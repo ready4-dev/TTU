@@ -1,0 +1,151 @@
+make_aqol6d_fns_ls <- function(domain_items_ls){
+  aqol6d_disu_fn_ls <- paste0("calc_aqol6d_d",
+                              1:length(domain_items_ls),
+                              "_disu_dbl") %>%
+    purrr::map(~rlang::sym(.x))
+  return(aqol6d_disu_fn_ls)
+}
+make_aqol6d_items_tb <- function(aqol_tb,
+                                 old_pfx_1L_chr,
+                                 new_pfx_1L_chr){
+  aqol6d_items_tb <- aqol_tb %>%
+    dplyr::select(dplyr::starts_with(old_pfx_1L_chr)) %>%
+    dplyr::rename_all(~{
+      stringr::str_replace(.,old_pfx_1L_chr,new_pfx_1L_chr)
+    })
+  return(aqol6d_items_tb)
+}
+make_dim_sclg_cons_dbl <- function(domains_chr,
+                                   dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb){
+  dim_sclg_cons_dbl <- purrr::map_dbl(domains_chr,
+                                      ~ ready4fun::get_from_lup_obj(dim_sclg_constant_lup_tb,
+                                                                    match_var_nm_chr = "Dimension_chr",
+                                                                    match_value_xx = .x,
+                                                                    target_var_nm_chr = "Constant_dbl",
+                                                                    evaluate_lgl = F))
+  return(dim_sclg_cons_dbl)
+}
+make_item_wrst_wghts_ls_ls <- function(domain_items_ls,
+                                       itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb){
+  item_wrst_wghts_ls_ls <- domain_items_ls %>%
+    purrr::map(~{
+      purrr::map_dbl(.x,
+                     ~ {
+                       ready4fun::get_from_lup_obj(itm_wrst_wghts_lup_tb,
+                                                   match_var_nm_chr = "Question_chr",
+                                                   match_value_xx = .x,
+                                                   target_var_nm_chr = "Worst_Weight_dbl",
+                                                   evaluate_lgl = F)
+                     })
+    })
+  return(item_wrst_wghts_ls_ls)
+}
+make_aqol_items_props_tbs_ls <- function(){
+  bl_answer_props_tb <- tibble::tribble(
+    ~Question, ~Answer_1, ~Answer_2, ~Answer_3, ~Answer_4, ~Answer_5, ~Answer_6,
+
+    "Q1", 0.35, 0.38, 0.16, 0.03, 100, NA_real_, # Check item 5 in real data.
+    "Q2", 0.28, 0.38, 0.18, 0.08, 0.04,100,
+    "Q3", 0.78, 0.18, 0.03, 0.01, 0.0, 100,
+    "Q4", 0.64, 0.23, 0.09, 0.0, 100, NA_real_,
+    "Q5", 0.3, 0.48, 0.12, 0.05, 100, NA_real_,
+    "Q6", 0.33, 0.48, 0.15, 100, NA_real_,NA_real_,
+    "Q7", 0.44, 0.27, 0.11, 100, NA_real_, NA_real_,
+    "Q8", 0.18, 0.29, 0.23, 0.21, 100, NA_real_,
+    "Q9", 0.07, 0.27, 0.19, 0.37, 100, NA_real_,
+    "Q10", 0.04, 0.15, 0.4, 0.25, 100, NA_real_,
+    "Q11", 0.03, 0.13, 0.52, 0.25, 100, NA_real_,
+    "Q12", 0.06, 0.21, 0.25, 0.34, 100, NA_real_,
+    "Q13", 0.05, 0.25, 0.31, 0.28, 100, NA_real_,
+    "Q14", 0.05, 0.3, 0.34, 0.25, 100, NA_real_,
+    "Q15", 0.57, 0.25, 0.12, 100, NA_real_,NA_real_,
+    "Q16", 0.48, 0.42, 0.06, 100, NA_real_, NA_real_,
+    "Q17", 0.44, 0.3, 0.16, 0.07, 100, NA_real_,
+    "Q18", 0.33, 0.38, 0.25, 0.04, 0.0, 100,
+    "Q19", 0.33, 0.49, 0.16, 0.02, 0.0, 100,
+    "Q20", 0.67, 0.21, 0.02, 100, NA_real_,NA_real_
+  ) %>%
+    dplyr::mutate(total_prop_dbl = rowSums(dplyr::select(.,-Question),na.rm = T) -100) %>%
+    dplyr::mutate_if(is.numeric,~purrr::map2_dbl(.,total_prop_dbl,~ifelse(.x==100,1-.y,.x))) %>%
+    dplyr::select(-total_prop_dbl)
+  fup_answer_props_tb <- tibble::tribble(
+    ~Question, ~Answer_1, ~Answer_2, ~Answer_3, ~Answer_4, ~Answer_5, ~Answer_6,
+
+    "Q1", 0.51, 0.33, 0.12, 0.02, 100, NA_real_,
+    "Q2", 0.36, 0.38, 0.16, 0.06, 0.02,100,
+    "Q3", 0.81, 0.15, 0.04, 0.00, 0.0, 100,
+    "Q4", 0.73, 0.18, 0.09, 0.0, 100, NA_real_,
+    "Q5", 0.36, 0.42, 0.12, 0.05, 100, NA_real_,
+    "Q6", 0.48, 0.40, 0.11, 100, NA_real_,NA_real_,
+    "Q7", 0.57, 0.25, 0.09, 100, NA_real_, NA_real_,
+    "Q8", 0.31, 0.33, 0.17, 0.12, 100, NA_real_,
+    "Q9", 0.13, 0.35, 0.19, 0.23, 100, NA_real_,
+    "Q10", 0.1, 0.21, 0.43, 0.16, 100, NA_real_,
+    "Q11", 0.06, 0.25, 0.48, 0.18, 100, NA_real_,
+    "Q12", 0.08, 0.27, 0.26, 0.25, 100, NA_real_,
+    "Q13", 0.07, 0.37, 0.31, 0.19, 100, NA_real_,
+    "Q14", 0.08, 0.37, 0.34, 0.15, 100, NA_real_,
+    "Q15", 0.62, 0.23, 0.09, 100, NA_real_,NA_real_,
+    "Q16", 0.52, 0.40, 0.06, 100, NA_real_, NA_real_,
+    "Q17", 0.51, 0.28, 0.15, 0.06, 100, NA_real_,
+    "Q18", 0.37, 0.35, 0.25, 0.03, 0.0, 100,
+    "Q19", 0.43, 0.40, 0.16, 0.01, 0.0, 100,
+    "Q20", 0.77, 0.21, 0.02, 100, NA_real_,NA_real_
+  ) %>%
+    dplyr::mutate(total_prop_dbl = rowSums(dplyr::select(.,-Question),na.rm = T) -100) %>%
+    dplyr::mutate_if(is.numeric,~purrr::map2_dbl(.,total_prop_dbl,~ifelse(.x==100,1-.y,.x))) %>%
+    dplyr::select(-total_prop_dbl)
+  aqol_items_props_tbs_ls <- list(bl_answer_props_tb,
+                                  fup_answer_props_tb)
+  return(aqol_items_props_tbs_ls)
+}
+make_correlated_data_tb <- function(synth_data_spine_ls,
+                                    synth_data_idx_1L_dbl = 1){
+  correlated_data_tb <- simstudy::genCorData(synth_data_spine_ls$nbr_obs_dbl[synth_data_idx_1L_dbl], mu = synth_data_spine_ls$means_ls[[synth_data_idx_1L_dbl]], sigma = synth_data_spine_ls$sds_ls[[synth_data_idx_1L_dbl]],corMatrix = make_pdef_corr_mat_mat(synth_data_spine_ls$corr_mat_ls[[synth_data_idx_1L_dbl]]),cnames = synth_data_spine_ls$var_names_chr)  %>%
+    force_min_max_and_int_cnstrs_tb(var_names_chr = synth_data_spine_ls$var_names_chr,
+                                    min_max_ls = synth_data_spine_ls$min_max_ls,
+                                    discrete_lgl = synth_data_spine_ls$discrete_lgl)
+
+  return(correlated_data_tb)
+}
+make_domain_items_ls <- function(domains_chr,
+                                 q_nbrs_ls,
+                                 item_pfx_1L_chr){
+  domain_items_ls <- purrr::map(q_nbrs_ls,
+                                ~ paste0(item_pfx_1L_chr,.x)) %>%
+    stats::setNames(domains_chr)
+  return(domain_items_ls)
+
+}
+make_pdef_corr_mat_mat <- function(lower_diag_mat){
+  pdef_corr_mat <- lower_diag_mat %>%
+    Matrix::forceSymmetric(uplo="L")  %>% as.matrix()
+  if(!matrixcalc::is.positive.definite(pdef_corr_mat)){
+    pdef_corr_mat <- psych::cor.smooth(pdef_corr_mat)
+  }
+  return(pdef_corr_mat)
+}
+
+make_synth_series_tbs_ls <- function(synth_data_spine_ls,
+                                     series_names_chr){
+  # Add assert
+  synth_series_tbs_ls <- 1:length(series_names_chr) %>%
+    purrr::map(~make_correlated_data_tb(synth_data_spine_ls = synth_data_spine_ls,
+                                        synth_data_idx_1L_dbl = .x) %>%
+                 replace_var_vals_with_missing_tbl(synth_data_spine_ls = synth_data_spine_ls,
+                                                   idx_int = .x)) %>%
+    stats::setNames(series_names_chr)
+  return(synth_series_tbs_ls)
+}
+make_vec_with_sum_of_int <- function(target_int,
+                                     start_int,
+                                     end_int,
+                                     length_int){
+  vec_int <- Surrogate::RandVec(a=start_int,b=end_int,s=target_int,n=length_int,m=1) %>%
+    purrr::pluck("RandVecOutput") %>%
+    as.vector() %>%
+    round() %>% as.integer() %>%
+    force_vec_to_sum_to_int(target_1L_int = target_int,
+                            min_max_int = c(start_int,end_int))
+  return(vec_int)
+}

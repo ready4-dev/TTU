@@ -54,7 +54,72 @@ all_fns_dmt_tb <- make_all_fns_dmt_tb(paths_ls = paths_ls,
                                       fn_type_lup_tb = fn_type_lup_tb,
                                       generics_lup_tb = generics_lup_tb,
                                       abbreviations_lup = abbreviations_lup)
-
+##
+aqol6d_from_8d_coeffs_lup_tb <- tibble::tribble(
+  ~var_name_chr, ~coeff_dbl,
+  "vD1", 0.0719264,
+  "vD2", 0.1027818,
+  "vD3", 0.2519563,
+  "vD4", 0.3201172,
+  "vD5", 0.1288289,
+  "vD6", 0.2052164,
+  "Constant", - 0.0444493
+)
+disutilities_lup_tb <- tibble::tribble(
+  ~Question_chr, ~Answer_1_dbl, ~Answer_2_dbl, ~Answer_3_dbl, ~Answer_4_dbl, ~Answer_5_dbl, ~Answer_6_dbl,
+  "Q1", 0, 0.073, 0.435, 0.820, 1, NA_real_,
+  "Q2", 0, 0.033, 0.240, 0.471, 0.840,1,
+  "Q3", 0, 0.041, 0.251, 0.570, 0.830, 1,
+  "Q4", 0, 0.040, 0.297, 0.797, 1, NA_real_,
+  "Q5", 0, 0.074, 0.461, 0.841, 1, NA_real_,
+  "Q6", 0, 0.193, 0.759, 1, NA_real_,NA_real_,
+  "Q7", 0, 0.197, 0.648, 1, NA_real_, NA_real_,
+  "Q8", 0, 0.133, 0.392, 0.838, 1, NA_real_,
+  "Q9", 0, 0.142, 0.392, 0.824, 1, NA_real_,
+  "Q10", 0, 0.097, 0.330, 0.784, 1, NA_real_,
+  "Q11", 0, 0.064, 0.368, 0.837, 1, NA_real_,
+  "Q12", 0, 0.056, 0.338, 0.722, 1, NA_real_,
+  "Q13", 0, 0.055, 0.382, 0.774, 1, NA_real_,
+  "Q14", 0, 0.057, 0.423, 0.826, 1, NA_real_,
+  "Q15", 0, 0.133, 0.642, 1, NA_real_,NA_real_,
+  "Q16", 0, 0.200, 0.758, 1, NA_real_, NA_real_,
+  "Q17", 0, 0.072, 0.338, 0.752, 1, NA_real_,
+  "Q18", 0, 0.033, 0.223, 0.621, 0.843, 1,
+  "Q19", 0, 0.024, 0.205, 0.586, 0.826, 1,
+  "Q20", 0, 0.187, 0.695, 1, NA_real_,NA_real_
+)
+dim_sclg_constant_lup_tb <- tibble::tribble(
+  ~Dimension_chr, ~Constant_dbl,
+  "IL",-0.978,
+  "RL", -0.923,
+  "MH", -0.983,
+  "COP", -0.930,
+  "P", -0.96,
+  "SEN", -0.851
+)
+itm_wrst_wghts_lup_tb <- tibble::tribble(
+  ~Question_chr, ~Worst_Weight_dbl,
+  "Q1", 0.385412,
+  "Q2", 0.593819,
+  "Q3", 0.630323,
+  "Q4", 0.794888,
+  "Q5", 0.64303,
+  "Q6", 0.697742,
+  "Q7", 0.508658,
+  "Q8", 0.640377,
+  "Q9", 0.588422,
+  "Q10", 0.648748,
+  "Q11", 0.71122,
+  "Q12", 0.415694,
+  "Q13", 0.636994,
+  "Q14", 0.773296,
+  "Q15", 0.631833,
+  "Q16", 0.767573,
+  "Q17", 0.652241,
+  "Q18", 0.580696,
+  "Q19", 0.463022,
+  "Q20", 0.604613
+)
 ## 7 Document.
 # Write documented methods to R directory.
 ## Note files to be rewritten cannot be open in RStudio.

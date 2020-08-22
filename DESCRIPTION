@@ -1,15 +1,15 @@
 Package: FBaqol
-Title: What the Package Does (One Line, Title Case)
+Title: Map measures routinely collected in youth mental health services to AQOL 6D Health Utility.
 Version: 0.0.0.9000
-Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to
-    pick a license
+Authors@R: c(
+    person(given = "Caroline",family = "Gao",email = "caroline.gao@orygen.org.au", role = c("aut"),comment = c(ORCID = "0000-0002-0987-2759")), 
+    person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
+    person("Orygen", role = c("cph", "fnd")),
+    person("Headspace", role = c( "fnd")),
+    person("National Health and Medical Research Council", role = c( "fnd"))
+    )
+Description: Tools for mapping measures routinely collected in youth mental health services to AQOL 6D Health Utility. Part of the First Bounce model of primary youth mental health services.
+License: `use_gpl3_license()` 
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
