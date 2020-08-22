@@ -67,7 +67,7 @@ add_aqol6dU_to_tbs_ls <- function(tbs_ls, ## FUNCTION NEEDS TO BE FIXED - UNFINI
                                   dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
                                   disutilities_lup_tb = disutilities_lup_tb,
                                   itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb){
-  tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calc_aqol6dU_dbl(aqol6d_items_tb = .x,
+  tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_aqol6dU_dbl(aqol6d_items_tb = .x,
                                                                                    prefix_1L_chr =  prefix_1L_chr,
                                                                                    aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
                                                                                    dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
