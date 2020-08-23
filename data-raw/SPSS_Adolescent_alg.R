@@ -122,7 +122,7 @@ Execute.
 
 if (Q1=1) dvQ1 = 0.
 if (Q1=2) dvQ1=0.073.
-if (Q1=6) dvQ1=0.073.
+if (Q1=6) dvQ1=0.073.# DIFF
 if (Q1=3) dvQ1=0.435.
 if (Q1=4) dvQ1=0.820.
 if (Q1=5) dvQ1=1.
@@ -268,7 +268,7 @@ if (Q17=5) dvQ17=1.
 if (Q18=1) dvQ18=0.
 if (Q18=2) dvQ18=0.033.
 if (Q18=3) dvQ18=0.223.
-if (Q18=4) dvQ18=0.622.
+if (Q18=4) dvQ18=0.622.#0.521
 if (Q18=5) dvQ18=0.843.
 if (Q18=6) dvQ18=1.
 
@@ -361,7 +361,7 @@ Compute dvD4=(1/-0.930)*((1+(-0.930*0.415694*dvQ12))*(1+(-0.930*0.636994*dvQ13))
 
 ***DIMENSION 5 - PAIN.
 
-***DIMENSION SCALING CONSTANT kD5 = -0.962.
+***DIMENSION SCALING CONSTANT kD5 = -0.962. #-0.96
 ***PAIN HAS 3 ITEMS.
 ***ITEM WORST WEIGHTS (Wi).
 **	w15=0.631833.
@@ -403,18 +403,18 @@ EXECUTE.
 ***3. OVERALL SCORE ON A 0-1 DISVALUE SCALE***
 *** On a scale, Utility/Disutility involves preferences, Value/Disvalue does not involve preferences***
 **********************************************************************************************************
-***DIMENSION SCALING CONSTANT kA = -0.965
-***DIMENSION WORST WEIGHTS (wDi)
-* wD1=0.472
-* wD2=0.448
-* wD3=0.479
-* wD4=0.345
-* wD5=0.592
-* wD6=0.637
+***DIMENSION SCALING CONSTANT kA = -0.965 # NEW
+***DIMENSION WORST WEIGHTS (wDi) # NEW
+* wD1=0.472 # NEW
+* wD2=0.448 # NEW
+* wD3=0.479 # NEW
+* wD4=0.345 # NEW
+* wD5=0.592 # NEW
+* wD6=0.637 # NEW
 
-*scaling factor for wDi = 1/1.132181 = 0.883
+*scaling factor for wDi = 1/1.132181 = 0.883 # NEW
 
-**6 dimension formula
+**6 dimension formula # NEW
 **duaqol = 1/kA)*[(1+(kA*wD1*0.883*dvD1))*(1+(kA*wD2*0.883*dvD2))*(1+(kA*wD3*0.883*dvD3))*(1+(kA*wD4*0.883*dvD4))*(1+(kA*wD5*0.883*dvD5))* (1+(kA*wD6*0.883*dvD6))-1]
 
 Compute duaqol =(1/-0.965)*((1+(-0.965*0.472*0.883*dvD1))*(1+(-0.965*0.448*0.883*dvD2))*
@@ -428,16 +428,16 @@ Compute duaqol =(1/-0.965)*((1+(-0.965*0.472*0.883*dvD1))*(1+(-0.965*0.448*0.883
 **Scaling constant for LIFE – DEATH scale, wld = 1.132
 ** duaqolld = wld*duaqol
 
-Compute duaqolld =1.132*duaqol.
+Compute duaqolld =1.132*duaqol. # NEW
 
 
 **************************************************************************************************
 ***AQoL-6D MULTIPLICATIVE MODE- ECONOMETRIC CORRECTION FOR ADOLESCENT AGE ***
 **************************************************************************************************
 
-Compute duAQoL6D = duaqolld**1.8407651.
+Compute duAQoL6D = duaqolld**1.8407651. # NEW
 
-If duAQoL6D > 1  duAQoL6D = (1 + (duAQoL6D-1)*.25773196).
+If duAQoL6D > 1  duAQoL6D = (1 + (duAQoL6D-1)*.25773196). # NEW
 
 
 **Variable duAQoL6D = " AQoL-6D AdolescentDisutility Score".  ***
@@ -445,20 +445,20 @@ If duAQoL6D > 1  duAQoL6D = (1 + (duAQoL6D-1)*.25773196).
 ***INSTRUMENT UTILITY SCORE
 ****************************************************
 
-Compute uAQoL6D = (1- duAQoL6D).
+Compute uAQoL6D = (1- duAQoL6D). # NEW
 
 
 ***Compute uAQoL6DRotated = uAQoL6D*.8807+.0889
 ***produces best .97 worst .03
 ***hence add .03 to constant = .0889 + .03 = .1189
 
-Compute uAQoL6DRotated = uAQoL6D*.8807+.1189.
+Compute uAQoL6DRotated = uAQoL6D*.8807+.1189. # NEW
 
 *********************************************************************************************************************************************
 *** ECONOMETRIC CORRECTION
 *********************************************************************************************************************************************
 
-Compute uaqol=1-(1-uAQoL6DRotated)**1.19.
+Compute uaqol=1-(1-uAQoL6DRotated)**1.19. # NEW
 EXECUTE.
 
 VARIABLE LABELS uaqol 'AQOL 6D ADOLESCENT Utility Score'.

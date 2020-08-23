@@ -3,7 +3,7 @@ calculate_aqol6d_d1_disu_dbl <- function(dvQs_tb,
                                     w_dbl){
   dvD1_dbl <- purrr::pmap_dbl(dvQs_tb,
                               ~{
-                                (1/kD_1L_dbl)*((1+(kD_1L_dbl*w_dbl[1]*..1))*(1+(kD_1L_dbl*w_dbl[2]*..2))*(1+(kD_1L_dbl*w_dbl[3]*..2))*(1+(kD_1L_dbl*w_dbl[4]*..4))-1)
+                                (1/kD_1L_dbl)*((1+(kD_1L_dbl*w_dbl[1]*..1))*(1+(kD_1L_dbl*w_dbl[2]*..2))*(1+(kD_1L_dbl*w_dbl[3]*..3))*(1+(kD_1L_dbl*w_dbl[4]*..4))-1)
                               })
   return(dvD1_dbl)
 }
