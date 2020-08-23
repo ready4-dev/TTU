@@ -25,13 +25,14 @@ data("abbreviations_lup",package = "ready4class")
 # 5.1 Create a lookup table of function types used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
 data("fn_type_lup_tb",package = "ready4class")
 fn_type_lup_tb %>%
-  dplyr::bind_rows(tibble::tibble(fn_type_nm_chr = c("Calculate","Extract","Impute","Randomise","Reorder","Reset"),
+  dplyr::bind_rows(tibble::tibble(fn_type_nm_chr = c("Calculate","Extract","Impute","Randomise","Reorder","Reset","Scramble"),
                                   fn_type_desc_chr = c("Calculates a numeric value.",
                                                        "Extracts data from an object.",
                                                        "Imputes data.",
                                                        "Randomly samples from data.",
-                                                       "Reorders an object",
-                                                       "Resets the value of an object to a default."),
+                                                       "Reorders an object to conform to a pre-specified schema.",
+                                                       "Resets the value of an object to a default.",
+                                                       "Randomly reorders an object."),
                                   first_arg_desc_chr = NA_character_,
                                   second_arg_desc_chr = NA_character_,
                                   is_generic_lgl = F)) %>% # Add to ready4fun template.

@@ -172,8 +172,8 @@ add_labels_to_aqol6d_tb <- function(aqol6d_tb,
       aqol6d_q2 = "Getting around",
       aqol6d_q3 = "Mobility",
       aqol6d_q4 = "Self care",
-      aqol6d_q5 = "Enjoy close rel’s",
-      aqol6d_q6 = "Family rel’s",
+      aqol6d_q5 = "Enjoy close rels", # omitted regex
+      aqol6d_q6 = "Family rels", # omitted regex
       aqol6d_q7 = "Community involvement",
       aqol6d_q8 = "Despair",
       aqol6d_q9 = "Worry",

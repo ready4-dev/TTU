@@ -18,9 +18,9 @@ make_aqol6d_items_tb <- function(aqol_tb,
 make_corstars_tbl_xx <- function(x, method=c("pearson", "spearman"), removeTriangle=c("upper", "lower"),
                                  result=c("none", "html", "latex")){
   #Compute correlation matrix
-  require(Hmisc)
+  #require(Hmisc)
   x <- as.matrix(x)
-  correlation_matrix<-rcorr(x, type=method[1])
+  correlation_matrix <- Hmisc::rcorr(x, type=method[1])
   R <- correlation_matrix$r # Matrix of correlation coeficients
   p <- correlation_matrix$P # Matrix of p-value
 

@@ -1,6 +1,6 @@
 Package: FBaqol
 Title: Map measures routinely collected in youth mental health services to AQOL 6D Health Utility.
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: c(
     person(given = "Caroline",family = "Gao",email = "caroline.gao@orygen.org.au", role = c("aut"),comment = c(ORCID = "0000-0002-0987-2759")), 
     person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
@@ -20,3 +20,22 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+Imports: 
+    Hmisc,
+    MASS,
+    Matrix,
+    Surrogate,
+    dplyr,
+    faux,
+    ggplot2,
+    hutils,
+    matrixcalc,
+    psych,
+    purrr,
+    ready4fun,
+    rlang,
+    simstudy,
+    stats,
+    stringr,
+    tibble,
+    tidyselect
