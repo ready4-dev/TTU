@@ -1,0 +1,64 @@
+---
+title: "AQoL 6D Utility"
+author: "Caroline Gao"
+date: "13/08/2020"
+output: html_document
+---
+
+## Total utility score and by round 
+
+```{r,fig.width=8,warning=FALSE}
+
+ggplot(aqol6d_tb,aes(x=aqol6d_total_w,fill=round)) +
+        theme_bw() +
+        geom_histogram( aes(y = stat(width*density)),
+                        bins=10,position="dodge",colour="white",alpha=0.7) + 
+        scale_y_continuous(labels = scales::percent_format()) +
+        labs(y="Percentage",x= "AQoL-6D utility score", fill = "Data collection")  +
+        scale_fill_manual(values=c("#de2d26","#fc9272"))  +
+        theme(legend.position="bottom")
+
+
+```
+
+# Regression testing 
+
+## Boxcox transformation 
+
+```{r}
+library(MASS)
+initech_fit = lm(aqol6d_total_w ~ PHQ9, data = baseline)
+bc<-boxcox(initech_fit, plotit = TRUE)
+bc$x[which.max(bc$y)]
+```
+
+close to no transformation
+
+```{r,fig.width= 12, fig.height=6}
+
+baseline<-baseline %>% 
+  dplyr::mutate(aqol6d_total_w=ifelse(aqol6d_total_w==1,0.999,aqol6d_total_w)) %>% 
+  dplyr::mutate(aqol6d_total_w_log=log(aqol6d_total_w),
+         aqol6d_total_w_logit=psych::logit(aqol6d_total_w),
+         aqol6d_total_w_loglog= -log(-log(aqol6d_total_w)),
+         aqol6d_total_w_cloglog= log(-log(1-aqol6d_total_w))) %>% 
+  dplyr::filter(!is.na(PHQ9)) 
+
+
+set.seed(12345)
+folds_10 <- caret::createFolds(baseline$aqol6d_total_w , k = 10, list = TRUE, returnTrain = FALSE)
+
+tidyr::gather(baseline, variable, value, aqol6d_total_w, aqol6d_total_w_log,  aqol6d_total_w_logit,  aqol6d_total_w_loglog,aqol6d_total_w_cloglog) %>%
+dplyr::mutate(variable = factor(variable, levels = c("aqol6d_total_w", 
+                                                "aqol6d_total_w_log", 
+                                                "aqol6d_total_w_logit", 
+                                                "aqol6d_total_w_loglog", "aqol6d_total_w_cloglog"),
+                                      labels= c("No transformation",
+                                                "Log", "Logit","Log-log", "Complementary log-log"))) %>%
+  ggplot2::ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde() +
+     ggplot2::geom_rug() +
+    viridis::scale_fill_viridis(guide = FALSE, discrete = TRUE) +
+    ggplot2::facet_wrap(~variable, scales = "free") +
+    ggplot2::theme_bw() + ggplot2::labs(x="Transformed AQoL-6D utility scores")
+```

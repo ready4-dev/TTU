@@ -132,6 +132,40 @@ add_aqol_items_tbs_ls <- function(tbs_ls, # Needs to convert study data.
                                 })
   return(updated_tbs_ls)
 }
+add_corrs_and_uts_to_tbs_ls_ls <- function(tbs_ls, # Based on: https://stats.stackexchange.com/questions/134164/how-to-rearrange-2d-data-to-get-given-correlation
+                                           temporal_corrs_ls,
+                                           prefix_chr){
+  data("aqol6d_from_8d_coeffs_lup_tb",
+       package="FBaqol",
+       envir = environment())
+  data("dim_sclg_constant_lup_tb",
+       package="FBaqol",
+       envir = environment())
+  data("disutilities_lup_tb",
+       package="FBaqol",
+       envir = environment())
+  data("itm_wrst_wghts_lup_tb",
+       package="FBaqol",
+       envir = environment())
+  tbs_ls <- reorder_tb_for_target_cors(tbs_ls,
+                                       corr_dbl = temporal_corrs_ls[[1]],
+                                       corr_var_1L_chr = names(temporal_corrs_ls)[1],
+                                       id_var_to_rm_1L_chr = "id") %>%
+    add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]])
+  tbs_ls <- tbs_ls  %>%
+    add_aqol_scores_tbs_ls(means_dbl = c(44.5,40.6),
+                           sds_dbl = c(9.9,9.8),
+                           corr_dbl = 0.9) %>%
+    add_aqol_items_tbs_ls(aqol_items_props_tbs_ls = make_aqol_items_props_tbs_ls(), # Needs updating with more precise data.
+                          prefix_1L_chr = prefix_chr[["uid"]]) %>%
+    add_aqol6dU_to_tbs_ls(prefix_1L_chr =  prefix_chr[["aqol_item"]],
+                          aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
+                          dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
+                          disutilities_lup_tb = disutilities_lup_tb,
+                          itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb
+    )
+  return(tbs_ls)
+}
 add_domain_unwtd_tots_tb <- function(items_tb,
                                      domain_items_ls,
                                      domain_pfx_1L_chr){
