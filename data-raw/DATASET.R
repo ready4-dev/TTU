@@ -20,7 +20,8 @@ options(usethis.description = list(
                   utils::person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
                   utils::person("Orygen", role = c("cph", "fnd")),
                   utils::person("Headspace", role = c( "fnd")),
-                  utils::person("National Health and Medical Research Council", role = c( "fnd"))
+                  utils::person("National Health and Medical Research Council", role = c( "fnd")),
+                  URL = c("https://github.com/orygen/FBaqol")
   ),
   License = usethis::use_gpl3_license("Orygen")
 ))

@@ -1,0 +1,53 @@
+---
+title: "AQoL Items XTRAs"
+author: "Caroline Gao"
+date: "14/08/2020"
+output: html_document
+---
+
+
+```{r}
+devtools::load_all()
+```
+## log-log transformed scores subtotal scores
+
+
+```{r, fig.height=10 ,fig.width=8,warning=FALSE}
+colNames <- names(dplyr::select(aqol6d_tb, dplyr::starts_with("aqol6d_subtotal_w")))
+
+plot<-list()
+for(i in colNames){
+    targetvar=paste0("tran_",i)
+    #log-log transform 
+    aqol6d_tb<- dplyr::mutate(aqol6d_tb,!!targetvar := log(-log(1-!!as.name(i))))  %>% 
+          dplyr::mutate(!!targetvar :=ifelse(!!as.name(i)==1,log(-log(1-0.999)),!!as.name(targetvar )))
+    #extract label  
+    labelx<-eval(parse(text=paste0("attributes(aqol6d_tb$",i,")$label")))
+    labelx<- paste0("log-log transformed", stringr::str_to_sentence(stringr::str_sub(labelx,38,55))
+                    )
+    #plot
+    plot[[i]]<- ggplot2::ggplot(aqol6d_tb, ggplot2::aes_string(targetvar)) +
+         ggplot2::geom_histogram(bins=8,color = "white",ggplot2::aes(fill=round),position = 'dodge',alpha=0.7) +
+          ggplot2::labs(x=labelx, y="Percentage")  +
+          ggplot2::theme_bw() +
+          ggplot2::scale_y_continuous(labels = scales::percent) +
+          ggplot2::theme(legend.position="none") +
+          ggplot2::scale_fill_manual(values=c("#de2d26","#fc9272")) 
+      
+}
+## FIX NEEDED BEFORE BELOW CAN RUN
+# extract legend
+# legend <- ggplot2::ggplot(aqol6d_tb, ggplot2::aes_string(targetvar)) +
+#          ggplot2::geom_histogram(bins=8,color = "white",ggplot2::aes(fill=round),position = 'dodge',alpha=0.7) +
+#           ggplot2::labs(x=labelx, y="Percentage", fill = "Data collection")  +
+#           ggplot2::theme_bw() +
+#           ggplot2::theme(legend.position="bottom") +
+#           ggplot2::scale_y_continuous(labels = scales::percent) +
+#           ggplot2::scale_fill_manual(values=c("#de2d26","#fc9272")) 
+# 
+# legend <- extract_g_legend_1L_chr(legend)
+# gridExtra::grid.arrange(ggpubr::ggarrange(plotlist=plot,nrow=3,ncol=2) ,
+#              legend, nrow=2,heights=c(10, 1))  
+
+```
+

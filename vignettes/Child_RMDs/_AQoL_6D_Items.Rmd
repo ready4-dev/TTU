@@ -1,0 +1,97 @@
+---
+title: "AQoL Items"
+author: "Caroline Gao"
+date: "13/08/2020"
+output: html_document
+---
+
+# Plots 
+
+## Crude question responses 
+  
+```{r, fig.height=12, fig.width=12,warning=FALSE,}
+
+colNames <- names(dplyr::select(aqol6d_tb, dplyr::starts_with("aqol6d_q")))
+
+labNames<-c("Household tasks", "Getting around", "Morbility","Self care",
+            "Enjoy close rel’s", "Family rel’s", "Community involvement",
+             "Despair","Worry", "Sad", "Agitated",
+             "Energy level", "Control", "Coping", 
+             "Frequency of pain", "Degree of pain", "Pain interference",
+              "Vision", "Hearing", "Communication")
+
+plot<-list() 
+j=1
+for(i in colNames){ 
+    
+    dta<-aqol6d_tb %>% 
+          dplyr::filter( !is.na(!!as.name(i) )) %>% 
+          dplyr::group_by( round, !!as.name(i) ) %>% 
+          dplyr::summarise(n=dplyr::n()) %>% 
+          dplyr::group_by(round) %>% 
+          dplyr::mutate(y=n/sum(n))
+    labelx<-labNames[j]
+    j=j+1
+    plot[[i]]<- ggplot2::ggplot(dta, ggplot2::aes_string(i)) +
+          ggplot2::geom_bar(ggplot2::aes(y = y, fill=round),stat = "identity", na.rm = TRUE, position="dodge",colour="white",alpha=0.7) +
+          ggplot2::scale_y_continuous(labels = scales::percent_format()) +
+          ggplot2::labs(x=labelx,y="Percentage",fill = "Data collection")  + 
+          ggplot2::theme_bw()+
+          ggplot2::theme(legend.position="none") +
+          ggplot2::scale_fill_manual(values=c("#de2d26","#fc9272")) 
+}
+
+#save legend from one plot 
+legend <- ggplot2::ggplot(dta, ggplot2::aes_string(i)) +
+          ggplot2::geom_bar(ggplot2::aes(y = y, fill=round),stat = "identity", na.rm = TRUE, position="dodge",colour="white",alpha=0.7)  +
+          ggplot2::labs(x=labelx,y="Percentage", fill = "Data collection")  +
+          ggplot2::theme(legend.position="bottom") +
+          ggplot2::scale_fill_manual(values=c("#de2d26","#fc9272")) 
+legend <- extract_g_legend_1L_chr(legend)
+
+#arrange all plot together
+gridExtra::grid.arrange(ggpubr::ggarrange(plotlist=plot,nrow=5,ncol=4) ,
+             legend, nrow=2,heights=c(10, 1))
+
+```
+
+
+
+## Weighted subtotal scores
+
+```{r, fig.height=10 ,fig.width=8,warning=FALSE}
+colNames <- names(dplyr::select(aqol6d_tb, dplyr::starts_with("aqol6d_subtotal_w")))
+
+plot<-list()
+for(i in colNames){ 
+    
+    labelx<-eval(parse(text=paste0("attributes(aqol6d_tb$",i,")$label")))
+    labelx<- stringr::str_to_sentence(stringr::str_sub(labelx,38,55))
+    plot[[i]]<- ggplot2::ggplot(aqol6d_tb, ggplot2::aes_string(i)) +
+      ggplot2::geom_histogram(bins=8,color = "white",ggplot2::aes(fill=round,y=2*(..density..)/sum(..density..)), position = 'dodge',alpha=0.7) +
+      #abs(x=labelx,y="Percentage")  + # NEED TO ADD BACK IN WITH NS CALL
+      ggplot2::theme_bw() +
+      ggplot2::scale_y_continuous(labels = scales::percent) +
+      ggplot2::theme(legend.position="none") +
+      ggplot2::scale_fill_manual(values=c("#de2d26","#fc9272")) 
+}
+
+#save legend from one plot 
+legend<-ggplot2::ggplot(aqol6d_tb, ggplot2::aes_string(i)) +
+      ggplot2::geom_histogram(bins=8,color = "white",ggplot2::aes(fill=round,y=2*(..density..)/sum(..density..)), position = 'dodge',alpha=0.7) +
+      ggplot2::labs(x=labelx,y="Percentage", fill = "Data collection")  + 
+      ggplot2::theme_bw() +
+      ggplot2::theme(legend.position="bottom") +
+      ggplot2::scale_y_continuous(labels = scales::percent) +
+      ggplot2::scale_fill_manual(values=c("#de2d26","#fc9272")) 
+
+
+legend <- extract_g_legend_1L_chr(legend)
+
+gridExtra::grid.arrange(ggpubr::ggarrange(plotlist=plot,nrow=3,ncol=2) ,
+             legend, nrow=2,heights=c(10, 1))  
+
+```
+
+
+

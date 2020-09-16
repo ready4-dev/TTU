@@ -1,0 +1,35 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r echo = F}
+library(xtable)
+options(xtable.floating = FALSE)
+options(xtable.timestamp = "")
+#install.packages("Surrogate")
+library("FBaqol")
+```
+
+
+# Generate fake study data
+```{r child="./AQoL_6D_Syn_Pop.Rmd", echo=FALSE}
+```
+
+```{r child="./AQoL_6D_Descriptives.Rmd", echo=FALSE}
+```
+
+```{r child="./AQoL_6D_Items.Rmd", echo=FALSE}
+```
+
+```{r child="./AQoL_6D_Items_XTRAs.Rmd", echo=FALSE}
+```
+
+
+```{r child="./AQoL_6D_Utility.Rmd", echo=FALSE}
+```
+
+```{r child="./AQoL_6D_Linear.Rmd", echo=FALSE}
+```
