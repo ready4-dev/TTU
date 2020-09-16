@@ -19,3 +19,4 @@ Synth (a table)
 \description{
 replace_var_vals_with_missing_tbl() is a Replace function that edits an object, replacing a specified element with another specified element. Specifically, this function implements an algorithm to replace var values with missing table. Function argument tbl specifies the object to be updated. Argument synth_data_spine_ls provides the object to be updated. The function is called for its side effects and does not return a value.
 }
+\keyword{internal}

@@ -26,3 +26,4 @@ Table (a tibble)
 \description{
 force_min_max_and_int_cnstrs_tb() is a Force function that checks if a specified local or global environmental condition is met and if not, updates the specified environment to comply with the condition. Specifically, this function implements an algorithm to force min max and integer vector cnstrs tibble. The function returns Table (a tibble).
 }
+\keyword{internal}

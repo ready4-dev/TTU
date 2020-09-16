@@ -6,6 +6,7 @@
 #' @rdname randomise_ptl_fup_fct
 #' @export 
 #' @importFrom purrr map2_dbl
+#' @keywords internal
 randomise_ptl_fup_fct <- function (vector_fct, prob_unchanged_dbl) 
 {
     labels_chr <- levels(vector_fct)

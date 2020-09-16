@@ -7,6 +7,7 @@
 #' @importFrom tibble tribble
 #' @importFrom dplyr mutate select mutate_if
 #' @importFrom purrr map2_dbl
+#' @keywords internal
 make_aqol_items_props_tbs_ls <- function () 
 {
     bl_answer_props_tb <- tibble::tribble(~Question, ~Answer_1, 
@@ -64,6 +65,7 @@ make_aqol_items_props_tbs_ls <- function ()
 #' @export 
 #' @importFrom purrr map
 #' @importFrom rlang sym
+#' @keywords internal
 make_aqol6d_fns_ls <- function (domain_items_ls) 
 {
     aqol6d_disu_fn_ls <- paste0("calculate_aqol6d_d", 1:length(domain_items_ls), 
@@ -80,6 +82,7 @@ make_aqol6d_fns_ls <- function (domain_items_ls)
 #' @export 
 #' @importFrom dplyr select starts_with rename_all
 #' @importFrom stringr str_replace
+#' @keywords internal
 make_aqol6d_items_tb <- function (aqol_tb, old_pfx_1L_chr, new_pfx_1L_chr) 
 {
     aqol6d_items_tb <- aqol_tb %>% dplyr::select(dplyr::starts_with(old_pfx_1L_chr)) %>% 
@@ -96,6 +99,7 @@ make_aqol6d_items_tb <- function (aqol_tb, old_pfx_1L_chr, new_pfx_1L_chr)
 #' @rdname make_correlated_data_tb
 #' @export 
 #' @importFrom simstudy genCorData
+#' @keywords internal
 make_correlated_data_tb <- function (synth_data_spine_ls, synth_data_idx_1L_dbl = 1) 
 {
     correlated_data_tb <- simstudy::genCorData(synth_data_spine_ls$nbr_obs_dbl[synth_data_idx_1L_dbl], 
@@ -116,6 +120,7 @@ make_correlated_data_tb <- function (synth_data_spine_ls, synth_data_idx_1L_dbl 
 #' @rdname make_corstars_tbl_xx
 #' @export 
 #' @importFrom Hmisc rcorr
+#' @keywords internal
 make_corstars_tbl_xx <- function (x, method = c("pearson", "spearman"), removeTriangle = c("upper", 
     "lower"), result = c("none", "html", "latex")) 
 {
@@ -158,6 +163,7 @@ make_corstars_tbl_xx <- function (x, method = c("pearson", "spearman"), removeTr
 #' @export 
 #' @importFrom purrr map_dbl
 #' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
 make_dim_sclg_cons_dbl <- function (domains_chr, dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb) 
 {
     dim_sclg_cons_dbl <- purrr::map_dbl(domains_chr, ~ready4fun::get_from_lup_obj(dim_sclg_constant_lup_tb, 
@@ -175,6 +181,7 @@ make_dim_sclg_cons_dbl <- function (domains_chr, dim_sclg_constant_lup_tb = dim_
 #' @export 
 #' @importFrom purrr map
 #' @importFrom stats setNames
+#' @keywords internal
 make_domain_items_ls <- function (domains_chr, q_nbrs_ls, item_pfx_1L_chr) 
 {
     domain_items_ls <- purrr::map(q_nbrs_ls, ~paste0(item_pfx_1L_chr, 
@@ -190,6 +197,7 @@ make_domain_items_ls <- function (domains_chr, q_nbrs_ls, item_pfx_1L_chr)
 #' @export 
 #' @importFrom purrr map map_dbl
 #' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
 make_item_wrst_wghts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb) 
 {
     item_wrst_wghts_ls_ls <- domain_items_ls %>% purrr::map(~{
@@ -210,6 +218,7 @@ make_item_wrst_wghts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb =
 #' @importFrom Matrix forceSymmetric
 #' @importFrom matrixcalc is.positive.definite
 #' @importFrom psych cor.smooth
+#' @keywords internal
 make_pdef_corr_mat_mat <- function (lower_diag_mat) 
 {
     pdef_corr_mat <- lower_diag_mat %>% Matrix::forceSymmetric(uplo = "L") %>% 
@@ -228,6 +237,7 @@ make_pdef_corr_mat_mat <- function (lower_diag_mat)
 #' @export 
 #' @importFrom purrr map
 #' @importFrom stats setNames
+#' @keywords internal
 make_synth_series_tbs_ls <- function (synth_data_spine_ls, series_names_chr) 
 {
     synth_series_tbs_ls <- 1:length(series_names_chr) %>% purrr::map(~make_correlated_data_tb(synth_data_spine_ls = synth_data_spine_ls, 
@@ -246,6 +256,7 @@ make_synth_series_tbs_ls <- function (synth_data_spine_ls, series_names_chr)
 #' @export 
 #' @importFrom Surrogate RandVec
 #' @importFrom purrr pluck
+#' @keywords internal
 make_vec_with_sum_of_int <- function (target_int, start_int, end_int, length_int) 
 {
     vec_int <- Surrogate::RandVec(a = start_int, b = end_int, 

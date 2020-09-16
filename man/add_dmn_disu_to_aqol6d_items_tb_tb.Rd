@@ -29,3 +29,4 @@ Aqol6d items (a tibble)
 \description{
 add_dmn_disu_to_aqol6d_items_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dmn disu to aqol6d items tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns Aqol6d items (a tibble).
 }
+\keyword{internal}

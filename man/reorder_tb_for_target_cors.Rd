@@ -29,3 +29,4 @@ Tibbles (a list)
 \description{
 reorder_tb_for_target_cors() is a Reorder function that reorders an object to conform to a pre-specified schema. Specifically, this function implements an algorithm to reorder tibble for target cors. The function returns Tibbles (a list).
 }
+\keyword{internal}

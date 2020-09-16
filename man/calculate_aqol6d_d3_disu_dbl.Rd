@@ -19,3 +19,4 @@ DvD3 (a double vector)
 \description{
 calculate_aqol6d_d3_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate aqol6d d3 disu double vector. The function returns DvD3 (a double vector).
 }
+\keyword{internal}

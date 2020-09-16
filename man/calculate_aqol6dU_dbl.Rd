@@ -32,3 +32,4 @@ Aqol6dU (a double vector)
 \description{
 calculate_aqol6dU_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate aqol6du double vector. The function returns Aqol6dU (a double vector).
 }
+\keyword{internal}

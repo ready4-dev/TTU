@@ -17,3 +17,4 @@ Correlated data (a tibble)
 \description{
 make_correlated_data_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make correlated data tibble. The function returns Correlated data (a tibble).
 }
+\keyword{internal}

@@ -173,25 +173,10 @@ ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
                                 r_dir_1L_chr = "R",
                                 dev_pkgs_chr = c("ready4fun","ready4class","ready4use"),
                                 update_pkgdown_1L_lgl = T)
-#
+##
+## PART FOUR
+##
 # Update Description file with imported packages.
 ready4fun::write_ns_imps_to_desc()
 ##
-## 8. Run script to make package classes.
-# source("data-raw/MAKE_CLASSES.R")
-# prototype_lup <- prototype_lup %>%
-#   ready4_class_pt_lup()
-# usethis::use_data(prototype_lup,overwrite = T, internal = T)
-# ## 9. Remake the classes we previously created, this time using the new, preferred make_and_update method, which appends the metadata on the new classes to our instance of the ready4_class_pt_lup class.
-# prototype_lup <- make_and_update(classes_to_make_tb,
-#                                  dev_pckg_namespace = dev_pckg_namespace,
-#                                  name_prefix = name_prefix,
-#                                  output_dir = "R",
-#                                  file_exists_logic = "overwrite")
-# ## 10. Update the internal system data.
-# usethis::use_data(prototype_lup,overwrite = T, internal = T)
-##
-# 11. Create vignettes
-usethis::use_vignette("FBaqol")
-devtools::document()
-ready4fun::write_ns_imps_to_desc()
+## Add, Commit and Push

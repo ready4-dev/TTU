@@ -12,6 +12,7 @@
 #' @importFrom dplyr slice arrange bind_rows select
 #' @importFrom rlang sym
 #' @importFrom purrr map
+#' @keywords internal
 reorder_tb_for_target_cors <- function (tbs_ls, corr_dbl, corr_var_1L_chr, id_var_to_rm_1L_chr = NA_character_, 
     included_fup_idx_dbl = NA_real_) 
 {

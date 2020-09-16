@@ -15,3 +15,4 @@ NA ()
 \description{
 extract_g_legend_1L_chr() is an Extract function that extracts data from an object. Specifically, this function implements an algorithm to extract g legend length one character vector. The function is called for its side effects and does not return a value.
 }
+\keyword{internal}

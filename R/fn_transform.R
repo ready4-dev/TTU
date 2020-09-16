@@ -6,6 +6,7 @@
 #' @export 
 #' @importFrom dplyr mutate filter select contains rename
 #' @importFrom Hmisc label
+#' @keywords internal
 transform_raw_aqol_tb_to_aqol6d_tb <- function (raw_aqol_tb) 
 {
     aqol6d_tb <- raw_aqol_tb %>% dplyr::mutate(d_agegroup = cut(d_age, 

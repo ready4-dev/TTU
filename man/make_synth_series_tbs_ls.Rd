@@ -17,3 +17,4 @@ Synth series tibbles (a list)
 \description{
 make_synth_series_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make synth series tibbles list. The function returns Synth series tibbles (a list).
 }
+\keyword{internal}
