@@ -10,5 +10,6 @@
 #'   \item{first_arg_desc_chr}{First argument description (a character vector)}
 #'   \item{second_arg_desc_chr}{Second argument description (a character vector)}
 #'   \item{is_generic_lgl}{Is generic (a logical vector)}
+#'   \item{is_method_lgl}{Is method (a logical vector)}
 #' }
 "fn_type_lup_tb"

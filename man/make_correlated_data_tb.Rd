@@ -9,12 +9,11 @@ make_correlated_data_tb(synth_data_spine_ls, synth_data_idx_1L_dbl = 1)
 \arguments{
 \item{synth_data_spine_ls}{Synth data spine (a list)}
 
-\item{synth_data_idx_1L_dbl}{Synth data idx 1L (a double vector of length 1), Default: 1}
+\item{synth_data_idx_1L_dbl}{Synth data index (a double vector of length one), Default: 1}
 }
 \value{
 Correlated data (a tibble)
 }
 \description{
-make_correlated_data_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make correlated data. The function returns correlated data (a tibble).
+make_correlated_data_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make correlated data tibble. The function returns Correlated data (a tibble).
 }
-\keyword{internal}

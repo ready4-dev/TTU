@@ -1,14 +1,13 @@
-#' Replace var vals with missing table
-#' @description replace_var_vals_with_missing_tbl() is a Replace function that edits an object, replacing a specified element with another specified element. Specifically, this function implements an algorithm to replace var vals with missing a table. Function argument tbl specifies the object to be updated. Argument synth_data_spine_ls provides the object to be updated. The function is called for its side effects and does not return a value.
-#' @param tbl PARAM_DESCRIPTION
+#' Replace var values with missing table
+#' @description replace_var_vals_with_missing_tbl() is a Replace function that edits an object, replacing a specified element with another specified element. Specifically, this function implements an algorithm to replace var values with missing table. Function argument tbl specifies the object to be updated. Argument synth_data_spine_ls provides the object to be updated. The function is called for its side effects and does not return a value.
+#' @param ... Additional arguments
 #' @param synth_data_spine_ls Synth data spine (a list)
-#' @param idx_int Idx (an integer vector of length 1)
-#' @return NULL
+#' @param idx_int Index (an integer vector)
+#' @return Synth (a table)
 #' @rdname replace_var_vals_with_missing_tbl
 #' @export 
 #' @importFrom purrr reduce
 #' @importFrom simstudy defMiss genMiss genObs
-#' @keywords internal
 replace_var_vals_with_missing_tbl <- function (tbl, synth_data_spine_ls, idx_int) 
 {
     missing_def_tbl <- purrr::reduce(1:length(synth_data_spine_ls$var_names_chr), 

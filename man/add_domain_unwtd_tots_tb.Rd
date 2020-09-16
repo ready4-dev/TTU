@@ -11,12 +11,11 @@ add_domain_unwtd_tots_tb(items_tb, domain_items_ls, domain_pfx_1L_chr)
 
 \item{domain_items_ls}{Domain items (a list)}
 
-\item{domain_pfx_1L_chr}{Domain prefix 1L (a character vector of length 1)}
+\item{domain_pfx_1L_chr}{Domain prefix (a character vector of length one)}
 }
 \value{
 Items and domains (a tibble)
 }
 \description{
-add_domain_unwtd_tots_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add domain unwtd tots. Function argument items_tb specifies the object to be updated. The function returns items and domains (a tibble).
+add_domain_unwtd_tots_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add domain unwtd tots tibble. Function argument items_tb specifies the object to be updated. The function returns Items and domains (a tibble).
 }
-\keyword{internal}

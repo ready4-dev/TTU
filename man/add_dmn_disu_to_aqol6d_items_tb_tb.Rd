@@ -17,7 +17,7 @@ add_dmn_disu_to_aqol6d_items_tb_tb(
 
 \item{domain_items_ls}{Domain items (a list)}
 
-\item{domains_chr}{Domains (a character vector of length 1)}
+\item{domains_chr}{Domains (a character vector)}
 
 \item{dim_sclg_constant_lup_tb}{Dim sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb}
 
@@ -27,6 +27,5 @@ add_dmn_disu_to_aqol6d_items_tb_tb(
 Aqol6d items (a tibble)
 }
 \description{
-add_dmn_disu_to_aqol6d_items_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dmn disu to aqol6d items a tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns aqol6d items (a tibble).
+add_dmn_disu_to_aqol6d_items_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dmn disu to aqol6d items tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns Aqol6d items (a tibble).
 }
-\keyword{internal}

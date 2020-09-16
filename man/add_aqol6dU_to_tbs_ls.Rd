@@ -16,7 +16,7 @@ add_aqol6dU_to_tbs_ls(
 \arguments{
 \item{tbs_ls}{Tibbles (a list)}
 
-\item{prefix_1L_chr}{Prefix 1L (a character vector of length 1), Default: 'aqol6d_q'}
+\item{prefix_1L_chr}{Prefix (a character vector of length one), Default: 'aqol6d_q'}
 
 \item{aqol6d_from_8d_coeffs_lup_tb}{Aqol6d from 8d coeffs lookup table (a tibble), Default: aqol6d_from_8d_coeffs_lup_tb}
 
@@ -30,6 +30,5 @@ add_aqol6dU_to_tbs_ls(
 Tibbles (a list)
 }
 \description{
-add_aqol6dU_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol6dU to a tibbles. Function argument tbs_ls specifies the object to be updated. The function returns a tibbles (a list).
+add_aqol6dU_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol6du to tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 }
-\keyword{internal}

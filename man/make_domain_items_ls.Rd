@@ -7,16 +7,15 @@
 make_domain_items_ls(domains_chr, q_nbrs_ls, item_pfx_1L_chr)
 }
 \arguments{
-\item{domains_chr}{Domains (a character vector of length 1)}
+\item{domains_chr}{Domains (a character vector)}
 
 \item{q_nbrs_ls}{Q nbrs (a list)}
 
-\item{item_pfx_1L_chr}{Item prefix 1L (a character vector of length 1)}
+\item{item_pfx_1L_chr}{Item prefix (a character vector of length one)}
 }
 \value{
 Domain items (a list)
 }
 \description{
-make_domain_items_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make domain items. The function returns domain items (a list).
+make_domain_items_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make domain items list. The function returns Domain items (a list).
 }
-\keyword{internal}

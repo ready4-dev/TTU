@@ -13,6 +13,5 @@ make_pdef_corr_mat_mat(lower_diag_mat)
 Pdef corr (a matrix)
 }
 \description{
-make_pdef_corr_mat_mat() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make pdef corr a matrix. The function returns pdef corr (a matrix).
+make_pdef_corr_mat_mat() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make pdef corr matrix matrix. The function returns Pdef corr (a matrix).
 }
-\keyword{internal}

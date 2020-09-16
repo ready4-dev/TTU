@@ -11,12 +11,11 @@ add_aqol_items_tbs_ls(tbs_ls, aqol_items_props_tbs_ls, prefix_1L_chr)
 
 \item{aqol_items_props_tbs_ls}{Aqol items props tibbles (a list)}
 
-\item{prefix_1L_chr}{Prefix 1L (a character vector of length 1)}
+\item{prefix_1L_chr}{Prefix (a character vector of length one)}
 }
 \value{
 Updated tibbles (a list)
 }
 \description{
-add_aqol_items_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol items a tibbles. Function argument tbs_ls specifies the object to be updated. The function returns an updated tibbles (a list).
+add_aqol_items_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol items tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Updated tibbles (a list).
 }
-\keyword{internal}

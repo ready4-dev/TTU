@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_force.R
 \name{force_min_max_and_int_cnstrs_tb}
 \alias{force_min_max_and_int_cnstrs_tb}
-\title{Force min max and integer vector of length 1 cnstrs}
+\title{Force min max and integer vector cnstrs}
 \usage{
 force_min_max_and_int_cnstrs_tb(
   tbl_tb,
@@ -14,16 +14,15 @@ force_min_max_and_int_cnstrs_tb(
 \arguments{
 \item{tbl_tb}{Table (a tibble)}
 
-\item{var_names_chr}{Var names (a character vector of length 1)}
+\item{var_names_chr}{Var names (a character vector)}
 
 \item{min_max_ls}{Min max (a list)}
 
-\item{discrete_lgl}{Discrete (a logical vector of length 1)}
+\item{discrete_lgl}{Discrete (a logical vector)}
 }
 \value{
 Table (a tibble)
 }
 \description{
-force_min_max_and_int_cnstrs_tb() is a Force function that checks if a specified local or global environmental condition is met and if not, updates the specified environment to comply with the condition. Specifically, this function implements an algorithm to force min max and an integer vector of length 1 cnstrs. The function returns a table (a tibble).
+force_min_max_and_int_cnstrs_tb() is a Force function that checks if a specified local or global environmental condition is met and if not, updates the specified environment to comply with the condition. Specifically, this function implements an algorithm to force min max and integer vector cnstrs tibble. The function returns Table (a tibble).
 }
-\keyword{internal}

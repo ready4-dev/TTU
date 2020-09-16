@@ -15,12 +15,11 @@ add_itm_disu_to_aqol6d_itms_tb_tb(
 
 \item{disutilities_lup_tb}{Disutilities lookup table (a tibble), Default: disutilities_lup_tb}
 
-\item{pfx_1L_chr}{Prefix 1L (a character vector of length 1)}
+\item{pfx_1L_chr}{Prefix (a character vector of length one)}
 }
 \value{
 Aqol6d items (a tibble)
 }
 \description{
-add_itm_disu_to_aqol6d_itms_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add itm disu to aqol6d itms a tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns aqol6d items (a tibble).
+add_itm_disu_to_aqol6d_itms_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add itm disu to aqol6d itms tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns Aqol6d items (a tibble).
 }
-\keyword{internal}

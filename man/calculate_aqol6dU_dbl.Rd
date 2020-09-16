@@ -16,7 +16,7 @@ calculate_aqol6dU_dbl(
 \arguments{
 \item{aqol6d_items_tb}{Aqol6d items (a tibble)}
 
-\item{prefix_1L_chr}{Prefix 1L (a character vector of length 1)}
+\item{prefix_1L_chr}{Prefix (a character vector of length one)}
 
 \item{aqol6d_from_8d_coeffs_lup_tb}{Aqol6d from 8d coeffs lookup table (a tibble), Default: aqol6d_from_8d_coeffs_lup_tb}
 
@@ -27,9 +27,8 @@ calculate_aqol6dU_dbl(
 \item{itm_wrst_wghts_lup_tb}{Itm wrst wghts lookup table (a tibble), Default: itm_wrst_wghts_lup_tb}
 }
 \value{
-Aqol6dU (a double vector of length 1)
+Aqol6dU (a double vector)
 }
 \description{
-calculate_aqol6dU_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate aqol6dU. The function returns aqol6du (a double vector of length 1).
+calculate_aqol6dU_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate aqol6du double vector. The function returns Aqol6dU (a double vector).
 }
-\keyword{internal}

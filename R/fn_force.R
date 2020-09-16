@@ -1,16 +1,15 @@
-#' Force min max and integer vector of length 1 cnstrs
-#' @description force_min_max_and_int_cnstrs_tb() is a Force function that checks if a specified local or global environmental condition is met and if not, updates the specified environment to comply with the condition. Specifically, this function implements an algorithm to force min max and an integer vector of length 1 cnstrs. The function returns a table (a tibble).
+#' Force min max and integer vector cnstrs
+#' @description force_min_max_and_int_cnstrs_tb() is a Force function that checks if a specified local or global environmental condition is met and if not, updates the specified environment to comply with the condition. Specifically, this function implements an algorithm to force min max and integer vector cnstrs tibble. The function returns Table (a tibble).
 #' @param tbl_tb Table (a tibble)
-#' @param var_names_chr Var names (a character vector of length 1)
+#' @param var_names_chr Var names (a character vector)
 #' @param min_max_ls Min max (a list)
-#' @param discrete_lgl Discrete (a logical vector of length 1)
+#' @param discrete_lgl Discrete (a logical vector)
 #' @return Table (a tibble)
 #' @rdname force_min_max_and_int_cnstrs_tb
 #' @export 
 #' @importFrom purrr reduce map_dbl
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
-#' @keywords internal
 force_min_max_and_int_cnstrs_tb <- function (tbl_tb, var_names_chr, min_max_ls, discrete_lgl) 
 {
     tbl_tb <- purrr::reduce(1:length(var_names_chr), .init = tbl_tb, 
@@ -25,15 +24,14 @@ force_min_max_and_int_cnstrs_tb <- function (tbl_tb, var_names_chr, min_max_ls, 
     return(tbl_tb)
 }
 #' Force vec to sum to
-#' @description force_vec_to_sum_to_int() is a Force function that checks if a specified local or global environmental condition is met and if not, updates the specified environment to comply with the condition. Specifically, this function implements an algorithm to force vec to sum to. The function returns vec (an integer vector of length 1).
-#' @param vec_int Vec (an integer vector of length 1)
-#' @param target_1L_int Target 1L (an integer vector of length 1)
-#' @param item_ranges_dbl_ls Item ranges (a list of double vectors of length 1)
-#' @return Vec (an integer vector of length 1)
+#' @description force_vec_to_sum_to_int() is a Force function that checks if a specified local or global environmental condition is met and if not, updates the specified environment to comply with the condition. Specifically, this function implements an algorithm to force vec to sum to integer vector. The function returns Vec (an integer vector).
+#' @param vec_int Vec (an integer vector)
+#' @param target_1L_int Target (an integer vector of length one)
+#' @param item_ranges_dbl_ls Item ranges (a list of double vectors)
+#' @return Vec (an integer vector)
 #' @rdname force_vec_to_sum_to_int
 #' @export 
 #' @importFrom purrr reduce map2_lgl
-#' @keywords internal
 force_vec_to_sum_to_int <- function (vec_int, target_1L_int, item_ranges_dbl_ls) 
 {
     extras_int <- target_1L_int - sum(vec_int)

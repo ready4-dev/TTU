@@ -1,41 +1,56 @@
 Package: FBaqol
-Title: Map measures routinely collected in youth mental health services to AQOL 6D Health Utility.
-Version: 0.0.0.9001
-Authors@R: c(
-    person(given = "Caroline",family = "Gao",email = "caroline.gao@orygen.org.au", role = c("aut"),comment = c(ORCID = "0000-0002-0987-2759")), 
-    person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
-    person("Orygen", role = c("cph", "fnd")),
-    person("Headspace", role = c( "fnd")),
-    person("National Health and Medical Research Council", role = c( "fnd"))
-    )
-Description: Tools for mapping measures routinely collected in youth mental health services to AQOL 6D Health Utility. Part of the First Bounce model of primary youth mental health services.
-License: `use_gpl3_license()` 
+Title: Map measures routinely collected in youth mental
+    health services to AQOL 6D Health Utility.
+Version: 0.0.0.9002
+Authors@R: 
+    c(person(given = "Caroline",
+             family = "Gao",
+             role = "aut",
+             email = "caroline.gao@orygen.org.au",
+             comment = c(ORCID = "0000-0002-0987-2759")),
+      person(given = "Matthew",
+             family = "Hamilton",
+             role = c("aut", "cre"),
+             email = "matthew.hamilton@orygen.org.au",
+             comment = c(ORCID = "0000-0001-7407-9194")),
+      person(given = "Orygen",
+             role = c("cph", "fnd")),
+      person(given = "Headspace",
+             role = "fnd"),
+      person(given = "National Health and Medical Research Council",
+             role = "fnd"))
+Description: Tools for mapping measures routinely collected in
+    youth mental health services to AQOL 6D Health Utility. Part of the
+    First Bounce model of primary youth mental health services.
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Depends: 
-    R (>= 2.10)
-Suggests: 
-    knitr,
-    rmarkdown
-VignetteBuilder: knitr
 Imports: 
-    Hmisc,
-    MASS,
-    Matrix,
-    Surrogate,
+    lifecycle,
+    ready4fun (>= 0.0.0.9222),
     dplyr,
     faux,
     ggplot2,
+    Hmisc,
     hutils,
+    magrittr,
+    MASS,
+    Matrix,
     matrixcalc,
+    methods,
     psych,
     purrr,
-    ready4fun,
     rlang,
     simstudy,
     stats,
     stringr,
+    Surrogate,
     tibble,
     tidyselect
+RdMacros: lifecycle
+Depends: 
+    R (>= 2.10)
+Remotes: 
+    readyforwhatsnext/ready4fun

@@ -21,6 +21,5 @@ make_corstars_tbl_xx(
 \item{result}{PARAM_DESCRIPTION, Default: c("none", "html", "latex")}
 }
 \description{
-make_corstars_tbl_xx() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make corstars a table. The function is called for its side effects and does not return a value.
+make_corstars_tbl_xx() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make corstars table output object of multiple potential types. The function is called for its side effects and does not return a value.
 }
-\keyword{internal}

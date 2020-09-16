@@ -9,14 +9,13 @@ calculate_aqol6d_d6_disu_dbl(dvQs_tb, kD_1L_dbl, w_dbl)
 \arguments{
 \item{dvQs_tb}{DvQs (a tibble)}
 
-\item{kD_1L_dbl}{KD 1L (a double vector of length 1)}
+\item{kD_1L_dbl}{KD (a double vector of length one)}
 
-\item{w_dbl}{W (a double vector of length 1)}
+\item{w_dbl}{W (a double vector)}
 }
 \value{
-DvD6 (a double vector of length 1)
+DvD6 (a double vector)
 }
 \description{
-calculate_aqol6d_d6_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate aqol6d d6 disu. The function returns dvd6 (a double vector of length 1).
+calculate_aqol6d_d6_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate aqol6d d6 disu double vector. The function returns DvD6 (a double vector).
 }
-\keyword{internal}

@@ -7,16 +7,15 @@
 force_vec_to_sum_to_int(vec_int, target_1L_int, item_ranges_dbl_ls)
 }
 \arguments{
-\item{vec_int}{Vec (an integer vector of length 1)}
+\item{vec_int}{Vec (an integer vector)}
 
-\item{target_1L_int}{Target 1L (an integer vector of length 1)}
+\item{target_1L_int}{Target (an integer vector of length one)}
 
-\item{item_ranges_dbl_ls}{Item ranges (a list of double vectors of length 1)}
+\item{item_ranges_dbl_ls}{Item ranges (a list of double vectors)}
 }
 \value{
-Vec (an integer vector of length 1)
+Vec (an integer vector)
 }
 \description{
-force_vec_to_sum_to_int() is a Force function that checks if a specified local or global environmental condition is met and if not, updates the specified environment to comply with the condition. Specifically, this function implements an algorithm to force vec to sum to. The function returns vec (an integer vector of length 1).
+force_vec_to_sum_to_int() is a Force function that checks if a specified local or global environmental condition is met and if not, updates the specified environment to comply with the condition. Specifically, this function implements an algorithm to force vec to sum to integer vector. The function returns Vec (an integer vector).
 }
-\keyword{internal}

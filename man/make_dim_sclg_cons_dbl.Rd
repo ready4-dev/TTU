@@ -10,14 +10,13 @@ make_dim_sclg_cons_dbl(
 )
 }
 \arguments{
-\item{domains_chr}{Domains (a character vector of length 1)}
+\item{domains_chr}{Domains (a character vector)}
 
 \item{dim_sclg_constant_lup_tb}{Dim sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb}
 }
 \value{
-Dim sclg cons (a double vector of length 1)
+Dim sclg cons (a double vector)
 }
 \description{
-make_dim_sclg_cons_dbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make dim sclg cons. The function returns dim sclg cons (a double vector of length 1).
+make_dim_sclg_cons_dbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make dim sclg cons double vector. The function returns Dim sclg cons (a double vector).
 }
-\keyword{internal}

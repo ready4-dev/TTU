@@ -13,6 +13,5 @@ make_aqol6d_fns_ls(domain_items_ls)
 Aqol6d disu (a list of functions)
 }
 \description{
-make_aqol6d_fns_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make aqol6d a functions. The function returns aqol6d disu (a list of functions).
+make_aqol6d_fns_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make aqol6d functions list. The function returns Aqol6d disu (a list of functions).
 }
-\keyword{internal}

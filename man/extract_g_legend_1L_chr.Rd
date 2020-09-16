@@ -2,14 +2,16 @@
 % Please edit documentation in R/fn_extract.R
 \name{extract_g_legend_1L_chr}
 \alias{extract_g_legend_1L_chr}
-\title{Extract g legend 1L}
+\title{Extract g legend}
 \usage{
 extract_g_legend_1L_chr(a.gplot)
 }
 \arguments{
 \item{a.gplot}{PARAM_DESCRIPTION}
 }
-\description{
-extract_g_legend_1L_chr() is an Extract function that extracts data from an object. Specifically, this function implements an algorithm to extract g legend 1L. The function is called for its side effects and does not return a value.
+\value{
+NA ()
 }
-\keyword{internal}
+\description{
+extract_g_legend_1L_chr() is an Extract function that extracts data from an object. Specifically, this function implements an algorithm to extract g legend length one character vector. The function is called for its side effects and does not return a value.
+}

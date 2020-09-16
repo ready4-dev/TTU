@@ -13,6 +13,5 @@ transform_raw_aqol_tb_to_aqol6d_tb(raw_aqol_tb)
 Aqol6d (a tibble)
 }
 \description{
-transform_raw_aqol_tb_to_aqol6d_tb() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform raw aqol a tibble to aqol6d. Function argument raw_aqol_tb specifies the object to be updated. Argument NA provides the object to be updated. The function returns aqol6d (a tibble).
+transform_raw_aqol_tb_to_aqol6d_tb() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform raw aqol tibble to aqol6d tibble. Function argument raw_aqol_tb specifies the object to be updated. The function returns Aqol6d (a tibble).
 }
-\keyword{internal}

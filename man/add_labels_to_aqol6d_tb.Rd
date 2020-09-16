@@ -9,12 +9,11 @@ add_labels_to_aqol6d_tb(aqol6d_tb, labels_chr = NA_character_)
 \arguments{
 \item{aqol6d_tb}{Aqol6d (a tibble)}
 
-\item{labels_chr}{Labels (a character vector of length 1), Default: 'NA'}
+\item{labels_chr}{Labels (a character vector), Default: 'NA'}
 }
 \value{
 Aqol6d (a tibble)
 }
 \description{
-add_labels_to_aqol6d_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add labels to aqol6d. Function argument aqol6d_tb specifies the object to be updated. The function returns aqol6d (a tibble).
+add_labels_to_aqol6d_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add labels to aqol6d tibble. Function argument aqol6d_tb specifies the object to be updated. The function returns Aqol6d (a tibble).
 }
-\keyword{internal}

@@ -2,18 +2,20 @@
 % Please edit documentation in R/fn_replace.R
 \name{replace_var_vals_with_missing_tbl}
 \alias{replace_var_vals_with_missing_tbl}
-\title{Replace var vals with missing table}
+\title{Replace var values with missing table}
 \usage{
 replace_var_vals_with_missing_tbl(tbl, synth_data_spine_ls, idx_int)
 }
 \arguments{
-\item{tbl}{PARAM_DESCRIPTION}
-
 \item{synth_data_spine_ls}{Synth data spine (a list)}
 
-\item{idx_int}{Idx (an integer vector of length 1)}
+\item{idx_int}{Index (an integer vector)}
+
+\item{...}{Additional arguments}
+}
+\value{
+Synth (a table)
 }
 \description{
-replace_var_vals_with_missing_tbl() is a Replace function that edits an object, replacing a specified element with another specified element. Specifically, this function implements an algorithm to replace var vals with missing a table. Function argument tbl specifies the object to be updated. Argument synth_data_spine_ls provides the object to be updated. The function is called for its side effects and does not return a value.
+replace_var_vals_with_missing_tbl() is a Replace function that edits an object, replacing a specified element with another specified element. Specifically, this function implements an algorithm to replace var values with missing table. Function argument tbl specifies the object to be updated. Argument synth_data_spine_ls provides the object to be updated. The function is called for its side effects and does not return a value.
 }
-\keyword{internal}

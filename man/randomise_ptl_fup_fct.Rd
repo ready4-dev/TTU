@@ -9,9 +9,8 @@ randomise_ptl_fup_fct(vector_fct, prob_unchanged_dbl)
 \arguments{
 \item{vector_fct}{Vector (a factor)}
 
-\item{prob_unchanged_dbl}{Prob unchanged (a double vector of length 1)}
+\item{prob_unchanged_dbl}{Prob unchanged (a double vector)}
 }
 \description{
-randomise_ptl_fup_fct() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise ptl fup. The function is called for its side effects and does not return a value.
+randomise_ptl_fup_fct() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise ptl fup factor. The function is called for its side effects and does not return a value.
 }
-\keyword{internal}

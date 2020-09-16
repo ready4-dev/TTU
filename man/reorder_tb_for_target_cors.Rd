@@ -15,18 +15,17 @@ reorder_tb_for_target_cors(
 \arguments{
 \item{tbs_ls}{Tibbles (a list)}
 
-\item{corr_dbl}{Corr (a double vector of length 1)}
+\item{corr_dbl}{Corr (a double vector)}
 
-\item{corr_var_1L_chr}{Corr var 1L (a character vector of length 1)}
+\item{corr_var_1L_chr}{Corr var (a character vector of length one)}
 
-\item{id_var_to_rm_1L_chr}{Id var to rm 1L (a character vector of length 1), Default: 'NA'}
+\item{id_var_to_rm_1L_chr}{Id var to rm (a character vector of length one), Default: 'NA'}
 
-\item{included_fup_idx_dbl}{Included fup idx (a double vector of length 1), Default: NA}
+\item{included_fup_idx_dbl}{Included fup index (a double vector), Default: NA}
 }
 \value{
 Tibbles (a list)
 }
 \description{
-reorder_tb_for_target_cors() is a Reorder function that reorders an object to conform to a pre-specified schema. Specifically, this function implements an algorithm to reorder a tibble for target cors. The function returns a tibbles (a list).
+reorder_tb_for_target_cors() is a Reorder function that reorders an object to conform to a pre-specified schema. Specifically, this function implements an algorithm to reorder tibble for target cors. The function returns Tibbles (a list).
 }
-\keyword{internal}

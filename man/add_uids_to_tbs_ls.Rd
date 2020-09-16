@@ -9,12 +9,11 @@ add_uids_to_tbs_ls(tbs_ls, prefix_1L_chr)
 \arguments{
 \item{tbs_ls}{Tibbles (a list)}
 
-\item{prefix_1L_chr}{Prefix 1L (a character vector of length 1)}
+\item{prefix_1L_chr}{Prefix (a character vector of length one)}
 }
 \value{
 Tibbles (a list)
 }
 \description{
-add_uids_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add uids to a tibbles. Function argument tbs_ls specifies the object to be updated. The function returns a tibbles (a list).
+add_uids_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add uids to tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 }
-\keyword{internal}

@@ -7,18 +7,17 @@
 make_vec_with_sum_of_int(target_int, start_int, end_int, length_int)
 }
 \arguments{
-\item{target_int}{Target (an integer vector of length 1)}
+\item{target_int}{Target (an integer vector)}
 
-\item{start_int}{Start (an integer vector of length 1)}
+\item{start_int}{Start (an integer vector)}
 
-\item{end_int}{End (an integer vector of length 1)}
+\item{end_int}{End (an integer vector)}
 
-\item{length_int}{Length (an integer vector of length 1)}
+\item{length_int}{Length (an integer vector)}
 }
 \value{
-Vec (an integer vector of length 1)
+Vec (an integer vector)
 }
 \description{
-make_vec_with_sum_of_int() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make vec with sum of. The function returns vec (an integer vector of length 1).
+make_vec_with_sum_of_int() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make vec with sum of integer vector. The function returns Vec (an integer vector).
 }
-\keyword{internal}

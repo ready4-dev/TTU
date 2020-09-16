@@ -9,14 +9,13 @@ make_aqol6d_items_tb(aqol_tb, old_pfx_1L_chr, new_pfx_1L_chr)
 \arguments{
 \item{aqol_tb}{Aqol (a tibble)}
 
-\item{old_pfx_1L_chr}{Old prefix 1L (a character vector of length 1)}
+\item{old_pfx_1L_chr}{Old prefix (a character vector of length one)}
 
-\item{new_pfx_1L_chr}{New prefix 1L (a character vector of length 1)}
+\item{new_pfx_1L_chr}{New prefix (a character vector of length one)}
 }
 \value{
 Aqol6d items (a tibble)
 }
 \description{
-make_aqol6d_items_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make aqol6d items. The function returns aqol6d items (a tibble).
+make_aqol6d_items_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make aqol6d items tibble. The function returns Aqol6d items (a tibble).
 }
-\keyword{internal}

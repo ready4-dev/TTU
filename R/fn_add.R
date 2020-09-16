@@ -1,8 +1,8 @@
 #' Add aqol items tibbles
-#' @description add_aqol_items_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol items a tibbles. Function argument tbs_ls specifies the object to be updated. The function returns an updated tibbles (a list).
+#' @description add_aqol_items_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol items tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Updated tibbles (a list).
 #' @param tbs_ls Tibbles (a list)
 #' @param aqol_items_props_tbs_ls Aqol items props tibbles (a list)
-#' @param prefix_1L_chr Prefix 1L (a character vector of length 1)
+#' @param prefix_1L_chr Prefix (a character vector of length one)
 #' @return Updated tibbles (a list)
 #' @rdname add_aqol_items_tbs_ls
 #' @export 
@@ -10,7 +10,6 @@
 #' @importFrom dplyr select mutate arrange pull bind_cols everything
 #' @importFrom simstudy defData genData
 #' @importFrom stringr str_replace
-#' @keywords internal
 add_aqol_items_tbs_ls <- function (tbs_ls, aqol_items_props_tbs_ls, prefix_1L_chr) 
 {
     updated_tbs_ls <- purrr::map2(tbs_ls, aqol_items_props_tbs_ls, 
@@ -47,11 +46,11 @@ add_aqol_items_tbs_ls <- function (tbs_ls, aqol_items_props_tbs_ls, prefix_1L_ch
     return(updated_tbs_ls)
 }
 #' Add aqol scores tibbles
-#' @description add_aqol_scores_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol scores a tibbles. Function argument tbs_ls specifies the object to be updated. The function returns a tibbles (a list).
+#' @description add_aqol_scores_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol scores tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 #' @param tbs_ls Tibbles (a list)
-#' @param means_dbl Means (a double vector of length 1)
-#' @param sds_dbl Sds (a double vector of length 1)
-#' @param corr_dbl Corr (a double vector of length 1)
+#' @param means_dbl Means (a double vector)
+#' @param sds_dbl Sds (a double vector)
+#' @param corr_dbl Corr (a double vector)
 #' @return Tibbles (a list)
 #' @rdname add_aqol_scores_tbs_ls
 #' @export 
@@ -59,7 +58,6 @@ add_aqol_items_tbs_ls <- function (tbs_ls, aqol_items_props_tbs_ls, prefix_1L_ch
 #' @importFrom faux rnorm_pre
 #' @importFrom dplyr pull mutate
 #' @importFrom tidyselect all_of
-#' @keywords internal
 add_aqol_scores_tbs_ls <- function (tbs_ls, means_dbl, sds_dbl, corr_dbl) 
 {
     tbs_ls <- purrr::pmap(list(tbs_ls, means_dbl, sds_dbl), ~{
@@ -72,7 +70,7 @@ add_aqol_scores_tbs_ls <- function (tbs_ls, means_dbl, sds_dbl, corr_dbl)
     return(tbs_ls)
 }
 #' Add aqol6dU to aqol6d items tibble
-#' @description add_aqol6dU_to_aqol6d_items_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol6dU to aqol6d items a tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns aqol6d items (a tibble).
+#' @description add_aqol6dU_to_aqol6d_items_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol6du to aqol6d items tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns Aqol6d items (a tibble).
 #' @param aqol6d_items_tb Aqol6d items (a tibble)
 #' @param aqol6d_from_8d_coeffs_lup_tb Aqol6d from 8d coeffs lookup table (a tibble)
 #' @return Aqol6d items (a tibble)
@@ -80,7 +78,6 @@ add_aqol_scores_tbs_ls <- function (tbs_ls, means_dbl, sds_dbl, corr_dbl)
 #' @export 
 #' @importFrom dplyr pull mutate
 #' @importFrom purrr map_dbl
-#' @keywords internal
 add_aqol6dU_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, aqol6d_from_8d_coeffs_lup_tb) 
 {
     coeff_dbl <- aqol6d_from_8d_coeffs_lup_tb[match(c(paste0("vD", 
@@ -94,9 +91,9 @@ add_aqol6dU_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, aqol6d_from_8d_c
     return(aqol6d_items_tb)
 }
 #' Add aqol6dU to tibbles
-#' @description add_aqol6dU_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol6dU to a tibbles. Function argument tbs_ls specifies the object to be updated. The function returns a tibbles (a list).
+#' @description add_aqol6dU_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol6du to tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 #' @param tbs_ls Tibbles (a list)
-#' @param prefix_1L_chr Prefix 1L (a character vector of length 1), Default: 'aqol6d_q'
+#' @param prefix_1L_chr Prefix (a character vector of length one), Default: 'aqol6d_q'
 #' @param aqol6d_from_8d_coeffs_lup_tb Aqol6d from 8d coeffs lookup table (a tibble), Default: aqol6d_from_8d_coeffs_lup_tb
 #' @param dim_sclg_constant_lup_tb Dim sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb
 #' @param disutilities_lup_tb Disutilities lookup table (a tibble), Default: disutilities_lup_tb
@@ -106,7 +103,6 @@ add_aqol6dU_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, aqol6d_from_8d_c
 #' @export 
 #' @importFrom purrr map
 #' @importFrom dplyr mutate
-#' @keywords internal
 add_aqol6dU_to_tbs_ls <- function (tbs_ls, prefix_1L_chr = "aqol6d_q", aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb, 
     dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, disutilities_lup_tb = disutilities_lup_tb, 
     itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb) 
@@ -117,11 +113,38 @@ add_aqol6dU_to_tbs_ls <- function (tbs_ls, prefix_1L_chr = "aqol6d_q", aqol6d_fr
         disutilities_lup_tb = disutilities_lup_tb, itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)))
     return(tbs_ls)
 }
+#' Add corrs and uts to tibbles
+#' @description add_corrs_and_uts_to_tbs_ls_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add corrs and uts to tibbles list list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
+#' @param tbs_ls Tibbles (a list)
+#' @param temporal_corrs_ls Temporal corrs (a list)
+#' @param prefix_chr Prefix (a character vector)
+#' @return Tibbles (a list)
+#' @rdname add_corrs_and_uts_to_tbs_ls_ls
+#' @export 
+
+add_corrs_and_uts_to_tbs_ls_ls <- function (tbs_ls, temporal_corrs_ls, prefix_chr) 
+{
+    data("aqol6d_from_8d_coeffs_lup_tb", package = "FBaqol", 
+        envir = environment())
+    data("dim_sclg_constant_lup_tb", package = "FBaqol", envir = environment())
+    data("disutilities_lup_tb", package = "FBaqol", envir = environment())
+    data("itm_wrst_wghts_lup_tb", package = "FBaqol", envir = environment())
+    tbs_ls <- reorder_tb_for_target_cors(tbs_ls, corr_dbl = temporal_corrs_ls[[1]], 
+        corr_var_1L_chr = names(temporal_corrs_ls)[1], id_var_to_rm_1L_chr = "id") %>% 
+        add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]])
+    tbs_ls <- tbs_ls %>% add_aqol_scores_tbs_ls(means_dbl = c(44.5, 
+        40.6), sds_dbl = c(9.9, 9.8), corr_dbl = 0.9) %>% add_aqol_items_tbs_ls(aqol_items_props_tbs_ls = make_aqol_items_props_tbs_ls(), 
+        prefix_1L_chr = prefix_chr[["uid"]]) %>% add_aqol6dU_to_tbs_ls(prefix_1L_chr = prefix_chr[["aqol_item"]], 
+        aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb, 
+        dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, 
+        disutilities_lup_tb = disutilities_lup_tb, itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)
+    return(tbs_ls)
+}
 #' Add dmn disu to aqol6d items tibble
-#' @description add_dmn_disu_to_aqol6d_items_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dmn disu to aqol6d items a tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns aqol6d items (a tibble).
+#' @description add_dmn_disu_to_aqol6d_items_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dmn disu to aqol6d items tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns Aqol6d items (a tibble).
 #' @param aqol6d_items_tb Aqol6d items (a tibble)
 #' @param domain_items_ls Domain items (a list)
-#' @param domains_chr Domains (a character vector of length 1)
+#' @param domains_chr Domains (a character vector)
 #' @param dim_sclg_constant_lup_tb Dim sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb
 #' @param itm_wrst_wghts_lup_tb Itm wrst wghts lookup table (a tibble), Default: itm_wrst_wghts_lup_tb
 #' @return Aqol6d items (a tibble)
@@ -130,7 +153,6 @@ add_aqol6dU_to_tbs_ls <- function (tbs_ls, prefix_1L_chr = "aqol6d_q", aqol6d_fr
 #' @importFrom purrr reduce
 #' @importFrom dplyr select mutate
 #' @importFrom rlang sym exec
-#' @keywords internal
 add_dmn_disu_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_ls, domains_chr, dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, 
     itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb) 
 {
@@ -149,7 +171,7 @@ add_dmn_disu_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_ls
     return(aqol6d_items_tb)
 }
 #' Add dmn scores to aqol6d items tibble
-#' @description add_dmn_scores_to_aqol6d_items_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dmn scores to aqol6d items a tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns aqol6d items (a tibble).
+#' @description add_dmn_scores_to_aqol6d_items_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dmn scores to aqol6d items tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns Aqol6d items (a tibble).
 #' @param aqol6d_items_tb Aqol6d items (a tibble)
 #' @param domain_items_ls Domain items (a list)
 #' @return Aqol6d items (a tibble)
@@ -157,7 +179,6 @@ add_dmn_disu_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_ls
 #' @export 
 #' @importFrom dplyr mutate across rename_with
 #' @importFrom stringr str_replace
-#' @keywords internal
 add_dmn_scores_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_ls) 
 {
     aqol6d_items_tb <- aqol6d_items_tb %>% dplyr::mutate(dplyr::across(paste0("dvD", 
@@ -167,17 +188,16 @@ add_dmn_scores_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_
     return(aqol6d_items_tb)
 }
 #' Add domain unwtd tots
-#' @description add_domain_unwtd_tots_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add domain unwtd tots. Function argument items_tb specifies the object to be updated. The function returns items and domains (a tibble).
+#' @description add_domain_unwtd_tots_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add domain unwtd tots tibble. Function argument items_tb specifies the object to be updated. The function returns Items and domains (a tibble).
 #' @param items_tb Items (a tibble)
 #' @param domain_items_ls Domain items (a list)
-#' @param domain_pfx_1L_chr Domain prefix 1L (a character vector of length 1)
+#' @param domain_pfx_1L_chr Domain prefix (a character vector of length one)
 #' @return Items and domains (a tibble)
 #' @rdname add_domain_unwtd_tots_tb
 #' @export 
 #' @importFrom purrr reduce
 #' @importFrom dplyr mutate select
 #' @importFrom rlang sym
-#' @keywords internal
 add_domain_unwtd_tots_tb <- function (items_tb, domain_items_ls, domain_pfx_1L_chr) 
 {
     items_and_domains_tb <- purrr::reduce(1:length(domain_items_ls), 
@@ -187,17 +207,16 @@ add_domain_unwtd_tots_tb <- function (items_tb, domain_items_ls, domain_pfx_1L_c
     return(items_and_domains_tb)
 }
 #' Add itm disu to aqol6d itms tibble
-#' @description add_itm_disu_to_aqol6d_itms_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add itm disu to aqol6d itms a tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns aqol6d items (a tibble).
+#' @description add_itm_disu_to_aqol6d_itms_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add itm disu to aqol6d itms tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns Aqol6d items (a tibble).
 #' @param aqol6d_items_tb Aqol6d items (a tibble)
 #' @param disutilities_lup_tb Disutilities lookup table (a tibble), Default: disutilities_lup_tb
-#' @param pfx_1L_chr Prefix 1L (a character vector of length 1)
+#' @param pfx_1L_chr Prefix (a character vector of length one)
 #' @return Aqol6d items (a tibble)
 #' @rdname add_itm_disu_to_aqol6d_itms_tb_tb
 #' @export 
 #' @importFrom purrr reduce
 #' @importFrom dplyr mutate across
 #' @importFrom tidyselect all_of
-#' @keywords internal
 add_itm_disu_to_aqol6d_itms_tb_tb <- function (aqol6d_items_tb, disutilities_lup_tb = disutilities_lup_tb, 
     pfx_1L_chr) 
 {
@@ -211,14 +230,13 @@ add_itm_disu_to_aqol6d_itms_tb_tb <- function (aqol6d_items_tb, disutilities_lup
     return(aqol6d_items_tb)
 }
 #' Add labels to aqol6d
-#' @description add_labels_to_aqol6d_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add labels to aqol6d. Function argument aqol6d_tb specifies the object to be updated. The function returns aqol6d (a tibble).
+#' @description add_labels_to_aqol6d_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add labels to aqol6d tibble. Function argument aqol6d_tb specifies the object to be updated. The function returns Aqol6d (a tibble).
 #' @param aqol6d_tb Aqol6d (a tibble)
-#' @param labels_chr Labels (a character vector of length 1), Default: 'NA'
+#' @param labels_chr Labels (a character vector), Default: 'NA'
 #' @return Aqol6d (a tibble)
 #' @rdname add_labels_to_aqol6d_tb
 #' @export 
 #' @importFrom Hmisc label
-#' @keywords internal
 add_labels_to_aqol6d_tb <- function (aqol6d_tb, labels_chr = NA_character_) 
 {
     if (is.na(labels_chr)) 
@@ -250,9 +268,9 @@ add_labels_to_aqol6d_tb <- function (aqol6d_tb, labels_chr = NA_character_)
     return(aqol6d_tb)
 }
 #' Add uids to tibbles
-#' @description add_uids_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add uids to a tibbles. Function argument tbs_ls specifies the object to be updated. The function returns a tibbles (a list).
+#' @description add_uids_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add uids to tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 #' @param tbs_ls Tibbles (a list)
-#' @param prefix_1L_chr Prefix 1L (a character vector of length 1)
+#' @param prefix_1L_chr Prefix (a character vector of length one)
 #' @return Tibbles (a list)
 #' @rdname add_uids_to_tbs_ls
 #' @export 
@@ -261,7 +279,6 @@ add_labels_to_aqol6d_tb <- function (aqol6d_tb, labels_chr = NA_character_)
 #' @importFrom tidyselect all_of
 #' @importFrom stringr str_replace
 #' @importFrom stats setNames
-#' @keywords internal
 add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr) 
 {
     participant_ids <- paste0(prefix_1L_chr, 1:nrow(tbs_ls$bl_part_1_tb)) %>% 

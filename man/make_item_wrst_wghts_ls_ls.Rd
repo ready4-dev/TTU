@@ -18,6 +18,5 @@ make_item_wrst_wghts_ls_ls(
 Item wrst wghts (a list of lists)
 }
 \description{
-make_item_wrst_wghts_ls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make item wrst wghts. The function returns item wrst wghts (a list of lists).
+make_item_wrst_wghts_ls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make item wrst wghts list list. The function returns Item wrst wghts (a list of lists).
 }
-\keyword{internal}

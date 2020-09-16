@@ -15,6 +15,5 @@ impute_miss_itms_in_aqol6d_items_tb_tb(aqol6d_items_tb, domain_items_ls)
 Aqol6d items (a tibble)
 }
 \description{
-impute_miss_itms_in_aqol6d_items_tb_tb() is an Impute function that imputes data. Specifically, this function implements an algorithm to impute miss itms in aqol6d items a tibble. The function returns aqol6d items (a tibble).
+impute_miss_itms_in_aqol6d_items_tb_tb() is an Impute function that imputes data. Specifically, this function implements an algorithm to impute miss itms in aqol6d items tibble tibble. The function returns Aqol6d items (a tibble).
 }
-\keyword{internal}

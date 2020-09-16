@@ -9,16 +9,15 @@ add_aqol_scores_tbs_ls(tbs_ls, means_dbl, sds_dbl, corr_dbl)
 \arguments{
 \item{tbs_ls}{Tibbles (a list)}
 
-\item{means_dbl}{Means (a double vector of length 1)}
+\item{means_dbl}{Means (a double vector)}
 
-\item{sds_dbl}{Sds (a double vector of length 1)}
+\item{sds_dbl}{Sds (a double vector)}
 
-\item{corr_dbl}{Corr (a double vector of length 1)}
+\item{corr_dbl}{Corr (a double vector)}
 }
 \value{
 Tibbles (a list)
 }
 \description{
-add_aqol_scores_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol scores a tibbles. Function argument tbs_ls specifies the object to be updated. The function returns a tibbles (a list).
+add_aqol_scores_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol scores tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 }
-\keyword{internal}
