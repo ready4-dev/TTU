@@ -19,4 +19,3 @@ Domain items (a list)
 \description{
 make_domain_items_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make domain items list. The function returns Domain items (a list).
 }
-\keyword{internal}

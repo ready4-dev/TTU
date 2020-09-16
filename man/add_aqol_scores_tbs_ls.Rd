@@ -21,4 +21,3 @@ Tibbles (a list)
 \description{
 add_aqol_scores_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol scores tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 }
-\keyword{internal}

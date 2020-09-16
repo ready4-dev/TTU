@@ -23,4 +23,3 @@ Aqol6d items (a tibble)
 \description{
 add_itm_disu_to_aqol6d_itms_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add itm disu to aqol6d itms tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns Aqol6d items (a tibble).
 }
-\keyword{internal}

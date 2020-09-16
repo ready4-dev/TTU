@@ -10,7 +10,6 @@
 #' @importFrom purrr reduce map_dbl
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
-#' @keywords internal
 force_min_max_and_int_cnstrs_tb <- function (tbl_tb, var_names_chr, min_max_ls, discrete_lgl) 
 {
     tbl_tb <- purrr::reduce(1:length(var_names_chr), .init = tbl_tb, 
@@ -33,7 +32,6 @@ force_min_max_and_int_cnstrs_tb <- function (tbl_tb, var_names_chr, min_max_ls, 
 #' @rdname force_vec_to_sum_to_int
 #' @export 
 #' @importFrom purrr reduce map2_lgl
-#' @keywords internal
 force_vec_to_sum_to_int <- function (vec_int, target_1L_int, item_ranges_dbl_ls) 
 {
     extras_int <- target_1L_int - sum(vec_int)

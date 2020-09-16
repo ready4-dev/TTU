@@ -20,4 +20,3 @@ Dim sclg cons (a double vector)
 \description{
 make_dim_sclg_cons_dbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make dim sclg cons double vector. The function returns Dim sclg cons (a double vector).
 }
-\keyword{internal}

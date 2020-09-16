@@ -75,7 +75,26 @@ data("fn_type_lup_tb")
 fns_dmt_tb <- ready4fun::make_dmt_for_all_fns(paths_ls = ready4fun::make_fn_nms()[1],
                                               undocumented_fns_dir_chr = ready4fun::make_undmtd_fns_dir_chr()[1],
                                               custom_dmt_ls = list(details_ls = NULL,
-                                                                   inc_for_main_user_lgl_ls = list(force_true_chr = c("write_results_csv"),
+                                                                   inc_for_main_user_lgl_ls = list(force_true_chr = c("add_aqol_items_tbs_ls","add_aqol_scores_tbs_ls",
+                                                                                                                      "add_aqol6dU_to_aqol6d_items_tb_tb","add_aqol6dU_to_tbs_ls",
+                                                                                                                      "add_corrs_and_uts_to_tbs_ls_ls","add_dmn_disu_to_aqol6d_items_tb_tb",
+                                                                                                                      "add_dmn_scores_to_aqol6d_items_tb_tb", "add_domain_unwtd_tots_tb",
+                                                                                                                      "add_itm_disu_to_aqol6d_itms_tb_tb","add_labels_to_aqol6d_tb",
+                                                                                                                      "add_uids_to_tbs_ls","calculate_aqol6d_d1_disu_dbl",
+                                                                                                                      "calculate_aqol6d_d2_disu_dbl","calculate_aqol6d_d3_disu_dbl",
+                                                                                                                      "calculate_aqol6d_d4_disu_dbl","calculate_aqol6d_d5_disu_dbl",
+                                                                                                                      "calculate_aqol6d_d6_disu_dbl","calculate_aqol6dU_dbl",
+                                                                                                                      "extract_g_legend_1L_chr","force_min_max_and_int_cnstrs_tb",
+                                                                                                                      "force_vec_to_sum_to_int","impute_miss_itms_in_aqol6d_items_tb_tb",
+                                                                                                                      "make_aqol_items_props_tbs_ls", "make_aqol6d_fns_ls",
+                                                                                                                      "make_aqol6d_items_tb", "make_correlated_data_tb",
+                                                                                                                      "make_corstars_tbl_xx","make_dim_sclg_cons_dbl",
+                                                                                                                      "make_domain_items_ls","make_item_wrst_wghts_ls_ls",
+                                                                                                                      "make_pdef_corr_mat_mat", "make_synth_series_tbs_ls",
+                                                                                                                      "make_vec_with_sum_of_int", "randomise_ptl_fup_fct",
+                                                                                                                      "reorder_tb_for_target_cors","replace_var_vals_with_missing_tbl",
+                                                                                                                      "scramble_xx","transform_raw_aqol_tb_to_aqol6d_tb",
+                                                                                                                      "write_results_csv"),
                                                                                                    force_false_chr = NA_character_),
                                                                    args_ls_ls = NULL),
                                               fn_type_lup_tb = fn_type_lup_tb,
@@ -177,6 +196,6 @@ ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
 ## PART FOUR
 ##
 # Update Description file with imported packages.
-ready4fun::write_ns_imps_to_desc()
+pkgdown::build_site()
 ##
 ## Add, Commit and Push

@@ -19,4 +19,3 @@ Aqol6d items (a tibble)
 \description{
 make_aqol6d_items_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make aqol6d items tibble. The function returns Aqol6d items (a tibble).
 }
-\keyword{internal}

@@ -12,4 +12,3 @@ Aqol items props tibbles (a list)
 \description{
 make_aqol_items_props_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make aqol items props tibbles list. The function returns Aqol items props tibbles (a list).
 }
-\keyword{internal}

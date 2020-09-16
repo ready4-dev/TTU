@@ -8,7 +8,6 @@
 #' @importFrom purrr reduce map2_dbl
 #' @importFrom dplyr mutate select mutate_at vars
 #' @importFrom rlang sym
-#' @keywords internal
 impute_miss_itms_in_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_ls) 
 {
     aqol6d_items_tb <- 1:length(domain_items_ls) %>% purrr::reduce(.init = aqol6d_items_tb, 

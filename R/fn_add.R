@@ -10,7 +10,6 @@
 #' @importFrom dplyr select mutate arrange pull bind_cols everything
 #' @importFrom simstudy defData genData
 #' @importFrom stringr str_replace
-#' @keywords internal
 add_aqol_items_tbs_ls <- function (tbs_ls, aqol_items_props_tbs_ls, prefix_1L_chr) 
 {
     updated_tbs_ls <- purrr::map2(tbs_ls, aqol_items_props_tbs_ls, 
@@ -59,7 +58,6 @@ add_aqol_items_tbs_ls <- function (tbs_ls, aqol_items_props_tbs_ls, prefix_1L_ch
 #' @importFrom faux rnorm_pre
 #' @importFrom dplyr pull mutate
 #' @importFrom tidyselect all_of
-#' @keywords internal
 add_aqol_scores_tbs_ls <- function (tbs_ls, means_dbl, sds_dbl, corr_dbl) 
 {
     tbs_ls <- purrr::pmap(list(tbs_ls, means_dbl, sds_dbl), ~{
@@ -80,7 +78,6 @@ add_aqol_scores_tbs_ls <- function (tbs_ls, means_dbl, sds_dbl, corr_dbl)
 #' @export 
 #' @importFrom dplyr pull mutate
 #' @importFrom purrr map_dbl
-#' @keywords internal
 add_aqol6dU_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, aqol6d_from_8d_coeffs_lup_tb) 
 {
     coeff_dbl <- aqol6d_from_8d_coeffs_lup_tb[match(c(paste0("vD", 
@@ -106,7 +103,6 @@ add_aqol6dU_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, aqol6d_from_8d_c
 #' @export 
 #' @importFrom purrr map
 #' @importFrom dplyr mutate
-#' @keywords internal
 add_aqol6dU_to_tbs_ls <- function (tbs_ls, prefix_1L_chr = "aqol6d_q", aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb, 
     dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, disutilities_lup_tb = disutilities_lup_tb, 
     itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb) 
@@ -126,7 +122,6 @@ add_aqol6dU_to_tbs_ls <- function (tbs_ls, prefix_1L_chr = "aqol6d_q", aqol6d_fr
 #' @rdname add_corrs_and_uts_to_tbs_ls_ls
 #' @export 
 
-#' @keywords internal
 add_corrs_and_uts_to_tbs_ls_ls <- function (tbs_ls, temporal_corrs_ls, prefix_chr) 
 {
     data("aqol6d_from_8d_coeffs_lup_tb", package = "FBaqol", 
@@ -158,7 +153,6 @@ add_corrs_and_uts_to_tbs_ls_ls <- function (tbs_ls, temporal_corrs_ls, prefix_ch
 #' @importFrom purrr reduce
 #' @importFrom dplyr select mutate
 #' @importFrom rlang sym exec
-#' @keywords internal
 add_dmn_disu_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_ls, domains_chr, dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, 
     itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb) 
 {
@@ -185,7 +179,6 @@ add_dmn_disu_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_ls
 #' @export 
 #' @importFrom dplyr mutate across rename_with
 #' @importFrom stringr str_replace
-#' @keywords internal
 add_dmn_scores_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_ls) 
 {
     aqol6d_items_tb <- aqol6d_items_tb %>% dplyr::mutate(dplyr::across(paste0("dvD", 
@@ -205,7 +198,6 @@ add_dmn_scores_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_
 #' @importFrom purrr reduce
 #' @importFrom dplyr mutate select
 #' @importFrom rlang sym
-#' @keywords internal
 add_domain_unwtd_tots_tb <- function (items_tb, domain_items_ls, domain_pfx_1L_chr) 
 {
     items_and_domains_tb <- purrr::reduce(1:length(domain_items_ls), 
@@ -225,7 +217,6 @@ add_domain_unwtd_tots_tb <- function (items_tb, domain_items_ls, domain_pfx_1L_c
 #' @importFrom purrr reduce
 #' @importFrom dplyr mutate across
 #' @importFrom tidyselect all_of
-#' @keywords internal
 add_itm_disu_to_aqol6d_itms_tb_tb <- function (aqol6d_items_tb, disutilities_lup_tb = disutilities_lup_tb, 
     pfx_1L_chr) 
 {
@@ -246,7 +237,6 @@ add_itm_disu_to_aqol6d_itms_tb_tb <- function (aqol6d_items_tb, disutilities_lup
 #' @rdname add_labels_to_aqol6d_tb
 #' @export 
 #' @importFrom Hmisc label
-#' @keywords internal
 add_labels_to_aqol6d_tb <- function (aqol6d_tb, labels_chr = NA_character_) 
 {
     if (is.na(labels_chr)) 
@@ -289,7 +279,6 @@ add_labels_to_aqol6d_tb <- function (aqol6d_tb, labels_chr = NA_character_)
 #' @importFrom tidyselect all_of
 #' @importFrom stringr str_replace
 #' @importFrom stats setNames
-#' @keywords internal
 add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr) 
 {
     participant_ids <- paste0(prefix_1L_chr, 1:nrow(tbs_ls$bl_part_1_tb)) %>% 

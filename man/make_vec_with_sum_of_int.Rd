@@ -21,4 +21,3 @@ Vec (an integer vector)
 \description{
 make_vec_with_sum_of_int() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make vec with sum of integer vector. The function returns Vec (an integer vector).
 }
-\keyword{internal}

@@ -15,4 +15,3 @@ Scrambled vec (an output object of multiple potential types)
 \description{
 scramble_xx() is a Scramble function that randomly reorders an object. Specifically, this function implements an algorithm to scramble output object of multiple potential types. The function returns Scrambled vec (an output object of multiple potential types).
 }
-\keyword{internal}

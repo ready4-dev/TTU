@@ -5,7 +5,6 @@
 #' @rdname extract_g_legend_1L_chr
 #' @export 
 #' @importFrom ggplot2 ggplot_gtable ggplot_build
-#' @keywords internal
 extract_g_legend_1L_chr <- function (a.gplot) 
 {
     tmp <- ggplot2::ggplot_gtable(ggplot2::ggplot_build(a.gplot))

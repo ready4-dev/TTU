@@ -7,7 +7,6 @@
 #' @rdname calculate_aqol6d_d1_disu_dbl
 #' @export 
 #' @importFrom purrr pmap_dbl
-#' @keywords internal
 calculate_aqol6d_d1_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl) 
 {
     dvD1_dbl <- purrr::pmap_dbl(dvQs_tb, ~{
@@ -27,7 +26,6 @@ calculate_aqol6d_d1_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl)
 #' @rdname calculate_aqol6d_d2_disu_dbl
 #' @export 
 #' @importFrom purrr pmap_dbl
-#' @keywords internal
 calculate_aqol6d_d2_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl) 
 {
     dvD2_dbl <- purrr::pmap_dbl(dvQs_tb, ~{
@@ -46,7 +44,6 @@ calculate_aqol6d_d2_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl)
 #' @rdname calculate_aqol6d_d3_disu_dbl
 #' @export 
 #' @importFrom purrr pmap_dbl
-#' @keywords internal
 calculate_aqol6d_d3_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl) 
 {
     dvD3_dbl <- purrr::pmap_dbl(dvQs_tb, ~{
@@ -66,7 +63,6 @@ calculate_aqol6d_d3_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl)
 #' @rdname calculate_aqol6d_d4_disu_dbl
 #' @export 
 #' @importFrom purrr pmap_dbl
-#' @keywords internal
 calculate_aqol6d_d4_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl) 
 {
     dvD4_dbl <- purrr::pmap_dbl(dvQs_tb, ~{
@@ -85,7 +81,6 @@ calculate_aqol6d_d4_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl)
 #' @rdname calculate_aqol6d_d5_disu_dbl
 #' @export 
 #' @importFrom purrr pmap_dbl
-#' @keywords internal
 calculate_aqol6d_d5_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl) 
 {
     dvD5_dbl <- purrr::pmap_dbl(dvQs_tb, ~{
@@ -104,7 +99,6 @@ calculate_aqol6d_d5_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl)
 #' @rdname calculate_aqol6d_d6_disu_dbl
 #' @export 
 #' @importFrom purrr pmap_dbl
-#' @keywords internal
 calculate_aqol6d_d6_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl) 
 {
     dvD6_dbl <- purrr::pmap_dbl(dvQs_tb, ~{
@@ -126,7 +120,6 @@ calculate_aqol6d_d6_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl)
 #' @rdname calculate_aqol6dU_dbl
 #' @export 
 #' @importFrom hutils longest_prefix
-#' @keywords internal
 calculate_aqol6dU_dbl <- function (aqol6d_items_tb, prefix_1L_chr, aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb, 
     dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, disutilities_lup_tb = disutilities_lup_tb, 
     itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb) 
