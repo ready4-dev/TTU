@@ -1,4 +1,3 @@
-##
 ## This script creates the data files embedded with this package.
 # 1. Load magrittr package to that the pipe operator ("%>%") can be used in this script.
 library(magrittr)
@@ -15,7 +14,7 @@ paths_ls <- undocumented_fns_dir_chr %>% purrr::map(~{
 }) %>% stats::setNames(c("fns","gnrcs","mthds"))
 # 4. Create a lookup table of abbreviations used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
 data("abbreviations_lup",package = "ready4class")
-# ready4fun::make_abbr_lup_tb(short_name_chr_vec = NA_character_,
+# ready4fun::write_abbr_lup(short_name_chr_vec = NA_character_,
 #                             long_name_chr_vec = NA_character_,
 #                             url_chr = NA_character_,
 #                             pkg_nm_chr = pkg_nm_chr,
@@ -37,7 +36,7 @@ fn_type_lup_tb %>%
                                   second_arg_desc_chr = NA_character_,
                                   is_generic_lgl = F)) %>% # Add to ready4fun template.
   dplyr::arrange(fn_type_nm_chr) %>%
-  ready4fun::make_and_doc_fn_type_R(pkg_nm_chr = pkg_nm_chr,
+  ready4fun::write_dmtd_fn_type_lup(pkg_nm_chr = pkg_nm_chr,
                                     url_chr = NA_character_,
                                     abbreviations_lup = abbreviations_lup)
 data("fn_type_lup_tb")
@@ -51,12 +50,12 @@ generics_lup_tb <- NULL
 # data("generics_lup_tb")
 #
 # 6. Create a table of all functions to document
-# fns_dmt_tb <- ready4fun::make_fn_dmt_tbl_tb(paths_ls[[1]],
+# fns_dmt_tb <- ready4fun::make_fn_dmt_tbl(paths_ls[[1]],
 #                                             fns_dir_chr = "data-raw/fns/",
 #                                             pkg_nm_chr = "FBaqol",
 #                                             fn_type_lup_tb = fn_type_lup_tb,
 #                                             abbreviations_lup = abbreviations_lup)
-all_fns_dmt_tb <- ready4fun::make_all_fns_dmt_tb(paths_ls = paths_ls[[1]],
+all_fns_dmt_tb <- ready4fun::make_dmt_for_all_fns(paths_ls = paths_ls[[1]],
                                                  #pkg_nm_chr = "FBaqol",
                                       undocumented_fns_dir_chr = undocumented_fns_dir_chr[1],
                                       custom_dmt_ls = list(details_ls = NULL,#list(extract_g_legend_1L_chr = "Implements: https://github.com/hadley/ggplot2/wiki/Share-a-legend-between-two-ggplot2-graphs )"),
@@ -76,7 +75,7 @@ tibble::tribble(
   "vD5", 0.1288289,
   "vD6", 0.2052164,
   "Constant", - 0.0444493
-) %>% ready4fun::write_and_doc_ds_R(db_chr = "aqol6d_from_8d_coeffs_lup_tb",
+) %>% ready4fun::write_and_doc_ds(db_chr = "aqol6d_from_8d_coeffs_lup_tb",
                                     title_chr = "Model 2A Coefficients To Weight AQoL6D",
                                     desc_chr = "Coefficients for model to predict AQoL-6D utility score from AQoL-8D. The optimal model is Model 2A (see Richardson et al (2011, 18-19)*/",
                                     url_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
@@ -103,7 +102,7 @@ tibble::tribble(
   "Q18", 0, 0.033, 0.223, 0.621, 0.843, 1,
   "Q19", 0, 0.024, 0.205, 0.586, 0.826, 1,
   "Q20", 0, 0.187, 0.695, 1, NA_real_,NA_real_
-) %>% ready4fun::write_and_doc_ds_R(db_chr = "disutilities_lup_tb",
+) %>% ready4fun::write_and_doc_ds(db_chr = "disutilities_lup_tb",
                                     title_chr = "AQoL6D item disutilities lookup table",
                                     desc_chr = "Disutility weights for individual AQoL6D items.",
                                     url_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
@@ -116,7 +115,7 @@ tibble::tribble(
   "COP", -0.930,
   "P", -0.96,
   "SEN", -0.851
-) %>% ready4fun::write_and_doc_ds_R(db_chr = "dim_sclg_constant_lup_tb",
+) %>% ready4fun::write_and_doc_ds(db_chr = "dim_sclg_constant_lup_tb",
                                     title_chr = "AQoL6D dimension scaling constants lookup table",
                                     desc_chr = "Scaling constants for each dimension of AQoL6D.",
                                     url_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
@@ -143,7 +142,7 @@ tibble::tribble(
   "Q18", 0.580696,
   "Q19", 0.463022,
   "Q20", 0.604613
-) %>% ready4fun::write_and_doc_ds_R(db_chr = "itm_wrst_wghts_lup_tb",
+) %>% ready4fun::write_and_doc_ds(db_chr = "itm_wrst_wghts_lup_tb",
                                     title_chr = "AQoL6D item worst weightings lookup table",
                                     desc_chr = "Worst weightings for individual items in AQoL6D.",
                                     url_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
@@ -151,7 +150,7 @@ tibble::tribble(
 ## 7 Document.
 # Write documented methods to R directory.
 ## Note files to be rewritten cannot be open in RStudio.
-ready4fun::write_and_doc_fn_fls_R(all_fns_dmt_tb,
+ready4fun::write_and_doc_fn_fls(all_fns_dmt_tb,
                                   r_dir_chr = "R")
 #
 # Update Description file with imported packages.

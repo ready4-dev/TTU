@@ -62,9 +62,9 @@ make_dim_sclg_cons_dbl <- function(domains_chr,
                                    dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb){
   dim_sclg_cons_dbl <- purrr::map_dbl(domains_chr,
                                       ~ ready4fun::get_from_lup_obj(dim_sclg_constant_lup_tb,
-                                                                    match_var_nm_chr = "Dimension_chr",
+                                                                    match_var_nm_1L_chr = "Dimension_chr",
                                                                     match_value_xx = .x,
-                                                                    target_var_nm_chr = "Constant_dbl",
+                                                                    target_var_nm_1L_chr = "Constant_dbl",
                                                                     evaluate_lgl = F))
   return(dim_sclg_cons_dbl)
 }
@@ -75,9 +75,9 @@ make_item_wrst_wghts_ls_ls <- function(domain_items_ls,
       purrr::map_dbl(.x,
                      ~ {
                        ready4fun::get_from_lup_obj(itm_wrst_wghts_lup_tb,
-                                                   match_var_nm_chr = "Question_chr",
+                                                   match_var_nm_1L_chr = "Question_chr",
                                                    match_value_xx = .x,
-                                                   target_var_nm_chr = "Worst_Weight_dbl",
+                                                   target_var_nm_1L_chr = "Worst_Weight_dbl",
                                                    evaluate_lgl = F)
                      })
     })
