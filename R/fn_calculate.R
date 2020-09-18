@@ -1,3 +1,26 @@
+#' Calculate adolescent Assessment of Quality of Life Six Dimension health utility
+#' @description calculate_adol_aqol6d() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate adolescent assessment of quality of life six dimension health utility. The function returns Adolescent Assessment of Quality of Life Six Dimension health utility (a double vector).
+#' @param unscored_aqol_tb Unscored Assessment of Quality of Life health utility (a tibble)
+#' @param prefix_1L_chr Prefix (a character vector of length one), Default: 'aqol'
+#' @param id_var_nm_1L_chr Id var name (a character vector of length one)
+#' @return Adolescent Assessment of Quality of Life Six Dimension health utility (a double vector)
+#' @rdname calculate_adol_aqol6d
+#' @export 
+#' @importFrom dplyr select starts_with rename_all
+#' @importFrom stringr str_replace
+calculate_adol_aqol6d <- function (unscored_aqol_tb, prefix_1L_chr = "aqol", id_var_nm_1L_chr) 
+{
+    unscored_aqol_tb <- unscored_aqol_tb %>% dplyr::select(id_var_nm_1L_chr, 
+        dplyr::starts_with(prefix_1L_chr))
+    names(unscored_aqol_tb) <- c("ID", paste0("Q", 1:20))
+    unscored_aqol_tb <- impute_adol_unscrd_aqol_ds(unscored_aqol_tb)
+    disvals_tb <- unscored_aqol_tb %>% add_itm_disu_to_aqol6d_itms_tb_tb(disutilities_lup_tb = make_adol_aqol6d_disv_lup(), 
+        pfx_1L_chr = "Q") %>% dplyr::select(ID, dplyr::starts_with("dv_")) %>% 
+        dplyr::rename_all(~stringr::str_replace(.x, "dv_", "dv"))
+    scored_aqol_tb <- add_adol_dim_scrg_eqs(disvals_tb)
+    adol_aqol6d_dbl <- scored_aqol_tb$uaqol
+    return(adol_aqol6d_dbl)
+}
 #' Calculate Assessment of Quality of Life Six Dimension health utility d1 disu
 #' @description calculate_aqol6d_d1_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate assessment of quality of life six dimension health utility d1 disu double vector. The function returns DvD1 (a double vector).
 #' @param dvQs_tb DvQs (a tibble)

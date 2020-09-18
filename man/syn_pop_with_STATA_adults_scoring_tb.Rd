@@ -3,7 +3,7 @@
 \docType{data}
 \name{syn_pop_with_STATA_adults_scoring_tb}
 \alias{syn_pop_with_STATA_adults_scoring_tb}
-\title{Synthetic population STATA output}
+\title{STATA comparison validation synthetic population}
 \format{
 An object of class \code{data.frame} with 1711 rows and 87 columns.
 }

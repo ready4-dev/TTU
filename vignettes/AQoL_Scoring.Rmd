@@ -9,7 +9,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-# library(FBaqol)
+library(magrittr)
 # devtools::load_all()
 ```
 
@@ -30,10 +30,10 @@ aqol_tb <- FBaqol::syn_pop_with_STATA_adults_scoring_tb# %>%
 comparison_tb <- aqol_tb %>%
   dplyr::mutate(uaqol_FB = FBaqol::calculate_aqol6dU_dbl(aqol6d_items_tb = aqol_tb,
                              prefix_1L_chr =  "aqol",
-                             aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
-                             dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
-                             disutilities_lup_tb = disutilities_lup_tb,
-                             itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb),
+                             aqol6d_from_8d_coeffs_lup_tb = FBaqol::aqol6d_from_8d_coeffs_lup_tb,
+                             dim_sclg_constant_lup_tb = FBaqol::dim_sclg_constant_lup_tb,
+                             disutilities_lup_tb = FBaqol::disutilities_lup_tb,
+                             itm_wrst_wghts_lup_tb = FBaqol::itm_wrst_wghts_lup_tb),
                 uaqol_adol = FBaqol::calc_adol_aqol6d(aqol_tb, prefix_1L_chr = "aqol",id_var_nm_1L_chr = "v1")) %>%
   dplyr::select(dplyr::starts_with("uaqol")) %>%
   dplyr::mutate(diff_with_8D = uaqol_FB - uaqol6Dusing8D,

@@ -1,4 +1,4 @@
-#' Synthetic population STATA output
+#' STATA comparison validation synthetic population
 #' 
 #' Synthetic population following application of STATA adult scoring algorithm.
 #' 
