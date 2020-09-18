@@ -2,18 +2,18 @@
 % Please edit documentation in R/fn_add.R
 \name{add_labels_to_aqol6d_tb}
 \alias{add_labels_to_aqol6d_tb}
-\title{Add labels to aqol6d}
+\title{Add labels to Assessment of Quality of Life Six Dimension health utility}
 \usage{
 add_labels_to_aqol6d_tb(aqol6d_tb, labels_chr = NA_character_)
 }
 \arguments{
-\item{aqol6d_tb}{Aqol6d (a tibble)}
+\item{aqol6d_tb}{Assessment of Quality of Life Six Dimension health utility (a tibble)}
 
 \item{labels_chr}{Labels (a character vector), Default: 'NA'}
 }
 \value{
-Aqol6d (a tibble)
+an Assessment of Quality of Life Six Dimension health utility (a tibble)
 }
 \description{
-add_labels_to_aqol6d_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add labels to aqol6d tibble. Function argument aqol6d_tb specifies the object to be updated. The function returns Aqol6d (a tibble).
+add_labels_to_aqol6d_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add labels to assessment of quality of life six dimension health utility tibble. Function argument aqol6d_tb specifies the object to be updated. The function returns an Assessment of Quality of Life Six Dimension health utility (a tibble).
 }

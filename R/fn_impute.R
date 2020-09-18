@@ -1,8 +1,32 @@
-#' Impute miss itms in aqol6d items tibble
-#' @description impute_miss_itms_in_aqol6d_items_tb_tb() is an Impute function that imputes data. Specifically, this function implements an algorithm to impute miss itms in aqol6d items tibble tibble. The function returns Aqol6d items (a tibble).
-#' @param aqol6d_items_tb Aqol6d items (a tibble)
+#' Impute adolescent unscored Assessment of Quality of Life health utility dataset
+#' @description impute_adol_unscrd_aqol_ds() is an Impute function that imputes data. Specifically, this function implements an algorithm to impute adolescent unscored assessment of quality of life health utility dataset. The function returns Imputed unscored Assessment of Quality of Life health utility dataset tibble (a tibble).
+#' @param unscrd_aqol_ds_tb Unscored Assessment of Quality of Life health utility dataset (a tibble)
+#' @return Imputed unscored Assessment of Quality of Life health utility dataset tibble (a tibble)
+#' @rdname impute_adol_unscrd_aqol_ds
+#' @export 
+#' @importFrom dplyr mutate select filter
+#' @importFrom mice mice complete
+impute_adol_unscrd_aqol_ds <- function (unscrd_aqol_ds_tb) 
+{
+    unscrd_aqol_ds_tb <- unscrd_aqol_ds_tb %>% dplyr::mutate(missing = rowSums(is.na(dplyr::select(., 
+        paste0("Q", c(1:10))))))
+    aqol_cases_to_imp_tb <- unscrd_aqol_ds_tb %>% dplyr::filter(missing < 
+        10) %>% dplyr::select(-missing)
+    aqol_cases_not_to_imp_tb <- unscrd_aqol_ds_tb %>% dplyr::filter(missing >= 
+        10) %>% dplyr::select(-missing)
+    imputed_aqol_tb <- mice::mice(aqol_cases_to_imp_tb, m = 1, 
+        maxit = 50, meth = "pmm", seed = 1234)
+    aqol_cases_to_imp_tb <- mice::complete(imputed_aqol_tb, "long") %>% 
+        dplyr::select(-.imp, -.id)
+    imputed_unscrd_aqol_ds_tb_tb <- data.frame(rbind(aqol_cases_to_imp_tb, 
+        aqol_cases_not_to_imp_tb))
+    return(imputed_unscrd_aqol_ds_tb_tb)
+}
+#' Impute miss itms in Assessment of Quality of Life Six Dimension health utility items tibble
+#' @description impute_miss_itms_in_aqol6d_items_tb_tb() is an Impute function that imputes data. Specifically, this function implements an algorithm to impute miss itms in assessment of quality of life six dimension health utility items tibble tibble. The function returns an Assessment of Quality of Life Six Dimension health utility items (a tibble).
+#' @param aqol6d_items_tb Assessment of Quality of Life Six Dimension health utility items (a tibble)
 #' @param domain_items_ls Domain items (a list)
-#' @return Aqol6d items (a tibble)
+#' @return an Assessment of Quality of Life Six Dimension health utility items (a tibble)
 #' @rdname impute_miss_itms_in_aqol6d_items_tb_tb
 #' @export 
 #' @importFrom purrr reduce map2_dbl

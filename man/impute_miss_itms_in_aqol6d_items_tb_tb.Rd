@@ -2,18 +2,18 @@
 % Please edit documentation in R/fn_impute.R
 \name{impute_miss_itms_in_aqol6d_items_tb_tb}
 \alias{impute_miss_itms_in_aqol6d_items_tb_tb}
-\title{Impute miss itms in aqol6d items tibble}
+\title{Impute miss itms in Assessment of Quality of Life Six Dimension health utility items tibble}
 \usage{
 impute_miss_itms_in_aqol6d_items_tb_tb(aqol6d_items_tb, domain_items_ls)
 }
 \arguments{
-\item{aqol6d_items_tb}{Aqol6d items (a tibble)}
+\item{aqol6d_items_tb}{Assessment of Quality of Life Six Dimension health utility items (a tibble)}
 
 \item{domain_items_ls}{Domain items (a list)}
 }
 \value{
-Aqol6d items (a tibble)
+an Assessment of Quality of Life Six Dimension health utility items (a tibble)
 }
 \description{
-impute_miss_itms_in_aqol6d_items_tb_tb() is an Impute function that imputes data. Specifically, this function implements an algorithm to impute miss itms in aqol6d items tibble tibble. The function returns Aqol6d items (a tibble).
+impute_miss_itms_in_aqol6d_items_tb_tb() is an Impute function that imputes data. Specifically, this function implements an algorithm to impute miss itms in assessment of quality of life six dimension health utility items tibble tibble. The function returns an Assessment of Quality of Life Six Dimension health utility items (a tibble).
 }

@@ -1,5 +1,5 @@
-#' Calculate aqol6d d1 disu
-#' @description calculate_aqol6d_d1_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate aqol6d d1 disu double vector. The function returns DvD1 (a double vector).
+#' Calculate Assessment of Quality of Life Six Dimension health utility d1 disu
+#' @description calculate_aqol6d_d1_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate assessment of quality of life six dimension health utility d1 disu double vector. The function returns DvD1 (a double vector).
 #' @param dvQs_tb DvQs (a tibble)
 #' @param kD_1L_dbl KD (a double vector of length one)
 #' @param w_dbl W (a double vector)
@@ -17,8 +17,8 @@ calculate_aqol6d_d1_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl)
     })
     return(dvD1_dbl)
 }
-#' Calculate aqol6d d2 disu
-#' @description calculate_aqol6d_d2_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate aqol6d d2 disu double vector. The function returns DvD2 (a double vector).
+#' Calculate Assessment of Quality of Life Six Dimension health utility d2 disu
+#' @description calculate_aqol6d_d2_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate assessment of quality of life six dimension health utility d2 disu double vector. The function returns DvD2 (a double vector).
 #' @param dvQs_tb DvQs (a tibble)
 #' @param kD_1L_dbl KD (a double vector of length one)
 #' @param w_dbl W (a double vector)
@@ -35,8 +35,8 @@ calculate_aqol6d_d2_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl)
     })
     return(dvD2_dbl)
 }
-#' Calculate aqol6d d3 disu
-#' @description calculate_aqol6d_d3_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate aqol6d d3 disu double vector. The function returns DvD3 (a double vector).
+#' Calculate Assessment of Quality of Life Six Dimension health utility d3 disu
+#' @description calculate_aqol6d_d3_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate assessment of quality of life six dimension health utility d3 disu double vector. The function returns DvD3 (a double vector).
 #' @param dvQs_tb DvQs (a tibble)
 #' @param kD_1L_dbl KD (a double vector of length one)
 #' @param w_dbl W (a double vector)
@@ -54,8 +54,8 @@ calculate_aqol6d_d3_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl)
     })
     return(dvD3_dbl)
 }
-#' Calculate aqol6d d4 disu
-#' @description calculate_aqol6d_d4_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate aqol6d d4 disu double vector. The function returns DvD4 (a double vector).
+#' Calculate Assessment of Quality of Life Six Dimension health utility d4 disu
+#' @description calculate_aqol6d_d4_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate assessment of quality of life six dimension health utility d4 disu double vector. The function returns DvD4 (a double vector).
 #' @param dvQs_tb DvQs (a tibble)
 #' @param kD_1L_dbl KD (a double vector of length one)
 #' @param w_dbl W (a double vector)
@@ -72,8 +72,8 @@ calculate_aqol6d_d4_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl)
     })
     return(dvD4_dbl)
 }
-#' Calculate aqol6d d5 disu
-#' @description calculate_aqol6d_d5_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate aqol6d d5 disu double vector. The function returns DvD5 (a double vector).
+#' Calculate Assessment of Quality of Life Six Dimension health utility d5 disu
+#' @description calculate_aqol6d_d5_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate assessment of quality of life six dimension health utility d5 disu double vector. The function returns DvD5 (a double vector).
 #' @param dvQs_tb DvQs (a tibble)
 #' @param kD_1L_dbl KD (a double vector of length one)
 #' @param w_dbl W (a double vector)
@@ -90,8 +90,8 @@ calculate_aqol6d_d5_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl)
     })
     return(dvD5_dbl)
 }
-#' Calculate aqol6d d6 disu
-#' @description calculate_aqol6d_d6_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate aqol6d d6 disu double vector. The function returns DvD6 (a double vector).
+#' Calculate Assessment of Quality of Life Six Dimension health utility d6 disu
+#' @description calculate_aqol6d_d6_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate assessment of quality of life six dimension health utility d6 disu double vector. The function returns DvD6 (a double vector).
 #' @param dvQs_tb DvQs (a tibble)
 #' @param kD_1L_dbl KD (a double vector of length one)
 #' @param w_dbl W (a double vector)
@@ -110,10 +110,10 @@ calculate_aqol6d_d6_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl)
 }
 #' Calculate aqol6dU
 #' @description calculate_aqol6dU_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate aqol6du double vector. The function returns Aqol6dU (a double vector).
-#' @param aqol6d_items_tb Aqol6d items (a tibble)
+#' @param aqol6d_items_tb Assessment of Quality of Life Six Dimension health utility items (a tibble)
 #' @param prefix_1L_chr Prefix (a character vector of length one)
-#' @param aqol6d_from_8d_coeffs_lup_tb Aqol6d from 8d coeffs lookup table (a tibble), Default: aqol6d_from_8d_coeffs_lup_tb
-#' @param dim_sclg_constant_lup_tb Dim sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb
+#' @param aqol6d_from_8d_coeffs_lup_tb Assessment of Quality of Life Six Dimension health utility from 8d coeffs lookup table (a tibble), Default: aqol6d_from_8d_coeffs_lup_tb
+#' @param dim_sclg_constant_lup_tb Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb
 #' @param disutilities_lup_tb Disutilities lookup table (a tibble), Default: disutilities_lup_tb
 #' @param itm_wrst_wghts_lup_tb Itm wrst wghts lookup table (a tibble), Default: itm_wrst_wghts_lup_tb
 #' @return Aqol6dU (a double vector)

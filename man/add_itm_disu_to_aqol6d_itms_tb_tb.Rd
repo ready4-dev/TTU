@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_add.R
 \name{add_itm_disu_to_aqol6d_itms_tb_tb}
 \alias{add_itm_disu_to_aqol6d_itms_tb_tb}
-\title{Add itm disu to aqol6d itms tibble}
+\title{Add itm disu to Assessment of Quality of Life Six Dimension health utility itms tibble}
 \usage{
 add_itm_disu_to_aqol6d_itms_tb_tb(
   aqol6d_items_tb,
@@ -11,15 +11,15 @@ add_itm_disu_to_aqol6d_itms_tb_tb(
 )
 }
 \arguments{
-\item{aqol6d_items_tb}{Aqol6d items (a tibble)}
+\item{aqol6d_items_tb}{Assessment of Quality of Life Six Dimension health utility items (a tibble)}
 
 \item{disutilities_lup_tb}{Disutilities lookup table (a tibble), Default: disutilities_lup_tb}
 
 \item{pfx_1L_chr}{Prefix (a character vector of length one)}
 }
 \value{
-Aqol6d items (a tibble)
+an Assessment of Quality of Life Six Dimension health utility items (a tibble)
 }
 \description{
-add_itm_disu_to_aqol6d_itms_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add itm disu to aqol6d itms tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns Aqol6d items (a tibble).
+add_itm_disu_to_aqol6d_itms_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add itm disu to assessment of quality of life six dimension health utility itms tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns an Assessment of Quality of Life Six Dimension health utility items (a tibble).
 }

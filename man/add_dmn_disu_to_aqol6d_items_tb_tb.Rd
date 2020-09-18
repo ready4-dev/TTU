@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_add.R
 \name{add_dmn_disu_to_aqol6d_items_tb_tb}
 \alias{add_dmn_disu_to_aqol6d_items_tb_tb}
-\title{Add dmn disu to aqol6d items tibble}
+\title{Add dmn disu to Assessment of Quality of Life Six Dimension health utility items tibble}
 \usage{
 add_dmn_disu_to_aqol6d_items_tb_tb(
   aqol6d_items_tb,
@@ -13,19 +13,19 @@ add_dmn_disu_to_aqol6d_items_tb_tb(
 )
 }
 \arguments{
-\item{aqol6d_items_tb}{Aqol6d items (a tibble)}
+\item{aqol6d_items_tb}{Assessment of Quality of Life Six Dimension health utility items (a tibble)}
 
 \item{domain_items_ls}{Domain items (a list)}
 
 \item{domains_chr}{Domains (a character vector)}
 
-\item{dim_sclg_constant_lup_tb}{Dim sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb}
+\item{dim_sclg_constant_lup_tb}{Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb}
 
 \item{itm_wrst_wghts_lup_tb}{Itm wrst wghts lookup table (a tibble), Default: itm_wrst_wghts_lup_tb}
 }
 \value{
-Aqol6d items (a tibble)
+an Assessment of Quality of Life Six Dimension health utility items (a tibble)
 }
 \description{
-add_dmn_disu_to_aqol6d_items_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dmn disu to aqol6d items tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns Aqol6d items (a tibble).
+add_dmn_disu_to_aqol6d_items_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dmn disu to assessment of quality of life six dimension health utility items tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns an Assessment of Quality of Life Six Dimension health utility items (a tibble).
 }

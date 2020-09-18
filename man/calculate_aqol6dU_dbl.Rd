@@ -14,13 +14,13 @@ calculate_aqol6dU_dbl(
 )
 }
 \arguments{
-\item{aqol6d_items_tb}{Aqol6d items (a tibble)}
+\item{aqol6d_items_tb}{Assessment of Quality of Life Six Dimension health utility items (a tibble)}
 
 \item{prefix_1L_chr}{Prefix (a character vector of length one)}
 
-\item{aqol6d_from_8d_coeffs_lup_tb}{Aqol6d from 8d coeffs lookup table (a tibble), Default: aqol6d_from_8d_coeffs_lup_tb}
+\item{aqol6d_from_8d_coeffs_lup_tb}{Assessment of Quality of Life Six Dimension health utility from 8d coeffs lookup table (a tibble), Default: aqol6d_from_8d_coeffs_lup_tb}
 
-\item{dim_sclg_constant_lup_tb}{Dim sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb}
+\item{dim_sclg_constant_lup_tb}{Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb}
 
 \item{disutilities_lup_tb}{Disutilities lookup table (a tibble), Default: disutilities_lup_tb}
 

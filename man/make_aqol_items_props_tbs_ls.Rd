@@ -2,13 +2,13 @@
 % Please edit documentation in R/fn_make.R
 \name{make_aqol_items_props_tbs_ls}
 \alias{make_aqol_items_props_tbs_ls}
-\title{Make aqol items props tibbles}
+\title{Make Assessment of Quality of Life health utility items props tibbles}
 \usage{
 make_aqol_items_props_tbs_ls()
 }
 \value{
-Aqol items props tibbles (a list)
+an Assessment of Quality of Life health utility items props tibbles (a list)
 }
 \description{
-make_aqol_items_props_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make aqol items props tibbles list. The function returns Aqol items props tibbles (a list).
+make_aqol_items_props_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life health utility items props tibbles list. The function returns an Assessment of Quality of Life health utility items props tibbles (a list).
 }

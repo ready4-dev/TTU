@@ -1,7 +1,7 @@
 Package: FBaqol
 Title: Map measures routinely collected in youth mental
     health services to AQOL 6D Health Utility.
-Version: 0.0.0.9004
+Version: 0.0.0.9005
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -23,6 +23,7 @@ Description: Tools for mapping measures routinely collected in
     youth mental health services to AQOL 6D Health Utility. Part of the
     First Bounce model of primary youth mental health services.
 License: GPL-3
+URL: https://github.com/orygen/FBaqol
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -40,6 +41,7 @@ Imports:
     Matrix,
     matrixcalc,
     methods,
+    mice,
     psych,
     purrr,
     rlang,

@@ -1,7 +1,23 @@
-#' Make aqol items props tibbles
-#' @description make_aqol_items_props_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make aqol items props tibbles list. The function returns Aqol items props tibbles (a list).
+#' Make adolescent Assessment of Quality of Life Six Dimension health utility disvalue
+#' @description make_adol_aqol6d_disv_lup() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make adolescent assessment of quality of life six dimension health utility disvalue lookup table. The function returns Adolescent Assessment of Quality of Life Six Dimension health utility disvalue (a lookup table).
 
-#' @return Aqol items props tibbles (a list)
+#' @return Adolescent Assessment of Quality of Life Six Dimension health utility disvalue (a lookup table)
+#' @rdname make_adol_aqol6d_disv_lup
+#' @export 
+#' @importFrom dplyr mutate case_when
+make_adol_aqol6d_disv_lup <- function () 
+{
+    data("disutilities_lup_tb", package = "FBaqol", envir = environment())
+    adol_aqol6d_disv_lup <- disutilities_lup_tb %>% dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr == 
+        "Q18" ~ 0.622, TRUE ~ Answer_4_dbl), Answer_5_dbl = dplyr::case_when(Question_chr == 
+        "Q3" ~ 0.827, TRUE ~ Answer_5_dbl), Answer_6_dbl = dplyr::case_when(Question_chr == 
+        "Q1" ~ 0.073, TRUE ~ Answer_5_dbl))
+    return(adol_aqol6d_disv_lup)
+}
+#' Make Assessment of Quality of Life health utility items props tibbles
+#' @description make_aqol_items_props_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life health utility items props tibbles list. The function returns an Assessment of Quality of Life health utility items props tibbles (a list).
+
+#' @return an Assessment of Quality of Life health utility items props tibbles (a list)
 #' @rdname make_aqol_items_props_tbs_ls
 #' @export 
 #' @importFrom tibble tribble
@@ -56,10 +72,10 @@ make_aqol_items_props_tbs_ls <- function ()
     aqol_items_props_tbs_ls <- list(bl_answer_props_tb, fup_answer_props_tb)
     return(aqol_items_props_tbs_ls)
 }
-#' Make aqol6d functions
-#' @description make_aqol6d_fns_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make aqol6d functions list. The function returns Aqol6d disu (a list of functions).
+#' Make Assessment of Quality of Life Six Dimension health utility functions
+#' @description make_aqol6d_fns_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension health utility functions list. The function returns an Assessment of Quality of Life Six Dimension health utility disu (a list of functions).
 #' @param domain_items_ls Domain items (a list)
-#' @return Aqol6d disu (a list of functions)
+#' @return an Assessment of Quality of Life Six Dimension health utility disu (a list of functions)
 #' @rdname make_aqol6d_fns_ls
 #' @export 
 #' @importFrom purrr map
@@ -70,12 +86,12 @@ make_aqol6d_fns_ls <- function (domain_items_ls)
         "_disu_dbl") %>% purrr::map(~rlang::sym(.x))
     return(aqol6d_disu_fn_ls)
 }
-#' Make aqol6d items
-#' @description make_aqol6d_items_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make aqol6d items tibble. The function returns Aqol6d items (a tibble).
-#' @param aqol_tb Aqol (a tibble)
+#' Make Assessment of Quality of Life Six Dimension health utility items
+#' @description make_aqol6d_items_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension health utility items tibble. The function returns an Assessment of Quality of Life Six Dimension health utility items (a tibble).
+#' @param aqol_tb Assessment of Quality of Life health utility (a tibble)
 #' @param old_pfx_1L_chr Old prefix (a character vector of length one)
 #' @param new_pfx_1L_chr New prefix (a character vector of length one)
-#' @return Aqol6d items (a tibble)
+#' @return an Assessment of Quality of Life Six Dimension health utility items (a tibble)
 #' @rdname make_aqol6d_items_tb
 #' @export 
 #' @importFrom dplyr select starts_with rename_all
@@ -149,11 +165,11 @@ make_corstars_tbl_xx <- function (x, method = c("pearson", "spearman"), removeTr
         else print(xtable(Rnew), type = "latex")
     }
 }
-#' Make dim sclg cons
-#' @description make_dim_sclg_cons_dbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make dim sclg cons double vector. The function returns Dim sclg cons (a double vector).
+#' Make dimension sclg cons
+#' @description make_dim_sclg_cons_dbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make dimension sclg cons double vector. The function returns Dimension sclg cons (a double vector).
 #' @param domains_chr Domains (a character vector)
-#' @param dim_sclg_constant_lup_tb Dim sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb
-#' @return Dim sclg cons (a double vector)
+#' @param dim_sclg_constant_lup_tb Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb
+#' @return Dimension sclg cons (a double vector)
 #' @rdname make_dim_sclg_cons_dbl
 #' @export 
 #' @importFrom purrr map_dbl

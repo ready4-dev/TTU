@@ -20,10 +20,10 @@ options(usethis.description = list(
                   utils::person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
                   utils::person("Orygen", role = c("cph", "fnd")),
                   utils::person("Headspace", role = c( "fnd")),
-                  utils::person("National Health and Medical Research Council", role = c( "fnd")),
-                  URL = c("https://github.com/orygen/FBaqol")
+                  utils::person("National Health and Medical Research Council", role = c( "fnd"))
   ),
-  License = usethis::use_gpl3_license("Orygen")
+  License = usethis::use_gpl3_license("Orygen"),
+  URL = c("https://github.com/orygen/FBaqol")
 ))
 # Deletes contents of R directory and resets DESCRIPTION and NAMESPACE files.
 ready4fun::write_pkg_setup_fls(incr_ver_1L_lgl = F,
@@ -39,12 +39,18 @@ ready4fun::write_pkg_setup_fls(incr_ver_1L_lgl = F,
 ##
 # 5. Create a lookup table of abbreviations used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
 data("abbreviations_lup",package = "ready4use")
-# pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr_vec = NA_character_,
-#                             long_name_chr_vec = NA_character_,
-#                             url_1L_chr = NA_character_,
-#                             pkg_nm_chr = pkg_nm_chr,
-#                             seed_lup = abbreviations_lup)
-# data("abbreviations_lup")
+pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c("adol","aqol","aqol6d","dim","disv","eq","scrg","unscrd"),
+                            long_name_chr = c("adolescent",
+                                                  "Assessment of Quality of Life health utility",
+                                                  "Assessment of Quality of Life Six Dimension health utility",
+                                                  "dimension",
+                                                  "disvalue",
+                                                  "equation",
+                                                  "scoring",
+                                                  "unscored"),
+                            url_1L_chr = NA_character_,
+                            seed_lup = abbreviations_lup)
+data("abbreviations_lup")
 # 5. Create function types and generics look-up tables
 # 5.1 Create a lookup table of function types used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
 data("fn_type_lup_tb",package = "ready4use")
@@ -63,16 +69,12 @@ pkg_dss_tb <- fn_type_lup_tb %>%
                                   is_method_lgl = F) %>% # Add to ready4fun template.
   dplyr::arrange(fn_type_nm_chr) %>%
   ready4fun::write_dmtd_fn_type_lup(url_1L_chr = NA_character_,
-                                    abbreviations_lup = abbreviations_lup)
+                                    abbreviations_lup = abbreviations_lup,
+                                    pkg_dss_tb = pkg_dss_tb)
 data("fn_type_lup_tb")
 
 #
 # 6. Create a table of all functions to document
-# fns_dmt_tb <- ready4fun::make_fn_dmt_tbl(paths_ls[[1]],
-#                                             fns_dir_chr = "data-raw/fns/",
-#                                             pkg_nm_chr = "FBaqol",
-#                                             fn_type_lup_tb = fn_type_lup_tb,
-#                                             abbreviations_lup = abbreviations_lup)
 fns_dmt_tb <- ready4fun::make_dmt_for_all_fns(paths_ls = ready4fun::make_fn_nms()[1],
                                               undocumented_fns_dir_chr = ready4fun::make_undmtd_fns_dir_chr()[1],
                                               custom_dmt_ls = list(details_ls = NULL,
@@ -186,6 +188,13 @@ pkg_dss_tb <- tibble::tribble(
                                     url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
                                     abbreviations_lup = abbreviations_lup,
                                   pkg_dss_tb = pkg_dss_tb)
+pkg_dss_tb <- read.csv("data-raw/AQoL_6D_Dim_Scaling.csv", stringsAsFactors = F, fileEncoding="UTF-8-BOM") %>%
+  ready4fun::write_and_doc_ds(db_1L_chr = "adol_dim_scalg_eqs_lup",
+                              title_1L_chr = "AQoL6D item worst weightings lookup table",
+                              desc_1L_chr = "Dimension scaling equations for adolescent version of AQoL6D scoring algorithm.",
+                              url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
+                              abbreviations_lup = abbreviations_lup,
+                              pkg_dss_tb = pkg_dss_tb)
 ## 7 Document.
 # Write documented methods to R directory.
 ## Note files to be rewritten cannot be open in RStudio.

@@ -1,7 +1,7 @@
-#' Transform raw aqol tibble to aqol6d
-#' @description transform_raw_aqol_tb_to_aqol6d_tb() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform raw aqol tibble to aqol6d tibble. Function argument raw_aqol_tb specifies the object to be updated. The function returns Aqol6d (a tibble).
-#' @param raw_aqol_tb Raw aqol (a tibble)
-#' @return Aqol6d (a tibble)
+#' Transform raw Assessment of Quality of Life health utility tibble to Assessment of Quality of Life Six Dimension health utility
+#' @description transform_raw_aqol_tb_to_aqol6d_tb() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform raw assessment of quality of life health utility tibble to assessment of quality of life six dimension health utility tibble. Function argument raw_aqol_tb specifies the object to be updated. The function returns an Assessment of Quality of Life Six Dimension health utility (a tibble).
+#' @param raw_aqol_tb Raw Assessment of Quality of Life health utility (a tibble)
+#' @return an Assessment of Quality of Life Six Dimension health utility (a tibble)
 #' @rdname transform_raw_aqol_tb_to_aqol6d_tb
 #' @export 
 #' @importFrom dplyr mutate filter select contains rename

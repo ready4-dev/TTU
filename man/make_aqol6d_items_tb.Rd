@@ -2,20 +2,20 @@
 % Please edit documentation in R/fn_make.R
 \name{make_aqol6d_items_tb}
 \alias{make_aqol6d_items_tb}
-\title{Make aqol6d items}
+\title{Make Assessment of Quality of Life Six Dimension health utility items}
 \usage{
 make_aqol6d_items_tb(aqol_tb, old_pfx_1L_chr, new_pfx_1L_chr)
 }
 \arguments{
-\item{aqol_tb}{Aqol (a tibble)}
+\item{aqol_tb}{Assessment of Quality of Life health utility (a tibble)}
 
 \item{old_pfx_1L_chr}{Old prefix (a character vector of length one)}
 
 \item{new_pfx_1L_chr}{New prefix (a character vector of length one)}
 }
 \value{
-Aqol6d items (a tibble)
+an Assessment of Quality of Life Six Dimension health utility items (a tibble)
 }
 \description{
-make_aqol6d_items_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make aqol6d items tibble. The function returns Aqol6d items (a tibble).
+make_aqol6d_items_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension health utility items tibble. The function returns an Assessment of Quality of Life Six Dimension health utility items (a tibble).
 }

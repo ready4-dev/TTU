@@ -2,14 +2,14 @@
 % Please edit documentation in R/fn_add.R
 \name{add_aqol_items_tbs_ls}
 \alias{add_aqol_items_tbs_ls}
-\title{Add aqol items tibbles}
+\title{Add Assessment of Quality of Life health utility items tibbles}
 \usage{
 add_aqol_items_tbs_ls(tbs_ls, aqol_items_props_tbs_ls, prefix_1L_chr)
 }
 \arguments{
 \item{tbs_ls}{Tibbles (a list)}
 
-\item{aqol_items_props_tbs_ls}{Aqol items props tibbles (a list)}
+\item{aqol_items_props_tbs_ls}{Assessment of Quality of Life health utility items props tibbles (a list)}
 
 \item{prefix_1L_chr}{Prefix (a character vector of length one)}
 }
@@ -17,5 +17,5 @@ add_aqol_items_tbs_ls(tbs_ls, aqol_items_props_tbs_ls, prefix_1L_chr)
 Updated tibbles (a list)
 }
 \description{
-add_aqol_items_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol items tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Updated tibbles (a list).
+add_aqol_items_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life health utility items tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Updated tibbles (a list).
 }

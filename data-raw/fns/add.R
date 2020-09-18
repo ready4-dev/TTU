@@ -1,4 +1,13 @@
-## AQOL Scoring
+add_adol_dim_scrg_eqs <- function(unscored_aqol_tb){
+  data("adol_dim_scalg_eqs_lup", package = "FBaqol", envir = environment())
+  for(var in adol_dim_scalg_eqs_lup$Dim_scal) {
+    expression=adol_dim_scalg_eqs_lup[adol_dim_scalg_eqs_lup$Dim_scal==var,]$Equ
+    unscored_aqol_tb <- unscored_aqol_tb %>%
+      mutate(!! var := !!rlang::parse_expr(expression))
+    Hmisc::label(unscored_aqol_tb[,var])=adol_dim_scalg_eqs_lup[adol_dim_scalg_eqs_lup$Dim_scal==var,]$Label
+  }
+  return(unscored_aqol_tb)
+}
 add_aqol6dU_to_aqol6d_items_tb_tb <- function(aqol6d_items_tb,
                                               aqol6d_from_8d_coeffs_lup_tb){
   coeff_dbl <- aqol6d_from_8d_coeffs_lup_tb[match(c(paste0("vD",1:6),"Constant"),

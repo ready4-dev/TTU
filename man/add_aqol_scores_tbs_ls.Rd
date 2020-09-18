@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_add.R
 \name{add_aqol_scores_tbs_ls}
 \alias{add_aqol_scores_tbs_ls}
-\title{Add aqol scores tibbles}
+\title{Add Assessment of Quality of Life health utility scores tibbles}
 \usage{
 add_aqol_scores_tbs_ls(tbs_ls, means_dbl, sds_dbl, corr_dbl)
 }
@@ -19,5 +19,5 @@ add_aqol_scores_tbs_ls(tbs_ls, means_dbl, sds_dbl, corr_dbl)
 Tibbles (a list)
 }
 \description{
-add_aqol_scores_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol scores tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
+add_aqol_scores_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life health utility scores tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 }

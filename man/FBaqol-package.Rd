@@ -15,6 +15,13 @@ First Bounce model of primary youth mental health services.
 To learn more about FBaqol, start with the vignettes:
 \code{browseVignettes(package = "FBaqol")}
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/orygen/FBaqol}
+}
+
+}
 \author{
 \strong{Maintainer}: Matthew Hamilton \email{matthew.hamilton@orygen.org.au} (\href{https://orcid.org/0000-0001-7407-9194}{ORCID})
 

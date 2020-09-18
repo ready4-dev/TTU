@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_dim_sclg_cons_dbl}
 \alias{make_dim_sclg_cons_dbl}
-\title{Make dim sclg cons}
+\title{Make dimension sclg cons}
 \usage{
 make_dim_sclg_cons_dbl(
   domains_chr,
@@ -12,11 +12,11 @@ make_dim_sclg_cons_dbl(
 \arguments{
 \item{domains_chr}{Domains (a character vector)}
 
-\item{dim_sclg_constant_lup_tb}{Dim sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb}
+\item{dim_sclg_constant_lup_tb}{Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb}
 }
 \value{
-Dim sclg cons (a double vector)
+Dimension sclg cons (a double vector)
 }
 \description{
-make_dim_sclg_cons_dbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make dim sclg cons double vector. The function returns Dim sclg cons (a double vector).
+make_dim_sclg_cons_dbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make dimension sclg cons double vector. The function returns Dimension sclg cons (a double vector).
 }

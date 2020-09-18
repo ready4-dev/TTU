@@ -1,3 +1,14 @@
+make_adol_aqol6d_disv_lup <- function(){
+  data("disutilities_lup_tb", package = "FBaqol", envir = environment())
+  adol_aqol6d_disv_lup <- disutilities_lup_tb %>%
+    dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr == "Q18" ~ 0.622,
+                                                  TRUE ~ Answer_4_dbl),
+                  Answer_5_dbl = dplyr::case_when(Question_chr == "Q3" ~ 0.827,
+                                                  TRUE ~ Answer_5_dbl),
+                  Answer_6_dbl = dplyr::case_when(Question_chr == "Q1" ~ 0.073,
+                                                  TRUE ~ Answer_5_dbl))
+  return(adol_aqol6d_disv_lup)
+}
 make_aqol6d_fns_ls <- function(domain_items_ls){
   aqol6d_disu_fn_ls <- paste0("calculate_aqol6d_d",
                               1:length(domain_items_ls),

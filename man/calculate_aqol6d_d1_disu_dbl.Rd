@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_calculate.R
 \name{calculate_aqol6d_d1_disu_dbl}
 \alias{calculate_aqol6d_d1_disu_dbl}
-\title{Calculate aqol6d d1 disu}
+\title{Calculate Assessment of Quality of Life Six Dimension health utility d1 disu}
 \usage{
 calculate_aqol6d_d1_disu_dbl(dvQs_tb, kD_1L_dbl, w_dbl)
 }
@@ -17,5 +17,5 @@ calculate_aqol6d_d1_disu_dbl(dvQs_tb, kD_1L_dbl, w_dbl)
 DvD1 (a double vector)
 }
 \description{
-calculate_aqol6d_d1_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate aqol6d d1 disu double vector. The function returns DvD1 (a double vector).
+calculate_aqol6d_d1_disu_dbl() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate assessment of quality of life six dimension health utility d1 disu double vector. The function returns DvD1 (a double vector).
 }

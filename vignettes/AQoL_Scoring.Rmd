@@ -44,4 +44,7 @@ As the below summary illustrates, there is little difference in results between 
 summary(comparison_tb)
 ```
 
+```{r}
+# comparison_tb
+```
 
