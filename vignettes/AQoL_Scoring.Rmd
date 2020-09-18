@@ -34,12 +34,12 @@ comparison_tb <- aqol_tb %>%
                              dim_sclg_constant_lup_tb = FBaqol::dim_sclg_constant_lup_tb,
                              disutilities_lup_tb = FBaqol::disutilities_lup_tb,
                              itm_wrst_wghts_lup_tb = FBaqol::itm_wrst_wghts_lup_tb),
-                uaqol_adol = FBaqol::calc_adol_aqol6d(aqol_tb, prefix_1L_chr = "aqol",id_var_nm_1L_chr = "v1")) %>%
+                uaqol_adol = FBaqol::calculate_adol_aqol6d(aqol_tb, prefix_1L_chr = "aqol",id_var_nm_1L_chr = "v1")) %>%
   dplyr::select(dplyr::starts_with("uaqol")) %>%
   dplyr::mutate(diff_with_8D = uaqol_FB - uaqol6Dusing8D,
                 diff_with_8Da = uaqol_FB - uaqol6Dusing8Da,
                 diff_adol_with_adult = uaqol_adol - uaqol_FB)
-comparison_tb
+#comparison_tb
 ```
 
 As the below summary illustrates, there is little difference in results between the two implementations.
@@ -47,22 +47,3 @@ As the below summary illustrates, there is little difference in results between 
 ```{r}
 summary(comparison_tb)
 ```
-
-```{r}
-# Check with missing data
-aqol_with_missing_tb <- purrr::map_df(aqol_tb, function(x) {x[sample(c(TRUE, NA), prob = c(0.8, 0.2), size = length(x), replace = TRUE)]})
-comparison_tb <- aqol_tb %>%
-  dplyr::mutate(uaqol_FB = FBaqol::calculate_aqol6dU_dbl(aqol6d_items_tb = aqol_tb,
-                             prefix_1L_chr =  "aqol",
-                             aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
-                             dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
-                             disutilities_lup_tb = disutilities_lup_tb,
-                             itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb),
-                uaqol_adol = calc_adol_aqol6d(aqol_tb, prefix_1L_chr = "aqol",id_var_nm_1L_chr = "v1")) %>%
-  dplyr::select(-uaqol_FB,
-                - uaqol6Dusing8D,
-                - uaqol6Dusing8Da)
-#comparison_tb
-summary(comparison_tb)
-```
-
