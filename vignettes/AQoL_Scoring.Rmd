@@ -47,7 +47,7 @@ summary(comparison_tb)
 ```
 
 ```{r}
-# Check that it  missing data
+# Check with missing data
 aqol_with_missing_tb <- purrr::map_df(aqol_tb, function(x) {x[sample(c(TRUE, NA), prob = c(0.8, 0.2), size = length(x), replace = TRUE)]})
 comparison_tb <- aqol_tb %>%
   dplyr::mutate(uaqol_FB = calculate_aqol6dU_dbl(aqol6d_items_tb = aqol_tb,

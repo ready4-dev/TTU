@@ -195,6 +195,13 @@ pkg_dss_tb <- read.csv("data-raw/AQoL_6D_Dim_Scaling.csv", stringsAsFactors = F,
                               url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
                               abbreviations_lup = abbreviations_lup,
                               pkg_dss_tb = pkg_dss_tb)
+pkg_dss_tb <- read.csv("vignettes/Data/aqol_valid_stata.csv") %>%
+  ready4fun::write_and_doc_ds(db_1L_chr = "syn_pop_with_STATA_adults_scoring_tb",
+                              title_1L_chr = "Synthetic population STATA output",
+                              desc_1L_chr = "Synthetic population following application of STATA adult scoring algorithm.",
+                              url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
+                              abbreviations_lup = abbreviations_lup,
+                              pkg_dss_tb = pkg_dss_tb)
 ## 7 Document.
 # Write documented methods to R directory.
 ## Note files to be rewritten cannot be open in RStudio.

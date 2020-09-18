@@ -6,7 +6,6 @@
 #' @export 
 #' @importFrom rlang parse_expr
 #' @importFrom Hmisc label
-#' @keywords internal
 add_adol_dim_scrg_eqs <- function (unscored_aqol_tb) 
 {
     data("adol_dim_scalg_eqs_lup", package = "FBaqol", envir = environment())
