@@ -15,3 +15,4 @@ Imputed unscored Assessment of Quality of Life health utility dataset tibble (a 
 \description{
 impute_adol_unscrd_aqol_ds() is an Impute function that imputes data. Specifically, this function implements an algorithm to impute adolescent unscored assessment of quality of life health utility dataset. The function returns Imputed unscored Assessment of Quality of Life health utility dataset tibble (a tibble).
 }
+\keyword{internal}

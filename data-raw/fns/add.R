@@ -10,16 +10,19 @@ add_aqol6dU_to_aqol6d_items_tb_tb <- function(aqol6d_items_tb,
 }
 add_aqol6dU_to_tbs_ls <- function(tbs_ls, ## FUNCTION NEEDS TO BE FIXED - UNFINISHED
                                   prefix_1L_chr =  "aqol6d_q",
+                                  id_var_nm_1L_chr,
                                   aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
                                   dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
                                   disvalues_lup_tb = disvalues_lup_tb,
                                   itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb){
-  tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_aqol6dU_dbl(aqol6d_items_tb = .x,
-                                                                                        prefix_1L_chr =  prefix_1L_chr,
-                                                                                        aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
-                                                                                        dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
-                                                                                        disvalues_lup_tb = disvalues_lup_tb,
-                                                                                        itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)))
+  tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6d(.x, prefix_1L_chr = prefix_1L_chr,id_var_nm_1L_chr = id_var_nm_1L_chr)
+                                                          # calculate_aqol6dU_dbl(aqol6d_items_tb = .x,
+                                                          #                               prefix_1L_chr =  prefix_1L_chr,
+                                                          #                               aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
+                                                          #                               dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
+                                                          #                               disvalues_lup_tb = disvalues_lup_tb,
+                                                          #                               itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)
+                                                          ))
   return(tbs_ls)
 }
 add_aqol_dim_scrg_eqs <- function(unscored_aqol_tb){
@@ -110,7 +113,7 @@ add_corrs_and_uts_to_tbs_ls_ls <- function(tbs_ls, # Based on: https://stats.sta
                                        corr_var_1L_chr = names(temporal_corrs_ls)[1],
                                        id_var_to_rm_1L_chr = "id"
                                        ) %>%
-    add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]])
+    add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]]) # Need to make "fkClientID" an input value to an argument.
   tbs_ls <- tbs_ls  %>%
     add_aqol_scores_tbs_ls(means_dbl = aqol_scores_pars_ls$means_dbl,#c(44.5,40.6), ## MOVE TO FN ARG
                            sds_dbl = aqol_scores_pars_ls$sds_dbl,#c(9.9,9.8),
@@ -120,6 +123,7 @@ add_corrs_and_uts_to_tbs_ls_ls <- function(tbs_ls, # Based on: https://stats.sta
                           prefix_1L_chr = prefix_chr[["uid"]]) %>%
     add_aqol6dU_to_tbs_ls(prefix_1L_chr =  prefix_chr[["aqol_item"]],
                           aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
+                          id_var_nm_1L_chr = "fkClientID",
                           dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
                           disvalues_lup_tb = disvalues_lup_tb,
                           itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb

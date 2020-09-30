@@ -8,6 +8,7 @@ reference:
   - adol_dim_scalg_eqs_tb
   - aqol6d_from_8d_coeffs_lup_tb
   - dim_sclg_constant_lup_tb
+  - disutilities_lup_tb
   - disvalues_lup_tb
   - fn_type_lup_tb
   - itm_wrst_wghts_lup_tb
@@ -36,7 +37,6 @@ reference:
   - force_min_max_and_int_cnstrs_tb
   - force_vec_to_sum_to_int
   - impute_miss_itms_in_aqol6d_items_tb_tb
-  - make_aqol_items_props_tbs_ls
   - make_aqol6d_fns_ls
   - make_aqol6d_items_tb
   - make_correlated_data_tb
