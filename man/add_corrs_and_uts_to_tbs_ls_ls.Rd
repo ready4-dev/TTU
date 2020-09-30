@@ -4,10 +4,20 @@
 \alias{add_corrs_and_uts_to_tbs_ls_ls}
 \title{Add corrs and uts to tibbles}
 \usage{
-add_corrs_and_uts_to_tbs_ls_ls(tbs_ls, temporal_corrs_ls, prefix_chr)
+add_corrs_and_uts_to_tbs_ls_ls(
+  tbs_ls,
+  aqol_scores_pars_ls,
+  aqol_items_props_tbs_ls,
+  temporal_corrs_ls,
+  prefix_chr
+)
 }
 \arguments{
 \item{tbs_ls}{Tibbles (a list)}
+
+\item{aqol_scores_pars_ls}{Assessment of Quality of Life health utility scores parameters (a list)}
+
+\item{aqol_items_props_tbs_ls}{Assessment of Quality of Life health utility items props tibbles (a list)}
 
 \item{temporal_corrs_ls}{Temporal corrs (a list)}
 

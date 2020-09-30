@@ -5,73 +5,14 @@
 #' @rdname make_adol_aqol6d_disv_lup
 #' @export 
 #' @importFrom dplyr mutate case_when
-#' @keywords internal
 make_adol_aqol6d_disv_lup <- function () 
 {
-    data("disutilities_lup_tb", package = "FBaqol", envir = environment())
-    adol_aqol6d_disv_lup <- disutilities_lup_tb %>% dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr == 
+    data("disvalues_lup_tb", package = "FBaqol", envir = environment())
+    adol_aqol6d_disv_lup <- disvalues_lup_tb %>% dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr == 
         "Q18" ~ 0.622, TRUE ~ Answer_4_dbl), Answer_5_dbl = dplyr::case_when(Question_chr == 
         "Q3" ~ 0.827, TRUE ~ Answer_5_dbl), Answer_6_dbl = dplyr::case_when(Question_chr == 
         "Q1" ~ 0.073, TRUE ~ Answer_5_dbl))
     return(adol_aqol6d_disv_lup)
-}
-#' Make Assessment of Quality of Life health utility items props tibbles
-#' @description make_aqol_items_props_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life health utility items props tibbles list. The function returns an Assessment of Quality of Life health utility items props tibbles (a list).
-
-#' @return an Assessment of Quality of Life health utility items props tibbles (a list)
-#' @rdname make_aqol_items_props_tbs_ls
-#' @export 
-#' @importFrom tibble tribble
-#' @importFrom dplyr mutate select mutate_if
-#' @importFrom purrr map2_dbl
-make_aqol_items_props_tbs_ls <- function () 
-{
-    bl_answer_props_tb <- tibble::tribble(~Question, ~Answer_1, 
-        ~Answer_2, ~Answer_3, ~Answer_4, ~Answer_5, ~Answer_6, 
-        "Q1", 0.35, 0.38, 0.16, 0.03, 100, NA_real_, "Q2", 0.28, 
-        0.38, 0.18, 0.08, 0.04, 100, "Q3", 0.78, 0.18, 0.03, 
-        0.01, 0, 100, "Q4", 0.64, 0.23, 0.09, 0, 100, NA_real_, 
-        "Q5", 0.3, 0.48, 0.12, 0.05, 100, NA_real_, "Q6", 0.33, 
-        0.48, 0.15, 100, NA_real_, NA_real_, "Q7", 0.44, 0.27, 
-        0.11, 100, NA_real_, NA_real_, "Q8", 0.18, 0.29, 0.23, 
-        0.21, 100, NA_real_, "Q9", 0.07, 0.27, 0.19, 0.37, 100, 
-        NA_real_, "Q10", 0.04, 0.15, 0.4, 0.25, 100, NA_real_, 
-        "Q11", 0.03, 0.13, 0.52, 0.25, 100, NA_real_, "Q12", 
-        0.06, 0.21, 0.25, 0.34, 100, NA_real_, "Q13", 0.05, 0.25, 
-        0.31, 0.28, 100, NA_real_, "Q14", 0.05, 0.3, 0.34, 0.25, 
-        100, NA_real_, "Q15", 0.57, 0.25, 0.12, 100, NA_real_, 
-        NA_real_, "Q16", 0.48, 0.42, 0.06, 100, NA_real_, NA_real_, 
-        "Q17", 0.44, 0.3, 0.16, 0.07, 100, NA_real_, "Q18", 0.33, 
-        0.38, 0.25, 0.04, 0, 100, "Q19", 0.33, 0.49, 0.16, 0.02, 
-        0, 100, "Q20", 0.67, 0.21, 0.02, 100, NA_real_, NA_real_) %>% 
-        dplyr::mutate(total_prop_dbl = rowSums(dplyr::select(., 
-            -Question), na.rm = T) - 100) %>% dplyr::mutate_if(is.numeric, 
-        ~purrr::map2_dbl(., total_prop_dbl, ~ifelse(.x == 100, 
-            1 - .y, .x))) %>% dplyr::select(-total_prop_dbl)
-    fup_answer_props_tb <- tibble::tribble(~Question, ~Answer_1, 
-        ~Answer_2, ~Answer_3, ~Answer_4, ~Answer_5, ~Answer_6, 
-        "Q1", 0.51, 0.33, 0.12, 0.02, 100, NA_real_, "Q2", 0.36, 
-        0.38, 0.16, 0.06, 0.02, 100, "Q3", 0.81, 0.15, 0.04, 
-        0, 0, 100, "Q4", 0.73, 0.18, 0.09, 0, 100, NA_real_, 
-        "Q5", 0.36, 0.42, 0.12, 0.05, 100, NA_real_, "Q6", 0.48, 
-        0.4, 0.11, 100, NA_real_, NA_real_, "Q7", 0.57, 0.25, 
-        0.09, 100, NA_real_, NA_real_, "Q8", 0.31, 0.33, 0.17, 
-        0.12, 100, NA_real_, "Q9", 0.13, 0.35, 0.19, 0.23, 100, 
-        NA_real_, "Q10", 0.1, 0.21, 0.43, 0.16, 100, NA_real_, 
-        "Q11", 0.06, 0.25, 0.48, 0.18, 100, NA_real_, "Q12", 
-        0.08, 0.27, 0.26, 0.25, 100, NA_real_, "Q13", 0.07, 0.37, 
-        0.31, 0.19, 100, NA_real_, "Q14", 0.08, 0.37, 0.34, 0.15, 
-        100, NA_real_, "Q15", 0.62, 0.23, 0.09, 100, NA_real_, 
-        NA_real_, "Q16", 0.52, 0.4, 0.06, 100, NA_real_, NA_real_, 
-        "Q17", 0.51, 0.28, 0.15, 0.06, 100, NA_real_, "Q18", 
-        0.37, 0.35, 0.25, 0.03, 0, 100, "Q19", 0.43, 0.4, 0.16, 
-        0.01, 0, 100, "Q20", 0.77, 0.21, 0.02, 100, NA_real_, 
-        NA_real_) %>% dplyr::mutate(total_prop_dbl = rowSums(dplyr::select(., 
-        -Question), na.rm = T) - 100) %>% dplyr::mutate_if(is.numeric, 
-        ~purrr::map2_dbl(., total_prop_dbl, ~ifelse(.x == 100, 
-            1 - .y, .x))) %>% dplyr::select(-total_prop_dbl)
-    aqol_items_props_tbs_ls <- list(bl_answer_props_tb, fup_answer_props_tb)
-    return(aqol_items_props_tbs_ls)
 }
 #' Make Assessment of Quality of Life Six Dimension health utility functions
 #' @description make_aqol6d_fns_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension health utility functions list. The function returns an Assessment of Quality of Life Six Dimension health utility disu (a list of functions).

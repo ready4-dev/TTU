@@ -8,8 +8,7 @@ reorder_tb_for_target_cors(
   tbs_ls,
   corr_dbl,
   corr_var_1L_chr,
-  id_var_to_rm_1L_chr = NA_character_,
-  included_fup_idx_dbl = NA_real_
+  id_var_to_rm_1L_chr = NA_character_
 )
 }
 \arguments{
@@ -20,8 +19,6 @@ reorder_tb_for_target_cors(
 \item{corr_var_1L_chr}{Corr var (a character vector of length one)}
 
 \item{id_var_to_rm_1L_chr}{Id var to rm (a character vector of length one), Default: 'NA'}
-
-\item{included_fup_idx_dbl}{Included fup index (a double vector), Default: NA}
 }
 \value{
 Tibbles (a list)

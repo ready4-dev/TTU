@@ -9,7 +9,7 @@ calculate_aqol6dU_dbl(
   prefix_1L_chr,
   aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
   dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
-  disutilities_lup_tb = disutilities_lup_tb,
+  disvalues_lup_tb = disvalues_lup_tb,
   itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb
 )
 }
@@ -22,7 +22,7 @@ calculate_aqol6dU_dbl(
 
 \item{dim_sclg_constant_lup_tb}{Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb}
 
-\item{disutilities_lup_tb}{Disutilities lookup table (a tibble), Default: disutilities_lup_tb}
+\item{disvalues_lup_tb}{Disvalues lookup table (a tibble), Default: disvalues_lup_tb}
 
 \item{itm_wrst_wghts_lup_tb}{Itm wrst wghts lookup table (a tibble), Default: itm_wrst_wghts_lup_tb}
 }

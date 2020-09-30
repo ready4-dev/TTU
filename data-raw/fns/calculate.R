@@ -7,12 +7,12 @@ calculate_adol_aqol6d <- function(unscored_aqol_tb,
   names(unscored_aqol_tb) <- c("ID",paste0("Q",1:20))
   unscored_aqol_tb <- impute_adol_unscrd_aqol_ds(unscored_aqol_tb)
   disvals_tb <- unscored_aqol_tb %>%
-    add_itm_disu_to_aqol6d_itms_tb_tb(disutilities_lup_tb = make_adol_aqol6d_disv_lup(),
+    add_itm_disu_to_aqol6d_itms_tb_tb(disvalues_lup_tb = make_adol_aqol6d_disv_lup(),
                                       pfx_1L_chr = "Q") %>%
     dplyr::select(ID,
                   dplyr::starts_with("dv_")) %>%
     dplyr::rename_all(~stringr::str_replace(.x,"dv_","dv"))
-  scored_aqol_tb <- add_adol_dim_scrg_eqs(disvals_tb)
+  scored_aqol_tb <- add_aqol_dim_scrg_eqs(disvals_tb)
   adol_aqol6d_dbl <- scored_aqol_tb$uaqol
   return(adol_aqol6d_dbl)
 }
@@ -74,17 +74,17 @@ calculate_aqol6dU_dbl <- function(aqol6d_items_tb,
                              prefix_1L_chr,
                              aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
                              dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
-                             disutilities_lup_tb = disutilities_lup_tb,
+                             disvalues_lup_tb = disvalues_lup_tb,
                              itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb){
   domains_chr <- dim_sclg_constant_lup_tb$Dimension_chr
-  item_pfx_1L_chr <- hutils::longest_prefix(disutilities_lup_tb$Question_chr)
+  item_pfx_1L_chr <- hutils::longest_prefix(disvalues_lup_tb$Question_chr)
   domain_items_ls <- make_domain_items_ls(domains_chr = domains_chr,
                                           q_nbrs_ls = list(1:4,5:7,8:11,12:14,15:17,18:20),
                                           item_pfx_1L_chr = item_pfx_1L_chr)
   aqol6d_items_tb <- aqol6d_items_tb %>% make_aqol6d_items_tb(old_pfx_1L_chr = prefix_1L_chr,
                                                               new_pfx_1L_chr = item_pfx_1L_chr) %>%
     impute_miss_itms_in_aqol6d_items_tb_tb(domain_items_ls = domain_items_ls) %>%
-    add_itm_disu_to_aqol6d_itms_tb_tb(disutilities_lup_tb = disutilities_lup_tb,
+    add_itm_disu_to_aqol6d_itms_tb_tb(disvalues_lup_tb = disvalues_lup_tb,
                                       pfx_1L_chr = item_pfx_1L_chr) %>%
     add_dmn_disu_to_aqol6d_items_tb_tb(domain_items_ls = domain_items_ls,
                                        domains_chr = domains_chr,

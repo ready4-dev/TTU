@@ -1,13 +1,12 @@
-#' Add adolescent dimension scoring equations
-#' @description add_adol_dim_scrg_eqs() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add adolescent dimension scoring equations. Function argument unscored_aqol_tb specifies the object to be updated. The function returns Unscored Assessment of Quality of Life health utility (a tibble).
+#' Add Assessment of Quality of Life health utility dimension scoring equations
+#' @description add_aqol_dim_scrg_eqs() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life health utility dimension scoring equations. Function argument unscored_aqol_tb specifies the object to be updated. The function returns Unscored Assessment of Quality of Life health utility (a tibble).
 #' @param unscored_aqol_tb Unscored Assessment of Quality of Life health utility (a tibble)
 #' @return Unscored Assessment of Quality of Life health utility (a tibble)
-#' @rdname add_adol_dim_scrg_eqs
+#' @rdname add_aqol_dim_scrg_eqs
 #' @export 
 #' @importFrom rlang parse_expr
 #' @importFrom Hmisc label
-#' @keywords internal
-add_adol_dim_scrg_eqs <- function (unscored_aqol_tb) 
+add_aqol_dim_scrg_eqs <- function (unscored_aqol_tb) 
 {
     data("adol_dim_scalg_eqs_lup", package = "FBaqol", envir = environment())
     for (var in adol_dim_scalg_eqs_lup$Dim_scal) {
@@ -86,7 +85,7 @@ add_aqol_scores_tbs_ls <- function (tbs_ls, means_dbl, sds_dbl, corr_dbl)
         aqol_score_dbl <- faux::rnorm_pre(..1 %>% dplyr::pull(aqol6d_total_w), 
             mu = ..2, sd = ..3, r = corr_dbl)
         aqol_score_dbl <- aqol_score_dbl %>% purrr::map_dbl(~min(round(.x), 
-            100) %>% max(20))
+            99) %>% max(20))
         ..1 %>% dplyr::mutate(aqol6d_total_c = tidyselect::all_of(aqol_score_dbl))
     })
     return(tbs_ls)
@@ -118,7 +117,7 @@ add_aqol6dU_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, aqol6d_from_8d_c
 #' @param prefix_1L_chr Prefix (a character vector of length one), Default: 'aqol6d_q'
 #' @param aqol6d_from_8d_coeffs_lup_tb Assessment of Quality of Life Six Dimension health utility from 8d coeffs lookup table (a tibble), Default: aqol6d_from_8d_coeffs_lup_tb
 #' @param dim_sclg_constant_lup_tb Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb
-#' @param disutilities_lup_tb Disutilities lookup table (a tibble), Default: disutilities_lup_tb
+#' @param disvalues_lup_tb Disvalues lookup table (a tibble), Default: disvalues_lup_tb
 #' @param itm_wrst_wghts_lup_tb Itm wrst wghts lookup table (a tibble), Default: itm_wrst_wghts_lup_tb
 #' @return Tibbles (a list)
 #' @rdname add_aqol6dU_to_tbs_ls
@@ -126,40 +125,44 @@ add_aqol6dU_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, aqol6d_from_8d_c
 #' @importFrom purrr map
 #' @importFrom dplyr mutate
 add_aqol6dU_to_tbs_ls <- function (tbs_ls, prefix_1L_chr = "aqol6d_q", aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb, 
-    dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, disutilities_lup_tb = disutilities_lup_tb, 
+    dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, disvalues_lup_tb = disvalues_lup_tb, 
     itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb) 
 {
     tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_aqol6dU_dbl(aqol6d_items_tb = .x, 
         prefix_1L_chr = prefix_1L_chr, aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb, 
         dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, 
-        disutilities_lup_tb = disutilities_lup_tb, itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)))
+        disvalues_lup_tb = disvalues_lup_tb, itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)))
     return(tbs_ls)
 }
 #' Add corrs and uts to tibbles
 #' @description add_corrs_and_uts_to_tbs_ls_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add corrs and uts to tibbles list list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 #' @param tbs_ls Tibbles (a list)
+#' @param aqol_scores_pars_ls Assessment of Quality of Life health utility scores parameters (a list)
+#' @param aqol_items_props_tbs_ls Assessment of Quality of Life health utility items props tibbles (a list)
 #' @param temporal_corrs_ls Temporal corrs (a list)
 #' @param prefix_chr Prefix (a character vector)
 #' @return Tibbles (a list)
 #' @rdname add_corrs_and_uts_to_tbs_ls_ls
 #' @export 
 
-add_corrs_and_uts_to_tbs_ls_ls <- function (tbs_ls, temporal_corrs_ls, prefix_chr) 
+add_corrs_and_uts_to_tbs_ls_ls <- function (tbs_ls, aqol_scores_pars_ls, aqol_items_props_tbs_ls, 
+    temporal_corrs_ls, prefix_chr) 
 {
     data("aqol6d_from_8d_coeffs_lup_tb", package = "FBaqol", 
         envir = environment())
     data("dim_sclg_constant_lup_tb", package = "FBaqol", envir = environment())
-    data("disutilities_lup_tb", package = "FBaqol", envir = environment())
+    data("disvalues_lup_tb", package = "FBaqol", envir = environment())
     data("itm_wrst_wghts_lup_tb", package = "FBaqol", envir = environment())
     tbs_ls <- reorder_tb_for_target_cors(tbs_ls, corr_dbl = temporal_corrs_ls[[1]], 
         corr_var_1L_chr = names(temporal_corrs_ls)[1], id_var_to_rm_1L_chr = "id") %>% 
         add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]])
-    tbs_ls <- tbs_ls %>% add_aqol_scores_tbs_ls(means_dbl = c(44.5, 
-        40.6), sds_dbl = c(9.9, 9.8), corr_dbl = 0.9) %>% add_aqol_items_tbs_ls(aqol_items_props_tbs_ls = make_aqol_items_props_tbs_ls(), 
-        prefix_1L_chr = prefix_chr[["uid"]]) %>% add_aqol6dU_to_tbs_ls(prefix_1L_chr = prefix_chr[["aqol_item"]], 
+    tbs_ls <- tbs_ls %>% add_aqol_scores_tbs_ls(means_dbl = aqol_scores_pars_ls$means_dbl, 
+        sds_dbl = aqol_scores_pars_ls$sds_dbl, corr_dbl = aqol_scores_pars_ls$corr_dbl) %>% 
+        add_aqol_items_tbs_ls(aqol_items_props_tbs_ls = aqol_items_props_tbs_ls, 
+            prefix_1L_chr = prefix_chr[["uid"]]) %>% add_aqol6dU_to_tbs_ls(prefix_1L_chr = prefix_chr[["aqol_item"]], 
         aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb, 
         dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, 
-        disutilities_lup_tb = disutilities_lup_tb, itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)
+        disvalues_lup_tb = disvalues_lup_tb, itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)
     return(tbs_ls)
 }
 #' Add dmn disu to Assessment of Quality of Life Six Dimension health utility items tibble
@@ -231,7 +234,7 @@ add_domain_unwtd_tots_tb <- function (items_tb, domain_items_ls, domain_pfx_1L_c
 #' Add itm disu to Assessment of Quality of Life Six Dimension health utility itms tibble
 #' @description add_itm_disu_to_aqol6d_itms_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add itm disu to assessment of quality of life six dimension health utility itms tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns an Assessment of Quality of Life Six Dimension health utility items (a tibble).
 #' @param aqol6d_items_tb Assessment of Quality of Life Six Dimension health utility items (a tibble)
-#' @param disutilities_lup_tb Disutilities lookup table (a tibble), Default: disutilities_lup_tb
+#' @param disvalues_lup_tb Disvalues lookup table (a tibble), Default: disvalues_lup_tb
 #' @param pfx_1L_chr Prefix (a character vector of length one)
 #' @return an Assessment of Quality of Life Six Dimension health utility items (a tibble)
 #' @rdname add_itm_disu_to_aqol6d_itms_tb_tb
@@ -239,13 +242,13 @@ add_domain_unwtd_tots_tb <- function (items_tb, domain_items_ls, domain_pfx_1L_c
 #' @importFrom purrr reduce
 #' @importFrom dplyr mutate across
 #' @importFrom tidyselect all_of
-add_itm_disu_to_aqol6d_itms_tb_tb <- function (aqol6d_items_tb, disutilities_lup_tb = disutilities_lup_tb, 
+add_itm_disu_to_aqol6d_itms_tb_tb <- function (aqol6d_items_tb, disvalues_lup_tb = disvalues_lup_tb, 
     pfx_1L_chr) 
 {
     aqol6d_items_tb <- purrr::reduce(1:20, .init = aqol6d_items_tb, 
         ~{
             q_1L_chr <- paste0(pfx_1L_chr, .y)
-            disu_dbl <- disutilities_lup_tb[.y, -1] %>% as.numeric()
+            disu_dbl <- disvalues_lup_tb[.y, -1] %>% as.numeric()
             .x %>% dplyr::mutate(dplyr::across(tidyselect::all_of(q_1L_chr), 
                 .fns = list(dv = ~disu_dbl[.x]), .names = "{fn}_{col}"))
         })
