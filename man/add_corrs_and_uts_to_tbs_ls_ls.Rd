@@ -9,7 +9,9 @@ add_corrs_and_uts_to_tbs_ls_ls(
   aqol_scores_pars_ls,
   aqol_items_props_tbs_ls,
   temporal_corrs_ls,
-  prefix_chr
+  prefix_chr,
+  aqol_tots_var_nms_chr,
+  id_var_nm_1L_chr = "fkClientID"
 )
 }
 \arguments{
@@ -22,6 +24,10 @@ add_corrs_and_uts_to_tbs_ls_ls(
 \item{temporal_corrs_ls}{Temporal corrs (a list)}
 
 \item{prefix_chr}{Prefix (a character vector)}
+
+\item{aqol_tots_var_nms_chr}{Assessment of Quality of Life health utility tots var names (a character vector)}
+
+\item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
 }
 \value{
 Tibbles (a list)

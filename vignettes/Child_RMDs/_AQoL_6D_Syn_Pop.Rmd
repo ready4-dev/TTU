@@ -8,7 +8,7 @@ output: html_document
 ```{r echo = F}
 library("magrittr")
 #library("FBaqol")
-devtools::load_all()
+library(FBaqol)
 ```
 
 ```{r}

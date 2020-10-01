@@ -4,12 +4,14 @@
 \alias{add_uids_to_tbs_ls}
 \title{Add uids to tibbles}
 \usage{
-add_uids_to_tbs_ls(tbs_ls, prefix_1L_chr)
+add_uids_to_tbs_ls(tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkClientID")
 }
 \arguments{
 \item{tbs_ls}{Tibbles (a list)}
 
 \item{prefix_1L_chr}{Prefix (a character vector of length one)}
+
+\item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
 }
 \value{
 Tibbles (a list)

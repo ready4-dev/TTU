@@ -5,7 +5,6 @@
 #' @rdname make_adol_aqol6d_disv_lup
 #' @export 
 #' @importFrom dplyr mutate case_when
-#' @keywords internal
 make_adol_aqol6d_disv_lup <- function () 
 {
     data("disvalues_lup_tb", package = "FBaqol", envir = environment())

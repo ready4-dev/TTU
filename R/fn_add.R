@@ -6,7 +6,6 @@
 #' @export 
 #' @importFrom rlang parse_expr
 #' @importFrom Hmisc label
-#' @keywords internal
 add_aqol_dim_scrg_eqs <- function (unscored_aqol_tb) 
 {
     data("adol_dim_scalg_eqs_lup", package = "FBaqol", envir = environment())
@@ -24,19 +23,24 @@ add_aqol_dim_scrg_eqs <- function (unscored_aqol_tb)
 #' @description add_aqol_items_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life health utility items tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Updated tibbles (a list).
 #' @param tbs_ls Tibbles (a list)
 #' @param aqol_items_props_tbs_ls Assessment of Quality of Life health utility items props tibbles (a list)
-#' @param prefix_1L_chr Prefix (a character vector of length one)
+#' @param prefix_chr Prefix (a character vector)
+#' @param aqol_tots_var_nms_chr Assessment of Quality of Life health utility tots var names (a character vector)
+#' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
+#' @param scaling_cnst_dbl Scaling cnst (a double vector), Default: 5
 #' @return Updated tibbles (a list)
 #' @rdname add_aqol_items_tbs_ls
 #' @export 
-#' @importFrom purrr map2 map reduce map_dfr map_dbl
-#' @importFrom dplyr select mutate arrange pull bind_cols everything
+#' @importFrom purrr map2 map reduce map_int
+#' @importFrom dplyr select mutate arrange left_join starts_with everything
 #' @importFrom simstudy defData genData
-#' @importFrom stringr str_replace
-add_aqol_items_tbs_ls <- function (tbs_ls, aqol_items_props_tbs_ls, prefix_1L_chr) 
+#' @importFrom rlang sym
+#' @importFrom tibble rowid_to_column
+add_aqol_items_tbs_ls <- function (tbs_ls, aqol_items_props_tbs_ls, prefix_chr, aqol_tots_var_nms_chr, 
+    id_var_nm_1L_chr = "fkClientID", scaling_cnst_dbl = 5) 
 {
     updated_tbs_ls <- purrr::map2(tbs_ls, aqol_items_props_tbs_ls, 
         ~{
-            nbr_obs_1L_int <- nrow(.x)
+            nbr_obs_1L_int <- nrow(.x) * scaling_cnst_dbl
             transposed_items_props_tb <- .y %>% dplyr::select(-Question) %>% 
                 t()
             item_ranges_dbl_ls <- 1:ncol(transposed_items_props_tb) %>% 
@@ -48,21 +52,21 @@ add_aqol_items_tbs_ls <- function (tbs_ls, aqol_items_props_tbs_ls, prefix_1L_ch
                   .y] %>% na.omit() %>% as.vector() %>% format(digits = 10) %>% 
                   paste0(collapse = ";"), dist = "categorical"))
             items_tb <- simstudy::genData(nbr_obs_1L_int, cat_probs_def_tbl) %>% 
-                dplyr::select(-id) %>% dplyr::mutate(totals_dbl = rowSums(., 
-                na.rm = T)) %>% dplyr::arrange(totals_dbl) %>% 
-                dplyr::select(-totals_dbl) %>% t()
-            target_dbl <- .x %>% dplyr::arrange(aqol6d_total_c) %>% 
-                dplyr::pull(aqol6d_total_c)
-            items_tb <- 1:ncol(items_tb) %>% purrr::map_dfr(~{
-                force_vec_to_sum_to_int(items_tb[, .x], target_1L_int = target_dbl[.x], 
-                  item_ranges_dbl_ls = item_ranges_dbl_ls)
-            })
-            updated_tb <- dplyr::bind_cols(.x %>% dplyr::arrange(aqol6d_total_c), 
-                items_tb) %>% dplyr::mutate(temp_id = fkClientID %>% 
-                purrr::map_dbl(~stringr::str_replace(.x, prefix_1L_chr, 
-                  "") %>% as.numeric())) %>% dplyr::arrange(temp_id) %>% 
-                dplyr::select(-temp_id) %>% dplyr::select(fkClientID, 
-                dplyr::everything())
+                dplyr::select(-id) %>% dplyr::mutate(`:=`(!!rlang::sym(unname(aqol_tots_var_nms_chr["cumulative"])), 
+                rowSums(., na.rm = T))) %>% dplyr::arrange(!!rlang::sym(unname(aqol_tots_var_nms_chr["cumulative"]))) %>% 
+                tibble::rowid_to_column("id")
+            items_tb <- items_tb %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6d(items_tb, 
+                prefix_1L_chr = prefix_chr[2], id_var_nm_1L_chr = "id"))
+            .x <- .x %>% dplyr::mutate(id = purrr::map_int(aqol6d_total_w, 
+                ~which.min(abs(items_tb$aqol6dU - .x)))) %>% 
+                dplyr::left_join(items_tb)
+            updated_tb <- .x %>% dplyr::mutate(`:=`(!!rlang::sym(unname(aqol_tots_var_nms_chr["weighted"])), 
+                aqol6dU)) %>% dplyr::select(-aqol6dU, -id) %>% 
+                dplyr::select(!!rlang::sym(id_var_nm_1L_chr), 
+                  dplyr::starts_with(unname(prefix_chr[2])), 
+                  !!rlang::sym(unname(aqol_tots_var_nms_chr["cumulative"])), 
+                  !!rlang::sym(unname(aqol_tots_var_nms_chr["weighted"])), 
+                  dplyr::everything())
             updated_tb
         })
     return(updated_tbs_ls)
@@ -116,6 +120,7 @@ add_aqol6dU_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, aqol6d_from_8d_c
 #' @description add_aqol6dU_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol6du to tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 #' @param tbs_ls Tibbles (a list)
 #' @param prefix_1L_chr Prefix (a character vector of length one), Default: 'aqol6d_q'
+#' @param id_var_nm_1L_chr Id var name (a character vector of length one)
 #' @param aqol6d_from_8d_coeffs_lup_tb Assessment of Quality of Life Six Dimension health utility from 8d coeffs lookup table (a tibble), Default: aqol6d_from_8d_coeffs_lup_tb
 #' @param dim_sclg_constant_lup_tb Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb
 #' @param disvalues_lup_tb Disvalues lookup table (a tibble), Default: disvalues_lup_tb
@@ -125,14 +130,13 @@ add_aqol6dU_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, aqol6d_from_8d_c
 #' @export 
 #' @importFrom purrr map
 #' @importFrom dplyr mutate
-add_aqol6dU_to_tbs_ls <- function (tbs_ls, prefix_1L_chr = "aqol6d_q", aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb, 
+add_aqol6dU_to_tbs_ls <- function (tbs_ls, prefix_1L_chr = "aqol6d_q", id_var_nm_1L_chr, 
+    aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb, 
     dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, disvalues_lup_tb = disvalues_lup_tb, 
     itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb) 
 {
-    tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_aqol6dU_dbl(aqol6d_items_tb = .x, 
-        prefix_1L_chr = prefix_1L_chr, aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb, 
-        dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, 
-        disvalues_lup_tb = disvalues_lup_tb, itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)))
+    tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6d(.x, 
+        prefix_1L_chr = prefix_1L_chr, id_var_nm_1L_chr = id_var_nm_1L_chr)))
     return(tbs_ls)
 }
 #' Add corrs and uts to tibbles
@@ -142,28 +146,22 @@ add_aqol6dU_to_tbs_ls <- function (tbs_ls, prefix_1L_chr = "aqol6d_q", aqol6d_fr
 #' @param aqol_items_props_tbs_ls Assessment of Quality of Life health utility items props tibbles (a list)
 #' @param temporal_corrs_ls Temporal corrs (a list)
 #' @param prefix_chr Prefix (a character vector)
+#' @param aqol_tots_var_nms_chr Assessment of Quality of Life health utility tots var names (a character vector)
+#' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
 #' @return Tibbles (a list)
 #' @rdname add_corrs_and_uts_to_tbs_ls_ls
 #' @export 
 
 add_corrs_and_uts_to_tbs_ls_ls <- function (tbs_ls, aqol_scores_pars_ls, aqol_items_props_tbs_ls, 
-    temporal_corrs_ls, prefix_chr) 
+    temporal_corrs_ls, prefix_chr, aqol_tots_var_nms_chr, id_var_nm_1L_chr = "fkClientID") 
 {
-    data("aqol6d_from_8d_coeffs_lup_tb", package = "FBaqol", 
-        envir = environment())
-    data("dim_sclg_constant_lup_tb", package = "FBaqol", envir = environment())
-    data("disvalues_lup_tb", package = "FBaqol", envir = environment())
-    data("itm_wrst_wghts_lup_tb", package = "FBaqol", envir = environment())
     tbs_ls <- reorder_tbs_for_target_cors(tbs_ls, corr_dbl = temporal_corrs_ls[[1]], 
-        corr_var_1L_chr = names(temporal_corrs_ls)[1], id_var_to_rm_1L_chr = "id") %>% 
-        add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]])
-    tbs_ls <- tbs_ls %>% add_aqol_scores_tbs_ls(means_dbl = aqol_scores_pars_ls$means_dbl, 
-        sds_dbl = aqol_scores_pars_ls$sds_dbl, corr_dbl = aqol_scores_pars_ls$corr_dbl) %>% 
-        add_aqol_items_tbs_ls(aqol_items_props_tbs_ls = aqol_items_props_tbs_ls, 
-            prefix_1L_chr = prefix_chr[["uid"]]) %>% add_aqol6dU_to_tbs_ls(prefix_1L_chr = prefix_chr[["aqol_item"]], 
-        aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb, 
-        dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, 
-        disvalues_lup_tb = disvalues_lup_tb, itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)
+        corr_var_chr = rep(names(temporal_corrs_ls)[1], 2), id_var_to_rm_1L_chr = "id") %>% 
+        add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]], 
+            id_var_nm_1L_chr = id_var_nm_1L_chr)
+    tbs_ls <- tbs_ls %>% add_aqol_items_tbs_ls(aqol_items_props_tbs_ls = aqol_items_props_tbs_ls, 
+        prefix_chr = prefix_chr, aqol_tots_var_nms_chr = aqol_tots_var_nms_chr, 
+        id_var_nm_1L_chr = id_var_nm_1L_chr)
     return(tbs_ls)
 }
 #' Add dmn disu to Assessment of Quality of Life Six Dimension health utility items tibble
@@ -297,22 +295,26 @@ add_labels_to_aqol6d_tb <- function (aqol6d_tb, labels_chr = NA_character_)
 #' @description add_uids_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add uids to tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 #' @param tbs_ls Tibbles (a list)
 #' @param prefix_1L_chr Prefix (a character vector of length one)
+#' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
 #' @return Tibbles (a list)
 #' @rdname add_uids_to_tbs_ls
 #' @export 
 #' @importFrom purrr map map_chr
 #' @importFrom dplyr mutate arrange
+#' @importFrom rlang sym
 #' @importFrom tidyselect all_of
 #' @importFrom stringr str_replace
 #' @importFrom stats setNames
-add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr) 
+add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkClientID") 
 {
     participant_ids <- paste0(prefix_1L_chr, 1:nrow(tbs_ls$bl_part_1_tb)) %>% 
         sample(nrow(tbs_ls$bl_part_1_tb))
     tbs_ls <- purrr::map(tbs_ls, ~{
-        .x %>% dplyr::mutate(fkClientID = tidyselect::all_of(participant_ids[1:nrow(.x)])) %>% 
-            dplyr::arrange(fkClientID %>% purrr::map_chr(~stringr::str_replace(.x, 
-                prefix_1L_chr, "")) %>% as.numeric())
+        .x %>% dplyr::mutate(`:=`(!!rlang::sym(id_var_nm_1L_chr), 
+            tidyselect::all_of(participant_ids[1:nrow(.x)]))) %>% 
+            dplyr::arrange(!!rlang::sym(id_var_nm_1L_chr) %>% 
+                purrr::map_chr(~stringr::str_replace(.x, prefix_1L_chr, 
+                  "")) %>% as.numeric())
     }) %>% stats::setNames(names(tbs_ls))
     return(tbs_ls)
 }

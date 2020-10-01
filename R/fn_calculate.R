@@ -8,11 +8,10 @@
 #' @export 
 #' @importFrom dplyr select starts_with rename_all
 #' @importFrom stringr str_replace
-#' @keywords internal
 calculate_adol_aqol6d <- function (unscored_aqol_tb, prefix_1L_chr = "aqol", id_var_nm_1L_chr) 
 {
     unscored_aqol_tb <- unscored_aqol_tb %>% dplyr::select(id_var_nm_1L_chr, 
-        dplyr::starts_with(prefix_1L_chr))
+        dplyr::starts_with(unname(prefix_1L_chr)))
     names(unscored_aqol_tb) <- c("ID", paste0("Q", 1:20))
     unscored_aqol_tb <- impute_adol_unscrd_aqol_ds(unscored_aqol_tb)
     disvals_tb <- unscored_aqol_tb %>% add_itm_disu_to_aqol6d_itms_tb_tb(disvalues_lup_tb = make_adol_aqol6d_disv_lup(), 

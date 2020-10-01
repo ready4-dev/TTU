@@ -4,14 +4,27 @@
 \alias{add_aqol_items_tbs_ls}
 \title{Add Assessment of Quality of Life health utility items tibbles}
 \usage{
-add_aqol_items_tbs_ls(tbs_ls, aqol_items_props_tbs_ls, prefix_1L_chr)
+add_aqol_items_tbs_ls(
+  tbs_ls,
+  aqol_items_props_tbs_ls,
+  prefix_chr,
+  aqol_tots_var_nms_chr,
+  id_var_nm_1L_chr = "fkClientID",
+  scaling_cnst_dbl = 5
+)
 }
 \arguments{
 \item{tbs_ls}{Tibbles (a list)}
 
 \item{aqol_items_props_tbs_ls}{Assessment of Quality of Life health utility items props tibbles (a list)}
 
-\item{prefix_1L_chr}{Prefix (a character vector of length one)}
+\item{prefix_chr}{Prefix (a character vector)}
+
+\item{aqol_tots_var_nms_chr}{Assessment of Quality of Life health utility tots var names (a character vector)}
+
+\item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
+
+\item{scaling_cnst_dbl}{Scaling cnst (a double vector), Default: 5}
 }
 \value{
 Updated tibbles (a list)

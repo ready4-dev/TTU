@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r}
-devtools::load_all()
+library(FBaqol)
 ```
 
 
