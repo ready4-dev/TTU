@@ -6,6 +6,7 @@
 #' @export 
 #' @importFrom dplyr mutate select filter
 #' @importFrom mice mice complete
+#' @keywords internal
 impute_adol_unscrd_aqol_ds <- function (unscrd_aqol_ds_tb) 
 {
     unscrd_aqol_ds_tb <- unscrd_aqol_ds_tb %>% dplyr::mutate(missing = rowSums(is.na(dplyr::select(., 

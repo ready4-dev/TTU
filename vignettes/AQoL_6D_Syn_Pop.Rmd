@@ -1,0 +1,271 @@
+---
+title: "Fake Data Generator"
+author: "Matthew Hamilton"
+date: "11/08/2020"
+output: html_document
+---
+
+```{r echo = F}
+library("magrittr")
+#library("FBaqol")
+library(FBaqol)
+```
+
+```{r}
+
+aqol_items_props_tbs_ls <- list(bl_answer_props_tb = tibble::tribble(
+    ~Question, ~Answer_1, ~Answer_2, ~Answer_3, ~Answer_4, ~Answer_5, ~Answer_6,
+    "Q1", 0.35, 0.38, 0.16, 0.03, NA_real_,100, # Check item 5 in real data.
+    "Q2", 0.28, 0.38, 0.18, 0.08, 0.04,100,
+    "Q3", 0.78, 0.18, 0.03, 0.01, 0.0, 100,
+    "Q4", 0.64, 0.23, 0.09, 0.0, 100, NA_real_,
+    "Q5", 0.3, 0.48, 0.12, 0.05, 100, NA_real_,
+    "Q6", 0.33, 0.48, 0.15, 100, NA_real_,NA_real_,
+    "Q7", 0.44, 0.27, 0.11, 100, NA_real_, NA_real_,
+    "Q8", 0.18, 0.29, 0.23, 0.21, 100, NA_real_,
+    "Q9", 0.07, 0.27, 0.19, 0.37, 100, NA_real_,
+    "Q10", 0.04, 0.15, 0.4, 0.25, 100, NA_real_,
+    "Q11", 0.03, 0.13, 0.52, 0.25, 100, NA_real_,
+    "Q12", 0.06, 0.21, 0.25, 0.34, 100, NA_real_,
+    "Q13", 0.05, 0.25, 0.31, 0.28, 100, NA_real_,
+    "Q14", 0.05, 0.3, 0.34, 0.25, 100, NA_real_,
+    "Q15", 0.57, 0.25, 0.12, 100, NA_real_,NA_real_,
+    "Q16", 0.48, 0.42, 0.06, 100, NA_real_, NA_real_,
+    "Q17", 0.44, 0.3, 0.16, 0.07, 100, NA_real_,
+    "Q18", 0.33, 0.38, 0.25, 0.04, 0.0, 100,
+    "Q19", 0.33, 0.49, 0.16, 0.02, 0.0, 100,
+    "Q20", 0.67, 0.21, 0.02, 100, NA_real_,NA_real_
+  ),
+    fup_answer_props_tb = tibble::tribble(
+    ~Question, ~Answer_1, ~Answer_2, ~Answer_3, ~Answer_4, ~Answer_5, ~Answer_6,
+    "Q1", 0.51, 0.33, 0.12, 0.02, NA_real_, 100,
+    "Q2", 0.36, 0.38, 0.16, 0.06, 0.02,100,
+    "Q3", 0.81, 0.15, 0.04, 0.00, 0.0, 100,
+    "Q4", 0.73, 0.18, 0.09, 0.0, 100, NA_real_,
+    "Q5", 0.36, 0.42, 0.12, 0.05, 100, NA_real_,
+    "Q6", 0.48, 0.40, 0.11, 100, NA_real_,NA_real_,
+    "Q7", 0.57, 0.25, 0.09, 100, NA_real_, NA_real_,
+    "Q8", 0.31, 0.33, 0.17, 0.12, 100, NA_real_,
+    "Q9", 0.13, 0.35, 0.19, 0.23, 100, NA_real_,
+    "Q10", 0.1, 0.21, 0.43, 0.16, 100, NA_real_,
+    "Q11", 0.06, 0.25, 0.48, 0.18, 100, NA_real_,
+    "Q12", 0.08, 0.27, 0.26, 0.25, 100, NA_real_,
+    "Q13", 0.07, 0.37, 0.31, 0.19, 100, NA_real_,
+    "Q14", 0.08, 0.37, 0.34, 0.15, 100, NA_real_,
+    "Q15", 0.62, 0.23, 0.09, 100, NA_real_,NA_real_,
+    "Q16", 0.52, 0.40, 0.06, 100, NA_real_, NA_real_,
+    "Q17", 0.51, 0.28, 0.15, 0.06, 100, NA_real_,
+    "Q18", 0.37, 0.35, 0.25, 0.03, 0.0, 100,
+    "Q19", 0.43, 0.40, 0.16, 0.01, 0.0, 100,
+    "Q20", 0.77, 0.21, 0.02, 100, NA_real_,NA_real_
+  )) %>%
+make_complete_props_tbs_ls()
+
+```
+
+```{r}
+corr_mat_ls <- list(matrix(c(1,-0.78,0.72,-0.67,-0.71,-0.65,-0.67,
+                               NA,1,-0.73,0.69,0.66,0.63,0.71,
+                               NA,NA,1,-.57,-0.64,-0.57,-0.65,
+                               NA,NA,NA,1,0.74,0.70,0.63,
+                               NA,NA,NA,NA,1,0.7,0.59,
+                               NA,NA,NA,NA,NA,1,0.55,
+                               NA,NA,NA,NA,NA,NA,1),7,7),
+                    matrix(c(1,-0.81,0.72,-0.71,-0.73,-0.64,-0.68,
+                        NA,1,-0.72,0.69,0.68,0.61,0.68,
+                        NA,NA,1,-0.59,-0.61,-0.51,-0.61,
+                        NA,NA,NA,1,0.75,0.71,0.6,
+                        NA,NA,NA,NA,1,0.68,0.59,
+                        NA,NA,NA,NA,NA,1,0.52,
+                        NA,NA,NA,NA,NA,NA,1),7,7)) 
+synth_data_spine_ls <- list(corr_mat_ls = corr_mat_ls,
+                            nbr_obs_dbl = c(1068,643),
+                            timepoint_nms_chr = c("BL","FUP"),
+                           means_ls = list(c(0.6,12.8,78.2, 10.4,8.1,34.2,12.2),
+                                           c(0.7,9.8,89.4, 7.9,6.3,28.8,9.8)),
+                           sds_ls = list(c(0.2,6.6,24.8,5.7,4.7,17.9,5.8),
+                                         c(0.2,6.5,24.4,5.5,4.3,17.8,5.9)),
+                           missing_ls = list(c(0,4,10,6,7,7,4),
+                                             c(0,5,2,2,1,2,2)),
+                     min_max_ls = list(c(0.03,1),c(0,27),c(0,150),c(0,21),c(0,20),c(0,82),c(0,24)),
+discrete_lgl = c(F,rep(T,6)),
+var_names_chr = c("aqol6d_total_w","phq9_total","bads_total","gad7_total",
+                     "oasis_total","scared_total","k6_total"),
+aqol_tots_var_nms_chr = c(cumulative = "aqol6d_total_c",weighted = "aqol6d_total_w")) 
+aqol_scores_pars_ls <- list(means_dbl = c(44.5,40.6), 
+                           sds_dbl = c(9.9,9.8),
+                           corr_dbl = -0.95)
+```
+
+```{r}
+write_results_csv(synth_data_spine_ls,
+                  output_dir_1L_chr = "../Data") # Change destination
+```
+
+```{r}
+tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls, series_names_chr = c("bl_part_1_tb","fup_part_1_tb"))
+
+```
+
+```{r, results='hide'}
+tbs_ls <- add_corrs_and_uts_to_tbs_ls_ls(tbs_ls,
+                                         aqol_scores_pars_ls = aqol_scores_pars_ls,
+                                         aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,
+                                         temporal_corrs_ls = list(aqol6d_total_w = 0.85,
+                                                                  aqol_scores = 0.9), 
+                                         prefix_chr = c(uid = "Participant_",aqol_item = "aqol6d_q"),
+                                         aqol_tots_var_nms_chr = synth_data_spine_ls$aqol_tots_var_nms_chr,
+                                         id_var_nm_1L_chr = "fkClientID")
+
+```
+
+
+```{r}
+## FAKE PLACEHOLDER DATA
+bl_part_2_tb <- tibble::tibble(fkClientID = tbs_ls$bl_part_1_tb$fkClientID,
+                        round = c(1) ,# %>% factor(labels = c("Baseline")),
+                        d_age = rnorm(1068,18.1,3.3) %>% 
+                          #round(0) %>% 
+                          purrr::map_dbl(~min(.x,25) %>% max(12)),
+                       #Age_group = NA_character_,
+                       d_gender = c(rep(1,653),
+                                  rep(2,359),
+                                  rep(3,39),
+                                  rep(NA_real_,17)) %>% scramble_xx() %>%
+                         factor(labels = c("Female","Male","Other")),
+                       d_sexual_ori_s = c(rep(1,738),
+                                  rep(2,289),
+                                  rep(NA_real_,41)) %>% scramble_xx() %>%
+                         factor(labels = c("Straight","Other")),
+                       Region = c(rep(1,671),
+                                  rep(2,397)) %>% scramble_xx() %>%
+                         factor(labels = c("Metro","Regional")),
+                       CALD = c(rep(T,759),
+                                  rep(F,169),
+                                  rep(NA,140)) %>% scramble_xx(),
+                       d_studying_working = c(rep(1,405),
+                                                      rep(2,167),
+                                                      rep(3,305),
+                                                      rep(4,159),
+                                                      rep(NA_real_,32)) %>% scramble_xx() %>% 
+                         factor(labels = c("Studying only",
+                                           "Working only",
+                                           "Studying and working",
+                                           "Not studying or working")),
+                         c_p_diag_s = c(rep(1,182),
+                                                 rep(2,264),
+                                                 rep(3,332),
+                                                 rep(4,237),
+                                                 rep(NA_real_,53)) %>% scramble_xx() %>%
+                         factor(labels = c("Depression", "Anxiety","Depression and Anxiety", "Other")),
+                         c_clinical_staging_s = c(rep(1,625),
+                                  rep(2,326),
+                                  rep(3,86),
+                                  rep(NA_real_,31)) %>% scramble_xx() %>%
+                         factor(labels = c("0-1a","1b","2-4")),
+                         c_sofas = c(rnorm(1068-30,65.2,9.5),
+                                   rep(NA_real_,30)) %>% 
+                         purrr::map_dbl(~min(.x,100) %>% max(0)) %>% 
+                         scramble_xx(),
+                       s_centre = NA_character_, 
+                       d_agegroup = NA_character_,  
+                       d_sex_birth_s = NA_character_,   
+                       d_country_bir_s = NA_character_, 
+                       d_ATSI = NA_character_,
+                       d_english_home = NA, 
+                       d_english_native = NA, 
+                       d_relation_s = NA_character_)
+fup_part_2_tb <- bl_part_2_tb %>% 
+  dplyr::filter(fkClientID %in% tbs_ls$fup_part_1_tb$fkClientID) %>%
+  dplyr::mutate(round = 2,
+                d_age = d_age + 0.25,
+                Region = Region %>% randomise_ptl_fup_fct(0.98),
+                d_studying_working = d_studying_working %>% randomise_ptl_fup_fct(0.9),
+                c_p_diag_s = c_p_diag_s %>% randomise_ptl_fup_fct(0.90),
+                c_clinical_staging_s = c_clinical_staging_s %>% randomise_ptl_fup_fct(0.8),
+                c_sofas = c_sofas + rnorm(643,4.7,10) %>% 
+                         purrr::map_dbl(~min(.x,100) %>% max(0)))
+
+
+```
+
+```{r}
+bl_tb <- dplyr::inner_join(bl_part_2_tb,tbs_ls$bl_part_1_tb) 
+fup_tb <- dplyr::inner_join(fup_part_2_tb,tbs_ls$fup_part_1_tb)
+```
+```{r}
+nrow(bl_tb)
+nrow(fup_tb)
+```
+
+```{r}
+composite_tb <- dplyr::bind_rows(bl_tb,fup_tb) %>%
+  dplyr::mutate(d_age = floor(d_age)) %>%
+  dplyr::mutate(d_gender = d_gender %>% as.character() %>%
+                  purrr::map_chr(~ifelse(.x=="Other",
+                                         sample(c("Genderqueer/gender nonconforming/agender",
+                                                              "Transgender"),1),
+                                         .x)),
+                s_centre = Region %>% as.character() %>%
+                  purrr::map_chr(~ifelse(.x=="Metro",
+                                         sample(c("Canberra","Southport","Knox"),1),
+                                         "Regional Centre")),
+                d_country_bir_s = CALD %>%
+                  purrr::map_chr(~ifelse(.x,
+                                         "Other",
+                                         "Australia")), 
+                       d_ATSI = CALD %>%
+                  purrr::map_chr(~ifelse(.x,
+                                         "Yes",
+                                         "No")),
+                       d_english_home = CALD %>%
+                  purrr::map_chr(~ifelse(.x,
+                                         "No",
+                                         "Yes")), 
+                       d_english_native = CALD %>%
+                  purrr::map_chr(~ifelse(.x,
+                                         "No",
+                                         "Yes")),
+                bads_total = bads_total %>% 
+                  purrr::map_dbl(~min(.x,150) %>% max(0)),
+                k6_total = k6_total  %>%
+                          purrr::map_dbl(~min(.x,24) %>% max(0)),
+                phq9_total = phq9_total %>%
+                          purrr::map_dbl(~min(.x,27) %>% max(0)),
+                gad7_total = gad7_total %>%
+                          purrr::map_dbl(~min(.x,21) %>% max(0)),
+                oasis_total = oasis_total %>%
+                          purrr::map_dbl(~min(.x,20) %>% max(0)),
+                scared_total =  scared_total %>%
+                          purrr::map_dbl(~min(.x,82) %>% max(0)),
+                aqol6d_total_w = aqol6d_total_w %>%
+                          purrr::map_dbl(~min(.x,1) %>% max(0.1))
+                ) %>%
+  dplyr::select(-CALD) %>%
+  dplyr::select(-Region)
+    
+```
+
+```{r}
+composite_tb <- make_domain_items_ls(domains_chr = c("IL", "Rel", "MH", "Coping","Pain", "Sense"),
+                     q_nbrs_ls = list(1:4,5:7,8:11,12:14,15:17,18:20),
+item_pfx_1L_chr = "aqol6d_q") %>%
+  add_domain_unwtd_tots_tb(items_tb = composite_tb,
+                           domain_pfx_1L_chr ="aqol6d_subtotal_w_") %>%
+  add_labels_to_aqol6d_tb()
+
+
+```
+
+```{r}
+if(!dir.exists("../Data cleaning"))
+  dir.create("../Data cleaning")
+if(!dir.exists("../Data cleaning/Data"))
+  dir.create("../Data cleaning/Data")
+saveRDS(composite_tb,"../Data cleaning/Data/Combined_cleaned_V2.rds") ## NEED TO CHANGE THIS BEFORE HANDING OVER
+```
+
+```{r}
+composite_tb
+```
+
