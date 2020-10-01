@@ -15,11 +15,6 @@ options(xtable.timestamp = "")
 n<-1
 ```
 
-
-# Generate fake study data
-```{r child="./Child_RMDs/_AQoL_6D_Syn_Pop.Rmd", echo=FALSE}
-```
-
 ```{r child="./Child_RMDs/_AQoL_6D_Descriptives.Rmd", echo=FALSE}
 ```
 

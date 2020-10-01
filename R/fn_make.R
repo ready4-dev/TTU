@@ -5,7 +5,6 @@
 #' @rdname make_adol_aqol6d_disv_lup
 #' @export 
 #' @importFrom dplyr mutate case_when
-#' @keywords internal
 make_adol_aqol6d_disv_lup <- function () 
 {
     data("disvalues_lup_tb", package = "FBaqol", envir = environment())
@@ -46,6 +45,27 @@ make_aqol6d_items_tb <- function (aqol_tb, old_pfx_1L_chr, new_pfx_1L_chr)
             stringr::str_replace(., old_pfx_1L_chr, new_pfx_1L_chr)
         })
     return(aqol6d_items_tb)
+}
+#' Make complete props tibbles
+#' @description make_complete_props_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make complete props tibbles list. The function returns Complete props tibbles (a list).
+#' @param raw_props_tbs_ls Raw props tibbles (a list)
+#' @param question_var_nm_1L_chr Question var name (a character vector of length one), Default: 'Question'
+#' @return Complete props tibbles (a list)
+#' @rdname make_complete_props_tbs_ls
+#' @export 
+#' @importFrom purrr map map2_dbl
+#' @importFrom dplyr mutate select mutate_if
+#' @importFrom rlang sym
+make_complete_props_tbs_ls <- function (raw_props_tbs_ls, question_var_nm_1L_chr = "Question") 
+{
+    complete_props_tbs_ls <- raw_props_tbs_ls %>% purrr::map(~{
+        .x %>% dplyr::mutate(total_prop_dbl = rowSums(dplyr::select(., 
+            -!!rlang::sym(question_var_nm_1L_chr)), na.rm = T) - 
+            100) %>% dplyr::mutate_if(is.numeric, ~purrr::map2_dbl(., 
+            total_prop_dbl, ~ifelse(.x == 100, 1 - .y, .x))) %>% 
+            dplyr::select(-total_prop_dbl)
+    })
+    return(complete_props_tbs_ls)
 }
 #' Make correlated data
 #' @description make_correlated_data_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make correlated data tibble. The function returns Correlated data (a tibble).

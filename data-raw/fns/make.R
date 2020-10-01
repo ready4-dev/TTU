@@ -26,6 +26,26 @@ make_aqol6d_items_tb <- function(aqol_tb,
     })
   return(aqol6d_items_tb)
 }
+make_complete_props_tbs_ls <- function(raw_props_tbs_ls,
+                                       question_var_nm_1L_chr = "Question"){
+  complete_props_tbs_ls <- raw_props_tbs_ls %>%
+    purrr::map(~{
+      .x %>%
+        dplyr::mutate(total_prop_dbl = rowSums(dplyr::select(.,-!!rlang::sym(question_var_nm_1L_chr)),na.rm = T) -100) %>%
+        dplyr::mutate_if(is.numeric,~purrr::map2_dbl(.,total_prop_dbl,~ifelse(.x==100,1-.y,.x))) %>%
+        dplyr::select(-total_prop_dbl)
+    })
+  return(complete_props_tbs_ls)
+}
+make_correlated_data_tb <- function(synth_data_spine_ls,
+                                    synth_data_idx_1L_dbl = 1){
+  correlated_data_tb <- simstudy::genCorData(synth_data_spine_ls$nbr_obs_dbl[synth_data_idx_1L_dbl], mu = synth_data_spine_ls$means_ls[[synth_data_idx_1L_dbl]], sigma = synth_data_spine_ls$sds_ls[[synth_data_idx_1L_dbl]],corMatrix = make_pdef_corr_mat_mat(synth_data_spine_ls$corr_mat_ls[[synth_data_idx_1L_dbl]]),cnames = synth_data_spine_ls$var_names_chr)  %>%
+    force_min_max_and_int_cnstrs_tb(var_names_chr = synth_data_spine_ls$var_names_chr,
+                                    min_max_ls = synth_data_spine_ls$min_max_ls,
+                                    discrete_lgl = synth_data_spine_ls$discrete_lgl)
+
+  return(correlated_data_tb)
+}
 make_corstars_tbl_xx <- function(x, method=c("pearson", "spearman"), removeTriangle=c("upper", "lower"),
                                  result=c("none", "html", "latex")){
   #Compute correlation matrix
@@ -69,6 +89,15 @@ make_corstars_tbl_xx <- function(x, method=c("pearson", "spearman"), removeTrian
     else print(xtable(Rnew), type="latex")
   }
 }
+make_domain_items_ls <- function(domains_chr,
+                                 q_nbrs_ls,
+                                 item_pfx_1L_chr){
+  domain_items_ls <- purrr::map(q_nbrs_ls,
+                                ~ paste0(item_pfx_1L_chr,.x)) %>%
+    stats::setNames(domains_chr)
+  return(domain_items_ls)
+
+}
 make_dim_sclg_cons_dbl <- function(domains_chr,
                                    dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb){
   dim_sclg_cons_dbl <- purrr::map_dbl(domains_chr,
@@ -95,24 +124,6 @@ make_item_wrst_wghts_ls_ls <- function(domain_items_ls,
   return(item_wrst_wghts_ls_ls)
 }
 
-make_correlated_data_tb <- function(synth_data_spine_ls,
-                                    synth_data_idx_1L_dbl = 1){
-  correlated_data_tb <- simstudy::genCorData(synth_data_spine_ls$nbr_obs_dbl[synth_data_idx_1L_dbl], mu = synth_data_spine_ls$means_ls[[synth_data_idx_1L_dbl]], sigma = synth_data_spine_ls$sds_ls[[synth_data_idx_1L_dbl]],corMatrix = make_pdef_corr_mat_mat(synth_data_spine_ls$corr_mat_ls[[synth_data_idx_1L_dbl]]),cnames = synth_data_spine_ls$var_names_chr)  %>%
-    force_min_max_and_int_cnstrs_tb(var_names_chr = synth_data_spine_ls$var_names_chr,
-                                    min_max_ls = synth_data_spine_ls$min_max_ls,
-                                    discrete_lgl = synth_data_spine_ls$discrete_lgl)
-
-  return(correlated_data_tb)
-}
-make_domain_items_ls <- function(domains_chr,
-                                 q_nbrs_ls,
-                                 item_pfx_1L_chr){
-  domain_items_ls <- purrr::map(q_nbrs_ls,
-                                ~ paste0(item_pfx_1L_chr,.x)) %>%
-    stats::setNames(domains_chr)
-  return(domain_items_ls)
-
-}
 make_pdef_corr_mat_mat <- function(lower_diag_mat){
   pdef_corr_mat <- lower_diag_mat %>%
     Matrix::forceSymmetric(uplo="L")  %>% as.matrix()
