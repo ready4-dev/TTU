@@ -96,7 +96,7 @@ fns_dmt_tb <- ready4fun::make_dmt_for_all_fns(paths_ls = ready4fun::make_fn_nms(
                                                                                                                       "make_domain_items_ls","make_item_wrst_wghts_ls_ls",
                                                                                                                       "make_pdef_corr_mat_mat", "make_synth_series_tbs_ls",
                                                                                                                       "make_vec_with_sum_of_int", "randomise_ptl_fup_fct",
-                                                                                                                      "reorder_tb_for_target_cors","replace_var_vals_with_missing_tbl",
+                                                                                                                      "reorder_tbs_for_target_cors","replace_var_vals_with_missing_tbl",
                                                                                                                       "scramble_xx","transform_raw_aqol_tb_to_aqol6d_tb",
                                                                                                                       "write_results_csv"),
                                                                                                    force_false_chr = NA_character_),

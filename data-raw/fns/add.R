@@ -37,11 +37,14 @@ add_aqol_dim_scrg_eqs <- function(unscored_aqol_tb){
 }
 add_aqol_items_tbs_ls <- function(tbs_ls, # Needs to convert study data.
                                   aqol_items_props_tbs_ls,
-                                  prefix_1L_chr){
+                                  prefix_chr,
+                                  aqol_tots_var_nms_chr,
+                                  id_var_nm_1L_chr = "fkClientID",
+                                  scaling_cnst_dbl = 5){
   updated_tbs_ls <- purrr::map2(tbs_ls,
                                 aqol_items_props_tbs_ls,
                                 ~ {
-                                  nbr_obs_1L_int <- nrow(.x)
+                                  nbr_obs_1L_int <- nrow(.x) * scaling_cnst_dbl
                                   transposed_items_props_tb <- .y %>% dplyr::select(-Question) %>% t()
                                   item_ranges_dbl_ls <- 1:ncol(transposed_items_props_tb) %>% purrr::map(~c(1, length(transposed_items_props_tb[,.x] %>% na.omit())))
                                   cat_probs_def_tbl <- purrr::reduce(1:ncol(transposed_items_props_tb),
@@ -52,23 +55,44 @@ add_aqol_items_tbs_ls <- function(tbs_ls, # Needs to convert study data.
                                                                                          dist = "categorical"))
                                   items_tb <- simstudy::genData(nbr_obs_1L_int, cat_probs_def_tbl) %>%
                                     dplyr::select(-id)  %>%
-                                    dplyr::mutate(totals_dbl = rowSums(.,na.rm = T)) %>%
-                                    dplyr::arrange(totals_dbl) %>%
-                                    #dplyr::arrange(rank_x_int) %>%
-                                    dplyr::select(-totals_dbl) %>%
-                                    t()
-                                  target_dbl <- .x %>% dplyr::arrange(aqol6d_total_c) %>% dplyr::pull(aqol6d_total_c)
-                                  items_tb <- 1:ncol(items_tb) %>% purrr::map_dfr(~{
-                                    force_vec_to_sum_to_int(items_tb[,.x],
-                                                            target_1L_int = target_dbl[.x],
-                                                            item_ranges_dbl_ls = item_ranges_dbl_ls)
-                                  })
-                                  updated_tb <-dplyr::bind_cols(.x %>% dplyr::arrange(aqol6d_total_c),
-                                                                items_tb) %>%
-                                    dplyr::mutate(temp_id = fkClientID %>% purrr::map_dbl(~stringr::str_replace(.x,prefix_1L_chr,"") %>% as.numeric())) %>%
-                                    dplyr::arrange(temp_id) %>%
-                                    dplyr::select(-temp_id) %>%
-                                    dplyr::select(fkClientID, dplyr::everything())
+                                    dplyr::mutate(!!rlang::sym(unname(aqol_tots_var_nms_chr["cumulative"])) := rowSums(.,na.rm = T)) %>%
+                                    dplyr::arrange(!!rlang::sym(unname(aqol_tots_var_nms_chr["cumulative"]))) %>%
+                                    tibble::rowid_to_column("id")
+                                  items_tb <- items_tb  %>%
+                                    dplyr::mutate(aqol6dU = calculate_adol_aqol6d(items_tb,
+                                                                                  prefix_1L_chr = prefix_chr[2],
+                                                                                  id_var_nm_1L_chr = "id"))
+                                  .x <- .x %>% dplyr::mutate(id = purrr::map_int(aqol6d_total_w,
+                                                                                        ~which.min(abs(items_tb$aqol6dU - .x)))) %>%
+                                    dplyr::left_join(items_tb)
+                                  updated_tb <- .x %>%
+                                    dplyr::mutate(!!rlang::sym(unname(aqol_tots_var_nms_chr["weighted"])) := aqol6dU) %>%
+                                    dplyr::select(-aqol6dU,
+                                                  -id) %>%
+                                    dplyr::select(!!rlang::sym(id_var_nm_1L_chr),
+                                                  dplyr::starts_with(unname(prefix_chr[2])),
+                                                  !!rlang::sym(unname(aqol_tots_var_nms_chr["cumulative"])),
+                                                  !!rlang::sym(unname(aqol_tots_var_nms_chr["weighted"])),
+                                                  dplyr::everything())
+                                  # %>%
+                                  #   dplyr::arrange(aqol6dU)
+
+                                  # .x <- .x %>% dplyr::arrange(aqol6d_total_w)
+                                  #%>%
+                                    ###dplyr::arrange(rank_x_int) %>%
+                                    #dplyr::select(-totals_dbl)  %>% t()
+                                  # target_dbl <- .x %>% dplyr::arrange(aqol6d_total_c) %>% dplyr::pull(aqol6d_total_c)
+                                  # items_tb <- 1:ncol(items_tb) %>% purrr::map_dfr(~{
+                                  #   force_vec_to_sum_to_int(items_tb[,.x],
+                                  #                           target_1L_int = target_dbl[.x],
+                                  #                           item_ranges_dbl_ls = item_ranges_dbl_ls)
+                                  # })
+                                  # updated_tb <-dplyr::bind_cols(.x %>% dplyr::arrange(aqol6d_total_c),
+                                  #                               items_tb) %>%
+                                  #   dplyr::mutate(temp_id = fkClientID %>% purrr::map_dbl(~stringr::str_replace(.x,prefix_chr[["uid"]],"") %>% as.numeric())) %>%
+                                  #   dplyr::arrange(temp_id) %>%
+                                  #   dplyr::select(-temp_id) %>%
+                                  #   dplyr::select(fkClientID, dplyr::everything())
                                   updated_tb
                                 })
   return(updated_tbs_ls)
@@ -95,39 +119,27 @@ add_corrs_and_uts_to_tbs_ls_ls <- function(tbs_ls, # Based on: https://stats.sta
                                            aqol_scores_pars_ls,
                                            aqol_items_props_tbs_ls,
                                            temporal_corrs_ls,
-                                           prefix_chr){
-  data("aqol6d_from_8d_coeffs_lup_tb",
-       package="FBaqol",
-       envir = environment())
-  data("dim_sclg_constant_lup_tb",
-       package="FBaqol",
-       envir = environment())
-  data("disvalues_lup_tb",
-       package="FBaqol",
-       envir = environment())
-  data("itm_wrst_wghts_lup_tb",
-       package="FBaqol",
-       envir = environment())
-  tbs_ls <- reorder_tb_for_target_cors(tbs_ls,
+                                           prefix_chr,
+                                           aqol_tots_var_nms_chr,
+                                           id_var_nm_1L_chr = "fkClientID"){
+  tbs_ls <- reorder_tbs_for_target_cors(tbs_ls,
                                        corr_dbl = temporal_corrs_ls[[1]],
-                                       corr_var_1L_chr = names(temporal_corrs_ls)[1],
+                                       corr_var_chr = rep(names(temporal_corrs_ls)[1],2),
                                        id_var_to_rm_1L_chr = "id"
                                        ) %>%
-    add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]]) # Need to make "fkClientID" an input value to an argument.
+    add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]],
+                       id_var_nm_1L_chr = id_var_nm_1L_chr)
   tbs_ls <- tbs_ls  %>%
-    add_aqol_scores_tbs_ls(means_dbl = aqol_scores_pars_ls$means_dbl,#c(44.5,40.6), ## MOVE TO FN ARG
-                           sds_dbl = aqol_scores_pars_ls$sds_dbl,#c(9.9,9.8),
-                           corr_dbl = aqol_scores_pars_ls$corr_dbl#0.9
-    ) %>%
-    add_aqol_items_tbs_ls(aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,#make_aqol_items_props_tbs_ls(), # Needs updating with more precise data.
-                          prefix_1L_chr = prefix_chr[["uid"]]) %>%
-    add_aqol6dU_to_tbs_ls(prefix_1L_chr =  prefix_chr[["aqol_item"]],
-                          aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
-                          id_var_nm_1L_chr = "fkClientID",
-                          dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
-                          disvalues_lup_tb = disvalues_lup_tb,
-                          itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb
-    )
+    add_aqol_items_tbs_ls(aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,
+                          prefix_chr = prefix_chr,
+                          aqol_tots_var_nms_chr = aqol_tots_var_nms_chr,
+                          id_var_nm_1L_chr = id_var_nm_1L_chr) #%>%
+    # add_aqol6dU_to_tbs_ls(prefix_1L_chr =  prefix_chr[["aqol_item"]],
+    #                       aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
+    #                       id_var_nm_1L_chr = "fkClientID",
+    #                       dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
+    #                       disvalues_lup_tb = disvalues_lup_tb,
+    #                       itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)
   return(tbs_ls)
 }
 add_dmn_disu_to_aqol6d_items_tb_tb <- function(aqol6d_items_tb,
@@ -245,13 +257,14 @@ add_labels_to_aqol6d_tb <- function(aqol6d_tb,
   return(aqol6d_tb)
 }
 add_uids_to_tbs_ls <- function(tbs_ls,
-                               prefix_1L_chr){
+                               prefix_1L_chr,
+                               id_var_nm_1L_chr = "fkClientID"){
   participant_ids <- paste0(prefix_1L_chr,1:nrow(tbs_ls$bl_part_1_tb)) %>% sample(nrow(tbs_ls$bl_part_1_tb))
   tbs_ls <- purrr::map(tbs_ls,
                        ~ {
                          .x %>%
-                           dplyr::mutate(fkClientID = tidyselect::all_of(participant_ids[1:nrow(.x)])) %>%
-                           dplyr::arrange(fkClientID %>% purrr::map_chr(~stringr::str_replace(.x,prefix_1L_chr,"")) %>% as.numeric())
+                           dplyr::mutate(!!rlang::sym(id_var_nm_1L_chr) := tidyselect::all_of(participant_ids[1:nrow(.x)])) %>%
+                           dplyr::arrange(!!rlang::sym(id_var_nm_1L_chr) %>% purrr::map_chr(~stringr::str_replace(.x,prefix_1L_chr,"")) %>% as.numeric())
                        }) %>%
     stats::setNames(names(tbs_ls))
   return(tbs_ls)

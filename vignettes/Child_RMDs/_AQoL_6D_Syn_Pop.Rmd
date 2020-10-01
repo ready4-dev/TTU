@@ -101,7 +101,8 @@ synth_data_spine_ls <- list(corr_mat_ls = corr_mat_ls,
                      min_max_ls = list(c(0.03,1),c(0,27),c(0,150),c(0,21),c(0,20),c(0,82),c(0,24)),
 discrete_lgl = c(F,rep(T,6)),
 var_names_chr = c("aqol6d_total_w","phq9_total","bads_total","gad7_total",
-                     "oasis_total","scared_total","k6_total")) 
+                     "oasis_total","scared_total","k6_total"),
+aqol_tots_var_nms_chr = c(cumulative = "aqol6d_total_c",weighted = "aqol6d_total_w")) 
 aqol_scores_pars_ls <- list(means_dbl = c(44.5,40.6), 
                            sds_dbl = c(9.9,9.8),
                            corr_dbl = -0.95)
@@ -117,13 +118,15 @@ tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls, series_names_chr = c("bl
 
 ```
 
-```{r}
+```{r, echo=FALSE}
 tbs_ls <- add_corrs_and_uts_to_tbs_ls_ls(tbs_ls,
                                          aqol_scores_pars_ls = aqol_scores_pars_ls,
                                          aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,
                                          temporal_corrs_ls = list(aqol6d_total_w = 0.85,
                                                                   aqol_scores = 0.9), 
-                                         prefix_chr = c(uid = "Participant_",aqol_item = "aqol6d_q"))
+                                         prefix_chr = c(uid = "Participant_",aqol_item = "aqol6d_q"),
+                                         aqol_tots_var_nms_chr = synth_data_spine_ls$aqol_tots_var_nms_chr,
+                                         id_var_nm_1L_chr = "fkClientID")
 
 ```
 

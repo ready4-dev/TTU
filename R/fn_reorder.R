@@ -1,17 +1,17 @@
 #' Reorder tibble for target cors
-#' @description reorder_tb_for_target_cors() is a Reorder function that reorders an object to conform to a pre-specified schema. Specifically, this function implements an algorithm to reorder tibble for target cors. The function returns Tibbles (a list).
+#' @description reorder_tbs_for_target_cors() is a Reorder function that reorders an object to conform to a pre-specified schema. Specifically, this function implements an algorithm to reorder tibble for target cors. The function returns Tibbles (a list).
 #' @param tbs_ls Tibbles (a list)
 #' @param corr_dbl Corr (a double vector)
 #' @param corr_var_1L_chr Corr var (a character vector of length one)
 #' @param id_var_to_rm_1L_chr Id var to rm (a character vector of length one), Default: 'NA'
 #' @return Tibbles (a list)
-#' @rdname reorder_tb_for_target_cors
+#' @rdname reorder_tbs_for_target_cors
 #' @export 
 #' @importFrom MASS mvrnorm
 #' @importFrom dplyr slice arrange bind_rows select
 #' @importFrom rlang sym
 #' @importFrom purrr map
-reorder_tb_for_target_cors <- function (tbs_ls, corr_dbl, corr_var_1L_chr, id_var_to_rm_1L_chr = NA_character_) 
+reorder_tbs_for_target_cors <- function (tbs_ls, corr_dbl, corr_var_1L_chr, id_var_to_rm_1L_chr = NA_character_) 
 {
     n_fup_dbl <- nrow(tbs_ls[[2]])
     corr_mat <- matrix(corr_dbl, ncol = 2, nrow = 2)

@@ -154,7 +154,7 @@ add_corrs_and_uts_to_tbs_ls_ls <- function (tbs_ls, aqol_scores_pars_ls, aqol_it
     data("dim_sclg_constant_lup_tb", package = "FBaqol", envir = environment())
     data("disvalues_lup_tb", package = "FBaqol", envir = environment())
     data("itm_wrst_wghts_lup_tb", package = "FBaqol", envir = environment())
-    tbs_ls <- reorder_tb_for_target_cors(tbs_ls, corr_dbl = temporal_corrs_ls[[1]], 
+    tbs_ls <- reorder_tbs_for_target_cors(tbs_ls, corr_dbl = temporal_corrs_ls[[1]], 
         corr_var_1L_chr = names(temporal_corrs_ls)[1], id_var_to_rm_1L_chr = "id") %>% 
         add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]])
     tbs_ls <- tbs_ls %>% add_aqol_scores_tbs_ls(means_dbl = aqol_scores_pars_ls$means_dbl, 

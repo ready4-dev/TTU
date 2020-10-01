@@ -48,7 +48,7 @@ reference:
   - make_synth_series_tbs_ls
   - make_vec_with_sum_of_int
   - randomise_ptl_fup_fct
-  - reorder_tb_for_target_cors
+  - reorder_tbs_for_target_cors
   - replace_var_vals_with_missing_tbl
   - scramble_xx
   - transform_raw_aqol_tb_to_aqol6d_tb
