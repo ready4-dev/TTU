@@ -1,0 +1,15 @@
+"timepoint_nms_chr","var_names_chr","Mean","SD","N_Missing"
+"BL","aqol6d_total_w",0.6,0.2,0
+"BL","phq9_total",12.8,6.6,4
+"BL","bads_total",78.2,24.8,10
+"BL","gad7_total",10.4,5.7,6
+"BL","oasis_total",8.1,4.7,7
+"BL","scared_total",34.2,17.9,7
+"BL","k6_total",12.2,5.8,4
+"FUP","aqol6d_total_w",0.7,0.2,0
+"FUP","phq9_total",9.8,6.5,5
+"FUP","bads_total",89.4,24.4,2
+"FUP","gad7_total",7.9,5.5,2
+"FUP","oasis_total",6.3,4.3,1
+"FUP","scared_total",28.8,17.8,2
+"FUP","k6_total",9.8,5.9,2

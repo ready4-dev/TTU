@@ -6,6 +6,11 @@ reference:
   - abbreviations_lup
   - adol_dim_scalg_eqs_lup
   - adol_dim_scalg_eqs_tb
+  - aqol6d_adult_disv_lup_tb
+  - aqol6d_adult_itm_wrst_wghts_lup_tb
+  - aqol6d_adult_vldn_pop_with_STATA_scores_tb
+  - aqol6d_dim_sclg_cnt_lup_tb
+  - aqol6d_domain_qs_lup_tb
   - aqol6d_from_8d_coeffs_lup_tb
   - BL_correlations_tb
   - dim_sclg_constant_lup_tb
@@ -16,7 +21,7 @@ reference:
   - FUP_correlations_tb
   - itm_wrst_wghts_lup_tb
   - measurements_tb
-  - aqol6d_adult_vldn_pop_with_STATA_scores_tb
+  - syn_pop_with_STATA_adults_scoring_tb
   - var_class_pars_tb
   - var_summ_res_tb
 - title: "Functions"
