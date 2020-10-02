@@ -147,6 +147,19 @@ pkg_dss_tb <- tibble::tribble(
                                     url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
                                     abbreviations_lup = abbreviations_lup,
                                   pkg_dss_tb = pkg_dss_tb)
+pkg_dss_tb <- tibble::tibble(Question_dbl = 1:20,
+                               Domain_chr = c(rep("IL",4),
+                                              rep("REL",3),
+                                              rep("MH",4),
+                                              rep("COP",3),
+                                              rep("P",3),
+                                              rep("SEN",3))) %>%
+  ready4fun::write_and_doc_ds(db_1L_chr = "domain_qs_lup_tb",
+                              title_1L_chr = "AQoL6D dimension questions lookup table",
+                              desc_1L_chr = "Breakdown of which questions relate to which dimension of the AQoL6D.",
+                              url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
+                              abbreviations_lup = abbreviations_lup,
+                              pkg_dss_tb = pkg_dss_tb)
 pkg_dss_tb <- tibble::tribble(
   ~Dimension_chr, ~Constant_dbl,
   "IL",-0.978,
@@ -154,13 +167,13 @@ pkg_dss_tb <- tibble::tribble(
   "MH", -0.983,
   "COP", -0.930,
   "P", -0.96,
-  "SEN", -0.851
-) %>% ready4fun::write_and_doc_ds(db_1L_chr = "dim_sclg_constant_lup_tb",
+  "SEN", -0.851) %>% ready4fun::write_and_doc_ds(db_1L_chr = "dim_sclg_constant_lup_tb",
                                     title_1L_chr = "AQoL6D dimension scaling constants lookup table",
                                     desc_1L_chr = "Scaling constants for each dimension of AQoL6D.",
                                     url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
                                     abbreviations_lup = abbreviations_lup,
                                   pkg_dss_tb = pkg_dss_tb)
+
 pkg_dss_tb <- tibble::tribble(
   ~Question_chr, ~Worst_Weight_dbl,
   "Q1", 0.385412,

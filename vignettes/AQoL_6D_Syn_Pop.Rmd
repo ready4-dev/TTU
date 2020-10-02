@@ -11,6 +11,9 @@ library("magrittr")
 library(FBaqol)
 ```
 
+# Specify parameters to generate outcome fake data
+The first set of input data are the proportions for each allowed response for each of the twenty AQOL-6D questions at both baseline and followup.
+
 ```{r}
 
 aqol_items_props_tbs_ls <- list(bl_answer_props_tb = tibble::tribble(
@@ -62,6 +65,7 @@ aqol_items_props_tbs_ls <- list(bl_answer_props_tb = tibble::tribble(
 make_complete_props_tbs_ls()
 
 ```
+The next step of input parameters relate to the correlations between outcome variables and univariate distribution parameters for each of these variables.
 
 ```{r}
 corr_mat_ls <- list(matrix(c(1,-0.78,0.72,-0.67,-0.71,-0.65,-0.67,
@@ -96,26 +100,50 @@ aqol_scores_pars_ls <- list(means_dbl = c(44.5,40.6),
                            sds_dbl = c(9.9,9.8),
                            corr_dbl = -0.95)
 ```
-
+Next we write a copy of these input parameters as CSV files.
 ```{r}
 write_results_csv(synth_data_spine_ls,
                   output_dir_1L_chr = "../Data") # Change destination
 ```
 
-```{r}
-tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls, series_names_chr = c("bl_part_1_tb","fup_part_1_tb"))
+```{r, results='hide'}
+id_var_nm_1L_chr <- "fkClientID"
+item_pfx_1L_chr <- "aqol6d_q"
+domain_pfx_1L_chr <-"aqol6d_subtotal_w_"
+
+domains_chr <- domain_qs_tb$Domain_chr %>% unique()
+q_nbrs_ls <- purrr::map(domains_chr,
+                        ~ domain_qs_tb %>%
+                          dplyr::filter(Domain_chr == .x) %>%
+                          dplyr::pull(Question_dbl))
+tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls, 
+                                   series_names_chr = c("bl_part_1_tb","fup_part_1_tb")) %>%
+  add_corrs_and_uts_to_tbs_ls_ls(aqol_scores_pars_ls = aqol_scores_pars_ls,
+                                 aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,
+                                 temporal_corrs_ls = list(aqol6d_total_w = 0.85#, aqol_scores = 0.9
+                                                          ), 
+                                 prefix_chr = c(uid = "Participant_",
+                                                aqol_item = item_pfx_1L_chr),
+                                 aqol_tots_var_nms_chr = synth_data_spine_ls$aqol_tots_var_nms_chr,
+                                 id_var_nm_1L_chr = id_var_nm_1L_chr) %>% purrr::map(~make_domain_items_ls(domains_chr = c("IL", "Rel", "MH", "COP","P", "SEN"),
+                     q_nbrs_ls = list(1:4,5:7,8:11,12:14,15:17,18:20),
+item_pfx_1L_chr = item_pfx_1L_chr) %>%
+  add_domain_unwtd_tots_tb(items_tb = .x,
+                           domain_pfx_1L_chr = domain_pfx_1L_chr) %>%
+  add_labels_to_aqol6d_tb()) %>%
+  purrr::map(~ .x %>%   
+               dplyr::select(!!rlang::sym(id_var_nm_1L_chr),
+                dplyr::starts_with(item_pfx_1L_chr),
+                dplyr::starts_with(domain_pfx_1L_chr),
+                dplyr::everything()
+                ))
 
 ```
 
-```{r, results='hide'}
-tbs_ls <- add_corrs_and_uts_to_tbs_ls_ls(tbs_ls,
-                                         aqol_scores_pars_ls = aqol_scores_pars_ls,
-                                         aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,
-                                         temporal_corrs_ls = list(aqol6d_total_w = 0.85,
-                                                                  aqol_scores = 0.9), 
-                                         prefix_chr = c(uid = "Participant_",aqol_item = "aqol6d_q"),
-                                         aqol_tots_var_nms_chr = synth_data_spine_ls$aqol_tots_var_nms_chr,
-                                         id_var_nm_1L_chr = "fkClientID")
+```{r}
+tbs_ls <- tbs_ls 
+
+
 
 ```
 
@@ -225,37 +253,14 @@ composite_tb <- dplyr::bind_rows(bl_tb,fup_tb) %>%
                        d_english_native = CALD %>%
                   purrr::map_chr(~ifelse(.x,
                                          "No",
-                                         "Yes")),
-                bads_total = bads_total %>% 
-                  purrr::map_dbl(~min(.x,150) %>% max(0)),
-                k6_total = k6_total  %>%
-                          purrr::map_dbl(~min(.x,24) %>% max(0)),
-                phq9_total = phq9_total %>%
-                          purrr::map_dbl(~min(.x,27) %>% max(0)),
-                gad7_total = gad7_total %>%
-                          purrr::map_dbl(~min(.x,21) %>% max(0)),
-                oasis_total = oasis_total %>%
-                          purrr::map_dbl(~min(.x,20) %>% max(0)),
-                scared_total =  scared_total %>%
-                          purrr::map_dbl(~min(.x,82) %>% max(0)),
-                aqol6d_total_w = aqol6d_total_w %>%
-                          purrr::map_dbl(~min(.x,1) %>% max(0.1))
+                                         "Yes"))
                 ) %>%
   dplyr::select(-CALD) %>%
   dplyr::select(-Region)
     
 ```
 
-```{r}
-composite_tb <- make_domain_items_ls(domains_chr = c("IL", "Rel", "MH", "Coping","Pain", "Sense"),
-                     q_nbrs_ls = list(1:4,5:7,8:11,12:14,15:17,18:20),
-item_pfx_1L_chr = "aqol6d_q") %>%
-  add_domain_unwtd_tots_tb(items_tb = composite_tb,
-                           domain_pfx_1L_chr ="aqol6d_subtotal_w_") %>%
-  add_labels_to_aqol6d_tb()
 
-
-```
 
 ```{r}
 if(!dir.exists("../Data cleaning"))

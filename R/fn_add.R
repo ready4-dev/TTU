@@ -6,7 +6,6 @@
 #' @export 
 #' @importFrom rlang parse_expr
 #' @importFrom Hmisc label
-#' @keywords internal
 add_aqol_dim_scrg_eqs <- function (unscored_aqol_tb) 
 {
     data("adol_dim_scalg_eqs_lup", package = "FBaqol", envir = environment())
@@ -286,8 +285,8 @@ add_labels_to_aqol6d_tb <- function (aqol6d_tb, labels_chr = NA_character_)
             aqol6d_q16 = "Degree of pain", aqol6d_q17 = "Pain interference", 
             aqol6d_q18 = "Vision", aqol6d_q19 = "Hearing", aqol6d_q20 = "Communication", 
             aqol6d_subtotal_w_IL = "Independent Living", aqol6d_subtotal_w_Rel = "Relationships", 
-            aqol6d_subtotal_w_MH = "Mental Health", aqol6d_subtotal_w_Coping = "Coping", 
-            aqol6d_subtotal_w_Pain = "Pain", aqol6d_subtotal_w_Sense = "Sense")
+            aqol6d_subtotal_w_MH = "Mental Health", aqol6d_subtotal_w_COP = "Coping", 
+            aqol6d_subtotal_w_P = "Pain", aqol6d_subtotal_w_SEN = "Sense")
     Hmisc::label(aqol6d_tb) = as.list(labels_chr[match(names(aqol6d_tb), 
         names(labels_chr))])
     return(aqol6d_tb)
