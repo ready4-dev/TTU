@@ -7,7 +7,6 @@ output: html_document
 
 ```{r echo = F}
 library("magrittr")
-#library("FBaqol")
 library(FBaqol)
 ```
 # Introduction
@@ -18,7 +17,6 @@ The workflow illustrated in this vignette outlines steps to generate a purely sy
 The first set of input data are the proportions for each allowed response for each of the twenty AQOL-6D questions at both baseline and followup.
 
 ```{r}
-
 aqol_items_props_tbs_ls <- list(bl_answer_props_tb = tibble::tribble(
     ~Question, ~Answer_1, ~Answer_2, ~Answer_3, ~Answer_4, ~Answer_5, ~Answer_6,
     "Q1", 0.35, 0.38, 0.16, 0.03, NA_real_,100, # Check item 5 in real data.
@@ -114,8 +112,6 @@ write_results_csv(synth_data_spine_ls,
 id_var_nm_1L_chr <- "fkClientID"
 item_pfx_1L_chr <- "aqol6d_q"
 domain_pfx_1L_chr <-"aqol6d_subtotal_w_"
-
-
 tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls, 
                                    series_names_chr = c("bl_part_1_tb","fup_part_1_tb")) %>%
   add_corrs_and_uts_to_tbs_ls_ls(aqol_scores_pars_ls = aqol_scores_pars_ls,
@@ -127,8 +123,6 @@ tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls,
                                  aqol_tots_var_nms_chr = synth_data_spine_ls$aqol_tots_var_nms_chr,
                                  id_var_nm_1L_chr = id_var_nm_1L_chr) %>% 
   purrr::map(~make_domain_items_ls(domain_qs_lup_tb = FBaqol::domain_qs_lup_tb,
-    # domains_chr = c("IL", "Rel", "MH", "COP","P", "SEN"),
-    #                  q_nbrs_ls = list(1:4,5:7,8:11,12:14,15:17,18:20),
 item_pfx_1L_chr = item_pfx_1L_chr) %>%
   add_domain_unwtd_tots_tb(items_tb = .x,
                            domain_pfx_1L_chr = domain_pfx_1L_chr) %>%
@@ -139,13 +133,6 @@ item_pfx_1L_chr = item_pfx_1L_chr) %>%
                 dplyr::starts_with(domain_pfx_1L_chr),
                 dplyr::everything()
                 ))
-
-```
-
-```{r}
-tbs_ls <- tbs_ls 
-
-
 
 ```
 
@@ -223,6 +210,7 @@ fup_part_2_tb <- bl_part_2_tb %>%
 bl_tb <- dplyr::inner_join(bl_part_2_tb,tbs_ls$bl_part_1_tb) 
 fup_tb <- dplyr::inner_join(fup_part_2_tb,tbs_ls$fup_part_1_tb)
 ```
+
 ```{r}
 nrow(bl_tb)
 nrow(fup_tb)
@@ -261,8 +249,6 @@ composite_tb <- dplyr::bind_rows(bl_tb,fup_tb) %>%
   dplyr::select(-Region)
     
 ```
-
-
 
 ```{r}
 if(!dir.exists("../Data cleaning"))

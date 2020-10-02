@@ -91,7 +91,7 @@ make_corstars_tbl_xx <- function(x, method=c("pearson", "spearman"), removeTrian
 }
 make_domain_items_ls <- function(domain_qs_lup_tb,
                                  item_pfx_1L_chr){
-  domains_chr <- domain_qs_lup_tbDomain_chr %>% unique()
+  domains_chr <- domain_qs_lup_tb$Domain_chr %>% unique()
   q_nbrs_ls <- purrr::map(domains_chr,
                           ~ domain_qs_lup_tb %>%
                             dplyr::filter(Domain_chr == .x) %>%

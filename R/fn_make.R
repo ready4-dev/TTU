@@ -5,7 +5,6 @@
 #' @rdname make_adol_aqol6d_disv_lup
 #' @export 
 #' @importFrom dplyr mutate case_when
-#' @keywords internal
 make_adol_aqol6d_disv_lup <- function () 
 {
     adol_aqol6d_disv_lup <- aqol6d_adult_disv_lup_tb %>% dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr == 
@@ -56,7 +55,6 @@ make_aqol6d_items_tb <- function (aqol_tb, old_pfx_1L_chr, new_pfx_1L_chr)
 #' @importFrom purrr map map2_dbl
 #' @importFrom dplyr mutate select mutate_if
 #' @importFrom rlang sym
-#' @keywords internal
 make_complete_props_tbs_ls <- function (raw_props_tbs_ls, question_var_nm_1L_chr = "Question") 
 {
     complete_props_tbs_ls <- raw_props_tbs_ls %>% purrr::map(~{
@@ -157,7 +155,7 @@ make_dim_sclg_cons_dbl <- function (domains_chr, dim_sclg_constant_lup_tb)
 #' @importFrom stats setNames
 make_domain_items_ls <- function (domain_qs_lup_tb, item_pfx_1L_chr) 
 {
-    domains_chr <- domain_qs_lup_tbDomain_chr %>% unique()
+    domains_chr <- domain_qs_lup_tb$Domain_chr %>% unique()
     q_nbrs_ls <- purrr::map(domains_chr, ~domain_qs_lup_tb %>% 
         dplyr::filter(Domain_chr == .x) %>% dplyr::pull(Question_dbl))
     domain_items_ls <- purrr::map(q_nbrs_ls, ~paste0(item_pfx_1L_chr, 
