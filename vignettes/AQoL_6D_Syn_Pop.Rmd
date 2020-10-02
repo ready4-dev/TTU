@@ -64,7 +64,7 @@ aqol_items_props_tbs_ls <- list(bl_answer_props_tb = tibble::tribble(
     "Q20", 0.77, 0.21, 0.02, 100, NA_real_,NA_real_
   )) %>%
 make_complete_props_tbs_ls()
-
+aqol_items_props_tbs_ls
 ```
 The next step of input parameters relate to the correlations between outcome variables and univariate distribution parameters for each of these variables.
 
@@ -108,38 +108,18 @@ write_results_csv(synth_data_spine_ls,
                   output_dir_1L_chr = "../Data") # Change destination
 ```
 
-```{r, results='hide'}
-id_var_nm_1L_chr <- "fkClientID"
-item_pfx_1L_chr <- "aqol6d_q"
-domain_pfx_1L_chr <-"aqol6d_subtotal_w_"
-tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls, 
-                                   series_names_chr = c("bl_part_1_tb","fup_part_1_tb")) %>%
-  add_corrs_and_uts_to_tbs_ls_ls(aqol_scores_pars_ls = aqol_scores_pars_ls,
-                                 aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,
-                                 temporal_corrs_ls = list(aqol6d_total_w = 0.85#, aqol_scores = 0.9
-                                                          ), 
-                                 prefix_chr = c(uid = "Participant_",
-                                                aqol_item = item_pfx_1L_chr),
-                                 aqol_tots_var_nms_chr = synth_data_spine_ls$aqol_tots_var_nms_chr,
-                                 id_var_nm_1L_chr = id_var_nm_1L_chr) %>% 
-  purrr::map(~make_domain_items_ls(domain_qs_lup_tb = FBaqol::domain_qs_lup_tb,
-item_pfx_1L_chr = item_pfx_1L_chr) %>%
-  add_domain_unwtd_tots_tb(items_tb = .x,
-                           domain_pfx_1L_chr = domain_pfx_1L_chr) %>%
-  add_labels_to_aqol6d_tb()) %>%
-  purrr::map(~ .x %>%   
-               dplyr::select(!!rlang::sym(id_var_nm_1L_chr),
-                dplyr::starts_with(item_pfx_1L_chr),
-                dplyr::starts_with(domain_pfx_1L_chr),
-                dplyr::everything()
-                ))
+```{r, results='hide', message=FALSE}
+aqol6d_adol_pop_tbs_ls <- make_aqol6d_adol_pop_tbs_ls(aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,
+                                        aqol_scores_pars_ls = aqol_scores_pars_ls,
+                                        series_names_chr =  c("bl_outcomes_tb","fup_outcomes_tb"),
+                                        synth_data_spine_ls = synth_data_spine_ls,
+                                        temporal_corrs_ls = list(aqol6d_total_w = 0.85))
 
 ```
 
-
 ```{r}
 ## FAKE PLACEHOLDER DATA
-bl_part_2_tb <- tibble::tibble(fkClientID = tbs_ls$bl_part_1_tb$fkClientID,
+bl_part_2_tb <- tibble::tibble(fkClientID = aqol6d_adol_pop_tbs_ls$bl_outcomes_tb$fkClientID,
                         round = c(1) ,# %>% factor(labels = c("Baseline")),
                         d_age = rnorm(1068,18.1,3.3) %>% 
                           #round(0) %>% 
@@ -193,7 +173,7 @@ bl_part_2_tb <- tibble::tibble(fkClientID = tbs_ls$bl_part_1_tb$fkClientID,
                        d_english_native = NA, 
                        d_relation_s = NA_character_)
 fup_part_2_tb <- bl_part_2_tb %>% 
-  dplyr::filter(fkClientID %in% tbs_ls$fup_part_1_tb$fkClientID) %>%
+  dplyr::filter(fkClientID %in% aqol6d_adol_pop_tbs_ls$fup_outcomes_tb$fkClientID) %>%
   dplyr::mutate(round = 2,
                 d_age = d_age + 0.25,
                 Region = Region %>% randomise_ptl_fup_fct(0.98),
@@ -207,8 +187,8 @@ fup_part_2_tb <- bl_part_2_tb %>%
 ```
 
 ```{r}
-bl_tb <- dplyr::inner_join(bl_part_2_tb,tbs_ls$bl_part_1_tb) 
-fup_tb <- dplyr::inner_join(fup_part_2_tb,tbs_ls$fup_part_1_tb)
+bl_tb <- dplyr::inner_join(bl_part_2_tb,aqol6d_adol_pop_tbs_ls$bl_outcomes_tb) 
+fup_tb <- dplyr::inner_join(fup_part_2_tb,aqol6d_adol_pop_tbs_ls$fup_outcomes_tb)
 ```
 
 ```{r}

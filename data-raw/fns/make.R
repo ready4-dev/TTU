@@ -9,6 +9,39 @@ make_adol_aqol6d_disv_lup <- function(){
                                                   TRUE ~ Answer_5_dbl))
   return(adol_aqol6d_disv_lup)
 }
+make_aqol6d_adol_pop_tbs_ls <- function(aqol_items_props_tbs_ls,
+                                        aqol_scores_pars_ls,
+                                        series_names_chr,
+                                        synth_data_spine_ls,
+                                        temporal_corrs_ls,
+                                        id_var_nm_1L_chr = "fkClientID",
+                                        prefix_chr =  c(uid = "Participant_",
+                                                        aqol_item = "aqol6d_q",
+                                                        domain_pfx_1L_chr = "aqol6d_subtotal_w_")){
+  item_pfx_1L_chr <- prefix_chr$aqol_item
+  uid_pfx_1L_chr <- prefix_chr$uid
+  domain_pfx_1L_chr <- prefix_chr$domain_pfx_1L_chr
+  aqol6d_adol_pop_tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls,
+                                                     series_names_chr = series_names_chr) %>%
+    add_corrs_and_uts_to_tbs_ls_ls(aqol_scores_pars_ls = aqol_scores_pars_ls,
+                                   aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,
+                                   temporal_corrs_ls = temporal_corrs_ls,
+                                   prefix_chr = prefix_chr,
+                                   aqol_tots_var_nms_chr = synth_data_spine_ls$aqol_tots_var_nms_chr,
+                                   id_var_nm_1L_chr = id_var_nm_1L_chr) %>%
+    purrr::map(~make_domain_items_ls(domain_qs_lup_tb = aqol6d_domain_qs_lup_tb,
+                                     item_pfx_1L_chr = item_pfx_1L_chr) %>%
+                 add_domain_unwtd_tots_tb(items_tb = .x,
+                                          domain_pfx_1L_chr = domain_pfx_1L_chr) %>%
+                 add_labels_to_aqol6d_tb()) %>%
+    purrr::map(~ .x %>%
+                 dplyr::select(!!rlang::sym(id_var_nm_1L_chr),
+                               dplyr::starts_with(item_pfx_1L_chr),
+                               dplyr::starts_with(domain_pfx_1L_chr),
+                               dplyr::everything()
+                 ))
+  return(aqol6d_adol_pop_tbs_ls)
+}
 make_aqol6d_fns_ls <- function(domain_items_ls){
   aqol6d_disu_fn_ls <- paste0("calculate_aqol6d_d",
                               1:length(domain_items_ls),

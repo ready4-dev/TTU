@@ -1,12 +1,9 @@
 reorder_tbs_for_target_cors <- function(tbs_ls,
                                        corr_dbl,
-                                       corr_var_chr,#aqol6d_total_w
-                                       id_var_to_rm_1L_chr = NA_character_#,
-                                       # included_fup_idx_dbl = NA_real_
+                                       corr_var_chr,
+                                       id_var_to_rm_1L_chr = NA_character_
                                        ){
   n_fup_dbl <- nrow(tbs_ls[[2]])
-  # if(is.na(included_fup_idx_dbl[1]))
-  #   included_fup_idx_dbl <- sample(1:nrow(tbs_ls[[1]]),n_fup_dbl) %>% sort()
   corr_mat <- matrix(corr_dbl, ncol = 2, nrow = 2)
   diag(corr_mat) <- 1
   mvdat_mat <- MASS::mvrnorm(n = n_fup_dbl, mu = c(0, 0), Sigma = corr_mat, empirical = TRUE)

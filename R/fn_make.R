@@ -5,7 +5,6 @@
 #' @rdname make_adol_aqol6d_disv_lup
 #' @export 
 #' @importFrom dplyr mutate case_when
-#' @keywords internal
 make_adol_aqol6d_disv_lup <- function () 
 {
     adol_aqol6d_disv_lup <- aqol6d_adult_disv_lup_tb %>% dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr == 
@@ -13,6 +12,41 @@ make_adol_aqol6d_disv_lup <- function ()
         "Q3" ~ 0.827, TRUE ~ Answer_5_dbl), Answer_6_dbl = dplyr::case_when(Question_chr == 
         "Q1" ~ 0.073, TRUE ~ Answer_5_dbl))
     return(adol_aqol6d_disv_lup)
+}
+#' Make Assessment of Quality of Life Six Dimension health utility adolescent pop tibbles
+#' @description make_aqol6d_adol_pop_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension health utility adolescent pop tibbles list. The function returns an Assessment of Quality of Life Six Dimension health utility adolescent pop tibbles (a list).
+#' @param aqol_items_props_tbs_ls Assessment of Quality of Life health utility items props tibbles (a list)
+#' @param aqol_scores_pars_ls Assessment of Quality of Life health utility scores parameters (a list)
+#' @param series_names_chr Series names (a character vector)
+#' @param synth_data_spine_ls Synth data spine (a list)
+#' @param temporal_corrs_ls Temporal corrs (a list)
+#' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
+#' @param prefix_chr Prefix (a character vector), Default: c(uid = "Participant_", aqol_item = "aqol6d_q", domain_pfx_1L_chr = "aqol6d_subtotal_w_")
+#' @return an Assessment of Quality of Life Six Dimension health utility adolescent pop tibbles (a list)
+#' @rdname make_aqol6d_adol_pop_tbs_ls
+#' @export 
+#' @importFrom purrr map
+#' @importFrom dplyr select starts_with everything
+#' @importFrom rlang sym
+make_aqol6d_adol_pop_tbs_ls <- function (aqol_items_props_tbs_ls, aqol_scores_pars_ls, series_names_chr, 
+    synth_data_spine_ls, temporal_corrs_ls, id_var_nm_1L_chr = "fkClientID", 
+    prefix_chr = c(uid = "Participant_", aqol_item = "aqol6d_q", 
+        domain_pfx_1L_chr = "aqol6d_subtotal_w_")) 
+{
+    item_pfx_1L_chr <- prefix_chr$aqol_item
+    uid_pfx_1L_chr <- prefix_chr$uid
+    domain_pfx_1L_chr <- prefix_chr$domain_pfx_1L_chr
+    aqol6d_adol_pop_tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls, 
+        series_names_chr = series_names_chr) %>% add_corrs_and_uts_to_tbs_ls_ls(aqol_scores_pars_ls = aqol_scores_pars_ls, 
+        aqol_items_props_tbs_ls = aqol_items_props_tbs_ls, temporal_corrs_ls = temporal_corrs_ls, 
+        prefix_chr = prefix_chr, aqol_tots_var_nms_chr = synth_data_spine_ls$aqol_tots_var_nms_chr, 
+        id_var_nm_1L_chr = id_var_nm_1L_chr) %>% purrr::map(~make_domain_items_ls(domain_qs_lup_tb = aqol6d_domain_qs_lup_tb, 
+        item_pfx_1L_chr = item_pfx_1L_chr) %>% add_domain_unwtd_tots_tb(items_tb = .x, 
+        domain_pfx_1L_chr = domain_pfx_1L_chr) %>% add_labels_to_aqol6d_tb()) %>% 
+        purrr::map(~.x %>% dplyr::select(!!rlang::sym(id_var_nm_1L_chr), 
+            dplyr::starts_with(item_pfx_1L_chr), dplyr::starts_with(domain_pfx_1L_chr), 
+            dplyr::everything()))
+    return(aqol6d_adol_pop_tbs_ls)
 }
 #' Make Assessment of Quality of Life Six Dimension health utility functions
 #' @description make_aqol6d_fns_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension health utility functions list. The function returns an Assessment of Quality of Life Six Dimension health utility disu (a list of functions).
@@ -56,7 +90,6 @@ make_aqol6d_items_tb <- function (aqol_tb, old_pfx_1L_chr, new_pfx_1L_chr)
 #' @importFrom purrr map map2_dbl
 #' @importFrom dplyr mutate select mutate_if
 #' @importFrom rlang sym
-#' @keywords internal
 make_complete_props_tbs_ls <- function (raw_props_tbs_ls, question_var_nm_1L_chr = "Question") 
 {
     complete_props_tbs_ls <- raw_props_tbs_ls %>% purrr::map(~{

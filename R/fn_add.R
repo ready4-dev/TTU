@@ -6,7 +6,6 @@
 #' @export 
 #' @importFrom rlang parse_expr
 #' @importFrom Hmisc label
-#' @keywords internal
 add_aqol_dim_scrg_eqs <- function (unscored_aqol_tb) 
 {
     data("adol_dim_scalg_eqs_lup", package = "FBaqol", envir = environment())
@@ -57,14 +56,14 @@ add_aqol_items_tbs_ls <- function (tbs_ls, aqol_items_props_tbs_ls, prefix_chr, 
                 rowSums(., na.rm = T))) %>% dplyr::arrange(!!rlang::sym(unname(aqol_tots_var_nms_chr["cumulative"]))) %>% 
                 tibble::rowid_to_column("id")
             items_tb <- items_tb %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6d(items_tb, 
-                prefix_1L_chr = prefix_chr[2], id_var_nm_1L_chr = "id"))
+                prefix_1L_chr = prefix_chr["aqol_item"], id_var_nm_1L_chr = "id"))
             .x <- .x %>% dplyr::mutate(id = purrr::map_int(aqol6d_total_w, 
                 ~which.min(abs(items_tb$aqol6dU - .x)))) %>% 
                 dplyr::left_join(items_tb)
             updated_tb <- .x %>% dplyr::mutate(`:=`(!!rlang::sym(unname(aqol_tots_var_nms_chr["weighted"])), 
                 aqol6dU)) %>% dplyr::select(-aqol6dU, -id) %>% 
                 dplyr::select(!!rlang::sym(id_var_nm_1L_chr), 
-                  dplyr::starts_with(unname(prefix_chr[2])), 
+                  dplyr::starts_with(prefix_chr[["aqol_item"]]), 
                   !!rlang::sym(unname(aqol_tots_var_nms_chr["cumulative"])), 
                   !!rlang::sym(unname(aqol_tots_var_nms_chr["weighted"])), 
                   dplyr::everything())
@@ -301,8 +300,8 @@ add_labels_to_aqol6d_tb <- function (aqol6d_tb, labels_chr = NA_character_)
 #' @importFrom stats setNames
 add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkClientID") 
 {
-    participant_ids <- paste0(prefix_1L_chr, 1:nrow(tbs_ls$bl_part_1_tb)) %>% 
-        sample(nrow(tbs_ls$bl_part_1_tb))
+    participant_ids <- paste0(prefix_1L_chr, 1:nrow(tbs_ls[[1]])) %>% 
+        sample(nrow(tbs_ls[[1]]))
     tbs_ls <- purrr::map(tbs_ls, ~{
         .x %>% dplyr::mutate(`:=`(!!rlang::sym(id_var_nm_1L_chr), 
             tidyselect::all_of(participant_ids[1:nrow(.x)]))) %>% 

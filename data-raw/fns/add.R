@@ -49,7 +49,7 @@ add_aqol_items_tbs_ls <- function(tbs_ls, # Needs to convert study data.
                                     tibble::rowid_to_column("id")
                                   items_tb <- items_tb  %>%
                                     dplyr::mutate(aqol6dU = calculate_adol_aqol6d(items_tb,
-                                                                                  prefix_1L_chr = prefix_chr[2],
+                                                                                  prefix_1L_chr = prefix_chr["aqol_item"],
                                                                                   id_var_nm_1L_chr = "id"))
                                   .x <- .x %>% dplyr::mutate(id = purrr::map_int(aqol6d_total_w,
                                                                                         ~which.min(abs(items_tb$aqol6dU - .x)))) %>%
@@ -59,29 +59,10 @@ add_aqol_items_tbs_ls <- function(tbs_ls, # Needs to convert study data.
                                     dplyr::select(-aqol6dU,
                                                   -id) %>%
                                     dplyr::select(!!rlang::sym(id_var_nm_1L_chr),
-                                                  dplyr::starts_with(unname(prefix_chr[2])),
+                                                  dplyr::starts_with(prefix_chr[["aqol_item"]]),
                                                   !!rlang::sym(unname(aqol_tots_var_nms_chr["cumulative"])),
                                                   !!rlang::sym(unname(aqol_tots_var_nms_chr["weighted"])),
                                                   dplyr::everything())
-                                  # %>%
-                                  #   dplyr::arrange(aqol6dU)
-
-                                  # .x <- .x %>% dplyr::arrange(aqol6d_total_w)
-                                  #%>%
-                                    ###dplyr::arrange(rank_x_int) %>%
-                                    #dplyr::select(-totals_dbl)  %>% t()
-                                  # target_dbl <- .x %>% dplyr::arrange(aqol6d_total_c) %>% dplyr::pull(aqol6d_total_c)
-                                  # items_tb <- 1:ncol(items_tb) %>% purrr::map_dfr(~{
-                                  #   force_vec_to_sum_to_int(items_tb[,.x],
-                                  #                           target_1L_int = target_dbl[.x],
-                                  #                           item_ranges_dbl_ls = item_ranges_dbl_ls)
-                                  # })
-                                  # updated_tb <-dplyr::bind_cols(.x %>% dplyr::arrange(aqol6d_total_c),
-                                  #                               items_tb) %>%
-                                  #   dplyr::mutate(temp_id = fkClientID %>% purrr::map_dbl(~stringr::str_replace(.x,prefix_chr[["uid"]],"") %>% as.numeric())) %>%
-                                  #   dplyr::arrange(temp_id) %>%
-                                  #   dplyr::select(-temp_id) %>%
-                                  #   dplyr::select(fkClientID, dplyr::everything())
                                   updated_tb
                                 })
   return(updated_tbs_ls)
@@ -242,7 +223,7 @@ add_labels_to_aqol6d_tb <- function(aqol6d_tb,
 add_uids_to_tbs_ls <- function(tbs_ls,
                                prefix_1L_chr,
                                id_var_nm_1L_chr = "fkClientID"){
-  participant_ids <- paste0(prefix_1L_chr,1:nrow(tbs_ls$bl_part_1_tb)) %>% sample(nrow(tbs_ls$bl_part_1_tb))
+  participant_ids <- paste0(prefix_1L_chr,1:nrow(tbs_ls[[1]])) %>% sample(nrow(tbs_ls[[1]]))
   tbs_ls <- purrr::map(tbs_ls,
                        ~ {
                          .x %>%
