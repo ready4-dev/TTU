@@ -4,15 +4,12 @@
 \alias{make_dim_sclg_cons_dbl}
 \title{Make dimension sclg cons}
 \usage{
-make_dim_sclg_cons_dbl(
-  domains_chr,
-  dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb
-)
+make_dim_sclg_cons_dbl(domains_chr, dim_sclg_constant_lup_tb)
 }
 \arguments{
 \item{domains_chr}{Domains (a character vector)}
 
-\item{dim_sclg_constant_lup_tb}{Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb}
+\item{dim_sclg_constant_lup_tb}{Dimension sclg constant lookup table (a tibble)}
 }
 \value{
 Dimension sclg cons (a double vector)

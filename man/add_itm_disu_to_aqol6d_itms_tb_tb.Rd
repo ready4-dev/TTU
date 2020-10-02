@@ -6,14 +6,14 @@
 \usage{
 add_itm_disu_to_aqol6d_itms_tb_tb(
   aqol6d_items_tb,
-  disvalues_lup_tb = disvalues_lup_tb,
+  disvalues_lup_tb = aqol6d_adult_disv_lup_tb,
   pfx_1L_chr
 )
 }
 \arguments{
 \item{aqol6d_items_tb}{Assessment of Quality of Life Six Dimension health utility items (a tibble)}
 
-\item{disvalues_lup_tb}{Disvalues lookup table (a tibble), Default: disvalues_lup_tb}
+\item{disvalues_lup_tb}{Disvalues lookup table (a tibble), Default: aqol6d_adult_disv_lup_tb}
 
 \item{pfx_1L_chr}{Prefix (a character vector of length one)}
 }

@@ -8,8 +8,8 @@ add_dmn_disu_to_aqol6d_items_tb_tb(
   aqol6d_items_tb,
   domain_items_ls,
   domains_chr,
-  dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
-  itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb
+  aqol6d_dim_sclg_cnt_lup_tb = aqol6d_dim_sclg_cnt_lup_tb,
+  aqol6d_adult_itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb
 )
 }
 \arguments{
@@ -19,9 +19,9 @@ add_dmn_disu_to_aqol6d_items_tb_tb(
 
 \item{domains_chr}{Domains (a character vector)}
 
-\item{dim_sclg_constant_lup_tb}{Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb}
+\item{aqol6d_dim_sclg_cnt_lup_tb}{Assessment of Quality of Life Six Dimension health utility dimension sclg constant lookup table (a tibble), Default: aqol6d_dim_sclg_cnt_lup_tb}
 
-\item{itm_wrst_wghts_lup_tb}{Itm wrst wghts lookup table (a tibble), Default: itm_wrst_wghts_lup_tb}
+\item{aqol6d_adult_itm_wrst_wghts_lup_tb}{Assessment of Quality of Life Six Dimension health utility adult itm wrst wghts lookup table (a tibble), Default: aqol6d_adult_itm_wrst_wghts_lup_tb}
 }
 \value{
 an Assessment of Quality of Life Six Dimension health utility items (a tibble)

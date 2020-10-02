@@ -1,6 +1,6 @@
 make_adol_aqol6d_disv_lup <- function(){
-  data("disvalues_lup_tb", package = "FBaqol", envir = environment())
-  adol_aqol6d_disv_lup <- disvalues_lup_tb %>%
+  #data("disvalues_lup_tb", package = "FBaqol", envir = environment())
+  adol_aqol6d_disv_lup <- aqol6d_adult_disv_lup_tb %>%
     dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr == "Q18" ~ 0.622,
                                                   TRUE ~ Answer_4_dbl),
                   Answer_5_dbl = dplyr::case_when(Question_chr == "Q3" ~ 0.827,
@@ -89,9 +89,13 @@ make_corstars_tbl_xx <- function(x, method=c("pearson", "spearman"), removeTrian
     else print(xtable(Rnew), type="latex")
   }
 }
-make_domain_items_ls <- function(domains_chr,
-                                 q_nbrs_ls,
+make_domain_items_ls <- function(domain_qs_lup_tb,
                                  item_pfx_1L_chr){
+  domains_chr <- domain_qs_lup_tbDomain_chr %>% unique()
+  q_nbrs_ls <- purrr::map(domains_chr,
+                          ~ domain_qs_lup_tb %>%
+                            dplyr::filter(Domain_chr == .x) %>%
+                            dplyr::pull(Question_dbl))
   domain_items_ls <- purrr::map(q_nbrs_ls,
                                 ~ paste0(item_pfx_1L_chr,.x)) %>%
     stats::setNames(domains_chr)
@@ -99,7 +103,7 @@ make_domain_items_ls <- function(domains_chr,
 
 }
 make_dim_sclg_cons_dbl <- function(domains_chr,
-                                   dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb){
+                                   dim_sclg_constant_lup_tb){
   dim_sclg_cons_dbl <- purrr::map_dbl(domains_chr,
                                       ~ ready4fun::get_from_lup_obj(dim_sclg_constant_lup_tb,
                                                                     match_var_nm_1L_chr = "Dimension_chr",
@@ -109,7 +113,7 @@ make_dim_sclg_cons_dbl <- function(domains_chr,
   return(dim_sclg_cons_dbl)
 }
 make_item_wrst_wghts_ls_ls <- function(domain_items_ls,
-                                       itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb){
+                                       itm_wrst_wghts_lup_tb){
   item_wrst_wghts_ls_ls <- domain_items_ls %>%
     purrr::map(~{
       purrr::map_dbl(.x,

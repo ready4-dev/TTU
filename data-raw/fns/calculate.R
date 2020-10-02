@@ -73,13 +73,12 @@ calculate_aqol6d_d6_disu_dbl <- function(dvQs_tb,
 calculate_aqol6dU_dbl <- function(aqol6d_items_tb,
                              prefix_1L_chr,
                              aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
-                             dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
-                             disvalues_lup_tb = disvalues_lup_tb,
-                             itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb){
-  domains_chr <- dim_sclg_constant_lup_tb$Dimension_chr
+                             aqol6d_dim_sclg_cnt_lup_tb = aqol6d_dim_sclg_cnt_lup_tb,
+                             disvalues_lup_tb = aqol6d_adult_disv_lup_tb,
+                             aqol6d_adult_itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb){
+  domains_chr <- aqol6d_dim_sclg_cnt_lup_tb$Dimension_chr
   item_pfx_1L_chr <- hutils::longest_prefix(disvalues_lup_tb$Question_chr)
-  domain_items_ls <- make_domain_items_ls(domains_chr = domains_chr,
-                                          q_nbrs_ls = list(1:4,5:7,8:11,12:14,15:17,18:20),
+  domain_items_ls <- make_domain_items_ls(domain_qs_lup_tb = aqol6d_domain_qs_lup_tb,
                                           item_pfx_1L_chr = item_pfx_1L_chr)
   aqol6d_items_tb <- aqol6d_items_tb %>% make_aqol6d_items_tb(old_pfx_1L_chr = prefix_1L_chr,
                                                               new_pfx_1L_chr = item_pfx_1L_chr) %>%
@@ -88,8 +87,8 @@ calculate_aqol6dU_dbl <- function(aqol6d_items_tb,
                                       pfx_1L_chr = item_pfx_1L_chr) %>%
     add_dmn_disu_to_aqol6d_items_tb_tb(domain_items_ls = domain_items_ls,
                                        domains_chr = domains_chr,
-                                       dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
-                                       itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb) %>%
+                                       aqol6d_dim_sclg_cnt_lup_tb = aqol6d_dim_sclg_cnt_lup_tb,
+                                       aqol6d_adult_itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb) %>%
     add_dmn_scores_to_aqol6d_items_tb_tb(domain_items_ls = domain_items_ls) %>%
     add_aqol6dU_to_aqol6d_items_tb_tb(aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb)
   aqol6dU_dbl <- aqol6d_items_tb$aqol6dU

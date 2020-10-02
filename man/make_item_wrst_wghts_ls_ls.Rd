@@ -4,15 +4,12 @@
 \alias{make_item_wrst_wghts_ls_ls}
 \title{Make item wrst wghts}
 \usage{
-make_item_wrst_wghts_ls_ls(
-  domain_items_ls,
-  itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb
-)
+make_item_wrst_wghts_ls_ls(domain_items_ls, itm_wrst_wghts_lup_tb)
 }
 \arguments{
 \item{domain_items_ls}{Domain items (a list)}
 
-\item{itm_wrst_wghts_lup_tb}{Itm wrst wghts lookup table (a tibble), Default: itm_wrst_wghts_lup_tb}
+\item{itm_wrst_wghts_lup_tb}{Itm wrst wghts lookup table (a tibble)}
 }
 \value{
 Item wrst wghts (a list of lists)

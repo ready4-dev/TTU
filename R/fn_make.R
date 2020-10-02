@@ -7,8 +7,7 @@
 #' @importFrom dplyr mutate case_when
 make_adol_aqol6d_disv_lup <- function () 
 {
-    data("disvalues_lup_tb", package = "FBaqol", envir = environment())
-    adol_aqol6d_disv_lup <- disvalues_lup_tb %>% dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr == 
+    adol_aqol6d_disv_lup <- aqol6d_adult_disv_lup_tb %>% dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr == 
         "Q18" ~ 0.622, TRUE ~ Answer_4_dbl), Answer_5_dbl = dplyr::case_when(Question_chr == 
         "Q3" ~ 0.827, TRUE ~ Answer_5_dbl), Answer_6_dbl = dplyr::case_when(Question_chr == 
         "Q1" ~ 0.073, TRUE ~ Answer_5_dbl))
@@ -131,13 +130,13 @@ make_corstars_tbl_xx <- function (x, method = c("pearson", "spearman"), removeTr
 #' Make dimension sclg cons
 #' @description make_dim_sclg_cons_dbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make dimension sclg cons double vector. The function returns Dimension sclg cons (a double vector).
 #' @param domains_chr Domains (a character vector)
-#' @param dim_sclg_constant_lup_tb Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb
+#' @param dim_sclg_constant_lup_tb Dimension sclg constant lookup table (a tibble)
 #' @return Dimension sclg cons (a double vector)
 #' @rdname make_dim_sclg_cons_dbl
 #' @export 
 #' @importFrom purrr map_dbl
 #' @importFrom ready4fun get_from_lup_obj
-make_dim_sclg_cons_dbl <- function (domains_chr, dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb) 
+make_dim_sclg_cons_dbl <- function (domains_chr, dim_sclg_constant_lup_tb) 
 {
     dim_sclg_cons_dbl <- purrr::map_dbl(domains_chr, ~ready4fun::get_from_lup_obj(dim_sclg_constant_lup_tb, 
         match_var_nm_1L_chr = "Dimension_chr", match_value_xx = .x, 
@@ -146,16 +145,19 @@ make_dim_sclg_cons_dbl <- function (domains_chr, dim_sclg_constant_lup_tb = dim_
 }
 #' Make domain items
 #' @description make_domain_items_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make domain items list. The function returns Domain items (a list).
-#' @param domains_chr Domains (a character vector)
-#' @param q_nbrs_ls Q nbrs (a list)
+#' @param domain_qs_lup_tb Domain questions lookup table (a tibble)
 #' @param item_pfx_1L_chr Item prefix (a character vector of length one)
 #' @return Domain items (a list)
 #' @rdname make_domain_items_ls
 #' @export 
 #' @importFrom purrr map
+#' @importFrom dplyr filter pull
 #' @importFrom stats setNames
-make_domain_items_ls <- function (domains_chr, q_nbrs_ls, item_pfx_1L_chr) 
+make_domain_items_ls <- function (domain_qs_lup_tb, item_pfx_1L_chr) 
 {
+    domains_chr <- domain_qs_lup_tbDomain_chr %>% unique()
+    q_nbrs_ls <- purrr::map(domains_chr, ~domain_qs_lup_tb %>% 
+        dplyr::filter(Domain_chr == .x) %>% dplyr::pull(Question_dbl))
     domain_items_ls <- purrr::map(q_nbrs_ls, ~paste0(item_pfx_1L_chr, 
         .x)) %>% stats::setNames(domains_chr)
     return(domain_items_ls)
@@ -163,13 +165,13 @@ make_domain_items_ls <- function (domains_chr, q_nbrs_ls, item_pfx_1L_chr)
 #' Make item wrst wghts
 #' @description make_item_wrst_wghts_ls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make item wrst wghts list list. The function returns Item wrst wghts (a list of lists).
 #' @param domain_items_ls Domain items (a list)
-#' @param itm_wrst_wghts_lup_tb Itm wrst wghts lookup table (a tibble), Default: itm_wrst_wghts_lup_tb
+#' @param itm_wrst_wghts_lup_tb Itm wrst wghts lookup table (a tibble)
 #' @return Item wrst wghts (a list of lists)
 #' @rdname make_item_wrst_wghts_ls_ls
 #' @export 
 #' @importFrom purrr map map_dbl
 #' @importFrom ready4fun get_from_lup_obj
-make_item_wrst_wghts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb) 
+make_item_wrst_wghts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb) 
 {
     item_wrst_wghts_ls_ls <- domain_items_ls %>% purrr::map(~{
         purrr::map_dbl(.x, ~{

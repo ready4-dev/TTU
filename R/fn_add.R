@@ -121,19 +121,12 @@ add_aqol6dU_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, aqol6d_from_8d_c
 #' @param tbs_ls Tibbles (a list)
 #' @param prefix_1L_chr Prefix (a character vector of length one), Default: 'aqol6d_q'
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one)
-#' @param aqol6d_from_8d_coeffs_lup_tb Assessment of Quality of Life Six Dimension health utility from 8d coeffs lookup table (a tibble), Default: aqol6d_from_8d_coeffs_lup_tb
-#' @param dim_sclg_constant_lup_tb Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb
-#' @param disvalues_lup_tb Disvalues lookup table (a tibble), Default: disvalues_lup_tb
-#' @param itm_wrst_wghts_lup_tb Itm wrst wghts lookup table (a tibble), Default: itm_wrst_wghts_lup_tb
 #' @return Tibbles (a list)
 #' @rdname add_aqol6dU_to_tbs_ls
 #' @export 
 #' @importFrom purrr map
 #' @importFrom dplyr mutate
-add_aqol6dU_to_tbs_ls <- function (tbs_ls, prefix_1L_chr = "aqol6d_q", id_var_nm_1L_chr, 
-    aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb, 
-    dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, disvalues_lup_tb = disvalues_lup_tb, 
-    itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb) 
+add_aqol6dU_to_tbs_ls <- function (tbs_ls, prefix_1L_chr = "aqol6d_q", id_var_nm_1L_chr) 
 {
     tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6d(.x, 
         prefix_1L_chr = prefix_1L_chr, id_var_nm_1L_chr = id_var_nm_1L_chr)))
@@ -169,22 +162,22 @@ add_corrs_and_uts_to_tbs_ls_ls <- function (tbs_ls, aqol_scores_pars_ls, aqol_it
 #' @param aqol6d_items_tb Assessment of Quality of Life Six Dimension health utility items (a tibble)
 #' @param domain_items_ls Domain items (a list)
 #' @param domains_chr Domains (a character vector)
-#' @param dim_sclg_constant_lup_tb Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb
-#' @param itm_wrst_wghts_lup_tb Itm wrst wghts lookup table (a tibble), Default: itm_wrst_wghts_lup_tb
+#' @param aqol6d_dim_sclg_cnt_lup_tb Assessment of Quality of Life Six Dimension health utility dimension sclg constant lookup table (a tibble), Default: aqol6d_dim_sclg_cnt_lup_tb
+#' @param aqol6d_adult_itm_wrst_wghts_lup_tb Assessment of Quality of Life Six Dimension health utility adult itm wrst wghts lookup table (a tibble), Default: aqol6d_adult_itm_wrst_wghts_lup_tb
 #' @return an Assessment of Quality of Life Six Dimension health utility items (a tibble)
 #' @rdname add_dmn_disu_to_aqol6d_items_tb_tb
 #' @export 
 #' @importFrom purrr reduce
 #' @importFrom dplyr select mutate
 #' @importFrom rlang sym exec
-add_dmn_disu_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_ls, domains_chr, dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, 
-    itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb) 
+add_dmn_disu_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_ls, domains_chr, aqol6d_dim_sclg_cnt_lup_tb = aqol6d_dim_sclg_cnt_lup_tb, 
+    aqol6d_adult_itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb) 
 {
     aqol6d_disu_fn_ls <- make_aqol6d_fns_ls(domain_items_ls)
     kD_dbl <- make_dim_sclg_cons_dbl(domains_chr = domains_chr, 
-        dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb)
+        dim_sclg_constant_lup_tb = aqol6d_dim_sclg_cnt_lup_tb)
     w_dbl_ls <- make_item_wrst_wghts_ls_ls(domain_items_ls = domain_items_ls, 
-        itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)
+        itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb)
     aqol6d_items_tb <- purrr::reduce(1:length(domain_items_ls), 
         .init = aqol6d_items_tb, ~{
             args_ls <- list(dvQs_tb = .x %>% dplyr::select(domain_items_ls[[.y]] %>% 
@@ -233,7 +226,7 @@ add_domain_unwtd_tots_tb <- function (items_tb, domain_items_ls, domain_pfx_1L_c
 #' Add itm disu to Assessment of Quality of Life Six Dimension health utility itms tibble
 #' @description add_itm_disu_to_aqol6d_itms_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add itm disu to assessment of quality of life six dimension health utility itms tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns an Assessment of Quality of Life Six Dimension health utility items (a tibble).
 #' @param aqol6d_items_tb Assessment of Quality of Life Six Dimension health utility items (a tibble)
-#' @param disvalues_lup_tb Disvalues lookup table (a tibble), Default: disvalues_lup_tb
+#' @param disvalues_lup_tb Disvalues lookup table (a tibble), Default: aqol6d_adult_disv_lup_tb
 #' @param pfx_1L_chr Prefix (a character vector of length one)
 #' @return an Assessment of Quality of Life Six Dimension health utility items (a tibble)
 #' @rdname add_itm_disu_to_aqol6d_itms_tb_tb
@@ -241,7 +234,7 @@ add_domain_unwtd_tots_tb <- function (items_tb, domain_items_ls, domain_pfx_1L_c
 #' @importFrom purrr reduce
 #' @importFrom dplyr mutate across
 #' @importFrom tidyselect all_of
-add_itm_disu_to_aqol6d_itms_tb_tb <- function (aqol6d_items_tb, disvalues_lup_tb = disvalues_lup_tb, 
+add_itm_disu_to_aqol6d_itms_tb_tb <- function (aqol6d_items_tb, disvalues_lup_tb = aqol6d_adult_disv_lup_tb, 
     pfx_1L_chr) 
 {
     aqol6d_items_tb <- purrr::reduce(1:20, .init = aqol6d_items_tb, 

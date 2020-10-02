@@ -38,18 +38,22 @@ ready4fun::write_pkg_setup_fls(incr_ver_1L_lgl = F,
 ## PART THREE
 ##
 # 5. Create a lookup table of abbreviations used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
-data("abbreviations_lup",package = "ready4use")
-pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c("adol","aqol","aqol6d","dim","disv","eq","scrg","unscrd"),
-                            long_name_chr = c("adolescent",
-                                                  "Assessment of Quality of Life health utility",
-                                                  "Assessment of Quality of Life Six Dimension health utility",
-                                                  "dimension",
-                                                  "disvalue",
-                                                  "equation",
-                                                  "scoring",
-                                                  "unscored"),
-                            url_1L_chr = NA_character_,
-                            seed_lup = abbreviations_lup)
+#data("abbreviations_lup",package = "ready4use")
+pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c("adol","aqol","aqol6d","cnt","dim","disv","eq","q","scrg","unscrd","vldn"),
+                                        long_name_chr = c("adolescent",
+                                                          "Assessment of Quality of Life health utility",
+                                                          "Assessment of Quality of Life Six Dimension health utility",
+                                                          "constant",
+                                                          "dimension",
+                                                          "disvalue",
+                                                          "equation",
+                                                          "question",
+                                                          "scoring",
+                                                          "unscored",
+                                                          "validation"),
+                                        no_plural_chr = c("validation"),
+                                        url_1L_chr = NA_character_,
+                                        seed_lup = ready4use::abbreviations_lup)
 data("abbreviations_lup")
 # 5. Create function types and generics look-up tables
 # 5.1 Create a lookup table of function types used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
@@ -141,9 +145,9 @@ pkg_dss_tb <- tibble::tribble(
   "Q18", 0, 0.033, 0.223, 0.621, 0.843, 1,
   "Q19", 0, 0.024, 0.205, 0.586, 0.826, 1,
   "Q20", 0, 0.187, 0.695, 1, NA_real_,NA_real_
-) %>% ready4fun::write_and_doc_ds(db_1L_chr = "disvalues_lup_tb",
-                                    title_1L_chr = "AQoL6D item disvalues lookup table",
-                                    desc_1L_chr = "Disutility weights for individual AQoL6D items.",
+) %>% ready4fun::write_and_doc_ds(db_1L_chr = "aqol6d_adult_disv_lup_tb",
+                                    title_1L_chr = "AQoL6D (adult version) item disvalues lookup table",
+                                    desc_1L_chr = "Disutility weights for individual AQoL6D (adult version) items.",
                                     url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
                                     abbreviations_lup = abbreviations_lup,
                                   pkg_dss_tb = pkg_dss_tb)
@@ -154,7 +158,7 @@ pkg_dss_tb <- tibble::tibble(Question_dbl = 1:20,
                                               rep("COP",3),
                                               rep("P",3),
                                               rep("SEN",3))) %>%
-  ready4fun::write_and_doc_ds(db_1L_chr = "domain_qs_lup_tb",
+  ready4fun::write_and_doc_ds(db_1L_chr = "aqol6d_domain_qs_lup_tb",
                               title_1L_chr = "AQoL6D dimension questions lookup table",
                               desc_1L_chr = "Breakdown of which questions relate to which dimension of the AQoL6D.",
                               url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
@@ -167,7 +171,7 @@ pkg_dss_tb <- tibble::tribble(
   "MH", -0.983,
   "COP", -0.930,
   "P", -0.96,
-  "SEN", -0.851) %>% ready4fun::write_and_doc_ds(db_1L_chr = "dim_sclg_constant_lup_tb",
+  "SEN", -0.851) %>% ready4fun::write_and_doc_ds(db_1L_chr = "aqol6d_dim_sclg_cnt_lup_tb",
                                     title_1L_chr = "AQoL6D dimension scaling constants lookup table",
                                     desc_1L_chr = "Scaling constants for each dimension of AQoL6D.",
                                     url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
@@ -196,21 +200,21 @@ pkg_dss_tb <- tibble::tribble(
   "Q18", 0.580696,
   "Q19", 0.463022,
   "Q20", 0.604613
-) %>% ready4fun::write_and_doc_ds(db_1L_chr = "itm_wrst_wghts_lup_tb",
-                                    title_1L_chr = "AQoL6D item worst weightings lookup table",
-                                    desc_1L_chr = "Worst weightings for individual items in AQoL6D.",
+) %>% ready4fun::write_and_doc_ds(db_1L_chr = "aqol6d_adult_itm_wrst_wghts_lup_tb",
+                                    title_1L_chr = "AQoL6D (adult) item worst weightings lookup table",
+                                    desc_1L_chr = "Worst weightings for individual items in AQoL6D (adult version).",
                                     url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
                                     abbreviations_lup = abbreviations_lup,
                                   pkg_dss_tb = pkg_dss_tb)
 pkg_dss_tb <- read.csv("data-raw/AQoL_6D_Dim_Scaling.csv", stringsAsFactors = F, fileEncoding="UTF-8-BOM") %>%
   ready4fun::write_and_doc_ds(db_1L_chr = "adol_dim_scalg_eqs_lup",
-                              title_1L_chr = "AQoL6D item worst weightings lookup table",
+                              title_1L_chr = "AQoL6D (adolescent) item worst weightings equations lookup table",
                               desc_1L_chr = "Dimension scaling equations for adolescent version of AQoL6D scoring algorithm.",
                               url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
                               abbreviations_lup = abbreviations_lup,
                               pkg_dss_tb = pkg_dss_tb)
 pkg_dss_tb <- read.csv("vignettes/Data/aqol_valid_stata.csv") %>%
-  ready4fun::write_and_doc_ds(db_1L_chr = "syn_pop_with_STATA_adults_scoring_tb",
+  ready4fun::write_and_doc_ds(db_1L_chr = "aqol6d_adult_vldn_pop_with_STATA_scores_tb",
                               title_1L_chr = "STATA comparison validation synthetic population",
                               desc_1L_chr = "Synthetic population following application of STATA adult scoring algorithm.",
                               url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",

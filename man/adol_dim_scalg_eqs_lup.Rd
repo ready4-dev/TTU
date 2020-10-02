@@ -3,7 +3,7 @@
 \docType{data}
 \name{adol_dim_scalg_eqs_lup}
 \alias{adol_dim_scalg_eqs_lup}
-\title{AQoL6D item worst weightings lookup table}
+\title{AQoL6D (adolescent) item worst weightings equations lookup table}
 \format{
 An object of class \code{data.frame} with 19 rows and 3 columns.
 }

@@ -4,15 +4,7 @@
 \alias{add_aqol6dU_to_tbs_ls}
 \title{Add aqol6dU to tibbles}
 \usage{
-add_aqol6dU_to_tbs_ls(
-  tbs_ls,
-  prefix_1L_chr = "aqol6d_q",
-  id_var_nm_1L_chr,
-  aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
-  dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
-  disvalues_lup_tb = disvalues_lup_tb,
-  itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb
-)
+add_aqol6dU_to_tbs_ls(tbs_ls, prefix_1L_chr = "aqol6d_q", id_var_nm_1L_chr)
 }
 \arguments{
 \item{tbs_ls}{Tibbles (a list)}
@@ -20,14 +12,6 @@ add_aqol6dU_to_tbs_ls(
 \item{prefix_1L_chr}{Prefix (a character vector of length one), Default: 'aqol6d_q'}
 
 \item{id_var_nm_1L_chr}{Id var name (a character vector of length one)}
-
-\item{aqol6d_from_8d_coeffs_lup_tb}{Assessment of Quality of Life Six Dimension health utility from 8d coeffs lookup table (a tibble), Default: aqol6d_from_8d_coeffs_lup_tb}
-
-\item{dim_sclg_constant_lup_tb}{Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb}
-
-\item{disvalues_lup_tb}{Disvalues lookup table (a tibble), Default: disvalues_lup_tb}
-
-\item{itm_wrst_wghts_lup_tb}{Itm wrst wghts lookup table (a tibble), Default: itm_wrst_wghts_lup_tb}
 }
 \value{
 Tibbles (a list)

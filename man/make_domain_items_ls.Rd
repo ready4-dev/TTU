@@ -4,12 +4,10 @@
 \alias{make_domain_items_ls}
 \title{Make domain items}
 \usage{
-make_domain_items_ls(domains_chr, q_nbrs_ls, item_pfx_1L_chr)
+make_domain_items_ls(domain_qs_lup_tb, item_pfx_1L_chr)
 }
 \arguments{
-\item{domains_chr}{Domains (a character vector)}
-
-\item{q_nbrs_ls}{Q nbrs (a list)}
+\item{domain_qs_lup_tb}{Domain questions lookup table (a tibble)}
 
 \item{item_pfx_1L_chr}{Item prefix (a character vector of length one)}
 }

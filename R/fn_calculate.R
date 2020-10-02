@@ -136,28 +136,28 @@ calculate_aqol6d_d6_disu_dbl <- function (dvQs_tb, kD_1L_dbl, w_dbl)
 #' @param aqol6d_items_tb Assessment of Quality of Life Six Dimension health utility items (a tibble)
 #' @param prefix_1L_chr Prefix (a character vector of length one)
 #' @param aqol6d_from_8d_coeffs_lup_tb Assessment of Quality of Life Six Dimension health utility from 8d coeffs lookup table (a tibble), Default: aqol6d_from_8d_coeffs_lup_tb
-#' @param dim_sclg_constant_lup_tb Dimension sclg constant lookup table (a tibble), Default: dim_sclg_constant_lup_tb
-#' @param disvalues_lup_tb Disvalues lookup table (a tibble), Default: disvalues_lup_tb
-#' @param itm_wrst_wghts_lup_tb Itm wrst wghts lookup table (a tibble), Default: itm_wrst_wghts_lup_tb
+#' @param aqol6d_dim_sclg_cnt_lup_tb Assessment of Quality of Life Six Dimension health utility dimension sclg constant lookup table (a tibble), Default: aqol6d_dim_sclg_cnt_lup_tb
+#' @param disvalues_lup_tb Disvalues lookup table (a tibble), Default: aqol6d_adult_disv_lup_tb
+#' @param aqol6d_adult_itm_wrst_wghts_lup_tb Assessment of Quality of Life Six Dimension health utility adult itm wrst wghts lookup table (a tibble), Default: aqol6d_adult_itm_wrst_wghts_lup_tb
 #' @return Aqol6dU (a double vector)
 #' @rdname calculate_aqol6dU_dbl
 #' @export 
 #' @importFrom hutils longest_prefix
 calculate_aqol6dU_dbl <- function (aqol6d_items_tb, prefix_1L_chr, aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb, 
-    dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, disvalues_lup_tb = disvalues_lup_tb, 
-    itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb) 
+    aqol6d_dim_sclg_cnt_lup_tb = aqol6d_dim_sclg_cnt_lup_tb, 
+    disvalues_lup_tb = aqol6d_adult_disv_lup_tb, aqol6d_adult_itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb) 
 {
-    domains_chr <- dim_sclg_constant_lup_tb$Dimension_chr
+    domains_chr <- aqol6d_dim_sclg_cnt_lup_tb$Dimension_chr
     item_pfx_1L_chr <- hutils::longest_prefix(disvalues_lup_tb$Question_chr)
-    domain_items_ls <- make_domain_items_ls(domains_chr = domains_chr, 
-        q_nbrs_ls = list(1:4, 5:7, 8:11, 12:14, 15:17, 18:20), 
+    domain_items_ls <- make_domain_items_ls(domain_qs_lup_tb = aqol6d_domain_qs_lup_tb, 
         item_pfx_1L_chr = item_pfx_1L_chr)
     aqol6d_items_tb <- aqol6d_items_tb %>% make_aqol6d_items_tb(old_pfx_1L_chr = prefix_1L_chr, 
         new_pfx_1L_chr = item_pfx_1L_chr) %>% impute_miss_itms_in_aqol6d_items_tb_tb(domain_items_ls = domain_items_ls) %>% 
         add_itm_disu_to_aqol6d_itms_tb_tb(disvalues_lup_tb = disvalues_lup_tb, 
             pfx_1L_chr = item_pfx_1L_chr) %>% add_dmn_disu_to_aqol6d_items_tb_tb(domain_items_ls = domain_items_ls, 
-        domains_chr = domains_chr, dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb, 
-        itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb) %>% add_dmn_scores_to_aqol6d_items_tb_tb(domain_items_ls = domain_items_ls) %>% 
+        domains_chr = domains_chr, aqol6d_dim_sclg_cnt_lup_tb = aqol6d_dim_sclg_cnt_lup_tb, 
+        aqol6d_adult_itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb) %>% 
+        add_dmn_scores_to_aqol6d_items_tb_tb(domain_items_ls = domain_items_ls) %>% 
         add_aqol6dU_to_aqol6d_items_tb_tb(aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb)
     aqol6dU_dbl <- aqol6d_items_tb$aqol6dU
     return(aqol6dU_dbl)

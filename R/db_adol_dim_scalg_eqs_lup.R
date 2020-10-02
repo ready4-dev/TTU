@@ -1,4 +1,4 @@
-#' AQoL6D item worst weightings lookup table
+#' AQoL6D (adolescent) item worst weightings equations lookup table
 #' 
 #' Dimension scaling equations for adolescent version of AQoL6D scoring algorithm.
 #' 

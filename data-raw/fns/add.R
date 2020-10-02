@@ -10,19 +10,8 @@ add_aqol6dU_to_aqol6d_items_tb_tb <- function(aqol6d_items_tb,
 }
 add_aqol6dU_to_tbs_ls <- function(tbs_ls, ## FUNCTION NEEDS TO BE FIXED - UNFINISHED
                                   prefix_1L_chr =  "aqol6d_q",
-                                  id_var_nm_1L_chr,
-                                  aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
-                                  dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
-                                  disvalues_lup_tb = disvalues_lup_tb,
-                                  itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb){
-  tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6d(.x, prefix_1L_chr = prefix_1L_chr,id_var_nm_1L_chr = id_var_nm_1L_chr)
-                                                          # calculate_aqol6dU_dbl(aqol6d_items_tb = .x,
-                                                          #                               prefix_1L_chr =  prefix_1L_chr,
-                                                          #                               aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
-                                                          #                               dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
-                                                          #                               disvalues_lup_tb = disvalues_lup_tb,
-                                                          #                               itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)
-                                                          ))
+                                  id_var_nm_1L_chr){
+  tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6d(.x, prefix_1L_chr = prefix_1L_chr,id_var_nm_1L_chr = id_var_nm_1L_chr)))
   return(tbs_ls)
 }
 add_aqol_dim_scrg_eqs <- function(unscored_aqol_tb){
@@ -133,25 +122,19 @@ add_corrs_and_uts_to_tbs_ls_ls <- function(tbs_ls, # Based on: https://stats.sta
     add_aqol_items_tbs_ls(aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,
                           prefix_chr = prefix_chr,
                           aqol_tots_var_nms_chr = aqol_tots_var_nms_chr,
-                          id_var_nm_1L_chr = id_var_nm_1L_chr) #%>%
-    # add_aqol6dU_to_tbs_ls(prefix_1L_chr =  prefix_chr[["aqol_item"]],
-    #                       aqol6d_from_8d_coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
-    #                       id_var_nm_1L_chr = "fkClientID",
-    #                       dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
-    #                       disvalues_lup_tb = disvalues_lup_tb,
-    #                       itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)
+                          id_var_nm_1L_chr = id_var_nm_1L_chr)
   return(tbs_ls)
 }
 add_dmn_disu_to_aqol6d_items_tb_tb <- function(aqol6d_items_tb,
                                                domain_items_ls,
                                                domains_chr,
-                                               dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb,
-                                               itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb){
+                                               aqol6d_dim_sclg_cnt_lup_tb = aqol6d_dim_sclg_cnt_lup_tb,
+                                               aqol6d_adult_itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb){
   aqol6d_disu_fn_ls <- make_aqol6d_fns_ls(domain_items_ls)
   kD_dbl <- make_dim_sclg_cons_dbl(domains_chr = domains_chr,
-                                   dim_sclg_constant_lup_tb = dim_sclg_constant_lup_tb)
+                                   dim_sclg_constant_lup_tb = aqol6d_dim_sclg_cnt_lup_tb)
   w_dbl_ls <- make_item_wrst_wghts_ls_ls(domain_items_ls = domain_items_ls,
-                                         itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)
+                                         itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb)
   aqol6d_items_tb <- purrr::reduce(1:length(domain_items_ls),
                                    .init = aqol6d_items_tb,
                                    ~{
@@ -183,7 +166,7 @@ add_domain_unwtd_tots_tb <- function(items_tb,
   return(items_and_domains_tb)
 }
 add_itm_disu_to_aqol6d_itms_tb_tb <- function(aqol6d_items_tb,
-                                              disvalues_lup_tb = disvalues_lup_tb,
+                                              disvalues_lup_tb = aqol6d_adult_disv_lup_tb,
                                               pfx_1L_chr){
   aqol6d_items_tb <- purrr::reduce(1:20,
                                    .init = aqol6d_items_tb,
