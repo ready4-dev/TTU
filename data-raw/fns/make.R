@@ -18,9 +18,9 @@ make_aqol6d_adol_pop_tbs_ls <- function(aqol_items_props_tbs_ls,
                                         prefix_chr =  c(uid = "Participant_",
                                                         aqol_item = "aqol6d_q",
                                                         domain_pfx_1L_chr = "aqol6d_subtotal_w_")){
-  item_pfx_1L_chr <- prefix_chr$aqol_item
-  uid_pfx_1L_chr <- prefix_chr$uid
-  domain_pfx_1L_chr <- prefix_chr$domain_pfx_1L_chr
+  item_pfx_1L_chr <- prefix_chr[["aqol_item"]]
+  uid_pfx_1L_chr <- prefix_chr[["uid"]]
+  domain_pfx_1L_chr <- prefix_chr[["domain_pfx_1L_chr"]]
   aqol6d_adol_pop_tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls,
                                                      series_names_chr = series_names_chr) %>%
     add_corrs_and_uts_to_tbs_ls_ls(aqol_scores_pars_ls = aqol_scores_pars_ls,

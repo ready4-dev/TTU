@@ -36,4 +36,3 @@ an Assessment of Quality of Life Six Dimension health utility adolescent pop tib
 \description{
 make_aqol6d_adol_pop_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension health utility adolescent pop tibbles list. The function returns an Assessment of Quality of Life Six Dimension health utility adolescent pop tibbles (a list).
 }
-\keyword{internal}

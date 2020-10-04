@@ -23,4 +23,3 @@ Adolescent Assessment of Quality of Life Six Dimension health utility (a double 
 \description{
 calculate_adol_aqol6d() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate adolescent assessment of quality of life six dimension health utility. The function returns Adolescent Assessment of Quality of Life Six Dimension health utility (a double vector).
 }
-\keyword{internal}
