@@ -1,15 +1,15 @@
-#' Write results comma separated variables file
-#' @description write_results_csv() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write results comma separated variables file. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' Write results to comma separated variables file
+#' @description write_results_to_csv() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write results to comma separated variables file. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param synth_data_spine_ls Synth data spine (a list)
 #' @param output_dir_1L_chr Output directory (a character vector of length one), Default: '.'
 #' @return NULL
-#' @rdname write_results_csv
+#' @rdname write_results_to_csv
 #' @export 
 #' @importFrom tibble tibble as_tibble as.tibble
 #' @importFrom purrr map_dfr map_dfc map map_dbl walk2
 #' @importFrom stats setNames
 #' @importFrom dplyr mutate select everything
-write_results_csv <- function (synth_data_spine_ls, output_dir_1L_chr = ".") 
+write_results_to_csv <- function (synth_data_spine_ls, output_dir_1L_chr = ".") 
 {
     measurements_tb <- tibble::tibble(timepoint_nms_chr = synth_data_spine_ls$timepoint_nms_chr, 
         nbr_obs_dbl = synth_data_spine_ls$nbr_obs_dbl)

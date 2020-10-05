@@ -1,8 +1,7 @@
 reorder_tbs_for_target_cors <- function(tbs_ls,
-                                       corr_dbl,
-                                       corr_var_chr,
-                                       id_var_to_rm_1L_chr = NA_character_
-                                       ){
+                                        corr_dbl,
+                                        corr_var_chr,
+                                        id_var_to_rm_1L_chr = NA_character_){
   n_fup_dbl <- nrow(tbs_ls[[2]])
   corr_mat <- matrix(corr_dbl, ncol = 2, nrow = 2)
   diag(corr_mat) <- 1

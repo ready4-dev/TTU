@@ -1,13 +1,12 @@
-#' Add Assessment of Quality of Life health utility dimension scoring equations
-#' @description add_aqol_dim_scrg_eqs() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life health utility dimension scoring equations. Function argument unscored_aqol_tb specifies the object to be updated. The function returns Unscored Assessment of Quality of Life health utility (a tibble).
-#' @param unscored_aqol_tb Unscored Assessment of Quality of Life health utility (a tibble)
-#' @return Unscored Assessment of Quality of Life health utility (a tibble)
-#' @rdname add_aqol_dim_scrg_eqs
+#' Add Assessment of Quality of Life Six Dimension adolescent dimension scoring equations
+#' @description add_aqol6d_adol_dim_scrg_eqs() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life six dimension adolescent dimension scoring equations. Function argument unscored_aqol_tb specifies the object to be updated. The function returns Unscored Assessment of Quality of Life (a tibble).
+#' @param unscored_aqol_tb Unscored Assessment of Quality of Life (a tibble)
+#' @return Unscored Assessment of Quality of Life (a tibble)
+#' @rdname add_aqol6d_adol_dim_scrg_eqs
 #' @export 
 #' @importFrom rlang parse_expr
 #' @importFrom Hmisc label
-#' @keywords internal
-add_aqol_dim_scrg_eqs <- function (unscored_aqol_tb) 
+add_aqol6d_adol_dim_scrg_eqs <- function (unscored_aqol_tb) 
 {
     data("adol_dim_scalg_eqs_lup", package = "FBaqol", envir = environment())
     for (var in adol_dim_scalg_eqs_lup$Dim_scal) {
@@ -20,26 +19,26 @@ add_aqol_dim_scrg_eqs <- function (unscored_aqol_tb)
     }
     return(unscored_aqol_tb)
 }
-#' Add Assessment of Quality of Life health utility items tibbles
-#' @description add_aqol_items_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life health utility items tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Updated tibbles (a list).
-#' @param tbs_ls Tibbles (a list)
-#' @param aqol_items_props_tbs_ls Assessment of Quality of Life health utility items props tibbles (a list)
+#' Add Assessment of Quality of Life Six Dimension items to Assessment of Quality of Life Six Dimension tibbles
+#' @description add_aqol6d_items_to_aqol6d_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life six dimension items to assessment of quality of life six dimension tibbles list. Function argument aqol6d_tbs_ls specifies the object to be updated. The function returns Updated Assessment of Quality of Life Six Dimension tibbles (a list).
+#' @param aqol6d_tbs_ls Assessment of Quality of Life Six Dimension tibbles (a list)
+#' @param aqol_items_props_tbs_ls Assessment of Quality of Life items props tibbles (a list)
 #' @param prefix_chr Prefix (a character vector)
-#' @param aqol_tots_var_nms_chr Assessment of Quality of Life health utility tots var names (a character vector)
+#' @param aqol_tots_var_nms_chr Assessment of Quality of Life totals var names (a character vector)
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
 #' @param scaling_cnst_dbl Scaling cnst (a double vector), Default: 5
-#' @return Updated tibbles (a list)
-#' @rdname add_aqol_items_tbs_ls
+#' @return Updated Assessment of Quality of Life Six Dimension tibbles (a list)
+#' @rdname add_aqol6d_items_to_aqol6d_tbs_ls
 #' @export 
 #' @importFrom purrr map2 map reduce map_int
 #' @importFrom dplyr select mutate arrange left_join starts_with everything
 #' @importFrom simstudy defData genData
 #' @importFrom rlang sym
 #' @importFrom tibble rowid_to_column
-add_aqol_items_tbs_ls <- function (tbs_ls, aqol_items_props_tbs_ls, prefix_chr, aqol_tots_var_nms_chr, 
-    id_var_nm_1L_chr = "fkClientID", scaling_cnst_dbl = 5) 
+add_aqol6d_items_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, aqol_items_props_tbs_ls, prefix_chr, 
+    aqol_tots_var_nms_chr, id_var_nm_1L_chr = "fkClientID", scaling_cnst_dbl = 5) 
 {
-    updated_tbs_ls <- purrr::map2(tbs_ls, aqol_items_props_tbs_ls, 
+    updated_aqol6d_tbs_ls <- purrr::map2(aqol6d_tbs_ls, aqol_items_props_tbs_ls, 
         ~{
             nbr_obs_1L_int <- nrow(.x) * scaling_cnst_dbl
             transposed_items_props_tb <- .y %>% dplyr::select(-Question) %>% 
@@ -56,7 +55,7 @@ add_aqol_items_tbs_ls <- function (tbs_ls, aqol_items_props_tbs_ls, prefix_chr, 
                 dplyr::select(-id) %>% dplyr::mutate(`:=`(!!rlang::sym(unname(aqol_tots_var_nms_chr["cumulative"])), 
                 rowSums(., na.rm = T))) %>% dplyr::arrange(!!rlang::sym(unname(aqol_tots_var_nms_chr["cumulative"]))) %>% 
                 tibble::rowid_to_column("id")
-            items_tb <- items_tb %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6d(items_tb, 
+            items_tb <- items_tb %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6dU(items_tb, 
                 prefix_1L_chr = prefix_chr["aqol_item"], id_var_nm_1L_chr = "id"))
             .x <- .x %>% dplyr::mutate(id = purrr::map_int(aqol6d_total_w, 
                 ~which.min(abs(items_tb$aqol6dU - .x)))) %>% 
@@ -70,46 +69,21 @@ add_aqol_items_tbs_ls <- function (tbs_ls, aqol_items_props_tbs_ls, prefix_chr, 
                   dplyr::everything())
             updated_tb
         })
-    return(updated_tbs_ls)
+    return(updated_aqol6d_tbs_ls)
 }
-#' Add Assessment of Quality of Life health utility scores tibbles
-#' @description add_aqol_scores_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life health utility scores tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
-#' @param tbs_ls Tibbles (a list)
-#' @param means_dbl Means (a double vector)
-#' @param sds_dbl Sds (a double vector)
-#' @param corr_dbl Corr (a double vector)
-#' @return Tibbles (a list)
-#' @rdname add_aqol_scores_tbs_ls
-#' @export 
-#' @importFrom purrr pmap map_dbl
-#' @importFrom faux rnorm_pre
-#' @importFrom dplyr pull mutate
-#' @importFrom tidyselect all_of
-add_aqol_scores_tbs_ls <- function (tbs_ls, means_dbl, sds_dbl, corr_dbl) 
-{
-    tbs_ls <- purrr::pmap(list(tbs_ls, means_dbl, sds_dbl), ~{
-        aqol_score_dbl <- faux::rnorm_pre(..1 %>% dplyr::pull(aqol6d_total_w), 
-            mu = ..2, sd = ..3, r = corr_dbl)
-        aqol_score_dbl <- aqol_score_dbl %>% purrr::map_dbl(~min(round(.x), 
-            99) %>% max(20))
-        ..1 %>% dplyr::mutate(aqol6d_total_c = tidyselect::all_of(aqol_score_dbl))
-    })
-    return(tbs_ls)
-}
-#' Add aqol6dU to Assessment of Quality of Life Six Dimension health utility items tibble
-#' @description add_aqol6dU_to_aqol6d_items_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol6du to assessment of quality of life six dimension health utility items tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns an Assessment of Quality of Life Six Dimension health utility items (a tibble).
-#' @param aqol6d_items_tb Assessment of Quality of Life Six Dimension health utility items (a tibble)
-#' @param aqol6d_from_8d_coeffs_lup_tb Assessment of Quality of Life Six Dimension health utility from 8d coeffs lookup table (a tibble)
-#' @return an Assessment of Quality of Life Six Dimension health utility items (a tibble)
-#' @rdname add_aqol6dU_to_aqol6d_items_tb_tb
+#' Add Assessment of Quality of Life Six Dimension Health Utility to Assessment of Quality of Life Six Dimension items
+#' @description add_aqol6dU_to_aqol6d_items_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life six dimension health utility to assessment of quality of life six dimension items tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension items (a tibble).
+#' @param aqol6d_items_tb Assessment of Quality of Life Six Dimension items (a tibble)
+#' @param coeffs_lup_tb Coeffs lookup table (a tibble), Default: aqol6d_from_8d_coeffs_lup_tb
+#' @return Assessment of Quality of Life Six Dimension items (a tibble)
+#' @rdname add_aqol6dU_to_aqol6d_items_tb
 #' @export 
 #' @importFrom dplyr pull mutate
 #' @importFrom purrr map_dbl
-add_aqol6dU_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, aqol6d_from_8d_coeffs_lup_tb) 
+add_aqol6dU_to_aqol6d_items_tb <- function (aqol6d_items_tb, coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb) 
 {
-    coeff_dbl <- aqol6d_from_8d_coeffs_lup_tb[match(c(paste0("vD", 
-        1:6), "Constant"), aqol6d_from_8d_coeffs_lup_tb$var_name_chr), 
-        ] %>% dplyr::pull(coeff_dbl)
+    coeff_dbl <- coeffs_lup_tb[match(c(paste0("vD", 1:6), "Constant"), 
+        coeffs_lup_tb$var_name_chr), ] %>% dplyr::pull(coeff_dbl)
     aqol6d_items_tb <- aqol6d_items_tb %>% dplyr::mutate(aqol6dU = coeff_dbl[1] * 
         vD1 + coeff_dbl[2] * vD2 + coeff_dbl[3] * vD3 + coeff_dbl[4] * 
         vD4 + coeff_dbl[5] * vD5 + coeff_dbl[6] * vD6 + coeff_dbl[7]) %>% 
@@ -117,68 +91,68 @@ add_aqol6dU_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, aqol6d_from_8d_c
             1, 1, .x)))
     return(aqol6d_items_tb)
 }
-#' Add aqol6dU to tibbles
-#' @description add_aqol6dU_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add aqol6du to tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
-#' @param tbs_ls Tibbles (a list)
+#' Add Assessment of Quality of Life Six Dimension Health Utility to Assessment of Quality of Life Six Dimension tibbles
+#' @description add_aqol6dU_to_aqol6d_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life six dimension health utility to assessment of quality of life six dimension tibbles list. Function argument aqol6d_tbs_ls specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension tibbles (a list).
+#' @param aqol6d_tbs_ls Assessment of Quality of Life Six Dimension tibbles (a list)
 #' @param prefix_1L_chr Prefix (a character vector of length one), Default: 'aqol6d_q'
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one)
-#' @return Tibbles (a list)
-#' @rdname add_aqol6dU_to_tbs_ls
+#' @return Assessment of Quality of Life Six Dimension tibbles (a list)
+#' @rdname add_aqol6dU_to_aqol6d_tbs_ls
 #' @export 
 #' @importFrom purrr map
 #' @importFrom dplyr mutate
-add_aqol6dU_to_tbs_ls <- function (tbs_ls, prefix_1L_chr = "aqol6d_q", id_var_nm_1L_chr) 
+add_aqol6dU_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, prefix_1L_chr = "aqol6d_q", id_var_nm_1L_chr) 
 {
-    tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6d(.x, 
+    aqol6d_tbs_ls <- aqol6d_tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6dU(.x, 
         prefix_1L_chr = prefix_1L_chr, id_var_nm_1L_chr = id_var_nm_1L_chr)))
-    return(tbs_ls)
+    return(aqol6d_tbs_ls)
 }
-#' Add corrs and uts to tibbles
-#' @description add_corrs_and_uts_to_tbs_ls_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add corrs and uts to tibbles list list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
-#' @param tbs_ls Tibbles (a list)
-#' @param aqol_scores_pars_ls Assessment of Quality of Life health utility scores parameters (a list)
-#' @param aqol_items_props_tbs_ls Assessment of Quality of Life health utility items props tibbles (a list)
+#' Add corrs and utilities to Assessment of Quality of Life Six Dimension tibbles
+#' @description add_corrs_and_uts_to_aqol6d_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add corrs and utilities to assessment of quality of life six dimension tibbles list. Function argument aqol6d_tbs_ls specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension tibbles (a list).
+#' @param aqol6d_tbs_ls Assessment of Quality of Life Six Dimension tibbles (a list)
+#' @param aqol_scores_pars_ls Assessment of Quality of Life scores parameters (a list)
+#' @param aqol_items_props_tbs_ls Assessment of Quality of Life items props tibbles (a list)
 #' @param temporal_corrs_ls Temporal corrs (a list)
 #' @param prefix_chr Prefix (a character vector)
-#' @param aqol_tots_var_nms_chr Assessment of Quality of Life health utility tots var names (a character vector)
+#' @param aqol_tots_var_nms_chr Assessment of Quality of Life totals var names (a character vector)
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
-#' @return Tibbles (a list)
-#' @rdname add_corrs_and_uts_to_tbs_ls_ls
+#' @return Assessment of Quality of Life Six Dimension tibbles (a list)
+#' @rdname add_corrs_and_uts_to_aqol6d_tbs_ls
 #' @export 
 
-add_corrs_and_uts_to_tbs_ls_ls <- function (tbs_ls, aqol_scores_pars_ls, aqol_items_props_tbs_ls, 
+add_corrs_and_uts_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, aqol_scores_pars_ls, aqol_items_props_tbs_ls, 
     temporal_corrs_ls, prefix_chr, aqol_tots_var_nms_chr, id_var_nm_1L_chr = "fkClientID") 
 {
-    tbs_ls <- reorder_tbs_for_target_cors(tbs_ls, corr_dbl = temporal_corrs_ls[[1]], 
-        corr_var_chr = rep(names(temporal_corrs_ls)[1], 2), id_var_to_rm_1L_chr = "id") %>% 
-        add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]], 
-            id_var_nm_1L_chr = id_var_nm_1L_chr)
-    tbs_ls <- tbs_ls %>% add_aqol_items_tbs_ls(aqol_items_props_tbs_ls = aqol_items_props_tbs_ls, 
+    aqol6d_tbs_ls <- reorder_tbs_for_target_cors(aqol6d_tbs_ls, 
+        corr_dbl = temporal_corrs_ls[[1]], corr_var_chr = rep(names(temporal_corrs_ls)[1], 
+            2), id_var_to_rm_1L_chr = "id") %>% add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]], 
+        id_var_nm_1L_chr = id_var_nm_1L_chr)
+    aqol6d_tbs_ls <- aqol6d_tbs_ls %>% add_aqol6d_items_to_aqol6d_tbs_ls(aqol_items_props_tbs_ls = aqol_items_props_tbs_ls, 
         prefix_chr = prefix_chr, aqol_tots_var_nms_chr = aqol_tots_var_nms_chr, 
         id_var_nm_1L_chr = id_var_nm_1L_chr)
-    return(tbs_ls)
+    return(aqol6d_tbs_ls)
 }
-#' Add dmn disu to Assessment of Quality of Life Six Dimension health utility items tibble
-#' @description add_dmn_disu_to_aqol6d_items_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dmn disu to assessment of quality of life six dimension health utility items tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns an Assessment of Quality of Life Six Dimension health utility items (a tibble).
-#' @param aqol6d_items_tb Assessment of Quality of Life Six Dimension health utility items (a tibble)
+#' Add dimension disvalue to Assessment of Quality of Life Six Dimension items
+#' @description add_dim_disv_to_aqol6d_items_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dimension disvalue to assessment of quality of life six dimension items tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension items (a tibble).
+#' @param aqol6d_items_tb Assessment of Quality of Life Six Dimension items (a tibble)
 #' @param domain_items_ls Domain items (a list)
 #' @param domains_chr Domains (a character vector)
-#' @param aqol6d_dim_sclg_cnt_lup_tb Assessment of Quality of Life Six Dimension health utility dimension sclg constant lookup table (a tibble), Default: aqol6d_dim_sclg_cnt_lup_tb
-#' @param aqol6d_adult_itm_wrst_wghts_lup_tb Assessment of Quality of Life Six Dimension health utility adult itm wrst wghts lookup table (a tibble), Default: aqol6d_adult_itm_wrst_wghts_lup_tb
-#' @return an Assessment of Quality of Life Six Dimension health utility items (a tibble)
-#' @rdname add_dmn_disu_to_aqol6d_items_tb_tb
+#' @param dim_sclg_con_lup_tb Dimension sclg constant lookup table (a tibble), Default: aqol6d_dim_sclg_con_lup_tb
+#' @param itm_wrst_wghts_lup_tb Itm wrst wghts lookup table (a tibble), Default: aqol6d_adult_itm_wrst_wghts_lup_tb
+#' @return Assessment of Quality of Life Six Dimension items (a tibble)
+#' @rdname add_dim_disv_to_aqol6d_items_tb
 #' @export 
 #' @importFrom purrr reduce
 #' @importFrom dplyr select mutate
 #' @importFrom rlang sym exec
-add_dmn_disu_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_ls, domains_chr, aqol6d_dim_sclg_cnt_lup_tb = aqol6d_dim_sclg_cnt_lup_tb, 
-    aqol6d_adult_itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb) 
+add_dim_disv_to_aqol6d_items_tb <- function (aqol6d_items_tb, domain_items_ls, domains_chr, dim_sclg_con_lup_tb = aqol6d_dim_sclg_con_lup_tb, 
+    itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb) 
 {
     aqol6d_disu_fn_ls <- make_aqol6d_fns_ls(domain_items_ls)
     kD_dbl <- make_dim_sclg_cons_dbl(domains_chr = domains_chr, 
-        dim_sclg_constant_lup_tb = aqol6d_dim_sclg_cnt_lup_tb)
+        dim_sclg_con_lup_tb = dim_sclg_con_lup_tb)
     w_dbl_ls <- make_item_wrst_wghts_ls_ls(domain_items_ls = domain_items_ls, 
-        itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb)
+        itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)
     aqol6d_items_tb <- purrr::reduce(1:length(domain_items_ls), 
         .init = aqol6d_items_tb, ~{
             args_ls <- list(dvQs_tb = .x %>% dplyr::select(domain_items_ls[[.y]] %>% 
@@ -188,16 +162,16 @@ add_dmn_disu_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_ls
         })
     return(aqol6d_items_tb)
 }
-#' Add dmn scores to Assessment of Quality of Life Six Dimension health utility items tibble
-#' @description add_dmn_scores_to_aqol6d_items_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dmn scores to assessment of quality of life six dimension health utility items tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns an Assessment of Quality of Life Six Dimension health utility items (a tibble).
-#' @param aqol6d_items_tb Assessment of Quality of Life Six Dimension health utility items (a tibble)
+#' Add dimension scores to Assessment of Quality of Life Six Dimension items
+#' @description add_dim_scores_to_aqol6d_items_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dimension scores to assessment of quality of life six dimension items tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension items (a tibble).
+#' @param aqol6d_items_tb Assessment of Quality of Life Six Dimension items (a tibble)
 #' @param domain_items_ls Domain items (a list)
-#' @return an Assessment of Quality of Life Six Dimension health utility items (a tibble)
-#' @rdname add_dmn_scores_to_aqol6d_items_tb_tb
+#' @return Assessment of Quality of Life Six Dimension items (a tibble)
+#' @rdname add_dim_scores_to_aqol6d_items_tb
 #' @export 
 #' @importFrom dplyr mutate across rename_with
 #' @importFrom stringr str_replace
-add_dmn_scores_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_ls) 
+add_dim_scores_to_aqol6d_items_tb <- function (aqol6d_items_tb, domain_items_ls) 
 {
     aqol6d_items_tb <- aqol6d_items_tb %>% dplyr::mutate(dplyr::across(paste0("dvD", 
         1:length(domain_items_ls)), .fns = list(vD = ~1 - .x), 
@@ -205,37 +179,18 @@ add_dmn_scores_to_aqol6d_items_tb_tb <- function (aqol6d_items_tb, domain_items_
         "vD_dvD", "vD"))
     return(aqol6d_items_tb)
 }
-#' Add domain unwtd tots
-#' @description add_domain_unwtd_tots_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add domain unwtd tots tibble. Function argument items_tb specifies the object to be updated. The function returns Items and domains (a tibble).
-#' @param items_tb Items (a tibble)
-#' @param domain_items_ls Domain items (a list)
-#' @param domain_pfx_1L_chr Domain prefix (a character vector of length one)
-#' @return Items and domains (a tibble)
-#' @rdname add_domain_unwtd_tots_tb
-#' @export 
-#' @importFrom purrr reduce
-#' @importFrom dplyr mutate select
-#' @importFrom rlang sym
-add_domain_unwtd_tots_tb <- function (items_tb, domain_items_ls, domain_pfx_1L_chr) 
-{
-    items_and_domains_tb <- purrr::reduce(1:length(domain_items_ls), 
-        .init = items_tb, ~.x %>% dplyr::mutate(`:=`(!!rlang::sym(paste0(domain_pfx_1L_chr, 
-            names(domain_items_ls)[.y])), rowSums(dplyr::select(., 
-            domain_items_ls[[.y]])))))
-    return(items_and_domains_tb)
-}
-#' Add itm disu to Assessment of Quality of Life Six Dimension health utility itms tibble
-#' @description add_itm_disu_to_aqol6d_itms_tb_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add itm disu to assessment of quality of life six dimension health utility itms tibble tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns an Assessment of Quality of Life Six Dimension health utility items (a tibble).
-#' @param aqol6d_items_tb Assessment of Quality of Life Six Dimension health utility items (a tibble)
+#' Add itm disvalue to Assessment of Quality of Life Six Dimension itms
+#' @description add_itm_disv_to_aqol6d_itms_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add itm disvalue to assessment of quality of life six dimension itms tibble. Function argument aqol6d_items_tb specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension items (a tibble).
+#' @param aqol6d_items_tb Assessment of Quality of Life Six Dimension items (a tibble)
 #' @param disvalues_lup_tb Disvalues lookup table (a tibble), Default: aqol6d_adult_disv_lup_tb
 #' @param pfx_1L_chr Prefix (a character vector of length one)
-#' @return an Assessment of Quality of Life Six Dimension health utility items (a tibble)
-#' @rdname add_itm_disu_to_aqol6d_itms_tb_tb
+#' @return Assessment of Quality of Life Six Dimension items (a tibble)
+#' @rdname add_itm_disv_to_aqol6d_itms_tb
 #' @export 
 #' @importFrom purrr reduce
 #' @importFrom dplyr mutate across
 #' @importFrom tidyselect all_of
-add_itm_disu_to_aqol6d_itms_tb_tb <- function (aqol6d_items_tb, disvalues_lup_tb = aqol6d_adult_disv_lup_tb, 
+add_itm_disv_to_aqol6d_itms_tb <- function (aqol6d_items_tb, disvalues_lup_tb = aqol6d_adult_disv_lup_tb, 
     pfx_1L_chr) 
 {
     aqol6d_items_tb <- purrr::reduce(1:20, .init = aqol6d_items_tb, 
@@ -247,11 +202,11 @@ add_itm_disu_to_aqol6d_itms_tb_tb <- function (aqol6d_items_tb, disvalues_lup_tb
         })
     return(aqol6d_items_tb)
 }
-#' Add labels to Assessment of Quality of Life Six Dimension health utility
-#' @description add_labels_to_aqol6d_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add labels to assessment of quality of life six dimension health utility tibble. Function argument aqol6d_tb specifies the object to be updated. The function returns an Assessment of Quality of Life Six Dimension health utility (a tibble).
-#' @param aqol6d_tb Assessment of Quality of Life Six Dimension health utility (a tibble)
+#' Add labels to Assessment of Quality of Life Six Dimension
+#' @description add_labels_to_aqol6d_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add labels to assessment of quality of life six dimension tibble. Function argument aqol6d_tb specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension (a tibble).
+#' @param aqol6d_tb Assessment of Quality of Life Six Dimension (a tibble)
 #' @param labels_chr Labels (a character vector), Default: 'NA'
-#' @return an Assessment of Quality of Life Six Dimension health utility (a tibble)
+#' @return Assessment of Quality of Life Six Dimension (a tibble)
 #' @rdname add_labels_to_aqol6d_tb
 #' @export 
 #' @importFrom Hmisc label
@@ -285,8 +240,8 @@ add_labels_to_aqol6d_tb <- function (aqol6d_tb, labels_chr = NA_character_)
         names(labels_chr))])
     return(aqol6d_tb)
 }
-#' Add uids to tibbles
-#' @description add_uids_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add uids to tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
+#' Add unique identifiers to tibbles
+#' @description add_uids_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add unique identifiers to tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 #' @param tbs_ls Tibbles (a list)
 #' @param prefix_1L_chr Prefix (a character vector of length one)
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
@@ -311,4 +266,23 @@ add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkCli
                   "")) %>% as.numeric())
     }) %>% stats::setNames(names(tbs_ls))
     return(tbs_ls)
+}
+#' Add unwtd dimension totals
+#' @description add_unwtd_dim_tots() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add unwtd dimension totals. Function argument items_tb specifies the object to be updated. The function returns Items and domains (a tibble).
+#' @param items_tb Items (a tibble)
+#' @param domain_items_ls Domain items (a list)
+#' @param domain_pfx_1L_chr Domain prefix (a character vector of length one)
+#' @return Items and domains (a tibble)
+#' @rdname add_unwtd_dim_tots
+#' @export 
+#' @importFrom purrr reduce
+#' @importFrom dplyr mutate select
+#' @importFrom rlang sym
+add_unwtd_dim_tots <- function (items_tb, domain_items_ls, domain_pfx_1L_chr) 
+{
+    items_and_domains_tb <- purrr::reduce(1:length(domain_items_ls), 
+        .init = items_tb, ~.x %>% dplyr::mutate(`:=`(!!rlang::sym(paste0(domain_pfx_1L_chr, 
+            names(domain_items_ls)[.y])), rowSums(dplyr::select(., 
+            domain_items_ls[[.y]])))))
+    return(items_and_domains_tb)
 }

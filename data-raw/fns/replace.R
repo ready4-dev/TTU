@@ -1,4 +1,4 @@
-replace_var_vals_with_missing_tbl <- function(tbl,
+replace_with_missing_vals <- function(tbl,
                                               synth_data_spine_ls,
                                               idx_int){
   missing_def_tbl <- purrr::reduce(1:length(synth_data_spine_ls$var_names_chr),

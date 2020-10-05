@@ -23,7 +23,7 @@ make_aqol6d_adol_pop_tbs_ls <- function(aqol_items_props_tbs_ls,
   domain_pfx_1L_chr <- prefix_chr[["domain_pfx_1L_chr"]]
   aqol6d_adol_pop_tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls,
                                                      series_names_chr = series_names_chr) %>%
-    add_corrs_and_uts_to_tbs_ls_ls(aqol_scores_pars_ls = aqol_scores_pars_ls,
+    add_corrs_and_uts_to_aqol6d_tbs_ls(aqol_scores_pars_ls = aqol_scores_pars_ls,
                                    aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,
                                    temporal_corrs_ls = temporal_corrs_ls,
                                    prefix_chr = prefix_chr,
@@ -31,7 +31,7 @@ make_aqol6d_adol_pop_tbs_ls <- function(aqol_items_props_tbs_ls,
                                    id_var_nm_1L_chr = id_var_nm_1L_chr) %>%
     purrr::map(~make_domain_items_ls(domain_qs_lup_tb = aqol6d_domain_qs_lup_tb,
                                      item_pfx_1L_chr = item_pfx_1L_chr) %>%
-                 add_domain_unwtd_tots_tb(items_tb = .x,
+                 add_unwtd_dim_tots(items_tb = .x,
                                           domain_pfx_1L_chr = domain_pfx_1L_chr) %>%
                  add_labels_to_aqol6d_tb()) %>%
     purrr::map(~ .x %>%
@@ -73,48 +73,39 @@ make_complete_props_tbs_ls <- function(raw_props_tbs_ls,
 make_correlated_data_tb <- function(synth_data_spine_ls,
                                     synth_data_idx_1L_dbl = 1){
   correlated_data_tb <- simstudy::genCorData(synth_data_spine_ls$nbr_obs_dbl[synth_data_idx_1L_dbl], mu = synth_data_spine_ls$means_ls[[synth_data_idx_1L_dbl]], sigma = synth_data_spine_ls$sds_ls[[synth_data_idx_1L_dbl]],corMatrix = make_pdef_corr_mat_mat(synth_data_spine_ls$corr_mat_ls[[synth_data_idx_1L_dbl]]),cnames = synth_data_spine_ls$var_names_chr)  %>%
-    force_min_max_and_int_cnstrs_tb(var_names_chr = synth_data_spine_ls$var_names_chr,
+    force_min_max_and_int_cnstrs(var_names_chr = synth_data_spine_ls$var_names_chr,
                                     min_max_ls = synth_data_spine_ls$min_max_ls,
                                     discrete_lgl = synth_data_spine_ls$discrete_lgl)
 
   return(correlated_data_tb)
 }
-make_corstars_tbl_xx <- function(x, method=c("pearson", "spearman"), removeTriangle=c("upper", "lower"),
-                                 result=c("none", "html", "latex")){
-  #Compute correlation matrix
-  #require(Hmisc)
+make_corstars_tbl_xx <- function(x, # MAYBE CHANGE TO A PRINT FN
+                                 method = c("pearson", "spearman"),
+                                 removeTriangle = c("upper", "lower"),
+                                 result = c("none", "html", "latex")){
   x <- as.matrix(x)
   correlation_matrix <- Hmisc::rcorr(x, type=method[1])
-  R <- correlation_matrix$r # Matrix of correlation coeficients
-  p <- correlation_matrix$P # Matrix of p-value
-
-  ## Define notions for significance levels; spacing is important.
-  mystars <- ifelse(p < .0001, "****", ifelse(p < .001, "*** ", ifelse(p < .01, "**  ", ifelse(p < .05, "*   ", "    "))))
-
-  ## trunctuate the correlation matrix to two decimal
+  R <- correlation_matrix$r
+  p <- correlation_matrix$P
+  mystars <- ifelse(p < .0001, "****",
+                    ifelse(p < .001, "*** ",
+                           ifelse(p < .01, "**  ",
+                                  ifelse(p < .05, "*   ", "    "))))
   R <- format(round(cbind(rep(-1.11, ncol(x)), R), 2))[,-1]
-
-  ## build a new matrix that includes the correlations with their apropriate stars
   Rnew <- matrix(paste(R, mystars, sep=""), ncol=ncol(x))
   diag(Rnew) <- paste(diag(R), " ", sep="")
   rownames(Rnew) <- colnames(x)
   colnames(Rnew) <- paste(colnames(x), "", sep="")
-
-  ## remove upper triangle of correlation matrix
   if(removeTriangle[1]=="upper"){
     Rnew <- as.matrix(Rnew)
     Rnew[upper.tri(Rnew, diag = TRUE)] <- ""
     Rnew <- as.data.frame(Rnew)
   }
-
-  ## remove lower triangle of correlation matrix
   else if(removeTriangle[1]=="lower"){
     Rnew <- as.matrix(Rnew)
     Rnew[lower.tri(Rnew, diag = TRUE)] <- ""
     Rnew <- as.data.frame(Rnew)
   }
-
-  ## remove last column and return the correlation matrix
   Rnew <- cbind(Rnew[1:length(Rnew)-1])
   if (result[1]=="none") return(Rnew)
   else{
@@ -136,9 +127,9 @@ make_domain_items_ls <- function(domain_qs_lup_tb,
 
 }
 make_dim_sclg_cons_dbl <- function(domains_chr,
-                                   dim_sclg_constant_lup_tb){
+                                   dim_sclg_con_lup_tb){
   dim_sclg_cons_dbl <- purrr::map_dbl(domains_chr,
-                                      ~ ready4fun::get_from_lup_obj(dim_sclg_constant_lup_tb,
+                                      ~ ready4fun::get_from_lup_obj(dim_sclg_con_lup_tb,
                                                                     match_var_nm_1L_chr = "Dimension_chr",
                                                                     match_value_xx = .x,
                                                                     target_var_nm_1L_chr = "Constant_dbl",
@@ -176,7 +167,7 @@ make_synth_series_tbs_ls <- function(synth_data_spine_ls,
   synth_series_tbs_ls <- 1:length(series_names_chr) %>%
     purrr::map(~make_correlated_data_tb(synth_data_spine_ls = synth_data_spine_ls,
                                         synth_data_idx_1L_dbl = .x) %>%
-                 replace_var_vals_with_missing_tbl(synth_data_spine_ls = synth_data_spine_ls,
+                 replace_with_missing_vals(synth_data_spine_ls = synth_data_spine_ls,
                                                    idx_int = .x)) %>%
     stats::setNames(series_names_chr)
   return(synth_series_tbs_ls)

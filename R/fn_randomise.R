@@ -1,16 +1,16 @@
-#' Randomise ptl fup
-#' @description randomise_ptl_fup_fct() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise ptl fup factor. The function is called for its side effects and does not return a value.
+#' Randomise change in factor var
+#' @description randomise_change_in_fct_var() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise change in factor var. The function is called for its side effects and does not return a value.
 #' @param vector_fct Vector (a factor)
 #' @param prob_unchanged_dbl Prob unchanged (a double vector)
 #' @return NULL
-#' @rdname randomise_ptl_fup_fct
+#' @rdname randomise_change_in_fct_var
 #' @export 
 #' @importFrom purrr map2_dbl
-randomise_ptl_fup_fct <- function (vector_fct, prob_unchanged_dbl) 
+randomise_change_in_fct_var <- function (vector_fct, prob_unchanged_dbl) 
 {
     labels_chr <- levels(vector_fct)
     levels_dbl <- 1:length(labels_chr)
-    unchanged_lgl <- runif(length(vector_fct)) > 0.5
+    unchanged_lgl <- runif(length(vector_fct)) > prob_unchanged_dbl
     vector_fct %>% purrr::map2_dbl(unchanged_lgl, ~{
         ifelse(.y, .x, sample(levels_dbl[levels_dbl != .x], 1))
     }) %>% factor(levels = levels_dbl, labels = labels_chr)

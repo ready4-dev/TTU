@@ -1,36 +1,36 @@
-add_aqol6dU_to_aqol6d_items_tb_tb <- function(aqol6d_items_tb,
-                                              aqol6d_from_8d_coeffs_lup_tb){
-  coeff_dbl <- aqol6d_from_8d_coeffs_lup_tb[match(c(paste0("vD",1:6),"Constant"),
-                                                  aqol6d_from_8d_coeffs_lup_tb$var_name_chr),] %>%
+add_aqol6dU_to_aqol6d_items_tb <- function(aqol6d_items_tb,
+                                           coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb){
+  coeff_dbl <- coeffs_lup_tb[match(c(paste0("vD",1:6),"Constant"),
+                                   coeffs_lup_tb$var_name_chr),] %>%
     dplyr::pull(coeff_dbl)
   aqol6d_items_tb <- aqol6d_items_tb %>%
     dplyr::mutate(aqol6dU = coeff_dbl[1]*vD1 + coeff_dbl[2]*vD2 + coeff_dbl[3]*vD3 + coeff_dbl[4]*vD4 +coeff_dbl[5]* vD5 +coeff_dbl[6]*vD6 + coeff_dbl[7]) %>%
     dplyr::mutate(aqol6dU = aqol6dU %>% purrr::map_dbl(~ifelse(.x>1,1,.x)))
   return(aqol6d_items_tb)
 }
-add_aqol6dU_to_tbs_ls <- function(tbs_ls, ## FUNCTION NEEDS TO BE FIXED - UNFINISHED
+add_aqol6dU_to_aqol6d_tbs_ls <- function(aqol6d_tbs_ls, ## FUNCTION NEEDS TO BE FIXED - UNFINISHED
                                   prefix_1L_chr =  "aqol6d_q",
                                   id_var_nm_1L_chr){
-  tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6d(.x, prefix_1L_chr = prefix_1L_chr,id_var_nm_1L_chr = id_var_nm_1L_chr)))
-  return(tbs_ls)
+  aqol6d_tbs_ls <- aqol6d_tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6dU(.x, prefix_1L_chr = prefix_1L_chr,id_var_nm_1L_chr = id_var_nm_1L_chr)))
+  return(aqol6d_tbs_ls)
 }
-add_aqol_dim_scrg_eqs <- function(unscored_aqol_tb){
+add_aqol6d_adol_dim_scrg_eqs <- function(unscored_aqol_tb){
   data("adol_dim_scalg_eqs_lup", package = "FBaqol", envir = environment())
   for(var in adol_dim_scalg_eqs_lup$Dim_scal) {
-    expression=adol_dim_scalg_eqs_lup[adol_dim_scalg_eqs_lup$Dim_scal==var,]$Equ
+    expression = adol_dim_scalg_eqs_lup[adol_dim_scalg_eqs_lup$Dim_scal==var,]$Equ
     unscored_aqol_tb <- unscored_aqol_tb %>%
       mutate(!! var := !!rlang::parse_expr(expression))
     Hmisc::label(unscored_aqol_tb[,var])=adol_dim_scalg_eqs_lup[adol_dim_scalg_eqs_lup$Dim_scal==var,]$Label
   }
   return(unscored_aqol_tb)
 }
-add_aqol_items_tbs_ls <- function(tbs_ls, # Needs to convert study data.
+add_aqol6d_items_to_aqol6d_tbs_ls <- function(aqol6d_tbs_ls, # Needs to convert study data.
                                   aqol_items_props_tbs_ls,
                                   prefix_chr,
                                   aqol_tots_var_nms_chr,
                                   id_var_nm_1L_chr = "fkClientID",
                                   scaling_cnst_dbl = 5){
-  updated_tbs_ls <- purrr::map2(tbs_ls,
+  updated_aqol6d_tbs_ls <- purrr::map2(aqol6d_tbs_ls,
                                 aqol_items_props_tbs_ls,
                                 ~ {
                                   nbr_obs_1L_int <- nrow(.x) * scaling_cnst_dbl
@@ -48,7 +48,7 @@ add_aqol_items_tbs_ls <- function(tbs_ls, # Needs to convert study data.
                                     dplyr::arrange(!!rlang::sym(unname(aqol_tots_var_nms_chr["cumulative"]))) %>%
                                     tibble::rowid_to_column("id")
                                   items_tb <- items_tb  %>%
-                                    dplyr::mutate(aqol6dU = calculate_adol_aqol6d(items_tb,
+                                    dplyr::mutate(aqol6dU = calculate_adol_aqol6dU(items_tb,
                                                                                   prefix_1L_chr = prefix_chr["aqol_item"],
                                                                                   id_var_nm_1L_chr = "id"))
                                   .x <- .x %>% dplyr::mutate(id = purrr::map_int(aqol6d_total_w,
@@ -65,57 +65,57 @@ add_aqol_items_tbs_ls <- function(tbs_ls, # Needs to convert study data.
                                                   dplyr::everything())
                                   updated_tb
                                 })
-  return(updated_tbs_ls)
+  return(updated_aqol6d_tbs_ls)
 }
-add_aqol_scores_tbs_ls <- function(tbs_ls,
-                                   means_dbl,
-                                   sds_dbl,
-                                   corr_dbl){
-  tbs_ls <- purrr::pmap(list(tbs_ls,
-                             means_dbl,
-                             sds_dbl),
-                        ~ {
-                          aqol_score_dbl <- faux::rnorm_pre(..1 %>% dplyr::pull(aqol6d_total_w),
-                                                            mu = ..2,
-                                                            sd = ..3,
-                                                            r = corr_dbl)
-                          aqol_score_dbl <- aqol_score_dbl %>% purrr::map_dbl(~min(round(.x),99) %>% max(20))
-                          ..1 %>% dplyr::mutate(aqol6d_total_c = tidyselect::all_of(aqol_score_dbl))
-                        }
-  )
-  return(tbs_ls)
-}
-add_corrs_and_uts_to_tbs_ls_ls <- function(tbs_ls, # Based on: https://stats.stackexchange.com/questions/134164/how-to-rearrange-2d-data-to-get-given-correlation
+# add_aqol_scores_aqol6d_tbs_ls <- function(aqol6d_tbs_ls,
+#                                    means_dbl,
+#                                    sds_dbl,
+#                                    corr_dbl){
+#   aqol6d_tbs_ls <- purrr::pmap(list(aqol6d_tbs_ls,
+#                              means_dbl,
+#                              sds_dbl),
+#                         ~ {
+#                           aqol_score_dbl <- faux::rnorm_pre(..1 %>% dplyr::pull(aqol6d_total_w),
+#                                                             mu = ..2,
+#                                                             sd = ..3,
+#                                                             r = corr_dbl)
+#                           aqol_score_dbl <- aqol_score_dbl %>% purrr::map_dbl(~min(round(.x),99) %>% max(20))
+#                           ..1 %>% dplyr::mutate(aqol6d_total_c = tidyselect::all_of(aqol_score_dbl))
+#                         }
+#   )
+#   return(aqol6d_tbs_ls)
+# }
+add_corrs_and_uts_to_aqol6d_tbs_ls <- function(aqol6d_tbs_ls, # Based on: https://stats.stackexchange.com/questions/134164/how-to-rearrange-2d-data-to-get-given-correlation
                                            aqol_scores_pars_ls,
                                            aqol_items_props_tbs_ls,
                                            temporal_corrs_ls,
                                            prefix_chr,
                                            aqol_tots_var_nms_chr,
                                            id_var_nm_1L_chr = "fkClientID"){
-  tbs_ls <- reorder_tbs_for_target_cors(tbs_ls,
+  aqol6d_tbs_ls <- reorder_tbs_for_target_cors(aqol6d_tbs_ls,
                                        corr_dbl = temporal_corrs_ls[[1]],
                                        corr_var_chr = rep(names(temporal_corrs_ls)[1],2),
                                        id_var_to_rm_1L_chr = "id"
                                        ) %>%
     add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]],
                        id_var_nm_1L_chr = id_var_nm_1L_chr)
-  tbs_ls <- tbs_ls  %>%
-    add_aqol_items_tbs_ls(aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,
+  aqol6d_tbs_ls <- aqol6d_tbs_ls  %>%
+    add_aqol6d_items_to_aqol6d_tbs_ls(aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,
                           prefix_chr = prefix_chr,
                           aqol_tots_var_nms_chr = aqol_tots_var_nms_chr,
                           id_var_nm_1L_chr = id_var_nm_1L_chr)
-  return(tbs_ls)
+  return(aqol6d_tbs_ls)
 }
-add_dmn_disu_to_aqol6d_items_tb_tb <- function(aqol6d_items_tb,
+add_dim_disv_to_aqol6d_items_tb <- function(aqol6d_items_tb,
                                                domain_items_ls,
                                                domains_chr,
-                                               aqol6d_dim_sclg_cnt_lup_tb = aqol6d_dim_sclg_cnt_lup_tb,
-                                               aqol6d_adult_itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb){
+                                               dim_sclg_con_lup_tb = aqol6d_dim_sclg_con_lup_tb,
+                                               itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb){
   aqol6d_disu_fn_ls <- make_aqol6d_fns_ls(domain_items_ls)
   kD_dbl <- make_dim_sclg_cons_dbl(domains_chr = domains_chr,
-                                   dim_sclg_constant_lup_tb = aqol6d_dim_sclg_cnt_lup_tb)
+                                   dim_sclg_con_lup_tb = dim_sclg_con_lup_tb)
   w_dbl_ls <- make_item_wrst_wghts_ls_ls(domain_items_ls = domain_items_ls,
-                                         itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb)
+                                         itm_wrst_wghts_lup_tb = itm_wrst_wghts_lup_tb)
   aqol6d_items_tb <- purrr::reduce(1:length(domain_items_ls),
                                    .init = aqol6d_items_tb,
                                    ~{
@@ -130,7 +130,7 @@ add_dmn_disu_to_aqol6d_items_tb_tb <- function(aqol6d_items_tb,
                                    })
   return(aqol6d_items_tb)
 }
-add_dmn_scores_to_aqol6d_items_tb_tb <- function(aqol6d_items_tb,
+add_dim_scores_to_aqol6d_items_tb <- function(aqol6d_items_tb,
                                                  domain_items_ls){
   aqol6d_items_tb <- aqol6d_items_tb %>% dplyr::mutate(dplyr::across(paste0("dvD",1:length(domain_items_ls)),
                                                                      .fns = list(vD = ~ 1-.x
@@ -139,14 +139,14 @@ add_dmn_scores_to_aqol6d_items_tb_tb <- function(aqol6d_items_tb,
   )) %>% dplyr::rename_with(~stringr::str_replace(.,"vD_dvD", "vD"))
   return(aqol6d_items_tb)
 }
-add_domain_unwtd_tots_tb <- function(items_tb,
+add_unwtd_dim_tots <- function(items_tb,
                                      domain_items_ls,
                                      domain_pfx_1L_chr){
   items_and_domains_tb <- purrr::reduce(1:length(domain_items_ls), .init = items_tb,
                                         ~ .x %>% dplyr::mutate(!!rlang::sym(paste0(domain_pfx_1L_chr,names(domain_items_ls)[.y])) := rowSums(dplyr::select(.,domain_items_ls[[.y]]))))
   return(items_and_domains_tb)
 }
-add_itm_disu_to_aqol6d_itms_tb_tb <- function(aqol6d_items_tb,
+add_itm_disv_to_aqol6d_itms_tb <- function(aqol6d_items_tb,
                                               disvalues_lup_tb = aqol6d_adult_disv_lup_tb,
                                               pfx_1L_chr){
   aqol6d_items_tb <- purrr::reduce(1:20,

@@ -1,4 +1,4 @@
-write_results_csv <- function(synth_data_spine_ls,
+write_results_to_csv <- function(synth_data_spine_ls,
                               output_dir_1L_chr = "."){
   measurements_tb <- tibble::tibble(timepoint_nms_chr = synth_data_spine_ls$timepoint_nms_chr,
                                     nbr_obs_dbl = synth_data_spine_ls$nbr_obs_dbl)

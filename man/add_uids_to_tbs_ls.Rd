@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_add.R
 \name{add_uids_to_tbs_ls}
 \alias{add_uids_to_tbs_ls}
-\title{Add uids to tibbles}
+\title{Add unique identifiers to tibbles}
 \usage{
 add_uids_to_tbs_ls(tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkClientID")
 }
@@ -17,5 +17,5 @@ add_uids_to_tbs_ls(tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkClientID")
 Tibbles (a list)
 }
 \description{
-add_uids_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add uids to tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
+add_uids_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add unique identifiers to tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 }

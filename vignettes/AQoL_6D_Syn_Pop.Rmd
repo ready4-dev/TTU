@@ -104,7 +104,7 @@ aqol_scores_pars_ls <- list(means_dbl = c(44.5,40.6),
 Next we write a copy of these input parameters as CSV files.
 
 ```{r}
-write_results_csv(synth_data_spine_ls,
+write_results_to_csv(synth_data_spine_ls,
                   output_dir_1L_chr = "../Data") # Change destination
 ```
 
@@ -176,10 +176,10 @@ fup_part_2_tb <- bl_part_2_tb %>%
   dplyr::filter(fkClientID %in% aqol6d_adol_pop_tbs_ls$fup_outcomes_tb$fkClientID) %>%
   dplyr::mutate(round = 2,
                 d_age = d_age + 0.25,
-                Region = Region %>% randomise_ptl_fup_fct(0.98),
-                d_studying_working = d_studying_working %>% randomise_ptl_fup_fct(0.9),
-                c_p_diag_s = c_p_diag_s %>% randomise_ptl_fup_fct(0.90),
-                c_clinical_staging_s = c_clinical_staging_s %>% randomise_ptl_fup_fct(0.8),
+                Region = Region %>% randomise_change_in_fct_var(0.98),
+                d_studying_working = d_studying_working %>% randomise_change_in_fct_var(0.9),
+                c_p_diag_s = c_p_diag_s %>% randomise_change_in_fct_var(0.90),
+                c_clinical_staging_s = c_clinical_staging_s %>% randomise_change_in_fct_var(0.8),
                 c_sofas = c_sofas + rnorm(643,4.7,10) %>% 
                          purrr::map_dbl(~min(.x,100) %>% max(0)))
 

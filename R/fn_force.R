@@ -1,16 +1,16 @@
-#' Force min max and integer vector cnstrs
-#' @description force_min_max_and_int_cnstrs_tb() is a Force function that checks if a specified local or global environmental condition is met and if not, updates the specified environment to comply with the condition. Specifically, this function implements an algorithm to force min max and integer vector cnstrs tibble. The function returns Table (a tibble).
+#' Force min max and integer vector constraints
+#' @description force_min_max_and_int_cnstrs() is a Force function that checks if a specified local or global environmental condition is met and if not, updates the specified environment to comply with the condition. Specifically, this function implements an algorithm to force min max and integer vector constraints. The function returns Table (a tibble).
 #' @param tbl_tb Table (a tibble)
 #' @param var_names_chr Var names (a character vector)
 #' @param min_max_ls Min max (a list)
 #' @param discrete_lgl Discrete (a logical vector)
 #' @return Table (a tibble)
-#' @rdname force_min_max_and_int_cnstrs_tb
+#' @rdname force_min_max_and_int_cnstrs
 #' @export 
 #' @importFrom purrr reduce map_dbl
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
-force_min_max_and_int_cnstrs_tb <- function (tbl_tb, var_names_chr, min_max_ls, discrete_lgl) 
+force_min_max_and_int_cnstrs <- function (tbl_tb, var_names_chr, min_max_ls, discrete_lgl) 
 {
     tbl_tb <- purrr::reduce(1:length(var_names_chr), .init = tbl_tb, 
         ~{

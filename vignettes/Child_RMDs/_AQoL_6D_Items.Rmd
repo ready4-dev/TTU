@@ -47,7 +47,7 @@ legend <- ggplot2::ggplot(dta, ggplot2::aes_string(i)) +
           ggplot2::labs(x=labelx,y="Percentage", fill = "Data collection")  +
           ggplot2::theme(legend.position="bottom") +
           ggplot2::scale_fill_manual(values=c("#de2d26","#fc9272")) 
-legend <- extract_g_legend_1L_chr(legend)
+legend <- extract_guide_box_lgd(legend)
 
 #arrange all plot together
 gridExtra::grid.arrange(ggpubr::ggarrange(plotlist=plot,nrow=5,ncol=4) ,
@@ -86,7 +86,7 @@ legend<-ggplot2::ggplot(aqol6d_tb, ggplot2::aes_string(i)) +
       ggplot2::scale_fill_manual(values=c("#de2d26","#fc9272")) 
 
 
-legend <- extract_g_legend_1L_chr(legend)
+legend <- extract_guide_box_lgd(legend)
 
 gridExtra::grid.arrange(ggpubr::ggarrange(plotlist=plot,nrow=3,ncol=2) ,
              legend, nrow=2,heights=c(10, 1))  

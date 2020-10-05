@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_aqol6d_fns_ls}
 \alias{make_aqol6d_fns_ls}
-\title{Make Assessment of Quality of Life Six Dimension health utility functions}
+\title{Make Assessment of Quality of Life Six Dimension functions}
 \usage{
 make_aqol6d_fns_ls(domain_items_ls)
 }
@@ -10,8 +10,8 @@ make_aqol6d_fns_ls(domain_items_ls)
 \item{domain_items_ls}{Domain items (a list)}
 }
 \value{
-an Assessment of Quality of Life Six Dimension health utility disu (a list of functions)
+Assessment of Quality of Life Six Dimension disu (a list of functions)
 }
 \description{
-make_aqol6d_fns_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension health utility functions list. The function returns an Assessment of Quality of Life Six Dimension health utility disu (a list of functions).
+make_aqol6d_fns_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension functions list. The function returns Assessment of Quality of Life Six Dimension disu (a list of functions).
 }

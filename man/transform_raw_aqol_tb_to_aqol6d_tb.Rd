@@ -2,16 +2,16 @@
 % Please edit documentation in R/fn_transform.R
 \name{transform_raw_aqol_tb_to_aqol6d_tb}
 \alias{transform_raw_aqol_tb_to_aqol6d_tb}
-\title{Transform raw Assessment of Quality of Life health utility tibble to Assessment of Quality of Life Six Dimension health utility}
+\title{Transform raw Assessment of Quality of Life tibble to Assessment of Quality of Life Six Dimension}
 \usage{
 transform_raw_aqol_tb_to_aqol6d_tb(raw_aqol_tb)
 }
 \arguments{
-\item{raw_aqol_tb}{Raw Assessment of Quality of Life health utility (a tibble)}
+\item{raw_aqol_tb}{Raw Assessment of Quality of Life (a tibble)}
 }
 \value{
-an Assessment of Quality of Life Six Dimension health utility (a tibble)
+Assessment of Quality of Life Six Dimension (a tibble)
 }
 \description{
-transform_raw_aqol_tb_to_aqol6d_tb() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform raw assessment of quality of life health utility tibble to assessment of quality of life six dimension health utility tibble. Function argument raw_aqol_tb specifies the object to be updated. The function returns an Assessment of Quality of Life Six Dimension health utility (a tibble).
+transform_raw_aqol_tb_to_aqol6d_tb() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform raw assessment of quality of life tibble to assessment of quality of life six dimension tibble. Function argument raw_aqol_tb specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension (a tibble).
 }

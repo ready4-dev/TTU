@@ -2,14 +2,13 @@
 % Please edit documentation in R/fn_make.R
 \name{make_adol_aqol6d_disv_lup}
 \alias{make_adol_aqol6d_disv_lup}
-\title{Make adolescent Assessment of Quality of Life Six Dimension health utility disvalue}
+\title{Make adolescent Assessment of Quality of Life Six Dimension disvalue}
 \usage{
 make_adol_aqol6d_disv_lup()
 }
 \value{
-Adolescent Assessment of Quality of Life Six Dimension health utility disvalue (a lookup table)
+Adolescent Assessment of Quality of Life Six Dimension disvalue (a lookup table)
 }
 \description{
-make_adol_aqol6d_disv_lup() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make adolescent assessment of quality of life six dimension health utility disvalue lookup table. The function returns Adolescent Assessment of Quality of Life Six Dimension health utility disvalue (a lookup table).
+make_adol_aqol6d_disv_lup() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make adolescent assessment of quality of life six dimension disvalue lookup table. The function returns Adolescent Assessment of Quality of Life Six Dimension disvalue (a lookup table).
 }
-\keyword{internal}

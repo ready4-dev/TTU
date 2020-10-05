@@ -45,7 +45,7 @@ for(i in colNames){
 #           ggplot2::scale_y_continuous(labels = scales::percent) +
 #           ggplot2::scale_fill_manual(values=c("#de2d26","#fc9272")) 
 # 
-# legend <- extract_g_legend_1L_chr(legend)
+# legend <- extract_guide_box_lgd(legend)
 # gridExtra::grid.arrange(ggpubr::ggarrange(plotlist=plot,nrow=3,ncol=2) ,
 #              legend, nrow=2,heights=c(10, 1))  
 

@@ -9,11 +9,11 @@ reference:
   - aqol6d_adult_disv_lup_tb
   - aqol6d_adult_itm_wrst_wghts_lup_tb
   - aqol6d_adult_vldn_pop_with_STATA_scores_tb
-  - aqol6d_dim_sclg_cnt_lup_tb
+  - aqol6d_dim_sclg_con_lup_tb
   - aqol6d_domain_qs_lup_tb
   - aqol6d_from_8d_coeffs_lup_tb
   - BL_correlations_tb
-  - dim_sclg_constant_lup_tb
+  - dim_sclg_con_lup_tb
   - disutilities_lup_tb
   - disvalues_lup_tb
   - domain_qs_lup_tb
@@ -26,28 +26,28 @@ reference:
   - var_summ_res_tb
 - title: "Functions"
 - contents:
-  - add_aqol_items_tbs_ls
+  - add_aqol6d_items_to_tbs_ls
   - add_aqol_scores_tbs_ls
-  - add_aqol6dU_to_aqol6d_items_tb_tb
+  - add_aqol6dU_to_aqol6d_items_tb
   - add_aqol6dU_to_tbs_ls
   - add_corrs_and_uts_to_tbs_ls_ls
-  - add_dmn_disu_to_aqol6d_items_tb_tb
-  - add_dmn_scores_to_aqol6d_items_tb_tb
-  - add_domain_unwtd_tots_tb
-  - add_itm_disu_to_aqol6d_itms_tb_tb
+  - add_dim_disv_to_aqol6d_items_tb
+  - add_dim_scores_to_aqol6d_items_tb
+  - add_unwtd_dim_tots
+  - add_itm_disv_to_aqol6d_itms_tb
   - add_labels_to_aqol6d_tb
   - add_uids_to_tbs_ls
-  - calculate_aqol6d_d1_disu_dbl
-  - calculate_aqol6d_d2_disu_dbl
-  - calculate_aqol6d_d3_disu_dbl
-  - calculate_aqol6d_d4_disu_dbl
-  - calculate_aqol6d_d5_disu_dbl
-  - calculate_aqol6d_d6_disu_dbl
-  - calculate_aqol6dU_dbl
-  - extract_g_legend_1L_chr
-  - force_min_max_and_int_cnstrs_tb
+  - calculate_aqol6d_dim_1_disv
+  - calculate_aqol6d_dim_2_disv
+  - calculate_aqol6d_dim_3_disv
+  - calculate_aqol6d_dim_4_disv
+  - calculate_aqol6d_dim_5_disv
+  - calculate_aqol6d_dim_6_disv
+  - calculate_adult_aqol6dU
+  - extract_guide_box_lgd
+  - force_min_max_and_int_cnstrs
   - force_vec_to_sum_to_int
-  - impute_miss_itms_in_aqol6d_items_tb_tb
+  - impute_adult_aqol6d_items_tb
   - make_aqol6d_fns_ls
   - make_aqol6d_items_tb
   - make_correlated_data_tb
@@ -58,9 +58,9 @@ reference:
   - make_pdef_corr_mat_mat
   - make_synth_series_tbs_ls
   - make_vec_with_sum_of_int
-  - randomise_ptl_fup_fct
+  - randomise_change_in_fct_var
   - reorder_tbs_for_target_cors
-  - replace_var_vals_with_missing_tbl
+  - replace_with_missing_vals
   - scramble_xx
   - transform_raw_aqol_tb_to_aqol6d_tb
-  - write_results_csv
+  - write_results_to_csv

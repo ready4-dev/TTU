@@ -23,7 +23,7 @@ force_vec_to_sum_to_int <- function(vec_int,
   }
   return(vec_int)
 }
-force_min_max_and_int_cnstrs_tb <- function(tbl_tb,
+force_min_max_and_int_cnstrs <- function(tbl_tb,
                                             var_names_chr,
                                             min_max_ls,
                                             discrete_lgl){

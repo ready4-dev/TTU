@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_aqol6d_adol_pop_tbs_ls}
 \alias{make_aqol6d_adol_pop_tbs_ls}
-\title{Make Assessment of Quality of Life Six Dimension health utility adolescent pop tibbles}
+\title{Make Assessment of Quality of Life Six Dimension adolescent pop tibbles}
 \usage{
 make_aqol6d_adol_pop_tbs_ls(
   aqol_items_props_tbs_ls,
@@ -16,9 +16,9 @@ make_aqol6d_adol_pop_tbs_ls(
 )
 }
 \arguments{
-\item{aqol_items_props_tbs_ls}{Assessment of Quality of Life health utility items props tibbles (a list)}
+\item{aqol_items_props_tbs_ls}{Assessment of Quality of Life items props tibbles (a list)}
 
-\item{aqol_scores_pars_ls}{Assessment of Quality of Life health utility scores parameters (a list)}
+\item{aqol_scores_pars_ls}{Assessment of Quality of Life scores parameters (a list)}
 
 \item{series_names_chr}{Series names (a character vector)}
 
@@ -31,9 +31,8 @@ make_aqol6d_adol_pop_tbs_ls(
 \item{prefix_chr}{Prefix (a character vector), Default: c(uid = "Participant_", aqol_item = "aqol6d_q", domain_pfx_1L_chr = "aqol6d_subtotal_w_")}
 }
 \value{
-an Assessment of Quality of Life Six Dimension health utility adolescent pop tibbles (a list)
+Assessment of Quality of Life Six Dimension adolescent pop tibbles (a list)
 }
 \description{
-make_aqol6d_adol_pop_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension health utility adolescent pop tibbles list. The function returns an Assessment of Quality of Life Six Dimension health utility adolescent pop tibbles (a list).
+make_aqol6d_adol_pop_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension adolescent pop tibbles list. The function returns Assessment of Quality of Life Six Dimension adolescent pop tibbles (a list).
 }
-\keyword{internal}
