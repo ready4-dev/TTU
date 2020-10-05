@@ -43,9 +43,9 @@ make_aqol6d_adol_pop_tbs_ls <- function(aqol_items_props_tbs_ls,
   return(aqol6d_adol_pop_tbs_ls)
 }
 make_aqol6d_fns_ls <- function(domain_items_ls){
-  aqol6d_disu_fn_ls <- paste0("calculate_aqol6d_d",
+  aqol6d_disu_fn_ls <- paste0("calculate_aqol6d_dim_",
                               1:length(domain_items_ls),
-                              "_disu_dbl") %>%
+                              "_disv") %>%
     purrr::map(~rlang::sym(.x))
   return(aqol6d_disu_fn_ls)
 }
