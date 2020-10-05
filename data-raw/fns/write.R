@@ -12,7 +12,7 @@ write_results_to_csv <- function(synth_data_spine_ls,
                                                       timepoint_nms_chr = synth_data_spine_ls$timepoint_nms_chr[idx_dbl]) %>%
                                         dplyr::select(timepoint_nms_chr,var_names_chr,dplyr::everything())
                                     })
-  corr_tb_ls <- synth_data_spine_ls$corr_mat_ls %>% purrr::map(~tibble::as_tibble(.x) %>% stats::setNames(synth_data_spine_ls$var_names_chr) %>% dplyr::mutate(var_names_chr = synth_data_spine_ls$var_names_chr) %>%
+  cor_tb_ls <- synth_data_spine_ls$cor_mat_ls %>% purrr::map(~tibble::as_tibble(.x) %>% stats::setNames(synth_data_spine_ls$var_names_chr) %>% dplyr::mutate(var_names_chr = synth_data_spine_ls$var_names_chr) %>%
                                                                  dplyr::select(var_names_chr,dplyr::everything())) %>%
     stats::setNames(paste0(synth_data_spine_ls$timepoint_nms_chr,"_correlations_tb"))
   var_class_pars_tb <- synth_data_spine_ls[7:9] %>% tibble::as.tibble() %>% dplyr::mutate(min_dbl = purrr::map_dbl(min_max_ls,~.x[1]),
@@ -20,7 +20,7 @@ write_results_to_csv <- function(synth_data_spine_ls,
     dplyr::select(var_names_chr,dplyr::everything(),-min_max_ls)
   output_ls <- list(measurements_tb = measurements_tb,
                     var_summ_res_tb = var_summ_res_tb,
-                    var_class_pars_tb = var_class_pars_tb) %>% append(corr_tb_ls)
+                    var_class_pars_tb = var_class_pars_tb) %>% append(cor_tb_ls)
   purrr::walk2(output_ls, names(output_ls), ~ write.csv(.x, file = paste0(output_dir_1L_chr,"/",.y,".csv"),
                                                         row.names = F))
 }

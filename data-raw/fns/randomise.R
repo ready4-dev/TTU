@@ -1,4 +1,4 @@
-randomise_change_in_fct_var <- function(vector_fct,
+randomise_changes_in_fct_levs <- function(vector_fct,
                                         prob_unchanged_dbl){ # Hacky and prone to failure if generalised
   labels_chr <- levels(vector_fct)
   levels_dbl <- 1:length(labels_chr)

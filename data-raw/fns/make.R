@@ -13,7 +13,7 @@ make_aqol6d_adol_pop_tbs_ls <- function(aqol_items_props_tbs_ls,
                                         aqol_scores_pars_ls,
                                         series_names_chr,
                                         synth_data_spine_ls,
-                                        temporal_corrs_ls,
+                                        temporal_cors_ls,
                                         id_var_nm_1L_chr = "fkClientID",
                                         prefix_chr =  c(uid = "Participant_",
                                                         aqol_item = "aqol6d_q",
@@ -23,9 +23,9 @@ make_aqol6d_adol_pop_tbs_ls <- function(aqol_items_props_tbs_ls,
   domain_pfx_1L_chr <- prefix_chr[["domain_pfx_1L_chr"]]
   aqol6d_adol_pop_tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls,
                                                      series_names_chr = series_names_chr) %>%
-    add_corrs_and_uts_to_aqol6d_tbs_ls(aqol_scores_pars_ls = aqol_scores_pars_ls,
+    add_cors_and_uts_to_aqol6d_tbs_ls(aqol_scores_pars_ls = aqol_scores_pars_ls,
                                    aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,
-                                   temporal_corrs_ls = temporal_corrs_ls,
+                                   temporal_cors_ls = temporal_cors_ls,
                                    prefix_chr = prefix_chr,
                                    aqol_tots_var_nms_chr = synth_data_spine_ls$aqol_tots_var_nms_chr,
                                    id_var_nm_1L_chr = id_var_nm_1L_chr) %>%
@@ -72,7 +72,7 @@ make_complete_props_tbs_ls <- function(raw_props_tbs_ls,
 }
 make_correlated_data_tb <- function(synth_data_spine_ls,
                                     synth_data_idx_1L_dbl = 1){
-  correlated_data_tb <- simstudy::genCorData(synth_data_spine_ls$nbr_obs_dbl[synth_data_idx_1L_dbl], mu = synth_data_spine_ls$means_ls[[synth_data_idx_1L_dbl]], sigma = synth_data_spine_ls$sds_ls[[synth_data_idx_1L_dbl]],corMatrix = make_pdef_corr_mat_mat(synth_data_spine_ls$corr_mat_ls[[synth_data_idx_1L_dbl]]),cnames = synth_data_spine_ls$var_names_chr)  %>%
+  correlated_data_tb <- simstudy::genCorData(synth_data_spine_ls$nbr_obs_dbl[synth_data_idx_1L_dbl], mu = synth_data_spine_ls$means_ls[[synth_data_idx_1L_dbl]], sigma = synth_data_spine_ls$sds_ls[[synth_data_idx_1L_dbl]],corMatrix = make_pdef_cor_mat_mat(synth_data_spine_ls$cor_mat_ls[[synth_data_idx_1L_dbl]]),cnames = synth_data_spine_ls$var_names_chr)  %>%
     force_min_max_and_int_cnstrs(var_names_chr = synth_data_spine_ls$var_names_chr,
                                     min_max_ls = synth_data_spine_ls$min_max_ls,
                                     discrete_lgl = synth_data_spine_ls$discrete_lgl)
@@ -152,13 +152,13 @@ make_item_wrst_wghts_ls_ls <- function(domain_items_ls,
   return(item_wrst_wghts_ls_ls)
 }
 
-make_pdef_corr_mat_mat <- function(lower_diag_mat){
-  pdef_corr_mat <- lower_diag_mat %>%
+make_pdef_cor_mat_mat <- function(lower_diag_mat){
+  pdef_cor_mat <- lower_diag_mat %>%
     Matrix::forceSymmetric(uplo="L")  %>% as.matrix()
-  if(!matrixcalc::is.positive.definite(pdef_corr_mat)){
-    pdef_corr_mat <- psych::cor.smooth(pdef_corr_mat)
+  if(!matrixcalc::is.positive.definite(pdef_cor_mat)){
+    pdef_cor_mat <- psych::cor.smooth(pdef_cor_mat)
   }
-  return(pdef_corr_mat)
+  return(pdef_cor_mat)
 }
 
 make_synth_series_tbs_ls <- function(synth_data_spine_ls,

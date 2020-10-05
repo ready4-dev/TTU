@@ -5,7 +5,6 @@
 #' @rdname make_adol_aqol6d_disv_lup
 #' @export 
 #' @importFrom dplyr mutate case_when
-#' @keywords internal
 make_adol_aqol6d_disv_lup <- function () 
 {
     adol_aqol6d_disv_lup <- aqol6d_adult_disv_lup_tb %>% dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr == 
@@ -20,7 +19,7 @@ make_adol_aqol6d_disv_lup <- function ()
 #' @param aqol_scores_pars_ls Assessment of Quality of Life scores parameters (a list)
 #' @param series_names_chr Series names (a character vector)
 #' @param synth_data_spine_ls Synth data spine (a list)
-#' @param temporal_corrs_ls Temporal corrs (a list)
+#' @param temporal_cors_ls Temporal correlations (a list)
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
 #' @param prefix_chr Prefix (a character vector), Default: c(uid = "Participant_", aqol_item = "aqol6d_q", domain_pfx_1L_chr = "aqol6d_subtotal_w_")
 #' @return Assessment of Quality of Life Six Dimension adolescent pop tibbles (a list)
@@ -29,9 +28,8 @@ make_adol_aqol6d_disv_lup <- function ()
 #' @importFrom purrr map
 #' @importFrom dplyr select starts_with everything
 #' @importFrom rlang sym
-#' @keywords internal
 make_aqol6d_adol_pop_tbs_ls <- function (aqol_items_props_tbs_ls, aqol_scores_pars_ls, series_names_chr, 
-    synth_data_spine_ls, temporal_corrs_ls, id_var_nm_1L_chr = "fkClientID", 
+    synth_data_spine_ls, temporal_cors_ls, id_var_nm_1L_chr = "fkClientID", 
     prefix_chr = c(uid = "Participant_", aqol_item = "aqol6d_q", 
         domain_pfx_1L_chr = "aqol6d_subtotal_w_")) 
 {
@@ -39,8 +37,8 @@ make_aqol6d_adol_pop_tbs_ls <- function (aqol_items_props_tbs_ls, aqol_scores_pa
     uid_pfx_1L_chr <- prefix_chr[["uid"]]
     domain_pfx_1L_chr <- prefix_chr[["domain_pfx_1L_chr"]]
     aqol6d_adol_pop_tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls, 
-        series_names_chr = series_names_chr) %>% add_corrs_and_uts_to_aqol6d_tbs_ls(aqol_scores_pars_ls = aqol_scores_pars_ls, 
-        aqol_items_props_tbs_ls = aqol_items_props_tbs_ls, temporal_corrs_ls = temporal_corrs_ls, 
+        series_names_chr = series_names_chr) %>% add_cors_and_uts_to_aqol6d_tbs_ls(aqol_scores_pars_ls = aqol_scores_pars_ls, 
+        aqol_items_props_tbs_ls = aqol_items_props_tbs_ls, temporal_cors_ls = temporal_cors_ls, 
         prefix_chr = prefix_chr, aqol_tots_var_nms_chr = synth_data_spine_ls$aqol_tots_var_nms_chr, 
         id_var_nm_1L_chr = id_var_nm_1L_chr) %>% purrr::map(~make_domain_items_ls(domain_qs_lup_tb = aqol6d_domain_qs_lup_tb, 
         item_pfx_1L_chr = item_pfx_1L_chr) %>% add_unwtd_dim_tots(items_tb = .x, 
@@ -92,7 +90,6 @@ make_aqol6d_items_tb <- function (aqol_tb, old_pfx_1L_chr, new_pfx_1L_chr)
 #' @importFrom purrr map map2_dbl
 #' @importFrom dplyr mutate select mutate_if
 #' @importFrom rlang sym
-#' @keywords internal
 make_complete_props_tbs_ls <- function (raw_props_tbs_ls, question_var_nm_1L_chr = "Question") 
 {
     complete_props_tbs_ls <- raw_props_tbs_ls %>% purrr::map(~{
@@ -117,7 +114,7 @@ make_correlated_data_tb <- function (synth_data_spine_ls, synth_data_idx_1L_dbl 
     correlated_data_tb <- simstudy::genCorData(synth_data_spine_ls$nbr_obs_dbl[synth_data_idx_1L_dbl], 
         mu = synth_data_spine_ls$means_ls[[synth_data_idx_1L_dbl]], 
         sigma = synth_data_spine_ls$sds_ls[[synth_data_idx_1L_dbl]], 
-        corMatrix = make_pdef_corr_mat_mat(synth_data_spine_ls$corr_mat_ls[[synth_data_idx_1L_dbl]]), 
+        corMatrix = make_pdef_cor_mat_mat(synth_data_spine_ls$cor_mat_ls[[synth_data_idx_1L_dbl]]), 
         cnames = synth_data_spine_ls$var_names_chr) %>% force_min_max_and_int_cnstrs(var_names_chr = synth_data_spine_ls$var_names_chr, 
         min_max_ls = synth_data_spine_ls$min_max_ls, discrete_lgl = synth_data_spine_ls$discrete_lgl)
     return(correlated_data_tb)
@@ -220,23 +217,23 @@ make_item_wrst_wghts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb)
     })
     return(item_wrst_wghts_ls_ls)
 }
-#' Make pdef corr matrix
-#' @description make_pdef_corr_mat_mat() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make pdef corr matrix matrix. The function returns Pdef corr (a matrix).
+#' Make pdef correlation matrix
+#' @description make_pdef_cor_mat_mat() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make pdef correlation matrix matrix. The function returns Pdef correlation (a matrix).
 #' @param lower_diag_mat Lower diag (a matrix)
-#' @return Pdef corr (a matrix)
-#' @rdname make_pdef_corr_mat_mat
+#' @return Pdef correlation (a matrix)
+#' @rdname make_pdef_cor_mat_mat
 #' @export 
 #' @importFrom Matrix forceSymmetric
 #' @importFrom matrixcalc is.positive.definite
 #' @importFrom psych cor.smooth
-make_pdef_corr_mat_mat <- function (lower_diag_mat) 
+make_pdef_cor_mat_mat <- function (lower_diag_mat) 
 {
-    pdef_corr_mat <- lower_diag_mat %>% Matrix::forceSymmetric(uplo = "L") %>% 
+    pdef_cor_mat <- lower_diag_mat %>% Matrix::forceSymmetric(uplo = "L") %>% 
         as.matrix()
-    if (!matrixcalc::is.positive.definite(pdef_corr_mat)) {
-        pdef_corr_mat <- psych::cor.smooth(pdef_corr_mat)
+    if (!matrixcalc::is.positive.definite(pdef_cor_mat)) {
+        pdef_cor_mat <- psych::cor.smooth(pdef_cor_mat)
     }
-    return(pdef_corr_mat)
+    return(pdef_cor_mat)
 }
 #' Make synth series tibbles
 #' @description make_synth_series_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make synth series tibbles list. The function returns Synth series tibbles (a list).

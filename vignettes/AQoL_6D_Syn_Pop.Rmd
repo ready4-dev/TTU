@@ -64,9 +64,13 @@ aqol_items_props_tbs_ls <- list(bl_answer_props_tb = tibble::tribble(
     "Q20", 0.77, 0.21, 0.02, 100, NA_real_,NA_real_
   )) %>%
 make_complete_props_tbs_ls()
+```
+
+```{r}
 aqol_items_props_tbs_ls
 ```
-The next step of input parameters relate to the correlations between outcome variables and univariate distribution parameters for each of these variables.
+
+The next step is to specify the correlations between outcome variables.
 
 ```{r}
 corr_mat_ls <- list(matrix(c(1,-0.78,0.72,-0.67,-0.71,-0.65,-0.67,
@@ -83,6 +87,11 @@ corr_mat_ls <- list(matrix(c(1,-0.78,0.72,-0.67,-0.71,-0.65,-0.67,
                         NA,NA,NA,NA,1,0.68,0.59,
                         NA,NA,NA,NA,NA,1,0.52,
                         NA,NA,NA,NA,NA,NA,1),7,7)) 
+
+```
+
+Finally, we need to specify the univariate distribution parameters for each of the outcome variables.
+```{r}
 synth_data_spine_ls <- list(corr_mat_ls = corr_mat_ls,
                             nbr_obs_dbl = c(1068,643),
                             timepoint_nms_chr = c("BL","FUP"),
@@ -92,21 +101,24 @@ synth_data_spine_ls <- list(corr_mat_ls = corr_mat_ls,
                                          c(0.2,6.5,24.4,5.5,4.3,17.8,5.9)),
                            missing_ls = list(c(0,4,10,6,7,7,4),
                                              c(0,5,2,2,1,2,2)),
-                     min_max_ls = list(c(0.03,1),c(0,27),c(0,150),c(0,21),c(0,20),c(0,82),c(0,24)),
+                     min_max_ls = list(c(0.03,1),
+                                       c(0,27),
+                                       c(0,150),
+                                       c(0,21),
+                                       c(0,20),
+                                       c(0,82),
+                                       c(0,24)),
 discrete_lgl = c(F,rep(T,6)),
 var_names_chr = c("aqol6d_total_w","phq9_total","bads_total","gad7_total",
                      "oasis_total","scared_total","k6_total"),
-aqol_tots_var_nms_chr = c(cumulative = "aqol6d_total_c",weighted = "aqol6d_total_w")) 
+aqol_tots_var_nms_chr = c(cumulative = "aqol6d_total_c",
+                          weighted = "aqol6d_total_w")
+) 
 aqol_scores_pars_ls <- list(means_dbl = c(44.5,40.6), 
                            sds_dbl = c(9.9,9.8),
                            corr_dbl = -0.95)
 ```
-Next we write a copy of these input parameters as CSV files.
 
-```{r}
-write_results_to_csv(synth_data_spine_ls,
-                  output_dir_1L_chr = "../Data") # Change destination
-```
 
 ```{r, results='hide', message=FALSE}
 aqol6d_adol_pop_tbs_ls <- make_aqol6d_adol_pop_tbs_ls(aqol_items_props_tbs_ls = aqol_items_props_tbs_ls,
@@ -176,10 +188,10 @@ fup_part_2_tb <- bl_part_2_tb %>%
   dplyr::filter(fkClientID %in% aqol6d_adol_pop_tbs_ls$fup_outcomes_tb$fkClientID) %>%
   dplyr::mutate(round = 2,
                 d_age = d_age + 0.25,
-                Region = Region %>% randomise_change_in_fct_var(0.98),
-                d_studying_working = d_studying_working %>% randomise_change_in_fct_var(0.9),
-                c_p_diag_s = c_p_diag_s %>% randomise_change_in_fct_var(0.90),
-                c_clinical_staging_s = c_clinical_staging_s %>% randomise_change_in_fct_var(0.8),
+                Region = Region %>% randomise_changes_in_fct_levs(0.98),
+                d_studying_working = d_studying_working %>% randomise_changes_in_fct_levs(0.9),
+                c_p_diag_s = c_p_diag_s %>% randomise_changes_in_fct_levs(0.90),
+                c_clinical_staging_s = c_clinical_staging_s %>% randomise_changes_in_fct_levs(0.8),
                 c_sofas = c_sofas + rnorm(643,4.7,10) %>% 
                          purrr::map_dbl(~min(.x,100) %>% max(0)))
 
@@ -230,15 +242,23 @@ composite_tb <- dplyr::bind_rows(bl_tb,fup_tb) %>%
     
 ```
 
-```{r}
-if(!dir.exists("../Data cleaning"))
-  dir.create("../Data cleaning")
-if(!dir.exists("../Data cleaning/Data"))
-  dir.create("../Data cleaning/Data")
-saveRDS(composite_tb,"../Data cleaning/Data/Combined_cleaned_V2.rds") ## NEED TO CHANGE THIS BEFORE HANDING OVER
-```
+
+
 
 ```{r}
 composite_tb
+```
+
+Next we write a copy of these input parameters as CSV files.
+
+```{r}
+write_results_to_csv(synth_data_spine_ls,
+                  output_dir_1L_chr = "../Data") # Change destination
+```
+
+```{r}
+if(!dir.exists("Data"))
+  dir.create("Data")
+saveRDS(composite_tb,"Data/fake_pop.rds") ## NEED TO CHANGE THIS BEFORE HANDING OVER
 ```
 

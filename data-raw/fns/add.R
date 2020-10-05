@@ -70,7 +70,7 @@ add_aqol6d_items_to_aqol6d_tbs_ls <- function(aqol6d_tbs_ls, # Needs to convert 
 # add_aqol_scores_aqol6d_tbs_ls <- function(aqol6d_tbs_ls,
 #                                    means_dbl,
 #                                    sds_dbl,
-#                                    corr_dbl){
+#                                    cor_dbl){
 #   aqol6d_tbs_ls <- purrr::pmap(list(aqol6d_tbs_ls,
 #                              means_dbl,
 #                              sds_dbl),
@@ -78,23 +78,23 @@ add_aqol6d_items_to_aqol6d_tbs_ls <- function(aqol6d_tbs_ls, # Needs to convert 
 #                           aqol_score_dbl <- faux::rnorm_pre(..1 %>% dplyr::pull(aqol6d_total_w),
 #                                                             mu = ..2,
 #                                                             sd = ..3,
-#                                                             r = corr_dbl)
+#                                                             r = cor_dbl)
 #                           aqol_score_dbl <- aqol_score_dbl %>% purrr::map_dbl(~min(round(.x),99) %>% max(20))
 #                           ..1 %>% dplyr::mutate(aqol6d_total_c = tidyselect::all_of(aqol_score_dbl))
 #                         }
 #   )
 #   return(aqol6d_tbs_ls)
 # }
-add_corrs_and_uts_to_aqol6d_tbs_ls <- function(aqol6d_tbs_ls, # Based on: https://stats.stackexchange.com/questions/134164/how-to-rearrange-2d-data-to-get-given-correlation
+add_cors_and_uts_to_aqol6d_tbs_ls <- function(aqol6d_tbs_ls, # Based on: https://stats.stackexchange.com/questions/134164/how-to-rearrange-2d-data-to-get-given-correlation
                                            aqol_scores_pars_ls,
                                            aqol_items_props_tbs_ls,
-                                           temporal_corrs_ls,
+                                           temporal_cors_ls,
                                            prefix_chr,
                                            aqol_tots_var_nms_chr,
                                            id_var_nm_1L_chr = "fkClientID"){
   aqol6d_tbs_ls <- reorder_tbs_for_target_cors(aqol6d_tbs_ls,
-                                       corr_dbl = temporal_corrs_ls[[1]],
-                                       corr_var_chr = rep(names(temporal_corrs_ls)[1],2),
+                                       cor_dbl = temporal_cors_ls[[1]],
+                                       cor_var_chr = rep(names(temporal_cors_ls)[1],2),
                                        id_var_to_rm_1L_chr = "id"
                                        ) %>%
     add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]],

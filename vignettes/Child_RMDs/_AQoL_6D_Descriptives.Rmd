@@ -31,7 +31,7 @@ sessionInfo()
 # Import the data 
 
 ```{r}
-aqol6d_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS("../Data cleaning/Data/Combined_cleaned_V2.rds"))
+aqol6d_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS("../Data/fake_pop.rds"))
 nrow(aqol6d_tb)
 ```
 

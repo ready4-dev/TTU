@@ -9,7 +9,7 @@ make_aqol6d_adol_pop_tbs_ls(
   aqol_scores_pars_ls,
   series_names_chr,
   synth_data_spine_ls,
-  temporal_corrs_ls,
+  temporal_cors_ls,
   id_var_nm_1L_chr = "fkClientID",
   prefix_chr = c(uid = "Participant_", aqol_item = "aqol6d_q", domain_pfx_1L_chr =
     "aqol6d_subtotal_w_")
@@ -24,7 +24,7 @@ make_aqol6d_adol_pop_tbs_ls(
 
 \item{synth_data_spine_ls}{Synth data spine (a list)}
 
-\item{temporal_corrs_ls}{Temporal corrs (a list)}
+\item{temporal_cors_ls}{Temporal correlations (a list)}
 
 \item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
 
@@ -36,4 +36,3 @@ Assessment of Quality of Life Six Dimension adolescent pop tibbles (a list)
 \description{
 make_aqol6d_adol_pop_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension adolescent pop tibbles list. The function returns Assessment of Quality of Life Six Dimension adolescent pop tibbles (a list).
 }
-\keyword{internal}

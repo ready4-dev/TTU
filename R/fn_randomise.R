@@ -1,12 +1,12 @@
-#' Randomise change in factor var
-#' @description randomise_change_in_fct_var() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise change in factor var. The function is called for its side effects and does not return a value.
+#' Randomise changes in factor levels
+#' @description randomise_changes_in_fct_levs() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise changes in factor levels. The function is called for its side effects and does not return a value.
 #' @param vector_fct Vector (a factor)
 #' @param prob_unchanged_dbl Prob unchanged (a double vector)
 #' @return NULL
-#' @rdname randomise_change_in_fct_var
+#' @rdname randomise_changes_in_fct_levs
 #' @export 
 #' @importFrom purrr map2_dbl
-randomise_change_in_fct_var <- function (vector_fct, prob_unchanged_dbl) 
+randomise_changes_in_fct_levs <- function (vector_fct, prob_unchanged_dbl) 
 {
     labels_chr <- levels(vector_fct)
     levels_dbl <- 1:length(labels_chr)

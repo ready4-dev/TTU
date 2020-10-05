@@ -2,21 +2,21 @@
 % Please edit documentation in R/fn_reorder.R
 \name{reorder_tbs_for_target_cors}
 \alias{reorder_tbs_for_target_cors}
-\title{Reorder tibbles for target cors}
+\title{Reorder tibbles for target correlations}
 \usage{
 reorder_tbs_for_target_cors(
   tbs_ls,
-  corr_dbl,
-  corr_var_chr,
+  cor_dbl,
+  cor_var_chr,
   id_var_to_rm_1L_chr = NA_character_
 )
 }
 \arguments{
 \item{tbs_ls}{Tibbles (a list)}
 
-\item{corr_dbl}{Corr (a double vector)}
+\item{cor_dbl}{Correlation (a double vector)}
 
-\item{corr_var_chr}{Corr var (a character vector)}
+\item{cor_var_chr}{Correlation var (a character vector)}
 
 \item{id_var_to_rm_1L_chr}{Id var to rm (a character vector of length one), Default: 'NA'}
 }
@@ -24,5 +24,5 @@ reorder_tbs_for_target_cors(
 Tibbles (a list)
 }
 \description{
-reorder_tbs_for_target_cors() is a Reorder function that reorders an object to conform to a pre-specified schema. Specifically, this function implements an algorithm to reorder tibbles for target cors. The function returns Tibbles (a list).
+reorder_tbs_for_target_cors() is a Reorder function that reorders an object to conform to a pre-specified schema. Specifically, this function implements an algorithm to reorder tibbles for target correlations. The function returns Tibbles (a list).
 }

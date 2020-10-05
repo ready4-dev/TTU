@@ -55,7 +55,7 @@ reference:
   - make_pdef_corr_mat_mat
   - make_synth_series_tbs_ls
   - make_vec_with_sum_of_int
-  - randomise_change_in_fct_var
+  - randomise_changes_in_fct_levs
   - reorder_tbs_for_target_cors
   - replace_with_missing_vals
   - scramble_xx

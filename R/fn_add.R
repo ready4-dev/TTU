@@ -6,7 +6,6 @@
 #' @export 
 #' @importFrom rlang parse_expr
 #' @importFrom Hmisc label
-#' @keywords internal
 add_aqol6d_adol_dim_scrg_eqs <- function (unscored_aqol_tb) 
 {
     data("adol_dim_scalg_eqs_lup", package = "FBaqol", envir = environment())
@@ -36,7 +35,6 @@ add_aqol6d_adol_dim_scrg_eqs <- function (unscored_aqol_tb)
 #' @importFrom simstudy defData genData
 #' @importFrom rlang sym
 #' @importFrom tibble rowid_to_column
-#' @keywords internal
 add_aqol6d_items_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, aqol_items_props_tbs_ls, prefix_chr, 
     aqol_tots_var_nms_chr, id_var_nm_1L_chr = "fkClientID", scaling_cnst_dbl = 5) 
 {
@@ -103,32 +101,30 @@ add_aqol6dU_to_aqol6d_items_tb <- function (aqol6d_items_tb, coeffs_lup_tb = aqo
 #' @export 
 #' @importFrom purrr map
 #' @importFrom dplyr mutate
-#' @keywords internal
 add_aqol6dU_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, prefix_1L_chr = "aqol6d_q", id_var_nm_1L_chr) 
 {
     aqol6d_tbs_ls <- aqol6d_tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6dU(.x, 
         prefix_1L_chr = prefix_1L_chr, id_var_nm_1L_chr = id_var_nm_1L_chr)))
     return(aqol6d_tbs_ls)
 }
-#' Add corrs and utilities to Assessment of Quality of Life Six Dimension tibbles
-#' @description add_corrs_and_uts_to_aqol6d_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add corrs and utilities to assessment of quality of life six dimension tibbles list. Function argument aqol6d_tbs_ls specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension tibbles (a list).
+#' Add correlations and utilities to Assessment of Quality of Life Six Dimension tibbles
+#' @description add_cors_and_uts_to_aqol6d_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add correlations and utilities to assessment of quality of life six dimension tibbles list. Function argument aqol6d_tbs_ls specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension tibbles (a list).
 #' @param aqol6d_tbs_ls Assessment of Quality of Life Six Dimension tibbles (a list)
 #' @param aqol_scores_pars_ls Assessment of Quality of Life scores parameters (a list)
 #' @param aqol_items_props_tbs_ls Assessment of Quality of Life items props tibbles (a list)
-#' @param temporal_corrs_ls Temporal corrs (a list)
+#' @param temporal_cors_ls Temporal correlations (a list)
 #' @param prefix_chr Prefix (a character vector)
 #' @param aqol_tots_var_nms_chr Assessment of Quality of Life totals var names (a character vector)
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
 #' @return Assessment of Quality of Life Six Dimension tibbles (a list)
-#' @rdname add_corrs_and_uts_to_aqol6d_tbs_ls
+#' @rdname add_cors_and_uts_to_aqol6d_tbs_ls
 #' @export 
 
-#' @keywords internal
-add_corrs_and_uts_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, aqol_scores_pars_ls, aqol_items_props_tbs_ls, 
-    temporal_corrs_ls, prefix_chr, aqol_tots_var_nms_chr, id_var_nm_1L_chr = "fkClientID") 
+add_cors_and_uts_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, aqol_scores_pars_ls, aqol_items_props_tbs_ls, 
+    temporal_cors_ls, prefix_chr, aqol_tots_var_nms_chr, id_var_nm_1L_chr = "fkClientID") 
 {
     aqol6d_tbs_ls <- reorder_tbs_for_target_cors(aqol6d_tbs_ls, 
-        corr_dbl = temporal_corrs_ls[[1]], corr_var_chr = rep(names(temporal_corrs_ls)[1], 
+        cor_dbl = temporal_cors_ls[[1]], cor_var_chr = rep(names(temporal_cors_ls)[1], 
             2), id_var_to_rm_1L_chr = "id") %>% add_uids_to_tbs_ls(prefix_1L_chr = prefix_chr[["uid"]], 
         id_var_nm_1L_chr = id_var_nm_1L_chr)
     aqol6d_tbs_ls <- aqol6d_tbs_ls %>% add_aqol6d_items_to_aqol6d_tbs_ls(aqol_items_props_tbs_ls = aqol_items_props_tbs_ls, 
