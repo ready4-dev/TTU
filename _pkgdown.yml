@@ -52,7 +52,7 @@ reference:
   - make_dim_sclg_cons_dbl
   - make_domain_items_ls
   - make_item_wrst_wghts_ls_ls
-  - make_pdef_corr_mat_mat
+  - make_pdef_cor_mat_mat
   - make_synth_series_tbs_ls
   - make_vec_with_sum_of_int
   - randomise_changes_in_fct_levs
