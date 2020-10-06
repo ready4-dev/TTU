@@ -73,7 +73,7 @@ aqol_items_props_tbs_ls
 The next step is to specify the correlations between outcome variables.
 
 ```{r}
-corr_mat_ls <- list(matrix(c(1,-0.78,0.72,-0.67,-0.71,-0.65,-0.67,
+cor_mat_ls <- list(matrix(c(1,-0.78,0.72,-0.67,-0.71,-0.65,-0.67,
                                NA,1,-0.73,0.69,0.66,0.63,0.71,
                                NA,NA,1,-.57,-0.64,-0.57,-0.65,
                                NA,NA,NA,1,0.74,0.70,0.63,
@@ -92,7 +92,7 @@ corr_mat_ls <- list(matrix(c(1,-0.78,0.72,-0.67,-0.71,-0.65,-0.67,
 
 Finally, we need to specify the univariate distribution parameters for each of the outcome variables.
 ```{r}
-synth_data_spine_ls <- list(corr_mat_ls = corr_mat_ls,
+synth_data_spine_ls <- list(cor_mat_ls = cor_mat_ls,
                             nbr_obs_dbl = c(1068,643),
                             timepoint_nms_chr = c("BL","FUP"),
                            means_ls = list(c(0.6,12.8,78.2, 10.4,8.1,34.2,12.2),
@@ -125,13 +125,13 @@ aqol6d_adol_pop_tbs_ls <- make_aqol6d_adol_pop_tbs_ls(aqol_items_props_tbs_ls = 
                                         aqol_scores_pars_ls = aqol_scores_pars_ls,
                                         series_names_chr =  c("bl_outcomes_tb","fup_outcomes_tb"),
                                         synth_data_spine_ls = synth_data_spine_ls,
-                                        temporal_corrs_ls = list(aqol6d_total_w = 0.85))
+                                        temporal_cors_ls = list(aqol6d_total_w = 0.85))
 
 ```
 
 ```{r}
 ## FAKE PLACEHOLDER DATA
-bl_part_2_tb <- tibble::tibble(fkClientID = aqol6d_adol_pop_tbs_ls$bl_outcomes_tb$fkClientID,
+descriptives_BL_tb <- tibble::tibble(fkClientID = aqol6d_adol_pop_tbs_ls$bl_outcomes_tb$fkClientID,
                         round = c(1) ,# %>% factor(labels = c("Baseline")),
                         d_age = rnorm(1068,18.1,3.3) %>% 
                           #round(0) %>% 
@@ -184,7 +184,7 @@ bl_part_2_tb <- tibble::tibble(fkClientID = aqol6d_adol_pop_tbs_ls$bl_outcomes_t
                        d_english_home = NA, 
                        d_english_native = NA, 
                        d_relation_s = NA_character_)
-fup_part_2_tb <- bl_part_2_tb %>% 
+descriptives_FUP_tb <- descriptives_BL_tb %>% 
   dplyr::filter(fkClientID %in% aqol6d_adol_pop_tbs_ls$fup_outcomes_tb$fkClientID) %>%
   dplyr::mutate(round = 2,
                 d_age = d_age + 0.25,
@@ -199,13 +199,13 @@ fup_part_2_tb <- bl_part_2_tb %>%
 ```
 
 ```{r}
-bl_tb <- dplyr::inner_join(bl_part_2_tb,aqol6d_adol_pop_tbs_ls$bl_outcomes_tb) 
-fup_tb <- dplyr::inner_join(fup_part_2_tb,aqol6d_adol_pop_tbs_ls$fup_outcomes_tb)
+bl_tb <- dplyr::inner_join(descriptives_BL_tb,aqol6d_adol_pop_tbs_ls$bl_outcomes_tb) 
+fup_tb <- dplyr::inner_join(descriptives_FUP_tb,aqol6d_adol_pop_tbs_ls$fup_outcomes_tb)
 ```
 
 ```{r}
-nrow(bl_tb)
-nrow(fup_tb)
+# nrow(bl_tb)
+# nrow(fup_tb)
 ```
 
 ```{r}
@@ -253,7 +253,7 @@ Next we write a copy of these input parameters as CSV files.
 
 ```{r}
 write_results_to_csv(synth_data_spine_ls,
-                  output_dir_1L_chr = "../Data") # Change destination
+                  output_dir_1L_chr = "Data") # Change destination
 ```
 
 ```{r}

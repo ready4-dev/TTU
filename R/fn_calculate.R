@@ -8,7 +8,6 @@
 #' @export 
 #' @importFrom dplyr select starts_with rename_all
 #' @importFrom stringr str_replace
-#' @keywords internal
 calculate_adol_aqol6dU <- function (unscored_aqol_tb, prefix_1L_chr = "aqol", id_var_nm_1L_chr) 
 {
     unscored_aqol_tb <- unscored_aqol_tb %>% dplyr::select(id_var_nm_1L_chr, 
