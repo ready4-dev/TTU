@@ -242,11 +242,11 @@ ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
 ##
 ## PART FOUR
 ##
-ds_ls <- write_pkg_dss_to_dv_ds_csvs(pkg_dss_tb,
-                                     dv_nm_1L_chr = "ready4models",
-                                     ds_url_1L_chr = "https://doi.org/10.7910/DVN/RXGPAT",
-                                     parent_dv_dir_1L_chr = "../../../../../Data/Dataverse",
-                                     wait_time_in_secs_int = 5L)
+ds_ls <- ready4use::write_pkg_dss_to_dv_ds_csvs(pkg_dss_tb,
+                                                dv_nm_1L_chr = "ready4models",
+                                                ds_url_1L_chr = "https://doi.org/10.7910/DVN/RXGPAT",
+                                                parent_dv_dir_1L_chr = "../../../../../Data/Dataverse",
+                                                wait_time_in_secs_int = 5L)
   #ready4use::write_pkg_dss_to_dv_ds_csvs(pkg_dss_tb,
 #                                                 dv_nm_1L_chr = "ready4models")
 # NOTE: NEED TO UPDATE DIR PATH FOR MODELS
