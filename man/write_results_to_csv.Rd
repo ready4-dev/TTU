@@ -11,6 +11,9 @@ write_results_to_csv(synth_data_spine_ls, output_dir_1L_chr = ".")
 
 \item{output_dir_1L_chr}{Output directory (a character vector of length one), Default: '.'}
 }
+\value{
+Datasets (a tibble)
+}
 \description{
-write_results_to_csv() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write results to comma separated variables file. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+write_results_to_csv() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write results to comma separated variables file. The function returns Datasets (a tibble).
 }

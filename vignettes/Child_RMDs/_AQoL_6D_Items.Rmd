@@ -69,7 +69,7 @@ for(i in colNames){
     labelx<- stringr::str_to_sentence(stringr::str_sub(labelx,38,55))
     plot[[i]]<- ggplot2::ggplot(aqol6d_tb, ggplot2::aes_string(i)) +
       ggplot2::geom_histogram(bins=8,color = "white",ggplot2::aes(fill=round,y=2*(..density..)/sum(..density..)), position = 'dodge',alpha=0.7) +
-      #abs(x=labelx,y="Percentage")  + # NEED TO ADD BACK IN WITH NS CALL
+      ggplot2::labs(x=labelx,y="Percentage")  + 
       ggplot2::theme_bw() +
       ggplot2::scale_y_continuous(labels = scales::percent) +
       ggplot2::theme(legend.position="none") +

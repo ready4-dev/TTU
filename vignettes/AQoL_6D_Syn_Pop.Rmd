@@ -249,16 +249,34 @@ composite_tb <- dplyr::bind_rows(bl_tb,fup_tb) %>%
 composite_tb
 ```
 
-Next we write a copy of these input parameters as CSV files.
+Next we write a copy of these input parameters and the synthetic population dataset as CSV files.
 
 ```{r}
-write_results_to_csv(synth_data_spine_ls,
-                  output_dir_1L_chr = "Data") # Change destination
+dss_tb <- write_results_to_csv(synth_data_spine_ls,
+                  output_dir_1L_chr = "Data") 
+write.csv(composite_tb, file = paste0("Data/fake_pop_tb.csv"),
+                                                        row.names = F)
+dss_tb <- tibble::add_case(dss_tb,
+                           ds_obj_nm_chr = "fake_pop_tb",
+                           title_chr = "Synthetic population representative of study participants but containing no trace of source records. The synthetic population was constructed using correlation matrices and summary statistics from the source dataset.")
 ```
+
+```{r}
+# NOT FOR INCLUSION IN VIGNETTE
+# ready4use::write_fls_to_dv_ds(dss_tb,
+#                                dv_nm_1L_chr = "ready4models",
+#                                ds_url_1L_chr = "https://doi.org/10.7910/DVN/GRZRY5",
+#                                parent_dv_dir_1L_chr = "../../../../../../Data/Dataverse",
+#                                paths_to_dirs_chr = "Data",
+#                                inc_fl_types_chr = ".csv")
+```
+
+
+Finally we save an RDS copy of the synthetic dataset.
 
 ```{r}
 if(!dir.exists("Data"))
   dir.create("Data")
-saveRDS(composite_tb,"Data/fake_pop.rds") ## NEED TO CHANGE THIS BEFORE HANDING OVER
+saveRDS(composite_tb,"Data/fake_pop_tb.rds") 
 ```
 

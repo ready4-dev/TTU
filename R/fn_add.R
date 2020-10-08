@@ -6,7 +6,6 @@
 #' @export 
 #' @importFrom rlang parse_expr
 #' @importFrom Hmisc label
-#' @keywords internal
 add_aqol6d_adol_dim_scrg_eqs <- function (unscored_aqol_tb) 
 {
     data("adol_dim_scalg_eqs_lup", package = "FBaqol", envir = environment())
@@ -36,7 +35,6 @@ add_aqol6d_adol_dim_scrg_eqs <- function (unscored_aqol_tb)
 #' @importFrom simstudy defData genData
 #' @importFrom rlang sym
 #' @importFrom tibble rowid_to_column
-#' @keywords internal
 add_aqol6d_items_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, aqol_items_props_tbs_ls, prefix_chr, 
     aqol_tots_var_nms_chr, id_var_nm_1L_chr = "fkClientID", scaling_cnst_dbl = 5) 
 {
@@ -103,7 +101,6 @@ add_aqol6dU_to_aqol6d_items_tb <- function (aqol6d_items_tb, coeffs_lup_tb = aqo
 #' @export 
 #' @importFrom purrr map
 #' @importFrom dplyr mutate
-#' @keywords internal
 add_aqol6dU_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, prefix_1L_chr = "aqol6d_q", id_var_nm_1L_chr) 
 {
     aqol6d_tbs_ls <- aqol6d_tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6dU(.x, 
@@ -123,7 +120,6 @@ add_aqol6dU_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, prefix_1L_chr = "aqol6d
 #' @rdname add_cors_and_uts_to_aqol6d_tbs_ls
 #' @export 
 
-#' @keywords internal
 add_cors_and_uts_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, aqol_scores_pars_ls, aqol_items_props_tbs_ls, 
     temporal_cors_ls, prefix_chr, aqol_tots_var_nms_chr, id_var_nm_1L_chr = "fkClientID") 
 {
@@ -237,7 +233,7 @@ add_labels_to_aqol6d_tb <- function (aqol6d_tb, labels_chr = NA_character_)
             aqol6d_q13 = "Control", aqol6d_q14 = "Coping", aqol6d_q15 = "Frequency of pain", 
             aqol6d_q16 = "Degree of pain", aqol6d_q17 = "Pain interference", 
             aqol6d_q18 = "Vision", aqol6d_q19 = "Hearing", aqol6d_q20 = "Communication", 
-            aqol6d_subtotal_w_IL = "Independent Living", aqol6d_subtotal_w_Rel = "Relationships", 
+            aqol6d_subtotal_w_IL = "Independent Living", aqol6d_subtotal_w_REL = "Relationships", 
             aqol6d_subtotal_w_MH = "Mental Health", aqol6d_subtotal_w_COP = "Coping", 
             aqol6d_subtotal_w_P = "Pain", aqol6d_subtotal_w_SEN = "Sense")
     Hmisc::label(aqol6d_tb) = as.list(labels_chr[match(names(aqol6d_tb), 

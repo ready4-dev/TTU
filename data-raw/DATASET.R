@@ -244,7 +244,7 @@ ds_ls <- ready4use::write_pkg_dss_to_dv_ds_csvs(pkg_dss_tb,
 # Update Description file with imported packages.
 # Write documented methods to R directory.
 ## Note files to be rewritten cannot be open in RStudio.
-## 8 Document functions.
+## 8. Document functions.
 ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
                                 r_dir_1L_chr = "R",
                                 dev_pkgs_chr = c("ready4fun","ready4class","ready4use"),
