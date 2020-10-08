@@ -1,7 +1,7 @@
 Package: FBaqol
 Title: Map measures routinely collected in youth mental
     health services to AQOL 6D Health Utility.
-Version: 0.0.0.9020
+Version: 0.0.0.9021
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -30,7 +30,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
     lifecycle,
-    ready4fun (>= 0.0.0.9223),
+    ready4fun (>= 0.0.0.9227),
     dplyr,
     ggplot2,
     Hmisc,
