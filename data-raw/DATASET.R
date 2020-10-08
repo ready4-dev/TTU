@@ -25,7 +25,6 @@ options(usethis.description = list(
   License = usethis::use_gpl3_license("Orygen"),
   URL = c("https://github.com/orygen/FBaqol")
 ))
-# Deletes contents of R directory and resets DESCRIPTION and NAMESPACE files.
 ready4fun::write_pkg_setup_fls(incr_ver_1L_lgl = F,
                                delete_contents_of_R_dir = T,
                                copyright_holders_chr = "Orygen",
