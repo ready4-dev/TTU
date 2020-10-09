@@ -5,7 +5,6 @@ reference:
 - contents:
   - abbreviations_lup
   - adol_dim_scalg_eqs_lup
-  - adol_dim_scalg_eqs_tb
   - aqol6d_adult_disv_lup_tb
   - aqol6d_adult_itm_wrst_wghts_lup_tb
   - aqol6d_adult_vldn_pop_with_STATA_scores_tb
