@@ -35,7 +35,8 @@ for(i in colNames){
           ggplot2::scale_fill_manual(values=c("#de2d26","#fc9272")) 
       
 }
-## FIX NEEDED BEFORE BELOW CAN RUN
+# Above needs additional transformation to work. Currently attempting to log negatives.
+# Have commented out last lines until this is fixed.
 # extract legend
 legend <- ggplot2::ggplot(aqol6d_tb, ggplot2::aes_string(targetvar)) +
          ggplot2::geom_histogram(bins=8,color = "white",ggplot2::aes(fill=round),position = 'dodge',alpha=0.7) +
@@ -45,9 +46,9 @@ legend <- ggplot2::ggplot(aqol6d_tb, ggplot2::aes_string(targetvar)) +
           ggplot2::scale_y_continuous(labels = scales::percent) +
           ggplot2::scale_fill_manual(values=c("#de2d26","#fc9272"))
 
-legend <- extract_guide_box_lgd(legend)
-gridExtra::grid.arrange(ggpubr::ggarrange(plotlist=plot,nrow=3,ncol=2) ,
-             legend, nrow=2,heights=c(10, 1))
+# legend <- extract_guide_box_lgd(legend)
+# gridExtra::grid.arrange(ggpubr::ggarrange(plotlist=plot,nrow=3,ncol=2) ,
+#              legend, nrow=2,heights=c(10, 1))
 
 ```
 

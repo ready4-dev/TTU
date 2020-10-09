@@ -139,13 +139,6 @@ add_dim_scores_to_aqol6d_items_tb <- function(aqol6d_items_tb,
   )) %>% dplyr::rename_with(~stringr::str_replace(.,"vD_dvD", "vD"))
   return(aqol6d_items_tb)
 }
-add_unwtd_dim_tots <- function(items_tb,
-                                     domain_items_ls,
-                                     domain_pfx_1L_chr){
-  items_and_domains_tb <- purrr::reduce(1:length(domain_items_ls), .init = items_tb,
-                                        ~ .x %>% dplyr::mutate(!!rlang::sym(paste0(domain_pfx_1L_chr,names(domain_items_ls)[.y])) := rowSums(dplyr::select(.,domain_items_ls[[.y]]))))
-  return(items_and_domains_tb)
-}
 add_itm_disv_to_aqol6d_itms_tb <- function(aqol6d_items_tb,
                                               disvalues_lup_tb = aqol6d_adult_disv_lup_tb,
                                               pfx_1L_chr){
@@ -211,6 +204,12 @@ add_labels_to_aqol6d_tb <- function(aqol6d_tb,
       aqol6d_q18 = "Vision",
       aqol6d_q19 = "Hearing",
       aqol6d_q20 = "Communication",
+      aqol6d_subtotal_c_IL = "Unweighted Independent Living",
+      aqol6d_subtotal_c_REL = "Unweighted Relationships",
+      aqol6d_subtotal_c_MH = "Unweighted Mental Health",
+      aqol6d_subtotal_c_COP = "Unweighted Coping",
+      aqol6d_subtotal_c_P = "Unweighted Pain",
+      aqol6d_subtotal_c_SEN = "Unweighted Sense",
       aqol6d_subtotal_w_IL = "Independent Living",
       aqol6d_subtotal_w_REL = "Relationships",
       aqol6d_subtotal_w_MH = "Mental Health",
@@ -232,6 +231,42 @@ add_uids_to_tbs_ls <- function(tbs_ls,
                        }) %>%
     stats::setNames(names(tbs_ls))
   return(tbs_ls)
+}
+add_unwtd_dim_tots <- function(items_tb,
+                               domain_items_ls,
+                               domain_pfx_1L_chr){
+  items_and_domains_tb <- purrr::reduce(1:length(domain_items_ls), .init = items_tb,
+                                        ~ .x %>% dplyr::mutate(!!rlang::sym(paste0(domain_pfx_1L_chr,names(domain_items_ls)[.y])) := rowSums(dplyr::select(.,domain_items_ls[[.y]]))))
+  return(items_and_domains_tb)
+}
+add_wtd_dim_tots <- function(unwtd_dim_tb,
+                             domain_items_ls,
+                             domain_unwtd_pfx_1L_chr,
+                             domain_wtd_pfx_1L_chr){
+  data("aqol6d_adult_disv_lup_tb", package = "FBaqol", envir = environment())
+  data("aqol6d_domain_qs_lup_tb", package = "FBaqol", envir = environment())
+  min_vals_dbl <- purrr::map_dbl(domain_items_ls,~length(.x))  %>% unname()
+  max_vals_dbl <- purrr::map2_dbl(domain_items_ls,
+                              names(domain_items_ls),
+                              ~{
+                                paste0("Q",aqol6d_domain_qs_lup_tb %>%
+                                         dplyr::filter(Domain_chr == .y) %>%
+                                         dplyr::pull(Question_dbl)) %>%
+                                  purrr::map_dbl(~
+                                                   {
+                                                     tb <- aqol6d_adult_disv_lup_tb %>%
+                                                       dplyr::filter(Question_chr == .x) %>%
+                                                       dplyr::select_if(is.numeric)
+                                                     as.numeric(as.data.frame(tb)[1,]) %>%
+                                                       purrr::discard(is.na) %>%
+                                                       length()
+                                                   }
+                                  ) %>% sum()
+                              }) %>% unname()
+
+  wtd_and_unwtd_dim_tb <- purrr::reduce(1:length(domain_items_ls), .init = unwtd_dim_tb,
+                                        ~ .x %>% dplyr::mutate(!!rlang::sym(paste0(domain_wtd_pfx_1L_chr,names(domain_items_ls)[.y])) := (1-(!!rlang::sym(paste0(domain_unwtd_pfx_1L_chr,names(domain_items_ls)[.y]))-min_vals_dbl[.y])/(max_vals_dbl[.y]-min_vals_dbl[.y]))))
+  return(wtd_and_unwtd_dim_tb)
 }
 
 

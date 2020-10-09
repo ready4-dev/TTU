@@ -17,10 +17,10 @@ make_aqol6d_adol_pop_tbs_ls <- function(aqol_items_props_tbs_ls,
                                         id_var_nm_1L_chr = "fkClientID",
                                         prefix_chr =  c(uid = "Participant_",
                                                         aqol_item = "aqol6d_q",
-                                                        domain_pfx_1L_chr = "aqol6d_subtotal_w_")){
+                                                        domain_unwtd_pfx_1L_chr = "aqol6d_subtotal_c_",
+                                                        domain_wtd_pfx_1L_chr = "aqol6d_subtotal_w_")){
   item_pfx_1L_chr <- prefix_chr[["aqol_item"]]
   uid_pfx_1L_chr <- prefix_chr[["uid"]]
-  domain_pfx_1L_chr <- prefix_chr[["domain_pfx_1L_chr"]]
   aqol6d_adol_pop_tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls,
                                                      series_names_chr = series_names_chr) %>%
     add_cors_and_uts_to_aqol6d_tbs_ls(aqol_scores_pars_ls = aqol_scores_pars_ls,
@@ -29,15 +29,22 @@ make_aqol6d_adol_pop_tbs_ls <- function(aqol_items_props_tbs_ls,
                                    prefix_chr = prefix_chr,
                                    aqol_tots_var_nms_chr = synth_data_spine_ls$aqol_tots_var_nms_chr,
                                    id_var_nm_1L_chr = id_var_nm_1L_chr) %>%
-    purrr::map(~make_domain_items_ls(domain_qs_lup_tb = aqol6d_domain_qs_lup_tb,
-                                     item_pfx_1L_chr = item_pfx_1L_chr) %>%
+    purrr::map(~{
+      domain_items_ls <- make_domain_items_ls(domain_qs_lup_tb = aqol6d_domain_qs_lup_tb,
+                                     item_pfx_1L_chr = item_pfx_1L_chr)
+      domain_items_ls %>%
                  add_unwtd_dim_tots(items_tb = .x,
-                                          domain_pfx_1L_chr = domain_pfx_1L_chr) %>%
-                 add_labels_to_aqol6d_tb()) %>%
+                                          domain_pfx_1L_chr = prefix_chr[["domain_unwtd_pfx_1L_chr"]]) %>%
+        add_wtd_dim_tots(domain_items_ls = domain_items_ls,
+                         domain_unwtd_pfx_1L_chr = prefix_chr[["domain_unwtd_pfx_1L_chr"]],
+                         domain_wtd_pfx_1L_chr = prefix_chr[["domain_wtd_pfx_1L_chr"]]) %>%
+                 add_labels_to_aqol6d_tb()
+      }) %>%
     purrr::map(~ .x %>%
                  dplyr::select(!!rlang::sym(id_var_nm_1L_chr),
                                dplyr::starts_with(item_pfx_1L_chr),
-                               dplyr::starts_with(domain_pfx_1L_chr),
+                               dplyr::starts_with(prefix_chr[["domain_unwtd_pfx_1L_chr"]]),
+                               dplyr::starts_with(prefix_chr[["domain_wtd_pfx_1L_chr"]]),
                                dplyr::everything()
                  ))
   return(aqol6d_adol_pop_tbs_ls)

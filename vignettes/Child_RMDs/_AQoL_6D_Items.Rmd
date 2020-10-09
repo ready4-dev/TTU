@@ -66,7 +66,7 @@ plot<-list()
 for(i in colNames){ 
     
     labelx<-eval(parse(text=paste0("attributes(aqol6d_tb$",i,")$label")))
-    labelx<- stringr::str_to_sentence(stringr::str_sub(labelx,38,55))
+    #labelx<- stringr::str_to_sentence(stringr::str_sub(labelx,38,55))
     plot[[i]]<- ggplot2::ggplot(aqol6d_tb, ggplot2::aes_string(i)) +
       ggplot2::geom_histogram(bins=8,color = "white",ggplot2::aes(fill=round,y=2*(..density..)/sum(..density..)), position = 'dodge',alpha=0.7) +
       ggplot2::labs(x=labelx,y="Percentage")  + 
@@ -85,11 +85,10 @@ legend<-ggplot2::ggplot(aqol6d_tb, ggplot2::aes_string(i)) +
       ggplot2::scale_y_continuous(labels = scales::percent) +
       ggplot2::scale_fill_manual(values=c("#de2d26","#fc9272")) 
 
-
 legend <- extract_guide_box_lgd(legend)
 
 gridExtra::grid.arrange(ggpubr::ggarrange(plotlist=plot,nrow=3,ncol=2) ,
-             legend, nrow=2,heights=c(10, 1))  
+             legend, nrow=2,heights=c(10, 1))
 
 ```
 
