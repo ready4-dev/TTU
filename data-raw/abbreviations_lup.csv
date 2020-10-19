@@ -103,6 +103,20 @@
 "fct_r3_ls","list of ready4 S3 extension of factors",FALSE
 "fct_r3_r4","ready4 S4 collection of ready4 S3 extension of factors",FALSE
 "fct_r4","ready4 S4 collection of factors",FALSE
+"firstbounce_aqol6d_adol","First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))",FALSE
+"firstbounce_aqol6d_adols","First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))s",TRUE
+"firstbounce_bads","First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores",FALSE
+"firstbounce_badss","First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scoress",TRUE
+"firstbounce_gad7","First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores",FALSE
+"firstbounce_gad7s","First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scoress",TRUE
+"firstbounce_k6","First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores",FALSE
+"firstbounce_k6s","First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scoress",TRUE
+"firstbounce_oasis","First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores",FALSE
+"firstbounce_oasiss","First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scoress",TRUE
+"firstbounce_phq9","First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores",FALSE
+"firstbounce_phq9s","First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scoress",TRUE
+"firstbounce_scared","First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores",FALSE
+"firstbounce_scareds","First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scoress",TRUE
 "fl","file",FALSE
 "fls","files",TRUE
 "fn","function",FALSE

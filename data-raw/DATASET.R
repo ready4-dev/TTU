@@ -36,9 +36,22 @@ ready4fun::write_pkg_setup_fls(incr_ver_1L_lgl = F,
 ##
 ## PART THREE
 ##
+classes_to_make_tb <- ready4class::ready4_constructor_tbl() %>%
+  dplyr::bind_rows(tibble::tribble(
+    ~ make_s3_lgl, ~ name_stub_chr, ~ pt_ls, ~ pt_chkr_pfx_ls, ~ pt_ns_ls, ~ vals_ls, ~ allowed_vals_ls, ~ min_max_vals_ls, ~ start_end_vals_ls, ~ class_desc_chr, ~ parent_class_chr, ~ slots_ls, ~ meaningful_nms_ls, ~inc_clss_ls,
+    TRUE, "aqol6d_adol", list("numeric"), list("is."),list("base"),NULL, NULL,list(c(0.03,1)), NULL, "First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))", NA_character_, NULL, NULL, NULL,
+    TRUE, "phq9", list("integer"), list("is."),list("base"),NULL, NULL,list(c(0,27)), NULL, "First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores", NA_character_, NULL, NULL, NULL,
+    TRUE, "bads", list("integer"), list("is."),list("base"),NULL, NULL,list(c(0,150)), NULL, "First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores", NA_character_, NULL, NULL, NULL,
+    TRUE, "gad7", list("integer"), list("is."),list("base"),NULL, NULL,list(c(0,21)), NULL, "First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores", NA_character_, NULL, NULL, NULL,
+    TRUE, "oasis", list("integer"), list("is."),list("base"),NULL, NULL,list(c(0,20)), NULL, "First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores", NA_character_, NULL, NULL, NULL,
+    TRUE, "scared", list("integer"), list("is."),list("base"),NULL, NULL,list(c(0,82)), NULL, "First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores", NA_character_, NULL, NULL, NULL,
+    TRUE, "k6", list("integer"), list("is."),list("base"),NULL, NULL,list(c(0,24)), NULL, "First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores", NA_character_, NULL, NULL, NULL)
+  )
+name_pfx_1L_chr <- "firstbounce_"
 # 5. Create a lookup table of abbreviations used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
 #data("abbreviations_lup",package = "ready4use")
-pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c("adol","aqol","aqol6d","aqol6dU","cnstr","con","cor","dim","disv","eq","lev","lgd","q","scrg","tot","uid","ut","unscrd","vldn"),
+pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c("adol","aqol","aqol6d","aqol6dU","cnstr","con","cor","dim","disv","eq","lev","lgd","q","scrg","tot","uid","ut","unscrd","vldn",
+                                                           paste0(name_pfx_1L_chr,classes_to_make_tb$name_stub_chr)),
                                         long_name_chr = c("adolescent",
                                                           "Assessment of Quality of Life",
                                                           "Assessment of Quality of Life Six Dimension",
@@ -57,7 +70,8 @@ pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c("adol","aqol","aqol6d
                                                           "unique identifier",
                                                           "utility",
                                                           "unscored",
-                                                          "validation"),
+                                                          "validation",
+                                                          classes_to_make_tb$class_desc_chr),
                                         no_plural_chr = c("Assessment of Quality of Life",
                                                           "Assessment of Quality of Life Six Dimension",
                                                           "Assessment of Quality of Life Six Dimension Health Utility",
@@ -66,6 +80,18 @@ pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c("adol","aqol","aqol6d
                                         url_1L_chr = NA_character_,
                                         seed_lup = ready4use::abbreviations_lup)
 data("abbreviations_lup")
+##
+pkg_dss_tb <- classes_to_make_tb %>%
+  ready4class::write_classes_and_make_lup(dev_pkg_ns_1L_chr = ready4fun::get_dev_pkg_nm(),
+                                          name_pfx_1L_chr = name_pfx_1L_chr,
+                                          output_dir_1L_chr = "R",
+                                          file_exists_cdn_1L_chr = "overwrite",
+                                          abbreviations_lup = abbreviations_lup,
+                                          init_class_pt_lup = prototype_lup)  %>%
+  ready4fun::write_and_doc_ds(db_1L_chr = "prototype_lup",
+                              title_1L_chr = "Class prototype lookup table",
+                              desc_1L_chr = "Metadata on classes used in readyforwhatsnext suite",
+                              pkg_dss_tb = pkg_dss_tb)
 # 5. Create function types and generics look-up tables
 # 5.1 Create a lookup table of function types used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
 data("fn_type_lup_tb",package = "ready4use")
