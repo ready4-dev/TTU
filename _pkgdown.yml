@@ -21,9 +21,19 @@ reference:
   - FUP_correlations_tb
   - itm_wrst_wghts_lup_tb
   - measurements_tb
+  - prototype_lup
   - syn_pop_with_STATA_adults_scoring_tb
   - var_class_pars_tb
   - var_summ_res_tb
+- title: "Classes"
+- contents:
+  - firstbounce_aqol6d_adol
+  - firstbounce_phq9
+  - firstbounce_bads
+  - firstbounce_gad7
+  - firstbounce_oasis
+  - firstbounce_scared
+  - firstbounce_k6
 - title: "Functions"
 - contents:
   - add_aqol6dU_to_aqol6d_items_tb
