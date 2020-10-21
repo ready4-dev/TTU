@@ -4,9 +4,6 @@ output: html_document:
   toc: yes 
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 ```{r}
 #load libraries 
@@ -15,33 +12,6 @@ p_load("dplyr", "tidyr","magrittr","reshape2", "ggplot2","gridExtra", "data.tabl
 "ggalt","viridis", "ggthemes", "caret","brms")
 
 sessionInfo()
-
-```
-
-
-
-# Import the data 
-
-```{r}
-Baseline_follow<-readRDS( here::here("Data cleaning","Data","Combined_cleaned_V4.rds")) %>%     
-  mutate(d_agegroup_s=cut(d_age,breaks=c(11,17,30), labels=c("Age 12-17","Age 18-26"))) %>% 
-  filter(!is.na(aqol6d_total_w)) %>% 
-  mutate(round=factor(round,labels=c("Baseline","Follow-up"))) %>% 
-  dplyr::select(fkClientID, c_p_diag_s , s_centre, c_clinical_staging_s, 
-          d_age , d_agegroup ,d_gender,
-          d_sex_birth_s , d_sexual_ori_s ,
-          d_country_bir_s, d_ATSI,d_english_home, d_english_native, 
-          d_relation_s,  d_studying_working, k6_total, 
-          phq9_total, bads_total, gad7_total,oasis_total,
-          scared_total, 
-          contains("aqol6d"),c_sofas, round) %>% 
-  mutate(Gender= factor(ifelse(d_gender =="Genderqueer/gender nonconforming/agender" | 
-                d_gender=="Transgender" , "Other", as.character(d_gender))))   %>% 
-  mutate(Region=as.factor(ifelse(s_centre=="Canberra" |  s_centre=="Southport" | s_centre=="Knox", "Metro","Regional"))) %>% 
-  mutate(CALD=factor(ifelse(d_country_bir_s=="Other" | d_english_home=="No" | d_english_native=="No" | d_ATSI=="Yes" , "Yes", "No" ))) %>%
-  rename(PHQ9=phq9_total,BADS=bads_total,GAD7=gad7_total,OASIS=oasis_total, SCARED=scared_total,K6=k6_total,SOFAS=c_sofas)
-
-nrow(Baseline_follow)
 
 ```
 
@@ -335,4 +305,9 @@ knitr::kable( results[,c(1:5,8:10)]  , format="html") %>%
     add_header_above(c(" " = 2, "GLM (Gaussian distribution with log link)" = 3, "OLS (cloglog transformed utility score)" = 3))
 ```
 
+```{r}
+if(!dir.exists("../Data"))
+  dir.create("../Data")
+saveRDS(results,"../Data/sofas_models_ls.rds") 
+```
 

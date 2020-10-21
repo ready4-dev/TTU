@@ -1,0 +1,332 @@
+---
+title: "AQoL 6D Preferred Models"
+author: "Matthew Hamilton & Caroline Gao"
+date: "21/10/2020"
+output: html_document
+---
+
+
+## Functions 
+```{r}
+
+# function for RMSR
+calculate_rmse <- function(y_dbl,yhat_dbl){sqrt(mean((yhat_dbl-y_dbl)^2))}
+
+# function for fitting Gaussian model with log link
+transform_tb_for_gsn_log_mdl <- function(data_tb,
+                              var_nms_chr){
+    data_tb <- data.frame(data_tb)
+  tfd_tb_for_gsn_log_md <- data_tb %>% 
+    dplyr::select("aqol6d_total_w","fkClientID","round",
+                  var_nms_chr) %>% 
+    group_by(fkClientID) %>% 
+    arrange(fkClientID,round) %>% 
+    dplyr::mutate(dplyr::across(var_nms_chr, 
+                    .fns = list(baseline = ~ ./100,
+                                change = ~ ifelse(round=="Baseline",
+                                                0,
+                                                (.-lag(.))/100))))  %>% 
+    mutate(aqol6d_total_w_cloglog = log(-log(1-ifelse(aqol6d_total_w==1,0.999,aqol6d_total_w)))) %>% 
+    na.omit()
+  return(tfd_tb_for_gsn_log_md)
+                              }
+fit_gsn_log_lnk <- function(data_tb,
+                          var_nms_chr,
+                          iter_1L_dbl = 4000,
+                          seed_dbl = c(1000,23456)
+                          ){
+  data_tb <- transform_tb_for_gsn_log_mdl(data_tb,
+                               var_nms_chr = var_nms_chr)
+  brm_model_ls <- brms::brm(formula = as.formula(paste0("aqol6d_total_w ~ ",
+                                                        purrr::map_chr(var_nms_chr,
+                                                                       ~ paste0(.x,
+                                                                                "_baseline + ",
+                                                                                .x,"_change + ")) %>%
+                                                          paste0(collapse = ""),
+                                                        "(1|fkClientID)")), 
+                   data = data_tb,
+                   family = gaussian(link="log"), 
+                   iter = iter_1L_dbl,
+                   seed = seed_dbl[1])
+  return(brm_model_ls)
+}
+make_smry_of_brm_mdl <- function(brm_model_ls,
+                                 var_nms_chr,
+                                 data_tb,
+                                 seed_1L_dbl = 23456){
+  set.seed(seed_1L_dbl)
+  predictions <- predict(brm_model_ls, summary=F)
+  coef <- summary(brm_model_ls, digits = 4)$fixed[2:5,1:4]
+  R2 <- brms::bayes_R2(brm_model_ls)
+  RMSE <- psych::describe(apply(predictions,
+                                1,
+                                calculate_rmse,
+                                y_dbl = data_tb$aqol6d_total_w),
+                          quant = c(.25, .75), 
+                          skew = F, 
+                          ranges = F)
+  RMSE <- cbind(RMSE$mean, RMSE$sd, RMSE$Q0.25, RMSE$Q0.75)
+  Sigma <- summary(brm_model_ls, digits = 4)$spec_par[1:4]
+  smry_of_brm_mdl_tb <- data.frame(round(rbind(coef,R2,RMSE,Sigma),3))  %>% 
+    dplyr::mutate(Parameter=c(purrr::map(var_nms_chr,
+                                  ~ paste0(.x, c(" baseline", " change"))) %>%
+                         purrr::flatten_chr(),
+                       "R2", "RMSE", "Sigma"),
+           Model = paste(var1, " model")) %>% 
+    dplyr::mutate(`95% CI`= paste(`l.95..CI`,",", `u.95..CI`)) %>% 
+    dplyr::rename (SE=Est.Error) %>% 
+    dplyr::select(Model, Parameter, Estimate, SE, `95% CI`)
+  return(smry_of_brm_mdl_tb)
+}
+make_brm_model_plts <- function(brm_model_ls,
+                           data_tb,
+                           seed_1L_dbl = 23456){
+  plot_1_plt <- plot(brm_model_ls, ask=F)
+  set.seed(seed_1L_dbl)
+  plot_2_plt <- data_tb$Predicted <- predict(brm_model_ls)[,1]
+    data_tb %>% 
+        mutate(Observed = aqol6d_total_w) %>% 
+        gather(variable, value, Predicted, Observed) %>%
+        ggplot(aes(x = value, fill = variable)) +
+        geom_bkde(alpha=0.5) +
+        geom_rug() +
+        scale_fill_viridis( discrete = TRUE) +
+        theme_bw() + 
+        theme(legend.position="bottom") +
+        labs( x="AQoL-6D utility score",y="Density", fill="")
+  plot_3_plt <- ggplot(data_tb) + 
+      geom_point(aes(x=aqol6d_total_w,y=Predicted,col=round),size=1) +
+      theme_bw()  + xlim(0,1)  + ylim(0,1)  + scale_color_manual(values=c("#D55E00","#56B4E9"))  +
+      labs( x="Observed AQoL-6D utility score",y="Predicted AQoL-6D utility score", col="") +
+      theme(legend.position="bottom")
+  brm_model_ls = list(plot_1_plt, 
+                      plot_2_plt,
+                      plot_3_plt)
+return(brm_model_plts_ls)
+}
+print_brm_model <- function(brm_model_ls,
+                            brm_model_plts_ls){
+    #print results
+  print(brm_model_plts_ls[[1]])
+  print(summary(brm_model_ls, digits = 4))
+  print(brm_model_plts_ls[[2]])
+  brm_model_plts_ls[[3]]
+                            }
+# function for RMSR
+calculate_rmse_trans <- function(y_dbl,yhat_dbl){
+  sqrt(mean((1-exp(-exp(yhat_dbl))-y_dbl)^2))
+  }
+# function for fitting Gaussian model with log link
+fit_clg_log_tfmn<-function(data_tb,var1,var2 ){
+  data_tb<-data.frame(data_tb)
+  #prepare data
+  data_tb<-data_tb %>% 
+    dplyr::select("aqol6d_total_w","fkClientID","round",var1,var2) %>% 
+    group_by(fkClientID) %>% 
+    arrange(fkClientID,round) %>% 
+    mutate(!!paste0(var1,"_baseline") :=  first(!!as.name(var1))/100) %>% 
+    mutate(!!paste0(var1,"_change") :=ifelse(round=="Baseline",0,(!!as.name(var1)-lag(!!as.name(var1)))/100))  %>% 
+    mutate(!!paste0(var2,"_baseline") :=  first(!!as.name(var2))/100) %>% 
+    mutate(!!paste0(var2,"_change") :=ifelse(round=="Baseline",0,(!!as.name(var2)-lag(!!as.name(var2)))/100))  %>% 
+    mutate(aqol6d_total_w_cloglog= log(-log(1-ifelse(aqol6d_total_w==1,0.999,aqol6d_total_w)))) %>% 
+    na.omit() 
+  
+  #Bayes models
+  brm_model_ls <- brm(formula = as.formula(paste0("aqol6d_total_w_cloglog ~ ",var1,"_baseline + ",var1,"_change + ",
+                                                var2,"_baseline + ",var2,"_change + (1|fkClientID)")), data = data_tb,
+                   family = gaussian(link="identity"), iter = 4000,seed=1000)
+
+  
+  #save prediction
+  set.seed(23456)
+  predictions<-predict(brm_model_ls,summary=F)
+  
+  # summary statistics for posterior coef, R2, RMSR and Sigma  
+  coef<-summary(brm_model_ls, digits = 4)$fixed[2:5,1:4]
+  R2<-bayes_R2(brm_model_ls)
+  RMSE<-psych::describe( apply(predictions,1,calculate_rmse_trans,y_dbl=data_tb$aqol6d_total_w),
+                                 quant=c(.25,.75),skew = F, ranges = F )
+  RMSE <- cbind(RMSE$mean,RMSE$sd,RMSE$Q0.25,RMSE$Q0.75)
+  Sigma<-summary(brm_model_ls, digits = 4)$spec_par[1:4]
+  
+  #combine results
+  result <- data_tb.frame(round(rbind(coef,R2,RMSE,Sigma),3))  %>% 
+    mutate(Parameter=c(paste(var1," baseline"), paste(var1," change"), 
+                       paste(var2," baseline"), paste(var2," change") ,
+                       "R2", "RMSE", "Sigma"),
+           Model= paste(var1, " model")) %>% 
+    mutate(`95% CI`= paste(`l.95..CI`,",", `u.95..CI`)) %>% 
+    rename (SE=Est.Error) %>% 
+    dplyr::select(Model,Parameter,Estimate,  SE, `95% CI`)
+    
+  #extract plot
+  set.seed(23456)
+  data_tb$Predicted<-1-exp(-exp(predict(brm_model_ls)[,1]))
+  
+  print(data_tb %>% 
+        mutate(Observed=aqol6d_total_w) %>% 
+        gather(variable, value, Predicted, Observed) %>%
+        ggplot(aes(x = value, fill = variable)) +
+        geom_bkde(alpha=0.5) +
+        geom_rug() +
+        scale_fill_viridis( discrete = TRUE) +
+        theme_bw() + 
+        theme(legend.position="bottom") +
+        labs( x="AQoL-6D utility score",y="Density", fill=""))
+
+  print(ggplot(data_tb) + 
+      geom_jitter(aes(x = aqol6d_total_w,
+                      y = Predicted,
+                      col = round),
+                  size = 1,
+                  alpha = 0.7) +
+      theme_bw()  + xlim(0,1)  + ylim(0,1)  + scale_color_manual(values=c("#D55E00","#56B4E9"))  +
+      labs(x="Observed AQoL-6D utility score", y="Predicted AQoL-6D utility score", col="") +
+      theme(legend.position="bottom"))
+  return(result)
+  
+}
+
+
+```
+
+## PHQ9 
+
+### Gaussian with log link
+
+```{r}
+var_nms_chr <- c("PHQ9","SOFAS")
+brm_model_ls <- fit_gsn_log_lnk(Baseline_follow,var_nms_chr)
+model1 <- make_smry_of_brm_mdl(brm_model_ls,
+                               data_tb = Baseline_follow,
+                               var_nms_chr = var_nms_chr)
+mdl_plts_ls <- make_brm_model_plts(data_tb)
+
+```
+
+### Cloglog transformed AQoL-6D scores
+
+```{r}
+model2<-fit_clg_log_tfmn(Baseline_follow,"PHQ9","SOFAS")
+```
+
+```{r}
+results<-cbind(model1,model2)
+```
+
+
+## BADS 
+
+### Gaussian with log link
+
+```{r}
+model1<-fit_gsn_log_lnk(Baseline_follow,"BADS","SOFAS")
+
+```
+
+### Cloglog transformed AQoL-6D scores
+
+```{r}
+model2<-fit_clg_log_tfmn(Baseline_follow,"BADS","SOFAS")
+```
+
+```{r}
+results<-rbind(results,cbind(model1,model2))
+```
+
+
+## GAD7 
+
+### Gaussian with log link
+
+```{r}
+model1<-fit_gsn_log_lnk(Baseline_follow,"GAD7","SOFAS")
+```
+
+### Cloglog transformed AQoL-6D scores
+
+```{r}
+model2<-fit_clg_log_tfmn(Baseline_follow,"GAD7","SOFAS")
+```
+
+```{r}
+results<-rbind(results,cbind(model1,model2))
+```
+
+
+
+## OASIS
+
+### Gaussian with log link
+
+```{r}
+model1<-fit_gsn_log_lnk(Baseline_follow,"OASIS","SOFAS")
+
+```
+
+### Cloglog transformed AQoL-6D scores
+
+```{r}
+model2<-fit_clg_log_tfmn(Baseline_follow,"OASIS","SOFAS")
+```
+
+```{r}
+results<-rbind(results,cbind(model1,model2))
+```
+
+
+
+## SCARED
+
+### Gaussian with log link
+
+```{r}
+model1<-fit_gsn_log_lnk(Baseline_follow,"SCARED","SOFAS")
+
+```
+
+### Cloglog transformed AQoL-6D scores
+
+```{r}
+model2<-fit_clg_log_tfmn(Baseline_follow,"SCARED","SOFAS")
+```
+
+```{r}
+results<-rbind(results,cbind(model1,model2))
+```
+
+
+
+## K6
+
+### Gaussian with log link
+
+```{r}
+model1<-fit_gsn_log_lnk(Baseline_follow,"K6","SOFAS")
+
+```
+
+### Cloglog transformed AQoL-6D scores
+
+```{r}
+model2<-fit_clg_log_tfmn(Baseline_follow,"K6","SOFAS")
+```
+
+```{r}
+results<-rbind(results,cbind(model1,model2))
+```
+
+
+## Summary table 
+
+```{r}
+knitr::kable( results[,c(1:5,8:10)]  , format="html") %>%
+    kable_styling(bootstrap_options = "striped", full_width = F) %>%  
+    add_header_above(c(" " = 2, "GLM (Gaussian distribution with log link)" = 3, "OLS (cloglog transformed utility score)" = 3))
+```
+
+```{r}
+if(!dir.exists("../Data"))
+  dir.create("../Data")
+saveRDS(results,"../Data/sofas_models_ls.rds") 
+```

@@ -187,11 +187,13 @@ descriptives_BL_tb <- tibble::tibble(fkClientID = aqol6d_adol_pop_tbs_ls$bl_outc
                                   rep(2,426),
                                   rep(3,286),
                                   rep(NA_real_,31)) %>% scramble_xx() %>%
-                         factor(labels = c("REPLACE_ME_1","REPLACE_ME_2","REPLACE_ME_3"))) %>%
-  dplyr::mutate(d_sex_birth_s = dplyr::case_when(as.integer(d_gender) %in% c(1L,2L) & runif(1068)>0.995 ~ as.integer(d_gender) %>% purrr::map_int(~switch(as.integer(.x),2L,1L)),
-                                                 #d_gender ==3 ~ 1,
+                         factor(labels = c("REPLACE_ME_1","REPLACE_ME_2","REPLACE_ME_3")))  %>%
+  dplyr::mutate(d_sex_birth_s = dplyr::case_when(is.na(d_gender) ~ NA_integer_,
+                                                 as.integer(d_gender) %in% c(1L,2L) & runif(1068)>0.995 ~ as.integer(d_gender) %>% purrr::map_int(~ifelse(is.na(.x),.x,switch(.x,2L,1L,3L))),
+                                                 as.integer(d_gender) ==3 ~ sample(c(1L,2L),1068,replace = T),
                                                  TRUE ~ as.integer(d_gender)
-                ))
+                ) %>%
+                  factor(labels = c("Female","Male")))
 descriptives_FUP_tb <- descriptives_BL_tb %>% 
   dplyr::filter(fkClientID %in% aqol6d_adol_pop_tbs_ls$fup_outcomes_tb$fkClientID) %>%
   dplyr::mutate(round = 2,
@@ -211,10 +213,6 @@ bl_tb <- dplyr::inner_join(descriptives_BL_tb,aqol6d_adol_pop_tbs_ls$bl_outcomes
 fup_tb <- dplyr::inner_join(descriptives_FUP_tb,aqol6d_adol_pop_tbs_ls$fup_outcomes_tb)
 ```
 
-```{r}
-# nrow(bl_tb)
-# nrow(fup_tb)
-```
 
 ```{r}
 composite_tb <- dplyr::bind_rows(bl_tb,fup_tb) %>%

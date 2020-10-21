@@ -74,5 +74,5 @@ corstars <-function(x, method=c("pearson", "spearman"), removeTriangle=c("upper"
 
 ```{r}
 Baseline_follow <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS("../Data/fake_pop_tb.rds"))
-nrow(aqol6d_tb)
+nrow(Baseline_follow)
 ```
