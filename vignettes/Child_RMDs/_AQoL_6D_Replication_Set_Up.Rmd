@@ -9,6 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(xtable) # EDIT
 library(FBaqol) # EDIT
+library(magrittr)
 ```
 
 ```{r}
