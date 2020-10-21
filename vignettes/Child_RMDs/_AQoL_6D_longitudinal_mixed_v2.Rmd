@@ -51,8 +51,11 @@ Gaussian_log_link<-function(data,var1,var2){
   
   #Bayes models
   brm_model <- brm(formula = as.formula(paste0("aqol6d_total_w ~ ",var1,"_baseline + ",var1,"_change + ",
-                                                var2,"_baseline + ",var2,"_change + (1|fkClientID)")), data = data,
-                   family = gaussian(link="log"), iter = 4000,seed=1000)
+                                                var2,"_baseline + ",var2,"_change + (1|fkClientID)")), 
+                   data = data,
+                   family = gaussian(link="log"), 
+                   iter = 4000,
+                   seed=1000)
   #print results
   print(plot(brm_model))
   print(summary(brm_model, digits = 4))
