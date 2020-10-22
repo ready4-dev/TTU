@@ -20,9 +20,9 @@ transform_tb_to_mdl_inp <- function(data_tb,
                                     round_bl_val_1L_chr = "Baseline"){
     data_tb <- data.frame(data_tb)
   tfd_for_gsn_log_mdl_tb <- data_tb %>% 
-    dplyr::select(dplyr::all_of(dep_var_nm_1L_chr),#"aqol6d_total_w",
-                  dplyr::all_of(id_var_nm_1L_chr),#"fkClientID",
-                  dplyr::all_of(round_var_nm_1L_chr),#"round",
+    dplyr::select(dplyr::all_of(dep_var_nm_1L_chr),
+                  dplyr::all_of(id_var_nm_1L_chr),
+                  dplyr::all_of(round_var_nm_1L_chr),
                   dplyr::all_of(predictor_vars_nms_chr)) %>% 
     dplyr::group_by(!!rlang::sym(id_var_nm_1L_chr)) %>% 
     dplyr::arrange(!!rlang::sym(id_var_nm_1L_chr),!!rlang::sym(round_var_nm_1L_chr)) %>% 
@@ -30,7 +30,7 @@ transform_tb_to_mdl_inp <- function(data_tb,
                     .fns = list(baseline = ~ dplyr::first(.)/100,
                                 change = ~ ifelse(!!rlang::sym(round_var_nm_1L_chr)==round_bl_val_1L_chr,
                                                 0,
-                                                (.-lag(.))/100))))  %>% #aqol6d_total_w_cloglog
+                                                (.-lag(.))/100))))  %>% 
     dplyr::mutate(!!rlang::sym(paste0(dep_var_nm_1L_chr,"_cloglog")) := log(-log(1-ifelse(!!rlang::sym(dep_var_nm_1L_chr)==1,0.999,!!rlang::sym(dep_var_nm_1L_chr))))) %>% 
     na.omit()
   return(tfd_for_gsn_log_mdl_tb)
@@ -64,12 +64,13 @@ make_smry_of_brm_mdl <- function(brm_model_ls,
     model_nm_1L_chr <- predictor_vars_nms_chr[1]
   set.seed(seed_1L_dbl)
   predictions <- predict(brm_model_ls, summary=F)
-  coef <- summary(brm_model_ls, digits = 4)$fixed[2:5,1:4]
+  coef <- summary(brm_model_ls, digits = 4)$fixed
+  coef <- coef[2:nrow(coef),1:4]
   R2 <- brms::bayes_R2(brm_model_ls)
   RMSE <- psych::describe(apply(predictions,
                                 1,
                                 fn,
-                                y_dbl = data_tb %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))),#data_tb$aqol6d_total_w
+                                y_dbl = data_tb %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))),
                           quant = c(.25, .75), 
                           skew = F, 
                           ranges = F)
@@ -132,13 +133,11 @@ return(brm_model_plts_ls)
 }
 print_brm_model <- function(brm_model_ls,
                             brm_model_plts_ls){
-    #print results
   print(brm_model_plts_ls[[1]])
   print(summary(brm_model_ls, digits = 4))
   print(brm_model_plts_ls[[2]])
   brm_model_plts_ls[[3]]
                             }
-# function for RMSR
 calculate_rmse_tfmn <- function(y_dbl,yhat_dbl){
   rmse_tfmn_dbl <- sqrt(mean((1-exp(-exp(yhat_dbl))-y_dbl)^2))
   return(rmse_tfmn_dbl)
@@ -182,58 +181,60 @@ fit_clg_log_tfmn <- function(data_tb,
                                         iters_1L_int = iters_1L_int,
                                         seed_1L_int = seed_1L_int)
     return(brm_model_ls)
-    # PART 2
-  #save prediction
-  # set.seed(23456)
-  # predictions<-predict(brm_model_ls,summary=F)
-  # 
-  # # summary statistics for posterior coef, R2, RMSR and Sigma  
-  # coef<-summary(brm_model_ls, digits = 4)$fixed[2:5,1:4]
-  # R2<-bayes_R2(brm_model_ls)
-  # RMSE<-psych::describe( apply(predictions,1,calculate_rmse_tfmn,y_dbl=data_tb$aqol6d_total_w),
-  #                                quant=c(.25,.75),skew = F, ranges = F )
-  # RMSE <- cbind(RMSE$mean,RMSE$sd,RMSE$Q0.25,RMSE$Q0.75)
-  # Sigma<-summary(brm_model_ls, digits = 4)$spec_par[1:4]
-  # 
-  # #combine results
-  # result <- data_tb.frame(round(rbind(coef,R2,RMSE,Sigma),3))  %>% 
-  #   mutate(Parameter=c(paste(var1," baseline"), paste(var1," change"), 
-  #                      paste(var2," baseline"), paste(var2," change") ,
-  #                      "R2", "RMSE", "Sigma"),
-  #          Model= paste(var1, " model")) %>% 
-  #   mutate(`95% CI`= paste(`l.95..CI`,",", `u.95..CI`)) %>% 
-  #   rename (SE=Est.Error) %>% 
-  #   dplyr::select(Model,Parameter,Estimate,  SE, `95% CI`)
-    
-  # PART 3
-  # set.seed(23456)
-  # data_tb$Predicted<-1-exp(-exp(predict(brm_model_ls)[,1]))
-  # 
-  # print(data_tb %>% 
-  #       mutate(Observed=aqol6d_total_w) %>% 
-  #       gather(variable, value, Predicted, Observed) %>%
-  #       ggplot(aes(x = value, fill = variable)) +
-  #       geom_bkde(alpha=0.5) +
-  #       geom_rug() +
-  #       scale_fill_viridis( discrete = TRUE) +
-  #       theme_bw() + 
-  #       theme(legend.position="bottom") +
-  #       labs( x="AQoL-6D utility score",y="Density", fill=""))
-  # 
-  # print(ggplot(data_tb) + 
-  #     geom_jitter(aes(x = aqol6d_total_w,
-  #                     y = Predicted,
-  #                     col = round),
-  #                 size = 1,
-  #                 alpha = 0.7) +
-  #     theme_bw()  + xlim(0,1)  + ylim(0,1)  + scale_color_manual(values=c("#D55E00","#56B4E9"))  +
-  #     labs(x="Observed AQoL-6D utility score", y="Predicted AQoL-6D utility score", col="") +
-  #     theme(legend.position="bottom"))
-  # return(result)
-  
+}
+write_ts_mdl <- function(mdl_ls,
+                      data_tb,
+                      dep_var_nm_1L_chr = "aqol6d_total_w",
+                      predictor_vars_nms_chr,
+                      id_var_nm_1L_chr = "fkClientID",
+                      model_nm_1L_chr,
+                      path_to_data_dir_1L_chr
+                      ){
+  old_data_tb <- transform_tb_to_mdl_inp(data_tb,
+                                dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                                predictor_vars_nms_chr = predictor_vars_nms_chr) %>%
+          dplyr::select(c(dplyr::all_of(id_var_nm_1L_chr),
+                          dplyr::all_of(dep_var_nm_1L_chr),
+                          predictor_vars_nms_chr %>% purrr::map(~paste0(.x,c("","_baseline","_change"))) %>%
+                            purrr::flatten_chr()))
+cnfdl_mdl_ls <- mdl_ls 
+cnfdl_mdl_ls$data <- old_data_tb %>% as.data.frame() %>% dplyr::summarise(dplyr::across(dplyr::everything(), ~ sample(.x,1))) 
+saveRDS(cnfdl_mdl_ls,paste0(path_to_data_dir_1L_chr,"/",model_nm_1L_chr,".RDS"))
+}
+write_and_make_smry_of_ts_mdl <- function(data_tb,
+                                          dep_var_nm_1L_chr = "aqol6d_total_w",
+                                          predictor_vars_nms_chr,
+                                          id_var_nm_1L_chr = "fkClientID",
+                                          model_nm_1L_chr,
+                                          path_to_data_dir_1L_chr,
+                                          fn,
+                                          print_plots_1L_lgl = T){
+  gsn_log_lnk_mdl_ls <- fit_gsn_log_lnk(data_tb,
+                                      dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                                      predictor_vars_nms_chr = predictor_vars_nms_chr)
+smry_of_mdl_1 <- make_smry_of_brm_mdl(gsn_log_lnk_mdl_ls,
+                               data_tb = transform_tb_to_mdl_inp(data_tb,
+                                                                 dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                                                                 predictor_vars_nms_chr = predictor_vars_nms_chr),
+                               dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                               predictor_vars_nms_chr = predictor_vars_nms_chr,
+                               fn = fn)
+write_ts_mdl(gsn_log_lnk_mdl_ls,
+             data_tb = data_tb,
+             dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+             predictor_vars_nms_chr = predictor_vars_nms_chr,
+             id_var_nm_1L_chr = id_var_nm_1L_chr,
+             model_nm_1L_chr = model_nm_1L_chr,
+             path_to_data_dir_1L_chr = path_to_data_dir_1L_chr)
+if(print_plots_1L_lgl){
+  mdl_1_plts_ls <- make_brm_model_plts(gsn_log_lnk_mdl_ls,
+                                     data_tb)
+  print_brm_model(gsn_log_lnk_mdl_ls,mdl_1_plts_ls)
 }
 
+return(smry_of_mdl_1)
 
+                                          }
 ```
 
 ## PHQ9 
@@ -241,34 +242,27 @@ fit_clg_log_tfmn <- function(data_tb,
 ### Gaussian with log link
 
 ```{r}
-dep_var_nm_1L_chr = "aqol6d_total_w"
-predictor_vars_nms_chr <- c("PHQ9","SOFAS")
-gsn_log_lnk_mdl_ls <- fit_gsn_log_lnk(Baseline_follow,
-                                      dep_var_nm_1L_chr = dep_var_nm_1L_chr,
-                                      predictor_vars_nms_chr = predictor_vars_nms_chr)
-smry_of_mdl_1 <- make_smry_of_brm_mdl(gsn_log_lnk_mdl_ls,
-                               data_tb = transform_tb_to_mdl_inp(Baseline_follow,
-                                                                 dep_var_nm_1L_chr = dep_var_nm_1L_chr,
-                                                                 predictor_vars_nms_chr = predictor_vars_nms_chr),
-                               dep_var_nm_1L_chr = dep_var_nm_1L_chr,
-                               predictor_vars_nms_chr = predictor_vars_nms_chr,
-                               fn = calculate_rmse
-                               )
-mdl_1_plts_ls <- make_brm_model_plts(gsn_log_lnk_mdl_ls,
-                                     data_tb)
-print_brm_model(gsn_log_lnk_mdl_ls,mdl_1_plts_ls)
-old_data_tb <- transform_tb_to_mdl_inp(Baseline_follow,
-                                dep_var_nm_1L_chr = dep_var_nm_1L_chr,
-                                predictor_vars_nms_chr = predictor_vars_nms_chr) %>%
-          dplyr::select(c("fkClientID",
-                          dplyr::all_of(dep_var_nm_1L_chr),
-                          predictor_vars_nms_chr %>% purrr::map(~paste0(.x,c("","_baseline","_change"))) %>%
-                            purrr::flatten_chr()))
-cnfdl_gsn_log_lnk_mdl_ls <- gsn_log_lnk_mdl_ls
-cnfdl_gsn_log_lnk_mdl_ls$data <- old_data_tb[2,] # Need to sample or simulate replacement
-predict(cnfdl_gsn_log_lnk_mdl_ls, 
-        newdata = old_data_tb[1,],
-        re_formula = NA)
+write_and_make_smry_of_ts_mdl(data_tb = Baseline_follow,
+                              dep_var_nm_1L_chr = "aqol6d_total_w",
+                              predictor_vars_nms_chr = c("PHQ9","SOFAS"),
+                              id_var_nm_1L_chr = "fkClientID",
+                              path_to_data_dir_1L_chr = "../../../../../../../Data/R_Format/Utility_Models",
+                              model_nm_1L_chr = "PHQ9_GSN_LOG",
+                              fn = calculate_rmse)
+
+
+
+# predict(readRDS(paste0(path_to_data_dir_1L_chr,"/",model_nm_1L_chr,".RDS")), 
+#         newdata = tibble::tibble(PHQ9_baseline = 0.22,
+#                                  PHQ9_change = 0,
+#                                  SOFAS_baseline = 0.61,
+#                                  SOFAS_change = 0.05),#old_data_tb[1,]
+#         re_formula = NA)
+# purrr::map2_dbl(smry_of_mdl_1$Parameter[!smry_of_mdl_1$Parameter %in% c("R2","RMSE", "Sigma")],
+#                 c(old_data_tb[1,"PHQ9_baseline"], old_data_tb[1,"PHQ9_change"],
+#                   old_data_tb[1,"SOFAS_baseline"], old_data_tb[1,"SOFAS_change"]),
+#                ~ ready4fun::get_from_lup_obj(smry_of_mdl_1,match_var_nm_1L_chr = "Parameter", match_value_xx = .x, target_var_nm_1L_chr = "Estimate", evaluate_lgl = F) * .y) %>% sum()
+
 
 ```
 
