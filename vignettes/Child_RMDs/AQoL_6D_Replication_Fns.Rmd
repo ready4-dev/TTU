@@ -65,7 +65,7 @@ make_smry_of_brm_mdl <- function(brm_model_ls,
   set.seed(seed_1L_dbl)
   predictions <- predict(brm_model_ls, summary=F)
   coef <- summary(brm_model_ls, digits = 4)$fixed
-  coef <- coef[2:nrow(coef),1:4]
+  coef <- coef[1:nrow(coef),1:4]
   R2 <- brms::bayes_R2(brm_model_ls)
   RMSE <- psych::describe(apply(predictions,
                                 1,
@@ -77,7 +77,7 @@ make_smry_of_brm_mdl <- function(brm_model_ls,
   RMSE <- cbind(RMSE$mean, RMSE$sd, RMSE$Q0.25, RMSE$Q0.75)
   Sigma <- summary(brm_model_ls, digits = 4)$spec_par[1:4]
   smry_of_brm_mdl_tb <- data.frame(round(rbind(coef,R2,RMSE,Sigma),3))  %>% 
-    dplyr::mutate(Parameter=c(purrr::map(predictor_vars_nms_chr,
+    dplyr::mutate(Parameter=c("Intercept",purrr::map(predictor_vars_nms_chr,
                                   ~ paste0(.x, c(" baseline", 
                                                  " change"))) %>%
                          purrr::flatten_chr(),
@@ -142,7 +142,6 @@ calculate_rmse_tfmn <- function(y_dbl,yhat_dbl){
   rmse_tfmn_dbl <- sqrt(mean((1-exp(-exp(yhat_dbl))-y_dbl)^2))
   return(rmse_tfmn_dbl)
   }
-# function for fitting Gaussian model with log link
 fit_ts_model_with_brm <- function(data_tb,
                                dep_var_nm_1L_chr,
                                predictor_vars_nms_chr,
@@ -228,13 +227,29 @@ write_ts_mdl(gsn_log_lnk_mdl_ls,
              path_to_data_dir_1L_chr = path_to_data_dir_1L_chr)
 if(print_plots_1L_lgl){
   mdl_1_plts_ls <- make_brm_model_plts(gsn_log_lnk_mdl_ls,
-                                     data_tb)
+                                     transform_tb_to_mdl_inp(data_tb,
+                                                                 dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                                                                 predictor_vars_nms_chr = predictor_vars_nms_chr))
   print_brm_model(gsn_log_lnk_mdl_ls,mdl_1_plts_ls)
 }
 
 return(smry_of_mdl_1)
 
-                                          }
+}
+predict_from_mdl_coefs <- function(smry_of_mdl_tb,
+                                   new_data_tb){
+  coef_tb <- smry_of_mdl_tb %>% dplyr::filter(!Parameter %in% c("R2", "RMSE", "Sigma"))
+  vecs_1_ls <- coef_tb$Parameter[-1] %>% 
+  purrr::map(~ new_data_tb %>% 
+               dplyr::pull(.x %>% stringr::str_replace(" ","_")) * coef_tb %>%
+               dplyr::filter(Parameter == .x) %>%
+               dplyr::pull(Estimate)
+             ) 
+  pred_dbl <- exp(Reduce(`+`, vecs_1_ls) + coef_tb %>%
+               dplyr::filter(Parameter == "Intercept") %>%
+               dplyr::pull(Estimate))
+return(pred_dbl)
+}
 ```
 
 ## PHQ9 
@@ -242,28 +257,25 @@ return(smry_of_mdl_1)
 ### Gaussian with log link
 
 ```{r}
-write_and_make_smry_of_ts_mdl(data_tb = Baseline_follow,
+smry_of_gsn_log_mdl_1 <- write_and_make_smry_of_ts_mdl(data_tb = Baseline_follow,
                               dep_var_nm_1L_chr = "aqol6d_total_w",
                               predictor_vars_nms_chr = c("PHQ9","SOFAS"),
                               id_var_nm_1L_chr = "fkClientID",
                               path_to_data_dir_1L_chr = "../../../../../../../Data/R_Format/Utility_Models",
                               model_nm_1L_chr = "PHQ9_GSN_LOG",
                               fn = calculate_rmse)
-
-
-
-# predict(readRDS(paste0(path_to_data_dir_1L_chr,"/",model_nm_1L_chr,".RDS")), 
-#         newdata = tibble::tibble(PHQ9_baseline = 0.22,
-#                                  PHQ9_change = 0,
-#                                  SOFAS_baseline = 0.61,
-#                                  SOFAS_change = 0.05),#old_data_tb[1,]
-#         re_formula = NA)
-# purrr::map2_dbl(smry_of_mdl_1$Parameter[!smry_of_mdl_1$Parameter %in% c("R2","RMSE", "Sigma")],
-#                 c(old_data_tb[1,"PHQ9_baseline"], old_data_tb[1,"PHQ9_change"],
-#                   old_data_tb[1,"SOFAS_baseline"], old_data_tb[1,"SOFAS_change"]),
-#                ~ ready4fun::get_from_lup_obj(smry_of_mdl_1,match_var_nm_1L_chr = "Parameter", match_value_xx = .x, target_var_nm_1L_chr = "Estimate", evaluate_lgl = F) * .y) %>% sum()
-
-
+# new_data_tb <- tibble::tibble(PHQ9_baseline = c(0.14,0.25,0.15,0.2,0.11),
+#                                  PHQ9_change = c(-0.1,-0.05,0.05,-0.06,0.1),
+#                                  SOFAS_baseline = c(0.71,0.69,0.75,0.43,0.29),
+#                                  SOFAS_change = c(0.25,-0.19,0.1,-0.1,0.2))
+new_data_tb <- old_data_tb
+pred_1_tb <- predict(readRDS(paste0(path_to_data_dir_1L_chr,"/",model_nm_1L_chr,".RDS")),
+        newdata = new_data_tb,
+        re_formula = NA)
+pred_1_dbl <- pred_1_tb[,1]
+pred_2_dbl <-predict_from_mdl_coefs(smry_of_mdl_1,
+                       new_data_tb = new_data_tb)
+ 
 ```
 
 ```{r}
@@ -398,7 +410,7 @@ knitr::kable( results[,c(1:5,8:10)]  , format="html") %>%
 ```
 
 ```{r}
-if(!dir.exists("../Data"))
-  dir.create("../Data")
-saveRDS(results,"../Data/sofas_models_ls.rds") 
+# if(!dir.exists("../Data"))
+#   dir.create("../Data")
+# saveRDS(results,"../Data/sofas_models_ls.rds") 
 ```
