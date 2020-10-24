@@ -1,0 +1,35 @@
+---
+title: "AQoL 6D Model Summary"
+author: "Matthew Hamilton & Caroline Gao"
+date: "24/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(xtable) # EDIT
+library(FBaqol) # EDIT
+library(magrittr)
+```
+
+```{r}
+data_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS("../Data/fake_pop_tb.rds"))
+```
+
+```{r child="./AQoL_6D_Replication_Fns.Rmd", echo=FALSE}
+
+```
+
+```{r, results="asis"}
+mdls_smry_tb <- purrr::map2_dfr(list(fit_gsn_log_lnk,fit_clg_log_tfmn),
+                                paste0("PHQ9",c("_GSN_LOG","_CLL_TFN")),
+                                ~ make_smry_of_ts_mdl(data_tb = data_tb,
+                                                       fn = .x,
+                                                       predictor_vars_nms_chr = c("PHQ9","SOFAS"),
+                                                       mdl_nm_1L_chr = .y,
+                                                       path_to_write_to_1L_chr = "../../../../../../../Data/R_Format/Utility_Models",
+                                                       iters_1L_int = 1000L,# RETURN TO 4000L
+                                                       seed_1L_int = 1000L)
+)
+```
+

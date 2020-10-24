@@ -148,6 +148,63 @@ make_smry_of_brm_mdl <- function(brm_model_ls,
     dplyr::select(Model, Parameter, Estimate, SE, `95% CI`)
   return(smry_of_brm_mdl_tb)
 }
+make_smry_of_ts_mdl <- function(data_tb,
+                                          fn,
+                                          predictor_vars_nms_chr,
+                                          mdl_nm_1L_chr,
+                                          path_to_write_to_1L_chr = NA_character_,
+                                          dep_var_nm_1L_chr = "aqol6d_total_w",
+                                          id_var_nm_1L_chr = "fkClientID",
+                                          round_var_nm_1L_chr = "round",
+                                          round_bl_val_1L_chr = "Baseline",
+                                          iters_1L_int = 4000L,
+                                          seed_1L_int = 1000L,
+                                          print_plots_1L_lgl = T){
+    tfd_data_tb <- transform_tb_to_mdl_inp(data_tb,
+                                     dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                                     predictor_vars_nms_chr = predictor_vars_nms_chr,
+                                     id_var_nm_1L_chr = id_var_nm_1L_chr,
+                                     round_var_nm_1L_chr = round_var_nm_1L_chr,
+                                     round_bl_val_1L_chr = round_bl_val_1L_chr)
+    dep_var_nm_1L_chr <- ifelse(identical(fn,fit_clg_log_tfmn),
+                                transform_dep_var_nm_for_cll(dep_var_nm_1L_chr),      
+                                dep_var_nm_1L_chr)
+    args_ls <- list(data_tb = tfd_data_tb,
+                    dep_var_nm_1L_chr = dep_var_nm_1L_chr, # ADD CONDITIONAL LOGIC
+                    predictor_vars_nms_chr = predictor_vars_nms_chr,
+                    iters_1L_int = iters_1L_int,
+                    seed_1L_int = seed_1L_int)
+  mdl_ls <- rlang::exec(fn,!!!args_ls)
+  smry_of_ts_mdl_tb <- make_smry_of_brm_mdl(mdl_ls,
+                                            data_tb = tfd_data_tb,
+                                            dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                                            predictor_vars_nms_chr = predictor_vars_nms_chr,
+                                            fn = ifelse(identical(fn,fit_gsn_log_lnk),
+                                                        calculate_rmse,
+                                                        calculate_rmse_tfmn), 
+                                            mdl_nm_1L_chr = mdl_nm_1L_chr
+                                            )
+  if(!is.na(path_to_write_to_1L_chr)){
+     write_ts_mdl(mdl_ls,
+               data_tb = tfd_data_tb,
+               dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+               predictor_vars_nms_chr = predictor_vars_nms_chr,
+               id_var_nm_1L_chr = id_var_nm_1L_chr,
+               mdl_nm_1L_chr = mdl_nm_1L_chr,
+               path_to_write_to_1L_chr = path_to_write_to_1L_chr) 
+  }
+if(print_plots_1L_lgl){
+  mdl_plts_ls <- make_brm_model_plts(mdl_ls,
+                                       tfd_data_tb,
+                                       tfmn_fn = ifelse(identical(fn,fit_gsn_log_lnk),
+                                                        function(x){x},
+                                                        function(x){1-exp(-exp(x))}))
+  print_brm_model(mdl_ls,
+                  brm_model_plts_ls = mdl_plts_ls,
+                  mdl_nm_1L_chr = mdl_nm_1L_chr)
+}
+return(smry_of_ts_mdl_tb)
+}
 predict_from_mdl_coefs <- function(smry_of_mdl_tb,
                                    new_data_tb){
   coef_tb <- smry_of_mdl_tb %>% dplyr::filter(!Parameter %in% c("R2", "RMSE", "Sigma"))
@@ -163,11 +220,16 @@ predict_from_mdl_coefs <- function(smry_of_mdl_tb,
 return(pred_dbl)
 }
 print_brm_model <- function(brm_model_ls,
-                            brm_model_plts_ls){
+                            brm_model_plts_ls,
+                            mdl_nm_1L_chr){
+  cat('\n') 
+  cat("### ", mdl_nm_1L_chr, "\n")
+  cat('\n') 
   print(brm_model_plts_ls[[1]])
-  print(summary(brm_model_ls, digits = 4))
+  #print(summary(brm_model_ls, digits = 4))
   print(brm_model_plts_ls[[2]])
-  brm_model_plts_ls[[3]]
+  print(brm_model_plts_ls[[3]])
+  cat('\n')
 }
 transform_tb_to_mdl_inp <- function(data_tb,
                                     dep_var_nm_1L_chr = "aqol6d_total_w",
@@ -189,66 +251,22 @@ transform_tb_to_mdl_inp <- function(data_tb,
                                             change = ~ ifelse(round == "Baseline",
                                                               0,
                                                               (.-dplyr::lag(.))/100))))  %>% 
-    dplyr::mutate(!!rlang::sym(paste0(dep_var_nm_1L_chr,"_cloglog")) := log(-log(1-ifelse(!!rlang::sym(dep_var_nm_1L_chr)==1,0.999,!!rlang::sym(dep_var_nm_1L_chr))))) %>% 
+    dplyr::mutate(!!rlang::sym(transform_dep_var_nm_for_cll(dep_var_nm_1L_chr)) := log(-log(1-ifelse(!!rlang::sym(dep_var_nm_1L_chr)==1,0.999,!!rlang::sym(dep_var_nm_1L_chr))))) %>% 
     na.omit()
   return(tfd_for_gsn_log_mdl_tb)
-                              }
-write_and_make_smry_of_ts_mdl <- function(data_tb,
-                                          fn,
-                                          predictor_vars_nms_chr,
-                                          mdl_nm_1L_chr,
-                                          path_to_data_dir_1L_chr,
-                                          dep_var_nm_1L_chr = "aqol6d_total_w",
-                                          id_var_nm_1L_chr = "fkClientID",
-                                          round_var_nm_1L_chr = "round",
-                                          round_bl_val_1L_chr = "Baseline",
-                                          iters_1L_int = 4000L,
-                                          seed_1L_int = 1000L,
-                                          print_plots_1L_lgl = T){
-    tfd_data_tb <- transform_tb_to_mdl_inp(data_tb,
-                                     dep_var_nm_1L_chr = dep_var_nm_1L_chr,
-                                     predictor_vars_nms_chr = predictor_vars_nms_chr,
-                                     id_var_nm_1L_chr = id_var_nm_1L_chr,
-                                     round_var_nm_1L_chr = round_var_nm_1L_chr,
-                                     round_bl_val_1L_chr = round_bl_val_1L_chr)
-    args_ls <- list(data_tb = tfd_data_tb,
-                    dep_var_nm_1L_chr = dep_var_nm_1L_chr, # ADD CONDITIONAL LOGIC
-                    predictor_vars_nms_chr = predictor_vars_nms_chr,
-                    iters_1L_int = iters_1L_int,
-                    seed_1L_int = seed_1L_int)
-  mdl_ls <- rlang::exec(fn,!!!args_ls)
-  smry_of_ts_mdl_tb <- make_smry_of_brm_mdl(mdl_ls,
-                                            data_tb = tfd_data_tb,
-                                            dep_var_nm_1L_chr = dep_var_nm_1L_chr,
-                                            predictor_vars_nms_chr = predictor_vars_nms_chr,
-                                            fn = ifelse(identical(fn,fit_gsn_log_lnk),
-                                                        calculate_rmse,
-                                                        calculate_rmse_tfmn)#, mdl_nm_1L_chr = mdl_nm_1L_chr
-                                            )
-  write_ts_mdl(mdl_ls,
-               data_tb = tfd_data_tb,
-               dep_var_nm_1L_chr = dep_var_nm_1L_chr,
-               predictor_vars_nms_chr = predictor_vars_nms_chr,
-               id_var_nm_1L_chr = id_var_nm_1L_chr,
-               mdl_nm_1L_chr = mdl_nm_1L_chr,
-               path_to_data_dir_1L_chr = path_to_data_dir_1L_chr)
-if(print_plots_1L_lgl){
-  mdl_1_plts_ls <- make_brm_model_plts(mdl_ls,
-                                       tfd_data_tb,
-                                       tfmn_fn = ifelse(identical(fn,fit_gsn_log_lnk),
-                                                        function(x){x},
-                                                        function(x){1-exp(-exp(x))}))
-  print_brm_model(mdl_ls,mdl_1_plts_ls)
 }
-return(smry_of_ts_mdl_tb)
+transform_dep_var_nm_for_cll <- function(dep_var_nm_1L_chr){
+  tfd_dep_var_nm_1L_chr <- paste0(dep_var_nm_1L_chr,"_cloglog")
+  return(tfd_dep_var_nm_1L_chr)
 }
+
 write_ts_mdl <- function(mdl_ls,
                       data_tb,
                       dep_var_nm_1L_chr = "aqol6d_total_w",
                       predictor_vars_nms_chr,
                       id_var_nm_1L_chr = "fkClientID",
                       mdl_nm_1L_chr,
-                      path_to_data_dir_1L_chr
+                      path_to_write_to_1L_chr
                       ){
   old_data_tb <- data_tb %>%
           dplyr::select(c(dplyr::all_of(id_var_nm_1L_chr),
@@ -257,184 +275,44 @@ write_ts_mdl <- function(mdl_ls,
                             purrr::flatten_chr()))
 cnfdl_mdl_ls <- mdl_ls 
 cnfdl_mdl_ls$data <- old_data_tb %>% as.data.frame() %>% dplyr::summarise(dplyr::across(dplyr::everything(), ~ sample(.x,1))) 
-saveRDS(cnfdl_mdl_ls,paste0(path_to_data_dir_1L_chr,"/",mdl_nm_1L_chr,".RDS"))
+saveRDS(cnfdl_mdl_ls,paste0(path_to_write_to_1L_chr,"/",mdl_nm_1L_chr,".RDS"))
 }
 
 ```
 
-## PHQ9 
-
-### Gaussian with log link
-
 ```{r}
-smry_of_gsn_log_mdl_1 <- write_and_make_smry_of_ts_mdl(data_tb = Baseline_follow,
-                                                       fn = fit_gsn_log_lnk,
-                                                       predictor_vars_nms_chr = c("PHQ9","SOFAS"),
-                                                       mdl_nm_1L_chr = "PHQ9_GSN_LOG",
-                                                       path_to_data_dir_1L_chr = "../../../../../../../Data/R_Format/Utility_Models",
-                                                       dep_var_nm_1L_chr = "aqol6d_total_w",
-                                                       id_var_nm_1L_chr = "fkClientID",
-                                                       iters_1L_int = 4000L,
-                                                       seed_1L_int = 1000L)
-# new_data_tb <- tibble::tibble(PHQ9_baseline = c(0.14,0.25,0.15,0.2,0.11),
-#                                  PHQ9_change = c(-0.1,-0.05,0.05,-0.06,0.1),
-#                                  SOFAS_baseline = c(0.71,0.69,0.75,0.43,0.29),
-#                                  SOFAS_change = c(0.25,-0.19,0.1,-0.1,0.2))
-
-new_data_tb <- Baseline_follow
-#path_to_data_dir_1L_chr <- "../../../../../../../Data/R_Format/Utility_Models"
-#mdl_nm_1L_chr <- "PHQ9_GSN_LOG"
-# pred_1_tb <- predict(readRDS(paste0(path_to_data_dir_1L_chr,"/",mdl_nm_1L_chr,".RDS")),
-#         newdata = new_data_tb,
-#         re_formula = NA)
-# pred_1_dbl <- pred_1_tb[,1]
-pred_2_dbl <- predict_from_mdl_coefs(smry_of_gsn_log_mdl_1,
-                       new_data_tb = new_data_tb %>% transform_tb_to_mdl_inp(predictor_vars_nms_chr = c("PHQ9","SOFAS")))
+# smry_of_gsn_log_mdl_1 <- write_and_make_smry_of_ts_mdl(data_tb = Baseline_follow,
+#                                                        fn = fit_gsn_log_lnk,
+#                                                        predictor_vars_nms_chr = c("PHQ9","SOFAS"),
+#                                                        mdl_nm_1L_chr = "PHQ9_GSN_LOG",
+#                                                        path_to_data_dir_1L_chr = "../../../../../../../Data/R_Format/Utility_Models",
+#                                                        iters_1L_int = 4000L,
+#                                                        seed_1L_int = 1000L)
+# # new_data_tb <- tibble::tibble(PHQ9_baseline = c(0.14,0.25,0.15,0.2,0.11),
+# #                                  PHQ9_change = c(-0.1,-0.05,0.05,-0.06,0.1),
+# #                                  SOFAS_baseline = c(0.71,0.69,0.75,0.43,0.29),
+# #                                  SOFAS_change = c(0.25,-0.19,0.1,-0.1,0.2))
+# 
+# new_data_tb <- Baseline_follow
+# #path_to_data_dir_1L_chr <- "../../../../../../../Data/R_Format/Utility_Models"
+# #mdl_nm_1L_chr <- "PHQ9_GSN_LOG"
+# # pred_1_tb <- predict(readRDS(paste0(path_to_data_dir_1L_chr,"/",mdl_nm_1L_chr,".RDS")),
+# #         newdata = new_data_tb,
+# #         re_formula = NA)
+# # pred_1_dbl <- pred_1_tb[,1]
+# pred_2_dbl <- predict_from_mdl_coefs(smry_of_gsn_log_mdl_1,
+#                        new_data_tb = new_data_tb %>% transform_tb_to_mdl_inp(predictor_vars_nms_chr = c("PHQ9","SOFAS")))
  
 ```
 
 ```{r}
-smry_of_clg_log_tfmn_mdl_1 <- write_and_make_smry_of_ts_mdl(data_tb = Baseline_follow,
-                                                       fn = fit_clg_log_tfmn,
-                                                       predictor_vars_nms_chr = c("PHQ9","SOFAS"),
-                                                       mdl_nm_1L_chr = "PHQ9_CLL_TFN",
-                                                       path_to_data_dir_1L_chr = "../../../../../../../Data/R_Format/Utility_Models",
-                                                       dep_var_nm_1L_chr = "aqol6d_total_w_cloglog",
-                                                       id_var_nm_1L_chr = "fkClientID",
-                                                       iters_1L_int = 4000L,
-                                                       seed_1L_int = 1000L)
-#predictor_vars_nms_chr <- c("PHQ9","SOFAS")
-# clg_log_tfmn_mdl_ls <- fit_gsn_log_lnk(Baseline_follow,predictor_vars_nms_chr)
-# model2 <- make_smry_of_brm_mdl(clg_log_tfmn_mdl_ls,
-#                                data_tb = Baseline_follow,
-#                                fn = calculate_rmse_tfmn,
-#                                predictor_vars_nms_chr = predictor_vars_nms_chr)
-# mdl_2_plts_ls <- make_brm_model_plts(data_tb)
-```
-
-### Cloglog transformed AQoL-6D scores
-
-```{r}
-model2 <- fit_clg_log_tfmn(Baseline_follow,"PHQ9","SOFAS")
-```
-
-```{r}
-results<-cbind(model1,model2)
-```
-
-
-## BADS 
-
-### Gaussian with log link
-
-```{r}
-model1<-fit_gsn_log_lnk(Baseline_follow,"BADS","SOFAS")
+# smry_of_clg_log_tfmn_mdl_1 <- write_and_make_smry_of_ts_mdl(data_tb = Baseline_follow,
+#                                                        fn = fit_clg_log_tfmn,
+#                                                        predictor_vars_nms_chr = c("PHQ9","SOFAS"),
+#                                                        mdl_nm_1L_chr = "PHQ9_CLL_TFN",
+#                                                        path_to_data_dir_1L_chr = "../../../../../../../Data/R_Format/Utility_Models",
+#                                                        iters_1L_int = 4000L,
+#                                                        seed_1L_int = 1000L)
 
 ```
 
-### Cloglog transformed AQoL-6D scores
-
-```{r}
-model2<-fit_clg_log_tfmn(Baseline_follow,"BADS","SOFAS")
-```
-
-```{r}
-results<-rbind(results,cbind(model1,model2))
-```
-
-
-## GAD7 
-
-### Gaussian with log link
-
-```{r}
-model1<-fit_gsn_log_lnk(Baseline_follow,"GAD7","SOFAS")
-```
-
-### Cloglog transformed AQoL-6D scores
-
-```{r}
-model2<-fit_clg_log_tfmn(Baseline_follow,"GAD7","SOFAS")
-```
-
-```{r}
-results<-rbind(results,cbind(model1,model2))
-```
-
-
-
-## OASIS
-
-### Gaussian with log link
-
-```{r}
-model1<-fit_gsn_log_lnk(Baseline_follow,"OASIS","SOFAS")
-
-```
-
-### Cloglog transformed AQoL-6D scores
-
-```{r}
-model2<-fit_clg_log_tfmn(Baseline_follow,"OASIS","SOFAS")
-```
-
-```{r}
-results<-rbind(results,cbind(model1,model2))
-```
-
-
-
-## SCARED
-
-### Gaussian with log link
-
-```{r}
-model1<-fit_gsn_log_lnk(Baseline_follow,"SCARED","SOFAS")
-
-```
-
-### Cloglog transformed AQoL-6D scores
-
-```{r}
-model2<-fit_clg_log_tfmn(Baseline_follow,"SCARED","SOFAS")
-```
-
-```{r}
-results<-rbind(results,cbind(model1,model2))
-```
-
-
-
-## K6
-
-### Gaussian with log link
-
-```{r}
-model1<-fit_gsn_log_lnk(Baseline_follow,"K6","SOFAS")
-
-```
-
-### Cloglog transformed AQoL-6D scores
-
-```{r}
-model2<-fit_clg_log_tfmn(Baseline_follow,"K6","SOFAS")
-```
-
-```{r}
-results<-rbind(results,cbind(model1,model2))
-```
-
-
-## Summary table 
-
-```{r}
-knitr::kable( results[,c(1:5,8:10)]  , format="html") %>%
-    kable_styling(bootstrap_options = "striped", full_width = F) %>%  
-    add_header_above(c(" " = 2, "GLM (Gaussian distribution with log link)" = 3, "OLS (cloglog transformed utility score)" = 3))
-```
-
-```{r}
-# if(!dir.exists("../Data"))
-#   dir.create("../Data")
-# saveRDS(results,"../Data/sofas_models_ls.rds") 
-```
