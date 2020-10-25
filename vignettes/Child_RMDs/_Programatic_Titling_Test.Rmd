@@ -2,32 +2,49 @@
 title: "Untitled"
 author: "Matthew Hamilton & Caroline Gao"
 date: "24/10/2020"
-output: html_document
+output: 
+  html_document:
+    fig_caption: true
 ---
 
-```{r, include=FALSE}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(xtable) # EDIT
+library(FBaqol) # EDIT
+library(magrittr)
+```
 
-library(DT)
-
-datatable(iris)
+```{r child="./AQoL_6D_Replication_Fns.Rmd", echo=FALSE}
 
 ```
 
+```{r, include=FALSE}
 
-```{r, fig.width=3, fig.height=3, results="asis"}
+# library(DT)
+# 
+# datatable(iris)
+mdl_ls<-readRDS("../../../../../../../Data/R_Format/Utility_Models/PHQ9_GSN_LOG.RDS")
+fn <- fit_gsn_log_lnk
+tfd_data_tb <- transform_tb_to_mdl_inp(transform_raw_aqol_tb_to_aqol6d_tb(readRDS("../Data/fake_pop_tb.rds")),
+                                    predictor_vars_nms_chr = c("PHQ9","SOFAS"))
+mdl_plts_ls <- make_brm_model_plts(mdl_ls,
+                                       tfd_data_tb,
+                                       tfmn_fn = ifelse(identical(fn,fit_gsn_log_lnk),
+                                                        function(x){x},
+                                                        function(x){1-exp(-exp(x))})) %>%
+  stats::setNames(c("A","B","C"))
 
-for(i in paste("Plot", 1:3)){
-  
-  cat('\n') 
-  cat("###", i, "\n")
+```
 
-print(
-  ggplot2::ggplot(iris) +
-    ggplot2::geom_point(ggplot2::aes(x=Sepal.Length, y=Petal.Length))
-)
+```{r, fig.cap=c("Caption 1", "Caption 2", "Caption 3"), echo=FALSE, message=F}
 
-cat('\n')
+cat('\n') 
+cat("###", "TEST", "\n\n")
 
+for(plots in mdl_plts_ls){
+  print(mdl_plts_ls)
+  cat('\n\n') 
 }
+
 
 ```
