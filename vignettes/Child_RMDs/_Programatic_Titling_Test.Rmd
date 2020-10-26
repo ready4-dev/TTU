@@ -19,15 +19,13 @@ library(magrittr)
 ```
 
 ```{r, include=FALSE}
-
-# library(DT)
-# 
-# datatable(iris)
-mdl_ls <- readRDS("../../../../../../../Data/R_Format/Utility_Models/PHQ9_CLL_TFN.RDS")
-fn <- fit_clg_log_tfmn
-tfd_data_tb <- transform_tb_to_mdl_inp(transform_raw_aqol_tb_to_aqol6d_tb(readRDS("../Data/fake_pop_tb.rds")),
+mdl_ls <- readRDS("../../../../../../../Data/Project/Utility_Models/PHQ9_GSN_LOG.RDS")
+fn <- fit_gsn_log_lnk
+data_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS("../Data/fake_pop_tb.rds"))
+tfd_data_tb <- transform_tb_to_mdl_inp(data_tb,
                                     predictor_vars_nms_chr = c("PHQ9","SOFAS"))
-tfd_dep_var_nm_1L_chr <- transform_dep_var_nm_for_cll(dep_var_nm_1L_chr = "aqol6d_total_w")
+dep_var_nm_1L_chr <- "aqol6d_total_w"
+tfd_dep_var_nm_1L_chr <- transform_dep_var_nm_for_cll(dep_var_nm_1L_chr)
 mdl_plts_ls <- make_brm_model_plts(brm_model_ls =  mdl_ls,
                                    data_tb = tfd_data_tb,
                                    dep_var_nm_1L_chr = tfd_dep_var_nm_1L_chr,

@@ -70,86 +70,6 @@ fit_ts_model_with_brm <- function(data_tb,
                                 seed = seed_1L_int)
       return(mdl_ls)
 }
-  write_brm_mdl_tiff <- function(plt_fn,
-                                 path_to_write_to_1L_chr,
-                                 mdl_nm_1L_chr,
-                                 units_1L_chr = "in", 
-                                 width_1L_dbl = 5, 
-                                 height_1L_dbl = 6, 
-                                 rsl_1L_dbl = 300){
-    path_to_plot_1L_chr <- paste0(path_to_write_to_1L_chr,"/",mdl_nm_1L_chr,".tiff")           
-    grDevices::tiff(path_to_plot_1L_chr, 
-                    units = units_1L_chr, 
-                    width = width_1L_dbl, 
-                    height = height_1L_dbl, 
-                    res = rsl_1L_dbl)
-    plt_fn %>% rlang::exec()
-    dev.off()
-    return(path_to_plot_1L_chr)
-  }
-write_brm_model_plts <- function(mdl_ls,
-                           data_tb,
-                           mdl_nm_1L_chr,
-                           path_to_write_to_1L_chr,
-                           dep_var_nm_1L_chr = "aqol6d_total_w",
-                           dep_var_desc_1L_chr = "AQoL-6D utility score",
-                           round_var_nm_1L_chr = "round",
-                           tfmn_fn = function(x){x},# function(x){1-exp(-exp(x))}
-                           plot3_fn = ggplot2::geom_point,
-                           units_1L_chr = "in",
-                           height_dbl = c(rep(6,2),rep(5,2)), 
-                           width_dbl = c(rep(5,2),rep(6,2)),
-                           rsl_dbl = rep(300,4),
-                           args_ls = NULL,
-                           seed_1L_dbl = 23456){
-  set.seed(seed_1L_dbl)
-  data_tb$Predicted <- predict(mdl_ls)[,1] %>% tfmn_fn()
-  mdl_plts_paths_ls <- purrr::map(1:4, 
-              ~  {
-                if(.x %in% c(1,2)){
-                  plt_fn <- function(){plot(mdl_ls, ask=F, plot = F)[.x]}
-                }else{
-                  if(.x == 3){
-                     plt_fn <- function(){data_tb %>% 
-                       dplyr::mutate(Observed = !!rlang::sym(dep_var_nm_1L_chr)) %>% 
-                       tidyr::gather(variable, value, Predicted, Observed) %>%
-                       ggplot2::ggplot(ggplot2::aes(x = value, fill = variable)) +
-                       ggalt::geom_bkde(alpha = 0.5) +
-                       ggplot2::geom_rug() +
-                       viridis::scale_fill_viridis(discrete = TRUE) +
-                       ggplot2::theme_bw() + 
-                       ggplot2::theme(legend.position = "bottom") +
-                       ggplot2::labs(x = dep_var_desc_1L_chr, 
-                                     y = "Density", fill="")}
-                  }else{
-                     plt_fn <- function(){ggplot2::ggplot(data_tb) +
-                       rlang::exec(plot3_fn,
-                                   ggplot2::aes(x = !!rlang::sym(dep_var_nm_1L_chr), 
-                                                y = Predicted,
-                                                col = !!rlang::sym(round_var_nm_1L_chr)),
-                                   size = 1,
-                                   !!!args_ls) + 
-                       ggplot2::theme_bw()  + 
-                       ggplot2::xlim(0,1)  + 
-                       ggplot2::ylim(0,1)  + 
-                       ggplot2::scale_color_manual(values=c("#D55E00","#56B4E9"))  +
-                       ggplot2::labs(x = paste0("Observed ", dep_var_desc_1L_chr),
-                                     y = paste0("Predicted ", dep_var_desc_1L_chr), 
-                                     col = "") +
-                       ggplot2::theme(legend.position="bottom")
-                       }
-                  }
-                }
-                write_brm_mdl_tiff(plt_fn,
-                                   path_to_write_to_1L_chr = path_to_write_to_1L_chr,
-                                   mdl_nm_1L_chr = paste0(mdl_nm_1L_chr,"_",.x),
-                                   units_1L_chr = units_1L_chr, 
-                                   width_1L_dbl =  width_dbl[.x], 
-                                   height_1L_dbl = height_dbl[.x], 
-                                   rsl_1L_dbl = rsl_dbl[.x])
-                })
-return(mdl_plts_paths_ls)
-}
 make_smry_of_brm_mdl <- function(mdl_ls,
                                  data_tb,
                                  dep_var_nm_1L_chr = "aqol6d_total_w",
@@ -241,6 +161,40 @@ if(print_plots_1L_lgl){
 }
 return(smry_of_ts_mdl_tb)
 }
+plot_obsd_predd_dnst <- function(tfd_data_tb){
+  tfd_data_tb %>%
+    dplyr::mutate(Observed=aqol6d_total_w) %>% 
+    tidyr::gather(variable, value, Predicted, Observed) %>%
+  ggplot2::ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha = 0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis(discrete = TRUE) +
+    ggplot2::theme_bw() + 
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",y="Density", fill="")
+}
+plot_obsd_predd_sctr <- function(tfd_data_tb, 
+                                        dep_var_nm_1L_chr, 
+                                        dep_var_desc_1L_chr,
+                                 #plot_fn,
+                                        args_ls){
+  ggplot2::ggplot(tfd_data_tb) +
+                       rlang::exec(ggplot2::geom_point,
+                                   ggplot2::aes(x = !!rlang::sym(dep_var_nm_1L_chr), 
+                                                y = Predicted,
+                                                col = !!rlang::sym(round_var_nm_1L_chr)),
+                                   size = 1,
+                                   !!!args_ls) + 
+                       ggplot2::theme_bw()  + 
+                       ggplot2::xlim(0,1)  + 
+                       ggplot2::ylim(0,1)  + 
+                       ggplot2::scale_color_manual(values=c("#D55E00","#56B4E9"))  +
+                       ggplot2::labs(x = paste0("Observed ", dep_var_desc_1L_chr),
+                                     y = paste0("Predicted ", dep_var_desc_1L_chr), 
+                                     col = "") +
+                       ggplot2::theme(legend.position="bottom")
+                     }
+
 predict_from_mdl_coefs <- function(smry_of_mdl_tb,
                                    new_data_tb){
   coef_tb <- smry_of_mdl_tb %>% dplyr::filter(!Parameter %in% c("R2", "RMSE", "Sigma"))
@@ -315,7 +269,72 @@ transform_ts_mdl_data <- function(mdl_ls,
 #saveRDS(cnfdl_mdl_ls,paste0(path_to_write_to_1L_chr,"/",mdl_nm_1L_chr,".RDS"))
 return(cnfdl_mdl_ls)
 }
-
+write_brm_model_plts <- function(mdl_ls,
+                           tfd_data_tb,
+                           mdl_nm_1L_chr,
+                           path_to_write_to_1L_chr,
+                           dep_var_nm_1L_chr = "aqol6d_total_w",
+                           dep_var_desc_1L_chr = "AQoL-6D utility score",
+                           round_var_nm_1L_chr = "round",
+                           tfmn_fn = function(x){x},# function(x){1-exp(-exp(x))}
+                           #sctr_plt_fn = ggplot2::geom_point,
+                           units_1L_chr = "in",
+                           height_dbl = c(rep(6,2),rep(5,2)), 
+                           width_dbl = c(rep(5,2),rep(6,2)),
+                           rsl_dbl = rep(300,4),
+                           args_ls = NULL,
+                           seed_1L_dbl = 23456){
+  set.seed(seed_1L_dbl)
+  tfd_data_tb$Predicted <- predict(mdl_ls)[,1] %>% tfmn_fn()
+  mdl_plts_paths_ls <- purrr::map(1:4, 
+              ~  {
+                if(.x %in% c(1,2)){
+                  plt_fn <- function(mdl_ls, idx_1L_int){plot(mdl_ls, ask=F, plot = F)[idx_1L_int]}
+                  fn_args_ls <- list(mdl_ls = mdl_ls,
+                                     idx_1L_int = as.integer(.x))
+                }else{
+                  if(.x == 3){
+                     plt_fn <- plot_obsd_predd_dnst
+                     fn_args_ls <- list(tfd_data_tb = tfd_data_tb)
+                  }else{
+                     plt_fn <- plot_obsd_predd_sctr
+                     fn_args_ls <- list(tfd_data_tb = tfd_data_tb, 
+                                        dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
+                                        dep_var_desc_1L_chr = dep_var_desc_1L_chr,
+                                        #plot_fn = sctr_plt_fn,
+                                        args_ls = args_ls)
+                  }
+                }
+                write_brm_mdl_tiff(plt_fn,
+                                   fn_args_ls = fn_args_ls,
+                                   path_to_write_to_1L_chr = path_to_write_to_1L_chr,
+                                   mdl_nm_1L_chr = paste0(mdl_nm_1L_chr,"_",.x),
+                                   units_1L_chr = units_1L_chr, 
+                                   width_1L_dbl =  width_dbl[.x], 
+                                   height_1L_dbl = height_dbl[.x], 
+                                   rsl_1L_dbl = rsl_dbl[.x])
+                })
+return(mdl_plts_paths_ls)
+}
+  write_brm_mdl_tiff <- function(plt_fn,
+                                 fn_args_ls = NULL,
+                                 path_to_write_to_1L_chr,
+                                 mdl_nm_1L_chr,
+                                 units_1L_chr = "in", 
+                                 width_1L_dbl = 5, 
+                                 height_1L_dbl = 6, 
+                                 rsl_1L_dbl = 300){
+    path_to_plot_1L_chr <- paste0(path_to_write_to_1L_chr,"/",mdl_nm_1L_chr,".tiff")           
+    grDevices::tiff(path_to_plot_1L_chr, 
+                    units = units_1L_chr, 
+                    width = width_1L_dbl, 
+                    height = height_1L_dbl, 
+                    res = rsl_1L_dbl)
+    plt <- rlang::exec(plt_fn,!!!fn_args_ls)
+    print(plt)
+    dev.off()
+    return(path_to_plot_1L_chr)
+  }
 ```
 
 ```{r}
