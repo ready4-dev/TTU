@@ -27,8 +27,8 @@ mdls_smry_tb <- purrr::map2_dfr(list(fit_gsn_log_lnk,fit_clg_log_tfmn),
                                                        fn = .x,
                                                        predictor_vars_nms_chr = c("PHQ9","SOFAS"),
                                                        mdl_nm_1L_chr = .y,
-                                                       path_to_write_to_1L_chr = "../../../../../../../Data/R_Format/Utility_Models",
-                                                       iters_1L_int = 1000L,# RETURN TO 4000L
+                                                       path_to_write_to_1L_chr = "../../../../../../../Data/Project/Utility_Models",
+                                                       iters_1L_int = 4000L,
                                                        seed_1L_int = 1000L)
 )
 ```
