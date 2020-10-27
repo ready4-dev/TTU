@@ -1,12 +1,14 @@
 ---
 title: "TEST"
 output:
-  officedown::rdocx_document:
-    number_sections: yes
   pdf_document:
     number_sections: yes
+    includes:  
+      in_header: preamble.tex
   html_document:
     df_print: paged
+  officedown::rdocx_document:
+    number_sections: yes
   bookdown::html_document2:
     number_sections: yes
 ---
@@ -43,30 +45,48 @@ print_ts_mdl_plts <- function(paths_to_plts_chr,
     cat('\n')
   cat("## ", title_1L_chr, "\n")
   cat('\n')
-  purrr::walk2(paths_to_plts_chr,
+  purrr::pwalk(list(paths_to_plts_chr,
               paste0(#"\\label{fig:fig",label_refs_chr,"}",
                      "Caption",1:length(paths_to_plts_chr)),
+              label_refs_chr),
     ~ {
       cat(paste0('\n![',
                  #.y,
                  '](',
-                 .x,
-                 ')\n'))
-      cat('\`r fig_nums(\"',.y,'\",\"', .y,'\")`')
+                 ..1,
+                 ')\n\n'))
+      cat(fig_nums(..3, ..2))
     cat('\n\n')
     })
-  #knitr::include_graphics(paths_to_mdl_plts_chr)
  cat('\n\n')
 }
-label_refs_mat <- paste0("lab",1:(output_ls %>% purrr::flatten() %>% length())) %>% matrix(nrow = length(output_ls), byrow=T)
+print_all_plts_for_mdl_set <- function(output_ls,
+                                       start_from_1L_int = 0L){
+  label_refs_mat <- paste0("lab",1:(output_ls %>% purrr::flatten() %>% length())+start_from_1L_int) %>% matrix(nrow = length(output_ls), byrow=T)
 purrr::walk(1:length(output_ls),
             ~ print_ts_mdl_plts(output_ls[[.x]], 
                                 title_1L_chr = names(output_ls)[.x],
                                 label_refs_chr = label_refs_mat[.x,]))
+}
+
+
 
 ```
 
- `r fig_nums("pressure-plot", "pressure against temperature")`
+
+```{r results='asis', echo=F}
+#From: https://stackoverflow.com/questions/20409172/how-to-display-verbatim-inline-r-code-with-backticks-using-rmarkdown
+# rinline <- function(code) { 
+#   sprintf('``` `r %s` ```', code)
+# }
+# rinline(fig_nums('pressure-plot', 'pressure against temperature'))
+#cat(fig_nums('pressure-plot', 'pressure against temperature'))
+#cat("\"\`r fig_nums(\"pressure-plot\", \"pressure against temperature\")\`\"")
+#cat("some text \u0060r 2+3\u0060 and more text")
+```
+
+`r fig_nums("lab1", display = "cite")`
+ 
 ```{r, fig.cap=c("Caption 1", "Caption 2", "Caption 3", "Caption 4"), echo=FALSE, message=F}
 # knitr::include_graphics(paths_to_mdl_plts_chr)
 # cat('\n') 
