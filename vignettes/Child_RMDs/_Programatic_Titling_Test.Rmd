@@ -1,5 +1,7 @@
 ---
 title: "TEST"
+author: "Matthew Hamilton"
+date: "06/08/2020"
 output:
   pdf_document:
     number_sections: yes
@@ -7,10 +9,17 @@ output:
       in_header: preamble.tex
   officedown::rdocx_document:
     number_sections: yes
-  html_document:
-    df_print: paged
   bookdown::html_document2:
     number_sections: yes
+  html_document:
+    df_print: paged
+  bookdown::pdf_book:
+    number_sections: yes
+    includes:  
+      in_header: preamble.tex
+params:
+  pdf_output_lgl: !r T
+graphics: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -19,9 +28,32 @@ knitr::opts_chunk$set(comment=NA)
 library(xtable) # EDIT
 library(FBaqol) # EDIT
 library(magrittr)
+options(tinytex.verbose = TRUE)
+options(xtable.floating = FALSE)
+options(xtable.timestamp = "")
 ```
 
 ```{r echo = FALSE}
+make_brms_mdl_smry_tbl <- function(smry_mdl_ls,
+                                   grp_1L_chr,
+                                   pop_1L_chr,
+                                   fam_1L_chr){
+ brms_mdl_smry_tb <- purrr::map(1:length(smry_mdl_ls$random), 
+           ~ make_mdl_smry_elmt_tbl(cat_chr = c(ifelse(.x==1,grp_1L_chr,character(0)),paste0(names(smry_mdl_ls$ngrps)[.x], 
+                         " (Number of levels: ",smry_mdl_ls$ngrps[.x][[1]],")")),
+                  mat = smry_mdl_ls$random[.x][[1]])) %>%
+  dplyr::bind_rows(make_mdl_smry_elmt_tbl(mat = smry_mdl_ls$fixed, cat_chr = pop_1L_chr),
+                   make_mdl_smry_elmt_tbl(mat = smry_mdl_ls$spec_pars, cat_chr = fam_1L_chr))
+ return(brms_mdl_smry_tb)
+                                   }
+make_mdl_smry_elmt_tbl <- function(mat,
+                              cat_chr){
+  tb <- mat %>% tibble::as_tibble() %>% dplyr::mutate(Parameter = rownames(mat)) %>% dplyr::select(Parameter, dplyr::everything())
+
+mdl_elmt_sum_tb <- tb %>% dplyr::filter(F) %>% tibble::add_case(Parameter = cat_chr) %>%
+  dplyr::bind_rows(tb)
+return(mdl_elmt_sum_tb)
+}
 print_ts_mdl_plts <- function(paths_to_plts_chr,
                               title_1L_chr,
                               label_refs_chr,
@@ -57,7 +89,8 @@ print_table_xx <- function(data_tb,
                            caption_chr,
                            label,
                            hline.after,
-                           addtorow){
+                           addtorow,
+                           sanitize_fn = getOption("xtable.sanitize.text.function", NULL)){
    data_x_tb <- data_tb %>%
   xtable::xtable(caption = caption_chr, label = label)
 if(pdf_output_lgl){
@@ -67,8 +100,9 @@ if(pdf_output_lgl){
         hline.after = hline.after,
         caption.placement = "top",
         add.to.row = addtorow, 
+        sanitize.text.function = sanitize_fn,
         include.colnames = FALSE,
-        include.rownames=FALSE#,scalebox = 0.75
+        include.rownames = FALSE#,scalebox = 0.75
         ) 
 }else{
   data_tb %>%
@@ -76,7 +110,7 @@ if(pdf_output_lgl){
         caption = caption_chr) %>%
       kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
                                 full_width = F, 
-                                position = "left")
+                                position = "left") # NEED TO ADD FOOTNOTE
 }
 }
 ```
@@ -108,43 +142,84 @@ fig_nums <- captioner::captioner()
 #   text(0, 1, paste(tmp, collapse='\n'), adj = c(0,1), family = 'mono', cex = cex)
 #   box()
 # }
-make_brms_mdl_smry_tbl <- function(smry_mdl_ls,
-                                   grp_1L_chr,
-                                   pop_1L_chr,
-                                   fam_1L_chr){
- brms_mdl_smry_tb <- purrr::map(1:length(smry_mdl_ls$random), 
-           ~ make_mdl_elmt_sum(cat_chr = c(ifelse(.x==1,grp_1L_chr,character(0)),paste0(names(smry_mdl_ls$ngrps)[.x], 
-                         " (Number of levels: ",smry_mdl_ls$ngrps[.x][[1]],")")),
-                  mat = smry_mdl_ls$random[.x][[1]])) %>%
-  dplyr::bind_rows(make_mdl_elmt_sum(mat = smry_mdl_ls$fixed, cat_chr = pop_1L_chr),
-                   make_mdl_elmt_sum(mat = smry_mdl_ls$spec_pars, cat_chr = fam_1L_chr))
- return(brms_mdl_smry_tb)
-                                   }
-make_mdl_elmt_sum <- function(mat,
-                              cat_chr){
-  tb <- mat %>% tibble::as.tibble() %>% dplyr::mutate(Parameter = rownames(mat)) %>% dplyr::select(Parameter, dplyr::everything())
 
-mdl_elmt_sum_tb <- tb %>% dplyr::filter(F) %>% tibble::add_case(Parameter = cat_chr) %>%
-  dplyr::bind_rows(tb)
-return(mdl_elmt_sum_tb)
-}
 mdl_ls <- readRDS(path_to_mdl_1L_chr)
 smry_mdl_ls <- summary(mdl_ls, digits = 4)
 mdl_smry_chr <- smry_mdl_ls %>% capture.output()  #paste0(collapse='\n')
-mdl_smry_chr[1:7]
-make_brms_mdl_smry_tbl(smry_mdl_ls,
-                       grp_1L_chr = mdl_smry_chr[8],
+mdl_smry_chr[3] %>% cat()
+cat("\n\n")
+c(mdl_smry_chr[1:4][-3], 
+  paste0(mdl_smry_chr[5], " ",trimws(mdl_smry_chr[6]), collapse = " ")) %>% 
+  paste0(collapse = "\n\n") %>% cat()
+cat("\n\n")
+data_tb <- make_brms_mdl_smry_tbl(smry_mdl_ls,
+                       grp_1L_chr = ifelse(params$pdf_output_lgl,
+                                           mdl_smry_chr[8],#paste0("\\\\textbf{","TEST","}"),
+                                           mdl_smry_chr[8]),
                        pop_1L_chr = mdl_smry_chr[13],
                        fam_1L_chr = mdl_smry_chr[21])
-mdl_smry_chr[25:27]
-
-
-
+label_stub_1L_chr <- "LABELSTUB"
+addtorow <- list(pos = list(0, nrow(data_tb)),
+                 command = c(names(data_tb) %>% stringr::str_replace_all("[[:punct:]]", " ") %>% paste0(collapse=" & ") %>% paste0("\\\\\n"),
+                      paste0("\\hline\n","{\\footnotesize ",
+                             "TEST",
+                             #mdl_smry_chr[25:27] %>% paste0(collapse = " "),
+                             "}\n")))
+caption_chr <- "CAPTION FOR TABLE"
+print_table_xx(data_tb = data_tb,
+               pdf_output_lgl = params$pdf_output_lgl,
+               caption_chr = caption_chr,
+               label = paste0("tab:",label_stub_1L_chr),
+               hline.after =  c(-1,0),
+               #sanitize_fn = force,
+              addtorow = addtorow)
+mdl_smry_chr[25:27] %>% paste0(collapse = " ") %>% cat()
 
 # print(smry_mdl_ls)
 #readRDS(path_to_mdl_1L_chr) %>% sjPlot::tab_model()
 
 ```
+
+```{r results = 'asis', echo = F}
+data_3_tb <- read.csv("../Data/glm_SOFAS.csv")
+data_3_tb <- data_3_tb[1:nrow(data_tb),]
+addtorow <- list()
+addtorow$pos <- list(0, nrow(data_3_tb)
+                     )
+addtorow$command <- c("Parameter* & Estimate	& SE	& 95CI & R2	& Sigma\\\\\n",
+                      paste0("\\hline\n","{\\footnotesize * Calculated as original scores divided by 100}\n")) 
+
+# caption_chr <- "Estimated coefficients from TTU models based on individual anxiety/depression measurements and SOFAS score using GLM (Gaussian distribution with log link)"
+# print_table_xx(data_tb = data_3_tb,
+#                pdf_output_lgl = params$pdf_output_lgl,
+#                caption_chr = caption_chr,
+#                label = "tab:coeffsll_table",
+#                hline.after =  c(-1,0#,nrow(data_3_tb)
+#                                 ),
+#               addtorow = addtorow)
+```
+
+```{r results = 'asis', echo = F}
+# addtorow <- list(pos = list(0, nrow(data_tb)),
+#                  command = c(names(data_tb) %>% paste0(collapse=" & ") %>% paste0("\\\\\n"),
+#                       paste0("\\hline\n","{\\footnotesize ",
+#                              mdl_smry_chr[25:27] %>% paste0(collapse = " "),
+#                              "}\n"))
+# )
+# addtorow$command <- c("Parameter & Estimate	& SE	& 95CI & R2	& Sigma\\\\\n",
+#                       # paste0("\\hline\n","{\\footnotesize Calculated as original scores divided by 100}\n")) 
+#                       paste0("\\hline\n","{\\footnotesize ",
+#                              mdl_smry_chr[25:27] %>% paste0(collapse = "") %>% stringr::str_replace_all("[[:punct:]]", " "),
+#                              "}\n"))
+# print_table_xx(data_tb = data_tb[,1:6],
+#                pdf_output_lgl = params$pdf_output_lgl,
+#                caption_chr = caption_chr,
+#                label = paste0("tab:",label_stub_1L_chr),
+#                hline.after =  c(-1,0),
+#               addtorow = addtorow)
+```
+
+
 <!-- \elandscape -->
 <!-- \newpage -->
 ```{r results='asis', echo=F}
