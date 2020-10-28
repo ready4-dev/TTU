@@ -5,43 +5,27 @@ output:
     number_sections: yes
     includes:  
       in_header: preamble.tex
-  html_document:
-    df_print: paged
   officedown::rdocx_document:
     number_sections: yes
+  html_document:
+    df_print: paged
   bookdown::html_document2:
     number_sections: yes
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(comment=NA)
 library(xtable) # EDIT
 library(FBaqol) # EDIT
 library(magrittr)
 ```
-# TEST SECTION
 
-```{r child="./AQoL_6D_Replication_Fns.Rmd", echo=FALSE}
-
-```
-
-```{r, include=FALSE}
-path_to_mdl_1L_chr <- "../../../../../../../Data/Project/Utility_Models/PHQ9_GSN_LOG.RDS"
-#mdl_ls <- readRDS(path_to_mdl_1L_chr)
-paths_to_mdl_plts_chr <- paste0(path_to_mdl_1L_chr %>% stringr::str_sub(end=-5), paste0("_",c("coefs","hetg", "dnst","sctr_plt"),".png"))
-plt_nms_chr <- c("Caption 1","Caption 2","Caption 3","Caption 4")
-output_ls <- list(`First predictor` = paths_to_mdl_plts_chr,
-                  `Second predictor` = paths_to_mdl_plts_chr)
-plt_nms_chr <- rep(plt_nms_chr,2)
-fig_nums <- captioner::captioner()
-```
-
-
-```{r results = "asis", echo = F, fig.retina=1}
-#grid::grid.raster(tiff::readTIFF(paths_to_mdl_plts_chr[1]))
+```{r echo = FALSE}
 print_ts_mdl_plts <- function(paths_to_plts_chr,
                               title_1L_chr,
-                              label_refs_chr){
+                              label_refs_chr,
+                              mdl_smry_ls){
     cat('\n')
   cat("## ", title_1L_chr, "\n")
   cat('\n')
@@ -68,12 +52,101 @@ purrr::walk(1:length(output_ls),
                                 title_1L_chr = names(output_ls)[.x],
                                 label_refs_chr = label_refs_mat[.x,]))
 }
+print_table_xx <- function(data_tb,
+                           pdf_output_lgl,
+                           caption_chr,
+                           label,
+                           hline.after,
+                           addtorow){
+   data_x_tb <- data_tb %>%
+  xtable::xtable(caption = caption_chr, label = label)
+if(pdf_output_lgl){
+ data_x_tb %>%
+  print(comment = F,
+        floating = TRUE, #floating.environment = "sidewaystable",
+        hline.after = hline.after,
+        caption.placement = "top",
+        add.to.row = addtorow, 
+        include.colnames = FALSE,
+        include.rownames=FALSE#,scalebox = 0.75
+        ) 
+}else{
+  data_tb %>%
+    kableExtra::kable(escape = F,
+        caption = caption_chr) %>%
+      kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed"), 
+                                full_width = F, 
+                                position = "left")
+}
+}
+```
 
+# TEST SECTION
 
+```{r child="./AQoL_6D_Replication_Fns.Rmd", echo=FALSE}
 
 ```
 
+```{r, include=FALSE}
+path_to_mdl_1L_chr <- "../../../../../../../Data/Project/Utility_Models/PHQ9_GSN_LOG.RDS"
+#mdl_ls <- readRDS(path_to_mdl_1L_chr)
+paths_to_mdl_plts_chr <- paste0(path_to_mdl_1L_chr %>% stringr::str_sub(end=-5), paste0("_",c("coefs","hetg", "dnst","sctr_plt"),".png"))
+plt_nms_chr <- c("Caption 1","Caption 2","Caption 3","Caption 4")
+output_ls <- list(`First predictor` = paths_to_mdl_plts_chr,
+                  `Second predictor` = paths_to_mdl_plts_chr)
+plt_nms_chr <- rep(plt_nms_chr,2)
+fig_nums <- captioner::captioner()
+```
 
+<!-- \newpage -->
+<!-- \blandscape -->
+```{r echo = F, results='asis'}
+#grid::grid.raster(tiff::readTIFF(paths_to_mdl_plts_chr[1]))
+# print_output <- function(output, cex = 0.8) {
+#   tmp <- capture.output(output)
+#   plot.new()
+#   text(0, 1, paste(tmp, collapse='\n'), adj = c(0,1), family = 'mono', cex = cex)
+#   box()
+# }
+make_brms_mdl_smry_tbl <- function(smry_mdl_ls,
+                                   grp_1L_chr,
+                                   pop_1L_chr,
+                                   fam_1L_chr){
+ brms_mdl_smry_tb <- purrr::map(1:length(smry_mdl_ls$random), 
+           ~ make_mdl_elmt_sum(cat_chr = c(ifelse(.x==1,grp_1L_chr,character(0)),paste0(names(smry_mdl_ls$ngrps)[.x], 
+                         " (Number of levels: ",smry_mdl_ls$ngrps[.x][[1]],")")),
+                  mat = smry_mdl_ls$random[.x][[1]])) %>%
+  dplyr::bind_rows(make_mdl_elmt_sum(mat = smry_mdl_ls$fixed, cat_chr = pop_1L_chr),
+                   make_mdl_elmt_sum(mat = smry_mdl_ls$spec_pars, cat_chr = fam_1L_chr))
+ return(brms_mdl_smry_tb)
+                                   }
+make_mdl_elmt_sum <- function(mat,
+                              cat_chr){
+  tb <- mat %>% tibble::as.tibble() %>% dplyr::mutate(Parameter = rownames(mat)) %>% dplyr::select(Parameter, dplyr::everything())
+
+mdl_elmt_sum_tb <- tb %>% dplyr::filter(F) %>% tibble::add_case(Parameter = cat_chr) %>%
+  dplyr::bind_rows(tb)
+return(mdl_elmt_sum_tb)
+}
+mdl_ls <- readRDS(path_to_mdl_1L_chr)
+smry_mdl_ls <- summary(mdl_ls, digits = 4)
+mdl_smry_chr <- smry_mdl_ls %>% capture.output()  #paste0(collapse='\n')
+mdl_smry_chr[1:7]
+make_brms_mdl_smry_tbl(smry_mdl_ls,
+                       grp_1L_chr = mdl_smry_chr[8],
+                       pop_1L_chr = mdl_smry_chr[13],
+                       fam_1L_chr = mdl_smry_chr[21])
+mdl_smry_chr[25:27]
+
+
+
+
+# print(smry_mdl_ls)
+#readRDS(path_to_mdl_1L_chr) %>% sjPlot::tab_model()
+
+```
+<!-- \elandscape -->
+<!-- \newpage -->
 ```{r results='asis', echo=F}
 #From: https://stackoverflow.com/questions/20409172/how-to-display-verbatim-inline-r-code-with-backticks-using-rmarkdown
 # rinline <- function(code) { 
