@@ -2,32 +2,15 @@
 title: "TEST"
 author: "Matthew Hamilton"
 date: "06/08/2020"
-output:
-  bookdown::pdf_book:
-    number_sections: yes
-    includes:  
-      in_header: preamble.tex
-  bookdown::html_document2:
-    number_sections: yes
-  word_document:
-    pandoc_args:
-     '--lua-filter=page-break.lua'
-  officedown::rdocx_document:
-    number_sections: yes
-  html_document:
-    df_print: paged
-  pdf_document:
-    number_sections: yes
-    includes:  
-      in_header: preamble.tex
-params:
-  output_type_1L_chr: "PDF"
 graphics: yes
+params:
+  output_type_1L_chr: HTML
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(comment=NA)
+library(kableExtra)
 library(flextable)
 library(xtable) # EDIT
 library(FBaqol) # EDIT
@@ -98,9 +81,9 @@ print_table_xx <- function(data_tb,
                            hline.after,
                            addtorow,
                            sanitize_fn = getOption("xtable.sanitize.text.function", NULL)){
-   data_x_tb <- data_tb %>%
-  xtable::xtable(caption = caption_1L_chr, label = label, digits = digits_dbl)
 if(output_type_1L_chr == "PDF"){
+     data_x_tb <- data_tb %>%
+  xtable::xtable(caption = caption_1L_chr, label = label, digits = digits_dbl)
  data_x_tb %>%
   print(comment = F,
         floating = TRUE, #floating.environment = "sidewaystable",
@@ -111,44 +94,59 @@ if(output_type_1L_chr == "PDF"){
         include.colnames = FALSE,
         include.rownames = FALSE#,scalebox = 0.75
         ) 
+ data_xx <- NULL
 }else{
   if(output_type_1L_chr == "HTML"){
-  data_tb <- data_tb %>%
-    kableExtra::kable(escape = F,
+    data_kb <- data_tb %>%
+    kableExtra::kable(format = "html",escape = F,
         caption = caption_1L_chr) %>%
-      kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"), 
-                                full_width = F, 
+      kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed"#, "responsive"
+                                                      ),
+                                full_width = F,
                                 position = "left") %>%
-      kableExtra::footnote(general = rep("",length(footnotes_chr)),
-                           general_title = footnotes_chr,
+      kableExtra::footnote(general = footnotes_chr,
+                           general_title = "",
                            footnote_as_chunk = T,
                            #title_format = c("italic","underline"),
                            threeparttable = T)
-  print(data_tb)
+  data_xx <- data_kb
+  #print(data_kb)
   }
     if(output_type_1L_chr == "Word"){
       j2_1L_dbl <- ncol(data_tb)
-    data_tb <- flextable::flextable(data_tb,
+    data_fx <- flextable::flextable(data_tb,
                                    #cwidth = 1.25
                                    ) %>%
       flextable::set_caption(caption_1L_chr,
                              autonum = officer::run_autonum())
     if(!all(is.na(merge_row_idx_int))){
-      data_tb <- data_tb %>%
+      data_fx <- data_fx %>%
       flextable::merge_h_range(i = merge_row_idx_int,
                                j1 = 1,
                                j2 = j2_1L_dbl) %>%
-        flextable::bold(i = merge_row_idx_int, j = 1) %>%
-        flextable::autofit(add_w = 0, add_h = 0)
+        flextable::bold(i = merge_row_idx_int, j = 1) 
     }
-    
+    if(!is.null(digits_dbl)){
+      numeric_lgl <- unlist(lapply(data_tb, is.numeric)) %>% unname()
+      data_fx <- unique(digits_dbl) %>%
+        purrr::reduce(.init = data_fx, 
+                      ~ .x %>%
+                          flextable::colformat_num(j = names(data_tb)[which(digits_dbl==.y & numeric_lgl)],
+                                                   digits = .y)
+                        
+                        )
+    }
+    data_fx <- data_fx %>%
+        flextable::autofit(add_w = 0, add_h = 0)
     if(!all(is.na(footnotes_chr))){
-      data_tb <- data_tb %>%
+      data_fx <- data_fx %>%
         flextable::add_footer_lines(values = footnotes_chr)
     }
-    data_tb
+    data_xx <- data_fx
   }
 }
+  data_xx <- 
+  return(data_xx)
 }
 make_brms_mdl_print_ls <- function(mdl_ls,
                                label_stub_1L_chr,
@@ -181,10 +179,13 @@ data_tb <- data_tb %>% dplyr::mutate(Parameter = Parameter %>%
                                                                .x))) 
 if(output_type_1L_chr!="PDF"){
 data_tb <- data_tb %>%
-  dplyr::mutate(dplyr::across(c(Bulk_ESS, Tail_ESS),as.character)) %>%
-  dplyr::mutate(dplyr::across(where(is.numeric), ~ round(., digits = digits_1L_dbl) %>% as.character()))
+  dplyr::mutate(dplyr::across(c(Bulk_ESS, Tail_ESS),as.character)) 
 }
-
+if(output_type_1L_chr=="HTML"){
+data_tb <- data_tb %>%
+  dplyr::mutate(dplyr::across(where(is.numeric), 
+                              ~ round(., digits = digits_1L_dbl) %>% as.character())) 
+}
 end_matter_1L_chr <- trimws(mdl_smry_chr[idx_dbl[6]:length(mdl_smry_chr)]) %>% paste0(collapse = " ")
 brms_mdl_print_ls <- list(part_1 = mdl_smry_chr[idx_dbl[1]],
                           part_2 = "\n\n",
@@ -197,7 +198,8 @@ brms_mdl_print_ls <- list(part_1 = mdl_smry_chr[idx_dbl[1]],
                caption_1L_chr = caption_1L_chr,
                label = paste0("tab:",label_stub_1L_chr),
                merge_row_idx_int = as.integer(which(bold_lgl)),
-               digits_dbl = c(0, 
+               digits_dbl = c(ifelse(output_type_1L_chr=="PDF",0,NA_real_) %>%
+                                purrr::discard(is.na), 
                               names(data_tb) %>% purrr::map_dbl(~ifelse(.x %in% c("Bulk_ESS", "Tail_ESS"),
                                                          0,
                                                          digits_1L_dbl))),
@@ -275,16 +277,40 @@ fig_nums <- captioner::captioner()
 
 <!-- \blandscape -->
 
-```{r echo = F, results='asis'}
+```{r echo = F, results="asis"}
 brms_mdl_print_ls <- make_brms_mdl_print_ls(mdl_ls = readRDS(path_to_mdl_1L_chr),
 label_stub_1L_chr = "LABELSTUB",
 caption_1L_chr = "CAPTION FOR TABLE",
 output_type_1L_chr = params$output_type_1L_chr,
 footnotes_chr = rep("TEST",15) %>% paste0(collapse=",")) 
-#brms_mdl_print_ls[1:4] %>% purrr::walk(~cat(.x))
 rlang::exec(print_table_xx,!!!brms_mdl_print_ls[[5]])
-#readRDS(path_to_mdl_1L_chr) %>% sjPlot::tab_model()
+# data_tb <- brms_mdl_print_ls[[5]]$data_tb
+# brms_mdl_print_ls[[5]]$output_type_1L_chr -> output_type_1L_chr
+# brms_mdl_print_ls[[5]]$caption_1L_chr -> caption_1L_chr
+# brms_mdl_print_ls[[5]]$label -> label
+# brms_mdl_print_ls[[5]]$merge_row_idx_int -> merge_row_idx_int
+# brms_mdl_print_ls[[5]]$digits_dbl -> digits_dbl
+# brms_mdl_print_ls[[5]]$hline.after -> hline.after
+# brms_mdl_print_ls[[5]]$sanitize_fn ->  sanitize_fn
+# brms_mdl_print_ls[[5]]$footnotes_chr -> footnotes_chr
+#  if(output_type_1L_chr == "HTML"){
+  # data_kb <- data_tb %>%
+  #   kableExtra::kable(format = "html",escape = F,
+  #       caption = caption_1L_chr) %>%
+  #     kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed"#, "responsive"
+  #                                                     ),
+  #                               full_width = F,
+  #                               position = "left") %>%
+  #     kableExtra::footnote(general = footnotes_chr,
+  #                          general_title = "",
+  #                          footnote_as_chunk = T,
+  #                          #title_format = c("italic","underline"),
+  #                          threeparttable = T)
+  #data_kb
 
+```
+```{r}
+#rlang::exec(print_table_xx,!!!brms_mdl_print_ls[[5]])
 ```
 
 <!-- \elandscape -->
