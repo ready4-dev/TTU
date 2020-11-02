@@ -6,6 +6,7 @@
 "Close","Closes specified connections.",NA,NA,FALSE,FALSE
 "Download Data","Downloads data files.",NA,NA,TRUE,TRUE
 "Extract","Extracts data from an object.",NA,NA,FALSE,FALSE
+"Fit","Fits a model of a specified type to a dataset",NA,NA,FALSE,FALSE
 "Force","Checks if a specified local or global environmental condition is met and if not, updates the specified environment to comply with the condition.",NA,NA,FALSE,FALSE
 "Get","Retrieves a pre-existing data object from memory, local file system or online repository.","Where to look for the required object.",NA,FALSE,FALSE
 "Get Data","Retrieves data from R objects loaded in memory.",NA,NA,TRUE,TRUE
@@ -19,6 +20,9 @@
 "Make Import Output Object of Multiple Potential Types","Makes an output object of multiple potential classes.",NA,NA,TRUE,TRUE
 "Make Lookup Table","Applies a Make method and then updates the output of that method.",NA,NA,TRUE,TRUE
 "Order Tibble","Orders a tibble.",NA,NA,TRUE,TRUE
+"Plot","Plots data",NA,NA,FALSE,FALSE
+"Predict","Makes predictions from data using a specified statistical model.",NA,NA,FALSE,FALSE
+"Print","Prints output to console",NA,NA,FALSE,FALSE
 "Randomise","Randomly samples from data.",NA,NA,FALSE,FALSE
 "Read","Reads an R script into memory.","Path to object.",NA,FALSE,FALSE
 "Remake List Columns","Remakes list columns.",NA,NA,TRUE,TRUE

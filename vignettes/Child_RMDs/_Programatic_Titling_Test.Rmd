@@ -21,233 +21,6 @@ options(xtable.timestamp = "")
 ```
 
 ```{r echo = FALSE}
-make_brms_mdl_smry_tbl <- function(smry_mdl_ls,
-                                   grp_1L_chr,
-                                   pop_1L_chr,
-                                   fam_1L_chr){
- brms_mdl_smry_tb <- purrr::map(1:length(smry_mdl_ls$random), 
-           ~ make_mdl_smry_elmt_tbl(cat_chr = c(ifelse(.x==1,grp_1L_chr,character(0)),paste0(names(smry_mdl_ls$ngrps)[.x], 
-                         " (Number of levels: ",smry_mdl_ls$ngrps[.x][[1]],")")),
-                  mat = smry_mdl_ls$random[.x][[1]])) %>%
-  dplyr::bind_rows(make_mdl_smry_elmt_tbl(mat = smry_mdl_ls$fixed, cat_chr = pop_1L_chr),
-                   make_mdl_smry_elmt_tbl(mat = smry_mdl_ls$spec_pars, cat_chr = fam_1L_chr))
- return(brms_mdl_smry_tb)
-                                   }
-make_mdl_smry_elmt_tbl <- function(mat,
-                              cat_chr){
-  tb <- mat %>% tibble::as_tibble() %>% dplyr::mutate(Parameter = rownames(mat)) %>% dplyr::select(Parameter, dplyr::everything())
-
-mdl_elmt_sum_tb <- tb %>% dplyr::filter(F) %>% tibble::add_case(Parameter = cat_chr) %>%
-  dplyr::bind_rows(tb)
-return(mdl_elmt_sum_tb)
-}
-print_ts_mdl_plts <- function(paths_to_plts_chr,
-                              title_1L_chr,
-                              label_refs_chr,
-                              mdl_smry_ls){
-    cat('\n')
-  cat("## ", title_1L_chr, "\n")
-  cat('\n')
-  purrr::pwalk(list(paths_to_plts_chr,
-              paste0(#"\\label{fig:fig",label_refs_chr,"}",
-                     "Caption",1:length(paths_to_plts_chr)),
-              label_refs_chr),
-    ~ {
-      cat(paste0('\n![',
-                 #.y,
-                 '](',
-                 ..1,
-                 ')\n\n'))
-      cat(fig_nums(..3, ..2))
-    cat('\n\n')
-    })
- cat('\n\n')
-}
-print_all_plts_for_mdl_set <- function(output_ls,
-                                       start_from_1L_int = 0L){
-  label_refs_mat <- paste0("lab",1:(output_ls %>% purrr::flatten() %>% length())+start_from_1L_int) %>% matrix(nrow = length(output_ls), byrow=T)
-purrr::walk(1:length(output_ls),
-            ~ print_ts_mdl_plts(output_ls[[.x]], 
-                                title_1L_chr = names(output_ls)[.x],
-                                label_refs_chr = label_refs_mat[.x,]))
-}
-print_table_xx <- function(data_tb,
-                           output_type_1L_chr = "PDF",
-                           caption_1L_chr = NA_character_,
-                           footnotes_chr = NA_character_,
-                           merge_row_idx_int = NA_integer_,
-                           digits_dbl = NULL,
-                           big_mark_1L_chr = " ",
-                           label,
-                           hline.after,
-                           addtorow,
-                           sanitize_fn = getOption("xtable.sanitize.text.function", NULL)){
-if(output_type_1L_chr == "PDF"){
-     data_x_tb <- data_tb %>%
-  xtable::xtable(caption = caption_1L_chr, label = label, digits = digits_dbl)
- data_x_tb %>%
-  print(comment = F,
-        floating = TRUE, 
-        hline.after = hline.after,
-        caption.placement = "top",
-        add.to.row = addtorow, 
-        sanitize.text.function = sanitize_fn,
-        format.args = list(big.mark = big_mark_1L_chr),
-        include.colnames = FALSE,
-        include.rownames = FALSE) 
-}else{
-  if(output_type_1L_chr == "HTML"){
-    data_kb <- data_tb %>%
-      kableExtra::kbl(format = "html",escape = F,
-        caption = caption_1L_chr) %>%
-      kableExtra::kable_paper("hover", full_width = F) 
-    if(!all(is.na(merge_row_idx_int))){
-    data_kb <- data_kb %>%
-      kableExtra::row_spec(merge_row_idx_int, bold = T)
-    }
-    # kableExtra::kable(format = "html",escape = F,
-    #     caption = caption_1L_chr) %>%
-    #   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed"),
-    #                             full_width = F,
-    #                             position = "left") %>%
-     data_kb <- data_kb %>%
-       kableExtra::footnote(general = footnotes_chr,
-                           general_title = "",
-                           footnote_as_chunk = T,
-                           threeparttable = T)
-  data_xx <- data_kb
-  }
-    if(output_type_1L_chr == "Word"){
-      j2_1L_dbl <- ncol(data_tb)
-    data_fx <- flextable::flextable(data_tb) %>% #
-      flextable::set_caption(caption_1L_chr,
-                             autonum = officer::run_autonum())
-    if(!all(is.na(merge_row_idx_int))){
-      data_fx <- data_fx %>%
-      flextable::merge_h_range(i = merge_row_idx_int,
-                               j1 = 1,
-                               j2 = j2_1L_dbl) %>%
-        flextable::bold(i = merge_row_idx_int, j = 1) 
-    }
-    if(!is.null(digits_dbl)){
-      numeric_lgl <- unlist(lapply(data_tb, is.numeric)) %>% unname()
-      data_fx <- unique(digits_dbl) %>%
-        purrr::reduce(.init = data_fx, 
-                      ~ .x %>%
-                          flextable::colformat_num(j = names(data_tb)[which(digits_dbl==.y & numeric_lgl)],
-                                                   digits = .y)
-                        
-                        )
-    }
-    data_fx <- data_fx %>%
-        flextable::autofit(add_w = 0, add_h = 0)
-    if(!all(is.na(footnotes_chr))){
-      data_fx <- data_fx %>%
-        flextable::add_footer_lines(values = footnotes_chr)
-    }
-    data_xx <- data_fx
-    }
-  return(data_xx)
-}
-}
-make_brms_mdl_print_ls <- function(mdl_ls,
-                               label_stub_1L_chr,
-                               caption_1L_chr,
-                               footnotes_chr = "",
-                               output_type_1L_chr = "PDF",
-                               digits_1L_dbl = 2,
-                               big_mark_1L_chr = " "){
-    smry_mdl_ls <- summary(mdl_ls, digits = 4)
-  mdl_smry_chr <- smry_mdl_ls %>% capture.output() 
-  idx_dbl <- c("Formula: ",
-             "Samples: ", 
-             "Group-Level Effects: ", 
-             "Population-Level Effects: ", 
-             "Family Specific Parameters: ",
-             "Samples were drawn using ") %>% purrr::map_dbl(~mdl_smry_chr %>% startsWith(.x) %>% which())
-  data_tb <- make_brms_mdl_smry_tbl(smry_mdl_ls,
-                       grp_1L_chr = mdl_smry_chr[idx_dbl[3]],
-                       pop_1L_chr = mdl_smry_chr[idx_dbl[4]],
-                       fam_1L_chr = mdl_smry_chr[idx_dbl[5]])
-bold_lgl <- data_tb$Parameter %in% c(mdl_smry_chr[idx_dbl[3]],mdl_smry_chr[idx_dbl[4]],mdl_smry_chr[idx_dbl[5]])
-if(output_type_1L_chr =="PDF"){
-  data_tb <- data_tb %>% dplyr::mutate(Parameter = purrr::map_chr(Parameter,
-                                                                ~ .x %>%
-                                                                  Hmisc::latexTranslate()))
-}
-data_tb <- data_tb %>% dplyr::mutate(Parameter = Parameter %>%
-                                       purrr::map2_chr(dplyr::all_of(bold_lgl),
-                                                       ~ifelse(.y & output_type_1L_chr =="PDF",
-                                                               paste0("\\textbf{",.x,"}"),
-                                                               .x))) 
-if(output_type_1L_chr!="PDF"){
-data_tb <- data_tb %>%
-  dplyr::mutate(dplyr::across(c(Bulk_ESS, Tail_ESS),
-                              ~ format(.,big.mark = big_mark_1L_chr))) #
-}
-if(output_type_1L_chr=="HTML"){
-data_tb <- data_tb %>%
-  dplyr::mutate(dplyr::across(where(is.numeric), 
-                              ~ format(round(.,digits = digits_1L_dbl), digits = digits_1L_dbl, nsmall = digits_1L_dbl))) 
-}
-data_tb <- data_tb %>%
-  dplyr::mutate(dplyr::across(where(is.character),
-                              ~ dplyr::case_when(is.na(.) ~ "",
-                                                 . == "NA" ~ "",
-                                                 endsWith(.," NA") ~ "",
-                                                 TRUE ~ .)))
-end_matter_1L_chr <- trimws(mdl_smry_chr[idx_dbl[6]:length(mdl_smry_chr)]) %>% paste0(collapse = " ")
-brms_mdl_print_ls <- list(part_1 = mdl_smry_chr[idx_dbl[1]],
-                          part_2 = "\n\n",
-                          part_3 = c(trimws(mdl_smry_chr[1:(idx_dbl[2]-1)][-idx_dbl[1]]),
-  paste0(trimws(mdl_smry_chr[idx_dbl[2]]), " ",trimws(mdl_smry_chr[idx_dbl[2]+1]), collapse = " ")) %>%
-  paste0(collapse = ifelse(output_type_1L_chr=="PDF","\n\n","\n")),
-  part_4 = "\n\n",
-  part_5 = list(data_tb = data_tb,
-               output_type_1L_chr = output_type_1L_chr,
-               caption_1L_chr = caption_1L_chr,
-               label = paste0("tab:",label_stub_1L_chr),
-               merge_row_idx_int = as.integer(which(bold_lgl)),
-               digits_dbl = c(ifelse(output_type_1L_chr=="PDF",0,NA_real_) %>%
-                                purrr::discard(is.na), 
-                              names(data_tb) %>% purrr::map_dbl(~ifelse(.x %in% c("Bulk_ESS", "Tail_ESS"),
-                                                         0,
-                                                         digits_1L_dbl))),
-               big_mark_1L_chr = big_mark_1L_chr,
-               hline.after =  c(-1,0),
-               sanitize_fn = force,
-               footnotes_chr = NA_character_
-               ),
-  part_6 = end_matter_1L_chr)
-if(output_type_1L_chr!="PDF"){
-  brms_mdl_print_ls$part_5$footnotes_chr <- c(paste0(brms_mdl_print_ls$part_1,ifelse(output_type_1L_chr=="Word","","\n")),
-                                              brms_mdl_print_ls$part_3,
-                                              brms_mdl_print_ls$part_6)
-  brms_mdl_print_ls$part_6 <- NULL
-}else{
-  footnotes_chr <- c(mdl_smry_chr[idx_dbl[1]],
-                     trimws(mdl_smry_chr[1:(idx_dbl[2]-1)][-idx_dbl[1]]),
-                     trimws(mdl_smry_chr[idx_dbl[2]]),
-                     trimws(mdl_smry_chr[idx_dbl[2]+1]),
-                     trimws(mdl_smry_chr[idx_dbl[6]:length(mdl_smry_chr)])) %>%
-    Hmisc::latexTranslate() 
-  footnotes_chr[1] <- footnotes_chr[1] %>% stringr::str_replace("~","\\\\textasciitilde")
-  brms_mdl_print_ls$part_5$addtorow <- list(pos = purrr::map(c(0,
-                                                                    rep(nrow(data_tb),
-                                                                          length(footnotes_chr)+1)),
-                                                                  ~ .x),
-                 command = c(names(data_tb) %>% 
-                               Hmisc::latexTranslate() %>% 
-                               paste0(collapse=" & ") %>% paste0("\\\\\n"),
-                             c("\\toprule\n"),
-                             footnotes_chr %>% purrr::map_chr(~paste0(
-                             "\\multicolumn{",ncol(data_tb),"}{l}{",
-                             paste0("{\\footnotesize ",.x,"}\n", collapse = ","),
-                             "}\\\\\n"))))
-}
-    
-return(brms_mdl_print_ls)
-}
 print_brms_mdl_tbl <- function(brms_mdl_print_ls){
   # mdl_smry_chr = brms_mdl_print_ls$mdl_smry_chr
   # idx_dbl = brms_mdl_print_ls$idx_dbl
@@ -262,8 +35,6 @@ if(output_type_1L_chr=="PDF"){
 }
 
                                }
-
-
 
 ```
 
@@ -295,7 +66,6 @@ caption_1L_chr = "CAPTION FOR TABLE",
 output_type_1L_chr = params$output_type_1L_chr,
 footnotes_chr = rep("TEST",15) %>% paste0(collapse=",")) 
 rlang::exec(print_table_xx,!!!brms_mdl_print_ls[[5]])
-
 ```
 
 <!-- \elandscape -->
@@ -313,7 +83,7 @@ rlang::exec(print_table_xx,!!!brms_mdl_print_ls[[5]])
 
 <!-- `r fig_nums("lab1", display = "cite")` -->
  
-```{r, fig.cap=c("Caption 1", "Caption 2", "Caption 3", "Caption 4"), echo=FALSE, message=F}
+```{r, fig.cap=plt_nms_chr, echo=FALSE, message=F}
 knitr::include_graphics(paths_to_mdl_plts_chr)
 # cat('\n')
 # cat("###", "TEST", "\n\n")

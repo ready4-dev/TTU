@@ -66,6 +66,115 @@ make_aqol6d_items_tb <- function(aqol_tb,
     })
   return(aqol6d_items_tb)
 }
+make_brms_mdl_print_ls <- function(mdl_ls,
+                                   label_stub_1L_chr,
+                                   caption_1L_chr,
+                                   footnotes_chr = "",
+                                   output_type_1L_chr = "PDF",
+                                   digits_1L_dbl = 2,
+                                   big_mark_1L_chr = " "){
+  smry_mdl_ls <- summary(mdl_ls, digits = 4)
+  mdl_smry_chr <- smry_mdl_ls %>% capture.output()
+  idx_dbl <- c("Formula: ",
+               "Samples: ",
+               "Group-Level Effects: ",
+               "Population-Level Effects: ",
+               "Family Specific Parameters: ",
+               "Samples were drawn using ") %>% purrr::map_dbl(~mdl_smry_chr %>% startsWith(.x) %>% which())
+  data_tb <- make_brms_mdl_smry_tbl(smry_mdl_ls,
+                                    grp_1L_chr = mdl_smry_chr[idx_dbl[3]],
+                                    pop_1L_chr = mdl_smry_chr[idx_dbl[4]],
+                                    fam_1L_chr = mdl_smry_chr[idx_dbl[5]])
+  bold_lgl <- data_tb$Parameter %in% c(mdl_smry_chr[idx_dbl[3]],mdl_smry_chr[idx_dbl[4]],mdl_smry_chr[idx_dbl[5]])
+  if(output_type_1L_chr =="PDF"){
+    data_tb <- data_tb %>% dplyr::mutate(Parameter = purrr::map_chr(Parameter,
+                                                                    ~ .x %>%
+                                                                      Hmisc::latexTranslate()))
+  }
+  data_tb <- data_tb %>% dplyr::mutate(Parameter = Parameter %>%
+                                         purrr::map2_chr(dplyr::all_of(bold_lgl),
+                                                         ~ifelse(.y & output_type_1L_chr =="PDF",
+                                                                 paste0("\\textbf{",.x,"}"),
+                                                                 .x)))
+  if(output_type_1L_chr!="PDF"){
+    data_tb <- data_tb %>%
+      dplyr::mutate(dplyr::across(c(Bulk_ESS, Tail_ESS),
+                                  ~ format(.,big.mark = big_mark_1L_chr))) #
+  }
+  if(output_type_1L_chr=="HTML"){
+    data_tb <- data_tb %>%
+      dplyr::mutate(dplyr::across(where(is.numeric),
+                                  ~ format(round(.,digits = digits_1L_dbl), digits = digits_1L_dbl, nsmall = digits_1L_dbl)))
+  }
+  data_tb <- data_tb %>%
+    dplyr::mutate(dplyr::across(where(is.character),
+                                ~ dplyr::case_when(is.na(.) ~ "",
+                                                   . == "NA" ~ "",
+                                                   endsWith(.," NA") ~ "",
+                                                   TRUE ~ .)))
+  end_matter_1L_chr <- trimws(mdl_smry_chr[idx_dbl[6]:length(mdl_smry_chr)]) %>% paste0(collapse = " ")
+  brms_mdl_print_ls <- list(part_1 = mdl_smry_chr[idx_dbl[1]],
+                            part_2 = "\n\n",
+                            part_3 = c(trimws(mdl_smry_chr[1:(idx_dbl[2]-1)][-idx_dbl[1]]),
+                                       paste0(trimws(mdl_smry_chr[idx_dbl[2]]), " ",trimws(mdl_smry_chr[idx_dbl[2]+1]), collapse = " ")) %>%
+                              paste0(collapse = ifelse(output_type_1L_chr=="PDF","\n\n","\n")),
+                            part_4 = "\n\n",
+                            part_5 = list(data_tb = data_tb,
+                                          output_type_1L_chr = output_type_1L_chr,
+                                          caption_1L_chr = caption_1L_chr,
+                                          label = paste0("tab:",label_stub_1L_chr),
+                                          merge_row_idx_int = as.integer(which(bold_lgl)),
+                                          digits_dbl = c(ifelse(output_type_1L_chr=="PDF",0,NA_real_) %>%
+                                                           purrr::discard(is.na),
+                                                         names(data_tb) %>% purrr::map_dbl(~ifelse(.x %in% c("Bulk_ESS", "Tail_ESS"),
+                                                                                                   0,
+                                                                                                   digits_1L_dbl))),
+                                          big_mark_1L_chr = big_mark_1L_chr,
+                                          hline.after =  c(-1,0),
+                                          sanitize_fn = force,
+                                          footnotes_chr = NA_character_
+                            ),
+                            part_6 = end_matter_1L_chr)
+  if(output_type_1L_chr!="PDF"){
+    brms_mdl_print_ls$part_5$footnotes_chr <- c(paste0(brms_mdl_print_ls$part_1,ifelse(output_type_1L_chr=="Word","","\n")),
+                                                brms_mdl_print_ls$part_3,
+                                                brms_mdl_print_ls$part_6)
+    brms_mdl_print_ls$part_6 <- NULL
+  }else{
+    footnotes_chr <- c(mdl_smry_chr[idx_dbl[1]],
+                       trimws(mdl_smry_chr[1:(idx_dbl[2]-1)][-idx_dbl[1]]),
+                       trimws(mdl_smry_chr[idx_dbl[2]]),
+                       trimws(mdl_smry_chr[idx_dbl[2]+1]),
+                       trimws(mdl_smry_chr[idx_dbl[6]:length(mdl_smry_chr)])) %>%
+      Hmisc::latexTranslate()
+    footnotes_chr[1] <- footnotes_chr[1] %>% stringr::str_replace("~","\\\\textasciitilde")
+    brms_mdl_print_ls$part_5$addtorow <- list(pos = purrr::map(c(0,
+                                                                 rep(nrow(data_tb),
+                                                                     length(footnotes_chr)+1)),
+                                                               ~ .x),
+                                              command = c(names(data_tb) %>%
+                                                            Hmisc::latexTranslate() %>%
+                                                            paste0(collapse=" & ") %>% paste0("\\\\\n"),
+                                                          c("\\toprule\n"),
+                                                          footnotes_chr %>% purrr::map_chr(~paste0(
+                                                            "\\multicolumn{",ncol(data_tb),"}{l}{",
+                                                            paste0("{\\footnotesize ",.x,"}\n", collapse = ","),
+                                                            "}\\\\\n"))))
+  }
+  return(brms_mdl_print_ls)
+}
+make_brms_mdl_smry_tbl <- function(smry_mdl_ls,
+                                   grp_1L_chr,
+                                   pop_1L_chr,
+                                   fam_1L_chr){
+  brms_mdl_smry_tb <- purrr::map(1:length(smry_mdl_ls$random),
+                                 ~ make_mdl_smry_elmt_tbl(cat_chr = c(ifelse(.x==1,grp_1L_chr,character(0)),paste0(names(smry_mdl_ls$ngrps)[.x],
+                                                                                                                   " (Number of levels: ",smry_mdl_ls$ngrps[.x][[1]],")")),
+                                                          mat = smry_mdl_ls$random[.x][[1]])) %>%
+    dplyr::bind_rows(make_mdl_smry_elmt_tbl(mat = smry_mdl_ls$fixed, cat_chr = pop_1L_chr),
+                     make_mdl_smry_elmt_tbl(mat = smry_mdl_ls$spec_pars, cat_chr = fam_1L_chr))
+  return(brms_mdl_smry_tb)
+}
 make_complete_props_tbs_ls <- function(raw_props_tbs_ls,
                                        question_var_nm_1L_chr = "Question"){
   complete_props_tbs_ls <- raw_props_tbs_ls %>%
@@ -158,7 +267,14 @@ make_item_wrst_wghts_ls_ls <- function(domain_items_ls,
     })
   return(item_wrst_wghts_ls_ls)
 }
+make_mdl_smry_elmt_tbl <- function(mat,
+                                   cat_chr){
+  tb <- mat %>% tibble::as_tibble() %>% dplyr::mutate(Parameter = rownames(mat)) %>% dplyr::select(Parameter, dplyr::everything())
 
+  mdl_elmt_sum_tb <- tb %>% dplyr::filter(F) %>% tibble::add_case(Parameter = cat_chr) %>%
+    dplyr::bind_rows(tb)
+  return(mdl_elmt_sum_tb)
+}
 make_pdef_cor_mat_mat <- function(lower_diag_mat){
   pdef_cor_mat <- lower_diag_mat %>%
     Matrix::forceSymmetric(uplo="L")  %>% as.matrix()
@@ -167,7 +283,92 @@ make_pdef_cor_mat_mat <- function(lower_diag_mat){
   }
   return(pdef_cor_mat)
 }
-
+make_smry_of_brm_mdl <- function(mdl_ls,
+                                 data_tb,
+                                 dep_var_nm_1L_chr = "aqol6d_total_w",
+                                 predictor_vars_nms_chr,
+                                 fn = calculate_rmse,
+                                 mdl_nm_1L_chr = NA_character_,
+                                 seed_1L_dbl = 23456){
+  if(is.na(mdl_nm_1L_chr))
+    mdl_nm_1L_chr <- predictor_vars_nms_chr[1]
+  set.seed(seed_1L_dbl)
+  predictions <- predict(mdl_ls, summary=F)
+  coef <- summary(mdl_ls, digits = 4)$fixed
+  coef <- coef[1:nrow(coef),1:4]
+  R2 <- brms::bayes_R2(mdl_ls)
+  RMSE <- psych::describe(apply(predictions,
+                                1,
+                                fn,
+                                y_dbl = data_tb %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))),
+                          quant = c(.25, .75),
+                          skew = F,
+                          ranges = F)
+  RMSE <- cbind(RMSE$mean, RMSE$sd, RMSE$Q0.25, RMSE$Q0.75)
+  Sigma <- summary(mdl_ls, digits = 4)$spec_par[1:4]
+  smry_of_brm_mdl_tb <- data.frame(round(rbind(coef,R2,RMSE,Sigma),3))  %>%
+    dplyr::mutate(Parameter=c("Intercept",purrr::map(predictor_vars_nms_chr,
+                                                     ~ paste0(.x, c(" baseline",
+                                                                    " change"))) %>%
+                                purrr::flatten_chr(),
+                              "R2", "RMSE", "Sigma"),
+                  Model = mdl_nm_1L_chr) %>%
+    dplyr::mutate(`95% CI`= paste(`l.95..CI`,",", `u.95..CI`)) %>%
+    dplyr::rename (SE=Est.Error) %>%
+    dplyr::select(Model, Parameter, Estimate, SE, `95% CI`)
+  return(smry_of_brm_mdl_tb)
+}
+make_smry_of_ts_mdl <- function(data_tb,
+                                fn,
+                                predictor_vars_nms_chr,
+                                mdl_nm_1L_chr,
+                                path_to_write_to_1L_chr = NA_character_,
+                                dep_var_nm_1L_chr = "aqol6d_total_w",
+                                id_var_nm_1L_chr = "fkClientID",
+                                round_var_nm_1L_chr = "round",
+                                round_bl_val_1L_chr = "Baseline",
+                                iters_1L_int = 4000L,
+                                seed_1L_int = 1000L#,print_plots_1L_lgl = T
+){
+  tfd_data_tb <- transform_tb_to_mdl_inp(data_tb,
+                                         dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                                         predictor_vars_nms_chr = predictor_vars_nms_chr,
+                                         id_var_nm_1L_chr = id_var_nm_1L_chr,
+                                         round_var_nm_1L_chr = round_var_nm_1L_chr,
+                                         round_bl_val_1L_chr = round_bl_val_1L_chr)
+  tfd_dep_var_nm_1L_chr <- ifelse(identical(fn,fit_clg_log_tfmn),
+                                  transform_dep_var_nm_for_cll(dep_var_nm_1L_chr),
+                                  dep_var_nm_1L_chr)
+  args_ls <- list(data_tb = tfd_data_tb,
+                  dep_var_nm_1L_chr = tfd_dep_var_nm_1L_chr,
+                  predictor_vars_nms_chr = predictor_vars_nms_chr,
+                  iters_1L_int = iters_1L_int,
+                  seed_1L_int = seed_1L_int)
+  mdl_ls <- rlang::exec(fn,!!!args_ls)
+  smry_of_ts_mdl_ls <- list(smry_of_ts_mdl_tb = make_smry_of_brm_mdl(mdl_ls,
+                                                                     data_tb = tfd_data_tb,
+                                                                     dep_var_nm_1L_chr = tfd_dep_var_nm_1L_chr,
+                                                                     predictor_vars_nms_chr = predictor_vars_nms_chr,
+                                                                     fn = ifelse(identical(fn,fit_gsn_log_lnk),
+                                                                                 calculate_rmse,
+                                                                                 calculate_rmse_tfmn),
+                                                                     mdl_nm_1L_chr = mdl_nm_1L_chr
+  ))
+  if(!is.na(path_to_write_to_1L_chr)){
+    smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr <- paste0(path_to_write_to_1L_chr,"/",mdl_nm_1L_chr,".RDS")
+    saveRDS(mdl_ls,path_to_mdl_ls_1L_chr)
+    smry_of_ts_mdl_ls$paths_to_mdl_plts_chr <- write_brm_model_plts(mdl_ls,
+                                                                    tfd_data_tb,
+                                                                    dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                                                                    mdl_nm_1L_chr = mdl_nm_1L_chr,
+                                                                    path_to_write_to_1L_chr = path_to_write_to_1L_chr,
+                                                                    round_var_nm_1L_chr = round_var_nm_1L_chr,
+                                                                    tfmn_fn = ifelse(identical(fn, fit_gsn_log_lnk),
+                                                                                     function(x){x},
+                                                                                     function(x){1-exp(-exp(x))}))
+  }
+  return(smry_of_ts_mdl_ls)
+}
 make_synth_series_tbs_ls <- function(synth_data_spine_ls,
                                      series_names_chr){
   # Add assert

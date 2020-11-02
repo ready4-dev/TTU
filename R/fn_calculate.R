@@ -8,7 +8,6 @@
 #' @export 
 #' @importFrom dplyr select starts_with rename_all
 #' @importFrom stringr str_replace
-#' @keywords internal
 calculate_adol_aqol6dU <- function (unscored_aqol_tb, prefix_1L_chr = "aqol", id_var_nm_1L_chr) 
 {
     unscored_aqol_tb <- unscored_aqol_tb %>% dplyr::select(id_var_nm_1L_chr, 
@@ -161,4 +160,30 @@ calculate_aqol6d_dim_6_disv <- function (dvQs_tb, kD_1L_dbl, w_dbl)
             w_dbl[3] * ..3)) - 1)
     })
     return(dvD6_dbl)
+}
+#' Calculate rmse
+#' @description calculate_rmse() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate rmse. The function returns Rmse (a double vector).
+#' @param y_dbl Y (a double vector)
+#' @param yhat_dbl Yhat (a double vector)
+#' @return Rmse (a double vector)
+#' @rdname calculate_rmse
+#' @export 
+
+calculate_rmse <- function (y_dbl, yhat_dbl) 
+{
+    rmse_dbl <- sqrt(mean((yhat_dbl - y_dbl)^2))
+    return(rmse_dbl)
+}
+#' Calculate rmse tfmn
+#' @description calculate_rmse_tfmn() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate rmse tfmn. The function returns Rmse tfmn (a double vector).
+#' @param y_dbl Y (a double vector)
+#' @param yhat_dbl Yhat (a double vector)
+#' @return Rmse tfmn (a double vector)
+#' @rdname calculate_rmse_tfmn
+#' @export 
+
+calculate_rmse_tfmn <- function (y_dbl, yhat_dbl) 
+{
+    rmse_tfmn_dbl <- sqrt(mean((1 - exp(-exp(yhat_dbl)) - y_dbl)^2))
+    return(rmse_tfmn_dbl)
 }

@@ -1,3 +1,31 @@
+transform_dep_var_nm_for_cll <- function(dep_var_nm_1L_chr){
+  tfd_dep_var_nm_1L_chr <- paste0(dep_var_nm_1L_chr,"_cloglog")
+  return(tfd_dep_var_nm_1L_chr)
+}
+transform_tb_to_mdl_inp <- function(data_tb,
+                                    dep_var_nm_1L_chr = "aqol6d_total_w",
+                                    predictor_vars_nms_chr,
+                                    id_var_nm_1L_chr = "fkClientID",
+                                    round_var_nm_1L_chr = "round",
+                                    round_bl_val_1L_chr = "Baseline"){
+  data_tb <- data.frame(data_tb)
+  tfd_for_gsn_log_mdl_tb <- data_tb %>%
+    dplyr::select(dplyr::all_of(dep_var_nm_1L_chr),
+                  dplyr::all_of(id_var_nm_1L_chr),
+                  dplyr::all_of(round_var_nm_1L_chr),
+                  dplyr::all_of(predictor_vars_nms_chr)) %>%
+    dplyr::group_by(!!rlang::sym(id_var_nm_1L_chr)) %>%
+    dplyr::arrange(!!rlang::sym(id_var_nm_1L_chr),!!rlang::sym(round_var_nm_1L_chr))
+  tfd_for_gsn_log_mdl_tb <- tfd_for_gsn_log_mdl_tb %>%
+    dplyr::mutate(dplyr::across(dplyr::all_of(predictor_vars_nms_chr),
+                                .fns = list(baseline = ~ dplyr::first(.)/100,
+                                            change = ~ ifelse(round == "Baseline",
+                                                              0,
+                                                              (.-dplyr::lag(.))/100))))  %>%
+    dplyr::mutate(!!rlang::sym(transform_dep_var_nm_for_cll(dep_var_nm_1L_chr)) := log(-log(1-ifelse(!!rlang::sym(dep_var_nm_1L_chr)==1,0.999,!!rlang::sym(dep_var_nm_1L_chr))))) %>%
+    na.omit()
+  return(tfd_for_gsn_log_mdl_tb)
+}
 transform_raw_aqol_tb_to_aqol6d_tb <- function(raw_aqol_tb){
   aqol6d_tb <- raw_aqol_tb %>%
     dplyr::mutate(d_agegroup=cut(d_age,breaks=c(11,17,30), labels=c("Age 12-17","Age 18-26"))) %>% # change
@@ -20,3 +48,25 @@ transform_raw_aqol_tb_to_aqol6d_tb <- function(raw_aqol_tb){
   Hmisc::label(aqol6d_tb$d_agegroup)="Age group"
   return(aqol6d_tb)
 }
+transform_ts_mdl_data <- function(mdl_ls,
+                                  data_tb,
+                                  dep_var_nm_1L_chr = "aqol6d_total_w",
+                                  predictor_vars_nms_chr,
+                                  id_var_nm_1L_chr = "fkClientID",
+                                  mdl_nm_1L_chr#,
+                                  #path_to_write_to_1L_chr
+){
+  old_data_tb <- data_tb %>%
+    dplyr::select(c(dplyr::all_of(id_var_nm_1L_chr),
+                    dplyr::all_of(dep_var_nm_1L_chr),
+                    predictor_vars_nms_chr %>% purrr::map(~paste0(.x,
+                                                                  c("","_baseline","_change"))) %>%
+                      purrr::flatten_chr()))
+  cnfdl_mdl_ls <- mdl_ls
+  cnfdl_mdl_ls$data <- old_data_tb %>% as.data.frame() %>%
+    dplyr::summarise(dplyr::across(dplyr::everything(), ~ sample(.x,1)))
+  #saveRDS(cnfdl_mdl_ls,paste0(path_to_write_to_1L_chr,"/",mdl_nm_1L_chr,".RDS"))
+  return(cnfdl_mdl_ls)
+}
+
+
