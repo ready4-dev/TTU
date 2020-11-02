@@ -20,28 +20,6 @@ options(xtable.floating = FALSE)
 options(xtable.timestamp = "")
 ```
 
-```{r echo = FALSE}
-print_brms_mdl_tbl <- function(brms_mdl_print_ls){
-  # mdl_smry_chr = brms_mdl_print_ls$mdl_smry_chr
-  # idx_dbl = brms_mdl_print_ls$idx_dbl
-  # data_tb = brms_mdl_print_ls$data_tb
-  # output_type_1L_chr = brms_mdl_print_ls$output_type_1L_chr
-  # caption_1L_chr = brms_mdl_print_ls$caption_1L_chr
-  # label_stub_1L_chr = brms_mdl_print_ls$label_stub_1L_chr
-  # add_to_row_ls = brms_mdl_print_ls$add_to_row_ls
-
-if(output_type_1L_chr=="PDF"){
-  end_matter_1L_chr %>% cat()
-}
-
-                               }
-
-```
-
-```{r child="./AQoL_6D_Replication_Fns.Rmd", echo=FALSE}
-
-```
-
 ```{r, include=FALSE}
 path_to_mdl_1L_chr <- "../../../../../../../Data/Project/Utility_Models/PHQ9_GSN_LOG.RDS"
 #mdl_ls <- readRDS(path_to_mdl_1L_chr)

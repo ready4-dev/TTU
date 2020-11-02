@@ -1,0 +1,42 @@
+---
+title: "TEST"
+author: "Matthew Hamilton"
+date: "06/08/2020"
+graphics: yes
+params:
+  output_type_1L_chr: HTML
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(comment=NA)
+library(kableExtra)
+library(flextable)
+library(xtable) # EDIT
+library(FBaqol) # EDIT
+library(magrittr)
+options(tinytex.verbose = TRUE)
+options(xtable.floating = FALSE)
+options(xtable.timestamp = "")
+```
+
+```{r, echo=FALSE, results='asis'}
+# src = lapply(list(c("Caption A","Caption B","Caption C","Caption D") %>% deparse(),
+#                   c("Caption 1","Caption 2","Caption 3","Caption 4") %>% deparse()), function(plt_nms_chr) {
+#   knitr::knit_expand('_Model_Report_Template.Rmd')
+# })
+
+src = purrr::pmap(list(plt_nms_ls = list(c("Caption A","Caption B","Caption C","Caption D"),
+                  c("Caption 1","Caption 2","Caption 3","Caption 4")),
+                  path_to_mdl_chr = c("../../../../../../../Data/Project/Utility_Models/PHQ9_GSN_LOG.RDS",
+                                         "../../../../../../../Data/Project/Utility_Models/PHQ9_GSN_LOG.RDS"),
+                  caption_1L_chr = c("CAPTION A","CAPTION B")), 
+                 ~  knitr::knit_expand('_Model_Report_Template.Rmd',
+                                       plt_nms_chr = ..1 %>% deparse(),
+                                       path_to_mdl_1L_chr = ..2 %>% deparse(),
+                                       caption_1L_chr = ..3 %>% deparse())
+)
+res = knitr::knit_child(text = unlist(src), quiet = TRUE)
+cat(res, sep = '\n')
+```
+
