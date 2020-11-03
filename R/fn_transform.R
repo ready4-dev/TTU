@@ -5,6 +5,7 @@
 #' @rdname transform_dep_var_nm_for_cll
 #' @export 
 
+#' @keywords internal
 transform_dep_var_nm_for_cll <- function (dep_var_nm_1L_chr) 
 {
     tfd_dep_var_nm_1L_chr <- paste0(dep_var_nm_1L_chr, "_cloglog")
@@ -56,6 +57,7 @@ transform_raw_aqol_tb_to_aqol6d_tb <- function (raw_aqol_tb)
 #' @export 
 #' @importFrom dplyr select all_of group_by arrange mutate across first lag
 #' @importFrom rlang sym
+#' @keywords internal
 transform_tb_to_mdl_inp <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predictor_vars_nms_chr, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline") 
@@ -86,6 +88,7 @@ transform_tb_to_mdl_inp <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_
 #' @export 
 #' @importFrom dplyr select all_of summarise across everything
 #' @importFrom purrr map flatten_chr
+#' @keywords internal
 transform_ts_mdl_data <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", 
     predictor_vars_nms_chr, id_var_nm_1L_chr = "fkClientID", 
     mdl_nm_1L_chr) 
