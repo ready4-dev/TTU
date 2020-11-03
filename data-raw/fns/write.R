@@ -30,6 +30,7 @@ write_brm_model_plts <- function(mdl_ls,
                                         fn_args_ls <- list(tfd_data_tb = tfd_data_tb,
                                                            dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                                                            dep_var_desc_1L_chr = dep_var_desc_1L_chr,
+                                                           round_var_nm_1L_chr = round_var_nm_1L_chr,
                                                            #plot_fn = sctr_plt_fn,
                                                            args_ls = args_ls)
                                       }

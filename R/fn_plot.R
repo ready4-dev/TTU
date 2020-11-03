@@ -9,7 +9,6 @@
 #' @importFrom ggplot2 ggplot aes geom_rug theme_bw theme labs
 #' @importFrom ggalt geom_bkde
 #' @importFrom viridis scale_fill_viridis
-#' @keywords internal
 plot_obsd_predd_dnst <- function (tfd_data_tb) 
 {
     tfd_data_tb %>% dplyr::mutate(Observed = aqol6d_total_w) %>% 
@@ -25,15 +24,15 @@ plot_obsd_predd_dnst <- function (tfd_data_tb)
 #' @param tfd_data_tb Transformed data (a tibble)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one)
 #' @param dep_var_desc_1L_chr Dep var description (a character vector of length one)
+#' @param round_var_nm_1L_chr Round var name (a character vector of length one)
 #' @param args_ls Arguments (a list)
 #' @return NULL
 #' @rdname plot_obsd_predd_sctr
 #' @export 
 #' @importFrom ggplot2 ggplot geom_point aes theme_bw xlim ylim scale_color_manual labs theme
 #' @importFrom rlang exec sym
-#' @keywords internal
 plot_obsd_predd_sctr <- function (tfd_data_tb, dep_var_nm_1L_chr, dep_var_desc_1L_chr, 
-    args_ls) 
+    round_var_nm_1L_chr, args_ls) 
 {
     ggplot2::ggplot(tfd_data_tb) + rlang::exec(ggplot2::geom_point, 
         ggplot2::aes(x = !!rlang::sym(dep_var_nm_1L_chr), y = Predicted, 

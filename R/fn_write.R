@@ -14,7 +14,6 @@
 #' @export 
 #' @importFrom grDevices png
 #' @importFrom rlang exec
-#' @keywords internal
 write_brm_mdl_plt_fl <- function (plt_fn, fn_args_ls = NULL, path_to_write_to_1L_chr, 
     plt_nm_1L_chr, grpx_fn = grDevices::png, units_1L_chr = "in", 
     width_1L_dbl = 6, height_1L_dbl = 6, rsl_1L_dbl = 300) 
@@ -52,7 +51,6 @@ write_brm_mdl_plt_fl <- function (plt_fn, fn_args_ls = NULL, path_to_write_to_1L
 #' @export 
 #' @importFrom purrr map
 #' @importFrom stats setNames
-#' @keywords internal
 write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_write_to_1L_chr, 
     dep_var_nm_1L_chr = "aqol6d_total_w", dep_var_desc_1L_chr = "AQoL-6D utility score", 
     round_var_nm_1L_chr = "round", tfmn_fn = function(x) {
@@ -81,6 +79,7 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
                 plt_fn <- plot_obsd_predd_sctr
                 fn_args_ls <- list(tfd_data_tb = tfd_data_tb, 
                   dep_var_nm_1L_chr = dep_var_nm_1L_chr, dep_var_desc_1L_chr = dep_var_desc_1L_chr, 
+                  round_var_nm_1L_chr = round_var_nm_1L_chr, 
                   args_ls = args_ls)
             }
         }

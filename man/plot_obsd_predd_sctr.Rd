@@ -8,6 +8,7 @@ plot_obsd_predd_sctr(
   tfd_data_tb,
   dep_var_nm_1L_chr,
   dep_var_desc_1L_chr,
+  round_var_nm_1L_chr,
   args_ls
 )
 }
@@ -18,9 +19,10 @@ plot_obsd_predd_sctr(
 
 \item{dep_var_desc_1L_chr}{Dep var description (a character vector of length one)}
 
+\item{round_var_nm_1L_chr}{Round var name (a character vector of length one)}
+
 \item{args_ls}{Arguments (a list)}
 }
 \description{
 plot_obsd_predd_sctr() is a Plot function that plots data Specifically, this function implements an algorithm to plot obsd predd sctr. The function is called for its side effects and does not return a value.
 }
-\keyword{internal}

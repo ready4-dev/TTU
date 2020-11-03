@@ -13,6 +13,7 @@ plot_obsd_predd_dnst <- function(tfd_data_tb){
 plot_obsd_predd_sctr <- function(tfd_data_tb,
                                  dep_var_nm_1L_chr,
                                  dep_var_desc_1L_chr,
+                                 round_var_nm_1L_chr,
                                  args_ls){
   ggplot2::ggplot(tfd_data_tb) +
     rlang::exec(ggplot2::geom_point,
