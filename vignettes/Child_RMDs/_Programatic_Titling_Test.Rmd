@@ -21,7 +21,7 @@ options(xtable.timestamp = "")
 ```
 
 ```{r, include=FALSE}
-path_to_mdl_1L_chr <- "../../../../../../../Data/Project/Utility_Models/PHQ9_GSN_LOG.RDS"
+path_to_mdl_1L_chr <- "../../../../../../../Data/Project/Utility_Models/PHQ9_CLL_TFN.RDS" #PHQ9_GSN_LOG.RDS
 #mdl_ls <- readRDS(path_to_mdl_1L_chr)
 paths_to_mdl_plts_chr <- paste0(path_to_mdl_1L_chr %>% stringr::str_sub(end=-5), paste0("_",c("coefs","hetg", "dnst","sctr_plt"),".png"))
 plt_nms_chr <- c("Caption 1","Caption 2","Caption 3","Caption 4")

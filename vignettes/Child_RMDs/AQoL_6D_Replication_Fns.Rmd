@@ -10,10 +10,6 @@ output: html_document
 ```{r}
 
 
-
-
-
-
 # print_brm_model <- function(mdl_ls,
 #                             brm_model_plts_ls,
 #                             mdl_nm_1L_chr){

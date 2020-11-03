@@ -28,7 +28,7 @@ options(xtable.timestamp = "")
 
 src = purrr::pmap(list(plt_nms_ls = list(c("Caption A","Caption B","Caption C","Caption D"),
                   c("Caption 1","Caption 2","Caption 3","Caption 4")),
-                  path_to_mdl_chr = c("../../../../../../../Data/Project/Utility_Models/PHQ9_GSN_LOG.RDS",
+                  path_to_mdl_chr = c("../../../../../../../Data/Project/Utility_Models/PHQ9_CLL_TFN.RDS",
                                          "../../../../../../../Data/Project/Utility_Models/PHQ9_GSN_LOG.RDS"),
                   caption_1L_chr = c("CAPTION A","CAPTION B")), 
                  ~  knitr::knit_expand('_Model_Report_Template.Rmd',

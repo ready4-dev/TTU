@@ -356,7 +356,7 @@ make_smry_of_ts_mdl <- function(data_tb,
   ))
   if(!is.na(path_to_write_to_1L_chr)){
     smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr <- paste0(path_to_write_to_1L_chr,"/",mdl_nm_1L_chr,".RDS")
-    saveRDS(mdl_ls,path_to_mdl_ls_1L_chr)
+    saveRDS(mdl_ls,smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)
     smry_of_ts_mdl_ls$paths_to_mdl_plts_chr <- write_brm_model_plts(mdl_ls,
                                                                     tfd_data_tb,
                                                                     dep_var_nm_1L_chr = dep_var_nm_1L_chr,
