@@ -288,6 +288,6 @@ ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
 ## PART FOUR
 ##
 
-pkgdown::build_site()
+# pkgdown::build_site()
 ##
 ## Add, Commit and Push
