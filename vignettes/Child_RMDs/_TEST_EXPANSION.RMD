@@ -20,9 +20,9 @@ options(xtable.floating = FALSE)
 options(xtable.timestamp = "")
 ```
 
-```{r}
-knit_mdl_rprt <- function(ab_ls){
-  src = purrr::pmap(ab_ls, 
+```{r echo = FALSE}
+knit_mdl_rprt <- function(knit_pars_ls){
+  src = purrr::pmap(knit_pars_ls, 
                  ~  knitr::knit_expand('_Model_Report_Template.Rmd',
                                        plt_nms_chr = ..1 %>% deparse(),
                                        path_to_mdl_1L_chr = ..2 %>% deparse(),
@@ -41,15 +41,63 @@ cat(res, sep = '\n')
 # output_ls <- list(`First predictor` = paths_to_mdl_plts_chr,
 #                   `Second predictor` = paths_to_mdl_plts_chr)
 # plt_nms_chr <- rep(plt_nms_chr,2)
-ab_ls <- list(plt_nms_ls = list(c("Caption A","Caption B","Caption C","Caption D"),
-                  c("Caption 1","Caption 2","Caption 3","Caption 4")),
-                  path_to_mdl_chr = c("../../../../../../../Data/Project/Utility_Models/PHQ9_CLL_TFN.RDS",
-                                         "../../../../../../../Data/Project/Utility_Models/PHQ9_GSN_LOG.RDS"),
-                  caption_chr = c("CAPTION A","CAPTION B"),
-                  label_stubs_chr = c("lab1","lab2"),
-                  output_type_1L_chr = rep(params$output_type_1L_chr,2),
-                  section_ttls_chr = c("# TITLE ONE", "# TITLE TWO"))
+mdl_types_lup <- tibble::tibble(short_name_chr = c("GSN_LOG","CLL_TFN"),
+                                long_name_chr = c("Gaussian model with log link",
+                                                  "Clogit model with log transformation")) # CHECK
+plt_types_lup <- tibble::tibble(short_name_chr = c("coefs","hetg", "dnst","sctr_plt"),
+                                 long_name_chr = c("population level effects",
+                                                   "group level effects",
+                                                   "comparative densities of observed and predicted data",
+                                                   "comparative scatter plot of obsereved and predicted data"))
+predictor_vars_nms_ls <- list(c("PHQ9","SOFAS"))
+mdl_types_chr <- c("GSN_LOG","CLL_TFN")
+mdl_smry_dir_1L_chr <- "../../../../../../../Data/Project/Utility_Models" # path_to_write_to_1L_chr
+plt_types_chr <- c("coefs","hetg", "dnst","sctr_plt")
+section_type_1L_chr <- "#"
+lab_idx_dbl <- 1:(length(mdl_types_chr)*length(predictor_vars_nms_ls))
+knit_pars_ls <- purrr::map2(predictor_vars_nms_ls,
+                            split(lab_idx_dbl, 
+                                       ceiling(seq_along(lab_idx_dbl)/length(mdl_types_chr))),
+                            ~ {
+                              mdl_nms_chr <- paste0(.x[1],"_",mdl_types_chr)
+                              path_to_mdl_stubs_chr <- paste0(mdl_smry_dir_1L_chr, "/" , mdl_nms_chr)
+                              paths_to_mdls_chr <- paste0(path_to_mdl_stubs_chr,".RDS")
+                              paths_to_mdl_plts_ls <- purrr::map(path_to_mdl_stubs_chr, 
+                                                                     ~ paste0(.x, 
+                                                                              paste0("_",plt_types_chr,".png")))
+                              mdl_ttls_chr <- paste0(.x[1], " with ", .x[2], " ",
+                                                         ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                                                     match_var_nm_1L_chr = "short_name_chr",
+                                                                                     match_value_xx = mdl_types_chr,
+                                                                                     target_var_nm_1L_chr = "long_name_chr",
+                                                                                     evaluate_lgl = F))
+                              section_ttls_chr <- paste0(section_type_1L_chr, " ", mdl_ttls_chr)
+                              list(plt_nms_ls = purrr::map(mdl_ttls_chr,
+                                                           ~{
+                                                             paste0(.x,
+                                                                    " ",
+                                                                    ready4fun::get_from_lup_obj(plt_types_lup,
+                                                                                     match_var_nm_1L_chr = "short_name_chr",
+                                                                                     match_value_xx = plt_types_chr,
+                                                                                     target_var_nm_1L_chr = "long_name_chr",
+                                                                                     evaluate_lgl = F))
+                                                           }),
+                                   paths_to_mdls_chr = paths_to_mdls_chr,
+                                   tbl_captions_chr = mdl_ttls_chr,
+                                   label_stubs_chr = paste0("lab",.y),
+                                   output_type_1L_chr = rep(params$output_type_1L_chr,length(mdl_types_chr)),
+                                   section_ttls_chr = section_ttls_chr
+                                   )
+                              })
+# ab_ls <- list(plt_nms_ls = list(c("Caption A","Caption B","Caption C","Caption D"),
+#                   c("Caption 1","Caption 2","Caption 3","Caption 4")),
+#                   path_to_mdl_chr = c("../../../../../../../Data/Project/Utility_Models/PHQ9_CLL_TFN.RDS",
+#                                          "../../../../../../../Data/Project/Utility_Models/PHQ9_GSN_LOG.RDS"),
+#                   tbl_captions_chr = c("CAPTION A","CAPTION B"),
+#                   label_stubs_chr = c("lab1","lab2"),
+#                   output_type_1L_chr = rep(params$output_type_1L_chr,2),
+#                   section_ttls_chr = c("# TITLE ONE", "# TITLE TWO"))
 
-knit_mdl_rprt(ab_ls)
+knit_pars_ls %>% purrr::walk(~knit_mdl_rprt(.x))
 ```
 
