@@ -20,13 +20,17 @@ data_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS("../Data/fake_pop_tb.rds")
 ```{r, results="asis"}
 mdls_smry_tb <- purrr::map2_dfr(list(fit_gsn_log_lnk,fit_clg_log_tfmn),
                                 paste0("PHQ9",c("_GSN_LOG","_CLL_TFN")),
-                                ~ make_smry_of_ts_mdl(data_tb = data_tb,
+                                ~ {
+                                  tb <- make_smry_of_ts_mdl(data_tb = data_tb,
                                                        fn = .x,
                                                        predictor_vars_nms_chr = c("PHQ9","SOFAS"),
                                                        mdl_nm_1L_chr = .y,
                                                        path_to_write_to_1L_chr = "../../../../../../../Data/Project/Utility_Models",
                                                        iters_1L_int = 4000L,
                                                        seed_1L_int = 1000L)
+                                  Sys.sleep(5)
+                                  tb
+                                  }
 )
 ```
 

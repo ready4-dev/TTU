@@ -9,6 +9,7 @@ fit_ts_model_with_brm(
   dep_var_nm_1L_chr,
   predictor_vars_nms_chr,
   id_var_nm_1L_chr,
+  backend_1L_chr = getOption("brms.backend", "rstan"),
   link_1L_chr = "identity",
   iters_1L_int = 4000L,
   seed_1L_int = 1000L
@@ -22,6 +23,8 @@ fit_ts_model_with_brm(
 \item{predictor_vars_nms_chr}{Predictor vars names (a character vector)}
 
 \item{id_var_nm_1L_chr}{Id var name (a character vector of length one)}
+
+\item{backend_1L_chr}{Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")}
 
 \item{link_1L_chr}{Link (a character vector of length one), Default: 'identity'}
 
