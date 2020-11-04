@@ -64,7 +64,7 @@ fit_ts_model_with_brm <- function (data_tb, dep_var_nm_1L_chr, predictor_vars_nm
     mdl_ls <- brms::brm(formula = as.formula(paste0(dep_var_nm_1L_chr, 
         " ~ ", purrr::map_chr(predictor_vars_nms_chr, ~paste0(.x, 
             "_baseline + ", .x, "_change + ")) %>% paste0(collapse = ""), 
-        "(1|", id_var_nm_1L_chr, ")")), backend = "backend_1L_chr", 
+        "(1|", id_var_nm_1L_chr, ")")), backend = backend_1L_chr, 
         data = data_tb, family = gaussian(link = link_1L_chr), 
         iter = iters_1L_int, seed = seed_1L_int)
     return(mdl_ls)
