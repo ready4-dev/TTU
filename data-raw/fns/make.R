@@ -69,7 +69,7 @@ make_aqol6d_items_tb <- function(aqol_tb,
 make_brms_mdl_print_ls <- function(mdl_ls,
                                    label_stub_1L_chr,
                                    caption_1L_chr,
-                                   footnotes_chr = "",
+                                   #footnotes_chr = "",
                                    output_type_1L_chr = "PDF",
                                    digits_1L_dbl = 2,
                                    big_mark_1L_chr = " "){

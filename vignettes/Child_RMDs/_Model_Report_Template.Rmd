@@ -5,31 +5,21 @@ date: "02/11/2020"
 output: html_document
 ---
 
-```{r include=FALSE}
-#plt_nms_chr <- c("Caption 1","Caption 2","Caption 3","Caption 4")
-plt_nms_chr <- {{plt_nms_chr}}
-# path_to_mdl_1L_chr <- "../../../../../../../Data/Project/Utility_Models/PHQ9_GSN_LOG.RDS"
-path_to_mdl_1L_chr <- {{path_to_mdl_1L_chr}}
-caption_1L_chr <- {{caption_1L_chr}} 
-```
+{{section_ttl_1L_chr}}
 
 ```{r, include=FALSE}
-paths_to_mdl_plts_chr <- paste0(path_to_mdl_1L_chr %>% stringr::str_sub(end=-5), 
+paths_to_mdl_plts_chr <- paste0({{path_to_mdl_1L_chr}} %>% stringr::str_sub(end=-5), 
                                 paste0("_",c("coefs","hetg", "dnst","sctr_plt"),".png"))
-# output_ls <- list(`First predictor` = paths_to_mdl_plts_chr,
-#                   `Second predictor` = paths_to_mdl_plts_chr)
-# plt_nms_chr <- rep(plt_nms_chr,2)
 ```
 
 ```{r echo = F, results="asis"}
-brms_mdl_print_ls <- make_brms_mdl_print_ls(mdl_ls = readRDS(path_to_mdl_1L_chr),
-label_stub_1L_chr = "LABELSTUB",
-caption_1L_chr = caption_1L_chr, #"CAPTION FOR TABLE",
-output_type_1L_chr = params$output_type_1L_chr,
-footnotes_chr = rep("TEST",15) %>% paste0(collapse=",")) 
+brms_mdl_print_ls <- make_brms_mdl_print_ls(mdl_ls = readRDS({{path_to_mdl_1L_chr}}),
+                                            label_stub_1L_chr = {{label_stub_1L_chr}},
+                                            caption_1L_chr = {{caption_1L_chr}}, 
+                                            output_type_1L_chr = {{output_type_1L_chr}}) 
 rlang::exec(print_table_xx,!!!brms_mdl_print_ls[[5]])
 ```
 
-```{r, fig.cap=plt_nms_chr, echo=FALSE, message=F}
+```{r, fig.cap={{plt_nms_chr}}, echo=FALSE, message=F}
 knitr::include_graphics(paths_to_mdl_plts_chr)
 ```

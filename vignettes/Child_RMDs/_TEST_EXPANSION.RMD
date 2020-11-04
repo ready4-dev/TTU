@@ -20,23 +20,36 @@ options(xtable.floating = FALSE)
 options(xtable.timestamp = "")
 ```
 
-```{r, echo=FALSE, results='asis'}
-# src = lapply(list(c("Caption A","Caption B","Caption C","Caption D") %>% deparse(),
-#                   c("Caption 1","Caption 2","Caption 3","Caption 4") %>% deparse()), function(plt_nms_chr) {
-#   knitr::knit_expand('_Model_Report_Template.Rmd')
-# })
-
-src = purrr::pmap(list(plt_nms_ls = list(c("Caption A","Caption B","Caption C","Caption D"),
-                  c("Caption 1","Caption 2","Caption 3","Caption 4")),
-                  path_to_mdl_chr = c("../../../../../../../Data/Project/Utility_Models/PHQ9_CLL_TFN.RDS",
-                                         "../../../../../../../Data/Project/Utility_Models/PHQ9_GSN_LOG.RDS"),
-                  caption_1L_chr = c("CAPTION A","CAPTION B")), 
+```{r}
+knit_mdl_rprt <- function(ab_ls){
+  src = purrr::pmap(ab_ls, 
                  ~  knitr::knit_expand('_Model_Report_Template.Rmd',
                                        plt_nms_chr = ..1 %>% deparse(),
                                        path_to_mdl_1L_chr = ..2 %>% deparse(),
-                                       caption_1L_chr = ..3 %>% deparse())
+                                       caption_1L_chr = ..3 %>% deparse(),
+                                       label_stub_1L_chr = ..4 %>% deparse(),
+                                       output_type_1L_chr = ..5 %>% deparse(),
+                                       section_ttl_1L_chr = ..6)
 )
 res = knitr::knit_child(text = unlist(src), quiet = TRUE)
 cat(res, sep = '\n')
+}
+```
+
+
+```{r, echo=FALSE, results='asis'}
+# output_ls <- list(`First predictor` = paths_to_mdl_plts_chr,
+#                   `Second predictor` = paths_to_mdl_plts_chr)
+# plt_nms_chr <- rep(plt_nms_chr,2)
+ab_ls <- list(plt_nms_ls = list(c("Caption A","Caption B","Caption C","Caption D"),
+                  c("Caption 1","Caption 2","Caption 3","Caption 4")),
+                  path_to_mdl_chr = c("../../../../../../../Data/Project/Utility_Models/PHQ9_CLL_TFN.RDS",
+                                         "../../../../../../../Data/Project/Utility_Models/PHQ9_GSN_LOG.RDS"),
+                  caption_chr = c("CAPTION A","CAPTION B"),
+                  label_stubs_chr = c("lab1","lab2"),
+                  output_type_1L_chr = rep(params$output_type_1L_chr,2),
+                  section_ttls_chr = c("# TITLE ONE", "# TITLE TWO"))
+
+knit_mdl_rprt(ab_ls)
 ```
 
