@@ -338,6 +338,7 @@ make_item_wrst_wghts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb)
 #' @param mdl_smry_dir_1L_chr Mdl smry directory (a character vector of length one)
 #' @param mdl_types_chr Mdl types (a character vector)
 #' @param predictor_vars_nms_ls Predictor vars names (a list)
+#' @param output_type_1L_chr Output type (a character vector of length one), Default: 'HTML'
 #' @param mdl_types_lup Mdl types (a lookup table), Default: NULL
 #' @param plt_types_lup Plt types (a lookup table), Default: NULL
 #' @param plt_types_chr Plt types (a character vector), Default: c("coefs", "hetg", "dnst", "sctr_plt")
@@ -348,8 +349,8 @@ make_item_wrst_wghts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb)
 #' @importFrom purrr pmap map
 #' @importFrom ready4fun get_from_lup_obj
 make_knit_pars_ls <- function (mdl_smry_dir_1L_chr, mdl_types_chr, predictor_vars_nms_ls, 
-    mdl_types_lup = NULL, plt_types_lup = NULL, plt_types_chr = c("coefs", 
-        "hetg", "dnst", "sctr_plt"), section_type_1L_chr = "#") 
+    output_type_1L_chr = "HTML", mdl_types_lup = NULL, plt_types_lup = NULL, 
+    plt_types_chr = c("coefs", "hetg", "dnst", "sctr_plt"), section_type_1L_chr = "#") 
 {
     if (is.null(mdl_types_lup)) 
         data(mdl_types_lup, package = "FBaqol", envir = environment())
@@ -377,9 +378,8 @@ make_knit_pars_ls <- function (mdl_smry_dir_1L_chr, mdl_types_chr, predictor_var
                 match_var_nm_1L_chr = "short_name_chr", match_value_xx = plt_types_chr, 
                 target_var_nm_1L_chr = "long_name_chr", evaluate_lgl = F))
         }), paths_to_mdls_chr = paths_to_mdls_chr, tbl_captions_chr = mdl_ttls_chr, 
-            label_stubs_chr = paste0("lab", ..2), output_type_1L_chr = rep(params$output_type_1L_chr, 
-                length(mdl_types_chr)), section_ttls_chr = section_ttls_chr, 
-            ls_elmt_idx_1L_int = ..3)
+            label_stubs_chr = paste0("lab", ..2), output_type_1L_chr = output_type_1L_chr, 
+            section_ttls_chr = section_ttls_chr, ls_elmt_idx_1L_int = ..3)
     })
     return(knit_pars_ls)
 }

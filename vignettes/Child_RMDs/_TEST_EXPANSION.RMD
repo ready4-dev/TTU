@@ -4,7 +4,7 @@ author: "Matthew Hamilton"
 date: "06/08/2020"
 graphics: yes
 params:
-  output_type_1L_chr: HTML
+  output_type_1L_chr: "HTML"
 ---
 
 ```{r setup, include=FALSE}
@@ -24,18 +24,7 @@ options(xtable.timestamp = "")
 make_knit_pars_ls(mdl_smry_dir_1L_chr = "../../../../../../../Data/Project/Utility_Models", # path_to_write_to_1L_chr
                   mdl_types_chr = c("GSN_LOG","CLL_TFN"),
                   predictor_vars_nms_ls = list(c("PHQ9","SOFAS")),
-                  plt_types_chr = c("coefs","hetg", "dnst","sctr_plt"),
-                  section_type_1L_chr = "#",
-                  mdl_types_lup = tibble::tibble(short_name_chr = c("GSN_LOG","CLL_TFN"),
-                                long_name_chr = c("Generalised Linear Mixed Model with Gaussian distribution and log link",
-                                                  "Linear Mixed Model with clog-log transformation")), 
-plt_types_lup = tibble::tibble(short_name_chr = c("coefs","hetg", "dnst","sctr_plt"),
-                                 long_name_chr = c("population level effects",
-                                                   "group level effects",
-                                                   "comparative densities of observed and predicted data",
-                                                   "comparative scatter plot of obsereved and predicted data"))
-                  
-                  
+                  output_type_1L_chr = params$output_type_1L_chr
                   ) %>% 
   purrr::walk(~knit_mdl_rprt(.x))
 

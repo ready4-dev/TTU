@@ -20,7 +20,9 @@ reference:
   - fn_type_lup_tb
   - FUP_correlations_tb
   - itm_wrst_wghts_lup_tb
+  - mdl_types_lup
   - measurements_tb
+  - plt_types_lup
   - prototype_lup
   - syn_pop_with_STATA_adults_scoring_tb
   - var_class_pars_tb
