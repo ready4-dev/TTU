@@ -1,0 +1,3498 @@
+\documentclass[a4paper]{book}
+\usepackage[times,inconsolata,hyper]{Rd}
+\usepackage{makeidx}
+\usepackage[utf8]{inputenc} % @SET ENCODING@
+% \usepackage{graphicx} % @USE GRAPHICX@
+\makeindex{}
+\begin{document}
+\chapter*{}
+\begin{center}
+{\textbf{\huge Package `FBaqol'}}
+\par\bigskip{\large \today}
+\end{center}
+\begin{description}
+\raggedright{}
+\inputencoding{utf8}
+\item[Title]\AsIs{Map measures routinely collected in youth mental
+health services to AQOL 6D Health Utility.}
+\item[Version]\AsIs{0.0.0.9035}
+\item[Description]\AsIs{Tools for mapping measures routinely collected in
+youth mental health services to AQOL 6D Health Utility. Part of the
+First Bounce model of primary youth mental health services.}
+\item[License]\AsIs{GPL-3}
+\item[URL]\AsIs{}\url{https://github.com/orygen/FBaqol}\AsIs{}
+\item[Encoding]\AsIs{UTF-8}
+\item[LazyData]\AsIs{true}
+\item[Roxygen]\AsIs{list(markdown = TRUE)}
+\item[RoxygenNote]\AsIs{7.1.1}
+\item[Imports]\AsIs{lifecycle,
+ready4fun (>= 0.0.0.9230),
+brms,
+dplyr,
+flextable,
+ggalt,
+ggplot2,
+grDevices,
+Hmisc,
+hutils,
+kableExtra,
+knitr,
+magrittr,
+MASS,
+Matrix,
+matrixcalc,
+methods,
+mice,
+officer,
+psych,
+purrr,
+rlang,
+simstudy,
+stats,
+stringr,
+Surrogate,
+tibble,
+tidyr,
+tidyselect,
+viridis,
+xtable}
+\item[RdMacros]\AsIs{lifecycle}
+\item[Depends]\AsIs{R (>= 2.10)}
+\item[Remotes]\AsIs{readyforwhatsnext/ready4fun}
+\end{description}
+\Rdcontents{\R{} topics documented:}
+\inputencoding{utf8}
+\HeaderA{FBaqol-package}{FBaqol: Map measures routinely collected in youth mental health services to AQOL 6D Health Utility.}{FBaqol.Rdash.package}
+\aliasA{FBaqol}{FBaqol-package}{FBaqol}
+%
+\begin{Description}\relax
+Tools for mapping measures routinely collected in
+youth mental health services to AQOL 6D Health Utility. Part of the
+First Bounce model of primary youth mental health services.
+\end{Description}
+%
+\begin{Details}\relax
+To learn more about FBaqol, start with the vignettes:
+\code{browseVignettes(package = "FBaqol")}
+\end{Details}
+%
+\begin{Author}\relax
+\strong{Maintainer}: Matthew Hamilton \email{matthew.hamilton@orygen.org.au} (\Rhref{https://orcid.org/0000-0001-7407-9194}{ORCID})
+
+Authors:
+\begin{itemize}
+
+\item{} Caroline Gao \email{caroline.gao@orygen.org.au} (\Rhref{https://orcid.org/0000-0002-0987-2759}{ORCID})
+
+\end{itemize}
+
+
+Other contributors:
+\begin{itemize}
+
+\item{} Orygen [copyright holder, funder]
+\item{} Headspace [funder]
+\item{} National Health and Medical Research Council [funder]
+
+\end{itemize}
+
+
+\end{Author}
+%
+\begin{SeeAlso}\relax
+Useful links:
+\begin{itemize}
+
+\item{} \url{https://github.com/orygen/FBaqol}
+
+\end{itemize}
+
+
+\end{SeeAlso}
+\inputencoding{utf8}
+\HeaderA{abbreviations\_lup}{Common abbreviations lookup table}{abbreviations.Rul.lup}
+\keyword{datasets}{abbreviations\_lup}
+%
+\begin{Description}\relax
+A lookup table for abbreviations commonly used in object names in the FBaqolpackage.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+abbreviations_lup
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+An object of class \code{tbl\_df} (inherits from \code{tbl}, \code{data.frame}) with 312 rows and 3 columns.
+\end{Format}
+%
+\begin{Details}\relax
+A tibble
+
+\begin{description}
+
+\item[short\_name\_chr] Short name (a character vector)
+\item[long\_name\_chr] Long name (a character vector)
+\item[plural\_lgl] Plural (a logical vector)
+
+\end{description}
+
+\end{Details}
+\inputencoding{utf8}
+\HeaderA{add\_aqol6dU\_to\_aqol6d\_items\_tb}{Add Assessment of Quality of Life Six Dimension Health Utility to Assessment of Quality of Life Six Dimension items}{add.Rul.aqol6dU.Rul.to.Rul.aqol6d.Rul.items.Rul.tb}
+%
+\begin{Description}\relax
+add\_aqol6dU\_to\_aqol6d\_items\_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life six dimension health utility to assessment of quality of life six dimension items tibble. Function argument aqol6d\_items\_tb specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension items (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+add_aqol6dU_to_aqol6d_items_tb(
+  aqol6d_items_tb,
+  coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{aqol6d\_items\_tb}] Assessment of Quality of Life Six Dimension items (a tibble)
+
+\item[\code{coeffs\_lup\_tb}] Coeffs lookup table (a tibble), Default: aqol6d\_from\_8d\_coeffs\_lup\_tb
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Assessment of Quality of Life Six Dimension items (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{add\_aqol6dU\_to\_aqol6d\_tbs\_ls}{Add Assessment of Quality of Life Six Dimension Health Utility to Assessment of Quality of Life Six Dimension tibbles}{add.Rul.aqol6dU.Rul.to.Rul.aqol6d.Rul.tbs.Rul.ls}
+%
+\begin{Description}\relax
+add\_aqol6dU\_to\_aqol6d\_tbs\_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life six dimension health utility to assessment of quality of life six dimension tibbles list. Function argument aqol6d\_tbs\_ls specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension tibbles (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+add_aqol6dU_to_aqol6d_tbs_ls(
+  aqol6d_tbs_ls,
+  prefix_1L_chr = "aqol6d_q",
+  id_var_nm_1L_chr
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{aqol6d\_tbs\_ls}] Assessment of Quality of Life Six Dimension tibbles (a list)
+
+\item[\code{prefix\_1L\_chr}] Prefix (a character vector of length one), Default: 'aqol6d\_q'
+
+\item[\code{id\_var\_nm\_1L\_chr}] Id var name (a character vector of length one)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Assessment of Quality of Life Six Dimension tibbles (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{add\_aqol6d\_adol\_dim\_scrg\_eqs}{Add Assessment of Quality of Life Six Dimension adolescent dimension scoring equations}{add.Rul.aqol6d.Rul.adol.Rul.dim.Rul.scrg.Rul.eqs}
+%
+\begin{Description}\relax
+add\_aqol6d\_adol\_dim\_scrg\_eqs() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life six dimension adolescent dimension scoring equations. Function argument unscored\_aqol\_tb specifies the object to be updated. The function returns Unscored Assessment of Quality of Life (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+add_aqol6d_adol_dim_scrg_eqs(unscored_aqol_tb)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{unscored\_aqol\_tb}] Unscored Assessment of Quality of Life (a tibble)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Unscored Assessment of Quality of Life (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{add\_aqol6d\_items\_to\_aqol6d\_tbs\_ls}{Add Assessment of Quality of Life Six Dimension items to Assessment of Quality of Life Six Dimension tibbles}{add.Rul.aqol6d.Rul.items.Rul.to.Rul.aqol6d.Rul.tbs.Rul.ls}
+%
+\begin{Description}\relax
+add\_aqol6d\_items\_to\_aqol6d\_tbs\_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life six dimension items to assessment of quality of life six dimension tibbles list. Function argument aqol6d\_tbs\_ls specifies the object to be updated. The function returns Updated Assessment of Quality of Life Six Dimension tibbles (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+add_aqol6d_items_to_aqol6d_tbs_ls(
+  aqol6d_tbs_ls,
+  aqol_items_props_tbs_ls,
+  prefix_chr,
+  aqol_tots_var_nms_chr,
+  id_var_nm_1L_chr = "fkClientID",
+  scaling_cnst_dbl = 5
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{aqol6d\_tbs\_ls}] Assessment of Quality of Life Six Dimension tibbles (a list)
+
+\item[\code{aqol\_items\_props\_tbs\_ls}] Assessment of Quality of Life items props tibbles (a list)
+
+\item[\code{prefix\_chr}] Prefix (a character vector)
+
+\item[\code{aqol\_tots\_var\_nms\_chr}] Assessment of Quality of Life totals var names (a character vector)
+
+\item[\code{id\_var\_nm\_1L\_chr}] Id var name (a character vector of length one), Default: 'fkClientID'
+
+\item[\code{scaling\_cnst\_dbl}] Scaling cnst (a double vector), Default: 5
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Updated Assessment of Quality of Life Six Dimension tibbles (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{add\_cors\_and\_uts\_to\_aqol6d\_tbs\_ls}{Add correlations and utilities to Assessment of Quality of Life Six Dimension tibbles}{add.Rul.cors.Rul.and.Rul.uts.Rul.to.Rul.aqol6d.Rul.tbs.Rul.ls}
+%
+\begin{Description}\relax
+add\_cors\_and\_uts\_to\_aqol6d\_tbs\_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add correlations and utilities to assessment of quality of life six dimension tibbles list. Function argument aqol6d\_tbs\_ls specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension tibbles (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+add_cors_and_uts_to_aqol6d_tbs_ls(
+  aqol6d_tbs_ls,
+  aqol_scores_pars_ls,
+  aqol_items_props_tbs_ls,
+  temporal_cors_ls,
+  prefix_chr,
+  aqol_tots_var_nms_chr,
+  id_var_nm_1L_chr = "fkClientID"
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{aqol6d\_tbs\_ls}] Assessment of Quality of Life Six Dimension tibbles (a list)
+
+\item[\code{aqol\_scores\_pars\_ls}] Assessment of Quality of Life scores parameters (a list)
+
+\item[\code{aqol\_items\_props\_tbs\_ls}] Assessment of Quality of Life items props tibbles (a list)
+
+\item[\code{temporal\_cors\_ls}] Temporal correlations (a list)
+
+\item[\code{prefix\_chr}] Prefix (a character vector)
+
+\item[\code{aqol\_tots\_var\_nms\_chr}] Assessment of Quality of Life totals var names (a character vector)
+
+\item[\code{id\_var\_nm\_1L\_chr}] Id var name (a character vector of length one), Default: 'fkClientID'
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Assessment of Quality of Life Six Dimension tibbles (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{add\_dim\_disv\_to\_aqol6d\_items\_tb}{Add dimension disvalue to Assessment of Quality of Life Six Dimension items}{add.Rul.dim.Rul.disv.Rul.to.Rul.aqol6d.Rul.items.Rul.tb}
+%
+\begin{Description}\relax
+add\_dim\_disv\_to\_aqol6d\_items\_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dimension disvalue to assessment of quality of life six dimension items tibble. Function argument aqol6d\_items\_tb specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension items (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+add_dim_disv_to_aqol6d_items_tb(
+  aqol6d_items_tb,
+  domain_items_ls,
+  domains_chr,
+  dim_sclg_con_lup_tb = aqol6d_dim_sclg_con_lup_tb,
+  itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{aqol6d\_items\_tb}] Assessment of Quality of Life Six Dimension items (a tibble)
+
+\item[\code{domain\_items\_ls}] Domain items (a list)
+
+\item[\code{domains\_chr}] Domains (a character vector)
+
+\item[\code{dim\_sclg\_con\_lup\_tb}] Dimension sclg constant lookup table (a tibble), Default: aqol6d\_dim\_sclg\_con\_lup\_tb
+
+\item[\code{itm\_wrst\_wghts\_lup\_tb}] Itm wrst wghts lookup table (a tibble), Default: aqol6d\_adult\_itm\_wrst\_wghts\_lup\_tb
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Assessment of Quality of Life Six Dimension items (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{add\_dim\_scores\_to\_aqol6d\_items\_tb}{Add dimension scores to Assessment of Quality of Life Six Dimension items}{add.Rul.dim.Rul.scores.Rul.to.Rul.aqol6d.Rul.items.Rul.tb}
+%
+\begin{Description}\relax
+add\_dim\_scores\_to\_aqol6d\_items\_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add dimension scores to assessment of quality of life six dimension items tibble. Function argument aqol6d\_items\_tb specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension items (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+add_dim_scores_to_aqol6d_items_tb(aqol6d_items_tb, domain_items_ls)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{aqol6d\_items\_tb}] Assessment of Quality of Life Six Dimension items (a tibble)
+
+\item[\code{domain\_items\_ls}] Domain items (a list)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Assessment of Quality of Life Six Dimension items (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{add\_itm\_disv\_to\_aqol6d\_itms\_tb}{Add itm disvalue to Assessment of Quality of Life Six Dimension itms}{add.Rul.itm.Rul.disv.Rul.to.Rul.aqol6d.Rul.itms.Rul.tb}
+%
+\begin{Description}\relax
+add\_itm\_disv\_to\_aqol6d\_itms\_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add itm disvalue to assessment of quality of life six dimension itms tibble. Function argument aqol6d\_items\_tb specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension items (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+add_itm_disv_to_aqol6d_itms_tb(
+  aqol6d_items_tb,
+  disvalues_lup_tb = aqol6d_adult_disv_lup_tb,
+  pfx_1L_chr
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{aqol6d\_items\_tb}] Assessment of Quality of Life Six Dimension items (a tibble)
+
+\item[\code{disvalues\_lup\_tb}] Disvalues lookup table (a tibble), Default: aqol6d\_adult\_disv\_lup\_tb
+
+\item[\code{pfx\_1L\_chr}] Prefix (a character vector of length one)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Assessment of Quality of Life Six Dimension items (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{add\_labels\_to\_aqol6d\_tb}{Add labels to Assessment of Quality of Life Six Dimension}{add.Rul.labels.Rul.to.Rul.aqol6d.Rul.tb}
+%
+\begin{Description}\relax
+add\_labels\_to\_aqol6d\_tb() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add labels to assessment of quality of life six dimension tibble. Function argument aqol6d\_tb specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+add_labels_to_aqol6d_tb(aqol6d_tb, labels_chr = NA_character_)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{aqol6d\_tb}] Assessment of Quality of Life Six Dimension (a tibble)
+
+\item[\code{labels\_chr}] Labels (a character vector), Default: 'NA'
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Assessment of Quality of Life Six Dimension (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{add\_uids\_to\_tbs\_ls}{Add unique identifiers to tibbles}{add.Rul.uids.Rul.to.Rul.tbs.Rul.ls}
+%
+\begin{Description}\relax
+add\_uids\_to\_tbs\_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add unique identifiers to tibbles list. Function argument tbs\_ls specifies the object to be updated. The function returns Tibbles (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+add_uids_to_tbs_ls(tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkClientID")
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{tbs\_ls}] Tibbles (a list)
+
+\item[\code{prefix\_1L\_chr}] Prefix (a character vector of length one)
+
+\item[\code{id\_var\_nm\_1L\_chr}] Id var name (a character vector of length one), Default: 'fkClientID'
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Tibbles (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{add\_unwtd\_dim\_tots}{Add unwtd dimension totals}{add.Rul.unwtd.Rul.dim.Rul.tots}
+%
+\begin{Description}\relax
+add\_unwtd\_dim\_tots() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add unwtd dimension totals. Function argument items\_tb specifies the object to be updated. The function returns Items and domains (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+add_unwtd_dim_tots(items_tb, domain_items_ls, domain_pfx_1L_chr)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{items\_tb}] Items (a tibble)
+
+\item[\code{domain\_items\_ls}] Domain items (a list)
+
+\item[\code{domain\_pfx\_1L\_chr}] Domain prefix (a character vector of length one)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Items and domains (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{add\_wtd\_dim\_tots}{Add wtd dimension totals}{add.Rul.wtd.Rul.dim.Rul.tots}
+%
+\begin{Description}\relax
+add\_wtd\_dim\_tots() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add wtd dimension totals. Function argument unwtd\_dim\_tb specifies the object to be updated. The function returns Wtd and unwtd dimension (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+add_wtd_dim_tots(
+  unwtd_dim_tb,
+  domain_items_ls,
+  domain_unwtd_pfx_1L_chr,
+  domain_wtd_pfx_1L_chr
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{unwtd\_dim\_tb}] Unwtd dimension (a tibble)
+
+\item[\code{domain\_items\_ls}] Domain items (a list)
+
+\item[\code{domain\_unwtd\_pfx\_1L\_chr}] Domain unwtd prefix (a character vector of length one)
+
+\item[\code{domain\_wtd\_pfx\_1L\_chr}] Domain wtd prefix (a character vector of length one)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Wtd and unwtd dimension (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{adol\_dim\_scalg\_eqs\_lup}{AQoL6D (adolescent) item worst weightings equations lookup table}{adol.Rul.dim.Rul.scalg.Rul.eqs.Rul.lup}
+\keyword{datasets}{adol\_dim\_scalg\_eqs\_lup}
+%
+\begin{Description}\relax
+Dimension scaling equations for adolescent version of AQoL6D scoring algorithm.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+adol_dim_scalg_eqs_lup
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+An object of class \code{data.frame} with 19 rows and 3 columns.
+\end{Format}
+%
+\begin{Details}\relax
+A tibble
+
+\begin{description}
+
+\item[Dim\_scal] NO MATCH
+\item[Label] NO MATCH
+\item[Equ] NO MATCH
+
+\end{description}
+
+\end{Details}
+%
+\begin{Source}\relax
+\url{https://www.aqol.com.au/index.php/scoring-algorithms}
+\end{Source}
+\inputencoding{utf8}
+\HeaderA{aqol6d\_adult\_disv\_lup\_tb}{AQoL6D (adult version) item disvalues lookup table}{aqol6d.Rul.adult.Rul.disv.Rul.lup.Rul.tb}
+\keyword{datasets}{aqol6d\_adult\_disv\_lup\_tb}
+%
+\begin{Description}\relax
+Disutility weights for individual AQoL6D (adult version) items.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+aqol6d_adult_disv_lup_tb
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+An object of class \code{tbl\_df} (inherits from \code{tbl}, \code{data.frame}) with 20 rows and 7 columns.
+\end{Format}
+%
+\begin{Details}\relax
+A tibble
+
+\begin{description}
+
+\item[Question\_chr] Question (a character vector)
+\item[Answer\_1\_dbl] Answer 1 (a double vector)
+\item[Answer\_2\_dbl] Answer 2 (a double vector)
+\item[Answer\_3\_dbl] Answer 3 (a double vector)
+\item[Answer\_4\_dbl] Answer 4 (a double vector)
+\item[Answer\_5\_dbl] Answer 5 (a double vector)
+\item[Answer\_6\_dbl] Answer 6 (a double vector)
+
+\end{description}
+
+\end{Details}
+%
+\begin{Source}\relax
+\url{https://www.aqol.com.au/index.php/scoring-algorithms}
+\end{Source}
+\inputencoding{utf8}
+\HeaderA{aqol6d\_adult\_itm\_wrst\_wghts\_lup\_tb}{AQoL6D (adult) item worst weightings lookup table}{aqol6d.Rul.adult.Rul.itm.Rul.wrst.Rul.wghts.Rul.lup.Rul.tb}
+\keyword{datasets}{aqol6d\_adult\_itm\_wrst\_wghts\_lup\_tb}
+%
+\begin{Description}\relax
+Worst weightings for individual items in AQoL6D (adult version).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+aqol6d_adult_itm_wrst_wghts_lup_tb
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+An object of class \code{tbl\_df} (inherits from \code{tbl}, \code{data.frame}) with 20 rows and 2 columns.
+\end{Format}
+%
+\begin{Details}\relax
+A tibble
+
+\begin{description}
+
+\item[Question\_chr] Question (a character vector)
+\item[Worst\_Weight\_dbl] Worst Weight (a double vector)
+
+\end{description}
+
+\end{Details}
+%
+\begin{Source}\relax
+\url{https://www.aqol.com.au/index.php/scoring-algorithms}
+\end{Source}
+\inputencoding{utf8}
+\HeaderA{aqol6d\_adult\_vldn\_pop\_with\_STATA\_scores\_tb}{STATA comparison validation synthetic population}{aqol6d.Rul.adult.Rul.vldn.Rul.pop.Rul.with.Rul.STATA.Rul.scores.Rul.tb}
+\keyword{datasets}{aqol6d\_adult\_vldn\_pop\_with\_STATA\_scores\_tb}
+%
+\begin{Description}\relax
+Synthetic population following application of STATA adult scoring algorithm.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+aqol6d_adult_vldn_pop_with_STATA_scores_tb
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+An object of class \code{data.frame} with 1711 rows and 87 columns.
+\end{Format}
+%
+\begin{Details}\relax
+A tibble
+
+\begin{description}
+
+\item[v1] NO MATCH
+\item[aqol1] NO MATCH
+\item[aqol2] NO MATCH
+\item[aqol3] NO MATCH
+\item[aqol4] NO MATCH
+\item[aqol5] NO MATCH
+\item[aqol6] NO MATCH
+\item[aqol7] NO MATCH
+\item[aqol8] NO MATCH
+\item[aqol9] NO MATCH
+\item[aqol10] NO MATCH
+\item[aqol11] NO MATCH
+\item[aqol12] NO MATCH
+\item[aqol13] NO MATCH
+\item[aqol14] NO MATCH
+\item[aqol15] NO MATCH
+\item[aqol16] NO MATCH
+\item[aqol17] NO MATCH
+\item[aqol18] NO MATCH
+\item[aqol19] NO MATCH
+\item[aqol20] NO MATCH
+\item[Q1] NO MATCH
+\item[Q2] NO MATCH
+\item[Q3] NO MATCH
+\item[Q4] NO MATCH
+\item[Q5] NO MATCH
+\item[Q6] NO MATCH
+\item[Q7] NO MATCH
+\item[Q8] NO MATCH
+\item[Q9] NO MATCH
+\item[Q10] NO MATCH
+\item[Q11] NO MATCH
+\item[Q12] NO MATCH
+\item[Q13] NO MATCH
+\item[Q14] NO MATCH
+\item[Q15] NO MATCH
+\item[Q16] NO MATCH
+\item[Q17] NO MATCH
+\item[Q18] NO MATCH
+\item[Q19] NO MATCH
+\item[Q20] NO MATCH
+\item[DILmiss] NO MATCH
+\item[DILmissno] NO MATCH
+\item[DRLmiss] NO MATCH
+\item[DRLmissno] NO MATCH
+\item[DMHmiss] NO MATCH
+\item[DMHmissno] NO MATCH
+\item[DCOPmiss] NO MATCH
+\item[DCOPmissno] NO MATCH
+\item[DPmiss] NO MATCH
+\item[DPmissno] NO MATCH
+\item[DSENmiss] NO MATCH
+\item[DSENmissno] NO MATCH
+\item[dvQ1] NO MATCH
+\item[dvQ2] NO MATCH
+\item[dvQ3] NO MATCH
+\item[dvQ4] NO MATCH
+\item[dvQ5] NO MATCH
+\item[dvQ6] NO MATCH
+\item[dvQ7] NO MATCH
+\item[dvQ8] NO MATCH
+\item[dvQ9] NO MATCH
+\item[dvQ10] NO MATCH
+\item[dvQ11] NO MATCH
+\item[dvQ12] NO MATCH
+\item[dvQ13] NO MATCH
+\item[dvQ14] NO MATCH
+\item[dvQ15] NO MATCH
+\item[dvQ16] NO MATCH
+\item[dvQ17] NO MATCH
+\item[dvQ18] NO MATCH
+\item[dvQ19] NO MATCH
+\item[dvQ20] NO MATCH
+\item[dvD1] NO MATCH
+\item[dvD2] NO MATCH
+\item[dvD3] NO MATCH
+\item[dvD4] NO MATCH
+\item[dvD5] NO MATCH
+\item[dvD6] NO MATCH
+\item[vD1] NO MATCH
+\item[vD2] NO MATCH
+\item[vD3] NO MATCH
+\item[vD4] NO MATCH
+\item[vD5] NO MATCH
+\item[vD6] NO MATCH
+\item[uaqol6Dusing8D] NO MATCH
+\item[uaqol6Dusing8Da] NO MATCH
+
+\end{description}
+
+\end{Details}
+%
+\begin{Source}\relax
+\url{https://www.aqol.com.au/index.php/scoring-algorithms}
+\end{Source}
+\inputencoding{utf8}
+\HeaderA{aqol6d\_dim\_sclg\_con\_lup\_tb}{AQoL6D dimension scaling constants lookup table}{aqol6d.Rul.dim.Rul.sclg.Rul.con.Rul.lup.Rul.tb}
+\keyword{datasets}{aqol6d\_dim\_sclg\_con\_lup\_tb}
+%
+\begin{Description}\relax
+Scaling constants for each dimension of AQoL6D.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+aqol6d_dim_sclg_con_lup_tb
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+An object of class \code{tbl\_df} (inherits from \code{tbl}, \code{data.frame}) with 6 rows and 2 columns.
+\end{Format}
+%
+\begin{Details}\relax
+A tibble
+
+\begin{description}
+
+\item[Dimension\_chr] Dimension (a character vector)
+\item[Constant\_dbl] Constant (a double vector)
+
+\end{description}
+
+\end{Details}
+%
+\begin{Source}\relax
+\url{https://www.aqol.com.au/index.php/scoring-algorithms}
+\end{Source}
+\inputencoding{utf8}
+\HeaderA{aqol6d\_domain\_qs\_lup\_tb}{AQoL6D dimension questions lookup table}{aqol6d.Rul.domain.Rul.qs.Rul.lup.Rul.tb}
+\keyword{datasets}{aqol6d\_domain\_qs\_lup\_tb}
+%
+\begin{Description}\relax
+Breakdown of which questions relate to which dimension of the AQoL6D.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+aqol6d_domain_qs_lup_tb
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+An object of class \code{tbl\_df} (inherits from \code{tbl}, \code{data.frame}) with 20 rows and 2 columns.
+\end{Format}
+%
+\begin{Details}\relax
+A tibble
+
+\begin{description}
+
+\item[Question\_dbl] Question (a double vector)
+\item[Domain\_chr] Domain (a character vector)
+
+\end{description}
+
+\end{Details}
+%
+\begin{Source}\relax
+\url{https://www.aqol.com.au/index.php/scoring-algorithms}
+\end{Source}
+\inputencoding{utf8}
+\HeaderA{aqol6d\_from\_8d\_coeffs\_lup\_tb}{Model 2A Coefficients To Weight AQoL6D}{aqol6d.Rul.from.Rul.8d.Rul.coeffs.Rul.lup.Rul.tb}
+\keyword{datasets}{aqol6d\_from\_8d\_coeffs\_lup\_tb}
+%
+\begin{Description}\relax
+Coefficients for model to predict AQoL-6D utility score from AQoL-8D. The optimal model is Model 2A (see Richardson et al (2011, 18-19)*/
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+aqol6d_from_8d_coeffs_lup_tb
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+An object of class \code{tbl\_df} (inherits from \code{tbl}, \code{data.frame}) with 7 rows and 2 columns.
+\end{Format}
+%
+\begin{Details}\relax
+A tibble
+
+\begin{description}
+
+\item[var\_name\_chr] Var name (a character vector)
+\item[coeff\_dbl] Coeff (a double vector)
+
+\end{description}
+
+\end{Details}
+%
+\begin{Source}\relax
+\url{https://www.aqol.com.au/index.php/scoring-algorithms}
+\end{Source}
+\inputencoding{utf8}
+\HeaderA{calculate\_adol\_aqol6dU}{Calculate adolescent Assessment of Quality of Life Six Dimension Health Utility}{calculate.Rul.adol.Rul.aqol6dU}
+%
+\begin{Description}\relax
+calculate\_adol\_aqol6dU() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate adolescent assessment of quality of life six dimension health utility. The function returns Adolescent Assessment of Quality of Life Six Dimension (a double vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+calculate_adol_aqol6dU(
+  unscored_aqol_tb,
+  prefix_1L_chr = "aqol",
+  id_var_nm_1L_chr
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{unscored\_aqol\_tb}] Unscored Assessment of Quality of Life (a tibble)
+
+\item[\code{prefix\_1L\_chr}] Prefix (a character vector of length one), Default: 'aqol'
+
+\item[\code{id\_var\_nm\_1L\_chr}] Id var name (a character vector of length one)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Adolescent Assessment of Quality of Life Six Dimension (a double vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{calculate\_adult\_aqol6dU}{Calculate adult Assessment of Quality of Life Six Dimension Health Utility}{calculate.Rul.adult.Rul.aqol6dU}
+%
+\begin{Description}\relax
+calculate\_adult\_aqol6dU() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate adult assessment of quality of life six dimension health utility. The function returns Assessment of Quality of Life Six Dimension Health Utility (a double vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+calculate_adult_aqol6dU(
+  aqol6d_items_tb,
+  prefix_1L_chr,
+  coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb,
+  dim_sclg_con_lup_tb = aqol6d_dim_sclg_con_lup_tb,
+  disvalues_lup_tb = aqol6d_adult_disv_lup_tb,
+  itm_wrst_wghts_lup_tb = aqol6d_adult_itm_wrst_wghts_lup_tb
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{aqol6d\_items\_tb}] Assessment of Quality of Life Six Dimension items (a tibble)
+
+\item[\code{prefix\_1L\_chr}] Prefix (a character vector of length one)
+
+\item[\code{coeffs\_lup\_tb}] Coeffs lookup table (a tibble), Default: aqol6d\_from\_8d\_coeffs\_lup\_tb
+
+\item[\code{dim\_sclg\_con\_lup\_tb}] Dimension sclg constant lookup table (a tibble), Default: aqol6d\_dim\_sclg\_con\_lup\_tb
+
+\item[\code{disvalues\_lup\_tb}] Disvalues lookup table (a tibble), Default: aqol6d\_adult\_disv\_lup\_tb
+
+\item[\code{itm\_wrst\_wghts\_lup\_tb}] Itm wrst wghts lookup table (a tibble), Default: aqol6d\_adult\_itm\_wrst\_wghts\_lup\_tb
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Assessment of Quality of Life Six Dimension Health Utility (a double vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{calculate\_aqol6d\_dim\_1\_disv}{Calculate Assessment of Quality of Life Six Dimension dimension 1 disvalue}{calculate.Rul.aqol6d.Rul.dim.Rul.1.Rul.disv}
+%
+\begin{Description}\relax
+calculate\_aqol6d\_dim\_1\_disv() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate assessment of quality of life six dimension dimension 1 disvalue. The function returns DvD1 (a double vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+calculate_aqol6d_dim_1_disv(dvQs_tb, kD_1L_dbl, w_dbl)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{dvQs\_tb}] DvQs (a tibble)
+
+\item[\code{kD\_1L\_dbl}] KD (a double vector of length one)
+
+\item[\code{w\_dbl}] W (a double vector)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+DvD1 (a double vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{calculate\_aqol6d\_dim\_2\_disv}{Calculate Assessment of Quality of Life Six Dimension dimension 2 disvalue}{calculate.Rul.aqol6d.Rul.dim.Rul.2.Rul.disv}
+%
+\begin{Description}\relax
+calculate\_aqol6d\_dim\_2\_disv() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate assessment of quality of life six dimension dimension 2 disvalue. The function returns DvD2 (a double vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+calculate_aqol6d_dim_2_disv(dvQs_tb, kD_1L_dbl, w_dbl)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{dvQs\_tb}] DvQs (a tibble)
+
+\item[\code{kD\_1L\_dbl}] KD (a double vector of length one)
+
+\item[\code{w\_dbl}] W (a double vector)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+DvD2 (a double vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{calculate\_aqol6d\_dim\_3\_disv}{Calculate Assessment of Quality of Life Six Dimension dimension 3 disvalue}{calculate.Rul.aqol6d.Rul.dim.Rul.3.Rul.disv}
+%
+\begin{Description}\relax
+calculate\_aqol6d\_dim\_3\_disv() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate assessment of quality of life six dimension dimension 3 disvalue. The function returns DvD3 (a double vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+calculate_aqol6d_dim_3_disv(dvQs_tb, kD_1L_dbl, w_dbl)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{dvQs\_tb}] DvQs (a tibble)
+
+\item[\code{kD\_1L\_dbl}] KD (a double vector of length one)
+
+\item[\code{w\_dbl}] W (a double vector)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+DvD3 (a double vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{calculate\_aqol6d\_dim\_4\_disv}{Calculate Assessment of Quality of Life Six Dimension dimension 4 disvalue}{calculate.Rul.aqol6d.Rul.dim.Rul.4.Rul.disv}
+%
+\begin{Description}\relax
+calculate\_aqol6d\_dim\_4\_disv() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate assessment of quality of life six dimension dimension 4 disvalue. The function returns DvD4 (a double vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+calculate_aqol6d_dim_4_disv(dvQs_tb, kD_1L_dbl, w_dbl)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{dvQs\_tb}] DvQs (a tibble)
+
+\item[\code{kD\_1L\_dbl}] KD (a double vector of length one)
+
+\item[\code{w\_dbl}] W (a double vector)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+DvD4 (a double vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{calculate\_aqol6d\_dim\_5\_disv}{Calculate Assessment of Quality of Life Six Dimension dimension 5 disvalue}{calculate.Rul.aqol6d.Rul.dim.Rul.5.Rul.disv}
+%
+\begin{Description}\relax
+calculate\_aqol6d\_dim\_5\_disv() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate assessment of quality of life six dimension dimension 5 disvalue. The function returns DvD5 (a double vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+calculate_aqol6d_dim_5_disv(dvQs_tb, kD_1L_dbl, w_dbl)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{dvQs\_tb}] DvQs (a tibble)
+
+\item[\code{kD\_1L\_dbl}] KD (a double vector of length one)
+
+\item[\code{w\_dbl}] W (a double vector)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+DvD5 (a double vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{calculate\_aqol6d\_dim\_6\_disv}{Calculate Assessment of Quality of Life Six Dimension dimension 6 disvalue}{calculate.Rul.aqol6d.Rul.dim.Rul.6.Rul.disv}
+%
+\begin{Description}\relax
+calculate\_aqol6d\_dim\_6\_disv() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate assessment of quality of life six dimension dimension 6 disvalue. The function returns DvD6 (a double vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+calculate_aqol6d_dim_6_disv(dvQs_tb, kD_1L_dbl, w_dbl)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{dvQs\_tb}] DvQs (a tibble)
+
+\item[\code{kD\_1L\_dbl}] KD (a double vector of length one)
+
+\item[\code{w\_dbl}] W (a double vector)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+DvD6 (a double vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{calculate\_rmse}{Calculate rmse}{calculate.Rul.rmse}
+%
+\begin{Description}\relax
+calculate\_rmse() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate rmse. The function returns Rmse (a double vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+calculate_rmse(y_dbl, yhat_dbl)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{y\_dbl}] Y (a double vector)
+
+\item[\code{yhat\_dbl}] Yhat (a double vector)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Rmse (a double vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{calculate\_rmse\_tfmn}{Calculate rmse tfmn}{calculate.Rul.rmse.Rul.tfmn}
+%
+\begin{Description}\relax
+calculate\_rmse\_tfmn() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate rmse tfmn. The function returns Rmse tfmn (a double vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+calculate_rmse_tfmn(y_dbl, yhat_dbl)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{y\_dbl}] Y (a double vector)
+
+\item[\code{yhat\_dbl}] Yhat (a double vector)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Rmse tfmn (a double vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{extract\_guide\_box\_lgd}{Extract guide box legend}{extract.Rul.guide.Rul.box.Rul.lgd}
+%
+\begin{Description}\relax
+extract\_guide\_box\_lgd() is an Extract function that extracts data from an object. Specifically, this function implements an algorithm to extract guide box legend. The function is called for its side effects and does not return a value.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+extract_guide_box_lgd(a.gplot)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{a.gplot}] PARAM\_DESCRIPTION
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+NA ()
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{firstbounce\_aqol6d\_adol}{First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))}{firstbounce.Rul.aqol6d.Rul.adol}
+%
+\begin{Description}\relax
+Create a new valid instance of the First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+firstbounce_aqol6d_adol(x = make_prototype_firstbounce_aqol6d_adol())
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] A prototype for the First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent)), Default: make\_prototype\_firstbounce\_aqol6d\_adol()
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Details}
+%
+\begin{Value}
+A validated instance of the First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{firstbounce\_bads}{First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores}{firstbounce.Rul.bads}
+%
+\begin{Description}\relax
+Create a new valid instance of the First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+firstbounce_bads(x = make_prototype_firstbounce_bads())
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] A prototype for the First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores, Default: make\_prototype\_firstbounce\_bads()
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Details}
+%
+\begin{Value}
+A validated instance of the First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{firstbounce\_gad7}{First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores}{firstbounce.Rul.gad7}
+%
+\begin{Description}\relax
+Create a new valid instance of the First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+firstbounce_gad7(x = make_prototype_firstbounce_gad7())
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] A prototype for the First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores, Default: make\_prototype\_firstbounce\_gad7()
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Details}
+%
+\begin{Value}
+A validated instance of the First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{firstbounce\_k6}{First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores}{firstbounce.Rul.k6}
+%
+\begin{Description}\relax
+Create a new valid instance of the First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+firstbounce_k6(x = make_prototype_firstbounce_k6())
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] A prototype for the First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores, Default: make\_prototype\_firstbounce\_k6()
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Details}
+%
+\begin{Value}
+A validated instance of the First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{firstbounce\_oasis}{First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores}{firstbounce.Rul.oasis}
+%
+\begin{Description}\relax
+Create a new valid instance of the First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+firstbounce_oasis(x = make_prototype_firstbounce_oasis())
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] A prototype for the First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores, Default: make\_prototype\_firstbounce\_oasis()
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Details}
+%
+\begin{Value}
+A validated instance of the First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{firstbounce\_phq9}{First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores}{firstbounce.Rul.phq9}
+%
+\begin{Description}\relax
+Create a new valid instance of the First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+firstbounce_phq9(x = make_prototype_firstbounce_phq9())
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] A prototype for the First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores, Default: make\_prototype\_firstbounce\_phq9()
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Details}
+%
+\begin{Value}
+A validated instance of the First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{firstbounce\_scared}{First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores}{firstbounce.Rul.scared}
+%
+\begin{Description}\relax
+Create a new valid instance of the First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+firstbounce_scared(x = make_prototype_firstbounce_scared())
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] A prototype for the First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores, Default: make\_prototype\_firstbounce\_scared()
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Details}
+%
+\begin{Value}
+A validated instance of the First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{fit\_clg\_log\_tfmn}{Fit clg log tfmn}{fit.Rul.clg.Rul.log.Rul.tfmn}
+%
+\begin{Description}\relax
+fit\_clg\_log\_tfmn() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit clg log tfmn. The function returns Mdl (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+fit_clg_log_tfmn(
+  data_tb,
+  dep_var_nm_1L_chr = "aqol6d_total_w_cloglog",
+  predictor_vars_nms_chr,
+  id_var_nm_1L_chr = "fkClientID",
+  iters_1L_int = 4000L,
+  seed_1L_int = 1000L
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{data\_tb}] Data (a tibble)
+
+\item[\code{dep\_var\_nm\_1L\_chr}] Dep var name (a character vector of length one), Default: 'aqol6d\_total\_w\_cloglog'
+
+\item[\code{predictor\_vars\_nms\_chr}] Predictor vars names (a character vector)
+
+\item[\code{id\_var\_nm\_1L\_chr}] Id var name (a character vector of length one), Default: 'fkClientID'
+
+\item[\code{iters\_1L\_int}] Iters (an integer vector of length one), Default: 4000
+
+\item[\code{seed\_1L\_int}] Seed (an integer vector of length one), Default: 1000
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Mdl (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{fit\_gsn\_log\_lnk}{Fit gsn log lnk}{fit.Rul.gsn.Rul.log.Rul.lnk}
+%
+\begin{Description}\relax
+fit\_gsn\_log\_lnk() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit gsn log lnk. The function returns Mdl (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+fit_gsn_log_lnk(
+  data_tb,
+  dep_var_nm_1L_chr = "aqol6d_total_w",
+  predictor_vars_nms_chr,
+  id_var_nm_1L_chr = "fkClientID",
+  iters_1L_int = 4000L,
+  seed_1L_int = 1000L
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{data\_tb}] Data (a tibble)
+
+\item[\code{dep\_var\_nm\_1L\_chr}] Dep var name (a character vector of length one), Default: 'aqol6d\_total\_w'
+
+\item[\code{predictor\_vars\_nms\_chr}] Predictor vars names (a character vector)
+
+\item[\code{id\_var\_nm\_1L\_chr}] Id var name (a character vector of length one), Default: 'fkClientID'
+
+\item[\code{iters\_1L\_int}] Iters (an integer vector of length one), Default: 4000
+
+\item[\code{seed\_1L\_int}] Seed (an integer vector of length one), Default: 1000
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Mdl (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{fit\_ts\_model\_with\_brm}{Fit ts model with brm}{fit.Rul.ts.Rul.model.Rul.with.Rul.brm}
+%
+\begin{Description}\relax
+fit\_ts\_model\_with\_brm() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit ts model with brm. The function returns Mdl (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+fit_ts_model_with_brm(
+  data_tb,
+  dep_var_nm_1L_chr,
+  predictor_vars_nms_chr,
+  id_var_nm_1L_chr,
+  backend_1L_chr = getOption("brms.backend", "rstan"),
+  link_1L_chr = "identity",
+  iters_1L_int = 4000L,
+  seed_1L_int = 1000L
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{data\_tb}] Data (a tibble)
+
+\item[\code{dep\_var\_nm\_1L\_chr}] Dep var name (a character vector of length one)
+
+\item[\code{predictor\_vars\_nms\_chr}] Predictor vars names (a character vector)
+
+\item[\code{id\_var\_nm\_1L\_chr}] Id var name (a character vector of length one)
+
+\item[\code{backend\_1L\_chr}] Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")
+
+\item[\code{link\_1L\_chr}] Link (a character vector of length one), Default: 'identity'
+
+\item[\code{iters\_1L\_int}] Iters (an integer vector of length one), Default: 4000
+
+\item[\code{seed\_1L\_int}] Seed (an integer vector of length one), Default: 1000
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Mdl (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{fn\_type\_lup\_tb}{Function type lookup table}{fn.Rul.type.Rul.lup.Rul.tb}
+\keyword{datasets}{fn\_type\_lup\_tb}
+%
+\begin{Description}\relax
+A lookup table to find descriptions for different types of functions used within the FBaqol package suite.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+fn_type_lup_tb
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+An object of class \code{tbl\_df} (inherits from \code{tbl}, \code{data.frame}) with 45 rows and 6 columns.
+\end{Format}
+%
+\begin{Details}\relax
+A tibble
+
+\begin{description}
+
+\item[fn\_type\_nm\_chr] Function type name (a character vector)
+\item[fn\_type\_desc\_chr] Function type description (a character vector)
+\item[first\_arg\_desc\_chr] First argument description (a character vector)
+\item[second\_arg\_desc\_chr] Second argument description (a character vector)
+\item[is\_generic\_lgl] Is generic (a logical vector)
+\item[is\_method\_lgl] Is method (a logical vector)
+
+\end{description}
+
+\end{Details}
+\inputencoding{utf8}
+\HeaderA{force\_min\_max\_and\_int\_cnstrs}{Force min max and integer vector constraints}{force.Rul.min.Rul.max.Rul.and.Rul.int.Rul.cnstrs}
+%
+\begin{Description}\relax
+force\_min\_max\_and\_int\_cnstrs() is a Force function that checks if a specified local or global environmental condition is met and if not, updates the specified environment to comply with the condition. Specifically, this function implements an algorithm to force min max and integer vector constraints. The function returns Table (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+force_min_max_and_int_cnstrs(tbl_tb, var_names_chr, min_max_ls, discrete_lgl)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{tbl\_tb}] Table (a tibble)
+
+\item[\code{var\_names\_chr}] Var names (a character vector)
+
+\item[\code{min\_max\_ls}] Min max (a list)
+
+\item[\code{discrete\_lgl}] Discrete (a logical vector)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Table (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{force\_vec\_to\_sum\_to\_int}{Force vec to sum to}{force.Rul.vec.Rul.to.Rul.sum.Rul.to.Rul.int}
+%
+\begin{Description}\relax
+force\_vec\_to\_sum\_to\_int() is a Force function that checks if a specified local or global environmental condition is met and if not, updates the specified environment to comply with the condition. Specifically, this function implements an algorithm to force vec to sum to integer vector. The function returns Vec (an integer vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+force_vec_to_sum_to_int(vec_int, target_1L_int, item_ranges_dbl_ls)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{vec\_int}] Vec (an integer vector)
+
+\item[\code{target\_1L\_int}] Target (an integer vector of length one)
+
+\item[\code{item\_ranges\_dbl\_ls}] Item ranges (a list of double vectors)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Vec (an integer vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{impute\_adult\_aqol6d\_items\_tb}{Impute adult Assessment of Quality of Life Six Dimension items}{impute.Rul.adult.Rul.aqol6d.Rul.items.Rul.tb}
+%
+\begin{Description}\relax
+impute\_adult\_aqol6d\_items\_tb() is an Impute function that imputes data. Specifically, this function implements an algorithm to impute adult assessment of quality of life six dimension items tibble. The function returns Assessment of Quality of Life Six Dimension items (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+impute_adult_aqol6d_items_tb(aqol6d_items_tb, domain_items_ls)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{aqol6d\_items\_tb}] Assessment of Quality of Life Six Dimension items (a tibble)
+
+\item[\code{domain\_items\_ls}] Domain items (a list)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Assessment of Quality of Life Six Dimension items (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{impute\_unscrd\_adol\_aqol6d\_ds}{Impute unscored adolescent Assessment of Quality of Life Six Dimension dataset}{impute.Rul.unscrd.Rul.adol.Rul.aqol6d.Rul.ds}
+%
+\begin{Description}\relax
+impute\_unscrd\_adol\_aqol6d\_ds() is an Impute function that imputes data. Specifically, this function implements an algorithm to impute unscored adolescent assessment of quality of life six dimension dataset. The function returns Imputed unscored Assessment of Quality of Life dataset tibble (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+impute_unscrd_adol_aqol6d_ds(unscrd_aqol_ds_tb)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{unscrd\_aqol\_ds\_tb}] Unscored Assessment of Quality of Life dataset (a tibble)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Imputed unscored Assessment of Quality of Life dataset tibble (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{is\_firstbounce\_aqol6d\_adol}{Is First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))}{is.Rul.firstbounce.Rul.aqol6d.Rul.adol}
+%
+\begin{Description}\relax
+Check whether an object is a valid instance of the First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+is_firstbounce_aqol6d_adol(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] An object of any type
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Details}
+%
+\begin{Value}
+A logical value, TRUE if a valid instance of the First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{is\_firstbounce\_bads}{Is First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores}{is.Rul.firstbounce.Rul.bads}
+%
+\begin{Description}\relax
+Check whether an object is a valid instance of the First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+is_firstbounce_bads(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] An object of any type
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Details}
+%
+\begin{Value}
+A logical value, TRUE if a valid instance of the First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{is\_firstbounce\_gad7}{Is First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores}{is.Rul.firstbounce.Rul.gad7}
+%
+\begin{Description}\relax
+Check whether an object is a valid instance of the First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+is_firstbounce_gad7(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] An object of any type
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Details}
+%
+\begin{Value}
+A logical value, TRUE if a valid instance of the First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{is\_firstbounce\_k6}{Is First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores}{is.Rul.firstbounce.Rul.k6}
+%
+\begin{Description}\relax
+Check whether an object is a valid instance of the First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+is_firstbounce_k6(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] An object of any type
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Details}
+%
+\begin{Value}
+A logical value, TRUE if a valid instance of the First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{is\_firstbounce\_oasis}{Is First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores}{is.Rul.firstbounce.Rul.oasis}
+%
+\begin{Description}\relax
+Check whether an object is a valid instance of the First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+is_firstbounce_oasis(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] An object of any type
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Details}
+%
+\begin{Value}
+A logical value, TRUE if a valid instance of the First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{is\_firstbounce\_phq9}{Is First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores}{is.Rul.firstbounce.Rul.phq9}
+%
+\begin{Description}\relax
+Check whether an object is a valid instance of the First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+is_firstbounce_phq9(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] An object of any type
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Details}
+%
+\begin{Value}
+A logical value, TRUE if a valid instance of the First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{is\_firstbounce\_scared}{Is First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores}{is.Rul.firstbounce.Rul.scared}
+%
+\begin{Description}\relax
+Check whether an object is a valid instance of the First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+is_firstbounce_scared(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] An object of any type
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Details}
+%
+\begin{Value}
+A logical value, TRUE if a valid instance of the First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{knit\_mdl\_rprt}{Knit mdl rprt}{knit.Rul.mdl.Rul.rprt}
+%
+\begin{Description}\relax
+knit\_mdl\_rprt() is a Knit function that knits a rmarkdown file Specifically, this function implements an algorithm to knit mdl rprt. The function is called for its side effects and does not return a value.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+knit_mdl_rprt(
+  knit_pars_ls,
+  path_to_mdl_rprt_tmpl_1L_chr = system.file("_Model_Report_Template.Rmd", package =
+    "FBaqol")
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{knit\_pars\_ls}] Knit parameters (a list)
+
+\item[\code{path\_to\_mdl\_rprt\_tmpl\_1L\_chr}] Path to mdl rprt tmpl (a character vector of length one), Default: system.file("\_Model\_Report\_Template.Rmd", package = "FBaqol")
+\end{ldescription}
+\end{Arguments}
+\inputencoding{utf8}
+\HeaderA{make\_adol\_aqol6d\_disv\_lup}{Make adolescent Assessment of Quality of Life Six Dimension disvalue}{make.Rul.adol.Rul.aqol6d.Rul.disv.Rul.lup}
+%
+\begin{Description}\relax
+make\_adol\_aqol6d\_disv\_lup() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make adolescent assessment of quality of life six dimension disvalue lookup table. The function returns Adolescent Assessment of Quality of Life Six Dimension disvalue (a lookup table).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_adol_aqol6d_disv_lup()
+\end{verbatim}
+\end{Usage}
+%
+\begin{Value}
+Adolescent Assessment of Quality of Life Six Dimension disvalue (a lookup table)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_aqol6d\_adol\_pop\_tbs\_ls}{Make Assessment of Quality of Life Six Dimension adolescent pop tibbles}{make.Rul.aqol6d.Rul.adol.Rul.pop.Rul.tbs.Rul.ls}
+%
+\begin{Description}\relax
+make\_aqol6d\_adol\_pop\_tbs\_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension adolescent pop tibbles list. The function returns Assessment of Quality of Life Six Dimension adolescent pop tibbles (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_aqol6d_adol_pop_tbs_ls(
+  aqol_items_props_tbs_ls,
+  aqol_scores_pars_ls,
+  series_names_chr,
+  synth_data_spine_ls,
+  temporal_cors_ls,
+  id_var_nm_1L_chr = "fkClientID",
+  prefix_chr = c(uid = "Participant_", aqol_item = "aqol6d_q", domain_unwtd_pfx_1L_chr
+    = "aqol6d_subtotal_c_", domain_wtd_pfx_1L_chr = "aqol6d_subtotal_w_")
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{aqol\_items\_props\_tbs\_ls}] Assessment of Quality of Life items props tibbles (a list)
+
+\item[\code{aqol\_scores\_pars\_ls}] Assessment of Quality of Life scores parameters (a list)
+
+\item[\code{series\_names\_chr}] Series names (a character vector)
+
+\item[\code{synth\_data\_spine\_ls}] Synth data spine (a list)
+
+\item[\code{temporal\_cors\_ls}] Temporal correlations (a list)
+
+\item[\code{id\_var\_nm\_1L\_chr}] Id var name (a character vector of length one), Default: 'fkClientID'
+
+\item[\code{prefix\_chr}] Prefix (a character vector), Default: c(uid = "Participant\_", aqol\_item = "aqol6d\_q", domain\_unwtd\_pfx\_1L\_chr = "aqol6d\_subtotal\_c\_",
+domain\_wtd\_pfx\_1L\_chr = "aqol6d\_subtotal\_w\_")
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Assessment of Quality of Life Six Dimension adolescent pop tibbles (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_aqol6d\_fns\_ls}{Make Assessment of Quality of Life Six Dimension functions}{make.Rul.aqol6d.Rul.fns.Rul.ls}
+%
+\begin{Description}\relax
+make\_aqol6d\_fns\_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension functions list. The function returns Assessment of Quality of Life Six Dimension disu (a list of functions).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_aqol6d_fns_ls(domain_items_ls)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{domain\_items\_ls}] Domain items (a list)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Assessment of Quality of Life Six Dimension disu (a list of functions)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_aqol6d\_items\_tb}{Make Assessment of Quality of Life Six Dimension items}{make.Rul.aqol6d.Rul.items.Rul.tb}
+%
+\begin{Description}\relax
+make\_aqol6d\_items\_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension items tibble. The function returns Assessment of Quality of Life Six Dimension items (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_aqol6d_items_tb(aqol_tb, old_pfx_1L_chr, new_pfx_1L_chr)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{aqol\_tb}] Assessment of Quality of Life (a tibble)
+
+\item[\code{old\_pfx\_1L\_chr}] Old prefix (a character vector of length one)
+
+\item[\code{new\_pfx\_1L\_chr}] New prefix (a character vector of length one)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Assessment of Quality of Life Six Dimension items (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_brms\_mdl\_print\_ls}{Make brms mdl print list}{make.Rul.brms.Rul.mdl.Rul.print.Rul.ls}
+%
+\begin{Description}\relax
+make\_brms\_mdl\_print\_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make brms mdl print list. The function returns Brms mdl print (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_brms_mdl_print_ls(
+  mdl_ls,
+  label_stub_1L_chr,
+  caption_1L_chr,
+  output_type_1L_chr = "PDF",
+  digits_1L_dbl = 2,
+  big_mark_1L_chr = " "
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{mdl\_ls}] Mdl (a list)
+
+\item[\code{label\_stub\_1L\_chr}] Label stub (a character vector of length one)
+
+\item[\code{caption\_1L\_chr}] Caption (a character vector of length one)
+
+\item[\code{output\_type\_1L\_chr}] Output type (a character vector of length one), Default: 'PDF'
+
+\item[\code{digits\_1L\_dbl}] Digits (a double vector of length one), Default: 2
+
+\item[\code{big\_mark\_1L\_chr}] Big mark (a character vector of length one), Default: ' '
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Brms mdl print (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_brms\_mdl\_smry\_tbl}{Make brms mdl smry table}{make.Rul.brms.Rul.mdl.Rul.smry.Rul.tbl}
+%
+\begin{Description}\relax
+make\_brms\_mdl\_smry\_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make brms mdl smry table. The function returns Brms mdl smry (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_brms_mdl_smry_tbl(smry_mdl_ls, grp_1L_chr, pop_1L_chr, fam_1L_chr)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{smry\_mdl\_ls}] Smry mdl (a list)
+
+\item[\code{grp\_1L\_chr}] Grp (a character vector of length one)
+
+\item[\code{pop\_1L\_chr}] Pop (a character vector of length one)
+
+\item[\code{fam\_1L\_chr}] Fam (a character vector of length one)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Brms mdl smry (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_complete\_props\_tbs\_ls}{Make complete props tibbles}{make.Rul.complete.Rul.props.Rul.tbs.Rul.ls}
+%
+\begin{Description}\relax
+make\_complete\_props\_tbs\_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make complete props tibbles list. The function returns Complete props tibbles (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_complete_props_tbs_ls(
+  raw_props_tbs_ls,
+  question_var_nm_1L_chr = "Question"
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{raw\_props\_tbs\_ls}] Raw props tibbles (a list)
+
+\item[\code{question\_var\_nm\_1L\_chr}] Question var name (a character vector of length one), Default: 'Question'
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Complete props tibbles (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_correlated\_data\_tb}{Make correlated data}{make.Rul.correlated.Rul.data.Rul.tb}
+%
+\begin{Description}\relax
+make\_correlated\_data\_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make correlated data tibble. The function returns Correlated data (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_correlated_data_tb(synth_data_spine_ls, synth_data_idx_1L_dbl = 1)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{synth\_data\_spine\_ls}] Synth data spine (a list)
+
+\item[\code{synth\_data\_idx\_1L\_dbl}] Synth data index (a double vector of length one), Default: 1
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Correlated data (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_corstars\_tbl\_xx}{Make corstars table}{make.Rul.corstars.Rul.tbl.Rul.xx}
+%
+\begin{Description}\relax
+make\_corstars\_tbl\_xx() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make corstars table output object of multiple potential types. The function is called for its side effects and does not return a value.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_corstars_tbl_xx(
+  x,
+  method = c("pearson", "spearman"),
+  removeTriangle = c("upper", "lower"),
+  result = c("none", "html", "latex")
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] PARAM\_DESCRIPTION
+
+\item[\code{method}] PARAM\_DESCRIPTION, Default: c("pearson", "spearman")
+
+\item[\code{removeTriangle}] PARAM\_DESCRIPTION, Default: c("upper", "lower")
+
+\item[\code{result}] PARAM\_DESCRIPTION, Default: c("none", "html", "latex")
+\end{ldescription}
+\end{Arguments}
+\inputencoding{utf8}
+\HeaderA{make\_dim\_sclg\_cons\_dbl}{Make dimension sclg constants}{make.Rul.dim.Rul.sclg.Rul.cons.Rul.dbl}
+%
+\begin{Description}\relax
+make\_dim\_sclg\_cons\_dbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make dimension sclg constants double vector. The function returns Dimension sclg constants (a double vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_dim_sclg_cons_dbl(domains_chr, dim_sclg_con_lup_tb)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{domains\_chr}] Domains (a character vector)
+
+\item[\code{dim\_sclg\_con\_lup\_tb}] Dimension sclg constant lookup table (a tibble)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Dimension sclg constants (a double vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_domain\_items\_ls}{Make domain items}{make.Rul.domain.Rul.items.Rul.ls}
+%
+\begin{Description}\relax
+make\_domain\_items\_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make domain items list. The function returns Domain items (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_domain_items_ls(domain_qs_lup_tb, item_pfx_1L_chr)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{domain\_qs\_lup\_tb}] Domain questions lookup table (a tibble)
+
+\item[\code{item\_pfx\_1L\_chr}] Item prefix (a character vector of length one)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Domain items (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_item\_wrst\_wghts\_ls\_ls}{Make item wrst wghts}{make.Rul.item.Rul.wrst.Rul.wghts.Rul.ls.Rul.ls}
+%
+\begin{Description}\relax
+make\_item\_wrst\_wghts\_ls\_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make item wrst wghts list list. The function returns Item wrst wghts (a list of lists).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_item_wrst_wghts_ls_ls(domain_items_ls, itm_wrst_wghts_lup_tb)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{domain\_items\_ls}] Domain items (a list)
+
+\item[\code{itm\_wrst\_wghts\_lup\_tb}] Itm wrst wghts lookup table (a tibble)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Item wrst wghts (a list of lists)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_knit\_pars\_ls}{Make knit parameters}{make.Rul.knit.Rul.pars.Rul.ls}
+%
+\begin{Description}\relax
+make\_knit\_pars\_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make knit parameters list. The function returns Knit parameters (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_knit_pars_ls(
+  mdl_smry_dir_1L_chr,
+  mdl_types_chr,
+  predictor_vars_nms_ls,
+  output_type_1L_chr = "HTML",
+  mdl_types_lup = NULL,
+  plt_types_lup = NULL,
+  plt_types_chr = c("coefs", "hetg", "dnst", "sctr_plt"),
+  section_type_1L_chr = "#"
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{mdl\_smry\_dir\_1L\_chr}] Mdl smry directory (a character vector of length one)
+
+\item[\code{mdl\_types\_chr}] Mdl types (a character vector)
+
+\item[\code{predictor\_vars\_nms\_ls}] Predictor vars names (a list)
+
+\item[\code{output\_type\_1L\_chr}] Output type (a character vector of length one), Default: 'HTML'
+
+\item[\code{mdl\_types\_lup}] Mdl types (a lookup table), Default: NULL
+
+\item[\code{plt\_types\_lup}] Plt types (a lookup table), Default: NULL
+
+\item[\code{plt\_types\_chr}] Plt types (a character vector), Default: c("coefs", "hetg", "dnst", "sctr\_plt")
+
+\item[\code{section\_type\_1L\_chr}] Section type (a character vector of length one), Default: '\#'
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Knit parameters (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_mdl\_nms\_ls}{Make mdl names}{make.Rul.mdl.Rul.nms.Rul.ls}
+%
+\begin{Description}\relax
+make\_mdl\_nms\_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make mdl names list. The function returns Mdl names (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_mdl_nms_ls(predictor_vars_nms_ls, mdl_types_chr)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{predictor\_vars\_nms\_ls}] Predictor vars names (a list)
+
+\item[\code{mdl\_types\_chr}] Mdl types (a character vector)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Mdl names (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_mdl\_smry\_elmt\_tbl}{Make mdl smry elmt table}{make.Rul.mdl.Rul.smry.Rul.elmt.Rul.tbl}
+%
+\begin{Description}\relax
+make\_mdl\_smry\_elmt\_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make mdl smry elmt table. The function returns Mdl elmt sum (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_mdl_smry_elmt_tbl(mat, cat_chr)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{mat}] Matrix (a matrix)
+
+\item[\code{cat\_chr}] Cat (a character vector)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Mdl elmt sum (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_new\_firstbounce\_aqol6d\_adol}{Make new First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))}{make.Rul.new.Rul.firstbounce.Rul.aqol6d.Rul.adol}
+%
+\begin{Description}\relax
+Create a new unvalidated instance of the First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_new_firstbounce_aqol6d_adol(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] A prototype for the First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Details}
+%
+\begin{Value}
+An unvalidated instance of the First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_new\_firstbounce\_bads}{Make new First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores}{make.Rul.new.Rul.firstbounce.Rul.bads}
+%
+\begin{Description}\relax
+Create a new unvalidated instance of the First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_new_firstbounce_bads(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] A prototype for the First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Details}
+%
+\begin{Value}
+An unvalidated instance of the First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_new\_firstbounce\_gad7}{Make new First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores}{make.Rul.new.Rul.firstbounce.Rul.gad7}
+%
+\begin{Description}\relax
+Create a new unvalidated instance of the First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_new_firstbounce_gad7(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] A prototype for the First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Details}
+%
+\begin{Value}
+An unvalidated instance of the First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_new\_firstbounce\_k6}{Make new First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores}{make.Rul.new.Rul.firstbounce.Rul.k6}
+%
+\begin{Description}\relax
+Create a new unvalidated instance of the First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_new_firstbounce_k6(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] A prototype for the First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Details}
+%
+\begin{Value}
+An unvalidated instance of the First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_new\_firstbounce\_oasis}{Make new First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores}{make.Rul.new.Rul.firstbounce.Rul.oasis}
+%
+\begin{Description}\relax
+Create a new unvalidated instance of the First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_new_firstbounce_oasis(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] A prototype for the First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Details}
+%
+\begin{Value}
+An unvalidated instance of the First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_new\_firstbounce\_phq9}{Make new First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores}{make.Rul.new.Rul.firstbounce.Rul.phq9}
+%
+\begin{Description}\relax
+Create a new unvalidated instance of the First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_new_firstbounce_phq9(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] A prototype for the First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Details}
+%
+\begin{Value}
+An unvalidated instance of the First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_new\_firstbounce\_scared}{Make new First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores}{make.Rul.new.Rul.firstbounce.Rul.scared}
+%
+\begin{Description}\relax
+Create a new unvalidated instance of the First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_new_firstbounce_scared(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] A prototype for the First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Details}
+%
+\begin{Value}
+An unvalidated instance of the First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_pdef\_cor\_mat\_mat}{Make pdef correlation matrix}{make.Rul.pdef.Rul.cor.Rul.mat.Rul.mat}
+%
+\begin{Description}\relax
+make\_pdef\_cor\_mat\_mat() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make pdef correlation matrix matrix. The function returns Pdef correlation (a matrix).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_pdef_cor_mat_mat(lower_diag_mat)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{lower\_diag\_mat}] Lower diag (a matrix)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Pdef correlation (a matrix)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_prototype\_firstbounce\_aqol6d\_adol}{Make prototype First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))}{make.Rul.prototype.Rul.firstbounce.Rul.aqol6d.Rul.adol}
+%
+\begin{Description}\relax
+Create a new prototype for the First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_prototype_firstbounce_aqol6d_adol()
+\end{verbatim}
+\end{Usage}
+%
+\begin{Details}\relax
+First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Details}
+%
+\begin{Value}
+A prototype for First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_prototype\_firstbounce\_bads}{Make prototype First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores}{make.Rul.prototype.Rul.firstbounce.Rul.bads}
+%
+\begin{Description}\relax
+Create a new prototype for the First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_prototype_firstbounce_bads()
+\end{verbatim}
+\end{Usage}
+%
+\begin{Details}\relax
+First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Details}
+%
+\begin{Value}
+A prototype for First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_prototype\_firstbounce\_gad7}{Make prototype First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores}{make.Rul.prototype.Rul.firstbounce.Rul.gad7}
+%
+\begin{Description}\relax
+Create a new prototype for the First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_prototype_firstbounce_gad7()
+\end{verbatim}
+\end{Usage}
+%
+\begin{Details}\relax
+First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Details}
+%
+\begin{Value}
+A prototype for First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_prototype\_firstbounce\_k6}{Make prototype First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores}{make.Rul.prototype.Rul.firstbounce.Rul.k6}
+%
+\begin{Description}\relax
+Create a new prototype for the First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_prototype_firstbounce_k6()
+\end{verbatim}
+\end{Usage}
+%
+\begin{Details}\relax
+First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Details}
+%
+\begin{Value}
+A prototype for First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_prototype\_firstbounce\_oasis}{Make prototype First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores}{make.Rul.prototype.Rul.firstbounce.Rul.oasis}
+%
+\begin{Description}\relax
+Create a new prototype for the First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_prototype_firstbounce_oasis()
+\end{verbatim}
+\end{Usage}
+%
+\begin{Details}\relax
+First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Details}
+%
+\begin{Value}
+A prototype for First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_prototype\_firstbounce\_phq9}{Make prototype First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores}{make.Rul.prototype.Rul.firstbounce.Rul.phq9}
+%
+\begin{Description}\relax
+Create a new prototype for the First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_prototype_firstbounce_phq9()
+\end{verbatim}
+\end{Usage}
+%
+\begin{Details}\relax
+First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Details}
+%
+\begin{Value}
+A prototype for First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_prototype\_firstbounce\_scared}{Make prototype First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores}{make.Rul.prototype.Rul.firstbounce.Rul.scared}
+%
+\begin{Description}\relax
+Create a new prototype for the First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_prototype_firstbounce_scared()
+\end{verbatim}
+\end{Usage}
+%
+\begin{Details}\relax
+First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Details}
+%
+\begin{Value}
+A prototype for First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_smry\_of\_brm\_mdl}{Make smry of brm mdl}{make.Rul.smry.Rul.of.Rul.brm.Rul.mdl}
+%
+\begin{Description}\relax
+make\_smry\_of\_brm\_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of brm mdl. The function returns Smry of brm mdl (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_smry_of_brm_mdl(
+  mdl_ls,
+  data_tb,
+  dep_var_nm_1L_chr = "aqol6d_total_w",
+  predictor_vars_nms_chr,
+  fn = calculate_rmse,
+  mdl_nm_1L_chr = NA_character_,
+  seed_1L_dbl = 23456
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{mdl\_ls}] Mdl (a list)
+
+\item[\code{data\_tb}] Data (a tibble)
+
+\item[\code{dep\_var\_nm\_1L\_chr}] Dep var name (a character vector of length one), Default: 'aqol6d\_total\_w'
+
+\item[\code{predictor\_vars\_nms\_chr}] Predictor vars names (a character vector)
+
+\item[\code{fn}] Function (a function), Default: calculate\_rmse
+
+\item[\code{mdl\_nm\_1L\_chr}] Mdl name (a character vector of length one), Default: 'NA'
+
+\item[\code{seed\_1L\_dbl}] Seed (a double vector of length one), Default: 23456
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Smry of brm mdl (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_smry\_of\_ts\_mdl}{Make smry of ts mdl}{make.Rul.smry.Rul.of.Rul.ts.Rul.mdl}
+%
+\begin{Description}\relax
+make\_smry\_of\_ts\_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of ts mdl. The function returns Smry of ts mdl (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_smry_of_ts_mdl(
+  data_tb,
+  fn,
+  predictor_vars_nms_chr,
+  mdl_nm_1L_chr,
+  path_to_write_to_1L_chr = NA_character_,
+  dep_var_nm_1L_chr = "aqol6d_total_w",
+  id_var_nm_1L_chr = "fkClientID",
+  round_var_nm_1L_chr = "round",
+  round_bl_val_1L_chr = "Baseline",
+  iters_1L_int = 4000L,
+  seed_1L_int = 1000L
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{data\_tb}] Data (a tibble)
+
+\item[\code{fn}] Function (a function)
+
+\item[\code{predictor\_vars\_nms\_chr}] Predictor vars names (a character vector)
+
+\item[\code{mdl\_nm\_1L\_chr}] Mdl name (a character vector of length one)
+
+\item[\code{path\_to\_write\_to\_1L\_chr}] Path to write to (a character vector of length one), Default: 'NA'
+
+\item[\code{dep\_var\_nm\_1L\_chr}] Dep var name (a character vector of length one), Default: 'aqol6d\_total\_w'
+
+\item[\code{id\_var\_nm\_1L\_chr}] Id var name (a character vector of length one), Default: 'fkClientID'
+
+\item[\code{round\_var\_nm\_1L\_chr}] Round var name (a character vector of length one), Default: 'round'
+
+\item[\code{round\_bl\_val\_1L\_chr}] Round bl value (a character vector of length one), Default: 'Baseline'
+
+\item[\code{iters\_1L\_int}] Iters (an integer vector of length one), Default: 4000
+
+\item[\code{seed\_1L\_int}] Seed (an integer vector of length one), Default: 1000
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Smry of ts mdl (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_synth\_series\_tbs\_ls}{Make synth series tibbles}{make.Rul.synth.Rul.series.Rul.tbs.Rul.ls}
+%
+\begin{Description}\relax
+make\_synth\_series\_tbs\_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make synth series tibbles list. The function returns Synth series tibbles (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_synth_series_tbs_ls(synth_data_spine_ls, series_names_chr)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{synth\_data\_spine\_ls}] Synth data spine (a list)
+
+\item[\code{series\_names\_chr}] Series names (a character vector)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Synth series tibbles (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_unique\_ls\_elmt\_idx\_int}{Make unique list elmt index}{make.Rul.unique.Rul.ls.Rul.elmt.Rul.idx.Rul.int}
+%
+\begin{Description}\relax
+make\_unique\_ls\_elmt\_idx\_int() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make unique list elmt index integer vector. The function returns Unique list elmt index (an integer vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_unique_ls_elmt_idx_int(data_ls)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{data\_ls}] Data (a list)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Unique list elmt index (an integer vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{make\_vec\_with\_sum\_of\_int}{Make vec with sum of}{make.Rul.vec.Rul.with.Rul.sum.Rul.of.Rul.int}
+%
+\begin{Description}\relax
+make\_vec\_with\_sum\_of\_int() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make vec with sum of integer vector. The function returns Vec (an integer vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+make_vec_with_sum_of_int(target_int, start_int, end_int, length_int)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{target\_int}] Target (an integer vector)
+
+\item[\code{start\_int}] Start (an integer vector)
+
+\item[\code{end\_int}] End (an integer vector)
+
+\item[\code{length\_int}] Length (an integer vector)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Vec (an integer vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{mdl\_types\_lup}{Model types lookup table}{mdl.Rul.types.Rul.lup}
+\keyword{datasets}{mdl\_types\_lup}
+%
+\begin{Description}\relax
+A lookup table of abbreviations to describe the different model types supported by FBaqol functions
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+mdl_types_lup
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+An object of class \code{tbl\_df} (inherits from \code{tbl}, \code{data.frame}) with 2 rows and 2 columns.
+\end{Format}
+%
+\begin{Details}\relax
+A tibble
+
+\begin{description}
+
+\item[short\_name\_chr] Short name (a character vector)
+\item[long\_name\_chr] Long name (a character vector)
+
+\end{description}
+
+\end{Details}
+\inputencoding{utf8}
+\HeaderA{plot\_obsd\_predd\_dnst}{Plot obsd predd dnst}{plot.Rul.obsd.Rul.predd.Rul.dnst}
+%
+\begin{Description}\relax
+plot\_obsd\_predd\_dnst() is a Plot function that plots data Specifically, this function implements an algorithm to plot obsd predd dnst. The function is called for its side effects and does not return a value.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+plot_obsd_predd_dnst(tfd_data_tb)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{tfd\_data\_tb}] Transformed data (a tibble)
+\end{ldescription}
+\end{Arguments}
+\inputencoding{utf8}
+\HeaderA{plot\_obsd\_predd\_sctr}{Plot obsd predd sctr}{plot.Rul.obsd.Rul.predd.Rul.sctr}
+%
+\begin{Description}\relax
+plot\_obsd\_predd\_sctr() is a Plot function that plots data Specifically, this function implements an algorithm to plot obsd predd sctr. The function is called for its side effects and does not return a value.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+plot_obsd_predd_sctr(
+  tfd_data_tb,
+  dep_var_nm_1L_chr,
+  dep_var_desc_1L_chr,
+  round_var_nm_1L_chr,
+  args_ls
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{tfd\_data\_tb}] Transformed data (a tibble)
+
+\item[\code{dep\_var\_nm\_1L\_chr}] Dep var name (a character vector of length one)
+
+\item[\code{dep\_var\_desc\_1L\_chr}] Dep var description (a character vector of length one)
+
+\item[\code{round\_var\_nm\_1L\_chr}] Round var name (a character vector of length one)
+
+\item[\code{args\_ls}] Arguments (a list)
+\end{ldescription}
+\end{Arguments}
+\inputencoding{utf8}
+\HeaderA{plt\_types\_lup}{Model plot types lookup table}{plt.Rul.types.Rul.lup}
+\keyword{datasets}{plt\_types\_lup}
+%
+\begin{Description}\relax
+A lookup table of abbreviations to describe the different model plot types supported by FBaqol functions
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+plt_types_lup
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+An object of class \code{tbl\_df} (inherits from \code{tbl}, \code{data.frame}) with 4 rows and 2 columns.
+\end{Format}
+%
+\begin{Details}\relax
+A tibble
+
+\begin{description}
+
+\item[short\_name\_chr] Short name (a character vector)
+\item[long\_name\_chr] Long name (a character vector)
+
+\end{description}
+
+\end{Details}
+\inputencoding{utf8}
+\HeaderA{predict\_from\_mdl\_coefs}{Predict from mdl coefs}{predict.Rul.from.Rul.mdl.Rul.coefs}
+%
+\begin{Description}\relax
+predict\_from\_mdl\_coefs() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict from mdl coefs. The function returns Pred (a double vector).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+predict_from_mdl_coefs(smry_of_mdl_tb, new_data_tb)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{smry\_of\_mdl\_tb}] Smry of mdl (a tibble)
+
+\item[\code{new\_data\_tb}] New data (a tibble)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Pred (a double vector)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{print\_all\_plts\_for\_mdl\_set}{Print all plts for mdl set}{print.Rul.all.Rul.plts.Rul.for.Rul.mdl.Rul.set}
+%
+\begin{Description}\relax
+print\_all\_plts\_for\_mdl\_set() is a Print function that prints output to console Specifically, this function implements an algorithm to print all plts for mdl set. The function is called for its side effects and does not return a value.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+print_all_plts_for_mdl_set(output_ls, start_from_1L_int = 0L)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{output\_ls}] Output (a list)
+
+\item[\code{start\_from\_1L\_int}] Start from (an integer vector of length one), Default: 0
+\end{ldescription}
+\end{Arguments}
+\inputencoding{utf8}
+\HeaderA{print\_table\_xx}{Print table}{print.Rul.table.Rul.xx}
+%
+\begin{Description}\relax
+print\_table\_xx() is a Print function that prints output to console Specifically, this function implements an algorithm to print table output object of multiple potential types. The function is called for its side effects and does not return a value.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+print_table_xx(
+  data_tb,
+  output_type_1L_chr = "PDF",
+  caption_1L_chr = NA_character_,
+  footnotes_chr = NA_character_,
+  merge_row_idx_int = NA_integer_,
+  digits_dbl = NULL,
+  big_mark_1L_chr = " ",
+  label,
+  hline.after,
+  addtorow,
+  sanitize_fn = getOption("xtable.sanitize.text.function", NULL)
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{data\_tb}] Data (a tibble)
+
+\item[\code{output\_type\_1L\_chr}] Output type (a character vector of length one), Default: 'PDF'
+
+\item[\code{caption\_1L\_chr}] Caption (a character vector of length one), Default: 'NA'
+
+\item[\code{footnotes\_chr}] Footnotes (a character vector), Default: 'NA'
+
+\item[\code{merge\_row\_idx\_int}] Merge row index (an integer vector), Default: NA
+
+\item[\code{digits\_dbl}] Digits (a double vector), Default: NULL
+
+\item[\code{big\_mark\_1L\_chr}] Big mark (a character vector of length one), Default: ' '
+
+\item[\code{label}] PARAM\_DESCRIPTION
+
+\item[\code{hline.after}] PARAM\_DESCRIPTION
+
+\item[\code{addtorow}] PARAM\_DESCRIPTION
+
+\item[\code{sanitize\_fn}] Sanitize (a function), Default: getOption("xtable.sanitize.text.function", NULL)
+\end{ldescription}
+\end{Arguments}
+\inputencoding{utf8}
+\HeaderA{print\_ts\_mdl\_plts}{Print ts mdl plts}{print.Rul.ts.Rul.mdl.Rul.plts}
+%
+\begin{Description}\relax
+print\_ts\_mdl\_plts() is a Print function that prints output to console Specifically, this function implements an algorithm to print ts mdl plts. The function is called for its side effects and does not return a value.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+print_ts_mdl_plts(paths_to_plts_chr, title_1L_chr, label_refs_chr, mdl_smry_ls)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{paths\_to\_plts\_chr}] Paths to plts (a character vector)
+
+\item[\code{title\_1L\_chr}] Title (a character vector of length one)
+
+\item[\code{label\_refs\_chr}] Label references (a character vector)
+
+\item[\code{mdl\_smry\_ls}] Mdl smry (a list)
+\end{ldescription}
+\end{Arguments}
+\inputencoding{utf8}
+\HeaderA{prototype\_lup}{Class prototype lookup table}{prototype.Rul.lup}
+\keyword{datasets}{prototype\_lup}
+%
+\begin{Description}\relax
+Metadata on classes used in readyforwhatsnext suite
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+prototype_lup
+\end{verbatim}
+\end{Usage}
+%
+\begin{Format}
+An object of class \code{ready4\_class\_pt\_lup} (inherits from \code{tbl\_df}, \code{tbl}, \code{data.frame}) with 17 rows and 6 columns.
+\end{Format}
+%
+\begin{Details}\relax
+A tibble
+
+\begin{description}
+
+\item[type\_chr] Type (a character vector)
+\item[val\_chr] Val (a character vector)
+\item[pt\_ns\_chr] Prototype namespace (a character vector)
+\item[fn\_to\_call\_chr] Function to call (a character vector)
+\item[default\_val\_chr] Default val (a character vector)
+\item[old\_class\_lgl] Old class (a logical vector)
+
+\end{description}
+
+\end{Details}
+\inputencoding{utf8}
+\HeaderA{randomise\_changes\_in\_fct\_levs}{Randomise changes in factor levels}{randomise.Rul.changes.Rul.in.Rul.fct.Rul.levs}
+%
+\begin{Description}\relax
+randomise\_changes\_in\_fct\_levs() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise changes in factor levels. The function is called for its side effects and does not return a value.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+randomise_changes_in_fct_levs(vector_fct, prob_unchanged_dbl)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{vector\_fct}] Vector (a factor)
+
+\item[\code{prob\_unchanged\_dbl}] Prob unchanged (a double vector)
+\end{ldescription}
+\end{Arguments}
+\inputencoding{utf8}
+\HeaderA{reorder\_tbs\_for\_target\_cors}{Reorder tibbles for target correlations}{reorder.Rul.tbs.Rul.for.Rul.target.Rul.cors}
+%
+\begin{Description}\relax
+reorder\_tbs\_for\_target\_cors() is a Reorder function that reorders an object to conform to a pre-specified schema. Specifically, this function implements an algorithm to reorder tibbles for target correlations. The function returns Tibbles (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+reorder_tbs_for_target_cors(
+  tbs_ls,
+  cor_dbl,
+  cor_var_chr,
+  id_var_to_rm_1L_chr = NA_character_
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{tbs\_ls}] Tibbles (a list)
+
+\item[\code{cor\_dbl}] Correlation (a double vector)
+
+\item[\code{cor\_var\_chr}] Correlation var (a character vector)
+
+\item[\code{id\_var\_to\_rm\_1L\_chr}] Id var to rm (a character vector of length one), Default: 'NA'
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Tibbles (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{replace\_with\_missing\_vals}{Replace with missing values}{replace.Rul.with.Rul.missing.Rul.vals}
+%
+\begin{Description}\relax
+replace\_with\_missing\_vals() is a Replace function that edits an object, replacing a specified element with another specified element. Specifically, this function implements an algorithm to replace with missing values. Function argument tbl specifies the object to be updated. Argument synth\_data\_spine\_ls provides the object to be updated. The function is called for its side effects and does not return a value.
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+replace_with_missing_vals(tbl, synth_data_spine_ls, idx_int)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{synth\_data\_spine\_ls}] Synth data spine (a list)
+
+\item[\code{idx\_int}] Index (an integer vector)
+
+\item[\code{...}] Additional arguments
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Synth (a table)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{scramble\_xx}{Scramble}{scramble.Rul.xx}
+%
+\begin{Description}\relax
+scramble\_xx() is a Scramble function that randomly reorders an object. Specifically, this function implements an algorithm to scramble output object of multiple potential types. The function returns Scrambled vec (an output object of multiple potential types).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+scramble_xx(vector_xx)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{vector\_xx}] Vector (an output object of multiple potential types)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Scrambled vec (an output object of multiple potential types)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{transform\_dep\_var\_nm\_for\_cll}{Transform dep var name for cll}{transform.Rul.dep.Rul.var.Rul.nm.Rul.for.Rul.cll}
+%
+\begin{Description}\relax
+transform\_dep\_var\_nm\_for\_cll() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dep var name for cll. Function argument dep\_var\_nm\_1L\_chr specifies the object to be updated. The function returns Transformed dep var name (a character vector of length one).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+transform_dep_var_nm_for_cll(dep_var_nm_1L_chr)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{dep\_var\_nm\_1L\_chr}] Dep var name (a character vector of length one)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Transformed dep var name (a character vector of length one)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{transform\_raw\_aqol\_tb\_to\_aqol6d\_tb}{Transform raw Assessment of Quality of Life tibble to Assessment of Quality of Life Six Dimension}{transform.Rul.raw.Rul.aqol.Rul.tb.Rul.to.Rul.aqol6d.Rul.tb}
+%
+\begin{Description}\relax
+transform\_raw\_aqol\_tb\_to\_aqol6d\_tb() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform raw assessment of quality of life tibble to assessment of quality of life six dimension tibble. Function argument raw\_aqol\_tb specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+transform_raw_aqol_tb_to_aqol6d_tb(raw_aqol_tb)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{raw\_aqol\_tb}] Raw Assessment of Quality of Life (a tibble)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Assessment of Quality of Life Six Dimension (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{transform\_tb\_to\_mdl\_inp}{Transform tibble to mdl input}{transform.Rul.tb.Rul.to.Rul.mdl.Rul.inp}
+%
+\begin{Description}\relax
+transform\_tb\_to\_mdl\_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to mdl input. Function argument data\_tb specifies the object to be updated. Argument dep\_var\_nm\_1L\_chr provides the object to be updated. The function returns Transformed for gsn log mdl (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+transform_tb_to_mdl_inp(
+  data_tb,
+  dep_var_nm_1L_chr = "aqol6d_total_w",
+  predictor_vars_nms_chr,
+  id_var_nm_1L_chr = "fkClientID",
+  round_var_nm_1L_chr = "round",
+  round_bl_val_1L_chr = "Baseline"
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{data\_tb}] Data (a tibble)
+
+\item[\code{dep\_var\_nm\_1L\_chr}] Dep var name (a character vector of length one), Default: 'aqol6d\_total\_w'
+
+\item[\code{predictor\_vars\_nms\_chr}] Predictor vars names (a character vector)
+
+\item[\code{id\_var\_nm\_1L\_chr}] Id var name (a character vector of length one), Default: 'fkClientID'
+
+\item[\code{round\_var\_nm\_1L\_chr}] Round var name (a character vector of length one), Default: 'round'
+
+\item[\code{round\_bl\_val\_1L\_chr}] Round bl value (a character vector of length one), Default: 'Baseline'
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Transformed for gsn log mdl (a tibble)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{transform\_ts\_mdl\_data}{Transform ts mdl data}{transform.Rul.ts.Rul.mdl.Rul.data}
+%
+\begin{Description}\relax
+transform\_ts\_mdl\_data() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform ts mdl data. Function argument mdl\_ls specifies the object to be updated. Argument data\_tb provides the object to be updated. The function returns Cnfdl mdl (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+transform_ts_mdl_data(
+  mdl_ls,
+  data_tb,
+  dep_var_nm_1L_chr = "aqol6d_total_w",
+  predictor_vars_nms_chr,
+  id_var_nm_1L_chr = "fkClientID",
+  mdl_nm_1L_chr
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{mdl\_ls}] Mdl (a list)
+
+\item[\code{data\_tb}] Data (a tibble)
+
+\item[\code{dep\_var\_nm\_1L\_chr}] Dep var name (a character vector of length one), Default: 'aqol6d\_total\_w'
+
+\item[\code{predictor\_vars\_nms\_chr}] Predictor vars names (a character vector)
+
+\item[\code{id\_var\_nm\_1L\_chr}] Id var name (a character vector of length one), Default: 'fkClientID'
+
+\item[\code{mdl\_nm\_1L\_chr}] Mdl name (a character vector of length one)
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Cnfdl mdl (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{validate\_firstbounce\_aqol6d\_adol}{Validate First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))}{validate.Rul.firstbounce.Rul.aqol6d.Rul.adol}
+%
+\begin{Description}\relax
+Validate an instance of the First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+validate_firstbounce_aqol6d_adol(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] An unvalidated instance of the First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Details}
+%
+\begin{Value}
+A prototpe for First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{validate\_firstbounce\_bads}{Validate First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores}{validate.Rul.firstbounce.Rul.bads}
+%
+\begin{Description}\relax
+Validate an instance of the First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+validate_firstbounce_bads(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] An unvalidated instance of the First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Details}
+%
+\begin{Value}
+A prototpe for First Bounce S3 class for Behavioural Activation for Depression Scale (BADS) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{validate\_firstbounce\_gad7}{Validate First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores}{validate.Rul.firstbounce.Rul.gad7}
+%
+\begin{Description}\relax
+Validate an instance of the First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+validate_firstbounce_gad7(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] An unvalidated instance of the First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Details}
+%
+\begin{Value}
+A prototpe for First Bounce S3 class for Generalised Anxiety Disorder Scale (GAD-7) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{validate\_firstbounce\_k6}{Validate First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores}{validate.Rul.firstbounce.Rul.k6}
+%
+\begin{Description}\relax
+Validate an instance of the First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+validate_firstbounce_k6(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] An unvalidated instance of the First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Details}
+%
+\begin{Value}
+A prototpe for First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{validate\_firstbounce\_oasis}{Validate First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores}{validate.Rul.firstbounce.Rul.oasis}
+%
+\begin{Description}\relax
+Validate an instance of the First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+validate_firstbounce_oasis(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] An unvalidated instance of the First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Details}
+%
+\begin{Value}
+A prototpe for First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{validate\_firstbounce\_phq9}{Validate First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores}{validate.Rul.firstbounce.Rul.phq9}
+%
+\begin{Description}\relax
+Validate an instance of the First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+validate_firstbounce_phq9(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] An unvalidated instance of the First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Details}
+%
+\begin{Value}
+A prototpe for First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{validate\_firstbounce\_scared}{Validate First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores}{validate.Rul.firstbounce.Rul.scared}
+%
+\begin{Description}\relax
+Validate an instance of the First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+validate_firstbounce_scared(x)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{x}] An unvalidated instance of the First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Details}\relax
+First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Details}
+%
+\begin{Value}
+A prototpe for First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{write\_brm\_mdl\_plt\_fl}{Write brm mdl plt file}{write.Rul.brm.Rul.mdl.Rul.plt.Rul.fl}
+%
+\begin{Description}\relax
+write\_brm\_mdl\_plt\_fl() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm mdl plt file. The function returns Path to plot (a character vector of length one).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+write_brm_mdl_plt_fl(
+  plt_fn,
+  fn_args_ls = NULL,
+  path_to_write_to_1L_chr,
+  plt_nm_1L_chr,
+  grpx_fn = grDevices::png,
+  units_1L_chr = "in",
+  width_1L_dbl = 6,
+  height_1L_dbl = 6,
+  rsl_1L_dbl = 300
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{plt\_fn}] Plt (a function)
+
+\item[\code{fn\_args\_ls}] Function arguments (a list), Default: NULL
+
+\item[\code{path\_to\_write\_to\_1L\_chr}] Path to write to (a character vector of length one)
+
+\item[\code{plt\_nm\_1L\_chr}] Plt name (a character vector of length one)
+
+\item[\code{grpx\_fn}] Grpx (a function), Default: grDevices::png
+
+\item[\code{units\_1L\_chr}] Units (a character vector of length one), Default: 'in'
+
+\item[\code{width\_1L\_dbl}] Width (a double vector of length one), Default: 6
+
+\item[\code{height\_1L\_dbl}] Height (a double vector of length one), Default: 6
+
+\item[\code{rsl\_1L\_dbl}] Rsl (a double vector of length one), Default: 300
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Path to plot (a character vector of length one)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{write\_brm\_model\_plts}{Write brm model plts}{write.Rul.brm.Rul.model.Rul.plts}
+%
+\begin{Description}\relax
+write\_brm\_model\_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm model plts. The function returns Mdl plts paths (a list).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+write_brm_model_plts(
+  mdl_ls,
+  tfd_data_tb,
+  mdl_nm_1L_chr,
+  path_to_write_to_1L_chr,
+  dep_var_nm_1L_chr = "aqol6d_total_w",
+  dep_var_desc_1L_chr = "AQoL-6D utility score",
+  round_var_nm_1L_chr = "round",
+  tfmn_fn = function(x) {     x },
+  units_1L_chr = "in",
+  height_dbl = c(rep(6, 2), rep(5, 2)),
+  width_dbl = c(rep(6, 2), rep(6, 2)),
+  rsl_dbl = rep(300, 4),
+  args_ls = NULL,
+  seed_1L_dbl = 23456
+)
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{mdl\_ls}] Mdl (a list)
+
+\item[\code{tfd\_data\_tb}] Transformed data (a tibble)
+
+\item[\code{mdl\_nm\_1L\_chr}] Mdl name (a character vector of length one)
+
+\item[\code{path\_to\_write\_to\_1L\_chr}] Path to write to (a character vector of length one)
+
+\item[\code{dep\_var\_nm\_1L\_chr}] Dep var name (a character vector of length one), Default: 'aqol6d\_total\_w'
+
+\item[\code{dep\_var\_desc\_1L\_chr}] Dep var description (a character vector of length one), Default: 'AQoL-6D utility score'
+
+\item[\code{round\_var\_nm\_1L\_chr}] Round var name (a character vector of length one), Default: 'round'
+
+\item[\code{tfmn\_fn}] Tfmn (a function), Default: function(x) 
+x
+
+
+\item[\code{units\_1L\_chr}] Units (a character vector of length one), Default: 'in'
+
+\item[\code{height\_dbl}] Height (a double vector), Default: c(rep(6, 2), rep(5, 2))
+
+\item[\code{width\_dbl}] Width (a double vector), Default: c(rep(6, 2), rep(6, 2))
+
+\item[\code{rsl\_dbl}] Rsl (a double vector), Default: rep(300, 4)
+
+\item[\code{args\_ls}] Arguments (a list), Default: NULL
+
+\item[\code{seed\_1L\_dbl}] Seed (a double vector of length one), Default: 23456
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Mdl plts paths (a list)
+\end{Value}
+\inputencoding{utf8}
+\HeaderA{write\_results\_to\_csv}{Write results to comma separated variables file}{write.Rul.results.Rul.to.Rul.csv}
+%
+\begin{Description}\relax
+write\_results\_to\_csv() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write results to comma separated variables file. The function returns Datasets (a tibble).
+\end{Description}
+%
+\begin{Usage}
+\begin{verbatim}
+write_results_to_csv(synth_data_spine_ls, output_dir_1L_chr = ".")
+\end{verbatim}
+\end{Usage}
+%
+\begin{Arguments}
+\begin{ldescription}
+\item[\code{synth\_data\_spine\_ls}] Synth data spine (a list)
+
+\item[\code{output\_dir\_1L\_chr}] Output directory (a character vector of length one), Default: '.'
+\end{ldescription}
+\end{Arguments}
+%
+\begin{Value}
+Datasets (a tibble)
+\end{Value}
+\printindex{}
+\end{document}
