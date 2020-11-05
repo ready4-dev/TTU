@@ -8,7 +8,6 @@ make_brms_mdl_print_ls(
   mdl_ls,
   label_stub_1L_chr,
   caption_1L_chr,
-  footnotes_chr = "",
   output_type_1L_chr = "PDF",
   digits_1L_dbl = 2,
   big_mark_1L_chr = " "
@@ -20,8 +19,6 @@ make_brms_mdl_print_ls(
 \item{label_stub_1L_chr}{Label stub (a character vector of length one)}
 
 \item{caption_1L_chr}{Caption (a character vector of length one)}
-
-\item{footnotes_chr}{Footnotes (a character vector), Default: ''}
 
 \item{output_type_1L_chr}{Output type (a character vector of length one), Default: 'PDF'}
 
@@ -35,4 +32,3 @@ Brms mdl print (a list)
 \description{
 make_brms_mdl_print_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make brms mdl print list. The function returns Brms mdl print (a list).
 }
-\keyword{internal}

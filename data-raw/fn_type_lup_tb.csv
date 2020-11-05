@@ -15,6 +15,7 @@
 "Import","Reads a data object in its native format and converts it to an R object.",NA,NA,FALSE,FALSE
 "Import Data","Imports data from saved files and loads them into memory as R objects.",NA,NA,TRUE,TRUE
 "Impute","Imputes data.",NA,NA,FALSE,FALSE
+"Knit","Knits a rmarkdown file",NA,NA,FALSE,FALSE
 "Make","Creates a new R object.",NA,NA,FALSE,FALSE
 "Make Dataverse Import Lookup Table","Makes a Dataverse import lookup table",NA,NA,TRUE,TRUE
 "Make Import Output Object of Multiple Potential Types","Makes an output object of multiple potential classes.",NA,NA,TRUE,TRUE

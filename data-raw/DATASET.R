@@ -33,6 +33,13 @@ ready4fun::write_pkg_setup_fls(incr_ver_1L_lgl = F,
                                github_repo_1L_chr = "orygen/FBaqol",
                                lifecycle_stage_1L_chr = "experimental")
 # PAUSE FOR INTERACTIVE
+if(dir.exists("data-raw/inst")){
+  if(dir.exists("inst"))
+    unlink("inst", recursive=TRUE)
+  dir.create('inst')
+  file.copy("data-raw/inst", getwd(), recursive=TRUE)
+}
+
 ##
 ## PART THREE
 ##
@@ -101,6 +108,7 @@ pkg_dss_tb <- fn_type_lup_tb %>%
   ready4fun::add_rows_to_fn_type_lup(fn_type_nm_chr = c("Calculate","Extract",
                                                         "Fit",
                                                         "Impute",
+                                                        "Knit",
                                                         "Plot",
                                                         "Predict",
                                                         "Print",
@@ -109,6 +117,7 @@ pkg_dss_tb <- fn_type_lup_tb %>%
                                                        "Extracts data from an object.",
                                                        "Fits a model of a specified type to a dataset",
                                                        "Imputes data.",
+                                                       "Knits a rmarkdown file",
                                                        "Plots data",
                                                        "Makes predictions from data using a specified statistical model.",
                                                        "Prints output to console",
@@ -267,6 +276,26 @@ pkg_dss_tb <- read.csv("vignettes/Data/aqol_valid_stata.csv") %>%
                               url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
                               abbreviations_lup = abbreviations_lup,
                               pkg_dss_tb = pkg_dss_tb)
+pkg_dss_tb <- tibble::tibble(short_name_chr = c("GSN_LOG","CLL_TFN"),
+                               long_name_chr = c("Generalised Linear Mixed Model with Gaussian distribution and log link",
+                                                 "Linear Mixed Model with clog-log transformation")) %>%
+  ready4fun::write_and_doc_ds(db_1L_chr = "mdl_types_lup",
+                              title_1L_chr = "Model types lookup table",
+                              desc_1L_chr = "A lookup table of abbreviations to describe the different model types supported by FBaqol functions",
+                              abbreviations_lup = abbreviations_lup,
+                              pkg_dss_tb = pkg_dss_tb)
+
+pkg_dss_tb <- tibble::tibble(short_name_chr = c("coefs","hetg", "dnst","sctr_plt"),
+                               long_name_chr = c("population level effects",
+                                                 "group level effects",
+                                                 "comparative densities of observed and predicted data",
+                                                 "comparative scatter plot of obsereved and predicted data")) %>%
+  ready4fun::write_and_doc_ds(db_1L_chr = "plt_types_lup",
+                              title_1L_chr = "Model plot types lookup table",
+                              desc_1L_chr = "A lookup table of abbreviations to describe the different model plot types supported by FBaqol functions",
+                              abbreviations_lup = abbreviations_lup,
+                              pkg_dss_tb = pkg_dss_tb)
+
 # 7. Save copy of package documentation to online data repo.
 ds_ls <- ready4use::write_pkg_dss_to_dv_ds_csvs(pkg_dss_tb,
                                                 dv_nm_1L_chr = "ready4models",

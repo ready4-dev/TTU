@@ -5,7 +5,6 @@
 #' @rdname make_adol_aqol6d_disv_lup
 #' @export 
 #' @importFrom dplyr mutate case_when
-#' @keywords internal
 make_adol_aqol6d_disv_lup <- function () 
 {
     adol_aqol6d_disv_lup <- aqol6d_adult_disv_lup_tb %>% dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr == 
@@ -30,7 +29,6 @@ make_adol_aqol6d_disv_lup <- function ()
 #' @importFrom purrr map
 #' @importFrom dplyr select starts_with everything
 #' @importFrom rlang sym
-#' @keywords internal
 make_aqol6d_adol_pop_tbs_ls <- function (aqol_items_props_tbs_ls, aqol_scores_pars_ls, series_names_chr, 
     synth_data_spine_ls, temporal_cors_ls, id_var_nm_1L_chr = "fkClientID", 
     prefix_chr = c(uid = "Participant_", aqol_item = "aqol6d_q", 
@@ -94,7 +92,6 @@ make_aqol6d_items_tb <- function (aqol_tb, old_pfx_1L_chr, new_pfx_1L_chr)
 #' @param mdl_ls Mdl (a list)
 #' @param label_stub_1L_chr Label stub (a character vector of length one)
 #' @param caption_1L_chr Caption (a character vector of length one)
-#' @param footnotes_chr Footnotes (a character vector), Default: ''
 #' @param output_type_1L_chr Output type (a character vector of length one), Default: 'PDF'
 #' @param digits_1L_dbl Digits (a double vector of length one), Default: 2
 #' @param big_mark_1L_chr Big mark (a character vector of length one), Default: ' '
@@ -105,9 +102,8 @@ make_aqol6d_items_tb <- function (aqol_tb, old_pfx_1L_chr, new_pfx_1L_chr)
 #' @importFrom dplyr mutate all_of across case_when
 #' @importFrom Hmisc latexTranslate
 #' @importFrom stringr str_replace
-#' @keywords internal
-make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, footnotes_chr = "", 
-    output_type_1L_chr = "PDF", digits_1L_dbl = 2, big_mark_1L_chr = " ") 
+make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, output_type_1L_chr = "PDF", 
+    digits_1L_dbl = 2, big_mark_1L_chr = " ") 
 {
     smry_mdl_ls <- summary(mdl_ls, digits = 4)
     mdl_smry_chr <- smry_mdl_ls %>% capture.output()
@@ -189,7 +185,6 @@ make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, f
 #' @export 
 #' @importFrom purrr map
 #' @importFrom dplyr bind_rows
-#' @keywords internal
 make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, pop_1L_chr, fam_1L_chr) 
 {
     brms_mdl_smry_tb <- purrr::map(1:length(smry_mdl_ls$random), 
@@ -211,7 +206,6 @@ make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, pop_1L_chr, fam_1L_
 #' @importFrom purrr map map2_dbl
 #' @importFrom dplyr mutate select mutate_if
 #' @importFrom rlang sym
-#' @keywords internal
 make_complete_props_tbs_ls <- function (raw_props_tbs_ls, question_var_nm_1L_chr = "Question") 
 {
     complete_props_tbs_ls <- raw_props_tbs_ls %>% purrr::map(~{
@@ -339,6 +333,71 @@ make_item_wrst_wghts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb)
     })
     return(item_wrst_wghts_ls_ls)
 }
+#' Make knit parameters
+#' @description make_knit_pars_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make knit parameters list. The function returns Knit parameters (a list).
+#' @param mdl_smry_dir_1L_chr Mdl smry directory (a character vector of length one)
+#' @param mdl_types_chr Mdl types (a character vector)
+#' @param predictor_vars_nms_ls Predictor vars names (a list)
+#' @param mdl_types_lup Mdl types (a lookup table), Default: NULL
+#' @param plt_types_lup Plt types (a lookup table), Default: NULL
+#' @param plt_types_chr Plt types (a character vector), Default: c("coefs", "hetg", "dnst", "sctr_plt")
+#' @param section_type_1L_chr Section type (a character vector of length one), Default: '#'
+#' @return Knit parameters (a list)
+#' @rdname make_knit_pars_ls
+#' @export 
+#' @importFrom purrr pmap map
+#' @importFrom ready4fun get_from_lup_obj
+make_knit_pars_ls <- function (mdl_smry_dir_1L_chr, mdl_types_chr, predictor_vars_nms_ls, 
+    mdl_types_lup = NULL, plt_types_lup = NULL, plt_types_chr = c("coefs", 
+        "hetg", "dnst", "sctr_plt"), section_type_1L_chr = "#") 
+{
+    if (is.null(mdl_types_lup)) 
+        data(mdl_types_lup, package = "FBaqol", envir = environment())
+    if (is.null(mdl_types_lup)) 
+        data(plt_types_lup, package = "FBaqol", envir = environment())
+    lab_idx_dbl <- 1:(length(mdl_types_chr) * length(predictor_vars_nms_ls))
+    knit_pars_ls <- purrr::pmap(list(predictor_vars_nms_ls, split(lab_idx_dbl, 
+        ceiling(seq_along(lab_idx_dbl)/length(mdl_types_chr))), 
+        make_unique_ls_elmt_idx_int(predictor_vars_nms_ls), make_mdl_nms_ls(predictor_vars_nms_ls, 
+            mdl_types_chr = mdl_types_chr)), ~{
+        mdl_nms_chr <- ..4
+        path_to_mdl_stubs_chr <- paste0(mdl_smry_dir_1L_chr, 
+            "/", mdl_nms_chr)
+        paths_to_mdls_chr <- paste0(path_to_mdl_stubs_chr, ".RDS")
+        paths_to_mdl_plts_ls <- purrr::map(path_to_mdl_stubs_chr, 
+            ~paste0(..1, paste0("_", plt_types_chr, ".png")))
+        mdl_ttls_chr <- paste0(..1[1], ifelse(is.na(..1[2]), 
+            "", paste(" with ", ..1[2])), " ", ready4fun::get_from_lup_obj(mdl_types_lup, 
+            match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_types_chr, 
+            target_var_nm_1L_chr = "long_name_chr", evaluate_lgl = F))
+        section_ttls_chr <- paste0(section_type_1L_chr, " ", 
+            mdl_ttls_chr)
+        list(plt_nms_ls = purrr::map(mdl_ttls_chr, ~{
+            paste0(.x, " ", ready4fun::get_from_lup_obj(plt_types_lup, 
+                match_var_nm_1L_chr = "short_name_chr", match_value_xx = plt_types_chr, 
+                target_var_nm_1L_chr = "long_name_chr", evaluate_lgl = F))
+        }), paths_to_mdls_chr = paths_to_mdls_chr, tbl_captions_chr = mdl_ttls_chr, 
+            label_stubs_chr = paste0("lab", ..2), output_type_1L_chr = rep(params$output_type_1L_chr, 
+                length(mdl_types_chr)), section_ttls_chr = section_ttls_chr, 
+            ls_elmt_idx_1L_int = ..3)
+    })
+    return(knit_pars_ls)
+}
+#' Make mdl names
+#' @description make_mdl_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make mdl names list. The function returns Mdl names (a list).
+#' @param predictor_vars_nms_ls Predictor vars names (a list)
+#' @param mdl_types_chr Mdl types (a character vector)
+#' @return Mdl names (a list)
+#' @rdname make_mdl_nms_ls
+#' @export 
+#' @importFrom purrr map2
+make_mdl_nms_ls <- function (predictor_vars_nms_ls, mdl_types_chr) 
+{
+    mdl_nms_ls <- purrr::map2(predictor_vars_nms_ls, make_unique_ls_elmt_idx_int(predictor_vars_nms_ls), 
+        ~paste0(.x[1], "_", ifelse(is.na(.x[2]), "", paste0(.x[2], 
+            "_")), .y, "_", mdl_types_chr))
+    return(mdl_nms_ls)
+}
 #' Make mdl smry elmt table
 #' @description make_mdl_smry_elmt_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make mdl smry elmt table. The function returns Mdl elmt sum (a tibble).
 #' @param mat Matrix (a matrix)
@@ -348,7 +407,6 @@ make_item_wrst_wghts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb)
 #' @export 
 #' @importFrom tibble as_tibble add_case
 #' @importFrom dplyr mutate select everything filter bind_rows
-#' @keywords internal
 make_mdl_smry_elmt_tbl <- function (mat, cat_chr) 
 {
     tb <- mat %>% tibble::as_tibble() %>% dplyr::mutate(Parameter = rownames(mat)) %>% 
@@ -392,7 +450,6 @@ make_pdef_cor_mat_mat <- function (lower_diag_mat)
 #' @importFrom dplyr pull mutate rename select
 #' @importFrom rlang sym
 #' @importFrom purrr map flatten_chr
-#' @keywords internal
 make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", 
     predictor_vars_nms_chr, fn = calculate_rmse, mdl_nm_1L_chr = NA_character_, 
     seed_1L_dbl = 23456) 
@@ -435,7 +492,6 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_t
 #' @rdname make_smry_of_ts_mdl
 #' @export 
 #' @importFrom rlang exec
-#' @keywords internal
 make_smry_of_ts_mdl <- function (data_tb, fn, predictor_vars_nms_chr, mdl_nm_1L_chr, 
     path_to_write_to_1L_chr = NA_character_, dep_var_nm_1L_chr = "aqol6d_total_w", 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
@@ -486,6 +542,32 @@ make_synth_series_tbs_ls <- function (synth_data_spine_ls, series_names_chr)
         synth_data_idx_1L_dbl = .x) %>% replace_with_missing_vals(synth_data_spine_ls = synth_data_spine_ls, 
         idx_int = .x)) %>% stats::setNames(series_names_chr)
     return(synth_series_tbs_ls)
+}
+#' Make unique list elmt index
+#' @description make_unique_ls_elmt_idx_int() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make unique list elmt index integer vector. The function returns Unique list elmt index (an integer vector).
+#' @param data_ls Data (a list)
+#' @return Unique list elmt index (an integer vector)
+#' @rdname make_unique_ls_elmt_idx_int
+#' @export 
+#' @importFrom tibble as_tibble
+#' @importFrom dplyr mutate group_by row_number ungroup
+#' @importFrom purrr map flatten_int
+#' @importFrom ready4fun get_from_lup_obj
+make_unique_ls_elmt_idx_int <- function (data_ls) 
+{
+    combos_tb <- tibble::as_tibble(data_ls, .name_repair = ~paste0("r_", 
+        1:length(data_ls))) %>% t() %>% as.data.frame()
+    combos_tb <- combos_tb %>% tibble::as_tibble()
+    combos_tb <- combos_tb %>% dplyr::mutate(combo_chr = ifelse(ncol(combos_tb) == 
+        1, V1, paste0(V1, V2)))
+    combos_tb <- combos_tb %>% dplyr::group_by(combo_chr) %>% 
+        dplyr::mutate(combo_id = dplyr::row_number())
+    unique_ls_elmt_idx_int <- purrr::map(data_ls %>% unique(), 
+        ~ready4fun::get_from_lup_obj(combos_tb %>% dplyr::ungroup(), 
+            match_var_nm_1L_chr = "combo_chr", match_value_xx = paste0(.x[1], 
+                ifelse(is.na(.x[2]), "", .x[2])), target_var_nm_1L_chr = "combo_id", 
+            evaluate_lgl = F)) %>% purrr::flatten_int()
+    return(unique_ls_elmt_idx_int)
 }
 #' Make vec with sum of
 #' @description make_vec_with_sum_of_int() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make vec with sum of integer vector. The function returns Vec (an integer vector).

@@ -47,4 +47,3 @@ Smry of ts mdl (a list)
 \description{
 make_smry_of_ts_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of ts mdl. The function returns Smry of ts mdl (a list).
 }
-\keyword{internal}

@@ -267,6 +267,74 @@ make_item_wrst_wghts_ls_ls <- function(domain_items_ls,
     })
   return(item_wrst_wghts_ls_ls)
 }
+make_knit_pars_ls <- function(mdl_smry_dir_1L_chr,
+                              mdl_types_chr,
+                              predictor_vars_nms_ls,
+                              mdl_types_lup = NULL,
+                              plt_types_lup = NULL,
+                              plt_types_chr = c("coefs","hetg", "dnst","sctr_plt"),
+                              section_type_1L_chr = "#"){
+  if(is.null(mdl_types_lup))
+    data(mdl_types_lup, package = "FBaqol", envir = environment())
+  if(is.null(mdl_types_lup))
+    data(plt_types_lup, package = "FBaqol", envir = environment())
+  lab_idx_dbl <- 1:(length(mdl_types_chr)*length(predictor_vars_nms_ls))
+  knit_pars_ls <- purrr::pmap(list(predictor_vars_nms_ls,
+                                   split(lab_idx_dbl,
+                                         ceiling(seq_along(lab_idx_dbl)/length(mdl_types_chr))),
+                                   make_unique_ls_elmt_idx_int(predictor_vars_nms_ls),
+                                   make_mdl_nms_ls(predictor_vars_nms_ls,
+                                                   mdl_types_chr = mdl_types_chr)),
+                              ~ {
+                                mdl_nms_chr <- ..4
+                                path_to_mdl_stubs_chr <- paste0(mdl_smry_dir_1L_chr, "/" , mdl_nms_chr)
+                                paths_to_mdls_chr <- paste0(path_to_mdl_stubs_chr,".RDS")
+                                paths_to_mdl_plts_ls <- purrr::map(path_to_mdl_stubs_chr,
+                                                                   ~ paste0(..1,
+                                                                            paste0("_",plt_types_chr,".png")))
+                                mdl_ttls_chr <- paste0(..1[1],
+                                                       ifelse(is.na(..1[2]),"",paste(" with ", ..1[2])),
+                                                       " ",
+                                                       ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                                                   match_var_nm_1L_chr = "short_name_chr",
+                                                                                   match_value_xx = mdl_types_chr,
+                                                                                   target_var_nm_1L_chr = "long_name_chr",
+                                                                                   evaluate_lgl = F))
+                                section_ttls_chr <- paste0(section_type_1L_chr, " ", mdl_ttls_chr)
+                                list(plt_nms_ls = purrr::map(mdl_ttls_chr,
+                                                             ~{
+                                                               paste0(.x,
+                                                                      " ",
+                                                                      ready4fun::get_from_lup_obj(plt_types_lup,
+                                                                                                  match_var_nm_1L_chr = "short_name_chr",
+                                                                                                  match_value_xx = plt_types_chr,
+                                                                                                  target_var_nm_1L_chr = "long_name_chr",
+                                                                                                  evaluate_lgl = F))
+                                                             }),
+                                     paths_to_mdls_chr = paths_to_mdls_chr,
+                                     tbl_captions_chr = mdl_ttls_chr,
+                                     label_stubs_chr = paste0("lab",..2),
+                                     output_type_1L_chr = rep(params$output_type_1L_chr,length(mdl_types_chr)),
+                                     section_ttls_chr = section_ttls_chr,
+                                     ls_elmt_idx_1L_int = ..3
+                                )
+                              })
+  return(knit_pars_ls)
+}
+make_mdl_nms_ls <- function(predictor_vars_nms_ls,
+                            mdl_types_chr){
+  mdl_nms_ls <- purrr::map2(predictor_vars_nms_ls,
+                            make_unique_ls_elmt_idx_int(predictor_vars_nms_ls),
+                            ~ paste0(.x[1],
+                                     "_",
+                                     ifelse(is.na(.x[2]),
+                                            "",
+                                            paste0(.x[2],"_")),
+                                     .y,
+                                     "_",
+                                     mdl_types_chr))
+  return(mdl_nms_ls)
+}
 make_mdl_smry_elmt_tbl <- function(mat,
                                    cat_chr){
   tb <- mat %>% tibble::as_tibble() %>% dplyr::mutate(Parameter = rownames(mat)) %>% dplyr::select(Parameter, dplyr::everything())
@@ -379,6 +447,25 @@ make_synth_series_tbs_ls <- function(synth_data_spine_ls,
                                                    idx_int = .x)) %>%
     stats::setNames(series_names_chr)
   return(synth_series_tbs_ls)
+}
+make_unique_ls_elmt_idx_int <- function(data_ls){
+  combos_tb <- tibble::as_tibble(data_ls, .name_repair = ~ paste0("r_",1:length(data_ls))) %>%
+    t() %>% as.data.frame()
+  combos_tb <- combos_tb %>% tibble::as_tibble()
+  combos_tb <- combos_tb %>%
+    dplyr::mutate(combo_chr = ifelse(ncol(combos_tb)==1,V1,paste0(V1,V2)))
+  combos_tb <- combos_tb %>%
+    dplyr::group_by(combo_chr) %>%
+    dplyr::mutate(combo_id = dplyr::row_number())
+  unique_ls_elmt_idx_int <- purrr::map(data_ls %>% unique(),
+                                       ~ ready4fun::get_from_lup_obj(combos_tb %>% dplyr::ungroup(),
+                                                                     match_var_nm_1L_chr = "combo_chr",
+                                                                     match_value_xx = paste0(.x[1],
+                                                                                             ifelse(is.na(.x[2]),"", .x[2])),
+                                                                     target_var_nm_1L_chr = "combo_id",
+                                                                     evaluate_lgl = F)) %>%
+    purrr::flatten_int()
+  return(unique_ls_elmt_idx_int)
 }
 make_vec_with_sum_of_int <- function(target_int,
                                      start_int,
