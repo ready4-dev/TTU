@@ -353,9 +353,9 @@ make_knit_pars_ls <- function (mdl_smry_dir_1L_chr, mdl_types_chr, predictor_var
     plt_types_chr = c("coefs", "hetg", "dnst", "sctr_plt"), section_type_1L_chr = "#") 
 {
     if (is.null(mdl_types_lup)) 
-        data(mdl_types_lup, package = "FBaqol", envir = environment())
+        data(mdl_types_lup, envir = environment())
     if (is.null(mdl_types_lup)) 
-        data(plt_types_lup, package = "FBaqol", envir = environment())
+        data(plt_types_lup, envir = environment())
     lab_idx_dbl <- 1:(length(mdl_types_chr) * length(predictor_vars_nms_ls))
     knit_pars_ls <- purrr::pmap(list(predictor_vars_nms_ls, split(lab_idx_dbl, 
         ceiling(seq_along(lab_idx_dbl)/length(mdl_types_chr))), 
