@@ -1,5 +1,6 @@
 output:
   bookdown::pdf_book:
+    toc: false
     number_sections: yes
     includes:
       in_header: preamble.tex
