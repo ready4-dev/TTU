@@ -35,4 +35,3 @@ Smry of brm mdl (a tibble)
 \description{
 make_smry_of_brm_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of brm mdl. The function returns Smry of brm mdl (a tibble).
 }
-\keyword{internal}

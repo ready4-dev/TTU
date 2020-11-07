@@ -10,7 +10,6 @@
 #' @rdname fit_clg_log_tfmn
 #' @export 
 
-#' @keywords internal
 fit_clg_log_tfmn <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w_cloglog", 
     predictor_vars_nms_chr, id_var_nm_1L_chr = "fkClientID", 
     iters_1L_int = 4000L, seed_1L_int = 1000L) 
@@ -33,7 +32,6 @@ fit_clg_log_tfmn <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w_clogl
 #' @rdname fit_gsn_log_lnk
 #' @export 
 
-#' @keywords internal
 fit_gsn_log_lnk <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predictor_vars_nms_chr, 
     id_var_nm_1L_chr = "fkClientID", iters_1L_int = 4000L, seed_1L_int = 1000L) 
 {
@@ -58,7 +56,6 @@ fit_gsn_log_lnk <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", pred
 #' @export 
 #' @importFrom brms brm
 #' @importFrom purrr map_chr
-#' @keywords internal
 fit_ts_model_with_brm <- function (data_tb, dep_var_nm_1L_chr, predictor_vars_nms_chr, 
     id_var_nm_1L_chr, backend_1L_chr = getOption("brms.backend", 
         "rstan"), link_1L_chr = "identity", iters_1L_int = 4000L, 

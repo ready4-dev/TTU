@@ -58,4 +58,3 @@ Mdl plts paths (a list)
 \description{
 write_brm_model_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm model plts. The function returns Mdl plts paths (a list).
 }
-\keyword{internal}
