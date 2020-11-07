@@ -5,7 +5,6 @@
 #' @rdname make_adol_aqol6d_disv_lup
 #' @export 
 #' @importFrom dplyr mutate case_when
-#' @keywords internal
 make_adol_aqol6d_disv_lup <- function () 
 {
     adol_aqol6d_disv_lup <- aqol6d_adult_disv_lup_tb %>% dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr == 
@@ -30,7 +29,6 @@ make_adol_aqol6d_disv_lup <- function ()
 #' @importFrom purrr map
 #' @importFrom dplyr select starts_with everything
 #' @importFrom rlang sym
-#' @keywords internal
 make_aqol6d_adol_pop_tbs_ls <- function (aqol_items_props_tbs_ls, aqol_scores_pars_ls, series_names_chr, 
     synth_data_spine_ls, temporal_cors_ls, id_var_nm_1L_chr = "fkClientID", 
     prefix_chr = c(uid = "Participant_", aqol_item = "aqol6d_q", 
@@ -104,7 +102,6 @@ make_aqol6d_items_tb <- function (aqol_tb, old_pfx_1L_chr, new_pfx_1L_chr)
 #' @importFrom dplyr mutate all_of across case_when
 #' @importFrom Hmisc latexTranslate
 #' @importFrom stringr str_replace
-#' @keywords internal
 make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, output_type_1L_chr = "PDF", 
     digits_1L_dbl = 2, big_mark_1L_chr = " ") 
 {
@@ -188,7 +185,6 @@ make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, o
 #' @export 
 #' @importFrom purrr map
 #' @importFrom dplyr bind_rows
-#' @keywords internal
 make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, pop_1L_chr, fam_1L_chr) 
 {
     brms_mdl_smry_tb <- purrr::map(1:length(smry_mdl_ls$random), 
@@ -210,7 +206,6 @@ make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, pop_1L_chr, fam_1L_
 #' @importFrom purrr map map2_dbl
 #' @importFrom dplyr mutate select mutate_if
 #' @importFrom rlang sym
-#' @keywords internal
 make_complete_props_tbs_ls <- function (raw_props_tbs_ls, question_var_nm_1L_chr = "Question") 
 {
     complete_props_tbs_ls <- raw_props_tbs_ls %>% purrr::map(~{
@@ -353,7 +348,6 @@ make_item_wrst_wghts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb)
 #' @export 
 #' @importFrom purrr pmap map
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 make_knit_pars_ls <- function (mdl_smry_dir_1L_chr, mdl_types_chr, predictor_vars_nms_ls, 
     output_type_1L_chr = "HTML", mdl_types_lup = NULL, plt_types_lup = NULL, 
     plt_types_chr = c("coefs", "hetg", "dnst", "sctr_plt"), section_type_1L_chr = "#") 
@@ -397,7 +391,6 @@ make_knit_pars_ls <- function (mdl_smry_dir_1L_chr, mdl_types_chr, predictor_var
 #' @rdname make_mdl_nms_ls
 #' @export 
 #' @importFrom purrr map2
-#' @keywords internal
 make_mdl_nms_ls <- function (predictor_vars_nms_ls, mdl_types_chr) 
 {
     mdl_nms_ls <- purrr::map2(predictor_vars_nms_ls, make_unique_ls_elmt_idx_int(predictor_vars_nms_ls), 
@@ -414,7 +407,6 @@ make_mdl_nms_ls <- function (predictor_vars_nms_ls, mdl_types_chr)
 #' @export 
 #' @importFrom tibble as_tibble add_case
 #' @importFrom dplyr mutate select everything filter bind_rows
-#' @keywords internal
 make_mdl_smry_elmt_tbl <- function (mat, cat_chr) 
 {
     tb <- mat %>% tibble::as_tibble() %>% dplyr::mutate(Parameter = rownames(mat)) %>% 
@@ -458,7 +450,6 @@ make_pdef_cor_mat_mat <- function (lower_diag_mat)
 #' @importFrom dplyr pull mutate rename select
 #' @importFrom rlang sym
 #' @importFrom purrr map flatten_chr
-#' @keywords internal
 make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", 
     predictor_vars_nms_chr, fn = calculate_rmse, mdl_nm_1L_chr = NA_character_, 
     seed_1L_dbl = 23456) 
@@ -501,7 +492,6 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_t
 #' @rdname make_smry_of_ts_mdl
 #' @export 
 #' @importFrom rlang exec
-#' @keywords internal
 make_smry_of_ts_mdl <- function (data_tb, fn, predictor_vars_nms_chr, mdl_nm_1L_chr, 
     path_to_write_to_1L_chr = NA_character_, dep_var_nm_1L_chr = "aqol6d_total_w", 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
@@ -563,7 +553,6 @@ make_synth_series_tbs_ls <- function (synth_data_spine_ls, series_names_chr)
 #' @importFrom dplyr mutate group_by row_number ungroup
 #' @importFrom purrr map flatten_int
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 make_unique_ls_elmt_idx_int <- function (data_ls) 
 {
     combos_tb <- tibble::as_tibble(data_ls, .name_repair = ~paste0("r_", 
