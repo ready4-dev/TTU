@@ -41,3 +41,4 @@ Path to plot (a character vector of length one)
 \description{
 write_brm_mdl_plt_fl() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm mdl plt file. The function returns Path to plot (a character vector of length one).
 }
+\keyword{internal}
