@@ -9,6 +9,7 @@
 #' @importFrom ggplot2 ggplot aes geom_rug theme_bw theme labs
 #' @importFrom ggalt geom_bkde
 #' @importFrom viridis scale_fill_viridis
+#' @keywords internal
 plot_obsd_predd_dnst <- function (tfd_data_tb) 
 {
     tfd_data_tb %>% dplyr::mutate(Observed = aqol6d_total_w) %>% 
@@ -31,6 +32,7 @@ plot_obsd_predd_dnst <- function (tfd_data_tb)
 #' @export 
 #' @importFrom ggplot2 ggplot geom_point aes theme_bw xlim ylim scale_color_manual labs theme
 #' @importFrom rlang exec sym
+#' @keywords internal
 plot_obsd_predd_sctr <- function (tfd_data_tb, dep_var_nm_1L_chr, dep_var_desc_1L_chr, 
     round_var_nm_1L_chr, args_ls) 
 {
