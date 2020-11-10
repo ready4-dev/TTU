@@ -467,8 +467,10 @@ make_unique_ls_elmt_idx_int <- function(data_ls){
     t() %>% as.data.frame()
   combos_tb <- combos_tb %>% tibble::as_tibble()
   combos_tb <- combos_tb %>%
+    dplyr::mutate(V2 = dplyr::case_when(V1 == V2 ~ NA_character_,
+                                        T ~ V2)) %>%
     dplyr::mutate(combo_chr = purrr::map2_chr(V1,V2,
-                                              ~ifelse(ncol(combos_tb)==1,
+                                              ~ifelse(ncol(combos_tb)==1 | is.na(.y),
                                                       .x,
                                                       paste0(.x,"_",.y))))
   combos_tb <- combos_tb %>%

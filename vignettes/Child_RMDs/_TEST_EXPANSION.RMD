@@ -31,6 +31,7 @@ make_knit_pars_ls(mdl_smry_dir_1L_chr = "../../../../../../../Data/Project/Utili
                   mdl_types_chr = c("GSN_LOG","CLL_TFN"),
                   predictor_vars_nms_ls = predictor_vars_nms_ls,
                   output_type_1L_chr = params$output_type_1L_chr
-                  ) %>% purrr::walk(~knit_mdl_rprt(.x))
+                  ) 
+#%>% purrr::walk(~knit_mdl_rprt(.x))
 ```
 

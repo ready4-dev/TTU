@@ -569,7 +569,7 @@ make_synth_series_tbs_ls <- function (synth_data_spine_ls, series_names_chr)
 #' @rdname make_unique_ls_elmt_idx_int
 #' @export 
 #' @importFrom tibble as_tibble
-#' @importFrom dplyr mutate group_by row_number ungroup
+#' @importFrom dplyr mutate case_when group_by row_number ungroup
 #' @importFrom purrr map2_chr map flatten_int
 #' @importFrom ready4fun get_from_lup_obj
 make_unique_ls_elmt_idx_int <- function (data_ls) 
@@ -577,9 +577,10 @@ make_unique_ls_elmt_idx_int <- function (data_ls)
     combos_tb <- tibble::as_tibble(data_ls, .name_repair = ~paste0("r_", 
         1:length(data_ls))) %>% t() %>% as.data.frame()
     combos_tb <- combos_tb %>% tibble::as_tibble()
-    combos_tb <- combos_tb %>% dplyr::mutate(combo_chr = purrr::map2_chr(V1, 
-        V2, ~ifelse(ncol(combos_tb) == 1, .x, paste0(.x, "_", 
-            .y))))
+    combos_tb <- combos_tb %>% dplyr::mutate(V2 = dplyr::case_when(V1 == 
+        V2 ~ NA_character_, T ~ V2)) %>% dplyr::mutate(combo_chr = purrr::map2_chr(V1, 
+        V2, ~ifelse(ncol(combos_tb) == 1 | is.na(.y), .x, paste0(.x, 
+            "_", .y))))
     combos_tb <- combos_tb %>% dplyr::group_by(combo_chr) %>% 
         dplyr::mutate(combo_id = dplyr::row_number())
     unique_ls_elmt_idx_int <- purrr::map(data_ls %>% unique(), 
