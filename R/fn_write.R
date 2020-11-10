@@ -148,3 +148,26 @@ write_results_to_csv <- function (synth_data_spine_ls, output_dir_1L_chr = ".")
         file = paste0(output_dir_1L_chr, "/", .y, ".csv"), row.names = F))
     return(dss_tb)
 }
+#' Write rndrd rprt
+#' @description write_rndrd_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write rndrd rprt. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @param path_to_RMD_1L_chr Path toMD (a character vector of length one)
+#' @param path_to_rprt_dir_1L_chr Path to rprt directory (a character vector of length one)
+#' @param file_nm_1L_chr File name (a character vector of length one)
+#' @param params_ls Params (a list), Default: list(output_type_1L_chr = "PDF")
+#' @return NULL
+#' @rdname write_rndrd_rprt
+#' @export 
+#' @importFrom rmarkdown render
+write_rndrd_rprt <- function (path_to_RMD_1L_chr, path_to_rprt_dir_1L_chr, file_nm_1L_chr, 
+    params_ls = list(output_type_1L_chr = "PDF")) 
+{
+    if (!dir.exists(path_to_rprt_dir_1L_chr)) 
+        dir.create(path_to_rprt_dir_1L_chr)
+    rmarkdown::render(path_to_RMD_1L_chr, switch(params_ls$output_type_1L_chr, 
+        PDF = "bookdown::pdf_book", HTML = "bookdown::html_document2", 
+        Word = "officedown::rdocx_document"), output_yaml = system.file("_output.yml", 
+        package = "FBaqol"), params = params_ls, envir = new.env(), 
+        output_file = paste0("../../", path_to_rprt_dir_1L_chr, 
+            "/", file_nm_1L_chr, ".", ifelse(params_ls$output_type_1L_chr == 
+                "Word", "docx", tolower(params_ls$output_type_1L_chr))))
+}
