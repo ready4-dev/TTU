@@ -454,7 +454,10 @@ make_unique_ls_elmt_idx_int <- function(data_ls){
     t() %>% as.data.frame()
   combos_tb <- combos_tb %>% tibble::as_tibble()
   combos_tb <- combos_tb %>%
-    dplyr::mutate(combo_chr = ifelse(ncol(combos_tb)==1,V1,paste0(V1,V2)))
+    dplyr::mutate(combo_chr = purrr::map2_chr(V1,V2,
+                                              ~ifelse(ncol(combos_tb)==1,
+                                                      .x,
+                                                      paste0(.x,"_",.y))))
   combos_tb <- combos_tb %>%
     dplyr::group_by(combo_chr) %>%
     dplyr::mutate(combo_id = dplyr::row_number())
