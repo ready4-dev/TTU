@@ -19,7 +19,7 @@ write_brm_model_plts <- function(mdl_ls,
                                   ~  {
                                     plt_fn <- fn_args_ls <- NULL
                                     if(.x %in% c(1,2)){
-                                      plt <- plot(mdl_ls)
+                                      plt <- plot(mdl_ls, ask=F, plot = F)
                                       if(length(plt)>=.x){
                                         fn_args_ls <- list(mdl_ls = mdl_ls,
                                                            idx_1L_int = as.integer(.x))

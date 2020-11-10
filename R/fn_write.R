@@ -71,7 +71,7 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
     mdl_plts_paths_ls <- purrr::map(1:4, ~{
         plt_fn <- fn_args_ls <- NULL
         if (.x %in% c(1, 2)) {
-            plt <- plot(mdl_ls)
+            plt <- plot(mdl_ls, ask = F, plot = F)
             if (length(plt) >= .x) {
                 fn_args_ls <- list(mdl_ls = mdl_ls, idx_1L_int = as.integer(.x))
                 plt_fn <- function(mdl_ls, idx_1L_int) {

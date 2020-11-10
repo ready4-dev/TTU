@@ -58,3 +58,7 @@ mdls_smry_tb <- purrr::map_dfr(1:length(mdl_nms_ls),
 
 ```
 
+```{r echo = F}
+saveRDS(mdls_smry_tb, paste0(mdl_smry_dir_1L_chr,"/mdls_smry_tb.RDS"))
+```
+
