@@ -80,6 +80,29 @@ write_brm_mdl_plt_fl <- function(plt_fn = NULL,
   }
   return(path_to_plot_1L_chr)
 }
+write_rndrd_rprt <- function(path_to_RMD_1L_chr,
+                             path_to_rprt_dir_1L_chr,
+                             file_nm_1L_chr,
+                             params_ls = list(output_type_1L_chr = "PDF")){
+  if(!dir.exists(path_to_rprt_dir_1L_chr))
+    dir.create(path_to_rprt_dir_1L_chr)
+  rmarkdown::render(path_to_RMD_1L_chr,
+                    switch(params_ls$output_type_1L_chr,
+                           PDF = "bookdown::pdf_book",
+                           HTML = "bookdown::html_document2",
+                           Word = "officedown::rdocx_document"),
+                    output_yaml = system.file("_output.yml", package = "FBaqol"),
+                    params = params_ls,
+                    envir = new.env(),
+                    output_file = paste0(#"../../",
+                      path_to_rprt_dir_1L_chr,
+                      "/",
+                      file_nm_1L_chr,
+                      ".",
+                      ifelse(params_ls$output_type_1L_chr=="Word",
+                             "docx",
+                             tolower(params_ls$output_type_1L_chr))))
+}
 write_results_to_csv <- function(synth_data_spine_ls,
                               output_dir_1L_chr = "."){
   measurements_tb <- tibble::tibble(timepoint_nms_chr = synth_data_spine_ls$timepoint_nms_chr,

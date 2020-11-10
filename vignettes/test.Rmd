@@ -1,12 +1,9 @@
 ---
-title: "TEST"
-author: "Matthew Hamilton"
-date: "06/08/2020"
+title: "Untitled"
 output: html_document
 params:
   output_type_1L_chr: HTML
   mdl_smry_dir_1L_chr: ../../../../../../../Data/Project/Utility_Models
-graphics: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -26,7 +23,6 @@ options(xtable.timestamp = "")
 ```{r echo=FALSE}
 predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),
                        covars_ls = list("SOFAS"))
-  #purrr::map(c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),~c(.x,"SOFAS"))
 ```
 
 ```{r, echo=FALSE, results='asis'}
