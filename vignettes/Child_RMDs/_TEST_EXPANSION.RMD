@@ -21,45 +21,16 @@ options(xtable.timestamp = "")
 ```
 
 ```{r echo=FALSE}
-predictor_vars_nms_ls <- purrr::map(c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),~c(.x,"SOFAS"))
+predictor_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),
+                       covars_ls = list("SOFAS"))
+  #purrr::map(c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),~c(.x,"SOFAS"))
 ```
 
-```{r echo=FALSE}
-knit_pars_ls <- make_knit_pars_ls(mdl_smry_dir_1L_chr = "../../../../../../../Data/Project/Utility_Models", # path_to_write_to_1L_chr
+```{r, echo=FALSE, results='asis'}
+make_knit_pars_ls(mdl_smry_dir_1L_chr = "../../../../../../../Data/Project/Utility_Models", # path_to_write_to_1L_chr
                   mdl_types_chr = c("GSN_LOG","CLL_TFN"),
                   predictor_vars_nms_ls = predictor_vars_nms_ls,
                   output_type_1L_chr = params$output_type_1L_chr
-                  ) 
-# knit_pars_ls_2 <- purrr::reduce(knit_pars_ls, ~purrr::map2(.x,.y,~ {append(.x,.y)}))
-# knit_pars_ls_2$output_type_1L_chr <- knit_pars_ls_2$output_type_1L_chr[1]
-# knit_pars_ls_2$ls_elmt_idx_1L_int <- purrr::map(knit_pars_ls_2$ls_elmt_idx_1L_int,~rep(.x,2)) %>% purrr::flatten_int()
-# knit_pars_ls_2 <- knit_pars_ls_2 %>% list()
-# knit_pars_ls_2 %>% knit_mdl_rprt()
-
+                  ) %>% purrr::walk(~knit_mdl_rprt(.x))
 ```
 
-```{r echo=FALSE}
-temp_files_chr <- tempfile(c("one","two"),fileext = ".Rmd")
-temp_files_chr %>% purrr::walk(~file.copy(system.file("_Model_Report_Template.Rmd", 
-    package = "FBaqol"),.x))
-```
-
-```{r, echo=FALSE, results='asis'}
-    src_1 <-  purrr::pmap(knit_pars_ls[[1]], ~knitr::knit_expand(temp_files_chr[1],
-        plt_nms_chr = ..1 %>% deparse(), path_to_mdl_1L_chr = ..2 %>%
-            deparse(), caption_1L_chr = ..3 %>% deparse(), label_stub_1L_chr = ..4 %>%
-            deparse(), output_type_1L_chr = ..5 %>% deparse(),
-        section_ttl_1L_chr = ..6))
-    src_2 <-  purrr::pmap(knit_pars_ls[[2]], ~knitr::knit_expand(temp_files_chr[2],
-        plt_nms_chr = ..1 %>% deparse(), path_to_mdl_1L_chr = ..2 %>%
-            deparse(), caption_1L_chr = ..3 %>% deparse(), label_stub_1L_chr = ..4 %>%
-            deparse(), output_type_1L_chr = ..5 %>% deparse(),
-        section_ttl_1L_chr = ..6))
-    src_3 <- append(src_1,src_2)
-    res <- knitr::knit_child(text = unlist(src_2), quiet = TRUE)
-    cat(res, sep = "\n")
-```
-
-```{r, echo=FALSE, results='asis'}
-#knit_mdl_rprt(knit_pars_ls[[2]], temp_files_chr[2])
-```

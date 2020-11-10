@@ -11,7 +11,7 @@ output:
     pandoc_args:
      '--lua-filter=page-break.lua'
   officedown::rdocx_document:
-    number_sections: yes
+    #number_sections: yes
   html_document:
     df_print: paged
   pdf_document:

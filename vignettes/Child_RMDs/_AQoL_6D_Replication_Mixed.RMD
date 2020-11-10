@@ -23,8 +23,8 @@ data_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS("../Data/fake_pop_tb.rds")
 ```{r}
 mdl_smry_dir_1L_chr <- "../../../../../../../Data/Project/Utility_Models"
 mdl_types_chr <- c("GSN_LOG","CLL_TFN")
-predictor_vars_nms_ls <- purrr::map(c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),~c(.x#,"SOFAS"
-                                                                                     ))
+make_predr_vars_nms_ls(main_predrs_chr = c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),
+                       covars_ls = list("SOFAS"))
 fn_ls <- list(fit_gsn_log_lnk,fit_clg_log_tfmn)
 mdl_nms_ls <- predictor_vars_nms_ls %>% purrr::map(~make_mdl_nms_ls(list(.x),
                               mdl_types_chr = mdl_types_chr)) %>% 

@@ -433,6 +433,25 @@ make_pdef_cor_mat_mat <- function (lower_diag_mat)
     }
     return(pdef_cor_mat)
 }
+#' Make predr vars names
+#' @description make_predr_vars_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predr vars names list. The function returns Predictor vars names (a list).
+#' @param main_predrs_chr Main predrs (a character vector)
+#' @param covars_ls Covars (a list)
+#' @return Predictor vars names (a list)
+#' @rdname make_predr_vars_nms_ls
+#' @export 
+#' @importFrom purrr map flatten
+make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls) 
+{
+    predictor_vars_nms_ls <- covars_ls %>% purrr::map(~{
+        covars_chr <- .x
+        purrr::map(main_predrs_chr, ~list(c(.x), c(.x, covars_chr))) %>% 
+            purrr::flatten()
+    }) %>% purrr::flatten()
+    predictor_vars_nms_ls <- predictor_vars_nms_ls[order(sapply(predictor_vars_nms_ls, 
+        length))]
+    return(predictor_vars_nms_ls)
+}
 #' Make smry of brm mdl
 #' @description make_smry_of_brm_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of brm mdl. The function returns Smry of brm mdl (a tibble).
 #' @param mdl_ls Mdl (a list)

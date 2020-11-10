@@ -352,6 +352,19 @@ make_pdef_cor_mat_mat <- function(lower_diag_mat){
   }
   return(pdef_cor_mat)
 }
+make_predr_vars_nms_ls <- function(main_predrs_chr,
+                                   covars_ls){
+  predictor_vars_nms_ls <- covars_ls %>%
+    purrr::map(~{
+      covars_chr <- .x
+      purrr::map(main_predrs_chr,
+                 ~ list(c(.x),
+                        c(.x,covars_chr))) %>%
+        purrr::flatten()
+    }) %>% purrr::flatten()
+  predictor_vars_nms_ls <- predictor_vars_nms_ls[order(sapply(predictor_vars_nms_ls, length))]
+  return(predictor_vars_nms_ls)
+}
 make_smry_of_brm_mdl <- function(mdl_ls,
                                  data_tb,
                                  dep_var_nm_1L_chr = "aqol6d_total_w",
