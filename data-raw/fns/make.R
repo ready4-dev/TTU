@@ -465,7 +465,7 @@ make_unique_ls_elmt_idx_int <- function(data_ls){
                                        ~ ready4fun::get_from_lup_obj(combos_tb %>% dplyr::ungroup(),
                                                                      match_var_nm_1L_chr = "combo_chr",
                                                                      match_value_xx = paste0(.x[1],
-                                                                                             ifelse(is.na(.x[2]),"", .x[2])),
+                                                                                             ifelse(is.na(.x[2]),"", paste0("_",.x[2]))),
                                                                      target_var_nm_1L_chr = "combo_id",
                                                                      evaluate_lgl = F)) %>%
     purrr::flatten_int()
