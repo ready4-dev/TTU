@@ -5,7 +5,7 @@
 \title{Write brm mdl plt file}
 \usage{
 write_brm_mdl_plt_fl(
-  plt_fn,
+  plt_fn = NULL,
   fn_args_ls = NULL,
   path_to_write_to_1L_chr,
   plt_nm_1L_chr,
@@ -17,7 +17,7 @@ write_brm_mdl_plt_fl(
 )
 }
 \arguments{
-\item{plt_fn}{Plt (a function)}
+\item{plt_fn}{Plt (a function), Default: NULL}
 
 \item{fn_args_ls}{Function arguments (a list), Default: NULL}
 

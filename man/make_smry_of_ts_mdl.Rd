@@ -7,7 +7,7 @@
 make_smry_of_ts_mdl(
   data_tb,
   fn,
-  predictor_vars_nms_chr,
+  predr_vars_nms_chr,
   mdl_nm_1L_chr,
   path_to_write_to_1L_chr = NA_character_,
   dep_var_nm_1L_chr = "aqol6d_total_w",
@@ -23,7 +23,7 @@ make_smry_of_ts_mdl(
 
 \item{fn}{Function (a function)}
 
-\item{predictor_vars_nms_chr}{Predictor vars names (a character vector)}
+\item{predr_vars_nms_chr}{Predr vars names (a character vector)}
 
 \item{mdl_nm_1L_chr}{Mdl name (a character vector of length one)}
 

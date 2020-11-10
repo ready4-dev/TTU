@@ -337,7 +337,7 @@ make_item_wrst_wghts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb)
 #' @description make_knit_pars_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make knit parameters list. The function returns Knit parameters (a list).
 #' @param mdl_smry_dir_1L_chr Mdl smry directory (a character vector of length one)
 #' @param mdl_types_chr Mdl types (a character vector)
-#' @param predictor_vars_nms_ls Predictor vars names (a list)
+#' @param predr_vars_nms_ls Predr vars names (a list)
 #' @param output_type_1L_chr Output type (a character vector of length one), Default: 'HTML'
 #' @param mdl_types_lup Mdl types (a lookup table), Default: NULL
 #' @param plt_types_lup Plt types (a lookup table), Default: NULL
@@ -348,7 +348,7 @@ make_item_wrst_wghts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb)
 #' @export 
 #' @importFrom purrr pmap map
 #' @importFrom ready4fun get_from_lup_obj
-make_knit_pars_ls <- function (mdl_smry_dir_1L_chr, mdl_types_chr, predictor_vars_nms_ls, 
+make_knit_pars_ls <- function (mdl_smry_dir_1L_chr, mdl_types_chr, predr_vars_nms_ls, 
     output_type_1L_chr = "HTML", mdl_types_lup = NULL, plt_types_lup = NULL, 
     plt_types_chr = c("coefs", "hetg", "dnst", "sctr_plt"), section_type_1L_chr = "#") 
 {
@@ -356,10 +356,10 @@ make_knit_pars_ls <- function (mdl_smry_dir_1L_chr, mdl_types_chr, predictor_var
         data(mdl_types_lup, envir = environment())
     if (is.null(plt_types_lup)) 
         data(plt_types_lup, envir = environment())
-    lab_idx_dbl <- 1:(length(mdl_types_chr) * length(predictor_vars_nms_ls))
-    knit_pars_ls <- purrr::pmap(list(predictor_vars_nms_ls, split(lab_idx_dbl, 
+    lab_idx_dbl <- 1:(length(mdl_types_chr) * length(predr_vars_nms_ls))
+    knit_pars_ls <- purrr::pmap(list(predr_vars_nms_ls, split(lab_idx_dbl, 
         ceiling(seq_along(lab_idx_dbl)/length(mdl_types_chr))), 
-        make_unique_ls_elmt_idx_int(predictor_vars_nms_ls), make_mdl_nms_ls(predictor_vars_nms_ls, 
+        make_unique_ls_elmt_idx_int(predr_vars_nms_ls), make_mdl_nms_ls(predr_vars_nms_ls, 
             mdl_types_chr = mdl_types_chr)), ~{
         mdl_nms_chr <- ..4
         path_to_mdl_stubs_chr <- paste0(mdl_smry_dir_1L_chr, 
@@ -385,15 +385,15 @@ make_knit_pars_ls <- function (mdl_smry_dir_1L_chr, mdl_types_chr, predictor_var
 }
 #' Make mdl names
 #' @description make_mdl_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make mdl names list. The function returns Mdl names (a list).
-#' @param predictor_vars_nms_ls Predictor vars names (a list)
+#' @param predr_vars_nms_ls Predr vars names (a list)
 #' @param mdl_types_chr Mdl types (a character vector)
 #' @return Mdl names (a list)
 #' @rdname make_mdl_nms_ls
 #' @export 
 #' @importFrom purrr map2
-make_mdl_nms_ls <- function (predictor_vars_nms_ls, mdl_types_chr) 
+make_mdl_nms_ls <- function (predr_vars_nms_ls, mdl_types_chr) 
 {
-    mdl_nms_ls <- purrr::map2(predictor_vars_nms_ls, make_unique_ls_elmt_idx_int(predictor_vars_nms_ls), 
+    mdl_nms_ls <- purrr::map2(predr_vars_nms_ls, make_unique_ls_elmt_idx_int(predr_vars_nms_ls), 
         ~paste0(.x[1], "_", ifelse(is.na(.x[2]), "", paste0(.x[2], 
             "_")), .y, "_", mdl_types_chr))
     return(mdl_nms_ls)
@@ -434,30 +434,30 @@ make_pdef_cor_mat_mat <- function (lower_diag_mat)
     return(pdef_cor_mat)
 }
 #' Make predr vars names
-#' @description make_predr_vars_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predr vars names list. The function returns Predictor vars names (a list).
+#' @description make_predr_vars_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predr vars names list. The function returns Predr vars names (a list).
 #' @param main_predrs_chr Main predrs (a character vector)
 #' @param covars_ls Covars (a list)
-#' @return Predictor vars names (a list)
+#' @return Predr vars names (a list)
 #' @rdname make_predr_vars_nms_ls
 #' @export 
 #' @importFrom purrr map flatten
 make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls) 
 {
-    predictor_vars_nms_ls <- covars_ls %>% purrr::map(~{
+    predr_vars_nms_ls <- covars_ls %>% purrr::map(~{
         covars_chr <- .x
         purrr::map(main_predrs_chr, ~list(c(.x), c(.x, covars_chr))) %>% 
             purrr::flatten()
     }) %>% purrr::flatten()
-    predictor_vars_nms_ls <- predictor_vars_nms_ls[order(sapply(predictor_vars_nms_ls, 
+    predr_vars_nms_ls <- predr_vars_nms_ls[order(sapply(predr_vars_nms_ls, 
         length))]
-    return(predictor_vars_nms_ls)
+    return(predr_vars_nms_ls)
 }
 #' Make smry of brm mdl
 #' @description make_smry_of_brm_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of brm mdl. The function returns Smry of brm mdl (a tibble).
 #' @param mdl_ls Mdl (a list)
 #' @param data_tb Data (a tibble)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
-#' @param predictor_vars_nms_chr Predictor vars names (a character vector)
+#' @param predr_vars_nms_chr Predr vars names (a character vector)
 #' @param fn Function (a function), Default: calculate_rmse
 #' @param mdl_nm_1L_chr Mdl name (a character vector of length one), Default: 'NA'
 #' @param seed_1L_dbl Seed (a double vector of length one), Default: 23456
@@ -470,11 +470,11 @@ make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls)
 #' @importFrom rlang sym
 #' @importFrom purrr map flatten_chr
 make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", 
-    predictor_vars_nms_chr, fn = calculate_rmse, mdl_nm_1L_chr = NA_character_, 
+    predr_vars_nms_chr, fn = calculate_rmse, mdl_nm_1L_chr = NA_character_, 
     seed_1L_dbl = 23456) 
 {
     if (is.na(mdl_nm_1L_chr)) 
-        mdl_nm_1L_chr <- predictor_vars_nms_chr[1]
+        mdl_nm_1L_chr <- predr_vars_nms_chr[1]
     set.seed(seed_1L_dbl)
     predictions <- predict(mdl_ls, summary = F)
     coef <- summary(mdl_ls, digits = 4)$fixed
@@ -483,11 +483,12 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_t
     RMSE <- psych::describe(apply(predictions, 1, fn, y_dbl = data_tb %>% 
         dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))), quant = c(0.25, 
         0.75), skew = F, ranges = F)
-    RMSE <- cbind(RMSE$mean, RMSE$sd, RMSE$Q0.25, RMSE$Q0.75)
+    RMSE <- cbind(RMSE$mean, RMSE$sd, RMSE$Q0.25, RMSE$Q0.75) %>% 
+        as.vector()
     Sigma <- summary(mdl_ls, digits = 4)$spec_par[1:4]
     smry_of_brm_mdl_tb <- data.frame(round(rbind(coef, R2, RMSE, 
         Sigma), 3)) %>% dplyr::mutate(Parameter = c("Intercept", 
-        purrr::map(predictor_vars_nms_chr, ~paste0(.x, c(" baseline", 
+        purrr::map(predr_vars_nms_chr, ~paste0(.x, c(" baseline", 
             " change"))) %>% purrr::flatten_chr(), "R2", "RMSE", 
         "Sigma"), Model = mdl_nm_1L_chr) %>% dplyr::mutate(`95% CI` = paste(l.95..CI, 
         ",", u.95..CI)) %>% dplyr::rename(SE = Est.Error) %>% 
@@ -498,7 +499,7 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_t
 #' @description make_smry_of_ts_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of ts mdl. The function returns Smry of ts mdl (a list).
 #' @param data_tb Data (a tibble)
 #' @param fn Function (a function)
-#' @param predictor_vars_nms_chr Predictor vars names (a character vector)
+#' @param predr_vars_nms_chr Predr vars names (a character vector)
 #' @param mdl_nm_1L_chr Mdl name (a character vector of length one)
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one), Default: 'NA'
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
@@ -511,28 +512,30 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_t
 #' @rdname make_smry_of_ts_mdl
 #' @export 
 #' @importFrom rlang exec
-make_smry_of_ts_mdl <- function (data_tb, fn, predictor_vars_nms_chr, mdl_nm_1L_chr, 
-    path_to_write_to_1L_chr = NA_character_, dep_var_nm_1L_chr = "aqol6d_total_w", 
-    id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
-    round_bl_val_1L_chr = "Baseline", iters_1L_int = 4000L, seed_1L_int = 1000L) 
+make_smry_of_ts_mdl <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_, 
+    dep_var_nm_1L_chr = "aqol6d_total_w", id_var_nm_1L_chr = "fkClientID", 
+    round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", 
+    iters_1L_int = 4000L, seed_1L_int = 1000L) 
 {
     tfd_data_tb <- transform_tb_to_mdl_inp(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
-        predictor_vars_nms_chr = predictor_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr, 
+        predr_vars_nms_chr = predr_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr, 
         round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr)
     tfd_dep_var_nm_1L_chr <- ifelse(identical(fn, fit_clg_log_tfmn), 
         transform_dep_var_nm_for_cll(dep_var_nm_1L_chr), dep_var_nm_1L_chr)
     args_ls <- list(data_tb = tfd_data_tb, dep_var_nm_1L_chr = tfd_dep_var_nm_1L_chr, 
-        predictor_vars_nms_chr = predictor_vars_nms_chr, iters_1L_int = iters_1L_int, 
+        predr_vars_nms_chr = predr_vars_nms_chr, iters_1L_int = iters_1L_int, 
         seed_1L_int = seed_1L_int)
     mdl_ls <- rlang::exec(fn, !!!args_ls)
     smry_of_ts_mdl_ls <- list(smry_of_ts_mdl_tb = make_smry_of_brm_mdl(mdl_ls, 
         data_tb = tfd_data_tb, dep_var_nm_1L_chr = tfd_dep_var_nm_1L_chr, 
-        predictor_vars_nms_chr = predictor_vars_nms_chr, fn = ifelse(identical(fn, 
+        predr_vars_nms_chr = predr_vars_nms_chr, fn = ifelse(identical(fn, 
             fit_gsn_log_lnk), calculate_rmse, calculate_rmse_tfmn), 
         mdl_nm_1L_chr = mdl_nm_1L_chr))
     if (!is.na(path_to_write_to_1L_chr)) {
         smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr <- paste0(path_to_write_to_1L_chr, 
             "/", mdl_nm_1L_chr, ".RDS")
+        if (file.exists(smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)) 
+            file.remove(smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)
         saveRDS(mdl_ls, smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)
         smry_of_ts_mdl_ls$paths_to_mdl_plts_chr <- write_brm_model_plts(mdl_ls, 
             tfd_data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 

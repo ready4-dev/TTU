@@ -21,7 +21,7 @@ options(xtable.timestamp = "")
 ```
 
 ```{r echo=FALSE}
-predictor_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),
+predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),
                        covars_ls = list("SOFAS"))
   #purrr::map(c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),~c(.x,"SOFAS"))
 ```
@@ -29,9 +29,8 @@ predictor_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = c("BADS","GAD7
 ```{r, echo=FALSE, results='asis'}
 make_knit_pars_ls(mdl_smry_dir_1L_chr = "../../../../../../../Data/Project/Utility_Models", # path_to_write_to_1L_chr
                   mdl_types_chr = c("GSN_LOG","CLL_TFN"),
-                  predictor_vars_nms_ls = predictor_vars_nms_ls,
+                  predr_vars_nms_ls = predr_vars_nms_ls,
                   output_type_1L_chr = params$output_type_1L_chr
-                  ) 
-#%>% purrr::walk(~knit_mdl_rprt(.x))
+                  ) %>% purrr::walk(~knit_mdl_rprt(.x))
 ```
 

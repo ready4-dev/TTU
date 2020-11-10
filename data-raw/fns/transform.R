@@ -4,7 +4,7 @@ transform_dep_var_nm_for_cll <- function(dep_var_nm_1L_chr){
 }
 transform_tb_to_mdl_inp <- function(data_tb,
                                     dep_var_nm_1L_chr = "aqol6d_total_w",
-                                    predictor_vars_nms_chr,
+                                    predr_vars_nms_chr,
                                     id_var_nm_1L_chr = "fkClientID",
                                     round_var_nm_1L_chr = "round",
                                     round_bl_val_1L_chr = "Baseline"){
@@ -13,11 +13,11 @@ transform_tb_to_mdl_inp <- function(data_tb,
     dplyr::select(dplyr::all_of(dep_var_nm_1L_chr),
                   dplyr::all_of(id_var_nm_1L_chr),
                   dplyr::all_of(round_var_nm_1L_chr),
-                  dplyr::all_of(predictor_vars_nms_chr)) %>%
+                  dplyr::all_of(predr_vars_nms_chr)) %>%
     dplyr::group_by(!!rlang::sym(id_var_nm_1L_chr)) %>%
     dplyr::arrange(!!rlang::sym(id_var_nm_1L_chr),!!rlang::sym(round_var_nm_1L_chr))
   tfd_for_gsn_log_mdl_tb <- tfd_for_gsn_log_mdl_tb %>%
-    dplyr::mutate(dplyr::across(dplyr::all_of(predictor_vars_nms_chr),
+    dplyr::mutate(dplyr::across(dplyr::all_of(predr_vars_nms_chr),
                                 .fns = list(baseline = ~ dplyr::first(.)/100,
                                             change = ~ ifelse(round == "Baseline",
                                                               0,
@@ -51,7 +51,7 @@ transform_raw_aqol_tb_to_aqol6d_tb <- function(raw_aqol_tb){
 transform_ts_mdl_data <- function(mdl_ls,
                                   data_tb,
                                   dep_var_nm_1L_chr = "aqol6d_total_w",
-                                  predictor_vars_nms_chr,
+                                  predr_vars_nms_chr,
                                   id_var_nm_1L_chr = "fkClientID",
                                   mdl_nm_1L_chr#,
                                   #path_to_write_to_1L_chr
@@ -59,7 +59,7 @@ transform_ts_mdl_data <- function(mdl_ls,
   old_data_tb <- data_tb %>%
     dplyr::select(c(dplyr::all_of(id_var_nm_1L_chr),
                     dplyr::all_of(dep_var_nm_1L_chr),
-                    predictor_vars_nms_chr %>% purrr::map(~paste0(.x,
+                    predr_vars_nms_chr %>% purrr::map(~paste0(.x,
                                                                   c("","_baseline","_change"))) %>%
                       purrr::flatten_chr()))
   cnfdl_mdl_ls <- mdl_ls

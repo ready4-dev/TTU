@@ -8,7 +8,7 @@ transform_ts_mdl_data(
   mdl_ls,
   data_tb,
   dep_var_nm_1L_chr = "aqol6d_total_w",
-  predictor_vars_nms_chr,
+  predr_vars_nms_chr,
   id_var_nm_1L_chr = "fkClientID",
   mdl_nm_1L_chr
 )
@@ -20,7 +20,7 @@ transform_ts_mdl_data(
 
 \item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
 
-\item{predictor_vars_nms_chr}{Predictor vars names (a character vector)}
+\item{predr_vars_nms_chr}{Predr vars names (a character vector)}
 
 \item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
 

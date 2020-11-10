@@ -4,10 +4,10 @@
 \alias{make_mdl_nms_ls}
 \title{Make mdl names}
 \usage{
-make_mdl_nms_ls(predictor_vars_nms_ls, mdl_types_chr)
+make_mdl_nms_ls(predr_vars_nms_ls, mdl_types_chr)
 }
 \arguments{
-\item{predictor_vars_nms_ls}{Predictor vars names (a list)}
+\item{predr_vars_nms_ls}{Predr vars names (a list)}
 
 \item{mdl_types_chr}{Mdl types (a character vector)}
 }

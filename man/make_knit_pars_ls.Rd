@@ -7,7 +7,7 @@
 make_knit_pars_ls(
   mdl_smry_dir_1L_chr,
   mdl_types_chr,
-  predictor_vars_nms_ls,
+  predr_vars_nms_ls,
   output_type_1L_chr = "HTML",
   mdl_types_lup = NULL,
   plt_types_lup = NULL,
@@ -20,7 +20,7 @@ make_knit_pars_ls(
 
 \item{mdl_types_chr}{Mdl types (a character vector)}
 
-\item{predictor_vars_nms_ls}{Predictor vars names (a list)}
+\item{predr_vars_nms_ls}{Predr vars names (a list)}
 
 \item{output_type_1L_chr}{Output type (a character vector of length one), Default: 'HTML'}
 

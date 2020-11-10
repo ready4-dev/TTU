@@ -23,18 +23,15 @@ data_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS("../Data/fake_pop_tb.rds")
 ```{r}
 mdl_smry_dir_1L_chr <- "../../../../../../../Data/Project/Utility_Models"
 mdl_types_chr <- c("GSN_LOG","CLL_TFN")
-make_predr_vars_nms_ls(main_predrs_chr = c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),
+predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),
                        covars_ls = list("SOFAS"))
 fn_ls <- list(fit_gsn_log_lnk,fit_clg_log_tfmn)
-mdl_nms_ls <- predictor_vars_nms_ls %>% purrr::map(~make_mdl_nms_ls(list(.x),
-                              mdl_types_chr = mdl_types_chr)) %>% 
-  purrr::flatten()
-#mdl_nm_chr <- paste0(predictor_vars_nms_ls[[1]][1],"_",mdl_types_chr)
+mdl_nms_ls <- predr_vars_nms_ls %>% make_mdl_nms_ls(mdl_types_chr = mdl_types_chr)
 ```
 
 ```{r, results="asis"}
-if(!dir.exists("../../../../../../../Data/Project/Utility_Models"))
-  dir.create("../../../../../../../Data/Project/Utility_Models/")
+if(!dir.exists(mdl_smry_dir_1L_chr))
+  dir.create(mdl_smry_dir_1L_chr)
 # https://web.archive.org/web/20200808073714/https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/
 # note use actual rtools path
 # https://web.archive.org/web/20200813122856/https://www.maxmantei.com/blog/2020-05-16-installing-cmdstanr-on-windows/cmdstanr-windows/
@@ -48,7 +45,7 @@ mdls_smry_tb <- purrr::map_dfr(1:length(mdl_nms_ls),
                                                     ~ {
                                                       smry_ls <- make_smry_of_ts_mdl(data_tb = data_tb,
                                                        fn = .x,
-                                                       predictor_vars_nms_chr = predictor_vars_nms_ls[[idx_1L_int]],
+                                                       predr_vars_nms_chr = predr_vars_nms_ls[[idx_1L_int]],
                                                        mdl_nm_1L_chr = .y,
                                                        path_to_write_to_1L_chr = mdl_smry_dir_1L_chr,
                                                        iters_1L_int = 4000L,
@@ -60,34 +57,4 @@ mdls_smry_tb <- purrr::map_dfr(1:length(mdl_nms_ls),
   
 
 ```
-
-
-
-
-# ```{r results="asis"}
-# tb_2 <- make_smry_of_ts_mdl(data_tb = data_tb,
-#                                                        fn = fn_ls[[2]],
-#                                                        predictor_vars_nms_chr = c("PHQ9","SOFAS"),
-#                                                        mdl_nm_1L_chr = mdl_nm_chr[2],
-#                                                        path_to_write_to_1L_chr = "../../../../../../../Data/Project/Utility_Models",
-#                                                        iters_1L_int = 4000L,
-#                                                        seed_1L_int = 1000L)
-# ```
-# 
-# ```{r}
-# tb_2
-# ```
-# 
-# ```{r results="asis"}
-# tb_1 <- make_smry_of_ts_mdl(data_tb = data_tb,
-#                                                        fn = fn_ls[[1]],
-#                                                        predictor_vars_nms_chr = c("PHQ9","SOFAS"),
-#                                                        mdl_nm_1L_chr = mdl_nm_chr[1],
-#                                                        path_to_write_to_1L_chr = "../../../../../../../Data/Project/Utility_Models",
-#                                                        iters_1L_int = 4000L,
-#                                                        seed_1L_int = 1000L)
-# ```
-# ```{r}
-# tb_1
-# ```
 

@@ -8,7 +8,7 @@ make_smry_of_brm_mdl(
   mdl_ls,
   data_tb,
   dep_var_nm_1L_chr = "aqol6d_total_w",
-  predictor_vars_nms_chr,
+  predr_vars_nms_chr,
   fn = calculate_rmse,
   mdl_nm_1L_chr = NA_character_,
   seed_1L_dbl = 23456
@@ -21,7 +21,7 @@ make_smry_of_brm_mdl(
 
 \item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
 
-\item{predictor_vars_nms_chr}{Predictor vars names (a character vector)}
+\item{predr_vars_nms_chr}{Predr vars names (a character vector)}
 
 \item{fn}{Function (a function), Default: calculate_rmse}
 

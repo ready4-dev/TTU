@@ -17,10 +17,14 @@ write_brm_model_plts <- function(mdl_ls,
   plt_nms_chr <- paste0(mdl_nm_1L_chr, "_", c("coefs","hetg", "dnst","sctr_plt"))
   mdl_plts_paths_ls <- purrr::map(1:4,
                                   ~  {
+                                    plt_fn <- fn_args_ls <- NULL
                                     if(.x %in% c(1,2)){
-                                      plt_fn <- function(mdl_ls, idx_1L_int){plot(mdl_ls, ask=F, plot = F)[idx_1L_int]}
-                                      fn_args_ls <- list(mdl_ls = mdl_ls,
-                                                         idx_1L_int = as.integer(.x))
+                                      plt <- plot(mdl_ls)
+                                      if(length(plt)>=.x){
+                                        fn_args_ls <- list(mdl_ls = mdl_ls,
+                                                           idx_1L_int = as.integer(.x))
+                                        plt_fn <- function(mdl_ls, idx_1L_int){plot(mdl_ls, ask=F, plot = F)[idx_1L_int]}
+                                      }
                                     }else{
                                       if(.x == 3){
                                         plt_fn <- plot_obsd_predd_dnst
@@ -43,11 +47,12 @@ write_brm_model_plts <- function(mdl_ls,
                                                          width_1L_dbl =  width_dbl[.x],
                                                          height_1L_dbl = height_dbl[.x],
                                                          rsl_1L_dbl = rsl_dbl[.x])
-                                  }) %>%
-    stats::setNames(plt_nms_chr)
+                                    }) %>%
+    stats::setNames(plt_nms_chr) %>%
+    purrr::discard(is.na)
   return(mdl_plts_paths_ls)
 }
-write_brm_mdl_plt_fl <- function(plt_fn,
+write_brm_mdl_plt_fl <- function(plt_fn = NULL,
                                  fn_args_ls = NULL,
                                  path_to_write_to_1L_chr,
                                  plt_nm_1L_chr,
@@ -56,19 +61,23 @@ write_brm_mdl_plt_fl <- function(plt_fn,
                                  width_1L_dbl = 6,
                                  height_1L_dbl = 6,
                                  rsl_1L_dbl = 300){
-  path_to_plot_1L_chr <- paste0(path_to_write_to_1L_chr,
-                                "/",
-                                plt_nm_1L_chr,
-                                ifelse(identical(grpx_fn,grDevices::png),".png",".tiff"))
-  rlang::exec(grpx_fn,
-              !!!list(path_to_plot_1L_chr,
-                      units = units_1L_chr,
-                      width = width_1L_dbl,
-                      height = height_1L_dbl,
-                      res = rsl_1L_dbl))
-  plt <- rlang::exec(plt_fn,!!!fn_args_ls)
-  print(plt)
-  dev.off()
+  if(!is.null(plt_fn)){
+    path_to_plot_1L_chr <- paste0(path_to_write_to_1L_chr,
+                                  "/",
+                                  plt_nm_1L_chr,
+                                  ifelse(identical(grpx_fn,grDevices::png),".png",".tiff"))
+    rlang::exec(grpx_fn,
+                !!!list(path_to_plot_1L_chr,
+                        units = units_1L_chr,
+                        width = width_1L_dbl,
+                        height = height_1L_dbl,
+                        res = rsl_1L_dbl))
+    plt <- rlang::exec(plt_fn,!!!fn_args_ls)
+    print(plt)
+    dev.off()
+  }else{
+    path_to_plot_1L_chr <- NA_character_
+  }
   return(path_to_plot_1L_chr)
 }
 write_results_to_csv <- function(synth_data_spine_ls,
