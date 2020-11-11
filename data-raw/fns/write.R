@@ -83,25 +83,30 @@ write_brm_mdl_plt_fl <- function(plt_fn = NULL,
 write_rndrd_rprt <- function(path_to_RMD_1L_chr,
                              path_to_rprt_dir_1L_chr,
                              file_nm_1L_chr,
-                             params_ls = list(output_type_1L_chr = "PDF")){
+                             params_ls = list(mdl_smry_dir_1L_chr = "C:\\Users\\61413\\OneDrive\\Documents\\Readyforwhatsnext\\Data\\Project\\Utility_Models",
+                                              output_type_1L_chr = "PDF",
+                                              root_dir_1L_chr = path_to_rprt_dir_1L_chr)){
   if(!dir.exists(path_to_rprt_dir_1L_chr))
     dir.create(path_to_rprt_dir_1L_chr)
-  rmarkdown::render(path_to_RMD_1L_chr,
+  # temp_dir_1L_chr <- tempdir(check =T)
+  # file.copy(path_to_RMD_1L_chr, paste0(temp_dir_1L_chr,'\\report.Rmd'), overwrite = TRUE)
+  rmarkdown::render(paste0(path_to_rprt_dir_1L_chr,'/report.Rmd'),
                     switch(params_ls$output_type_1L_chr,
                            PDF = "bookdown::pdf_book",
                            HTML = "bookdown::html_document2",
                            Word = "officedown::rdocx_document"),
-                    output_yaml = system.file("_output.yml", package = "FBaqol"),
+                    output_yaml = paste0(path_to_rprt_dir_1L_chr,"_output.yml"),
                     params = params_ls,
                     envir = new.env(),
-                    output_file = paste0("../../",
-                      path_to_rprt_dir_1L_chr,
-                      "/",
-                      file_nm_1L_chr,
+                    output_file = paste0(file_nm_1L_chr,
                       ".",
                       ifelse(params_ls$output_type_1L_chr=="Word",
                              "docx",
-                             tolower(params_ls$output_type_1L_chr))))
+                             tolower(params_ls$output_type_1L_chr))),
+                    output_dir = path_to_rprt_dir_1L_chr,
+                    knit_root_dir = path_to_rprt_dir_1L_chr
+                    )
+  #unlink(temp_dir_1L_chr, recursive = T)
 }
 write_results_to_csv <- function(synth_data_spine_ls,
                               output_dir_1L_chr = "."){
