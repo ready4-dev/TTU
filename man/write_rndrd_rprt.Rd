@@ -7,13 +7,14 @@
 write_rndrd_rprt(
   path_to_RMD_dir_1L_chr,
   nm_of_RMD_1L_chr = "report.RMD",
-  rltv_path_to_outpt_yaml_1L_chr = "output_yaml",
+  params_ls = list(output_type_1L_chr = "HTML"),
+  rltv_path_to_outpt_yaml_1L_chr = "output_yml",
   paths_to_fls_to_copy_chr = NA_character_,
   path_to_write_fls_to_1L_chr = NA_character_,
   nm_of_rprt_dir_1L_chr = "Reports",
-  rltv_path_to_outpt_rtrp_1L_chr = "./",
+  path_to_outpt_rtrp_1L_chr = "./",
   file_nm_1L_chr,
-  params_ls = list(output_type_1L_chr = "Word")
+  overwrite_1L_lgl = T
 )
 }
 \arguments{
@@ -21,7 +22,9 @@ write_rndrd_rprt(
 
 \item{nm_of_RMD_1L_chr}{Name ofMD (a character vector of length one), Default: 'report.RMD'}
 
-\item{rltv_path_to_outpt_yaml_1L_chr}{Rltv path to outpt yaml (a character vector of length one), Default: 'output_yaml'}
+\item{params_ls}{Params (a list), Default: list(output_type_1L_chr = "HTML")}
+
+\item{rltv_path_to_outpt_yaml_1L_chr}{Rltv path to outpt yaml (a character vector of length one), Default: 'output_yml'}
 
 \item{paths_to_fls_to_copy_chr}{Paths to files to copy (a character vector), Default: 'NA'}
 
@@ -29,11 +32,11 @@ write_rndrd_rprt(
 
 \item{nm_of_rprt_dir_1L_chr}{Name of rprt directory (a character vector of length one), Default: 'Reports'}
 
-\item{rltv_path_to_outpt_rtrp_1L_chr}{Rltv path to outpt rtrp (a character vector of length one), Default: './'}
+\item{path_to_outpt_rtrp_1L_chr}{Path to outpt rtrp (a character vector of length one), Default: './'}
 
 \item{file_nm_1L_chr}{File name (a character vector of length one)}
 
-\item{params_ls}{Params (a list), Default: list(output_type_1L_chr = "Word")}
+\item{overwrite_1L_lgl}{Overwrite (a logical vector of length one), Default: T}
 }
 \description{
 write_rndrd_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write rndrd rprt. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour

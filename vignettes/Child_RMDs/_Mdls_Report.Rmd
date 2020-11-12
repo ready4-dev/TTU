@@ -5,17 +5,15 @@ output:
   html_document: default
 params:
   root_dir_1L_chr: ./
-  mdl_smry_dir_1L_chr: ../
+  mdl_smry_dir_1L_chr: ../Output
   output_type_1L_chr: HTML
+  section_type_1L_chr: "#"
 ---
 
 ```{r setup, include=FALSE}
 library(FBaqol)
-# library(flextable)
-# library(kableExtra)
 library(magrittr)
-# library(xtable) 
- knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(comment = NA)
 knitr::opts_knit$set(root.dir = params$root_dir_1L_chr)
 options(tinytex.verbose = TRUE)
@@ -29,7 +27,8 @@ predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = c("BADS","GAD7","K
 knit_pars_ls <- make_knit_pars_ls(mdl_smry_dir_1L_chr = params$mdl_smry_dir_1L_chr,
                   mdl_types_chr = c("GSN_LOG","CLL_TFN"),
                   predr_vars_nms_ls = predr_vars_nms_ls,
-                  output_type_1L_chr = params$output_type_1L_chr
+                  output_type_1L_chr = params$output_type_1L_chr,
+                  section_type_1L_chr = params$section_type_1L_chr
                   ) 
 ```
 

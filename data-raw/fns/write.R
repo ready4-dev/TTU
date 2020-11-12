@@ -80,26 +80,66 @@ write_brm_mdl_plt_fl <- function(plt_fn = NULL,
   }
   return(path_to_plot_1L_chr)
 }
+write_ts_mdls <- function(data_tb,
+                          dep_var_nm_1L_chr = "aqol6d_total_w",
+                          predr_vars_nms_ls,
+                          id_var_nm_1L_chr = "fkClientID",
+                          round_var_nm_1L_chr = "round",
+                          round_bl_val_1L_chr = "Baseline",
+                          fn_ls,
+                          mdl_nms_ls,
+                          mdl_smry_dir_1L_chr,
+                          iters_1L_int = 4000L,
+                          seed_1L_int = 1000L){
+  if(!dir.exists(mdl_smry_dir_1L_chr))
+    dir.create(mdl_smry_dir_1L_chr)
+  mdls_smry_tb <- purrr::map_dfr(1:length(mdl_nms_ls),
+                                 ~ {
+                                   idx_1L_int <- .x
+                                   purrr::map2_dfr(fn_ls,
+                                                   mdl_nms_ls[[idx_1L_int]],
+                                                   ~ {
+                                                     smry_ls <- make_smry_of_ts_mdl(data_tb = data_tb,
+                                                                                    fn = .x,
+                                                                                    predr_vars_nms_chr = predr_vars_nms_ls[[idx_1L_int]],
+                                                                                    mdl_nm_1L_chr = .y,
+                                                                                    path_to_write_to_1L_chr = mdl_smry_dir_1L_chr,
+                                                                                    dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                                                                                    id_var_nm_1L_chr = id_var_nm_1L_chr,
+                                                                                    round_var_nm_1L_chr = round_var_nm_1L_chr,
+                                                                                    round_bl_val_1L_chr = round_bl_val_1L_chr,
+                                                                                    iters_1L_int = iters_1L_int,
+                                                                                    seed_1L_int = seed_1L_int)
+                                                     Sys.sleep(5)
+                                                     smry_ls$smry_of_ts_mdl_tb
+                                                   })
+                                 })
+  saveRDS(mdls_smry_tb, paste0(mdl_smry_dir_1L_chr,"/mdls_smry_tb.RDS"))
+  return(mdls_smry_tb)
+}
 write_rndrd_rprt <- function(path_to_RMD_dir_1L_chr,
                              nm_of_RMD_1L_chr = "report.RMD",
-                             rltv_path_to_outpt_yaml_1L_chr = "output_yaml", # must be relative to path_to_RMD_dir_1L_chr
+                             params_ls = list(output_type_1L_chr = "HTML"),
+                             rltv_path_to_outpt_yaml_1L_chr = "output_yml", # must be relative to path_to_RMD_dir_1L_chr
                              paths_to_fls_to_copy_chr = NA_character_, # main RMD must be at top level
                              path_to_write_fls_to_1L_chr = NA_character_,
                              nm_of_rprt_dir_1L_chr = "Reports",
-                             rltv_path_to_outpt_rtrp_1L_chr = "./",
+                             path_to_outpt_rtrp_1L_chr = "./",
                              file_nm_1L_chr,
-                             params_ls = list(output_type_1L_chr = "Word")){
+                             overwrite_1L_lgl = T){
   if(!is.na(path_to_write_fls_to_1L_chr)){
     path_to_rprt_dir_1L_chr <- paste0(path_to_write_fls_to_1L_chr,"/",nm_of_rprt_dir_1L_chr)
     if(!dir.exists(path_to_rprt_dir_1L_chr))
       dir.create(path_to_rprt_dir_1L_chr)
     if(is.na(paths_to_fls_to_copy_chr[1]))
       paths_to_fls_to_copy_chr <- list.files(path_to_RMD_dir_1L_chr, full.names = T)
-    file.copy(paths_to_fls_to_copy_chr, path_to_rprt_dir_1L_chr)
+    file.copy(paths_to_fls_to_copy_chr, path_to_rprt_dir_1L_chr, overwrite = overwrite_1L_lgl)
     path_to_wd_1L_chr <- path_to_rprt_dir_1L_chr
   }else{
     path_to_wd_1L_chr <- path_to_RMD_dir_1L_chr
   }
+  if(!dir.exists(path_to_outpt_rtrp_1L_chr))
+    dir.create(path_to_outpt_rtrp_1L_chr)
   path_to_RMD_1L_chr <- paste0(path_to_wd_1L_chr,"/",nm_of_RMD_1L_chr)
   rmarkdown::render(path_to_RMD_1L_chr,
                     switch(params_ls$output_type_1L_chr,
@@ -114,7 +154,7 @@ write_rndrd_rprt <- function(path_to_RMD_dir_1L_chr,
                       ifelse(params_ls$output_type_1L_chr=="Word",
                              "docx",
                              tolower(params_ls$output_type_1L_chr))),
-                    output_dir = rltv_path_to_outpt_rtrp_1L_chr)
+                    output_dir = path_to_outpt_rtrp_1L_chr)
 }
 write_results_to_csv <- function(synth_data_spine_ls,
                               output_dir_1L_chr = "."){
