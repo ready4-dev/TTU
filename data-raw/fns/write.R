@@ -80,22 +80,33 @@ write_brm_mdl_plt_fl <- function(plt_fn = NULL,
   }
   return(path_to_plot_1L_chr)
 }
-write_rndrd_rprt <- function(path_to_RMD_1L_chr,
-                             path_to_rprt_dir_1L_chr,
+write_rndrd_rprt <- function(path_to_RMD_dir_1L_chr,
+                             nm_of_RMD_1L_chr = "report.RMD",
+                             rltv_path_to_outpt_yaml_1L_chr = "output_yaml", # must be relative to path_to_RMD_dir_1L_chr
+                             paths_to_fls_to_copy_chr = NA_character_, # main RMD must be at top level
+                             path_to_write_fls_to_1L_chr = NA_character_,
+                             nm_of_rprt_dir_1L_chr = "Reports",
+                             rltv_path_to_outpt_rtrp_1L_chr = "./",
                              file_nm_1L_chr,
-                             params_ls = list(mdl_smry_dir_1L_chr = "C:\\Users\\61413\\OneDrive\\Documents\\Readyforwhatsnext\\Data\\Project\\Utility_Models",
-                                              output_type_1L_chr = "PDF",
-                                              root_dir_1L_chr = path_to_rprt_dir_1L_chr)){
-  if(!dir.exists(path_to_rprt_dir_1L_chr))
-    dir.create(path_to_rprt_dir_1L_chr)
-  # temp_dir_1L_chr <- tempdir(check =T)
-  # file.copy(path_to_RMD_1L_chr, paste0(temp_dir_1L_chr,'\\report.Rmd'), overwrite = TRUE)
-  rmarkdown::render(paste0(path_to_rprt_dir_1L_chr,'/report.Rmd'),
+                             params_ls = list(output_type_1L_chr = "Word")){
+  if(!is.na(path_to_write_fls_to_1L_chr)){
+    path_to_rprt_dir_1L_chr <- paste0(path_to_write_fls_to_1L_chr,"/",nm_of_rprt_dir_1L_chr)
+    if(!dir.exists(path_to_rprt_dir_1L_chr))
+      dir.create(path_to_rprt_dir_1L_chr)
+    if(is.na(paths_to_fls_to_copy_chr[1]))
+      paths_to_fls_to_copy_chr <- list.files(path_to_RMD_dir_1L_chr, full.names = T)
+    file.copy(paths_to_fls_to_copy_chr, path_to_rprt_dir_1L_chr)
+    path_to_wd_1L_chr <- path_to_rprt_dir_1L_chr
+  }else{
+    path_to_wd_1L_chr <- path_to_RMD_dir_1L_chr
+  }
+  path_to_RMD_1L_chr <- paste0(path_to_wd_1L_chr,"/",nm_of_RMD_1L_chr)
+  rmarkdown::render(path_to_RMD_1L_chr,
                     switch(params_ls$output_type_1L_chr,
                            PDF = "bookdown::pdf_book",
                            HTML = "bookdown::html_document2",
                            Word = "officedown::rdocx_document"),
-                    output_yaml = paste0(path_to_rprt_dir_1L_chr,"_output.yml"),
+                    output_yaml = paste0(path_to_wd_1L_chr,"/",rltv_path_to_outpt_yaml_1L_chr),
                     params = params_ls,
                     envir = new.env(),
                     output_file = paste0(file_nm_1L_chr,
@@ -103,10 +114,7 @@ write_rndrd_rprt <- function(path_to_RMD_1L_chr,
                       ifelse(params_ls$output_type_1L_chr=="Word",
                              "docx",
                              tolower(params_ls$output_type_1L_chr))),
-                    output_dir = path_to_rprt_dir_1L_chr,
-                    knit_root_dir = path_to_rprt_dir_1L_chr
-                    )
-  #unlink(temp_dir_1L_chr, recursive = T)
+                    output_dir = rltv_path_to_outpt_rtrp_1L_chr)
 }
 write_results_to_csv <- function(synth_data_spine_ls,
                               output_dir_1L_chr = "."){

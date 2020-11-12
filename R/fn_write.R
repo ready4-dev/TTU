@@ -150,24 +150,45 @@ write_results_to_csv <- function (synth_data_spine_ls, output_dir_1L_chr = ".")
 }
 #' Write rndrd rprt
 #' @description write_rndrd_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write rndrd rprt. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
-#' @param path_to_RMD_1L_chr Path toMD (a character vector of length one)
-#' @param path_to_rprt_dir_1L_chr Path to rprt directory (a character vector of length one)
+#' @param path_to_RMD_dir_1L_chr Path toMD directory (a character vector of length one)
+#' @param nm_of_RMD_1L_chr Name ofMD (a character vector of length one), Default: 'report.RMD'
+#' @param rltv_path_to_outpt_yaml_1L_chr Rltv path to outpt yaml (a character vector of length one), Default: 'output_yaml'
+#' @param paths_to_fls_to_copy_chr Paths to files to copy (a character vector), Default: 'NA'
+#' @param path_to_write_fls_to_1L_chr Path to write files to (a character vector of length one), Default: 'NA'
+#' @param nm_of_rprt_dir_1L_chr Name of rprt directory (a character vector of length one), Default: 'Reports'
+#' @param rltv_path_to_outpt_rtrp_1L_chr Rltv path to outpt rtrp (a character vector of length one), Default: './'
 #' @param file_nm_1L_chr File name (a character vector of length one)
-#' @param params_ls Params (a list), Default: list(output_type_1L_chr = "PDF")
+#' @param params_ls Params (a list), Default: list(output_type_1L_chr = "Word")
 #' @return NULL
 #' @rdname write_rndrd_rprt
 #' @export 
 #' @importFrom rmarkdown render
-write_rndrd_rprt <- function (path_to_RMD_1L_chr, path_to_rprt_dir_1L_chr, file_nm_1L_chr, 
-    params_ls = list(output_type_1L_chr = "PDF")) 
+write_rndrd_rprt <- function (path_to_RMD_dir_1L_chr, nm_of_RMD_1L_chr = "report.RMD", 
+    rltv_path_to_outpt_yaml_1L_chr = "output_yaml", paths_to_fls_to_copy_chr = NA_character_, 
+    path_to_write_fls_to_1L_chr = NA_character_, nm_of_rprt_dir_1L_chr = "Reports", 
+    rltv_path_to_outpt_rtrp_1L_chr = "./", file_nm_1L_chr, params_ls = list(output_type_1L_chr = "Word")) 
 {
-    if (!dir.exists(path_to_rprt_dir_1L_chr)) 
-        dir.create(path_to_rprt_dir_1L_chr)
+    if (!is.na(path_to_write_fls_to_1L_chr)) {
+        path_to_rprt_dir_1L_chr <- paste0(path_to_write_fls_to_1L_chr, 
+            "/", nm_of_rprt_dir_1L_chr)
+        if (!dir.exists(path_to_rprt_dir_1L_chr)) 
+            dir.create(path_to_rprt_dir_1L_chr)
+        if (is.na(paths_to_fls_to_copy_chr[1])) 
+            paths_to_fls_to_copy_chr <- list.files(path_to_RMD_dir_1L_chr, 
+                full.names = T)
+        file.copy(paths_to_fls_to_copy_chr, path_to_rprt_dir_1L_chr)
+        path_to_wd_1L_chr <- path_to_rprt_dir_1L_chr
+    }
+    else {
+        path_to_wd_1L_chr <- path_to_RMD_dir_1L_chr
+    }
+    path_to_RMD_1L_chr <- paste0(path_to_wd_1L_chr, "/", nm_of_RMD_1L_chr)
     rmarkdown::render(path_to_RMD_1L_chr, switch(params_ls$output_type_1L_chr, 
         PDF = "bookdown::pdf_book", HTML = "bookdown::html_document2", 
-        Word = "officedown::rdocx_document"), output_yaml = system.file("_output.yml", 
-        package = "FBaqol"), params = params_ls, envir = new.env(), 
-        output_file = paste0("../../", path_to_rprt_dir_1L_chr, 
-            "/", file_nm_1L_chr, ".", ifelse(params_ls$output_type_1L_chr == 
-                "Word", "docx", tolower(params_ls$output_type_1L_chr))))
+        Word = "officedown::rdocx_document"), output_yaml = paste0(path_to_wd_1L_chr, 
+        "/", rltv_path_to_outpt_yaml_1L_chr), params = params_ls, 
+        envir = new.env(), output_file = paste0(file_nm_1L_chr, 
+            ".", ifelse(params_ls$output_type_1L_chr == "Word", 
+                "docx", tolower(params_ls$output_type_1L_chr))), 
+        output_dir = rltv_path_to_outpt_rtrp_1L_chr)
 }
