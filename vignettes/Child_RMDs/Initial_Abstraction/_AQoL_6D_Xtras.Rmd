@@ -1,0 +1,1014 @@
+---
+title: "Xtras"
+author: "Caroline Gao"
+date: "13/08/2020"
+output: html_document
+---
+
+## Linear model (clog-log transformation)
+
+```{r}
+library(ggfortify)
+fit = lm(aqol6d_total_w_cloglog ~ PHQ9, data = baseline)
+summary(fit)
+
+newdata <-   data.frame(PHQ9=0:27)
+newdata$aqol6d_total_w=1-exp(-exp(predict(fit,newdata=newdata)))
+ 
+ggplot2::ggplot(baseline,ggplot2::aes(x = PHQ9, y= aqol6d_total_w )) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::geom_line(data=newdata,ggplot2::aes(x = PHQ9, y= aqol6d_total_w),col="red")  +
+  ggplot2::theme_bw() + ggplot2::labs(x="PHQ9 total score",y="AQoL-6D utility score")
+
+ggplot2::autoplot(fit, which = 1:6, ncol = 3, label.size = 3)
+
+
+ 
+baseline %>% 
+    dplyr::mutate(Predicted=1-exp(-exp(predict(fit))) ,
+         Original=aqol6d_total_w) %>%  
+    tidyr::gather(variable, value, Predicted, Original) %>%
+    ggplot2::ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="") 
+
+baseline %>% 
+    dplyr::mutate(Simulated=1-exp(-exp(simulate(fit)$sim_1)) ,
+         Original=aqol6d_total_w) %>%  
+    tidyr::gather(variable, value, Simulated, Original) %>%
+    ggplot2::ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="") 
+
+
+baseline %>% 
+     dplyr::mutate(Predicted=1-exp(-exp(predict(fit))) ,
+         Original=aqol6d_total_w) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Original, y=Predicted)) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(intercept = 0, slope = 1, color="red", 
+                 linetype="dashed", size=1.5) +
+  ggplot2::xlim(0, 1) + ggplot2::ylim(0, 1) 
+
+
+
+Rsquared<-NA 
+RMSE<-NA 
+MAE<-NA 
+RsquaredP<-NA 
+RMSEP<-NA 
+MAEP<-NA 
+for (i in 1:10) {
+  fit = lm(aqol6d_total_w_cloglog ~ PHQ9, data = baseline[-folds_10[[i]],])
+  pred <- 1-exp(-exp(predict(fit))) 
+  Rsquared[i] = caret::R2(pred, baseline[-folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+  RMSE[i] = caret::RMSE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+  MAE[i] = caret::MAE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+  pred <- 1-exp(-exp(predict(fit,newdata=baseline[folds_10[[i]],]))) 
+  RsquaredP[i] = caret::R2(pred, baseline[folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+  RMSEP[i] = caret::RMSE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+  MAEP[i] = caret::MAE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+} 
+
+n=n+1
+#save model fit
+summary_table[n,1]="OLS (cloglog)" 
+summary_table$Rsquare[n]= mean(Rsquared)
+summary_table$RMSE[n]= mean(RMSE)
+summary_table$MAE[n]=mean(MAE)
+summary_table$`Rsquare.prediction`[n]=mean(RsquaredP)
+summary_table$`RMSE.prediction`[n]=mean(RMSEP)
+summary_table$`MAE.prediction`[n]=mean(MAEP)
+
+``` 
+
+
+
+
+
+
+## GLM (Gausian with log link)
+
+```{r}
+library(ggfortify)
+fit = glm(aqol6d_total_w ~ PHQ9, data = baseline,family=gaussian(log))
+summary(fit)
+
+newdata<-data.frame(PHQ9=0:27)
+newdata$aqol6d_total_w=predict(fit,newdata=newdata,type="response")
+ 
+ggplot2::ggplot(baseline,ggplot2::aes(x = PHQ9, y= aqol6d_total_w )) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::geom_line(data=newdata,ggplot2::aes(x = PHQ9, y= aqol6d_total_w),col="red")  +
+  ggplot2::theme_bw() + ggplot2::labs(x="PHQ9 total score",y="AQoL-6D utility score")
+
+ggplot2::autoplot(fit, which = 1:6, ncol = 3, label.size = 3)
+
+baseline %>% 
+    dplyr::mutate(Predicted=predict(fit,type="response"), 
+         Original=aqol6d_total_w) %>%  
+    tidyr::gather(variable, value, Predicted, Original) %>%
+    ggplot2::ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="") 
+
+
+ 
+baseline %>% 
+    dplyr::mutate(Simulated=simulate(fit)$sim_1, 
+         Original=aqol6d_total_w) %>%  
+    tidyr::gather(variable, value, Simulated, Original) %>%
+    ggplot2::ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="") 
+
+
+
+baseline %>% 
+     dplyr::mutate(Predicted=predict(fit,type="response"),  
+         Original=aqol6d_total_w) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Original, y=Predicted)) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(intercept = 0, slope = 1, color="red", 
+                 linetype="dashed", size=1.5) +
+  ggplot2::xlim(0, 1) + ggplot2::ylim(0, 1) 
+
+
+
+Rsquared<-NA 
+RMSE<-NA 
+MAE<-NA 
+RsquaredP<-NA 
+RMSEP<-NA 
+MAEP<-NA 
+for (i in 1:10) {
+  fit = glm(aqol6d_total_w ~ PHQ9, data = baseline[-folds_10[[i]],],family=gaussian(log))
+  pred<-predict(fit,type="response")
+  Rsquared[i]=caret::R2(pred, baseline[-folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+  RMSE[i]=caret::RMSE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+  MAE[i]=caret::MAE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+  pred<-predict(fit,newdata=baseline[folds_10[[i]],],type="response")
+  RsquaredP[i]=caret::R2(pred, baseline[folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+  RMSEP[i]=caret::RMSE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+  MAEP[i]=caret::MAE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+} 
+
+
+n=n+1
+#save model fit
+summary_table[n,1]="GLM (Gausian with log link)" 
+summary_table$Rsquare[n]= mean(Rsquared)
+summary_table$RMSE[n]= mean(RMSE)
+summary_table$MAE[n]=mean(MAE)
+summary_table$`Rsquare.prediction`[n]=mean(RsquaredP)
+summary_table$`RMSE.prediction`[n]=mean(RMSEP)
+summary_table$`MAE.prediction`[n]=mean(MAEP)
+
+``` 
+
+## GLM (Binomial with log link)
+
+```{r}
+library(ggfortify)
+fit = glm( aqol6d_total_w  ~ PHQ9, data = baseline,family=quasibinomial(log))
+summary(fit)
+
+newdata <- data.frame(PHQ9=0:27)
+newdata$aqol6d_total_w=predict(fit,newdata=newdata,type="response")
+
+ggplot2::ggplot(baseline,ggplot2::aes(x = PHQ9, y= aqol6d_total_w )) +
+  ggplot2::geom_point() +
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::geom_line(data=newdata,ggplot2::aes(x = PHQ9, y= aqol6d_total_w),col="red")  +
+  ggplot2::theme_bw() + ggplot2::labs(x="PHQ9 total score",y="AQoL-6D utility score")
+
+ggplot2::autoplot(fit, which = 1:6, ncol = 3, label.size = 3)
+
+baseline %>%
+    dplyr::mutate(Predicted=predict(fit,type="response"),
+         Original=aqol6d_total_w) %>%
+    tidyr::gather(variable, value, Predicted, Original) %>%
+    ggplot2::ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="")
+
+
+baseline %>%
+    dplyr::mutate(Simulated=exp(predict(fit)+rnorm(dplyr::n(),0,sigma(fit))),
+         Original=aqol6d_total_w) %>%
+    tidyr::gather(variable, value, Simulated, Original) %>%
+    ggplot2::ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="")
+
+
+baseline %>%
+     dplyr::mutate(Predicted=predict(fit,type="response"),
+         Original=aqol6d_total_w) %>%
+  ggplot2::ggplot(ggplot2::aes(x = Original, y=Predicted)) +
+  ggplot2::geom_point() +
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(intercept = 0, slope = 1, color="red",
+                 linetype="dashed", size=1.5) +
+  ggplot2::xlim(0, 1) + ggplot2::ylim(0, 1)
+
+
+
+# Rsquared<-NA
+# RMSE<-NA
+# MAE<-NA
+# RsquaredP<-NA
+# RMSEP<-NA
+# MAEP<-NA
+# for (i in 1:10) {
+#   fit = glm(aqol6d_total_w ~ PHQ9, data = baseline[-folds_10[[i]],],family=quasibinomial(log))
+#   pred <- predict(fit,type="response")
+#   Rsquared[i] = caret::R2(pred, baseline[-folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+#   RMSE[i] = caret::RMSE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+#   MAE[i] = caret::MAE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+#   pred <- predict(fit,newdata=baseline[folds_10[[i]],],type="response")
+#   RsquaredP[i] = caret::R2(pred, baseline[folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+#   RMSEP[i] = caret::RMSE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+#   MAEP[i] = caret::MAE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+# }
+# 
+# 
+# n=n+1
+# #save model fit
+# summary_table[n,1]="GLM (Binomial with log link)"
+# summary_table$Rsquare[n]= mean(Rsquared)
+# summary_table$RMSE[n]= mean(RMSE)
+# summary_table$MAE[n]=mean(MAE)
+# summary_table$`Rsquare.prediction`[n]=mean(RsquaredP)
+# summary_table$`RMSE.prediction`[n]=mean(RMSEP)
+# summary_table$`MAE.prediction`[n]=mean(MAEP)
+
+
+``` 
+
+
+
+
+## GLM (Binomial with logit link)
+
+```{r}
+library(ggfortify)
+fit = glm( aqol6d_total_w  ~ PHQ9, 
+           data = baseline,family=quasibinomial(logit))
+summary(fit)
+
+newdata <- data.frame(PHQ9=0:27)
+newdata$aqol6d_total_w = predict(fit,newdata=newdata,type="response")
+ 
+ggplot2::ggplot(baseline,ggplot2::aes(x = PHQ9, y= aqol6d_total_w )) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::geom_line(data=newdata,ggplot2::aes(x = PHQ9, y= aqol6d_total_w),col="red")  +
+  ggplot2::theme_bw() + 
+  ggplot2::labs(x="PHQ9 total score",y="AQoL-6D utility score")
+
+ggplot2::autoplot(fit, which = 1:6, ncol = 3, label.size = 3)
+
+baseline %>% 
+    dplyr::mutate(Predicted=predict(fit, type="response"), 
+         Original = aqol6d_total_w) %>%  
+    tidyr::gather(variable, value, Predicted, Original) %>%
+    ggplot2::ggplot(ggplot2::aes(x = value, 
+                                 fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis(discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="") 
+
+ 
+baseline %>% 
+    dplyr::mutate(Simulated = inv.logit(predict(fit) + rnorm(dplyr::n(), 0, sigma(fit))), 
+         Original = aqol6d_total_w) %>%  
+    tidyr::gather(variable, value, Simulated, Original) %>%
+    ggplot2::ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="") 
+
+baseline %>% 
+     dplyr::mutate(Predicted = predict(fit,type="response"), 
+         Original = aqol6d_total_w) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = Original, y=Predicted)) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(intercept = 0, slope = 1, color="red", 
+                 linetype="dashed", size=1.5) +
+  ggplot2::xlim(0, 1) + 
+  ggplot2::ylim(0, 1) 
+
+Rsquared<-NA 
+RMSE<-NA 
+MAE<-NA 
+RsquaredP<-NA 
+RMSEP<-NA 
+MAEP<-NA 
+for (i in 1:10) {
+  fit = glm(aqol6d_total_w ~ PHQ9, data = baseline[-folds_10[[i]],],family=quasibinomial(logit))
+  pred<-predict(fit,type="response")
+  Rsquared[i]=caret::R2(pred, baseline[-folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+  RMSE[i]=caret::RMSE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+  MAE[i]=caret::MAE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+  pred<-predict(fit,newdata=baseline[folds_10[[i]],],type="response")
+  RsquaredP[i]=caret::R2(pred, baseline[folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+  RMSEP[i]=caret::RMSE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+  MAEP[i]=caret::MAE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+} 
+
+n=n+1
+#save model fit
+summary_table[n,1]="GLM (Binomial logit link)" 
+summary_table$Rsquare[n]= mean(Rsquared)
+summary_table$RMSE[n]= mean(RMSE)
+summary_table$MAE[n]=mean(MAE)
+summary_table$`Rsquare.prediction`[n]=mean(RsquaredP)
+summary_table$`RMSE.prediction`[n]=mean(RMSEP)
+summary_table$`MAE.prediction`[n]=mean(MAEP)
+
+``` 
+
+
+## GLM (Binomial with cloglog link)
+
+```{r}
+library(ggfortify)
+fit = glm( aqol6d_total_w  ~ PHQ9, data = baseline, family = quasibinomial(cloglog))
+summary(fit)
+newdata <- data.frame(PHQ9=0:27)
+newdata$aqol6d_total_w=predict(fit,newdata=newdata,type="response")
+ggplot2::ggplot(baseline,
+                ggplot2::aes(x = PHQ9, y= aqol6d_total_w )) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::geom_line(data=newdata,ggplot2::aes(x = PHQ9, y= aqol6d_total_w),col="red")  +
+  ggplot2::theme_bw() + 
+  ggplot2::labs(x="PHQ9 total score",y="AQoL-6D utility score")
+ggplot2::autoplot(fit, which = 1:6, ncol = 3, label.size = 3)
+baseline %>% 
+    dplyr::mutate(Predicted=predict(fit,type="response"), 
+         Original=aqol6d_total_w) %>%  
+    tidyr::gather(variable, value, Predicted, Original) %>%
+    ggplot2::ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score", fill="")   
+
+
+ 
+baseline %>% 
+    dplyr::mutate(Simulated=1-exp(-exp(predict(fit)+rnorm(dplyr::n(),0,sigma(fit)))), 
+         Original=aqol6d_total_w) %>%  
+    tidyr::gather(variable, value, Simulated, Original) %>%
+    ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="")   
+
+
+baseline %>% 
+     dplyr::mutate(Predicted=predict(fit,type="response"), 
+         Original=aqol6d_total_w) %>% 
+  ggplot(ggplot2::aes(x = Original, y=Predicted)) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(intercept = 0, slope = 1, color="red", 
+                 linetype="dashed", size=1.5) +
+  ggplot2::xlim(0, 1) + ggplot2::ylim(0, 1) 
+
+
+
+Rsquared<-NA 
+RMSE<-NA 
+MAE<-NA 
+RsquaredP<-NA 
+RMSEP<-NA 
+MAEP<-NA 
+for (i in 1:10) {
+  fit = glm(aqol6d_total_w ~ PHQ9, data = baseline[-folds_10[[i]],],family=quasibinomial(cloglog))
+  pred<-predict(fit,type="response")
+  Rsquared[i]=caret::R2(pred, baseline[-folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+  RMSE[i]=caret::RMSE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+  MAE[i]=caret::MAE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+  pred<-predict(fit,newdata=baseline[folds_10[[i]],],type="response")
+  RsquaredP[i]=caret::R2(pred, baseline[folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+  RMSEP[i]=caret::RMSE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+  MAEP[i]=caret::MAE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+} 
+
+
+n=n+1
+#save model fit
+summary_table[n,1]="GLM (Binomial with cloglog link)" 
+summary_table$Rsquare[n]= mean(Rsquared)
+summary_table$RMSE[n]= mean(RMSE)
+summary_table$MAE[n]=mean(MAE)
+summary_table$`Rsquare.prediction`[n]=mean(RsquaredP)
+summary_table$`RMSE.prediction`[n]=mean(RMSEP)
+summary_table$`MAE.prediction`[n]=mean(MAEP)
+
+``` 
+
+
+
+## Beta regression log link
+
+```{r}
+library(betareg) 
+fit = betareg( aqol6d_total_w  ~ PHQ9, data = baseline, link="log") 
+summary(fit)  
+
+newdata<-data.frame(PHQ9=0:27) 
+newdata$aqol6d_total_w=predict(fit,newdata=newdata,type="response") 
+ 
+ggplot(baseline,ggplot2::aes(x = PHQ9, y= aqol6d_total_w )) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::geom_line(data=newdata,ggplot2::aes(x = PHQ9, y= aqol6d_total_w),col="red")  +
+  ggplot2::theme_bw() + ggplot2::labs(x="PHQ9 total score",y="AQoL-6D utility score") 
+
+ 
+baseline %>% 
+    dplyr::mutate(Predicted=predict(fit,type="response"), 
+         Original=aqol6d_total_w) %>%  
+    tidyr::gather(variable, value, Predicted, Original) %>%
+    ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="")  
+
+
+
+baseline %>% 
+     dplyr::mutate(Predicted=predict(fit,type="response"), 
+         Original=aqol6d_total_w) %>% 
+  ggplot(ggplot2::aes(x = Original, y=Predicted)) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(intercept = 0, slope = 1, color="red", 
+                 linetype="dashed", size=1.5) +
+  ggplot2::xlim(0, 1) + ggplot2::ylim(0, 1) 
+
+
+
+# Rsquared<-NA 
+# RMSE<-NA 
+# MAE<-NA 
+# RsquaredP<-NA 
+# RMSEP<-NA 
+# MAEP<-NA 
+# for (i in 1:10) {
+#   fit = betareg(aqol6d_total_w ~ PHQ9, data = baseline[-folds_10[[i]],], link="log")
+#   pred<-predict(fit,type="response")
+#   Rsquared[i]=caret::R2(pred, baseline[-folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+#   RMSE[i]=caret::RMSE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+#   MAE[i]=caret::MAE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+#   pred<-predict(fit,newdata=baseline[folds_10[[i]],],type="response")
+#   RsquaredP[i]=caret::R2(pred, baseline[folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+#   RMSEP[i]=caret::RMSE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+#   MAEP[i]=caret::MAE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+# } 
+# 
+# 
+# n=n+1
+# #save model fit
+# summary_table[n,1]="Beta regression (log link)" 
+# summary_table$Rsquare[n]= mean(Rsquared)
+# summary_table$RMSE[n]= mean(RMSE)
+# summary_table$MAE[n]=mean(MAE)
+# summary_table$`Rsquare.prediction`[n]=mean(RsquaredP)
+# summary_table$`RMSE.prediction`[n]=mean(RMSEP)
+# summary_table$`MAE.prediction`[n]=mean(MAEP)
+
+``` 
+
+
+## Beta regression logit link
+
+```{r}
+library(betareg)
+fit = betareg( aqol6d_total_w  ~ PHQ9, data = baseline, link="logit") 
+summary(fit)
+
+newdata<-data.frame(PHQ9=0:27)
+newdata$aqol6d_total_w=predict(fit,newdata=newdata,type="response")
+ 
+ggplot(baseline,ggplot2::aes(x = PHQ9, y= aqol6d_total_w )) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::geom_line(data=newdata,ggplot2::aes(x = PHQ9, y= aqol6d_total_w),col="red")  +
+  ggplot2::theme_bw() + ggplot2::labs(x="PHQ9 total score",y="AQoL-6D utility score")
+
+ 
+baseline %>% 
+    dplyr::mutate(Predicted=predict(fit,type="response"), 
+         Original=aqol6d_total_w) %>%  
+    tidyr::gather(variable, value, Predicted, Original) %>%
+    ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="") 
+
+
+
+baseline %>% 
+     dplyr::mutate(Predicted=predict(fit,type="response"), 
+         Original=aqol6d_total_w) %>% 
+  ggplot(ggplot2::aes(x = Original, y=Predicted)) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(intercept = 0, slope = 1, color="red", 
+                 linetype="dashed", size=1.5) +
+  ggplot2::xlim(0, 1) + ggplot2::ylim(0, 1) 
+
+
+
+Rsquared<-NA 
+RMSE<-NA 
+MAE<-NA 
+RsquaredP<-NA 
+RMSEP<-NA 
+MAEP<-NA 
+for (i in 1:10) {
+  fit = betareg(aqol6d_total_w ~ PHQ9, data = baseline[-folds_10[[i]],], link="logit")
+  pred<-predict(fit,type="response")
+  Rsquared[i]=caret::R2(pred, baseline[-folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+  RMSE[i]=caret::RMSE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+  MAE[i]=caret::MAE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+  pred<-predict(fit,newdata=baseline[folds_10[[i]],],type="response")
+  RsquaredP[i]=caret::R2(pred, baseline[folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+  RMSEP[i]=caret::RMSE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+  MAEP[i]=caret::MAE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+} 
+
+
+n=n+1
+#save model fit
+summary_table[n,1]="Beta regression (logit link)" 
+summary_table$Rsquare[n]= mean(Rsquared)
+summary_table$RMSE[n]= mean(RMSE)
+summary_table$MAE[n]=mean(MAE)
+summary_table$`Rsquare.prediction`[n]=mean(RsquaredP)
+summary_table$`RMSE.prediction`[n]=mean(RMSEP)
+summary_table$`MAE.prediction`[n]=mean(MAEP)
+
+``` 
+
+
+## Beta regression cloglog link
+
+```{r}
+library(betareg)
+fit = betareg( aqol6d_total_w  ~ PHQ9, data = baseline, link="cloglog")
+summary(fit)
+
+newdata<-data.frame(PHQ9=0:27)
+newdata$aqol6d_total_w=predict(fit,newdata=newdata,type="response")
+ 
+ggplot(baseline,ggplot2::aes(x = PHQ9, y= aqol6d_total_w )) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::geom_line(data=newdata,ggplot2::aes(x = PHQ9, y= aqol6d_total_w),col="red")  +
+  ggplot2::theme_bw() + ggplot2::labs(x="PHQ9 total score",y="AQoL-6D utility score")
+ 
+baseline %>% 
+    dplyr::mutate(Predicted=predict(fit,type="response"), 
+         Original=aqol6d_total_w) %>%  
+    tidyr::gather(variable, value, Predicted, Original) %>%
+    ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="") 
+
+
+baseline %>% 
+     dplyr::mutate(Predicted=predict(fit,type="response"), 
+         Original=aqol6d_total_w) %>% 
+  ggplot(ggplot2::aes(x = Original, y=Predicted)) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(intercept = 0, slope = 1, color="red", 
+                 linetype="dashed", size=1.5) +
+  ggplot2::xlim(0, 1) + ggplot2::ylim(0, 1) 
+
+
+
+Rsquared<-NA 
+RMSE<-NA 
+MAE<-NA 
+RsquaredP<-NA 
+RMSEP<-NA 
+MAEP<-NA 
+for (i in 1:10) {
+  fit = betareg(aqol6d_total_w ~ PHQ9, data = baseline[-folds_10[[i]],], link="cloglog")
+  pred<-predict(fit,type="response")
+  Rsquared[i]=caret::R2(pred, baseline[-folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+  RMSE[i]=caret::RMSE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+  MAE[i]=caret::MAE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+  pred<-predict(fit,newdata=baseline[folds_10[[i]],],type="response")
+  RsquaredP[i]=caret::R2(pred, baseline[folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+  RMSEP[i]=caret::RMSE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+  MAEP[i]=caret::MAE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+} 
+
+
+n=n+1
+#save model fit
+summary_table[n,1]="Beta regression (cloglog link)" 
+summary_table$Rsquare[n]= mean(Rsquared)
+summary_table$RMSE[n]= mean(RMSE)
+summary_table$MAE[n]=mean(MAE)
+summary_table$`Rsquare.prediction`[n]=mean(RsquaredP)
+summary_table$`RMSE.prediction`[n]=mean(RMSEP)
+summary_table$`MAE.prediction`[n]=mean(MAEP)
+
+``` 
+
+## Summary of model fit
+
+```{r} 
+knitr::kable( summary_table  , format="html",digits = 3) %>%
+    kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) 
+```
+
+
+
+# Predictor selection 
+
+## Random forest 
+
+```{r, fig.height=8, fig.width=10}
+# library(randomForest)
+# library(Boruta)
+baseline
+
+baseline<- aqol6d_tb %>%
+   dplyr::filter(round=="Baseline") %>%
+   dplyr::select(aqol6d_total_w, PHQ9 ,  BADS, GAD7 ,OASIS,  SCARED, K6)  %>%
+   na.omit()
+
+names(baseline)<-c("aqol6d_total_w", "PHQ9", "BADS", "GAD7","OASIS","SCARED","K6" )
+
+folds_10 <- caret::createFolds(baseline$aqol6d_total_w , k = 10, list = TRUE, returnTrain = FALSE)
+
+## Random Forest
+RF <- randomForest::randomForest(aqol6d_total_w~.,data=baseline,importance=TRUE)
+varImpPlot(RF)
+
+
+## Boruta 
+boruta.model <- Boruta::Boruta(aqol6d_total_w~., data = baseline , maxRuns = 300)
+# plot variable importance 
+op <- par(mar = c(10,4,4,3) + 0.1)
+plot(boruta.model,cex=1.5, cex.axis=1, las=2, xlab="", main="Variable Importance")
+```
+
+## Individual predictor
+
+```{r}
+predictors<-c("PHQ9", "BADS", "GAD7","OASIS","SCARED","K6" )
+
+summary_table<-data.frame("Model"=NA,"Rsquare"=NA,"RMSE"=NA, "MAE"=NA, "Rsquare.prediction"=NA, "RMSE prediction"=NA,"MAE prediction"=NA)
+
+n=1 
+for(predictor in predictors){  
+  Rsquared<-NA 
+  RMSE<-NA 
+  MAE<-NA 
+  RsquaredP<-NA 
+  RMSEP<-NA 
+  MAEP<-NA 
+  for (i in 1:10) {
+    fit = glm(as.formula(paste0("aqol6d_total_w~", predictor )), data = baseline[-folds_10[[i]],], family=gaussian(log)) 
+    pred<-predict(fit,type="response")
+    Rsquared[i]=caret::R2(pred, baseline[-folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+    RMSE[i]=caret::RMSE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+    MAE[i]=caret::MAE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
+    pred<-predict(fit,newdata=baseline[folds_10[[i]],],type="response")
+    RsquaredP[i]=caret::R2(pred, baseline[folds_10[[i]],]$aqol6d_total_w, form = "traditional")
+    RMSEP[i]=caret::RMSE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+    MAEP[i]=caret::MAE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
+} 
+
+
+#save model fit
+summary_table[n,1]=predictor 
+summary_table$Rsquare[n]= mean(Rsquared)
+summary_table$RMSE[n]= mean(RMSE)
+summary_table$MAE[n]=mean(MAE)
+summary_table$`Rsquare.prediction`[n]=mean(RsquaredP)
+summary_table$`RMSE.prediction`[n]=mean(RMSEP)
+summary_table$`MAE.prediction`[n]=mean(MAEP)
+n=n+1
+}
+
+knitr::kable( summary_table  , format="html",digits = 3) %>%
+    kableExtra::kable_styling(bootstrap_options = "striped", full_width = F) 
+```
+
+## Additional confounding variables
+
+```{r}
+baseline<-aqol6d_tb[aqol6d_tb$round=="Baseline",] %>% 
+   dplyr::select(aqol6d_total_w, K6 ,PHQ9 ,  BADS, GAD7 ,OASIS,  SCARED,
+          d_sex_birth_s , SOFAS ,c_p_diag_s , c_clinical_staging_s ,  d_age , d_sexual_ori_s ,
+          d_country_bir_s,  d_relation_s , d_studying_working) %>% 
+   na.omit()
+
+
+predictor<-c("PHQ9", "BADS", "K6","OASIS","SCARED","GAD7" )
+
+summarytable<-data.frame("variable"=character(),"data"=character(),"Rsquared"=double(),
+                            "AIC"=double(),BIC=double(),"Significant"=character())
+
+# for(i in predictor){  
+#   model<-glm(as.formula(paste0("aqol6d_total_w~", i , "+d_sex_birth_s + SOFAS +c_p_diag_s + c_clinical_staging_s +  d_age + d_sexual_ori_s + d_country_bir_s + d_relation_s + d_studying_working")), data=baseline, family=gaussian(log)) 
+#   print(summary(model))
+#   summarytable=rbind(summarytable,data.frame("variable"=i,
+#                      Rsuqare=caret::R2(baseline$aqol6d_total_w, predict(model), form = "traditional"),
+#                      AIC=AIC(model), BIC=BIC(model),
+#                      "Significant"=paste(names(which(summary(model)$coefficients[,4]<0.01)),collapse = " "))) 
+# } 
+# 
+# knitr::kable( summarytable  , format="html",digits = 3) %>%
+#     kable_styling(bootstrap_options = "striped", full_width = F) 
+```
+
+## Checking 
+
+### PHQ9 
+```{r}
+baseline<-aqol6d_tb[aqol6d_tb$round=="Baseline",] %>% 
+   dplyr::select(aqol6d_total_w ,PHQ9, SOFAS) %>% 
+   na.omit()
+
+fit = glm(aqol6d_total_w ~ PHQ9 + SOFAS  , data = baseline,family=gaussian(log))
+
+summary(fit)
+baseline %>% 
+    dplyr::mutate(Predicted=simulate(fit)$sim_1, 
+         Original=aqol6d_total_w) %>% 
+    tidyr::gather(variable, value, Predicted, Original) %>%
+    ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="") 
+
+baseline %>% 
+     dplyr::mutate(Predicted=predict(fit,type="response"),  
+         Original=aqol6d_total_w) %>% 
+  ggplot(ggplot2::aes(x = Original, y=Predicted)) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(intercept = 0, slope = 1, color="red", 
+                 linetype="dashed", size=1.5) +
+  ggplot2::xlim(0, 1) + ggplot2::ylim(0, 1) 
+
+
+```
+
+
+### BADS 
+```{r}
+baseline<-aqol6d_tb[aqol6d_tb$round=="Baseline",] %>% 
+   dplyr::select(aqol6d_total_w ,BADS, SOFAS) %>% 
+   na.omit()
+
+fit = glm(aqol6d_total_w ~ BADS + SOFAS  , data = baseline,family=gaussian(log))
+
+summary(fit)
+baseline %>% 
+    dplyr::mutate(Predicted=simulate(fit)$sim_1, 
+         Original=aqol6d_total_w) %>% 
+    tidyr::gather(variable, value, Predicted, Original) %>%
+    ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="") 
+
+baseline %>% 
+     dplyr::mutate(Predicted=predict(fit,type="response"),  
+         Original=aqol6d_total_w) %>% 
+  ggplot(ggplot2::aes(x = Original, y=Predicted)) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(intercept = 0, slope = 1, color="red", 
+                 linetype="dashed", size=1.5) +
+  ggplot2::xlim(0, 1) + ggplot2::ylim(0, 1) 
+
+
+```
+
+
+
+### GAD7 
+```{r}
+baseline<-aqol6d_tb[aqol6d_tb$round=="Baseline",] %>% 
+   dplyr::select(aqol6d_total_w ,GAD7, SOFAS) %>% 
+   na.omit()
+
+fit = glm(aqol6d_total_w ~ GAD7 + SOFAS  , data = baseline,family=gaussian(log))
+
+summary(fit)
+baseline %>% 
+    dplyr::mutate(Predicted=simulate(fit)$sim_1, 
+         Original=aqol6d_total_w) %>% 
+    tidyr::gather(variable, value, Predicted, Original) %>%
+    ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="") 
+
+baseline %>% 
+     dplyr::mutate(Predicted=predict(fit,type="response"),  
+         Original=aqol6d_total_w) %>% 
+  ggplot(ggplot2::aes(x = Original, y=Predicted)) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(intercept = 0, slope = 1, color="red", 
+                 linetype="dashed", size=1.5) +
+  ggplot2::xlim(0, 1) + ggplot2::ylim(0, 1) 
+
+
+```
+
+
+### OASIS  
+```{r}
+baseline<-aqol6d_tb[aqol6d_tb$round=="Baseline",] %>% 
+   dplyr::select(aqol6d_total_w ,OASIS, SOFAS) %>% 
+   na.omit()
+
+fit = glm(aqol6d_total_w ~ OASIS + SOFAS  , data = baseline,family=gaussian(log))
+
+summary(fit)
+baseline %>% 
+    dplyr::mutate(Predicted=simulate(fit)$sim_1, 
+         Original=aqol6d_total_w) %>% 
+    tidyr::gather(variable, value, Predicted, Original) %>%
+    ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="") 
+
+baseline %>% 
+     dplyr::mutate(Predicted=predict(fit,type="response"),  
+         Original=aqol6d_total_w) %>% 
+  ggplot(ggplot2::aes(x = Original, y=Predicted)) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(intercept = 0, slope = 1, color="red", 
+                 linetype="dashed", size=1.5) +
+  ggplot2::xlim(0, 1) + ggplot2::ylim(0, 1) 
+
+
+```
+
+
+
+### SCARED 
+```{r}
+baseline<-aqol6d_tb[aqol6d_tb$round=="Baseline",] %>% 
+   dplyr::select(aqol6d_total_w ,SCARED, SOFAS) %>% 
+   na.omit()
+
+fit = glm(aqol6d_total_w ~ SCARED + SOFAS  , data = baseline,family=gaussian(log))
+
+summary(fit)
+baseline %>% 
+    dplyr::mutate(Predicted=simulate(fit)$sim_1, 
+         Original=aqol6d_total_w) %>% 
+    tidyr::gather(variable, value, Predicted, Original) %>%
+    ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="") 
+
+baseline %>% 
+     dplyr::mutate(Predicted=predict(fit,type="response"),  
+         Original=aqol6d_total_w) %>% 
+  ggplot(ggplot2::aes(x = Original, y=Predicted)) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(intercept = 0, slope = 1, color="red", 
+                 linetype="dashed", size=1.5) +
+  ggplot2::xlim(0, 1) + ggplot2::ylim(0, 1) 
+
+
+```
+
+
+
+### K6 
+```{r}
+baseline<-aqol6d_tb[aqol6d_tb$round=="Baseline",] %>% 
+   dplyr::select(aqol6d_total_w ,K6, SOFAS) %>% 
+   na.omit()
+
+fit = glm(aqol6d_total_w ~ K6 + SOFAS  , data = baseline,family=gaussian(log))
+
+summary(fit)
+baseline %>% 
+    dplyr::mutate(Predicted=simulate(fit)$sim_1, 
+         Original=aqol6d_total_w) %>% 
+    tidyr::gather(variable, value, Predicted, Original) %>%
+    ggplot(ggplot2::aes(x = value, fill = variable)) +
+    ggalt::geom_bkde(alpha=0.5) +
+    ggplot2::geom_rug() +
+    viridis::scale_fill_viridis( discrete = TRUE) +
+    ggplot2::theme_bw() +
+    ggplot2::theme(legend.position="bottom") +
+    ggplot2::labs( x="AQoL-6D utility score",fill="") 
+
+baseline %>% 
+     dplyr::mutate(Predicted=predict(fit,type="response"),  
+         Original=aqol6d_total_w) %>% 
+  ggplot(ggplot2::aes(x = Original, y=Predicted)) +
+  ggplot2::geom_point() + 
+  ggplot2::geom_smooth(method = "loess", size = 1.5) +
+  ggplot2::theme_bw() +
+  ggplot2::geom_abline(intercept = 0, slope = 1, color="red", 
+                 linetype="dashed", size=1.5) +
+  ggplot2::xlim(0, 1) + ggplot2::ylim(0, 1) 
+
+
+```

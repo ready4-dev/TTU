@@ -1,0 +1,31 @@
+---
+title: "AQoL Analysis"
+author: "Caroline Gao and Matthew Hamilton"
+date: "13/08/2020"
+output: 
+  knitrBootstrap::bootstrap_document:
+     theme: journal
+---
+
+```{r echo = F}
+library(xtable)
+options(xtable.floating = FALSE)
+options(xtable.timestamp = "")
+#install.packages("Surrogate")
+n<-1
+```
+
+```{r child="./Child_RMDs/_AQoL_6D_Descriptives.Rmd", echo=FALSE}
+```
+
+```{r child="./Child_RMDs/_AQoL_6D_Items.Rmd", echo=FALSE}
+```
+
+```{r child="./Child_RMDs/_AQoL_6D_Items_XTRAs.Rmd", echo=FALSE}
+```
+
+```{r child="./Child_RMDs/_AQoL_6D_Utility.Rmd", echo=FALSE}
+```
+
+```{r child="./Child_RMDs/_AQoL_6D_Linear.Rmd", echo=FALSE}
+```
