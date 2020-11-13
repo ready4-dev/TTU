@@ -53,9 +53,7 @@ transform_ts_mdl_data <- function(mdl_ls,
                                   dep_var_nm_1L_chr = "aqol6d_total_w",
                                   predr_vars_nms_chr,
                                   id_var_nm_1L_chr = "fkClientID",
-                                  mdl_nm_1L_chr#,
-                                  #path_to_write_to_1L_chr
-){
+                                  mdl_nm_1L_chr){
   old_data_tb <- data_tb %>%
     dplyr::select(c(dplyr::all_of(id_var_nm_1L_chr),
                     dplyr::all_of(dep_var_nm_1L_chr),
@@ -65,7 +63,6 @@ transform_ts_mdl_data <- function(mdl_ls,
   cnfdl_mdl_ls <- mdl_ls
   cnfdl_mdl_ls$data <- old_data_tb %>% as.data.frame() %>%
     dplyr::summarise(dplyr::across(dplyr::everything(), ~ sample(.x,1)))
-  #saveRDS(cnfdl_mdl_ls,paste0(path_to_write_to_1L_chr,"/",mdl_nm_1L_chr,".RDS"))
   return(cnfdl_mdl_ls)
 }
 

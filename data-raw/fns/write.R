@@ -80,43 +80,6 @@ write_brm_mdl_plt_fl <- function(plt_fn = NULL,
   }
   return(path_to_plot_1L_chr)
 }
-write_ts_mdls <- function(data_tb,
-                          dep_var_nm_1L_chr = "aqol6d_total_w",
-                          predr_vars_nms_ls,
-                          id_var_nm_1L_chr = "fkClientID",
-                          round_var_nm_1L_chr = "round",
-                          round_bl_val_1L_chr = "Baseline",
-                          fn_ls,
-                          mdl_nms_ls,
-                          mdl_smry_dir_1L_chr,
-                          iters_1L_int = 4000L,
-                          seed_1L_int = 1000L){
-  if(!dir.exists(mdl_smry_dir_1L_chr))
-    dir.create(mdl_smry_dir_1L_chr)
-  mdls_smry_tb <- purrr::map_dfr(1:length(mdl_nms_ls),
-                                 ~ {
-                                   idx_1L_int <- .x
-                                   purrr::map2_dfr(fn_ls,
-                                                   mdl_nms_ls[[idx_1L_int]],
-                                                   ~ {
-                                                     smry_ls <- make_smry_of_ts_mdl(data_tb = data_tb,
-                                                                                    fn = .x,
-                                                                                    predr_vars_nms_chr = predr_vars_nms_ls[[idx_1L_int]],
-                                                                                    mdl_nm_1L_chr = .y,
-                                                                                    path_to_write_to_1L_chr = mdl_smry_dir_1L_chr,
-                                                                                    dep_var_nm_1L_chr = dep_var_nm_1L_chr,
-                                                                                    id_var_nm_1L_chr = id_var_nm_1L_chr,
-                                                                                    round_var_nm_1L_chr = round_var_nm_1L_chr,
-                                                                                    round_bl_val_1L_chr = round_bl_val_1L_chr,
-                                                                                    iters_1L_int = iters_1L_int,
-                                                                                    seed_1L_int = seed_1L_int)
-                                                     Sys.sleep(5)
-                                                     smry_ls$smry_of_ts_mdl_tb
-                                                   })
-                                 })
-  saveRDS(mdls_smry_tb, paste0(mdl_smry_dir_1L_chr,"/mdls_smry_tb.RDS"))
-  return(mdls_smry_tb)
-}
 write_rndrd_rprt <- function(path_to_RMD_dir_1L_chr,
                              nm_of_RMD_1L_chr = "report.RMD",
                              params_ls = list(output_type_1L_chr = "HTML"),
@@ -187,4 +150,41 @@ write_results_to_csv <- function(synth_data_spine_ls,
   purrr::walk2(output_ls, names(output_ls), ~ write.csv(.x, file = paste0(output_dir_1L_chr,"/",.y,".csv"),
                                                         row.names = F))
   return(dss_tb)
+}
+write_ts_mdls <- function(data_tb,
+                          dep_var_nm_1L_chr = "aqol6d_total_w",
+                          predr_vars_nms_ls,
+                          id_var_nm_1L_chr = "fkClientID",
+                          round_var_nm_1L_chr = "round",
+                          round_bl_val_1L_chr = "Baseline",
+                          fn_ls,
+                          mdl_nms_ls,
+                          mdl_smry_dir_1L_chr,
+                          iters_1L_int = 4000L,
+                          seed_1L_int = 1000L){
+  if(!dir.exists(mdl_smry_dir_1L_chr))
+    dir.create(mdl_smry_dir_1L_chr)
+  mdls_smry_tb <- purrr::map_dfr(1:length(mdl_nms_ls),
+                                 ~ {
+                                   idx_1L_int <- .x
+                                   purrr::map2_dfr(fn_ls,
+                                                   mdl_nms_ls[[idx_1L_int]],
+                                                   ~ {
+                                                     smry_ls <- make_smry_of_ts_mdl(data_tb = data_tb,
+                                                                                    fn = .x,
+                                                                                    predr_vars_nms_chr = predr_vars_nms_ls[[idx_1L_int]],
+                                                                                    mdl_nm_1L_chr = .y,
+                                                                                    path_to_write_to_1L_chr = mdl_smry_dir_1L_chr,
+                                                                                    dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                                                                                    id_var_nm_1L_chr = id_var_nm_1L_chr,
+                                                                                    round_var_nm_1L_chr = round_var_nm_1L_chr,
+                                                                                    round_bl_val_1L_chr = round_bl_val_1L_chr,
+                                                                                    iters_1L_int = iters_1L_int,
+                                                                                    seed_1L_int = seed_1L_int)
+                                                     Sys.sleep(5)
+                                                     smry_ls$smry_of_ts_mdl_tb
+                                                   })
+                                 })
+  saveRDS(mdls_smry_tb, paste0(mdl_smry_dir_1L_chr,"/mdls_smry_tb.RDS"))
+  return(mdls_smry_tb)
 }

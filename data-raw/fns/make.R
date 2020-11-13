@@ -410,8 +410,7 @@ make_smry_of_ts_mdl <- function(data_tb,
                                 round_var_nm_1L_chr = "round",
                                 round_bl_val_1L_chr = "Baseline",
                                 iters_1L_int = 4000L,
-                                seed_1L_int = 1000L#,print_plots_1L_lgl = T
-){
+                                seed_1L_int = 1000L){
   tfd_data_tb <- transform_tb_to_mdl_inp(data_tb,
                                          dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                                          predr_vars_nms_chr = predr_vars_nms_chr,

@@ -3,14 +3,16 @@ title: "AQoL 6D Model Summary"
 author: "Matthew Hamilton & Caroline Gao"
 date: "24/10/2020"
 output:
-  html_document: 
-    code_folding: "hide"
-    toc: yes 
+  word_document:
+    toc: yes
+  html_document:
+    code_folding: hide
+    toc: yes
 params:
   root_dir_1L_chr: ./
-  mdl_smry_dir_1L_chr: "../../../../../../../Data/Project/Utility_Models/Output"
+  mdl_smry_dir_1L_chr: ../../../../../../../Data/Project/Utility_Models/Output
   output_type_1L_chr: HTML
-  path_to_data_1L_chr: "../Data/fake_pop_tb.rds"
+  path_to_data_1L_chr: ../Data/fake_pop_tb.rds
 ---
 ```{r setup, include=FALSE}
 options(brms.backend = "cmdstanr")
