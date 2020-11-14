@@ -1,3 +1,17 @@
+#' Transform dep var name
+#' @description transform_dep_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dep var name. Function argument dep_var_nm_1L_chr specifies the object to be updated. Argument tfmn_1L_chr provides the object to be updated. The function returns Transformed dep var name (a character vector of length one).
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one)
+#' @param tfmn_1L_chr Tfmn (a character vector of length one), Default: 'NTF'
+#' @return Transformed dep var name (a character vector of length one)
+#' @rdname transform_dep_var_nm
+#' @export 
+
+transform_dep_var_nm <- function (dep_var_nm_1L_chr, tfmn_1L_chr = "NTF") 
+{
+    tfd_dep_var_nm_1L_chr <- paste0(dep_var_nm_1L_chr, ifelse(tfmn_1L_chr == 
+        "", "", paste0("_", tfmn_1L_chr)))
+    return(tfd_dep_var_nm_1L_chr)
+}
 #' Transform dep var name for cll
 #' @description transform_dep_var_nm_for_cll() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dep var name for cll. Function argument dep_var_nm_1L_chr specifies the object to be updated. The function returns Transformed dep var name (a character vector of length one).
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one)
