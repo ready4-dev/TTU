@@ -5,7 +5,7 @@ transform_dep_var_nm_for_cll <- function(dep_var_nm_1L_chr){
 transform_dep_var_nm <- function(dep_var_nm_1L_chr,
                                  tfmn_1L_chr = "NTF"){
   tfd_dep_var_nm_1L_chr <- paste0(dep_var_nm_1L_chr,
-                                  ifelse(tfmn_1L_chr == "","",paste0("_",tfmn_1L_chr))
+                                  ifelse(tfmn_1L_chr == "NTF","",paste0("_",tfmn_1L_chr))
                                   )
   return(tfd_dep_var_nm_1L_chr)
 }

@@ -47,7 +47,6 @@ bc<-boxcox(initech_fit, plotit = TRUE)
 bc$x[which.max(bc$y)]
 ```
 
-## Linear model (no transformation)
 ```{r}
 make_one_predr_mdl <- function(data_tb,
                                dep_var_nm_1L_chr = "aqol6d_total_w",
@@ -94,7 +93,7 @@ make_smry_of_one_predr_mdl <- function(data_tb,
                                                    match_value_xx = mdl_type_1L_chr,
                                                    target_var_nm_1L_chr = "long_name_chr",
                                                    evaluate_lgl = F)
-purrr::map_dfr(folds_ls,
+smry_of_one_predr_mdl_tb <- purrr::map_dfr(folds_ls,
                ~ {
                    mdl <- make_one_predr_mdl(data_tb,
                                dep_var_nm_1L_chr = dep_var_nm_1L_chr,
@@ -115,6 +114,16 @@ purrr::map_dfr(folds_ls,
 ) %>% dplyr::summarise_all(mean) %>%
     dplyr::mutate(Model = mdl_desc_1L_chr) %>%
     dplyr::select(Model, dplyr::everything())
+return(smry_of_one_predr_mdl_tb)
+}
+plot_auto_lm <- function(mdl, # Requires ggfortify
+                         which_dbl = 1:6, 
+                         ncol_1L_int = 3L, 
+                         label_size_1L_int = 3){
+ plt <- ggplot2::autoplot(mdl,which = which_dbl, ncol = ncol_1L_int, label.size = label_size_1L_int)
+if(6 %in% which_dbl)
+  plt[which(which_dbl==6)] <- plt[which(which_dbl==6)] + ggtitle("Cooks vs Leverage") 
+plt
 }
 plot_lnr_cmprsn <- function(data_tb,
                       predn_ds_tb,
@@ -155,8 +164,10 @@ transform_data_tb_for_cmprsn <- function(data_tb,
          !!rlang::sym(source_data_nm_1L_chr) := !!rlang::sym(dep_var_nm_1L_chr))
   return(tfd_data_tb)
 }
-write_one_predr_mdl_plts <- function(data_tb,
+library(ggfortify)
+write_one_predr_mdl_plts <- function(data_tb, # MUST IMPORT ggfortify
                                      mdl,
+                                     mdl_type_1L_chr = "OLS_NTF",
                                      dep_var_nm_1L_chr = "aqol6d_total_w",
                                      tfmn_1L_chr = "NTF",
                                      predr_var_nm_1L_chr,
@@ -168,27 +179,30 @@ write_one_predr_mdl_plts <- function(data_tb,
                                               dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                                               tfmn_1L_chr = tfmn_1L_chr,
                                               predr_var_nm_1L_chr = predr_var_nm_1L_chr, predr_vals_dbl = predr_vals_dbl)
-  purrr::pwalk(list(plt_fn_ls = list(plot_lnr_cmprsn, ggplot2::autoplot, plot_obsd_predd_dnst, plot_obsd_predd_dnst, plot_sctr_lnr_cmprsn),
+  purrr::pwalk(list(plt_fn_ls = list(plot_lnr_cmprsn, plot_auto_lm, plot_obsd_predd_dnst, plot_obsd_predd_dnst, plot_sctr_lnr_cmprsn),
                  fn_args_ls_ls = list(list(data_tb = data_tb,
                                         predn_ds_tb = predn_ds_tb,
                                         predr_var_nm_1L_chr = predr_var_nm_1L_chr,
                                         predr_var_desc_1L_chr = predr_var_desc_1L_chr),
-                                      list(mdl, 
-                                            which = 1:6, 
-                                            ncol = 3, 
-                                            label.size = 3),
+                                      list(mdl,
+                                           which_dbl = 1:6, 
+                                           ncol_1L_int = 3L,
+                                           label_size_1L_int = 3),
                                       list(tfd_data_tb = tfd_data_tb),
                                       list(tfd_data_tb = transform_data_tb_for_cmprsn(data_tb, 
                                                                                       mdl = mdl,
                                                                                       tf_type_1L_chr = "Simulated"),
                                            predd_val_var_nm_1L_chr = "Simulated"),
                                       list(tfd_data_tb = tfd_data_tb)),
-                 plt_nm_sfx_chr = c("_lnr_cmprsn","_auto_plt","_pred_dnsty","_simd_dnsty","_pred_sctr")), 
+                 plt_nm_sfx_chr = c("_lnr_cmprsn","_auto_plt","_pred_dnsty","_simd_dnsty","_pred_sctr"),
+                 size_ls = list(c(6,6),c(4,7),c(6,6),c(6,6),c(6,6))), 
             ~ write_brm_mdl_plt_fl(plt_fn = ..1,
                      fn_args_ls = ..2,
                      path_to_write_to_1L_chr = path_to_write_to_1L_chr,
-                     plt_nm_1L_chr = paste0(predr_var_nm_1L_chr,
-                                            ..3)))
+                     plt_nm_1L_chr = paste0(mdl_type_1L_chr,
+                                            ..3),
+                     height_1L_dbl = ..4[1],
+                     width_1L_dbl = ..4[2]))
   
 }
 write_one_predr_mdl_outp <- function(data_tb,
@@ -213,34 +227,58 @@ write_one_predr_mdl_outp <- function(data_tb,
                             mdl_types_lup = mdl_types_lup)
   write_one_predr_mdl_plts(data_tb,
                          mdl = mdl,
+                         mdl_type_1L_chr = mdl_fl_nm_1L_chr,
                          dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                          tfmn_1L_chr = tfmn_1L_chr,
                          predr_var_nm_1L_chr = predr_var_nm_1L_chr,
                          predr_var_desc_1L_chr = predr_var_desc_1L_chr,
                          predr_vals_dbl = predr_vals_dbl,
                          path_to_write_to_1L_chr = path_to_write_to_1L_chr)
-make_smry_of_one_predr_mdl(data_tb,
+smry_of_one_predr_mdl_tb <- make_smry_of_one_predr_mdl(data_tb,
                            mdl = mdl,
                            folds_ls = folds_ls,
                            dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                            tfmn_1L_chr = tfmn_1L_chr,
                            predr_var_nm_1L_chr = predr_var_nm_1L_chr,
                            mdl_type_1L_chr = mdl_type_1L_chr,
-                           mdl_types_lup = mdl_types_lup)#
+                           mdl_types_lup = mdl_types_lup)
 saveRDS(mdl,paste0(path_to_write_to_1L_chr,"/",mdl_fl_nm_1L_chr,".RDS"))
+return(smry_of_one_predr_mdl_tb)
 }
 mdl_types_lup <- dplyr::bind_rows(FBaqol::mdl_types_lup,
   tibble::tibble(short_name_chr = c("OLS_NTF",
                                      "OLS_LOG",
                                      "OLS_LOGIT",
                                      "OLS_LOGLOG",
-                                     "OLS_CLL"),
+                                     "OLS_CLL",
+                                    "GLM_GSN_LOG_NTF",
+                                    "GLM_BNL_LOG_NTF",
+                                    "GLM_BNL_LGT_NTF",
+                                    "GLM_BNL_CLL_NTF",
+                                    "BET_LOG_NTF",
+                                    "BET_LGT_NTF",
+                                    "BET_CLL_NTF"),
                long_name_chr = c("Ordinary Least Squares (No transformation)",
                                     "Ordinary Least Squares (Log transformation)",
                                     "Ordinary Least Squares (Logit transformation)",
                                     "Ordinary Least Squares (Log Log transformation)",
-                                    "Ordinary Least Squares (Complementary Log Log transformation)"))) %>%
-  dplyr::mutate(fn_chr = c(NA_character_,rep("lm",6)))
+                                    "Ordinary Least Squares (Complementary Log Log transformation)",
+                                 "Generalised Linear Mixed Model with Gaussian distribution and log link",
+                                 "Generalised Linear Mixed Model with Binomial distribution and log link",
+                                 "Generalised Linear Mixed Model with Binomial distribution and logit link",
+                                 "Generalised Linear Mixed Model with Binomial distribution and complementary log log link", 
+                                 "Beta Regression Model with Binomial distribution and log link",
+                                 "Beta Regression Model with Binomial distribution and logit link",
+                                 "Beta Regression Model with Binomial distribution and complementary log log link"))) %>%
+  dplyr::mutate(fn_chr = c(NA_character_,rep("lm",6),rep("glm",4),rep("betareg::betareg",3)),
+                family_chr = c(rep(NA_character_,7),"gaussian(log)","quasibinomial(log)","quasibinomial(logit)","quasibinomial(cloglog)", rep(NA_character_,3)),
+                start_chr = c(rep(NA_character_,7),
+                              rep("-0.1,-0.1",4),
+                              rep("-0.5,-0.1,3",3)),
+                control_chr = c(rep(NA_character_,11),rep("betareg.control",3)),
+                predict_type = c(rep(NA_character_,7),
+                                 rep("response",7)),
+                binml_tfm_lgl = c(rep(F,8),rep(T,3),rep(F,3)))
 ```
 
 ```{r}
@@ -251,403 +289,53 @@ path_to_write_to_1L_chr <- paste0(path_to_write_fls_to_1L_chr,
                                                       "/",
                                                       dir_nm_1L_chr)
 predr_var_nm_1L_chr <- "PHQ9"
-write_one_predr_mdl_outp(bl_tb,
+```
+
+
+```{r}
+mdl_types_chr <- c("OLS_NTF","OLS_LOG", "OLS_LOGIT", "OLS_LOGLOG", "OLS_CLL")
+predr_var_desc_1L_chr <- "PHQ9 total score"
+predr_vals_dbl <- 0:27
+purrr::map_dfr(mdl_types_chr,
+               ~ {
+                 idx_1L_int <- 1 + stringi::stri_locate_last_fixed(.x,"_")[1,1] %>% as.vector()
+                 tfmn_1L_chr <- stringr::str_sub(.x, start = idx_1L_int)
+                 write_one_predr_mdl_outp(bl_tb,
+                         tfmn_1L_chr = tfmn_1L_chr,
                          predr_var_nm_1L_chr = predr_var_nm_1L_chr, 
-                         predr_var_desc_1L_chr = "PHQ9 total score",
+                         predr_var_desc_1L_chr = predr_var_desc_1L_chr,
                          predr_vals_dbl = 0:27,
-                         mdl_type_1L_chr = "OLS_NTF",
+                         mdl_type_1L_chr = .x,
                          path_to_write_to_1L_chr = path_to_write_to_1L_chr,
                          mdl_types_lup = mdl_types_lup,
                          mdl_fl_nm_1L_chr = paste0(predr_var_nm_1L_chr,
-                                                   "_OLS_NOTF_MDL"))
-
-#summary(mdl)
+                                                   "_",
+                                                   .x,
+                                                   "_MDL"
+                                                   ))
+               })
 ```
 
+
+## Linear model (no transformation)
 
 ## Linear model (log transformation)
-```{r}
-tfmn_1L_chr <- "log"
-write_one_predr_mdl_outp(bl_tb,
-                         tfmn_1L_chr = "log", 
-                         predr_var_nm_1L_chr = predr_var_nm_1L_chr, 
-                                     predr_var_desc_1L_chr = "PHQ9 total score",
-                                     predr_vals_dbl = 0:27,
-                                     mdl_type_1L_chr = "lm",
-                                     path_to_write_to_1L_chr = path_to_write_to_1L_chr,
-                                     mdl_fl_nm_1L_chr = paste0(predr_var_nm_1L_chr,
-                           "_OLS_NOTF_MDL"))
-```
-
-
-```{r}
-
-fit = lm(aqol6d_total_w_log ~ PHQ9, data = baseline) #
-summary(fit)
-
-newdata<-data.frame(PHQ9=0:27)
-newdata$aqol6d_total_w=exp(predict(fit,newdata=newdata)) #
- 
-ggplot(baseline,aes(x = PHQ9, y= aqol6d_total_w )) +
-  geom_point() + 
-  geom_smooth(method = "loess", size = 1.5) +
-  geom_line(data=newdata,aes(x = PHQ9, y= aqol6d_total_w),col="red")  +
-  theme_bw() + labs(x="PHQ9 total score",y="AQoL-6D utility score")
-
-ggplot2::autoplot(fit, which = 1:6, ncol = 3, label.size = 3)
-
-baseline %>% 
-    mutate(Predicted=exp(predict(fit)),
-         Original=aqol6d_total_w) %>% 
-    gather(variable, value, Predicted, Original) %>%
-    ggplot(aes(x = value, fill = variable)) +
-    geom_bkde(alpha=0.5) +
-    geom_rug() +
-    scale_fill_viridis( discrete = TRUE) +
-    theme_bw() +
-    theme(legend.position="bottom") +
-    labs( x="AQoL-6D utility score",fill="")
-
-
-baseline %>% 
-    mutate(Simulated=exp(simulate(fit)$sim_1),
-         Original=aqol6d_total_w) %>% 
-    gather(variable, value, Simulated, Original) %>%
-    ggplot(aes(x = value, fill = variable)) +
-    geom_bkde(alpha=0.5) +
-    geom_rug() +
-    scale_fill_viridis( discrete = TRUE) +
-    theme_bw() +
-    theme(legend.position="bottom") +
-    labs( x="AQoL-6D utility score",fill="")
-
-
-baseline %>% 
-    mutate(Predicted=exp(predict(fit)),
-         Original=aqol6d_total_w) %>% 
-  ggplot(aes(x = Original, y=Predicted)) +
-  geom_point() + 
-  geom_smooth(method = "loess", size = 1.5) +
-  theme_bw() +
-  geom_abline(intercept = 0, slope = 1, color="red", 
-                 linetype="dashed", size=1.5) +
-  xlim(0, 1) + ylim(0, 1)
-
-Rsquared<-NA
-RMSE<-NA
-MAE<-NA
-RsquaredP<-NA
-RMSEP<-NA
-MAEP<-NA
-for (i in 1:10) {
-  fit = lm(aqol6d_total_w_log ~ PHQ9, data = baseline[-folds_10[[i]],])
-  pred<-exp(predict(fit))
-  Rsquared[i]=R2(pred, baseline[-folds_10[[i]],]$aqol6d_total_w, form = "traditional")
-  RMSE[i]=RMSE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
-  MAE[i]=MAE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
-  pred<-exp(predict(fit,newdata=baseline[folds_10[[i]],]))
-  RsquaredP[i]=R2(pred, baseline[folds_10[[i]],]$aqol6d_total_w, form = "traditional")
-  RMSEP[i]=RMSE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
-  MAEP[i]=MAE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
-} 
-
-n=n+1
-#save model fit
-summary_table[n,1]="OLS (log)" 
-summary_table$Rsquare[n]= mean(Rsquared)
-summary_table$RMSE[n]= mean(RMSE)
-summary_table$MAE[n]=mean(MAE)
-summary_table$`Rsquare.prediction`[n]=mean(RsquaredP)
-summary_table$`RMSE.prediction`[n]=mean(RMSEP)
-summary_table$`MAE.prediction`[n]=mean(MAEP)
-``` 
-
-
 
 ## Linear model (logit transformation)
 
-```{r}
-library(boot)
-fit = lm(aqol6d_total_w_logit ~ PHQ9, data = baseline)
-summary(fit)
-
-newdata<-data.frame(PHQ9=0:27)
-newdata$aqol6d_total_w=inv.logit(predict(fit,newdata=newdata))
- 
-ggplot(baseline,aes(x = PHQ9, y= aqol6d_total_w )) +
-  geom_point() + 
-  geom_smooth(method = "loess", size = 1.5) +
-  geom_line(data=newdata,aes(x = PHQ9, y= aqol6d_total_w),col="red")  +
-  theme_bw() + labs(x="PHQ9 total score",y="AQoL-6D utility score")
-
-ggplot2::autoplot(fit, which = 1:6, ncol = 3, label.size = 3)
-
- 
-baseline %>% 
-    mutate(Predicted=inv.logit(predict(fit)),
-         Original=aqol6d_total_w) %>%  
-    gather(variable, value, Predicted, Original) %>%
-    ggplot(aes(x = value, fill = variable)) +
-    geom_bkde(alpha=0.5) +
-    geom_rug() +
-    scale_fill_viridis( discrete = TRUE) +
-    theme_bw() +
-    theme(legend.position="bottom") +
-    labs( x="AQoL-6D utility score",fill="")
-
-baseline %>% 
-    mutate(Simulated=inv.logit(simulate(fit)$sim_1) ,
-         Original=aqol6d_total_w) %>%  
-    gather(variable, value, Simulated, Original) %>%
-    ggplot(aes(x = value, fill = variable)) +
-    geom_bkde(alpha=0.5) +
-    geom_rug() +
-    scale_fill_viridis( discrete = TRUE) +
-    theme_bw() +
-    theme(legend.position="bottom") +
-    labs( x="AQoL-6D utility score",fill="")
-
-
-baseline %>% 
-    mutate(Predicted=inv.logit(predict(fit)),
-         Original=aqol6d_total_w) %>% 
-  ggplot(aes(x = Original, y=Predicted)) +
-  geom_point() + 
-  geom_smooth(method = "loess", size = 1.5) +
-  theme_bw() +
-  geom_abline(intercept = 0, slope = 1, color="red", 
-                 linetype="dashed", size=1.5) +
-  xlim(0, 1) + ylim(0, 1)
-
-Rsquared<-NA
-RMSE<-NA
-MAE<-NA
-RsquaredP<-NA
-RMSEP<-NA
-MAEP<-NA
-for (i in 1:10) {
-  fit = lm(aqol6d_total_w_logit ~ PHQ9, data = baseline[-folds_10[[i]],])
-  pred<-inv.logit(predict(fit))
-  Rsquared[i]=R2(pred, baseline[-folds_10[[i]],]$aqol6d_total_w, form = "traditional")
-  RMSE[i]=RMSE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
-  MAE[i]=MAE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
-  pred<-inv.logit(predict(fit,newdata=baseline[folds_10[[i]],]))
-  RsquaredP[i]=R2(pred, baseline[folds_10[[i]],]$aqol6d_total_w, form = "traditional")
-  RMSEP[i]=RMSE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
-  MAEP[i]=MAE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
-} 
-
-n=n+1
-#save model fit
-summary_table[n,1]="OLS (logit)" 
-summary_table$Rsquare[n]= mean(Rsquared)
-summary_table$RMSE[n]= mean(RMSE)
-summary_table$MAE[n]=mean(MAE)
-summary_table$`Rsquare.prediction`[n]=mean(RsquaredP)
-summary_table$`RMSE.prediction`[n]=mean(RMSEP)
-summary_table$`MAE.prediction`[n]=mean(MAEP)
-``` 
-
-
-
-
 ## Linear model (log-log transformation)
 
-```{r}
-library(ggfortify)
-fit = lm(aqol6d_total_w_loglog ~ PHQ9, data = baseline)
-summary(fit)
-
-newdata<-data.frame(PHQ9=0:27)
-newdata$aqol6d_total_w=exp(-exp(-predict(fit,newdata=newdata)))
- 
-ggplot(baseline,aes(x = PHQ9, y= aqol6d_total_w )) +
-  geom_point() + 
-  geom_smooth(method = "loess", size = 1.5) +
-  geom_line(data=newdata,aes(x = PHQ9, y= aqol6d_total_w),col="red")  +
-  theme_bw() + labs(x="PHQ9 total score",y="AQoL-6D utility score")
-
-
-ggplot2::autoplot(fit, which = 1:6, ncol = 3, label.size = 3)
-
-
- 
-baseline %>% 
-    mutate(Predicted=exp(-exp(-predict(fit))) ,
-         Original=aqol6d_total_w) %>%  
-    gather(variable, value, Predicted, Original) %>%
-    ggplot(aes(x = value, fill = variable)) +
-    geom_bkde(alpha=0.5) +
-    geom_rug() +
-    scale_fill_viridis( discrete = TRUE) +
-    theme_bw() +
-    theme(legend.position="bottom") +
-    labs( x="AQoL-6D utility score",fill="") 
-
-baseline %>% 
-    mutate(Simulated=exp(-exp(-simulate(fit)$sim_1)) ,
-         Original=aqol6d_total_w) %>%  
-    gather(variable, value, Simulated, Original) %>%
-    ggplot(aes(x = value, fill = variable)) +
-    geom_bkde(alpha=0.5) +
-    geom_rug() +
-    scale_fill_viridis( discrete = TRUE) +
-    theme_bw() +
-    theme(legend.position="bottom") +
-    labs( x="AQoL-6D utility score",fill="") 
-
-
-
-baseline %>% 
-    mutate(Predicted=exp(-exp(-predict(fit))) ,
-         Original=aqol6d_total_w) %>% 
-  ggplot(aes(x = Original, y=Predicted)) +
-  geom_point() + 
-  geom_smooth(method = "loess", size = 1.5) +
-  theme_bw() +
-  geom_abline(intercept = 0, slope = 1, color="red", 
-                 linetype="dashed", size=1.5) +
-  xlim(0, 1) + ylim(0, 1) 
-
-
-
-Rsquared<-NA 
-RMSE<-NA 
-MAE<-NA 
-RsquaredP<-NA 
-RMSEP<-NA 
-MAEP<-NA 
-for (i in 1:10) {
-  fit = lm(aqol6d_total_w_loglog ~ PHQ9, data = baseline[-folds_10[[i]],])
-  pred<-exp(-exp(-predict(fit))) 
-  Rsquared[i]=R2(pred, baseline[-folds_10[[i]],]$aqol6d_total_w, form = "traditional")
-  RMSE[i]=RMSE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
-  MAE[i]=MAE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
-  pred<-exp(-exp(-predict(fit,newdata=baseline[folds_10[[i]],]))) 
-  RsquaredP[i]=R2(pred, baseline[folds_10[[i]],]$aqol6d_total_w, form = "traditional")
-  RMSEP[i]=RMSE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
-  MAEP[i]=MAE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
-} 
-
-
-n=n+1
-#save model fit
-summary_table[n,1]="OLS (loglog)" 
-summary_table$Rsquare[n]= mean(Rsquared)
-summary_table$RMSE[n]= mean(RMSE)
-summary_table$MAE[n]=mean(MAE)
-summary_table$`Rsquare.prediction`[n]=mean(RsquaredP)
-summary_table$`RMSE.prediction`[n]=mean(RMSEP)
-summary_table$`MAE.prediction`[n]=mean(MAEP)
-
-``` 
-
-
-
-
 ## Linear model (clog-log transformation)
-
-```{r}
-library(ggfortify)
-fit = lm(aqol6d_total_w_cloglog ~ PHQ9, data = baseline)
-summary(fit)
-
-newdata<-data.frame(PHQ9=0:27)
-newdata$aqol6d_total_w=1-exp(-exp(predict(fit,newdata=newdata)))
- 
-ggplot(baseline,aes(x = PHQ9, y= aqol6d_total_w )) +
-  geom_point() + 
-  geom_smooth(method = "loess", size = 1.5) +
-  geom_line(data=newdata,aes(x = PHQ9, y= aqol6d_total_w),col="red")  +
-  theme_bw() + labs(x="PHQ9 total score",y="AQoL-6D utility score")
-
-ggplot2::autoplot(fit, which = 1:6, ncol = 3, label.size = 3)
-
-
- 
-baseline %>% 
-    mutate(Predicted=1-exp(-exp(predict(fit))) ,
-         Original=aqol6d_total_w) %>%  
-    gather(variable, value, Predicted, Original) %>%
-    ggplot(aes(x = value, fill = variable)) +
-    geom_bkde(alpha=0.5) +
-    geom_rug() +
-    scale_fill_viridis( discrete = TRUE) +
-    theme_bw() +
-    theme(legend.position="bottom") +
-    labs( x="AQoL-6D utility score",fill="") 
-
-baseline %>% 
-    mutate(Simulated=1-exp(-exp(simulate(fit)$sim_1)) ,
-         Original=aqol6d_total_w) %>%  
-    gather(variable, value, Simulated, Original) %>%
-    ggplot(aes(x = value, fill = variable)) +
-    geom_bkde(alpha=0.5) +
-    geom_rug() +
-    scale_fill_viridis( discrete = TRUE) +
-    theme_bw() +
-    theme(legend.position="bottom") +
-    labs( x="AQoL-6D utility score",fill="") 
-
-
-baseline %>% 
-     mutate(Predicted=1-exp(-exp(predict(fit))) ,
-         Original=aqol6d_total_w) %>% 
-  ggplot(aes(x = Original, y=Predicted)) +
-  geom_point() + 
-  geom_smooth(method = "loess", size = 1.5) +
-  theme_bw() +
-  geom_abline(intercept = 0, slope = 1, color="red", 
-                 linetype="dashed", size=1.5) +
-  xlim(0, 1) + ylim(0, 1) 
-
-
-
-Rsquared<-NA 
-RMSE<-NA 
-MAE<-NA 
-RsquaredP<-NA 
-RMSEP<-NA 
-MAEP<-NA 
-for (i in 1:10) {
-  fit = lm(aqol6d_total_w_cloglog ~ PHQ9, data = baseline[-folds_10[[i]],])
-  pred<-1-exp(-exp(predict(fit))) 
-  Rsquared[i]=R2(pred, baseline[-folds_10[[i]],]$aqol6d_total_w, form = "traditional")
-  RMSE[i]=RMSE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
-  MAE[i]=MAE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
-  pred<-1-exp(-exp(predict(fit,newdata=baseline[folds_10[[i]],]))) 
-  RsquaredP[i]=R2(pred, baseline[folds_10[[i]],]$aqol6d_total_w, form = "traditional")
-  RMSEP[i]=RMSE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
-  MAEP[i]=MAE(pred, baseline[folds_10[[i]],]$aqol6d_total_w)
-} 
-
-
-n=n+1
-#save model fit
-summary_table[n,1]="OLS (cloglog)" 
-summary_table$Rsquare[n]= mean(Rsquared)
-summary_table$RMSE[n]= mean(RMSE)
-summary_table$MAE[n]=mean(MAE)
-summary_table$`Rsquare.prediction`[n]=mean(RsquaredP)
-summary_table$`RMSE.prediction`[n]=mean(RMSEP)
-summary_table$`MAE.prediction`[n]=mean(MAEP)
-
-``` 
-
-
-
-
-
 
 ## GLM (Gausian with log link)
 
 ```{r}
 library(ggfortify)
-fit = glm(aqol6d_total_w ~ PHQ9, data = baseline,family=gaussian(log), start=c(-0.1,-0.1)) 
+fit = glm(aqol6d_total_w ~ PHQ9, data = baseline,family=gaussian(log), start=c(-0.1,-0.1)) ##
 summary(fit)
 
 newdata<-data.frame(PHQ9=0:27)
-newdata$aqol6d_total_w=predict(fit,newdata=newdata,type="response")
+newdata$aqol6d_total_w=predict(fit,newdata=newdata,type="response") ##
  
 ggplot(baseline,aes(x = PHQ9, y= aqol6d_total_w )) +
   geom_point() + 
@@ -658,7 +346,7 @@ ggplot(baseline,aes(x = PHQ9, y= aqol6d_total_w )) +
 ggplot2::autoplot(fit, which = 1:6, ncol = 3, label.size = 3)
 
 baseline %>% 
-    mutate(Predicted=predict(fit,type="response"), 
+    mutate(Predicted=predict(fit,type="response"), ##
          Original=aqol6d_total_w) %>%  
     gather(variable, value, Predicted, Original) %>%
     ggplot(aes(x = value, fill = variable)) +
@@ -672,7 +360,7 @@ baseline %>%
 
  
 baseline %>% 
-    mutate(Simulated=simulate(fit)$sim_1, 
+    mutate(Simulated=simulate(fit)$sim_1, ###################### 
          Original=aqol6d_total_w) %>%  
     gather(variable, value, Simulated, Original) %>%
     ggplot(aes(x = value, fill = variable)) +
@@ -686,7 +374,7 @@ baseline %>%
 
 
 baseline %>% 
-     mutate(Predicted=predict(fit,type="response"),  
+     mutate(Predicted=predict(fit,type="response"),  ##
          Original=aqol6d_total_w) %>% 
   ggplot(aes(x = Original, y=Predicted)) +
   geom_point() + 
@@ -705,8 +393,8 @@ RsquaredP<-NA
 RMSEP<-NA 
 MAEP<-NA 
 for (i in 1:10) {
-  fit = glm(aqol6d_total_w ~ PHQ9, data = baseline[-folds_10[[i]],],family=gaussian(log), start=c(-0.1,-0.1)) 
-  pred<-predict(fit,type="response")
+  fit = glm(aqol6d_total_w ~ PHQ9, data = baseline[-folds_10[[i]],],family=gaussian(log), start=c(-0.1,-0.1)) ######################
+  pred<-predict(fit,type="response") ##################
   Rsquared[i]=R2(pred, baseline[-folds_10[[i]],]$aqol6d_total_w, form = "traditional")
   RMSE[i]=RMSE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
   MAE[i]=MAE(pred, baseline[-folds_10[[i]],]$aqol6d_total_w)
@@ -728,7 +416,6 @@ summary_table$`RMSE.prediction`[n]=mean(RMSEP)
 summary_table$`MAE.prediction`[n]=mean(MAEP)
 
 ``` 
-
 
 
 
@@ -764,7 +451,7 @@ baseline %>%
 
  
 baseline %>% 
-    mutate(Simulated=exp(predict(fit)+rnorm(n(),0,sigma(fit))), 
+    mutate(Simulated=exp(predict(fit)+rnorm(n(),0,sigma(fit))),  ##################
          Original=aqol6d_total_w) %>%  
     gather(variable, value, Simulated, Original) %>%
     ggplot(aes(x = value, fill = variable)) +
@@ -822,8 +509,6 @@ summary_table$`MAE.prediction`[n]=mean(MAEP)
 ``` 
 
 
-
-
 ## GLM (Binomial with logit link)
 
 ```{r}
@@ -856,7 +541,7 @@ baseline %>%
 
  
 baseline %>% 
-    mutate(Simulated=inv.logit(predict(fit)+rnorm(n(),0,sigma(fit))), 
+    mutate(Simulated=inv.logit(predict(fit)+rnorm(n(),0,sigma(fit))),  ##########
          Original=aqol6d_total_w) %>%  
     gather(variable, value, Simulated, Original) %>%
     ggplot(aes(x = value, fill = variable)) +
@@ -1005,6 +690,7 @@ summary_table$`RMSE.prediction`[n]=mean(RMSEP)
 summary_table$`MAE.prediction`[n]=mean(MAEP)
 
 ``` 
+
 
 ## Beta regression log link
 
@@ -1163,7 +849,7 @@ summary_table$`MAE.prediction`[n]=mean(MAEP)
 
 ```{r}
 library(betareg)
-fit = betareg( aqol6d_total_w  ~ PHQ9, data = baseline, link="cloglog",control=betareg.control(start=c(-0.5,-0.1,3)))
+fit = betareg( aqol6d_total_w  ~ PHQ9, data = baseline, link="cloglog",control=betareg.control(start=c(-0.5,-0.1,3))) ###############
 summary(fit)
 
 newdata<-data.frame(PHQ9=0:27)
