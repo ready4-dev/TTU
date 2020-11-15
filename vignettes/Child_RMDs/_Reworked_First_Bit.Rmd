@@ -65,7 +65,33 @@ make_one_predr_mdl <- function(data_tb,
                        transform_dep_var_nm(dep_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr),
                        " ~ ",
                        predr_var_nm_1L_chr, 
-                       ", data = data_tb)")
+                       ", data = data_tb",
+                       ifelse(!is.na(ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                   match_var_nm_1L_chr = "short_name_chr",
+                                                   match_value_xx = mdl_type_1L_chr,
+                                                   target_var_nm_1L_chr = "family_chr",
+                                                   evaluate_lgl = F)),
+                              paste0(", family = ", 
+                                     ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                   match_var_nm_1L_chr = "short_name_chr",
+                                                   match_value_xx = mdl_type_1L_chr,
+                                                   target_var_nm_1L_chr = "family_chr",
+                                                   evaluate_lgl = F)),#", ADD ME",
+                              ""),
+                       ifelse(!is.na(ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                   match_var_nm_1L_chr = "short_name_chr",
+                                                   match_value_xx = mdl_type_1L_chr,
+                                                   target_var_nm_1L_chr = "start_chr",
+                                                   evaluate_lgl = F)),
+                              paste0(", start=c(",
+                                     ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                   match_var_nm_1L_chr = "short_name_chr",
+                                                   match_value_xx = mdl_type_1L_chr,
+                                                   target_var_nm_1L_chr = "start_chr",
+                                                   evaluate_lgl = F),
+                                     ")"),#", AND ME",
+                              ""),
+                       ")")
   mdl <- eval(parse(text = mdl_1L_chr))
   return(mdl)
 }
@@ -87,12 +113,19 @@ make_smry_of_one_predr_mdl <- function(data_tb,
                                        mdl_type_1L_chr = "OLS_NTF",
                                        mdl_types_lup = NULL){
     if(is.null(mdl_types_lup))
-    mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
+      mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
     mdl_desc_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
                                                    match_var_nm_1L_chr = "short_name_chr",
                                                    match_value_xx = mdl_type_1L_chr,
                                                    target_var_nm_1L_chr = "long_name_chr",
                                                    evaluate_lgl = F)
+        pred_type_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                   match_var_nm_1L_chr = "short_name_chr",
+                                                   match_value_xx = mdl_type_1L_chr,
+                                                   target_var_nm_1L_chr = "pred_type_chr",
+                                                   evaluate_lgl = F)
+        if(is.na(pred_type_1L_chr))
+          pred_type_1L_chr <- NULL
 smry_of_one_predr_mdl_tb <- purrr::map_dfr(folds_ls,
                ~ {
                    mdl <- make_one_predr_mdl(data_tb,
@@ -101,8 +134,8 @@ smry_of_one_predr_mdl_tb <- purrr::map_dfr(folds_ls,
                                predr_var_nm_1L_chr = predr_var_nm_1L_chr,
                                mdl_type_1L_chr = mdl_type_1L_chr,
                                mdl_types_lup = mdl_types_lup) 
-  pred_old_dbl <- predict(mdl)
-  pred_new_dbl <- predict(mdl,newdata=data_tb[.x,]) %>% calculate_dep_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
+  pred_old_dbl <- predict(mdl, type = pred_type_1L_chr)
+  pred_new_dbl <- predict(mdl,newdata=data_tb[.x,], type = pred_type_1L_chr) %>% calculate_dep_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
                                                                                tfmn_is_outp_1L_lgl = T)
   tibble::tibble(Rsquared = caret::R2(pred_old_dbl, data_tb[-.x,] %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr)), form = "traditional"),
   RMSE = caret::RMSE(pred_old_dbl, data_tb[-.x,] %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))),
@@ -251,13 +284,13 @@ mdl_types_lup <- dplyr::bind_rows(FBaqol::mdl_types_lup,
                                      "OLS_LOGIT",
                                      "OLS_LOGLOG",
                                      "OLS_CLL",
-                                    "GLM_GSN_LOG_NTF",
-                                    "GLM_BNL_LOG_NTF",
-                                    "GLM_BNL_LGT_NTF",
-                                    "GLM_BNL_CLL_NTF",
-                                    "BET_LOG_NTF",
-                                    "BET_LGT_NTF",
-                                    "BET_CLL_NTF"),
+                                    "GLM_GSN_LOG",
+                                    "GLM_BNL_LOG",
+                                    "GLM_BNL_LGT",
+                                    "GLM_BNL_CLL",
+                                    "BET_LOG",
+                                    "BET_LGT",
+                                    "BET_CLL"),
                long_name_chr = c("Ordinary Least Squares (No transformation)",
                                     "Ordinary Least Squares (Log transformation)",
                                     "Ordinary Least Squares (Logit transformation)",
@@ -270,15 +303,21 @@ mdl_types_lup <- dplyr::bind_rows(FBaqol::mdl_types_lup,
                                  "Beta Regression Model with Binomial distribution and log link",
                                  "Beta Regression Model with Binomial distribution and logit link",
                                  "Beta Regression Model with Binomial distribution and complementary log log link"))) %>%
-  dplyr::mutate(fn_chr = c(NA_character_,rep("lm",6),rep("glm",4),rep("betareg::betareg",3)),
+  dplyr::mutate(control_chr = c(rep(NA_character_,11),rep("betareg.control",3)),
                 family_chr = c(rep(NA_character_,7),"gaussian(log)","quasibinomial(log)","quasibinomial(logit)","quasibinomial(cloglog)", rep(NA_character_,3)),
+                fn_chr = c(NA_character_,rep("lm",6),rep("glm",4),rep("betareg::betareg",3)),
                 start_chr = c(rep(NA_character_,7),
                               rep("-0.1,-0.1",4),
                               rep("-0.5,-0.1,3",3)),
-                control_chr = c(rep(NA_character_,11),rep("betareg.control",3)),
-                predict_type = c(rep(NA_character_,7),
+                
+                pred_type_chr = c(rep(NA_character_,7),
                                  rep("response",7)),
-                binml_tfm_lgl = c(rep(F,8),rep(T,3),rep(F,3)))
+                tfmn_chr = dplyr::case_when(startsWith(short_name_chr, "OLS_") ~ purrr::map_chr(short_name_chr, ~ {
+                  idx_1L_int <- 1 + stringi::stri_locate_last_fixed(.x,"_")[1,1] %>% as.vector()
+                  stringr::str_sub(.x, start = idx_1L_int)
+                  }),
+                                            T ~ "NTF"),
+                tfmn_for_bnml_lgl = c(rep(F,8),rep(T,3),rep(F,3)))
 ```
 
 ```{r}
@@ -298,13 +337,16 @@ predr_var_desc_1L_chr <- "PHQ9 total score"
 predr_vals_dbl <- 0:27
 purrr::map_dfr(mdl_types_chr,
                ~ {
-                 idx_1L_int <- 1 + stringi::stri_locate_last_fixed(.x,"_")[1,1] %>% as.vector()
-                 tfmn_1L_chr <- stringr::str_sub(.x, start = idx_1L_int)
+                 tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+                                             match_var_nm_1L_chr = "short_name_chr",
+                                             match_value_xx = .x,
+                                             target_var_nm_1L_chr = "tfmn_chr",
+                                             evaluate_lgl = F)
                  write_one_predr_mdl_outp(bl_tb,
                          tfmn_1L_chr = tfmn_1L_chr,
                          predr_var_nm_1L_chr = predr_var_nm_1L_chr, 
                          predr_var_desc_1L_chr = predr_var_desc_1L_chr,
-                         predr_vals_dbl = 0:27,
+                         predr_vals_dbl = predr_vals_dbl,
                          mdl_type_1L_chr = .x,
                          path_to_write_to_1L_chr = path_to_write_to_1L_chr,
                          mdl_types_lup = mdl_types_lup,
@@ -326,6 +368,35 @@ purrr::map_dfr(mdl_types_chr,
 ## Linear model (log-log transformation)
 
 ## Linear model (clog-log transformation)
+
+
+```{r}
+mdl_types_chr <- c("GLM_GSN_LOG")
+predr_var_desc_1L_chr <- "PHQ9 total score"
+predr_vals_dbl <- 0:27
+.x <- mdl_types_chr[1]
+purrr::map_dfr(mdl_types_chr,
+               ~ {
+                 tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+                                             match_var_nm_1L_chr = "short_name_chr",
+                                             match_value_xx = .x,
+                                             target_var_nm_1L_chr = "tfmn_chr",
+                                             evaluate_lgl = F)
+                 write_one_predr_mdl_outp(bl_tb,
+                         tfmn_1L_chr = tfmn_1L_chr,
+                         predr_var_nm_1L_chr = predr_var_nm_1L_chr, 
+                         predr_var_desc_1L_chr = predr_var_desc_1L_chr,
+                         predr_vals_dbl = predr_vals_dbl,
+                         mdl_type_1L_chr = .x,
+                         path_to_write_to_1L_chr = path_to_write_to_1L_chr,
+                         mdl_types_lup = mdl_types_lup,
+                         mdl_fl_nm_1L_chr = paste0(predr_var_nm_1L_chr,
+                                                   "_",
+                                                   .x,
+                                                   "_MDL"
+                                                   ))
+               })
+```
 
 ## GLM (Gausian with log link)
 
