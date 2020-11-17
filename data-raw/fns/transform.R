@@ -6,8 +6,62 @@ transform_dep_var_nm <- function(dep_var_nm_1L_chr,
                                  tfmn_1L_chr = "NTF"){
   tfd_dep_var_nm_1L_chr <- paste0(dep_var_nm_1L_chr,
                                   ifelse(tfmn_1L_chr == "NTF","",paste0("_",tfmn_1L_chr))
-                                  )
+  )
   return(tfd_dep_var_nm_1L_chr)
+}
+transform_data_tb_for_cmprsn <- function(data_tb,
+                                         mdl,
+                                         dep_var_nm_1L_chr = "aqol6d_total_w",
+                                         source_data_nm_1L_chr = "Original",
+                                         tf_type_1L_chr = "Predicted",
+                                         pred_type_1L_chr = NULL,
+                                         tfmn_for_bnml_1L_lgl = F,
+                                         family_1L_chr = NA_character_){
+  if(tf_type_1L_chr == "Predicted")
+    new_data_dbl <- predict(mdl, type = pred_type_1L_chr)
+  if(tf_type_1L_chr == "Simulated" & !tfmn_for_bnml_1L_lgl)
+    new_data_dbl <- simulate(mdl)$sim_1
+  if(tf_type_1L_chr == "Simulated" & tfmn_for_bnml_1L_lgl)
+    new_data_dbl <- (predict(mdl)+rnorm(nrow(data_tb),0,sigma(mdl))) %>%
+      calculate_dep_var_tfmn(tfmn_1L_chr = ifelse(family_1L_chr =="quasibinomial(log)",
+                                                  "LOG",
+                                                  ifelse(family_1L_chr =="quasibinomial(logit)",
+                                                         "LOGIT",
+                                                         ifelse(family_1L_chr =="quasibinomial(cloglog)",
+                                                                "CLL",
+                                                                "NTF"))),
+                             tfmn_is_outp_1L_lgl = T)
+  tfd_data_tb <- data_tb %>%
+    dplyr::mutate(!!rlang::sym(tf_type_1L_chr) := new_data_dbl,
+                  !!rlang::sym(source_data_nm_1L_chr) := !!rlang::sym(dep_var_nm_1L_chr))
+  return(tfd_data_tb)
+}
+transform_ds_for_mdlng <- function(data_tb,
+                                   dep_var_nm_1L_chr = "aqol6d_total_w",
+                                   predr_var_nm_1L_chr,
+                                   covar_var_nms_chr = NA_character_){
+  mdl_vars_chr <- c(names(data_tb)[names(data_tb) %>% startsWith(dep_var_nm_1L_chr)],predr_var_nm_1L_chr,covar_var_nms_chr) %>% purrr::discard(is.na)
+  tfd_data_tb <- data_tb %>%
+    tidyr::drop_na(!!!rlang::syms(mdl_vars_chr)) %>%
+    dplyr::select(!!!rlang::syms(mdl_vars_chr))
+  return(tfd_data_tb)
+}
+transform_ds_for_tstng <- function(data_tb,
+                                   dep_var_nm_1L_chr = "aqol6d_total_w",
+                                   dep_var_max_val_1L_dbl = 0.999,
+                                   candidate_predrs_chr = NA_character_,
+                                   covar_var_nms_chr = NA_character_,
+                                   round_var_nm_1L_chr = "round",
+                                   round_val_1L_chr = "Baseline",
+                                   remove_all_mssng_1L_lgl = F){
+  vars_to_keep_chr <- c(dep_var_nm_1L_chr, candidate_predrs_chr, covar_var_nms_chr) %>% purrr::discard(is.na)
+  tfd_data_tb <- data_tb %>%
+    dplyr::filter(!!rlang::sym(round_var_nm_1L_chr) == round_val_1L_chr) %>%
+    dplyr::select(!!!rlang::syms(vars_to_keep_chr)) %>%
+    dplyr::mutate(!!rlang::sym(dep_var_nm_1L_chr) := ifelse(!!rlang::sym(dep_var_nm_1L_chr) == 1, 0.999, !!rlang::sym(dep_var_nm_1L_chr)))
+  if(remove_all_mssng_1L_lgl)
+    tfd_data_tb <- tfd_data_tb %>% na.omit()
+  return(tfd_data_tb)
 }
 transform_tb_to_mdl_inp <- function(data_tb,
                                     dep_var_nm_1L_chr = "aqol6d_total_w",

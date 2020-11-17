@@ -1,3 +1,41 @@
+plot_auto_lm <- function(mdl, # Requires ggfortify
+                         which_dbl = 1:6,
+                         ncol_1L_int = 3L,
+                         label_size_1L_int = 3){
+  require(ggfortify)
+  plt <- ggplot2::autoplot(mdl,which = which_dbl, ncol = ncol_1L_int, label.size = label_size_1L_int)
+  if(6 %in% which_dbl)
+    plt[which(which_dbl==6)] <- plt[which(which_dbl==6)] + ggtitle("Cook's vs Leverage")
+  plt
+}
+plot_lnr_cmprsn <- function(data_tb,
+                            predn_ds_tb,
+                            dep_var_nm_1L_chr = "aqol6d_total_w",
+                            predr_var_nm_1L_chr,
+                            dep_var_desc_1L_chr = "AQoL-6D utility score",
+                            predr_var_desc_1L_chr){
+  data_tb <- data_tb %>%
+    dplyr::filter(!is.na(!!rlang::sym(predr_var_nm_1L_chr)))
+
+  ggplot2::ggplot(data_tb,ggplot2::aes(x = !!rlang::sym(predr_var_nm_1L_chr), y = !!rlang::sym(dep_var_nm_1L_chr) )) +
+    ggplot2::geom_point() +
+    ggplot2::geom_smooth(method = "loess", size = 1.5) +
+    ggplot2::geom_line(data = predn_ds_tb, ggplot2::aes(x = !!rlang::sym(predr_var_nm_1L_chr), y = !!rlang::sym(dep_var_nm_1L_chr)),col="red")  +
+    ggplot2::theme_bw() + ggplot2::labs(x= predr_var_desc_1L_chr, y= dep_var_desc_1L_chr)
+}
+plot_lnr_cmprsn_sctr_plt <- function(tfd_data_tb,
+                                     dep_var_nm_1L_chr = "aqol6d_total_w",
+                                     predd_val_var_nm_1L_chr = "Predicted"){
+  tfd_data_tb %>%
+    ggplot2::ggplot(ggplot2::aes(x = !!rlang::sym(dep_var_nm_1L_chr),
+                                 y = !!rlang::sym(predd_val_var_nm_1L_chr))) +
+    ggplot2::geom_point() +
+    ggplot2::geom_smooth(method = "loess", size = 1.5) +
+    ggplot2::theme_bw() +
+    ggplot2::geom_abline(intercept = 0, slope = 1, color="red",
+                         linetype="dashed", size=1.5) +
+    ggplot2::xlim(0, 1) + ggplot2::ylim(0, 1)
+}
 plot_obsd_predd_dnst <- function(tfd_data_tb,
                                  dep_var_desc_1L_chr = "AQoL-6D utility score",
                                  predd_val_var_nm_1L_chr = "Predicted"){

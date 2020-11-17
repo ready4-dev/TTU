@@ -252,6 +252,15 @@ make_dim_sclg_cons_dbl <- function(domains_chr,
                                                                     evaluate_lgl = F))
   return(dim_sclg_cons_dbl)
 }
+make_folds_ls <- function(data_tb,
+                          dep_var_nm_1L_chr = "aqol6d_total_w",
+                          n_folds_1L_int = 10L){
+  folds_ls <- caret::createFolds(data_tb %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr)) ,
+                                 k = n_folds_1L_int,
+                                 list = TRUE,
+                                 returnTrain = FALSE)
+  return(folds_ls)
+}
 make_item_wrst_wghts_ls_ls <- function(domain_items_ls,
                                        itm_wrst_wghts_lup_tb){
   item_wrst_wghts_ls_ls <- domain_items_ls %>%
@@ -322,6 +331,82 @@ make_knit_pars_ls <- function(mdl_smry_dir_1L_chr,
                               })
   return(knit_pars_ls)
 }
+make_mdl <- function(data_tb,
+                     dep_var_nm_1L_chr = "aqol6d_total_w",
+                     tfmn_1L_chr = "NTF",
+                     predr_var_nm_1L_chr,
+                     covar_var_nms_chr = NA_character_,
+                     mdl_type_1L_chr = "OLS_NTF",
+                     mdl_types_lup = NULL,
+                     control_1L_chr = NA_character_,
+                     start_1L_chr = NULL){
+  if(is.null(mdl_types_lup))
+    mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
+  data_tb <- transform_ds_for_mdlng(data_tb,
+                                    dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                                    predr_var_nm_1L_chr = predr_var_nm_1L_chr,
+                                    covar_var_nms_chr = covar_var_nms_chr)
+  if(is.null(start_1L_chr)){
+    start_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                match_var_nm_1L_chr = "short_name_chr",
+                                                match_value_xx = mdl_type_1L_chr,
+                                                target_var_nm_1L_chr = "start_chr",
+                                                evaluate_lgl = F)
+  }
+  if(!is.na(control_1L_chr)){
+    idx_1L_int <- 1 + stringi::stri_locate_last_fixed(mdl_type_1L_chr,"_")[1,1] %>% as.vector()
+    link_1L_chr <- stringr::str_sub(mdl_type_1L_chr, start = idx_1L_int)
+    link_1L_chr <- ifelse(link_1L_chr=="LOG",
+                          "log",
+                          ifelse(link_1L_chr == "LGT",
+                                 "logit",
+                                 ifelse(link_1L_chr == "CLL",
+                                        "cloglog",
+                                        "ERROR")))
+  }
+  mdl_1L_chr <- paste0(ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                   match_var_nm_1L_chr = "short_name_chr",
+                                                   match_value_xx = mdl_type_1L_chr,
+                                                   target_var_nm_1L_chr = "fn_chr",
+                                                   evaluate_lgl = F),
+                       "(",
+                       transform_dep_var_nm(dep_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr),
+                       " ~ ",
+                       predr_var_nm_1L_chr,
+                       ifelse(is.na(covar_var_nms_chr[1]),
+                              "",
+                              paste0(" + ",paste0(covar_var_nms_chr, collapse = " + "))),
+                       ", data = data_tb",
+                       ifelse(!is.na(ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                                 match_var_nm_1L_chr = "short_name_chr",
+                                                                 match_value_xx = mdl_type_1L_chr,
+                                                                 target_var_nm_1L_chr = "family_chr",
+                                                                 evaluate_lgl = F)),
+                              paste0(", family = ",
+                                     ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                                 match_var_nm_1L_chr = "short_name_chr",
+                                                                 match_value_xx = mdl_type_1L_chr,
+                                                                 target_var_nm_1L_chr = "family_chr",
+                                                                 evaluate_lgl = F)),
+                              ""),
+                       ifelse(!is.na(start_1L_chr),
+                              ", ",
+                              ""),
+                       ifelse(!is.na(control_1L_chr),
+                              paste0("link=\"",link_1L_chr,"\",control=",control_1L_chr,"("),
+                              ""),
+                       ifelse(!is.na(start_1L_chr),
+                              paste0("start=c(",
+                                     start_1L_chr,
+                                     ")"),
+                              ""),
+                       ifelse(!is.na(control_1L_chr),
+                              ")",
+                              ""),
+                       ")")
+  mdl <- eval(parse(text = mdl_1L_chr))
+  return(mdl)
+}
 make_mdl_nms_ls <- function(predr_vars_nms_ls,
                             mdl_types_chr){
   mdl_nms_ls <- purrr::map2(predr_vars_nms_ls,
@@ -351,6 +436,16 @@ make_pdef_cor_mat_mat <- function(lower_diag_mat){
     pdef_cor_mat <- psych::cor.smooth(pdef_cor_mat)
   }
   return(pdef_cor_mat)
+}
+make_predn_ds_with_one_predr <- function(mdl,
+                                         dep_var_nm_1L_chr = "aqol6d_total_w",
+                                         tfmn_1L_chr = "NTF",
+                                         predr_var_nm_1L_chr,
+                                         predr_vals_dbl,
+                                         pred_type_1L_chr = NULL){
+  predn_ds_tb <- tibble::tibble(!!rlang::sym(predr_var_nm_1L_chr) := predr_vals_dbl)
+  predn_ds_tb <- predn_ds_tb %>% dplyr::mutate(!!rlang::sym(dep_var_nm_1L_chr) := predict(mdl, newdata = predn_ds_tb, type = pred_type_1L_chr) %>% calculate_dep_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, tfmn_is_outp_1L_lgl = T))
+  return(predn_ds_tb)
 }
 make_predr_vars_nms_ls <- function(main_predrs_chr,
                                    covars_ls){
@@ -399,6 +494,55 @@ make_smry_of_brm_mdl <- function(mdl_ls,
     dplyr::rename (SE=Est.Error) %>%
     dplyr::select(Model, Parameter, Estimate, SE, `95% CI`)
   return(smry_of_brm_mdl_tb)
+}
+make_smry_of_mdl <- function(data_tb,
+                             mdl,
+                             n_folds_1L_int = 10,
+                             dep_var_nm_1L_chr = "aqol6d_total_w",
+                             start_1L_chr = NULL,
+                             tfmn_1L_chr = "NTF",
+                             predr_var_nm_1L_chr,
+                             covar_var_nms_chr = NA_character_,
+                             mdl_type_1L_chr = "OLS_NTF",
+                             mdl_types_lup = NULL,
+                             pred_type_1L_chr = NULL){
+  if(is.null(mdl_types_lup))
+    mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
+  data_tb <- data_tb %>%
+    dplyr::filter(!is.na(!!rlang::sym(predr_var_nm_1L_chr)))
+  data_tb <- transform_ds_for_mdlng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
+  mdl_desc_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                 match_var_nm_1L_chr = "short_name_chr",
+                                                 match_value_xx = mdl_type_1L_chr,
+                                                 target_var_nm_1L_chr = "long_name_chr",
+                                                 evaluate_lgl = F)
+  folds_ls <- make_folds_ls(data_tb,
+                            dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                            n_folds_1L_int = n_folds_1L_int)
+  smry_of_one_predr_mdl_tb <- purrr::map_dfr(folds_ls,
+                                             ~ {
+                                               mdl <- make_mdl(data_tb,
+                                                               dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                                                               start_1L_chr = start_1L_chr,
+                                                               tfmn_1L_chr = tfmn_1L_chr,
+                                                               predr_var_nm_1L_chr = predr_var_nm_1L_chr,
+                                                               covar_var_nms_chr = covar_var_nms_chr,
+                                                               mdl_type_1L_chr = mdl_type_1L_chr,
+                                                               mdl_types_lup = mdl_types_lup)
+                                               pred_old_dbl <- predict(mdl, type = pred_type_1L_chr)
+                                               pred_new_dbl <- predict(mdl,newdata = data_tb[.x,], type = pred_type_1L_chr) %>% calculate_dep_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
+                                                                                                                                                       tfmn_is_outp_1L_lgl = T)
+                                               tibble::tibble(Rsquared = caret::R2(pred_old_dbl, data_tb[-.x,] %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr)), form = "traditional"),
+                                                              RMSE = caret::RMSE(pred_old_dbl, data_tb[-.x,] %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))),
+                                                              MAE = caret::MAE(pred_old_dbl, data_tb[-.x,] %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))),
+                                                              RsquaredP = caret::R2(pred_new_dbl, data_tb[.x,] %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr)), form = "traditional"),
+                                                              RMSEP = caret::RMSE(pred_new_dbl, data_tb[.x,] %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))),
+                                                              MAEP = caret::MAE(pred_new_dbl, data_tb[.x,] %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))))
+                                             }
+  ) %>% dplyr::summarise_all(mean) %>%
+    dplyr::mutate(Model = mdl_desc_1L_chr) %>%
+    dplyr::select(Model, dplyr::everything())
+  return(smry_of_one_predr_mdl_tb)
 }
 make_smry_of_ts_mdl <- function(data_tb,
                                 fn,

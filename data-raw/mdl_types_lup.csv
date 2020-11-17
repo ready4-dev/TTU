@@ -1,3 +1,15 @@
-"short_name_chr","long_name_chr"
-"GSN_LOG","Generalised Linear Mixed Model with Gaussian distribution and log link"
-"CLL_TFN","Linear Mixed Model with clog-log transformation"
+"short_name_chr","long_name_chr","control_chr","family_chr","fn_chr","start_chr","pred_type_chr","tfmn_chr","tfmn_for_bnml_lgl"
+"GSN_LOG","Generalised Linear Mixed Model with Gaussian distribution and log link",NA,NA,NA,NA,NA,"NTF",FALSE
+"CLL_TFN","Linear Mixed Model with clog-log transformation",NA,NA,"lm",NA,NA,"NTF",FALSE
+"OLS_NTF","Ordinary Least Squares (No transformation)",NA,NA,"lm",NA,NA,"NTF",FALSE
+"OLS_LOG","Ordinary Least Squares (Log transformation)",NA,NA,"lm",NA,NA,"LOG",FALSE
+"OLS_LOGIT","Ordinary Least Squares (Logit transformation)",NA,NA,"lm",NA,NA,"LOGIT",FALSE
+"OLS_LOGLOG","Ordinary Least Squares (Log Log transformation)",NA,NA,"lm",NA,NA,"LOGLOG",FALSE
+"OLS_CLL","Ordinary Least Squares (Complementary Log Log transformation)",NA,NA,"lm",NA,NA,"CLL",FALSE
+"GLM_GSN_LOG","Generalised Linear Mixed Model with Gaussian distribution and log link",NA,"gaussian(log)","glm","-0.1,-0.1","response","NTF",FALSE
+"GLM_BNL_LOG","Generalised Linear Mixed Model with Binomial distribution and log link",NA,"quasibinomial(log)","glm","-0.1,-0.1","response","NTF",TRUE
+"GLM_BNL_LGT","Generalised Linear Mixed Model with Binomial distribution and logit link",NA,"quasibinomial(logit)","glm","-0.1,-0.1","response","NTF",TRUE
+"GLM_BNL_CLL","Generalised Linear Mixed Model with Binomial distribution and complementary log log link",NA,"quasibinomial(cloglog)","glm","-0.1,-0.1","response","NTF",TRUE
+"BET_LOG","Beta Regression Model with Binomial distribution and log link","betareg::betareg.control",NA,"betareg::betareg","-0.5,-0.1,3","response","NTF",FALSE
+"BET_LGT","Beta Regression Model with Binomial distribution and logit link","betareg::betareg.control",NA,"betareg::betareg","-0.5,-0.1,3","response","NTF",FALSE
+"BET_CLL","Beta Regression Model with Binomial distribution and complementary log log link","betareg::betareg.control",NA,"betareg::betareg","-0.5,-0.1,3","response","NTF",FALSE

@@ -313,6 +313,23 @@ make_domain_items_ls <- function (domain_qs_lup_tb, item_pfx_1L_chr)
         .x)) %>% stats::setNames(domains_chr)
     return(domain_items_ls)
 }
+#' Make folds
+#' @description make_folds_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make folds list. The function returns Folds (a list).
+#' @param data_tb Data (a tibble)
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param n_folds_1L_int N folds (an integer vector of length one), Default: 10
+#' @return Folds (a list)
+#' @rdname make_folds_ls
+#' @export 
+#' @importFrom caret createFolds
+#' @importFrom dplyr pull
+#' @importFrom rlang sym
+make_folds_ls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", n_folds_1L_int = 10L) 
+{
+    folds_ls <- caret::createFolds(data_tb %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr)), 
+        k = n_folds_1L_int, list = TRUE, returnTrain = FALSE)
+    return(folds_ls)
+}
 #' Make item wrst wghts
 #' @description make_item_wrst_wghts_ls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make item wrst wghts list list. The function returns Item wrst wghts (a list of lists).
 #' @param domain_items_ls Domain items (a list)
@@ -383,6 +400,65 @@ make_knit_pars_ls <- function (mdl_smry_dir_1L_chr, mdl_types_chr, predr_vars_nm
     })
     return(knit_pars_ls)
 }
+#' Make mdl
+#' @description make_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make mdl. The function is called for its side effects and does not return a value.
+#' @param data_tb Data (a tibble)
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param tfmn_1L_chr Tfmn (a character vector of length one), Default: 'NTF'
+#' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
+#' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
+#' @param mdl_type_1L_chr Mdl type (a character vector of length one), Default: 'OLS_NTF'
+#' @param mdl_types_lup Mdl types (a lookup table), Default: NULL
+#' @param control_1L_chr Control (a character vector of length one), Default: 'NA'
+#' @param start_1L_chr Start (a character vector of length one), Default: NULL
+#' @return NA ()
+#' @rdname make_mdl
+#' @export 
+#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom stringi stri_locate_last_fixed
+#' @importFrom stringr str_sub
+make_mdl <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", tfmn_1L_chr = "NTF", 
+    predr_var_nm_1L_chr, covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF", 
+    mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NULL) 
+{
+    if (is.null(mdl_types_lup)) 
+        mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", 
+            envir = environment())
+    data_tb <- transform_ds_for_mdlng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
+        predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
+    if (is.null(start_1L_chr)) {
+        start_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+            match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
+            target_var_nm_1L_chr = "start_chr", evaluate_lgl = F)
+    }
+    if (!is.na(control_1L_chr)) {
+        idx_1L_int <- 1 + stringi::stri_locate_last_fixed(mdl_type_1L_chr, 
+            "_")[1, 1] %>% as.vector()
+        link_1L_chr <- stringr::str_sub(mdl_type_1L_chr, start = idx_1L_int)
+        link_1L_chr <- ifelse(link_1L_chr == "LOG", "log", ifelse(link_1L_chr == 
+            "LGT", "logit", ifelse(link_1L_chr == "CLL", "cloglog", 
+            "ERROR")))
+    }
+    mdl_1L_chr <- paste0(ready4fun::get_from_lup_obj(mdl_types_lup, 
+        match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
+        target_var_nm_1L_chr = "fn_chr", evaluate_lgl = F), "(", 
+        transform_dep_var_nm(dep_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr), 
+        " ~ ", predr_var_nm_1L_chr, ifelse(is.na(covar_var_nms_chr[1]), 
+            "", paste0(" + ", paste0(covar_var_nms_chr, collapse = " + "))), 
+        ", data = data_tb", ifelse(!is.na(ready4fun::get_from_lup_obj(mdl_types_lup, 
+            match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
+            target_var_nm_1L_chr = "family_chr", evaluate_lgl = F)), 
+            paste0(", family = ", ready4fun::get_from_lup_obj(mdl_types_lup, 
+                match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
+                target_var_nm_1L_chr = "family_chr", evaluate_lgl = F)), 
+            ""), ifelse(!is.na(start_1L_chr), ", ", ""), ifelse(!is.na(control_1L_chr), 
+            paste0("link=\"", link_1L_chr, "\",control=", control_1L_chr, 
+                "("), ""), ifelse(!is.na(start_1L_chr), paste0("start=c(", 
+            start_1L_chr, ")"), ""), ifelse(!is.na(control_1L_chr), 
+            ")", ""), ")")
+    mdl <- eval(parse(text = mdl_1L_chr))
+    return(mdl)
+}
 #' Make mdl names
 #' @description make_mdl_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make mdl names list. The function returns Mdl names (a list).
 #' @param predr_vars_nms_ls Predr vars names (a list)
@@ -432,6 +508,31 @@ make_pdef_cor_mat_mat <- function (lower_diag_mat)
         pdef_cor_mat <- psych::cor.smooth(pdef_cor_mat)
     }
     return(pdef_cor_mat)
+}
+#' Make predn dataset with one predr
+#' @description make_predn_ds_with_one_predr() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predn dataset with one predr. The function returns Predn dataset (a tibble).
+#' @param ... Additional arguments
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param tfmn_1L_chr Tfmn (a character vector of length one), Default: 'NTF'
+#' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
+#' @param predr_vals_dbl Predr values (a double vector)
+#' @param pred_type_1L_chr Pred type (a character vector of length one), Default: NULL
+#' @return Predn dataset (a tibble)
+#' @rdname make_predn_ds_with_one_predr
+#' @export 
+#' @importFrom tibble tibble
+#' @importFrom rlang sym
+#' @importFrom dplyr mutate
+make_predn_ds_with_one_predr <- function (mdl, dep_var_nm_1L_chr = "aqol6d_total_w", tfmn_1L_chr = "NTF", 
+    predr_var_nm_1L_chr, predr_vals_dbl, pred_type_1L_chr = NULL) 
+{
+    predn_ds_tb <- tibble::tibble(`:=`(!!rlang::sym(predr_var_nm_1L_chr), 
+        predr_vals_dbl))
+    predn_ds_tb <- predn_ds_tb %>% dplyr::mutate(`:=`(!!rlang::sym(dep_var_nm_1L_chr), 
+        predict(mdl, newdata = predn_ds_tb, type = pred_type_1L_chr) %>% 
+            calculate_dep_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, 
+                tfmn_is_outp_1L_lgl = T)))
+    return(predn_ds_tb)
 }
 #' Make predr vars names
 #' @description make_predr_vars_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predr vars names list. The function returns Predr vars names (a list).
@@ -494,6 +595,69 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_t
         ",", u.95..CI)) %>% dplyr::rename(SE = Est.Error) %>% 
         dplyr::select(Model, Parameter, Estimate, SE, `95% CI`)
     return(smry_of_brm_mdl_tb)
+}
+#' Make smry of mdl
+#' @description make_smry_of_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of mdl. The function returns Smry of one predr mdl (a tibble).
+#' @param data_tb Data (a tibble)
+#' @param ... Additional arguments
+#' @param n_folds_1L_int N folds (an integer vector of length one), Default: 10
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param start_1L_chr Start (a character vector of length one), Default: NULL
+#' @param tfmn_1L_chr Tfmn (a character vector of length one), Default: 'NTF'
+#' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
+#' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
+#' @param mdl_type_1L_chr Mdl type (a character vector of length one), Default: 'OLS_NTF'
+#' @param mdl_types_lup Mdl types (a lookup table), Default: NULL
+#' @param pred_type_1L_chr Pred type (a character vector of length one), Default: NULL
+#' @return Smry of one predr mdl (a tibble)
+#' @rdname make_smry_of_mdl
+#' @export 
+#' @importFrom dplyr filter pull summarise_all mutate select everything
+#' @importFrom rlang sym
+#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom purrr map_dfr
+#' @importFrom tibble tibble
+#' @importFrom caret R2 RMSE MAE
+make_smry_of_mdl <- function (data_tb, mdl, n_folds_1L_int = 10, dep_var_nm_1L_chr = "aqol6d_total_w", 
+    start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, 
+    covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF", 
+    mdl_types_lup = NULL, pred_type_1L_chr = NULL) 
+{
+    if (is.null(mdl_types_lup)) 
+        mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", 
+            envir = environment())
+    data_tb <- data_tb %>% dplyr::filter(!is.na(!!rlang::sym(predr_var_nm_1L_chr)))
+    data_tb <- transform_ds_for_mdlng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
+        predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
+    mdl_desc_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+        match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
+        target_var_nm_1L_chr = "long_name_chr", evaluate_lgl = F)
+    folds_ls <- make_folds_ls(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
+        n_folds_1L_int = n_folds_1L_int)
+    smry_of_one_predr_mdl_tb <- purrr::map_dfr(folds_ls, ~{
+        mdl <- make_mdl(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
+            start_1L_chr = start_1L_chr, tfmn_1L_chr = tfmn_1L_chr, 
+            predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr, 
+            mdl_type_1L_chr = mdl_type_1L_chr, mdl_types_lup = mdl_types_lup)
+        pred_old_dbl <- predict(mdl, type = pred_type_1L_chr)
+        pred_new_dbl <- predict(mdl, newdata = data_tb[.x, ], 
+            type = pred_type_1L_chr) %>% calculate_dep_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, 
+            tfmn_is_outp_1L_lgl = T)
+        tibble::tibble(Rsquared = caret::R2(pred_old_dbl, data_tb[-.x, 
+            ] %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr)), 
+            form = "traditional"), RMSE = caret::RMSE(pred_old_dbl, 
+            data_tb[-.x, ] %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))), 
+            MAE = caret::MAE(pred_old_dbl, data_tb[-.x, ] %>% 
+                dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))), 
+            RsquaredP = caret::R2(pred_new_dbl, data_tb[.x, ] %>% 
+                dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr)), 
+                form = "traditional"), RMSEP = caret::RMSE(pred_new_dbl, 
+                data_tb[.x, ] %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))), 
+            MAEP = caret::MAE(pred_new_dbl, data_tb[.x, ] %>% 
+                dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))))
+    }) %>% dplyr::summarise_all(mean) %>% dplyr::mutate(Model = mdl_desc_1L_chr) %>% 
+        dplyr::select(Model, dplyr::everything())
+    return(smry_of_one_predr_mdl_tb)
 }
 #' Make smry of ts mdl
 #' @description make_smry_of_ts_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of ts mdl. The function returns Smry of ts mdl (a list).

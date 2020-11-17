@@ -5,7 +5,7 @@
 \alias{mdl_types_lup}
 \title{Model types lookup table}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2 rows and 2 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 14 rows and 9 columns.
 }
 \usage{
 mdl_types_lup
@@ -19,6 +19,13 @@ A tibble
 \describe{
 \item{short_name_chr}{Short name (a character vector)}
 \item{long_name_chr}{Long name (a character vector)}
+\item{control_chr}{Control (a character vector)}
+\item{family_chr}{Family (a character vector)}
+\item{fn_chr}{Function (a character vector)}
+\item{start_chr}{Start (a character vector)}
+\item{pred_type_chr}{Pred type (a character vector)}
+\item{tfmn_chr}{Tfmn (a character vector)}
+\item{tfmn_for_bnml_lgl}{Tfmn for bnml (a logical vector)}
 }
 }
 \keyword{datasets}
