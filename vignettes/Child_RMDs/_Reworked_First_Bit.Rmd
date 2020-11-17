@@ -19,53 +19,32 @@ library(magrittr)
 ```
 
 ```{r}
-data_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS(params$path_to_data_1L_chr))
-bl_tb <- data_tb %>% 
-   dplyr::filter(round=="Baseline") %>% 
-   dplyr::select(aqol6d_total_w, PHQ9, BADS, GAD7, OASIS, SCARED, K6) %>% 
-  dplyr::mutate(aqol6d_total_w = ifelse(aqol6d_total_w == 1, 0.999, aqol6d_total_w)) 
-
-# %>% 
-#   dplyr::mutate(aqol6d_total_w_log = log(aqol6d_total_w),
-#          aqol6d_total_w_logit = psych::logit(aqol6d_total_w),
-#          aqol6d_total_w_loglog = -log(-log(aqol6d_total_w)),
-#          aqol6d_total_w_cloglog = log(-log(1-aqol6d_total_w))) %>% 
-#   dplyr::filter(!is.na(PHQ9)) 
-#folds_10 <- createFolds(baseline$aqol6d_total_w , k = 10, list = TRUE, returnTrain = FALSE)
-```
-
-```{r}
-set.seed(12345)
-```
-
-# Regression testing 
-
-## Boxcox transformation 
-
-```{r}
-library(MASS)
-initech_fit = lm(aqol6d_total_w ~ PHQ9, data = bl_tb)
-bc <- boxcox(initech_fit, plotit = TRUE)
-bc$x[which.max(bc$y)]
-```
-
-```{r}
+get_significant_covars <- function(mdls_with_covars_smry_tb,
+                                   covar_var_nms_chr){
+  signif_vars_chr <- mdls_with_covars_smry_tb$Significant %>% purrr::map(~strsplit(.x, " ")) %>% purrr::flatten() %>% purrr::flatten_chr() %>% unique()
+signt_covars_chr <- covar_var_nms_chr[covar_var_nms_chr %in% signif_vars_chr]
+return(signt_covars_chr)
+}
 make_one_predr_mdl <- function(data_tb,
                                dep_var_nm_1L_chr = "aqol6d_total_w",
                                tfmn_1L_chr = "NTF",
                                predr_var_nm_1L_chr,
+                               covar_var_nms_chr = NA_character_,
                                mdl_type_1L_chr = "OLS_NTF",
                                mdl_types_lup = NULL,
-                               control_1L_chr = NA_character_){
+                               control_1L_chr = NA_character_,
+                               start_1L_chr = NULL){
+      if(is.null(mdl_types_lup))
+      mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
   data_tb <- data_tb %>%
     dplyr::filter(!is.na(!!rlang::sym(predr_var_nm_1L_chr))) 
-    if(is.null(mdl_types_lup))
-      mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
-    start_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
+  if(is.null(start_1L_chr)){
+        start_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
                                                    match_var_nm_1L_chr = "short_name_chr",
                                                    match_value_xx = mdl_type_1L_chr,
                                                    target_var_nm_1L_chr = "start_chr",
                                                    evaluate_lgl = F)
+  }
     if(!is.na(control_1L_chr)){
       idx_1L_int <- 1 + stringi::stri_locate_last_fixed(mdl_type_1L_chr,"_")[1,1] %>% as.vector()
       link_1L_chr <- stringr::str_sub(mdl_type_1L_chr, start = idx_1L_int)
@@ -86,6 +65,9 @@ make_one_predr_mdl <- function(data_tb,
                        transform_dep_var_nm(dep_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr),
                        " ~ ",
                        predr_var_nm_1L_chr, 
+                       ifelse(is.na(covar_var_nms_chr[1]),
+                              "",
+                              paste0(" + ",paste0(covar_var_nms_chr, collapse = " + "))),
                        ", data = data_tb",
                        ifelse(!is.na(ready4fun::get_from_lup_obj(mdl_types_lup,
                                                    match_var_nm_1L_chr = "short_name_chr",
@@ -233,6 +215,129 @@ transform_data_tb_for_cmprsn <- function(data_tb,
     dplyr::mutate(!!rlang::sym(tf_type_1L_chr) := new_data_dbl,
          !!rlang::sym(source_data_nm_1L_chr) := !!rlang::sym(dep_var_nm_1L_chr))
   return(tfd_data_tb)
+}
+transform_ds_for_tstng <- function(data_tb,
+                                   dep_var_nm_1L_chr = "aqol6d_total_w",
+                                   dep_var_max_val_1L_dbl = 0.999,
+                                   main_predrs_chr = NA_character_,
+                                   covar_var_nms_chr = NA_character_,
+                                   round_var_nm_1L_chr = "round",
+                                   round_val_1L_chr = "Baseline",
+                                   remove_all_mssng_1L_lgl = F){
+  vars_to_keep_chr <- c(dep_var_nm_1L_chr, main_predrs_chr, covar_var_nms_chr) %>% purrr::discard(is.na)
+  tfd_data_tb <- data_tb %>% 
+   dplyr::filter(!!rlang::sym(round_var_nm_1L_chr) == round_val_1L_chr) %>% 
+   dplyr::select(!!!rlang::syms(vars_to_keep_chr)) %>% 
+  dplyr::mutate(!!rlang::sym(dep_var_nm_1L_chr) := ifelse(!!rlang::sym(dep_var_nm_1L_chr) == 1, 0.999, !!rlang::sym(dep_var_nm_1L_chr))) 
+  if(remove_all_mssng_1L_lgl)
+    tfd_data_tb <- tfd_data_tb %>% na.omit()
+  return(tfd_data_tb)
+}
+write_box_cox_tfmn <- function(data_tb,
+                               predr_var_nm_1L_chr,
+                               path_to_write_to_1L_chr,
+                               dep_var_nm_1L_chr = "aqol6d_total_w",
+                               fl_nm_pfx_1L_chr = "RT",
+                               height_1L_dbl = 6,
+                               width_1L_dbl = 6,
+                               mdl_types_lup = NULL){
+        
+  if(is.null(mdl_types_lup))
+      mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
+  mdl <- make_one_predr_mdl(data_tb, 
+                            dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
+                            predr_var_nm_1L_chr = predr_var_nm_1L_chr , 
+                            mdl_type_1L_chr = "OLS_NTF",
+                            mdl_types_lup = mdl_types_lup)
+  path_to_plot_1L_chr <- write_brm_mdl_plt_fl(plt_fn = MASS::boxcox,
+                     fn_args_ls = list(mdl, plotit=T),
+                     path_to_write_to_1L_chr = path_to_write_to_1L_chr,
+                     plt_nm_1L_chr = paste0(fl_nm_pfx_1L_chr,
+                                            "_",
+                                            predr_var_nm_1L_chr,
+                                            "_",
+                                            "boxcox"),
+                     height_1L_dbl = height_1L_dbl,
+                     width_1L_dbl = width_1L_dbl)
+  return(path_to_plot_1L_chr)
+  
+}
+write_mdl_sngl_predrs_outps <- function(data_tb,
+                                       folds_ls,
+                                       predr_var_nm_chr,
+                                       # predr_var_desc_chr,
+                                       # predr_vals_ls,
+                                       mdl_type_1L_chr,
+                                       dep_var_nm_1L_chr = "aqol6d_total_w",
+                                       path_to_write_to_1L_chr,
+                                       mdl_types_lup = NULL,
+                                       fl_nm_pfx_1L_chr = "ind_predr"){
+    if(is.null(mdl_types_lup))
+      mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
+  smry_of_mdl_sngl_predrs_tb <- purrr::map_dfr(predr_var_nm_chr,
+               ~ {
+                 tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+                                             match_var_nm_1L_chr = "short_name_chr",
+                                             match_value_xx = mdl_type_1L_chr,
+                                             target_var_nm_1L_chr = "tfmn_chr",
+                                             evaluate_lgl = F)
+                 write_one_predr_mdl_outp(data_tb,
+                                          folds_ls = folds_ls,
+                                          dep_var_nm_1L_chr  = dep_var_nm_1L_chr , 
+                                          tfmn_1L_chr = tfmn_1L_chr,
+                                          predr_var_nm_1L_chr = .x, 
+                                          predr_var_desc_1L_chr = NA_character_,
+                                          predr_vals_dbl = NA_real_,
+                                          mdl_type_1L_chr = mdl_type_1L_chr,
+                                          path_to_write_to_1L_chr = path_to_write_to_1L_chr,
+                                          mdl_types_lup = mdl_types_lup,
+                                          mdl_fl_nm_1L_chr = paste0(fl_nm_pfx_1L_chr,
+                                                                    "_",
+                                                   .x,
+                                                   "_MDL"
+                                                   ),
+                                          plt_idcs_int = c(3,5)) %>%
+                   dplyr::select((-Model)) %>%
+                   dplyr::mutate(Predictor = .x) %>%
+                   dplyr::select(Predictor, dplyr::everything())
+               })
+  return(smry_of_mdl_sngl_predrs_tb)
+  
+}
+write_mdls_with_covars <- function(data_tb,
+                                   predr_var_nm_chr,
+                                   mdl_type_1L_chr,
+                                   path_to_write_to_1L_chr,
+                                   fl_nm_pfx_1L_chr = "CT",
+                                   mdl_types_lup = NULL){
+      if(is.null(mdl_types_lup))
+        mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
+  smry_of_mdls_with_covars_tb <- purrr::map_dfr(predr_var_nm_chr,
+                                                ~{
+                 mdl <- make_one_predr_mdl(data_tb,
+                   predr_var_nm_1L_chr = .x,
+                   covar_var_nms_chr = covar_var_nms_chr,
+                   tfmn_1L_chr = "NTF",
+                   mdl_type_1L_chr = mdl_type_1L_chr,
+                   control_1L_chr = NA_character_,
+                   mdl_types_lup = mdl_types_lup,
+                   start_1L_chr = NA_character_)
+                 mdl_fl_nm_1L_chr <- paste0(fl_nm_pfx_1L_chr,"_",.x,
+                                            "_",mdl_type_1L_chr)
+                 saveRDS(mdl,paste0(path_to_write_to_1L_chr,"/",mdl_fl_nm_1L_chr,".RDS"))
+                 
+                 tibble::tibble(variable = .x,
+                     Rsquare=caret::R2(data_tb %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr)), predict(mdl), form = "traditional"),
+                     AIC=AIC(mdl), BIC=BIC(mdl),
+                     Significant=paste(names(which(summary(mdl)$coefficients[,4]<0.01)),
+                                       collapse = " "))
+               })
+  saveRDS(smry_of_mdls_with_covars_tb,paste0(path_to_write_to_1L_chr,"/",
+                                             paste0(fl_nm_pfx_1L_chr,"_","SMRY",
+                                            "_",mdl_type_1L_chr),
+                                             ".RDS"))
+  return(smry_of_mdls_with_covars_tb)
+  
 }
 write_one_predr_mdl_plts <- function(data_tb, 
                                      mdl,
@@ -397,7 +502,7 @@ confirmed_predrs_tb <- rf_mdl$importance %>% tibble::as_tibble(rownames = "predr
   dplyr::arrange(dplyr::desc(`%IncMSE`)) %>% 
   dplyr::filter(predr_chr %in% confirmed_predrs_chr)
 return(confirmed_predrs_tb)
-                                     }
+}
 write_sngl_predr_mdls_outps <- function(data_tb,
                                         folds_ls,
                                         mdl_types_chr,
@@ -483,24 +588,42 @@ mdl_types_lup <- dplyr::bind_rows(FBaqol::mdl_types_lup,
 ```
 
 ```{r}
+set.seed(12345)
+```
+
+```{r}
 path_to_write_fls_to_1L_chr <- params$path_to_write_fls_to_1L_chr
 dir_nm_1L_chr <- params$dir_nm_1L_chr
 path_to_write_to_1L_chr <- paste0(path_to_write_fls_to_1L_chr,
                                                       "/",
                                                       dir_nm_1L_chr)
-
 dep_var_nm_1L_chr <- "aqol6d_total_w"
+main_predrs_chr <- c("BADS","GAD7","K6","OASIS","PHQ9","SCARED")
+covar_var_nms_chr <- c("d_sex_birth_s", "SOFAS", "c_p_diag_s", "c_clinical_staging_s", "d_age",  "d_sexual_ori_s", "d_country_bir_s", "d_relation_s", "d_studying_working")
 n_folds_1L_int <- 10L
+round_var_nm_1L_chr <- "round"
+round_bl_val_1L_chr <- "Baseline"
+prefd_mdl_types_chr <- c("OLS_CLL", "GLM_GSN_LOG")
+prefd_covars_chr <- "SOFAS"
+```
+
+```{r}
+data_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS(params$path_to_data_1L_chr))
+bl_tb <- transform_ds_for_tstng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, main_predrs_chr = main_predrs_chr, dep_var_max_val_1L_dbl = 0.999, round_val_1L_chr = "Baseline")
+```
+
+```{r}
 folds_ls <- caret::createFolds(bl_tb %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr)) , 
                                  k = n_folds_1L_int, 
                                  list = TRUE, 
                                  returnTrain = FALSE)
-main_predrs_chr <- c("BADS","GAD7","K6","OASIS","PHQ9","SCARED")
-# predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = main_predrs_chr,
-#                                             covars_ls = list("SOFAS"))
-#predr_var_nm_1L_chr <- "PHQ9"
-# predr_var_desc_1L_chr <- "PHQ9 total score"
-# predr_vals_dbl <- 0:27
+```
+
+```{r}
+ bc_plt_path_1L_chr <- write_box_cox_tfmn(data_tb = bl_tb, 
+                    predr_var_nm_1L_chr = "PHQ9", 
+                    path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
+                    mdl_types_lup = mdl_types_lup) 
 ```
 
 ```{r}
@@ -514,22 +637,6 @@ smry_of_sngl_predr_mdls_tb <- write_sngl_predr_mdls_outps(data_tb = bl_tb,
                                                           path_to_write_to_1L_chr = path_to_write_to_1L_chr,
                                                           mdl_types_lup = mdl_types_lup)
 ```
-# Regression Testing
-## Linear model (no transformation)
-## Linear model (log transformation)
-## Linear model (logit transformation)
-## Linear model (log-log transformation)
-## Linear model (clog-log transformation)
-## GLM (Gausian with log link)
-## GLM (Binomial with log link)
-## GLM (Binomial with logit link)
-## GLM (Binomial with cloglog link)
-## Beta regression log link
-## Beta regression logit link
-## Beta regression cloglog link
-# Predictor selection 
-## Random forest
-## Boruta
 
 ```{r}
 predr_cmprsns_tb <- write_predr_cmprsn_outps(data_tb = bl_tb,
@@ -541,50 +648,7 @@ predr_cmprsns_tb <- write_predr_cmprsn_outps(data_tb = bl_tb,
 ```
 
 ## Individual predictors
-```{r}
-write_mdl_sngl_predrs_outps <- function(data_tb,
-                                       folds_ls,
-                                       predr_var_nm_chr,
-                                       # predr_var_desc_chr,
-                                       # predr_vals_ls,
-                                       mdl_type_1L_chr,
-                                       dep_var_nm_1L_chr = "aqol6d_total_w",
-                                       path_to_write_to_1L_chr,
-                                       mdl_types_lup = NULL,
-                                       fl_nm_pfx_1L_chr = "ind_predr"){
-    if(is.null(mdl_types_lup))
-      mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
-  smry_of_mdl_sngl_predrs_tb <- purrr::map_dfr(predr_var_nm_chr,
-               ~ {
-                 tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
-                                             match_var_nm_1L_chr = "short_name_chr",
-                                             match_value_xx = mdl_type_1L_chr,
-                                             target_var_nm_1L_chr = "tfmn_chr",
-                                             evaluate_lgl = F)
-                 write_one_predr_mdl_outp(data_tb,
-                                          folds_ls = folds_ls,
-                                          dep_var_nm_1L_chr  = dep_var_nm_1L_chr , 
-                                          tfmn_1L_chr = tfmn_1L_chr,
-                                          predr_var_nm_1L_chr = .x, 
-                                          predr_var_desc_1L_chr = NA_character_,
-                                          predr_vals_dbl = NA_real_,
-                                          mdl_type_1L_chr = mdl_type_1L_chr,
-                                          path_to_write_to_1L_chr = path_to_write_to_1L_chr,
-                                          mdl_types_lup = mdl_types_lup,
-                                          mdl_fl_nm_1L_chr = paste0(fl_nm_pfx_1L_chr,
-                                                                    "_",
-                                                   .x,
-                                                   "_MDL"
-                                                   ),
-                                          plt_idcs_int = c(3,5)) %>%
-                   dplyr::select((-Model)) %>%
-                   dplyr::mutate(Predictor = .x) %>%
-                   dplyr::select(Predictor, dplyr::everything())
-               })
-  return(smry_of_mdl_sngl_predrs_tb)
-  
-                                        }
-```
+
 ```{r}
 smry_of_mdl_sngl_predrs_tb <- write_mdl_sngl_predrs_outps(data_tb = bl_tb,
                             folds_ls = folds_ls,
@@ -598,30 +662,24 @@ smry_of_mdl_sngl_predrs_tb <- write_mdl_sngl_predrs_outps(data_tb = bl_tb,
 ## Additional confounding variables
 
 ```{r}
-baseline<-Baseline_follow[Baseline_follow$round=="Baseline",] %>% 
-   dplyr::select(aqol6d_total_w, K6 ,PHQ9 ,  BADS, GAD7 ,OASIS,  SCARED,
-          d_sex_birth_s , SOFAS ,c_p_diag_s , c_clinical_staging_s ,  d_age , d_sexual_ori_s ,
-          d_country_bir_s,  d_relation_s , d_studying_working) %>% 
-   na.omit()
+bl_tb <- data_tb %>% transform_ds_for_tstng(main_predrs_chr = main_predrs_chr, 
+                                   covar_var_nms_chr = covar_var_nms_chr,
+                                   remove_all_mssng_1L_lgl = T,
+                                   round_val_1L_chr = "Baseline")
+mdls_with_covars_smry_tb <- write_mdls_with_covars(bl_tb,
+                       predr_var_nm_chr = predr_var_nm_chr,
+                       mdl_type_1L_chr = prefd_mdl_types_chr[2],
+                       path_to_write_to_1L_chr = path_to_write_to_1L_chr,
+                       fl_nm_pfx_1L_chr = "CT",
+                       mdl_types_lup = mdl_types_lup)
 
+signt_covars_chr <- get_significant_covars(mdls_with_covars_smry_tb = mdls_with_covars_smry_tb,
+                       covar_var_nms_chr)
+if(is.na(prefd_covars_chr))
+  prefd_covars_chr <- signt_covars_chr
 
-predictor<-c("PHQ9", "BADS", "K6","OASIS","SCARED","GAD7" )
-
-summarytable<-data.frame("variable"=character(),"data"=character(),"Rsquared"=double(),
-                            "AIC"=double(),BIC=double(),"Significant"=character())
-
-for(i in predictor){  
-  model<-glm(as.formula(paste0("aqol6d_total_w~", i , "+d_sex_birth_s + SOFAS +c_p_diag_s + c_clinical_staging_s +  d_age + d_sexual_ori_s + d_country_bir_s + d_relation_s + d_studying_working")), data=baseline, family=gaussian(log)) 
-  print(summary(model))
-  summarytable=rbind(summarytable,data.frame("variable"=i,
-                     Rsuqare=R2(baseline$aqol6d_total_w, predict(model), form = "traditional"),
-                     AIC=AIC(model), BIC=BIC(model),
-                     "Significant"=paste(names(which(summary(model)$coefficients[,4]<0.01)),collapse = " "))) 
-} 
-
-knitr::kable( summarytable  , format="html",digits = 3) %>%
-    kable_styling(bootstrap_options = "striped", full_width = F) 
 ```
+
 
 ## Checking 
 
