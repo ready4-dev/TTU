@@ -1,24 +1,20 @@
 #' Calculate adolescent Assessment of Quality of Life Six Dimension Health Utility
 #' @description calculate_adol_aqol6dU() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate adolescent assessment of quality of life six dimension health utility. The function returns Adolescent Assessment of Quality of Life Six Dimension (a double vector).
 #' @param unscored_aqol_tb Unscored Assessment of Quality of Life (a tibble)
-#' @param prefix_1L_chr Prefix (a character vector of length one), Default: 'aqol'
-#' @param id_var_nm_1L_chr Id var name (a character vector of length one)
+#' @param prefix_1L_chr Prefix (a character vector of length one), Default: 'aqol6d_q'
+#' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
+#' @param wtd_aqol_var_nm_1L_chr Wtd Assessment of Quality of Life var name (a character vector of length one), Default: 'aqol6d_total_w'
 #' @return Adolescent Assessment of Quality of Life Six Dimension (a double vector)
 #' @rdname calculate_adol_aqol6dU
 #' @export 
-#' @importFrom dplyr select starts_with rename_all
-#' @importFrom stringr str_replace
-calculate_adol_aqol6dU <- function (unscored_aqol_tb, prefix_1L_chr = "aqol", id_var_nm_1L_chr) 
+#' @importFrom dplyr pull
+#' @importFrom rlang sym
+calculate_adol_aqol6dU <- function (unscored_aqol_tb, prefix_1L_chr = "aqol6d_q", id_var_nm_1L_chr = "fkClientID", 
+    wtd_aqol_var_nm_1L_chr = "aqol6d_total_w") 
 {
-    unscored_aqol_tb <- unscored_aqol_tb %>% dplyr::select(id_var_nm_1L_chr, 
-        dplyr::starts_with(unname(prefix_1L_chr)))
-    names(unscored_aqol_tb) <- c("ID", paste0("Q", 1:20))
-    unscored_aqol_tb <- impute_unscrd_adol_aqol6d_ds(unscored_aqol_tb)
-    disvals_tb <- unscored_aqol_tb %>% add_itm_disv_to_aqol6d_itms_tb(disvalues_lup_tb = make_adol_aqol6d_disv_lup(), 
-        pfx_1L_chr = "Q") %>% dplyr::select(ID, dplyr::starts_with("dv_")) %>% 
-        dplyr::rename_all(~stringr::str_replace(.x, "dv_", "dv"))
-    scored_aqol_tb <- add_aqol6d_adol_dim_scrg_eqs(disvals_tb)
-    adol_aqol6d_dbl <- scored_aqol_tb$uaqol
+    scored_aqol_tb <- add_adol6d_scores(unscored_aqol_tb, prefix_1L_chr = prefix_1L_chr, 
+        id_var_nm_1L_chr = id_var_nm_1L_chr, wtd_aqol_var_nm_1L_chr = wtd_aqol_var_nm_1L_chr)
+    adol_aqol6d_dbl <- scored_aqol_tb %>% dplyr::pull(!!rlang::sym(wtd_aqol_var_nm_1L_chr))
     return(adol_aqol6d_dbl)
 }
 #' Calculate adult Assessment of Quality of Life Six Dimension Health Utility

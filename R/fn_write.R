@@ -20,8 +20,7 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
     start_1L_chr = NULL, mdl_types_lup = NULL) 
 {
     if (is.null(mdl_types_lup)) 
-        mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", 
-            envir = environment())
+        data("mdl_types_lup", envir = environment())
     mdl <- make_mdl(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr, 
         mdl_type_1L_chr = "OLS_NTF", mdl_types_lup = mdl_types_lup, 
@@ -216,8 +215,7 @@ write_mdl_type_covars_mdls <- function (data_tb, predrs_var_nms_chr, covar_var_n
     start_1L_chr = NA_character_) 
 {
     if (is.null(mdl_types_lup)) 
-        mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", 
-            envir = environment())
+        data("mdl_types_lup", envir = environment())
     smry_of_mdls_with_covars_tb <- purrr::map_dfr(predrs_var_nms_chr, 
         ~{
             mdl <- make_mdl(data_tb, predr_var_nm_1L_chr = .x, 
@@ -266,8 +264,7 @@ write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var
     plt_idcs_int = c(3, 5)) 
 {
     if (is.null(mdl_types_lup)) 
-        mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", 
-            envir = environment())
+        data("mdl_types_lup", envir = environment())
     smry_of_mdl_sngl_predrs_tb <- purrr::map_dfr(predrs_var_nms_chr, 
         ~{
             tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
@@ -325,8 +322,7 @@ write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_
     mdl_fl_nm_1L_chr, plt_idcs_int = NA_integer_) 
 {
     if (is.null(mdl_types_lup)) 
-        mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", 
-            envir = environment())
+        data("mdl_types_lup", envir = environment())
     arg_vals_chr <- c("control_chr", "family_chr", "pred_type_chr") %>% 
         purrr::map_chr(~ready4fun::get_from_lup_obj(mdl_types_lup, 
             match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
@@ -546,8 +542,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
     plt_idcs_int = NA_integer_) 
 {
     if (is.null(mdl_types_lup)) 
-        mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", 
-            envir = environment())
+        data("mdl_types_lup", envir = environment())
     data_tb <- transform_ds_for_mdlng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
     smry_of_sngl_predr_mdls_tb <- purrr::map_dfr(mdl_types_chr, 

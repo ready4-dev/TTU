@@ -90,7 +90,7 @@ transform_tb_to_mdl_inp <- function(data_tb,
 transform_raw_aqol_tb_to_aqol6d_tb <- function(raw_aqol_tb){
   aqol6d_tb <- raw_aqol_tb %>%
     dplyr::mutate(d_agegroup=cut(d_age,breaks=c(11,17,30), labels=c("Age 12-17","Age 18-26"))) %>% # change
-    dplyr::filter(!is.na(aqol6d_total_w)) %>%
+    #dplyr::filter(!is.na(aqol6d_total_w)) %>%
     dplyr::mutate(round=factor(round,labels=c("Baseline","Follow-up"))) %>%
     dplyr::select(fkClientID, c_p_diag_s , s_centre, c_clinical_staging_s,
                   d_age , d_agegroup , d_gender,

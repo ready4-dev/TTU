@@ -334,7 +334,28 @@ pkg_dss_tb <- tibble::tibble(short_name_chr = c("coefs","hetg", "dnst","sctr_plt
                               desc_1L_chr = "A lookup table of abbreviations to describe the different model plot types supported by FBaqol functions",
                               abbreviations_lup = abbreviations_lup,
                               pkg_dss_tb = pkg_dss_tb)
-
+pkg_dss_tb <- ready4use::ready4_dv_import_lup() %>%
+  tibble::add_case(data_repo_db_ui = "https://doi.org/10.7910/DVN/GRZRY5",
+                   file_name = "fake_pop_tb",
+                   file_type = ".csv",
+                   data_repo_file_ext = ".tab") %>%
+  ready4use::get_data() %>%
+  transform_raw_aqol_tb_to_aqol6d_tb() %>%
+  ready4fun::write_and_doc_ds(db_1L_chr = "replication_popl_tb",
+                              title_1L_chr = "Synthetic population replication dataset",
+                              desc_1L_chr = "A purely synthetic dataset, representative of the original study data, that can be used for replication runs of package algorithms.",
+                              abbreviations_lup = abbreviations_lup,
+                              pkg_dss_tb = pkg_dss_tb)
+pkg_dss_tb <- tibble::tibble(short_name_chr = c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),
+                                       long_name_chr = short_name_chr %>% purrr::map_chr(~paste0(.x, " total score")),
+                                       min_val_dbl = rep(0,6),
+                                       max_val_dbl = c(150,21,24,20,27,82),
+                                       increment_dbl = rep(1,6)) %>%
+  ready4fun::write_and_doc_ds(db_1L_chr = "candidate_predrs_lup",
+                              title_1L_chr = "Candidate predictors lookup table",
+                              desc_1L_chr = "A lookup table of the short name and long name of each candidate predictor.",
+                              abbreviations_lup = abbreviations_lup,
+                              pkg_dss_tb = pkg_dss_tb)
 # 7. Save copy of package documentation to online data repo.
 ds_ls <- ready4use::write_pkg_dss_to_dv_ds_csvs(pkg_dss_tb,
                                                 dv_nm_1L_chr = "ready4models",

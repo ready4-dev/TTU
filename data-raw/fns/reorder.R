@@ -1,3 +1,17 @@
+reorder_cndt_predrs_chr <- function(candidate_predrs_chr,
+                                    data_tb,
+                                    dep_var_nm_1L_chr = "aqol6d_total_w",
+                                    method_1L_chr = "pearson"){#"spearman"
+  data_mat <- as.matrix(data_tb %>% dplyr::select(c(dplyr::all_of(dep_var_nm_1L_chr),dplyr::all_of(candidate_predrs_chr))))
+  corr_ls <- Hmisc::rcorr(data_mat , type = method_1L_chr)
+  reordered_cndt_predrs <- corr_ls$r %>% tibble::as_tibble(rownames = "var_nms_chr") %>%
+    dplyr::mutate(dplyr::across(where(is.numeric),abs)) %>%
+    dplyr::arrange(dplyr::desc(!!rlang::sym(dep_var_nm_1L_chr))) %>%
+    dplyr::filter(var_nms_chr != dep_var_nm_1L_chr) %>%
+    dplyr::pull(var_nms_chr) %>%
+    as.vector()
+  return(reordered_cndt_predrs)
+}
 reorder_tbs_for_target_cors <- function(tbs_ls,
                                         cor_dbl,
                                         cor_var_chr,

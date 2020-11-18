@@ -8,9 +8,8 @@ write_box_cox_tfmn <- function(data_tb,
                                width_1L_dbl = 6,
                                start_1L_chr = NULL,
                                mdl_types_lup = NULL){
-
   if(is.null(mdl_types_lup))
-    mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
+    data("mdl_types_lup", envir = environment())
   mdl <- make_mdl(data_tb,
                   dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                   predr_var_nm_1L_chr = predr_var_nm_1L_chr,
@@ -187,7 +186,7 @@ write_mdl_type_covars_mdls <- function(data_tb,
                                        mdl_types_lup = NULL,
                                        start_1L_chr = NA_character_){
   if(is.null(mdl_types_lup))
-    mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
+   data("mdl_types_lup", envir = environment())
   smry_of_mdls_with_covars_tb <- purrr::map_dfr(predrs_var_nms_chr,
                                                 ~{
                                                   mdl <- make_mdl(data_tb,
@@ -229,7 +228,7 @@ write_mdl_type_multi_outps <- function(data_tb,
                                        fl_nm_pfx_1L_chr = "C_PREDR",
                                        plt_idcs_int = c(3,5)){
   if(is.null(mdl_types_lup))
-    mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
+    data("mdl_types_lup", envir = environment())
   smry_of_mdl_sngl_predrs_tb <- purrr::map_dfr(predrs_var_nms_chr,
                                                ~ {
                                                  tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
@@ -286,7 +285,7 @@ write_mdl_type_sngl_outps <- function(data_tb,
                                       mdl_fl_nm_1L_chr,
                                       plt_idcs_int = NA_integer_){
   if(is.null(mdl_types_lup))
-    mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
+    data("mdl_types_lup", envir = environment())
   arg_vals_chr <- c("control_chr","family_chr","pred_type_chr") %>%
     purrr::map_chr(~ready4fun::get_from_lup_obj(mdl_types_lup,
                                                 match_var_nm_1L_chr = "short_name_chr",
@@ -476,7 +475,7 @@ write_sngl_predr_multi_mdls_outps <- function(data_tb,
                                               fl_nm_pfx_1L_chr = "A_RT_",
                                               plt_idcs_int = NA_integer_){
   if(is.null(mdl_types_lup))
-    mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", envir = environment())
+    data("mdl_types_lup", envir = environment())
   data_tb <- transform_ds_for_mdlng(data_tb,
                                     dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                                     predr_var_nm_1L_chr = predr_var_nm_1L_chr,

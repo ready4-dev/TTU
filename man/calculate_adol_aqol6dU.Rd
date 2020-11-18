@@ -6,16 +6,19 @@
 \usage{
 calculate_adol_aqol6dU(
   unscored_aqol_tb,
-  prefix_1L_chr = "aqol",
-  id_var_nm_1L_chr
+  prefix_1L_chr = "aqol6d_q",
+  id_var_nm_1L_chr = "fkClientID",
+  wtd_aqol_var_nm_1L_chr = "aqol6d_total_w"
 )
 }
 \arguments{
 \item{unscored_aqol_tb}{Unscored Assessment of Quality of Life (a tibble)}
 
-\item{prefix_1L_chr}{Prefix (a character vector of length one), Default: 'aqol'}
+\item{prefix_1L_chr}{Prefix (a character vector of length one), Default: 'aqol6d_q'}
 
-\item{id_var_nm_1L_chr}{Id var name (a character vector of length one)}
+\item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
+
+\item{wtd_aqol_var_nm_1L_chr}{Wtd Assessment of Quality of Life var name (a character vector of length one), Default: 'aqol6d_total_w'}
 }
 \value{
 Adolescent Assessment of Quality of Life Six Dimension (a double vector)

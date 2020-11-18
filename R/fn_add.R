@@ -1,9 +1,40 @@
+#' Add adol6d scores
+#' @description add_adol6d_scores() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add adol6d scores. Function argument unscored_aqol_tb specifies the object to be updated. The function returns Transformed Assessment of Quality of Life (a tibble).
+#' @param unscored_aqol_tb Unscored Assessment of Quality of Life (a tibble)
+#' @param prefix_1L_chr Prefix (a character vector of length one), Default: 'aqol6d_q'
+#' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
+#' @param wtd_aqol_var_nm_1L_chr Wtd Assessment of Quality of Life var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @return Transformed Assessment of Quality of Life (a tibble)
+#' @rdname add_adol6d_scores
+#' @export 
+#' @importFrom dplyr select starts_with rename_all inner_join rename
+#' @importFrom stringr str_replace
+#' @importFrom rlang sym
+add_adol6d_scores <- function (unscored_aqol_tb, prefix_1L_chr = "aqol6d_q", id_var_nm_1L_chr = "fkClientID", 
+    wtd_aqol_var_nm_1L_chr = "aqol6d_total_w") 
+{
+    complete_ds_tb <- unscored_aqol_tb
+    unscored_aqol_tb <- unscored_aqol_tb %>% dplyr::select(id_var_nm_1L_chr, 
+        dplyr::starts_with(unname(prefix_1L_chr)))
+    old_nms_chr <- names(unscored_aqol_tb)
+    names(unscored_aqol_tb) <- c("ID", paste0("Q", 1:20))
+    unscored_aqol_tb <- impute_unscrd_adol_aqol6d_ds(unscored_aqol_tb)
+    disvals_tb <- unscored_aqol_tb %>% add_itm_disv_to_aqol6d_itms_tb(disvalues_lup_tb = make_adol_aqol6d_disv_lup(), 
+        pfx_1L_chr = "Q") %>% dplyr::select(ID, dplyr::starts_with("dv_")) %>% 
+        dplyr::rename_all(~stringr::str_replace(.x, "dv_", "dv"))
+    scored_aqol_tb <- add_aqol6d_adol_dim_scrg_eqs(disvals_tb)
+    tfd_aqol_tb <- dplyr::inner_join(complete_ds_tb, scored_aqol_tb %>% 
+        dplyr::rename(`:=`(!!rlang::sym(id_var_nm_1L_chr), ID), 
+            `:=`(!!rlang::sym(wtd_aqol_var_nm_1L_chr), uaqol)))
+    return(tfd_aqol_tb)
+}
 #' Add Assessment of Quality of Life Six Dimension adolescent dimension scoring equations
 #' @description add_aqol6d_adol_dim_scrg_eqs() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add assessment of quality of life six dimension adolescent dimension scoring equations. Function argument unscored_aqol_tb specifies the object to be updated. The function returns Unscored Assessment of Quality of Life (a tibble).
 #' @param unscored_aqol_tb Unscored Assessment of Quality of Life (a tibble)
 #' @return Unscored Assessment of Quality of Life (a tibble)
 #' @rdname add_aqol6d_adol_dim_scrg_eqs
 #' @export 
+#' @importFrom dplyr mutate
 #' @importFrom rlang parse_expr
 #' @importFrom Hmisc label
 add_aqol6d_adol_dim_scrg_eqs <- function (unscored_aqol_tb) 
@@ -12,7 +43,7 @@ add_aqol6d_adol_dim_scrg_eqs <- function (unscored_aqol_tb)
     for (var in adol_dim_scalg_eqs_lup$Dim_scal) {
         expression = adol_dim_scalg_eqs_lup[adol_dim_scalg_eqs_lup$Dim_scal == 
             var, ]$Equ
-        unscored_aqol_tb <- unscored_aqol_tb %>% mutate(`:=`(!!var, 
+        unscored_aqol_tb <- unscored_aqol_tb %>% dplyr::mutate(`:=`(!!var, 
             !!rlang::parse_expr(expression)))
         Hmisc::label(unscored_aqol_tb[, var]) = adol_dim_scalg_eqs_lup[adol_dim_scalg_eqs_lup$Dim_scal == 
             var, ]$Label

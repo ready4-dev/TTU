@@ -422,8 +422,7 @@ make_mdl <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", tfmn_1L_chr
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NULL) 
 {
     if (is.null(mdl_types_lup)) 
-        mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", 
-            envir = environment())
+        data("mdl_types_lup", envir = environment())
     data_tb <- transform_ds_for_mdlng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
     if (is.null(start_1L_chr)) {
@@ -534,6 +533,28 @@ make_predn_ds_with_one_predr <- function (mdl, dep_var_nm_1L_chr = "aqol6d_total
                 tfmn_is_outp_1L_lgl = T)))
     return(predn_ds_tb)
 }
+#' Make predr values
+#' @description make_predr_vals() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predr values. The function returns Predr values (a double vector).
+#' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
+#' @param candidate_predrs_lup Candidate predrs (a lookup table), Default: NULL
+#' @return Predr values (a double vector)
+#' @rdname make_predr_vals
+#' @export 
+#' @importFrom purrr map_dbl
+#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom rlang exec
+make_predr_vals <- function (predr_var_nm_1L_chr, candidate_predrs_lup = NULL) 
+{
+    if (is.null(candidate_predrs_lup)) {
+        data("candidate_predrs_lup", envir = environment())
+    }
+    args_ls <- purrr::map_dbl(names(candidate_predrs_lup)[3:5], 
+        ~candidate_predrs_lup %>% ready4fun::get_from_lup_obj(match_value_xx = predr_var_nm_1L_chr, 
+            match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = .x, 
+            evaluate_lgl = F)) %>% as.list()
+    predr_vals_dbl <- rlang::exec(.fn = seq, !!!args_ls)
+    return(predr_vals_dbl)
+}
 #' Make predr vars names
 #' @description make_predr_vars_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predr vars names list. The function returns Predr vars names (a list).
 #' @param main_predrs_chr Main predrs (a character vector)
@@ -552,6 +573,84 @@ make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls)
     predr_vars_nms_ls <- predr_vars_nms_ls[order(sapply(predr_vars_nms_ls, 
         length))]
     return(predr_vars_nms_ls)
+}
+#' Make prefd mdls vec
+#' @description make_prefd_mdls_vec() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make prefd mdls vec. The function returns Prefd mdls (a character vector).
+#' @param smry_of_sngl_predr_mdls_tb Smry of sngl predr mdls (a tibble)
+#' @param choose_from_pfx_chr Choose from prefix (a character vector), Default: c("GLM", "OLS")
+#' @param mdl_types_lup Mdl types (a lookup table), Default: NULL
+#' @return Prefd mdls (a character vector)
+#' @rdname make_prefd_mdls_vec
+#' @export 
+#' @importFrom dplyr inner_join select rename pull
+#' @importFrom purrr map_chr
+make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr = c("GLM", 
+    "OLS"), mdl_types_lup = NULL) 
+{
+    if (is.null(mdl_types_lup)) 
+        data("mdl_types_lup", envir = environment())
+    ordered_mdl_types_chr <- dplyr::inner_join(smry_of_sngl_predr_mdls_tb %>% 
+        dplyr::select(Model) %>% dplyr::rename(long_name_chr = Model), 
+        mdl_types_lup) %>% dplyr::pull(short_name_chr)
+    prefd_mdls_chr <- purrr::map_chr(choose_from_pfx_chr, ~ordered_mdl_types_chr[startsWith(ordered_mdl_types_chr, 
+        .x)][1])
+    return(prefd_mdls_chr)
+}
+#' Make shareable mdl
+#' @description make_shareable_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make shareable mdl. The function is called for its side effects and does not return a value.
+#' @param data_tb Data (a tibble)
+#' @param mdl_smry_tb Mdl smry (a tibble)
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
+#' @param tfmn_1L_chr Tfmn (a character vector of length one), Default: 'CLL'
+#' @param mdl_type_1L_chr Mdl type (a character vector of length one), Default: 'OLS_CLL'
+#' @param mdl_types_lup Mdl types (a lookup table), Default: NULL
+#' @param control_1L_chr Control (a character vector of length one), Default: 'NA'
+#' @param start_1L_chr Start (a character vector of length one), Default: 'NA'
+#' @param seed_1L_int Seed (an integer vector of length one), Default: 12345
+#' @return NA ()
+#' @rdname make_shareable_mdl
+#' @export 
+#' @importFrom synthpop syn
+#' @importFrom dplyr mutate case_when filter slice
+#' @importFrom purrr map_chr
+#' @importFrom stringr str_replace_all
+#' @importFrom assertthat assert_that
+make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "aqol6d_total_w", 
+    id_var_nm_1L_chr = "fkClientID", tfmn_1L_chr = "CLL", mdl_type_1L_chr = "OLS_CLL", 
+    mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NA_character_, 
+    seed_1L_int = 12345L) 
+{
+    if (is.null(mdl_types_lup)) 
+        data(mdl_types_lup, envir = environment())
+    all_var_nms_chr <- names(data_tb)
+    tfd_dep_var_nm_1L_chr <- all_var_nms_chr[all_var_nms_chr %>% 
+        startsWith(dep_var_nm_1L_chr)]
+    predr_var_nms_chr <- setdiff(all_var_nms_chr, c(tfd_dep_var_nm_1L_chr, 
+        id_var_nm_1L_chr))
+    if (length(predr_var_nms_chr) > 1) {
+        covar_var_nms_chr <- predr_var_nms_chr[2:length(predr_var_nms_chr)]
+    }
+    else {
+        covar_var_nms_chr <- NA_character_
+    }
+    fk_data_ls <- synthpop::syn(data_tb, visit.sequence = all_var_nms_chr[all_var_nms_chr != 
+        id_var_nm_1L_chr], seed = seed_1L_int)
+    mdl <- make_mdl(fk_data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
+        predr_var_nm_1L_chr = predr_var_nms_chr[1], covar_var_nms_chr = covar_var_nms_chr, 
+        tfmn_1L_chr = tfmn_1L_chr, mdl_type_1L_chr = mdl_type_1L_chr, 
+        mdl_types_lup = mdl_types_lup, control_1L_chr = control_1L_chr, 
+        start_1L_chr = start_1L_chr)
+    par_nms_chr <- mdl$coefficients %>% names()
+    mdl_smry_tb <- mdl_smry_tb %>% dplyr::mutate(Parameter = dplyr::case_when(Parameter == 
+        "Intercept" ~ "(Intercept)", TRUE ~ purrr::map_chr(Parameter, 
+        ~stringr::str_replace_all(.x, " ", "_")))) %>% dplyr::filter(Parameter %in% 
+        par_nms_chr) %>% dplyr::slice(match(par_nms_chr, Parameter))
+    assertthat::assert_that(all(par_nms_chr == mdl_smry_tb$Parameter), 
+        msg = "Parameter names mismatch between data and model summary table")
+    mdl$coefficients <- mdl_smry_tb$Estimate
+    names(mdl$coefficients) <- par_nms_chr
+    return(mdl)
 }
 #' Make smry of brm mdl
 #' @description make_smry_of_brm_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of brm mdl. The function returns Smry of brm mdl (a tibble).
@@ -624,8 +723,7 @@ make_smry_of_mdl <- function (data_tb, mdl, n_folds_1L_int = 10, dep_var_nm_1L_c
     mdl_types_lup = NULL, pred_type_1L_chr = NULL) 
 {
     if (is.null(mdl_types_lup)) 
-        mdl_types_lup <- data("mdl_types_lup", package = "FBaqol", 
-            envir = environment())
+        data("mdl_types_lup", envir = environment())
     data_tb <- data_tb %>% dplyr::filter(!is.na(!!rlang::sym(predr_var_nm_1L_chr)))
     data_tb <- transform_ds_for_mdlng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
