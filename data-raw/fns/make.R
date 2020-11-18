@@ -460,6 +460,53 @@ make_predr_vars_nms_ls <- function(main_predrs_chr,
   predr_vars_nms_ls <- predr_vars_nms_ls[order(sapply(predr_vars_nms_ls, length))]
   return(predr_vars_nms_ls)
 }
+make_shareable_mdl <- function(data_tb,
+                               mdl_smry_tb,
+                               dep_var_nm_1L_chr = "aqol6d_total_w",
+                               id_var_nm_1L_chr = "fkClientID",
+                               tfmn_1L_chr = "CLL",
+                               mdl_type_1L_chr = "OLS_CLL",
+                               mdl_types_lup = NULL,
+                               control_1L_chr = NA_character_,
+                               start_1L_chr = NA_character_,
+                               seed_1L_int = 12345L){
+
+  if(is.null(mdl_types_lup))
+    data(mdl_types_lup, envir = environment())
+  all_var_nms_chr <- names(data_tb)
+  tfd_dep_var_nm_1L_chr <- all_var_nms_chr[all_var_nms_chr %>%
+                                             startsWith(dep_var_nm_1L_chr)]
+  predr_var_nms_chr <- setdiff(all_var_nms_chr,c(tfd_dep_var_nm_1L_chr, id_var_nm_1L_chr))
+  if(length(predr_var_nms_chr) > 1){
+    covar_var_nms_chr <- predr_var_nms_chr[2:length(predr_var_nms_chr)]
+  }else{
+    covar_var_nms_chr <- NA_character_
+  }
+  fk_data_ls <- synthpop::syn(data_tb,
+                              visit.sequence = all_var_nms_chr[all_var_nms_chr != id_var_nm_1L_chr],
+                              seed = seed_1L_int)
+  mdl <- make_mdl(fk_data_tb,
+                  dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                  predr_var_nm_1L_chr = predr_var_nms_chr[1],
+                  covar_var_nms_chr = covar_var_nms_chr,
+                  tfmn_1L_chr = tfmn_1L_chr,
+                  mdl_type_1L_chr = mdl_type_1L_chr,
+                  mdl_types_lup = mdl_types_lup,
+                  control_1L_chr = control_1L_chr,
+                  start_1L_chr = start_1L_chr)
+
+  par_nms_chr <- mdl$coefficients %>% names()
+  mdl_smry_tb <- mdl_smry_tb %>%
+    dplyr::mutate(Parameter = dplyr::case_when(Parameter == "Intercept" ~ "(Intercept)",
+                                               TRUE ~ purrr::map_chr(Parameter, ~ stringr::str_replace_all(.x," ","_")))) %>%
+    dplyr::filter(Parameter %in% par_nms_chr) %>%
+    dplyr::slice(match(par_nms_chr, Parameter))
+  assertthat::assert_that(all(par_nms_chr == mdl_smry_tb$Parameter),
+                          msg = "Parameter names mismatch between data and model summary table")
+  mdl$coefficients <- mdl_smry_tb$Estimate
+  names(mdl$coefficients) <- par_nms_chr
+  return(mdl)
+}
 make_smry_of_brm_mdl <- function(mdl_ls,
                                  data_tb,
                                  dep_var_nm_1L_chr = "aqol6d_total_w",
@@ -571,13 +618,13 @@ make_smry_of_ts_mdl <- function(data_tb,
                   seed_1L_int = seed_1L_int)
   mdl_ls <- rlang::exec(fn,!!!args_ls)
   smry_of_ts_mdl_ls <- list(smry_of_ts_mdl_tb = make_smry_of_brm_mdl(mdl_ls,
-                                                                     data_tb = tfd_data_tb,
-                                                                     dep_var_nm_1L_chr = tfd_dep_var_nm_1L_chr,
-                                                                     predr_vars_nms_chr = predr_vars_nms_chr,
-                                                                     fn = ifelse(identical(fn,fit_gsn_log_lnk),
-                                                                                 calculate_rmse,
-                                                                                 calculate_rmse_tfmn),
-                                                                     mdl_nm_1L_chr = mdl_nm_1L_chr))
+                                                 data_tb = tfd_data_tb,
+                                                 dep_var_nm_1L_chr = tfd_dep_var_nm_1L_chr,
+                                                 predr_vars_nms_chr = predr_vars_nms_chr,
+                                                 fn = ifelse(identical(fn,fit_gsn_log_lnk),
+                                                             calculate_rmse,
+                                                             calculate_rmse_tfmn),
+                                                 mdl_nm_1L_chr = mdl_nm_1L_chr))
   if(!is.na(path_to_write_to_1L_chr)){
     smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr <- paste0(path_to_write_to_1L_chr,"/",mdl_nm_1L_chr,".RDS")
     if(file.exists(smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr))
