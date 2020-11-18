@@ -302,7 +302,7 @@ pkg_dss_tb <- tibble::tibble(short_name_chr = c("OLS_NTF",
                                                     "Beta Regression Model with Binomial distribution and complementary log log link")) %>%
   dplyr::mutate(control_chr = c(rep(NA_character_,9),rep("betareg::betareg.control",3)),
                 family_chr = c(rep(NA_character_,5),"gaussian(log)","quasibinomial(log)","quasibinomial(logit)","quasibinomial(cloglog)", rep(NA_character_,3)),
-                fn_chr = c(NA_character_,rep("lm",4),rep("glm",4),rep("betareg::betareg",3)),
+                fn_chr = c(rep("lm",4),rep("glm",4),rep("betareg::betareg",3)),
                 start_chr = c(rep(NA_character_,5),
                               rep("-0.1,-0.1",4),
                               rep("-0.5,-0.1,3",3)),

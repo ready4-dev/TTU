@@ -48,7 +48,7 @@ outp_smry_ls <- write_all_alg_outps(raw_data_tb = raw_data_tb,
                     seed_1L_int = 12345,
                     n_folds_1L_int = 10L,
                     max_nbr_of_boruta_mdl_runs_int = 300L,
-                    mdl_types_lup = NULL)
+                    mdl_types_lup = mdl_types_lup)
 
 ```
 

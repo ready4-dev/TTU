@@ -39,6 +39,10 @@ write_all_alg_outps <- function(raw_data_tb,
   bc_plt_path_1L_chr <- write_box_cox_tfmn(data_tb = bl_tb,
                                            predr_var_nm_1L_chr = predr_var_nm_1L_chr,
                                            path_to_write_to_1L_chr = path_to_write_to_1L_chr,
+                                           dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                                           covar_var_nms_chr = NA_character_,
+                                           fl_nm_pfx_1L_chr = "A_RT",
+                                           start_1L_chr = NULL,
                                            mdl_types_lup = mdl_types_lup)
 
   smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data_tb = bl_tb,
