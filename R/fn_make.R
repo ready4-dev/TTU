@@ -313,6 +313,29 @@ make_domain_items_ls <- function (domain_qs_lup_tb, item_pfx_1L_chr)
         .x)) %>% stats::setNames(domains_chr)
     return(domain_items_ls)
 }
+#' Make fake ts data
+#' @description make_fake_ts_data() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake ts data. The function returns Fk data (a tibble).
+#' @param outp_smry_ls Output smry (a list)
+#' @return Fk data (a tibble)
+#' @rdname make_fake_ts_data
+#' @export 
+#' @importFrom synthpop syn
+#' @importFrom purrr map_lgl
+#' @importFrom dplyr mutate across all_of
+make_fake_ts_data <- function (outp_smry_ls) 
+{
+    data_tb <- outp_smry_ls$scored_data_tb %>% transform_tb_to_mdl_inp(dep_var_nm_1L_chr = outp_smry_ls$dep_var_nm_1L_chr, 
+        predr_vars_nms_chr = outp_smry_ls$predr_cmprsns_tb$predr_chr, 
+        id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr, 
+        round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr)
+    fk_data_ls <- synthpop::syn(data_tb, visit.sequence = names(data_tb)[names(data_tb) != 
+        outp_smry_ls$id_var_nm_1L_chr], seed = outp_smry_ls$seed_1L_int)
+    dep_vars_chr <- names(fk_data_ls$syn)[names(fk_data_ls$syn) %>% 
+        purrr::map_lgl(~startsWith(.x, outp_smry_ls$dep_var_nm_1L_chr))]
+    fk_data_tb <- fk_data_ls$syn %>% dplyr::mutate(dplyr::across(dplyr::all_of(dep_vars_chr), 
+        ~NA_real_))
+    return(fk_data_tb)
+}
 #' Make folds
 #' @description make_folds_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make folds list. The function returns Folds (a list).
 #' @param data_tb Data (a tibble)
@@ -636,7 +659,7 @@ make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "aqol6
     }
     fk_data_ls <- synthpop::syn(data_tb, visit.sequence = all_var_nms_chr[all_var_nms_chr != 
         id_var_nm_1L_chr], seed = seed_1L_int)
-    mdl <- make_mdl(fk_data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
+    mdl <- make_mdl(fk_data_ls$syn, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
         predr_var_nm_1L_chr = predr_var_nms_chr[1], covar_var_nms_chr = covar_var_nms_chr, 
         tfmn_1L_chr = tfmn_1L_chr, mdl_type_1L_chr = mdl_type_1L_chr, 
         mdl_types_lup = mdl_types_lup, control_1L_chr = control_1L_chr, 
@@ -768,6 +791,7 @@ make_smry_of_mdl <- function (data_tb, mdl, n_folds_1L_int = 10, dep_var_nm_1L_c
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
 #' @param round_var_nm_1L_chr Round var name (a character vector of length one), Default: 'round'
 #' @param round_bl_val_1L_chr Round bl value (a character vector of length one), Default: 'Baseline'
+#' @param backend_1L_chr Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")
 #' @param iters_1L_int Iters (an integer vector of length one), Default: 4000
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 1000
 #' @return Smry of ts mdl (a list)
@@ -777,7 +801,8 @@ make_smry_of_mdl <- function (data_tb, mdl, n_folds_1L_int = 10, dep_var_nm_1L_c
 make_smry_of_ts_mdl <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_, 
     dep_var_nm_1L_chr = "aqol6d_total_w", id_var_nm_1L_chr = "fkClientID", 
     round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", 
-    iters_1L_int = 4000L, seed_1L_int = 1000L) 
+    backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L, 
+    seed_1L_int = 1000L) 
 {
     tfd_data_tb <- transform_tb_to_mdl_inp(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
         predr_vars_nms_chr = predr_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr, 
@@ -786,7 +811,7 @@ make_smry_of_ts_mdl <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr,
         transform_dep_var_nm_for_cll(dep_var_nm_1L_chr), dep_var_nm_1L_chr)
     args_ls <- list(data_tb = tfd_data_tb, dep_var_nm_1L_chr = tfd_dep_var_nm_1L_chr, 
         predr_vars_nms_chr = predr_vars_nms_chr, iters_1L_int = iters_1L_int, 
-        seed_1L_int = seed_1L_int)
+        backend_1L_chr = backend_1L_chr, seed_1L_int = seed_1L_int)
     mdl_ls <- rlang::exec(fn, !!!args_ls)
     smry_of_ts_mdl_ls <- list(smry_of_ts_mdl_tb = make_smry_of_brm_mdl(mdl_ls, 
         data_tb = tfd_data_tb, dep_var_nm_1L_chr = tfd_dep_var_nm_1L_chr, 

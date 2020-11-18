@@ -14,6 +14,7 @@ make_smry_of_ts_mdl(
   id_var_nm_1L_chr = "fkClientID",
   round_var_nm_1L_chr = "round",
   round_bl_val_1L_chr = "Baseline",
+  backend_1L_chr = getOption("brms.backend", "rstan"),
   iters_1L_int = 4000L,
   seed_1L_int = 1000L
 )
@@ -36,6 +37,8 @@ make_smry_of_ts_mdl(
 \item{round_var_nm_1L_chr}{Round var name (a character vector of length one), Default: 'round'}
 
 \item{round_bl_val_1L_chr}{Round bl value (a character vector of length one), Default: 'Baseline'}
+
+\item{backend_1L_chr}{Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")}
 
 \item{iters_1L_int}{Iters (an integer vector of length one), Default: 4000}
 

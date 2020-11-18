@@ -11,6 +11,7 @@ write_ts_mdls(
   id_var_nm_1L_chr = "fkClientID",
   round_var_nm_1L_chr = "round",
   round_bl_val_1L_chr = "Baseline",
+  backend_1L_chr = getOption("brms.backend", "rstan"),
   fn_ls,
   mdl_nms_ls,
   mdl_smry_dir_1L_chr,
@@ -30,6 +31,8 @@ write_ts_mdls(
 \item{round_var_nm_1L_chr}{Round var name (a character vector of length one), Default: 'round'}
 
 \item{round_bl_val_1L_chr}{Round bl value (a character vector of length one), Default: 'Baseline'}
+
+\item{backend_1L_chr}{Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")}
 
 \item{fn_ls}{Function list (a list of functions)}
 

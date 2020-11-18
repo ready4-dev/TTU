@@ -18,19 +18,13 @@ library(magrittr)
 seed_1L_int <- 12345
 set.seed(seed_1L_int)
 ```
-
 ```{r}
 if(!is.na(params$path_to_data_1L_chr)){
   raw_data_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS(params$path_to_data_1L_chr))
-}### ADD ELSE CALL TO PKG DATA
-
+}else{
+  raw_data_tb <- FBaqol::replication_popl_tb
+}
 ```
-
-```{r}
-
-
-```
-
 ```{r}
 path_to_write_fls_to_1L_chr <- params$path_to_write_fls_to_1L_chr
 dir_nm_1L_chr <- params$dir_nm_1L_chr
@@ -44,7 +38,8 @@ n_folds_1L_int <- 10L
 round_var_nm_1L_chr <- "round"
 round_bl_val_1L_chr <- "Baseline"
 prefd_mdl_types_chr <- c("GLM_GSN_LOG","OLS_CLL")
-prefd_covars_chr <- "SOFAS"
+choose_from_pfx_chr = c("GLM","OLS", "BET") ## Default
+#prefd_covars_chr <- "SOFAS"
 id_var_nm_1L_chr <-"fkClientID"
 mdl_types_chr <- FBaqol::mdl_types_lup$short_name_chr[3:14]
 max_nbr_of_boruta_mdl_runs_int <- 300L
@@ -87,9 +82,16 @@ smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data_tb = bl_tb,
                                                           predr_var_desc_1L_chr = predr_var_nm_1L_chr,
                                                           predr_vals_dbl = predr_vals_dbl , 
                                                           path_to_write_to_1L_chr = path_to_write_to_1L_chr) # ,mdl_types_lup = mdl_types_lup
-make_prefd_mdls_vec(smry_of_sngl_predr_mdls_tb,
-                    choose_from_pfx_chr = c("GLM","OLS"))
+
 ```
+
+```{r}
+if(is.na(prefd_mdl_types_chr[1])){
+  prefd_mdl_types_chr <- make_prefd_mdls_vec(smry_of_sngl_predr_mdls_tb,
+                    choose_from_pfx_chr = choose_from_pfx_chr)
+}
+```
+
 
 ```{r}
 predr_cmprsns_tb <- write_predr_cmprsn_outps(data_tb = bl_tb,
@@ -113,7 +115,7 @@ smry_of_mdl_sngl_predrs_tb <- write_mdl_type_multi_outps(data_tb = bl_tb,
 bl_tb <- scored_data_tb %>% transform_ds_for_tstng(candidate_predrs_chr = candidate_predrs_chr, 
                                    covar_var_nms_chr = covar_var_nms_chr,
                                    remove_all_mssng_1L_lgl = T,
-                                   round_val_1L_chr = "Baseline")
+                                   round_val_1L_chr = round_bl_val_1L_chr)
 mdls_with_covars_smry_tb <- write_mdl_type_covars_mdls(bl_tb,
                        predrs_var_nms_chr = candidate_predrs_chr,
                        covar_var_nms_chr = covar_var_nms_chr,
@@ -127,7 +129,7 @@ if(is.na(prefd_covars_chr))
 
 ```
 ```{r}
-smry_of_mdl_sngl_predrs_tb <- write_mdl_type_multi_outps(data_tb = bl_tb,
+dud_tb <- write_mdl_type_multi_outps(data_tb = bl_tb,
                             n_folds_1L_int = NULL,
                             start_1L_chr = NA_character_,
                             predrs_var_nms_chr = predr_cmprsns_tb$predr_chr,

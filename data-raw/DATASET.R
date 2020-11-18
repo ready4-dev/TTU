@@ -276,10 +276,7 @@ pkg_dss_tb <- read.csv("vignettes/Data/aqol_valid_stata.csv") %>%
                               url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
                               abbreviations_lup = abbreviations_lup,
                               pkg_dss_tb = pkg_dss_tb)
-pkg_dss_tb <- tibble::tibble(short_name_chr = c("GSN_LOG","CLL_TFN"),
-                               long_name_chr = c("Generalised Linear Mixed Model with Gaussian distribution and log link",
-                                                 "Linear Mixed Model with clog-log transformation")) %>%
-  dplyr::bind_rows(tibble::tibble(short_name_chr = c("OLS_NTF",
+pkg_dss_tb <- tibble::tibble(short_name_chr = c("OLS_NTF",
                                                      "OLS_LOG",
                                                      "OLS_LOGIT",
                                                      "OLS_LOGLOG",
@@ -302,7 +299,7 @@ pkg_dss_tb <- tibble::tibble(short_name_chr = c("GSN_LOG","CLL_TFN"),
                                                     "Generalised Linear Mixed Model with Binomial distribution and complementary log log link",
                                                     "Beta Regression Model with Binomial distribution and log link",
                                                     "Beta Regression Model with Binomial distribution and logit link",
-                                                    "Beta Regression Model with Binomial distribution and complementary log log link"))) %>%
+                                                    "Beta Regression Model with Binomial distribution and complementary log log link")) %>%
   dplyr::mutate(control_chr = c(rep(NA_character_,11),rep("betareg::betareg.control",3)),
                 family_chr = c(rep(NA_character_,7),"gaussian(log)","quasibinomial(log)","quasibinomial(logit)","quasibinomial(cloglog)", rep(NA_character_,3)),
                 fn_chr = c(NA_character_,rep("lm",6),rep("glm",4),rep("betareg::betareg",3)),

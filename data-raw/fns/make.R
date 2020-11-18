@@ -252,6 +252,21 @@ make_dim_sclg_cons_dbl <- function(domains_chr,
                                                                     evaluate_lgl = F))
   return(dim_sclg_cons_dbl)
 }
+make_fake_ts_data <- function(outp_smry_ls){
+  data_tb <- outp_smry_ls$scored_data_tb %>%
+    transform_tb_to_mdl_inp(dep_var_nm_1L_chr = outp_smry_ls$dep_var_nm_1L_chr,
+                            predr_vars_nms_chr = outp_smry_ls$predr_cmprsns_tb$predr_chr,
+                            id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr,
+                            round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr,
+                            round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr)
+  fk_data_ls <- synthpop::syn(data_tb,
+                              visit.sequence = names(data_tb)[ names(data_tb) != outp_smry_ls$id_var_nm_1L_chr],
+                              seed = outp_smry_ls$seed_1L_int)
+  dep_vars_chr <- names(fk_data_ls$syn)[names(fk_data_ls$syn) %>% purrr::map_lgl(~startsWith(.x, outp_smry_ls$dep_var_nm_1L_chr))]
+  fk_data_tb <- fk_data_ls$syn %>%
+    dplyr::mutate(dplyr::across(dplyr::all_of(dep_vars_chr), ~ NA_real_))
+  return(fk_data_tb)
+}
 make_folds_ls <- function(data_tb,
                           dep_var_nm_1L_chr = "aqol6d_total_w",
                           n_folds_1L_int = 10L){
@@ -504,7 +519,7 @@ make_shareable_mdl <- function(data_tb,
   fk_data_ls <- synthpop::syn(data_tb,
                               visit.sequence = all_var_nms_chr[all_var_nms_chr != id_var_nm_1L_chr],
                               seed = seed_1L_int)
-  mdl <- make_mdl(fk_data_tb,
+  mdl <- make_mdl(fk_data_ls$syn,
                   dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                   predr_var_nm_1L_chr = predr_var_nms_chr[1],
                   covar_var_nms_chr = covar_var_nms_chr,
@@ -619,6 +634,7 @@ make_smry_of_ts_mdl <- function(data_tb,
                                 id_var_nm_1L_chr = "fkClientID",
                                 round_var_nm_1L_chr = "round",
                                 round_bl_val_1L_chr = "Baseline",
+                                backend_1L_chr = getOption("brms.backend", "rstan"),
                                 iters_1L_int = 4000L,
                                 seed_1L_int = 1000L){
   tfd_data_tb <- transform_tb_to_mdl_inp(data_tb,
@@ -634,6 +650,7 @@ make_smry_of_ts_mdl <- function(data_tb,
                   dep_var_nm_1L_chr = tfd_dep_var_nm_1L_chr,
                   predr_vars_nms_chr = predr_vars_nms_chr,
                   iters_1L_int = iters_1L_int,
+                  backend_1L_chr = backend_1L_chr,
                   seed_1L_int = seed_1L_int)
   mdl_ls <- rlang::exec(fn,!!!args_ls)
   smry_of_ts_mdl_ls <- list(smry_of_ts_mdl_tb = make_smry_of_brm_mdl(mdl_ls,
