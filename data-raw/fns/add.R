@@ -1,3 +1,26 @@
+add_adol6d_scores <- function(unscored_aqol_tb,
+                              prefix_1L_chr =  "aqol6d_q",
+                              id_var_nm_1L_chr = "fkClientID",
+                              wtd_aqol_var_nm_1L_chr = "aqol6d_total_w"){
+  complete_ds_tb <- unscored_aqol_tb
+  unscored_aqol_tb <- unscored_aqol_tb %>%
+    dplyr::select(id_var_nm_1L_chr,
+                  dplyr::starts_with(unname(prefix_1L_chr)))
+  old_nms_chr <- names(unscored_aqol_tb)
+  names(unscored_aqol_tb) <- c("ID",paste0("Q",1:20))
+  unscored_aqol_tb <- impute_unscrd_adol_aqol6d_ds(unscored_aqol_tb)
+  disvals_tb <- unscored_aqol_tb %>%
+    add_itm_disv_to_aqol6d_itms_tb(disvalues_lup_tb = make_adol_aqol6d_disv_lup(),
+                                   pfx_1L_chr = "Q") %>%
+    dplyr::select(ID,
+                  dplyr::starts_with("dv_")) %>%
+    dplyr::rename_all(~stringr::str_replace(.x,"dv_","dv"))
+  scored_aqol_tb <- add_aqol6d_adol_dim_scrg_eqs(disvals_tb)
+  tfd_aqol_tb <- dplyr::inner_join(complete_ds_tb, scored_aqol_tb %>%
+                                     dplyr::rename(!!rlang::sym(id_var_nm_1L_chr) := ID,
+                                                   !!rlang::sym(wtd_aqol_var_nm_1L_chr) := uaqol))
+  return(tfd_aqol_tb)
+}
 add_aqol6dU_to_aqol6d_items_tb <- function(aqol6d_items_tb,
                                            coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb){
   coeff_dbl <- coeffs_lup_tb[match(c(paste0("vD",1:6),"Constant"),

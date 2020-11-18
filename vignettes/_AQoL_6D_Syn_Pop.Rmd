@@ -213,6 +213,12 @@ bl_tb <- dplyr::inner_join(descriptives_BL_tb,aqol6d_adol_pop_tbs_ls$bl_outcomes
 fup_tb <- dplyr::inner_join(descriptives_FUP_tb,aqol6d_adol_pop_tbs_ls$fup_outcomes_tb)
 ```
 
+```{r}
+bl_tb <- bl_tb %>%
+  dplyr::mutate(c_sofas = faux::rnorm_pre(bl_tb$aqol6d_total_w %>% as.vector(), mu = 65.2, sd = 9.5, r = 0.5, empirical = T) %>% purrr::map_dbl(~min(.x,100) %>% max(0)))
+fup_tb <- fup_tb %>%
+  dplyr::mutate(c_sofas = faux::rnorm_pre(fup_tb$aqol6d_total_w %>% as.vector(), mu = 69.9, sd = 10, r = 0.5, empirical = T) %>% purrr::map_dbl(~min(.x,100) %>% max(0)))
+```
 
 ```{r}
 composite_tb <- dplyr::bind_rows(bl_tb,fup_tb) %>%
@@ -248,11 +254,9 @@ composite_tb <- dplyr::bind_rows(bl_tb,fup_tb) %>%
     
 ```
 
-
-
-
 ```{r}
-composite_tb
+composite_tb <- composite_tb %>%
+  dplyr::select(-setdiff(names(composite_tb)[startsWith(names(composite_tb),"aqol6d_")],names(composite_tb)[startsWith(names(composite_tb),"aqol6d_q")]))
 ```
 
 Next we write a copy of these input parameters and the synthetic population dataset as CSV files.
@@ -269,20 +273,20 @@ dss_tb <- tibble::add_case(dss_tb,
 
 ```{r}
 # NOT FOR INCLUSION IN VIGNETTE
-# ready4use::write_fls_to_dv_ds(dss_tb,
-#                                dv_nm_1L_chr = "ready4models",
-#                                ds_url_1L_chr = "https://doi.org/10.7910/DVN/GRZRY5",
-#                                parent_dv_dir_1L_chr = "../../../../../../Data/Dataverse",
-#                                paths_to_dirs_chr = "Data",
-#                                inc_fl_types_chr = ".csv")
+ready4use::write_fls_to_dv_ds(dss_tb,
+                               dv_nm_1L_chr = "ready4models",
+                               ds_url_1L_chr = "https://doi.org/10.7910/DVN/GRZRY5",
+                               parent_dv_dir_1L_chr = "../../../../../../Data/Dataverse",
+                               paths_to_dirs_chr = "Data",
+                               inc_fl_types_chr = ".csv")
 ```
 
 
 Finally we save an RDS copy of the synthetic dataset.
 
 ```{r}
-if(!dir.exists("Data"))
-  dir.create("Data")
-saveRDS(composite_tb,"Data/fake_pop_tb.rds") 
+# if(!dir.exists("Data"))
+#   dir.create("Data")
+# saveRDS(composite_tb,"Data/fake_pop_tb.rds") 
 ```
 

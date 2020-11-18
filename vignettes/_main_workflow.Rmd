@@ -1,13 +1,8 @@
 ---
-title: "AQol-6D analyses"
-output:
-  html_document: 
-    code_folding: "hide"
-    toc: yes 
-  output: html_notebook
+title: "Main Workflow"
+output: html_document
 params:
-  path_to_data_1L_chr: "../Data/fake_pop_tb.rds"
-  path_to_write_fls_to_1L_chr: "../../../../../../../Data/Project/Utility_Models"
+  path_to_write_fls_to_1L_chr: "../../../../../../Data/Project/Utility_Models"
   dir_nm_1L_chr: "One_Predr_Output"
 ---
 
@@ -16,10 +11,22 @@ knitr::opts_chunk$set(echo = TRUE)
 library(xtable) 
 library(FBaqol) 
 library(magrittr)
+library(ggfortify)
+
 ```
 
 ```{r}
-set.seed(12345)
+seed_1L_int <- 12345
+set.seed(seed_1L_int)
+```
+
+```{r}
+raw_data_tb <- ready4use::ready4_dv_import_lup() %>%
+  tibble::add_case(data_repo_db_ui = "https://doi.org/10.7910/DVN/GRZRY5",
+                   file_name = "fake_pop_tb",
+                   file_type = ".csv",
+                   data_repo_file_ext = ".tab") %>%
+  ready4use::get_data()
 ```
 
 ```{r}
@@ -36,11 +43,19 @@ round_var_nm_1L_chr <- "round"
 round_bl_val_1L_chr <- "Baseline"
 prefd_mdl_types_chr <- c("OLS_CLL", "GLM_GSN_LOG")
 prefd_covars_chr <- "SOFAS"
+id_var_nm_1L_chr <-"fkClientID"
+mdl_types_chr <- FBaqol::mdl_types_lup$short_name_chr[3:14]
 ```
 
 ```{r}
-data_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS(params$path_to_data_1L_chr))
-bl_tb <- transform_ds_for_tstng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, candidate_predrs_chr = candidate_predrs_chr, dep_var_max_val_1L_dbl = 0.999, round_val_1L_chr = "Baseline")
+scored_data_tb <- add_adol6d_scores(raw_data_tb,
+                              prefix_1L_chr =  "aqol6d_q",
+                              id_var_nm_1L_chr = id_var_nm_1L_chr,
+                              wtd_aqol_var_nm_1L_chr = dep_var_nm_1L_chr) %>% transform_raw_aqol_tb_to_aqol6d_tb()
+```
+
+```{r}
+bl_tb <- transform_ds_for_tstng(scored_data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, candidate_predrs_chr = candidate_predrs_chr, dep_var_max_val_1L_dbl = 0.999, round_val_1L_chr = "Baseline")
 ```
 
 ```{r}
@@ -53,7 +68,7 @@ bc_plt_path_1L_chr <- write_box_cox_tfmn(data_tb = bl_tb,
 ```{r}
 smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data_tb = bl_tb,
                                                           n_folds_1L_int = n_folds_1L_int,
-                                                          mdl_types_chr = c("OLS_NTF","OLS_LOG", "OLS_LOGIT", "OLS_LOGLOG", "OLS_CLL", "GLM_GSN_LOG", "GLM_BNL_LOG", "GLM_BNL_LGT", "GLM_BNL_CLL", "BET_LOG","BET_LGT", "BET_CLL"),
+                                                          mdl_types_chr = mdl_types_chr,
                                                           dep_var_nm_1L_chr = "aqol6d_total_w",
                                                           predr_var_nm_1L_chr = "PHQ9",
                                                           predr_var_desc_1L_chr = "PHQ9 total score",
@@ -82,7 +97,7 @@ smry_of_mdl_sngl_predrs_tb <- write_mdl_type_multi_outps(data_tb = bl_tb,
 ```
 
 ```{r}
-bl_tb <- data_tb %>% transform_ds_for_tstng(candidate_predrs_chr = candidate_predrs_chr, 
+bl_tb <- scored_data_tb %>% transform_ds_for_tstng(candidate_predrs_chr = candidate_predrs_chr, 
                                    covar_var_nms_chr = covar_var_nms_chr,
                                    remove_all_mssng_1L_lgl = T,
                                    round_val_1L_chr = "Baseline")
@@ -113,5 +128,3 @@ smry_of_mdl_sngl_predrs_tb <- write_mdl_type_multi_outps(data_tb = bl_tb,
                             mdl_types_lup = mdl_types_lup,
                             fl_nm_pfx_1L_chr = "E_CK_CV")
 ```
-
-
