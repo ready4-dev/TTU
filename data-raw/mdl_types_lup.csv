@@ -1,6 +1,4 @@
 "short_name_chr","long_name_chr","control_chr","family_chr","fn_chr","start_chr","pred_type_chr","tfmn_chr","tfmn_for_bnml_lgl"
-"GSN_LOG","Generalised Linear Mixed Model with Gaussian distribution and log link",NA,NA,NA,NA,NA,"NTF",FALSE
-"CLL_TFN","Linear Mixed Model with clog-log transformation",NA,NA,"lm",NA,NA,"NTF",FALSE
 "OLS_NTF","Ordinary Least Squares (No transformation)",NA,NA,"lm",NA,NA,"NTF",FALSE
 "OLS_LOG","Ordinary Least Squares (Log transformation)",NA,NA,"lm",NA,NA,"LOG",FALSE
 "OLS_LOGIT","Ordinary Least Squares (Logit transformation)",NA,NA,"lm",NA,NA,"LOGIT",FALSE
