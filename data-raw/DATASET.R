@@ -300,21 +300,21 @@ pkg_dss_tb <- tibble::tibble(short_name_chr = c("OLS_NTF",
                                                     "Beta Regression Model with Binomial distribution and log link",
                                                     "Beta Regression Model with Binomial distribution and logit link",
                                                     "Beta Regression Model with Binomial distribution and complementary log log link")) %>%
-  dplyr::mutate(control_chr = c(rep(NA_character_,11),rep("betareg::betareg.control",3)),
-                family_chr = c(rep(NA_character_,7),"gaussian(log)","quasibinomial(log)","quasibinomial(logit)","quasibinomial(cloglog)", rep(NA_character_,3)),
-                fn_chr = c(NA_character_,rep("lm",6),rep("glm",4),rep("betareg::betareg",3)),
-                start_chr = c(rep(NA_character_,7),
+  dplyr::mutate(control_chr = c(rep(NA_character_,9),rep("betareg::betareg.control",3)),
+                family_chr = c(rep(NA_character_,5),"gaussian(log)","quasibinomial(log)","quasibinomial(logit)","quasibinomial(cloglog)", rep(NA_character_,3)),
+                fn_chr = c(NA_character_,rep("lm",4),rep("glm",4),rep("betareg::betareg",3)),
+                start_chr = c(rep(NA_character_,5),
                               rep("-0.1,-0.1",4),
                               rep("-0.5,-0.1,3",3)),
 
-                pred_type_chr = c(rep(NA_character_,7),
+                pred_type_chr = c(rep(NA_character_,5),
                                   rep("response",7)),
                 tfmn_chr = dplyr::case_when(startsWith(short_name_chr, "OLS_") ~ purrr::map_chr(short_name_chr, ~ {
                   idx_1L_int <- 1 + stringi::stri_locate_last_fixed(.x,"_")[1,1] %>% as.vector()
                   stringr::str_sub(.x, start = idx_1L_int)
                 }),
                 T ~ "NTF"),
-                tfmn_for_bnml_lgl = c(rep(F,8),rep(T,3),rep(F,3))) %>%
+                tfmn_for_bnml_lgl = c(rep(F,6),rep(T,3),rep(F,3))) %>%
   ready4fun::write_and_doc_ds(db_1L_chr = "mdl_types_lup",
                               title_1L_chr = "Model types lookup table",
                               desc_1L_chr = "A lookup table of abbreviations to describe the different model types supported by FBaqol functions",
@@ -369,7 +369,9 @@ ds_ls <- ready4use::write_pkg_dss_to_dv_ds_csvs(pkg_dss_tb,
 ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
                                 r_dir_1L_chr = "R",
                                 dev_pkgs_chr = c("ready4fun","ready4class","ready4use"),
-                                update_pkgdown_1L_lgl = T)
+                                update_pkgdown_1L_lgl = T,
+                                path_to_dvpr_dmt_dir_1L_chr = "../../../../../Documentation/Code/Developer",
+                                path_to_user_dmt_dir_1L_chr = "../../../../../Documentation/Code/User")
 ##
 ## PART FOUR
 ##

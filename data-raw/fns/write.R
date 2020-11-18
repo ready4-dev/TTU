@@ -18,7 +18,7 @@ write_all_alg_outps <- function(raw_data_tb,
   set.seed(seed_1L_int)
   if(is.null(mdl_types_lup))
     data("mdl_types_lup", envir = environment())
-  if(is.na(mdl_types_chr)){
+  if(is.na(mdl_types_chr[1])){
     mdl_types_chr <- mdl_types_lup$short_name_chr
   }
   scored_data_tb <- add_adol6d_scores(raw_data_tb,
