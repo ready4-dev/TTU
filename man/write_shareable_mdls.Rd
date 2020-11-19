@@ -4,12 +4,10 @@
 \alias{write_shareable_mdls}
 \title{Write shareable mdls}
 \usage{
-write_shareable_mdls(outp_smry_ls, dv_ls = NULL, sub_dir_1L_chr = "Shareable")
+write_shareable_mdls(outp_smry_ls, sub_dir_1L_chr = "Shareable")
 }
 \arguments{
 \item{outp_smry_ls}{Output smry (a list)}
-
-\item{dv_ls}{Dataverse (a list), Default: NULL}
 
 \item{sub_dir_1L_chr}{Sub directory (a character vector of length one), Default: 'Shareable'}
 }

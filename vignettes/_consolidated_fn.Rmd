@@ -4,13 +4,14 @@ output: html_document
 params:
   path_to_data_1L_chr: !r NA_character_
   path_to_write_fls_to_1L_chr: "../../../../../../Data/Project/Utility_Models"
+  run_chunks_1L_lgl: FALSE
   dir_nm_1L_chr: "One_Predr_Output"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,
                       message = F,
-                      eval = T)
+                      eval = params$run_chunks_1L_lgl)
 library(xtable) 
 library(FBaqol) 
 library(magrittr)
@@ -20,7 +21,7 @@ library(magrittr)
 
 The first step is to import the raw data. Note, for this example, purely synthetic data has been used - all results are therefore purely illustrative.
 
-```{r}
+```{r eval = T}
 if(!is.na(params$path_to_data_1L_chr)){
   raw_data_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS(params$path_to_data_1L_chr))
 }else{
@@ -74,13 +75,20 @@ It is not appropriate to share the raw models created in the previous step publi
 
 https://dataverse.harvard.edu/privateurl.xhtml?token=37736f13-4d32-4afa-a03a-ad82c0d7d4e0
 
-```{r}
-outp_smry_ls <- write_shareable_mdls(outp_smry_ls,
-                                     sub_dir_1L_chr = "Shareable",
-                                     dv_ls = list(dv_nm_1L_chr = "ready4models",
-                               ds_url_1L_chr = "https://doi.org/10.7910/DVN/GRZRY5",
-                               parent_dv_dir_1L_chr = "../../../../../../Data/Dataverse"))
+```{r include=F, eval=T}
+if(!params$run_chunks_1L_lgl){
+  outp_smry_ls <- readRDS(paste0(path_to_write_to_1L_chr,"/I_ALL_OUTPUT_.RDS"))
+}
 ```
+
+```{r}
+outp_smry_ls$dv_ls <- list(dv_nm_1L_chr = "ready4models",
+                               ds_url_1L_chr = "https://doi.org/10.7910/DVN/GRZRY5",
+                               parent_dv_dir_1L_chr = "../../../../../../Data/Dataverse")
+outp_smry_ls <- write_shareable_mdls(outp_smry_ls,
+                                     sub_dir_1L_chr = "Shareable")
+```
+
 
 # Create shareable population data
 
@@ -92,21 +100,22 @@ outp_smry_ls$fk_data_tb <- make_fake_ts_data(outp_smry_ls)
 
 # Predict
 
+
 We now have a range of models that we can use for prediction. To put this to use, we can run the following function. The model passed to the argument mdl can either be one you have generated yourself using the previous steps, or one created by others that you download from a data repository.
 
-```{r}
+```{r eval=T}
 add_adol6d_predn_to_ds(data_tb = outp_smry_ls$fk_data_tb,
                        mdl = outp_smry_ls$sharble_mdls_ls$PHQ9_1_OLS_CLL,
                        tfmn_1L_chr = "CLL") %>% head() 
 ```
 
 # Create report
-You can create reports based on the output saved to your local machine in the preceding steps. One such report is generated below and is available for viewing at the same temporary URL used for the shareable models:
+You can create reports based on the output saved to your local machine in the preceding steps. As per previously, if you have supplied details about a Dataverse account, the report is sent to your online data repository as well. One sample report is generated below and is available for viewing at the same temporary URL used for the shareable models:
 
  https://dataverse.harvard.edu/privateurl.xhtml?token=37736f13-4d32-4afa-a03a-ad82c0d7d4e0
 
 ```{r}
-write_rprt(outp_smry_ls,
+outp_smry_ls <- write_rprt(outp_smry_ls,
            nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
            output_type_1L_chr = "PDF",
            section_type_1L_chr = "#",
@@ -114,19 +123,6 @@ write_rprt(outp_smry_ls,
            markdown_dir_1L_chr = "Markdown",
            file_nm_1L_chr = "Main_Mdl_Smry")
 ```
-
-
-```{r}
-outp_smry_ls$rprt_dss_tb <- tibble::tibble(ds_obj_nm_chr = "Main_Mdl_Smry",
-                           title_chr = "Summary report of the models estimated from synthetic data to map a number of mental health measures to adolescent AQoL-6D scores.")
-ready4use::write_fls_to_dv_ds(outp_smry_ls$rprt_dss_tb,
-                               dv_nm_1L_chr = "ready4models",
-                               ds_url_1L_chr = "https://doi.org/10.7910/DVN/GRZRY5",
-                               parent_dv_dir_1L_chr = "../../../../../../Data/Dataverse",
-                               paths_to_dirs_chr = paste0(params$path_to_write_fls_to_1L_chr,"/Reports"),
-                               inc_fl_types_chr = ".pdf")
-```
-
 
 # Save work
 

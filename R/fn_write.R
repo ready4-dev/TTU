@@ -618,7 +618,7 @@ write_rndrd_rprt <- function (path_to_RMD_dir_1L_chr, nm_of_RMD_1L_chr = "report
         output_dir = path_to_outpt_rtrp_1L_chr)
 }
 #' Write rprt
-#' @description write_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write rprt. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @description write_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write rprt. The function returns Output smry (a list).
 #' @param outp_smry_ls Output smry (a list)
 #' @param nm_of_RMD_1L_chr Name ofMD (a character vector of length one), Default: '_Mdls_Report.RMD'
 #' @param output_type_1L_chr Output type (a character vector of length one), Default: 'PDF'
@@ -626,10 +626,11 @@ write_rndrd_rprt <- function (path_to_RMD_dir_1L_chr, nm_of_RMD_1L_chr = "report
 #' @param reports_dir_1L_chr Reports directory (a character vector of length one), Default: 'Reports'
 #' @param markdown_dir_1L_chr Markdown directory (a character vector of length one), Default: 'Markdown'
 #' @param file_nm_1L_chr File name (a character vector of length one), Default: 'Main_Mdl_Smry'
-#' @return NULL
+#' @return Output smry (a list)
 #' @rdname write_rprt
 #' @export 
-
+#' @importFrom ready4use write_fls_to_dv_ds
+#' @importFrom tibble tibble
 write_rprt <- function (outp_smry_ls, nm_of_RMD_1L_chr = "_Mdls_Report.RMD", 
     output_type_1L_chr = "PDF", section_type_1L_chr = "#", reports_dir_1L_chr = "Reports", 
     markdown_dir_1L_chr = "Markdown", file_nm_1L_chr = "Main_Mdl_Smry") 
@@ -644,11 +645,27 @@ write_rprt <- function (outp_smry_ls, nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
             full.names = T), path_to_write_fls_to_1L_chr = normalizePath(params$path_to_write_fls_to_1L_chr), 
         nm_of_rprt_dir_1L_chr = markdown_dir_1L_chr, path_to_outpt_rtrp_1L_chr = normalizePath(paste0(params$path_to_write_fls_to_1L_chr, 
             "/", reports_dir_1L_chr)), file_nm_1L_chr = file_nm_1L_chr)
+    if (!is.null(outp_smry_ls$dv_ls)) {
+        ready4use::write_fls_to_dv_ds(shareable_mdls_tb, dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
+            ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr, 
+            parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr, 
+            paths_to_dirs_chr = paste0(outp_smry_ls$path_to_write_to_1L_chr, 
+                "/", sub_dir_1L_chr), inc_fl_types_chr = ".RDS")
+        outp_smry_ls$rprt_dss_tb <- tibble::tibble(ds_obj_nm_chr = "Main_Mdl_Smry", 
+            title_chr = "Summary report of the models estimated from synthetic data to map a number of mental health measures to adolescent AQoL-6D scores.")
+        ready4use::write_fls_to_dv_ds(outp_smry_ls$rprt_dss_tb, 
+            dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr, 
+            parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr, 
+            paths_to_dirs_chr = paste0(params$path_to_write_fls_to_1L_chr, 
+                "/", reports_dir_1L_chr), inc_fl_types_chr = paste0(".", 
+                ifelse(output_type_1L_chr == "Word", "docx", 
+                  tolower(output_type_1L_chr))))
+    }
+    return(outp_smry_ls)
 }
 #' Write shareable mdls
 #' @description write_shareable_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable mdls. The function returns Output smry (a list).
 #' @param outp_smry_ls Output smry (a list)
-#' @param dv_ls Dataverse (a list), Default: NULL
 #' @param sub_dir_1L_chr Sub directory (a character vector of length one), Default: 'Shareable'
 #' @return Output smry (a list)
 #' @rdname write_shareable_mdls
@@ -658,7 +675,7 @@ write_rprt <- function (outp_smry_ls, nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
 #' @importFrom stats setNames
 #' @importFrom tibble tibble
 #' @importFrom ready4use write_fls_to_dv_ds
-write_shareable_mdls <- function (outp_smry_ls, dv_ls = NULL, sub_dir_1L_chr = "Shareable") 
+write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable") 
 {
     sharble_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>% 
         purrr::map(~{
@@ -687,12 +704,13 @@ write_shareable_mdls <- function (outp_smry_ls, dv_ls = NULL, sub_dir_1L_chr = "
         }) %>% stats::setNames(outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())
     outp_smry_ls$sharble_mdls_ls <- sharble_mdls_ls
     shareable_mdls_tb <- NULL
-    if (!is.null) {
+    if (!is.null(outp_smry_ls$dv_ls)) {
         shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$sharble_mdls_ls), 
             title_chr = paste0("A shareable statistical model, ", 
                 names(outp_smry_ls$sharble_mdls_ls), ", containing no confidential information, that can be used to predict adolescent AQoL6D. Note this model is a placeholder as it has been estimated from synthetic data."))
-        ready4use::write_fls_to_dv_ds(shareable_mdls_tb, dv_nm_1L_chr = dv_ls$dv_nm_1L_chr, 
-            ds_url_1L_chr = dv_ls$ds_url_1L_chr, parent_dv_dir_1L_chr = dv_ls$parent_dv_dir_1L_chr, 
+        ready4use::write_fls_to_dv_ds(shareable_mdls_tb, dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
+            ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr, 
+            parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr, 
             paths_to_dirs_chr = paste0(outp_smry_ls$path_to_write_to_1L_chr, 
                 "/", sub_dir_1L_chr), inc_fl_types_chr = ".RDS")
     }

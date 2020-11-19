@@ -547,6 +547,26 @@ write_rprt <- function(outp_smry_ls,
                    nm_of_rprt_dir_1L_chr = markdown_dir_1L_chr,
                    path_to_outpt_rtrp_1L_chr = normalizePath(paste0(params$path_to_write_fls_to_1L_chr,"/",reports_dir_1L_chr)),
                    file_nm_1L_chr = file_nm_1L_chr)
+  if(!is.null(outp_smry_ls$dv_ls)){
+        ready4use::write_fls_to_dv_ds(shareable_mdls_tb ,
+                                  dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
+                                  ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr,
+                                  parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr,
+                                  paths_to_dirs_chr = paste0(outp_smry_ls$path_to_write_to_1L_chr,"/",sub_dir_1L_chr),
+                                  inc_fl_types_chr = ".RDS")
+    outp_smry_ls$rprt_dss_tb <- tibble::tibble(ds_obj_nm_chr = "Main_Mdl_Smry",
+                                               title_chr = "Summary report of the models estimated from synthetic data to map a number of mental health measures to adolescent AQoL-6D scores.")
+    ready4use::write_fls_to_dv_ds(outp_smry_ls$rprt_dss_tb,
+                                  dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
+                                  ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr,
+                                  parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr,
+                                  paths_to_dirs_chr = paste0(params$path_to_write_fls_to_1L_chr,"/",reports_dir_1L_chr),
+                                  inc_fl_types_chr = paste0(".",ifelse(output_type_1L_chr=="Word",
+                                                            "docx",
+                                                            tolower(output_type_1L_chr))))
+
+  }
+  return(outp_smry_ls)
 }
 write_rndrd_rprt <- function(path_to_RMD_dir_1L_chr,
                              nm_of_RMD_1L_chr = "report.RMD",
@@ -620,7 +640,7 @@ write_results_to_csv <- function(synth_data_spine_ls,
   return(dss_tb)
 }
 write_shareable_mdls <- function(outp_smry_ls,
-                                 dv_ls = NULL,
+                                 #dv_ls = NULL,
                                  sub_dir_1L_chr = "Shareable"){
   sharble_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>% purrr::map(~{
     mdl <- readRDS(paste0(outp_smry_ls$path_to_write_to_1L_chr,"/",.x,".RDS"))
@@ -647,13 +667,13 @@ write_shareable_mdls <- function(outp_smry_ls,
   }) %>% stats::setNames(outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())
   outp_smry_ls$sharble_mdls_ls <- sharble_mdls_ls
   shareable_mdls_tb <- NULL
-  if(!is.null){
+  if(!is.null(outp_smry_ls$dv_ls)){
     shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$sharble_mdls_ls),
                                         title_chr = paste0("A shareable statistical model, ",names(outp_smry_ls$sharble_mdls_ls),", containing no confidential information, that can be used to predict adolescent AQoL6D. Note this model is a placeholder as it has been estimated from synthetic data."))
     ready4use::write_fls_to_dv_ds(shareable_mdls_tb ,
-                                  dv_nm_1L_chr = dv_ls$dv_nm_1L_chr,
-                                  ds_url_1L_chr = dv_ls$ds_url_1L_chr,
-                                  parent_dv_dir_1L_chr = dv_ls$parent_dv_dir_1L_chr,
+                                  dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
+                                  ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr,
+                                  parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr,
                                   paths_to_dirs_chr = paste0(outp_smry_ls$path_to_write_to_1L_chr,"/",sub_dir_1L_chr),
                                   inc_fl_types_chr = ".RDS")
 
