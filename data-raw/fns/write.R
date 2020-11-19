@@ -26,7 +26,12 @@ write_all_alg_outps <- function(raw_data_tb,
                                       id_var_nm_1L_chr = id_var_nm_1L_chr,
                                       wtd_aqol_var_nm_1L_chr = dep_var_nm_1L_chr)
 
-  bl_tb <- transform_ds_for_tstng(scored_data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, candidate_predrs_chr = candidate_predrs_chr, dep_var_max_val_1L_dbl = 0.999, round_val_1L_chr = round_bl_val_1L_chr)
+  bl_tb <- transform_ds_for_tstng(scored_data_tb,
+                                  dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+                                  candidate_predrs_chr = candidate_predrs_chr,
+                                  dep_var_max_val_1L_dbl = 0.999,
+                                  round_var_nm_1L_chr = round_var_nm_1L_chr,
+                                  round_val_1L_chr = round_bl_val_1L_chr)
 
   candidate_predrs_chr <- reorder_cndt_predrs_chr(candidate_predrs_chr,
                                                   data_tb = bl_tb,
@@ -36,14 +41,15 @@ write_all_alg_outps <- function(raw_data_tb,
   predr_vals_dbl <- make_predr_vals(predr_var_nm_1L_chr,
                                     candidate_predrs_lup = candidate_predrs_lup)
 
-  bc_plt_path_1L_chr <- write_box_cox_tfmn(data_tb = bl_tb,
-                                           predr_var_nm_1L_chr = predr_var_nm_1L_chr,
-                                           path_to_write_to_1L_chr = path_to_write_to_1L_chr,
-                                           dep_var_nm_1L_chr = dep_var_nm_1L_chr,
-                                           covar_var_nms_chr = NA_character_,
-                                           fl_nm_pfx_1L_chr = "A_RT",
-                                           start_1L_chr = NULL,
-                                           mdl_types_lup = mdl_types_lup)
+  bc_plt_path_1L_chr <- NA_character_
+    # write_box_cox_tfmn(data_tb = bl_tb,
+    #                                        predr_var_nm_1L_chr = predr_var_nm_1L_chr,
+    #                                        path_to_write_to_1L_chr = path_to_write_to_1L_chr,
+    #                                        dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+    #                                        covar_var_nms_chr = NA_character_,
+    #                                        fl_nm_pfx_1L_chr = "A_RT",
+    #                                        start_1L_chr = NULL,
+    #                                        mdl_types_lup = mdl_types_lup)
 
   smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data_tb = bl_tb,
                                                                   n_folds_1L_int = n_folds_1L_int,
@@ -79,6 +85,7 @@ write_all_alg_outps <- function(raw_data_tb,
                                                      remove_all_mssng_1L_lgl = T,
                                                      round_val_1L_chr = round_bl_val_1L_chr)
   mdls_with_covars_smry_tb <- write_mdl_type_covars_mdls(bl_tb,
+                                                         dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                                                          predrs_var_nms_chr = candidate_predrs_chr,
                                                          covar_var_nms_chr = candidate_covar_nms_chr,
                                                          mdl_type_1L_chr = prefd_mdl_types_chr[1],
@@ -99,8 +106,8 @@ write_all_alg_outps <- function(raw_data_tb,
                                        path_to_write_to_1L_chr = path_to_write_to_1L_chr,
                                        mdl_types_lup = mdl_types_lup,
                                        fl_nm_pfx_1L_chr = "E_CK_CV")
-  predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = predr_cmprsns_tb$predr_chr, # CHANGE THIS
-                                              covars_ls = list(outp_smry_ls$prefd_covars_chr))
+  predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = predr_cmprsns_tb$predr_chr,
+                                              covars_ls = list(prefd_covars_chr))
   mdl_nms_ls <- make_mdl_nms_ls(predr_vars_nms_ls, mdl_types_chr = prefd_mdl_types_chr)
   outp_smry_ls <- list(scored_data_tb = scored_data_tb,
                        smry_of_sngl_predr_mdls_tb = smry_of_sngl_predr_mdls_tb,
@@ -108,6 +115,7 @@ write_all_alg_outps <- function(raw_data_tb,
                        predr_cmprsns_tb = predr_cmprsns_tb,
                        smry_of_mdl_sngl_predrs_tb = smry_of_mdl_sngl_predrs_tb,
                        mdls_with_covars_smry_tb = mdls_with_covars_smry_tb,
+                       signt_covars_chr = signt_covars_chr,
                        prefd_covars_chr = prefd_covars_chr,
                        dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                        predr_vars_nms_ls = predr_vars_nms_ls,
@@ -304,6 +312,7 @@ write_mdl_plts <- function(data_tb,
 
 }
 write_mdl_type_covars_mdls <- function(data_tb,
+                                       dep_var_nm_1L_chr = "aqol6d_total_w",
                                        predrs_var_nms_chr,
                                        covar_var_nms_chr,
                                        mdl_type_1L_chr,
@@ -316,6 +325,7 @@ write_mdl_type_covars_mdls <- function(data_tb,
   smry_of_mdls_with_covars_tb <- purrr::map_dfr(predrs_var_nms_chr,
                                                 ~{
                                                   mdl <- make_mdl(data_tb,
+                                                                  dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                                                                   predr_var_nm_1L_chr = .x,
                                                                   covar_var_nms_chr = covar_var_nms_chr,
                                                                   tfmn_1L_chr = "NTF",
@@ -516,6 +526,28 @@ write_predr_cmprsn_outps <- function(data_tb,
     dplyr::filter(predr_chr %in% confirmed_predrs_chr)
   return(confirmed_predrs_tb)
 }
+write_rprt <- function(outp_smry_ls,
+                       nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
+                       output_type_1L_chr = "PDF",
+                       section_type_1L_chr = "#",
+                       reports_dir_1L_chr = "Reports",
+                       markdown_dir_1L_chr = "Markdown",
+                       file_nm_1L_chr = "Main_Mdl_Smry"){
+  write_rndrd_rprt(system.file(package="FBaqol"),
+                   nm_of_RMD_1L_chr = nm_of_RMD_1L_chr,
+                   params_ls = list(covars_ls = list(outp_smry_ls$prefd_covars_chr),
+                                    main_predrs_chr = outp_smry_ls$predr_cmprsns_tb$predr_chr,
+                                    mdl_smry_dir_1L_chr =  paste0("../",params$dir_nm_1L_chr),
+                                    mdl_types_chr = outp_smry_ls$prefd_mdl_types_chr,
+                                    output_type_1L_chr = output_type_1L_chr,
+                                    section_type_1L_chr = section_type_1L_chr),
+                   rltv_path_to_outpt_yaml_1L_chr = "_output.yml",
+                   paths_to_fls_to_copy_chr = list.files(system.file(package="FBaqol"), full.names = T),
+                   path_to_write_fls_to_1L_chr = normalizePath(params$path_to_write_fls_to_1L_chr),
+                   nm_of_rprt_dir_1L_chr = markdown_dir_1L_chr,
+                   path_to_outpt_rtrp_1L_chr = normalizePath(paste0(params$path_to_write_fls_to_1L_chr,"/",reports_dir_1L_chr)),
+                   file_nm_1L_chr = file_nm_1L_chr)
+}
 write_rndrd_rprt <- function(path_to_RMD_dir_1L_chr,
                              nm_of_RMD_1L_chr = "report.RMD",
                              params_ls = list(output_type_1L_chr = "HTML"),
@@ -587,7 +619,9 @@ write_results_to_csv <- function(synth_data_spine_ls,
                                                         row.names = F))
   return(dss_tb)
 }
-write_shareable_mdls <- function(outp_smry_ls){
+write_shareable_mdls <- function(outp_smry_ls,
+                                 dv_ls = NULL,
+                                 sub_dir_1L_chr = "Shareable"){
   sharble_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>% purrr::map(~{
     mdl <- readRDS(paste0(outp_smry_ls$path_to_write_to_1L_chr,"/",.x,".RDS"))
     mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model == .x)
@@ -604,10 +638,27 @@ write_shareable_mdls <- function(outp_smry_ls){
                                       control_1L_chr = NA_character_,
                                       start_1L_chr = NA_character_,
                                       seed_1L_int = outp_smry_ls$seed_1L_int)
-    saveRDS(sharble_mdl,paste0(outp_smry_ls$path_to_write_to_1L_chr,"/G_SHBL_",.x,".RDS"))
+    path_1L_chr <- paste0(outp_smry_ls$path_to_write_to_1L_chr,"/",sub_dir_1L_chr)
+    if(!dir.exists(path_1L_chr))
+      dir.create(path_1L_chr)
+    saveRDS(sharble_mdl,paste0(path_1L_chr,"/",#
+                               .x,".RDS"))
     sharble_mdl
   }) %>% stats::setNames(outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())
   outp_smry_ls$sharble_mdls_ls <- sharble_mdls_ls
+  shareable_mdls_tb <- NULL
+  if(!is.null){
+    shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$sharble_mdls_ls),
+                                        title_chr = paste0("A shareable statistical model, ",names(outp_smry_ls$sharble_mdls_ls),", containing no confidential information, that can be used to predict adolescent AQoL6D. Note this model is a placeholder as it has been estimated from synthetic data."))
+    ready4use::write_fls_to_dv_ds(shareable_mdls_tb ,
+                                  dv_nm_1L_chr = dv_ls$dv_nm_1L_chr,
+                                  ds_url_1L_chr = dv_ls$ds_url_1L_chr,
+                                  parent_dv_dir_1L_chr = dv_ls$parent_dv_dir_1L_chr,
+                                  paths_to_dirs_chr = paste0(outp_smry_ls$path_to_write_to_1L_chr,"/",sub_dir_1L_chr),
+                                  inc_fl_types_chr = ".RDS")
+
+  }
+  outp_smry_ls$shareable_mdls_tb <- shareable_mdls_tb
   return(outp_smry_ls)
 }
 write_sngl_predr_multi_mdls_outps <- function(data_tb,

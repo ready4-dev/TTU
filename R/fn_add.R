@@ -1,3 +1,25 @@
+#' Add adol6d predn to dataset
+#' @description add_adol6d_predn_to_ds() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add adol6d predn to dataset. Function argument data_tb specifies the object to be updated. The function returns Data (a tibble).
+#' @param data_tb Data (a tibble)
+#' @param ... Additional arguments
+#' @param tfmn_1L_chr Tfmn (a character vector of length one)
+#' @return Data (a tibble)
+#' @rdname add_adol6d_predn_to_ds
+#' @export 
+#' @importFrom purrr reduce
+#' @importFrom dplyr mutate
+#' @importFrom rlang sym
+add_adol6d_predn_to_ds <- function (data_tb, mdl, tfmn_1L_chr) 
+{
+    dep_vars_chr <- c(outp_smry_ls$dep_var_nm_1L_chr, transform_dep_var_nm(dep_var_nm_1L_chr = outp_smry_ls$dep_var_nm_1L_chr, 
+        tfmn_1L_chr = tfmn_1L_chr)) %>% unique()
+    data_tb <- purrr::reduce(dep_vars_chr, .init = data_tb, ~dplyr::mutate(.x, 
+        `:=`(!!rlang::sym(.y), NA_real_)))
+    data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(outp_smry_ls$dep_var_nm_1L_chr), 
+        predict_aqol6d(data_tb = fk_data_tb, tfmn_1L_chr = tfmn_1L_chr, 
+            mdl = mdl)))
+    return(data_tb)
+}
 #' Add adol6d scores
 #' @description add_adol6d_scores() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add adol6d scores. Function argument unscored_aqol_tb specifies the object to be updated. The function returns Transformed Assessment of Quality of Life (a tibble).
 #' @param unscored_aqol_tb Unscored Assessment of Quality of Life (a tibble)

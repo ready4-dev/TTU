@@ -4,9 +4,12 @@ output:
   pdf_document: default
   html_document: default
 params:
-  root_dir_1L_chr: ./
+  covars_ls: !r NULL
+  main_predrs_chr: !r NA_character_
   mdl_smry_dir_1L_chr: ../Output
+  mdl_types_chr: !r NA_character_
   output_type_1L_chr: HTML
+  root_dir_1L_chr: ./
   section_type_1L_chr: "#"
 ---
 
@@ -22,10 +25,11 @@ options(xtable.timestamp = "")
 ```
 
 ```{r echo=FALSE}
-predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),
-                       covars_ls = list("SOFAS"))
+predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = params$main_predrs_chr, #c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),
+                       covars_ls = params$covars_ls #list("SOFAS")
+                       )
 knit_pars_ls <- make_knit_pars_ls(mdl_smry_dir_1L_chr = params$mdl_smry_dir_1L_chr,
-                  mdl_types_chr = c("GSN_LOG","CLL_TFN"),
+                  mdl_types_chr = params$mdl_types_chr,#c("GSN_LOG","CLL_TFN"),
                   predr_vars_nms_ls = predr_vars_nms_ls,
                   output_type_1L_chr = params$output_type_1L_chr,
                   section_type_1L_chr = params$section_type_1L_chr

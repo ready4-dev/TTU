@@ -8,13 +8,17 @@ params:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,
+                      message = F,
+                      eval = T)
 library(xtable) 
 library(FBaqol) 
 library(magrittr)
 ```
 
 # Specify input data
+
+The first step is to import the raw data. Note, for this example, purely synthetic data has been used - all results are therefore purely illustrative.
 
 ```{r}
 if(!is.na(params$path_to_data_1L_chr)){
@@ -29,8 +33,9 @@ path_to_write_to_1L_chr <- paste0(path_to_write_fls_to_1L_chr,
                                                       dir_nm_1L_chr)
 ```
 
-# Test candidate models, predictors and covariates
+# Calculate AQoL scores and test candidate models, predictors and confounders
 
+The next step implements an algorithm to convert AQoL6D item responses into AQoL6D-Adolescent utility scores and to examine a range of candidate models, predictors and confounders. In this example we have chosen to override models preferred by the automated algorithm
 ```{r}
 outp_smry_ls <- write_all_alg_outps(raw_data_tb = raw_data_tb,
                     path_to_write_to_1L_chr = path_to_write_to_1L_chr,
@@ -41,7 +46,7 @@ outp_smry_ls <- write_all_alg_outps(raw_data_tb = raw_data_tb,
                     id_var_nm_1L_chr ="fkClientID",
                     round_var_nm_1L_chr = "round",
                     round_bl_val_1L_chr = "Baseline",
-                    mdl_types_chr = FBaqol::mdl_types_lup$short_name_chr, 
+                    mdl_types_chr = mdl_types_lup$short_name_chr, 
                     prefd_mdl_types_chr = c("GLM_GSN_LOG","OLS_CLL"),
                     choose_from_pfx_chr = c("GLM","OLS", "BET"),
                     prefd_covars_chr = NA_character_,
@@ -64,23 +69,62 @@ outp_smry_ls <- write_ts_mdls_from_alg_outp(outp_smry_ls,
 # Create shareable version of predictive models
 
 ```{r}
-outp_smry_ls <- write_shareable_mdls(outp_smry_ls)
+outp_smry_ls <- write_shareable_mdls(outp_smry_ls,
+                                     sub_dir_1L_chr = "Shareable",
+                                     dv_ls = list(dv_nm_1L_chr = "ready4models",
+                               ds_url_1L_chr = "https://doi.org/10.7910/DVN/GRZRY5",
+                               parent_dv_dir_1L_chr = "../../../../../../Data/Dataverse"))
 ```
+
+This function call writes shareable models to your local machine and, if you have a Dataverse account and supply the details for the account in the dv_ls argument, will push these shareable models to the Dataverse online data repository. If you do not have  a Dataverse account, do not use the dv_ls argument (or set it to its default value of NULL).
+
+```{r}
+outp_smry_ls$fk_data_tb <- make_fake_ts_data(outp_smry_ls)
+```
+
 
 # Predict
 
 ```{r}
-fk_data_tb <- make_fake_ts_data(outp_smry_ls)
-fk_data_tb %>%
-  dplyr::mutate(!!rlang::sym(outp_smry_ls$dep_var_nm_1L_chr) := predict_aqol6d(data_tb = fk_data_tb,
-               tfmn_1L_chr = "CLL",
-               mdl = outp_smry_ls$sharble_mdls_ls$PHQ9_1_OLS_CLL)) %>% head() 
+add_adol6d_predn_to_ds(data_tb = outp_smry_ls$fk_data_tb,
+                       mdl = outp_smry_ls$sharble_mdls_ls$PHQ9_1_OLS_CLL,
+                       tfmn_1L_chr = "CLL")%>% head() 
 ```
+
+# Create report
+
+```{r}
+
+write_rprt(outp_smry_ls,
+           nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
+           output_type_1L_chr = "PDF",
+           section_type_1L_chr = "#",
+           reports_dir_1L_chr = "Reports",
+           markdown_dir_1L_chr = "Markdown",
+           file_nm_1L_chr = "Main_Mdl_Smry")
+```
+
+```{r}
+
+```
+
+
+```{r}
+  dss_tb <- tibble::tibble(ds_obj_nm_chr = "Main_Mdl_Smry",
+                           title_chr = "Summary report of the models estimated from synthetic data to map a number of mental health measures to adolescent AQoL-6D scores.")
+ready4use::write_fls_to_dv_ds(dss_tb,
+                               dv_nm_1L_chr = "ready4models",
+                               ds_url_1L_chr = "https://doi.org/10.7910/DVN/GRZRY5",
+                               parent_dv_dir_1L_chr = "../../../../../../Data/Dataverse",
+                               paths_to_dirs_chr = paste0(params$path_to_write_fls_to_1L_chr,"/Reports"),
+                               inc_fl_types_chr = ".pdf")
+```
+Report is available at: https://dataverse.harvard.edu/privateurl.xhtml?token=37736f13-4d32-4afa-a03a-ad82c0d7d4e0
 
 # Save work
 
 ```{r}
-outp_smry_ls$fk_data_tb <- fk_data_tb
+
 saveRDS(outp_smry_ls,paste0(outp_smry_ls$path_to_write_to_1L_chr,"/I_ALL_OUTPUT_.RDS"))
 ```
 

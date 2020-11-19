@@ -13,7 +13,7 @@ devtools::load_all()
 write_rndrd_rprt("vignettes/Child_RMDs",
                  nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
                  params_ls = list(mdl_smry_dir_1L_chr = "../Output",
-                                  output_type_1L_chr = "Word",
+                                  output_type_1L_chr = "PDF",
                                   section_type_1L_chr = "#"),
                  rltv_path_to_outpt_yaml_1L_chr = "_output.yml",
                  paths_to_fls_to_copy_chr = list.files("vignettes/Child_RMDs", full.names = T)[c(15:17,22:23)],

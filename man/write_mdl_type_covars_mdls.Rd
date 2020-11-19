@@ -6,6 +6,7 @@
 \usage{
 write_mdl_type_covars_mdls(
   data_tb,
+  dep_var_nm_1L_chr = "aqol6d_total_w",
   predrs_var_nms_chr,
   covar_var_nms_chr,
   mdl_type_1L_chr,
@@ -17,6 +18,8 @@ write_mdl_type_covars_mdls(
 }
 \arguments{
 \item{data_tb}{Data (a tibble)}
+
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
 
 \item{predrs_var_nms_chr}{Predrs var names (a character vector)}
 
