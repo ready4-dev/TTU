@@ -82,9 +82,10 @@ if(!params$run_chunks_1L_lgl){
 ```
 
 ```{r}
-outp_smry_ls$dv_ls <- list(dv_nm_1L_chr = "ready4models",
-                               ds_url_1L_chr = "https://doi.org/10.7910/DVN/GRZRY5",
-                               parent_dv_dir_1L_chr = "../../../../../../Data/Dataverse")
+outp_smry_ls$dv_ls <- NULL
+  # list(dv_nm_1L_chr = "ready4models",
+  #                              ds_url_1L_chr = "https://doi.org/10.7910/DVN/GRZRY5",
+  #                              parent_dv_dir_1L_chr = "../../../../../../Data/Dataverse")
 outp_smry_ls <- write_shareable_mdls(outp_smry_ls,
                                      sub_dir_1L_chr = "Shareable")
 ```

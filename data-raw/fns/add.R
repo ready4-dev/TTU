@@ -8,7 +8,7 @@ add_adol6d_predn_to_ds <- function(data_tb,
                            .init = data_tb,
                            ~ dplyr::mutate(.x,!!rlang::sym(.y) := NA_real_))
   data_tb <- data_tb %>%
-    dplyr::mutate(!!rlang::sym(outp_smry_ls$dep_var_nm_1L_chr) := predict_aqol6d(data_tb = fk_data_tb,
+    dplyr::mutate(!!rlang::sym(outp_smry_ls$dep_var_nm_1L_chr) := predict_aqol6d(data_tb = data_tb,
                                                                                  tfmn_1L_chr = tfmn_1L_chr,
                                                                                  mdl = mdl))
   return(data_tb)
