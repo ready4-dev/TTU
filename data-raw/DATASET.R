@@ -354,16 +354,12 @@ pkg_dss_tb <- tibble::tibble(short_name_chr = c("BADS","GAD7","K6","OASIS","PHQ9
                               abbreviations_lup = abbreviations_lup,
                               pkg_dss_tb = pkg_dss_tb)
 # 7. Save copy of package documentation to online data repo.
-ds_ls <- ready4use::write_pkg_dss_to_dv_ds_csvs(pkg_dss_tb,
-                                                dv_nm_1L_chr = "ready4models",
-                                                ds_url_1L_chr = "https://doi.org/10.7910/DVN/RXGPAT",
-                                                parent_dv_dir_1L_chr = "../../../../../Data/Dataverse",
-                                                wait_time_in_secs_int = 5L)
+# ds_ls <- ready4use::write_pkg_dss_to_dv_ds_csvs(pkg_dss_tb,
+#                                                 dv_nm_1L_chr = "ready4models",
+#                                                 ds_url_1L_chr = "https://doi.org/10.7910/DVN/RXGPAT",
+#                                                 parent_dv_dir_1L_chr = "../../../../../Data/Dataverse",
+#                                                 wait_time_in_secs_int = 5L)
 # NOTE: NEED TO UPDATE DIR PATH FOR MODELS
-# NEED TO CREATE FN BASED ON MANUAL CREATION OF DATASET
-# EXTRA FILE IN data-raw being read in.
-# Update Description file with imported packages.
-# Write documented methods to R directory.
 ## Note files to be rewritten cannot be open in RStudio.
 ## 8. Document functions.
 ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
@@ -372,6 +368,7 @@ ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
                                 update_pkgdown_1L_lgl = T,
                                 path_to_dvpr_dmt_dir_1L_chr = "../../../../../Documentation/Code/Developer",
                                 path_to_user_dmt_dir_1L_chr = "../../../../../Documentation/Code/User")
+usethis::use_github_action("pkgdown")
 ##
 ## PART FOUR
 ##
