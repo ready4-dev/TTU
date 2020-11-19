@@ -35,7 +35,8 @@ path_to_write_to_1L_chr <- paste0(path_to_write_fls_to_1L_chr,
 
 # Calculate AQoL scores and test candidate models, predictors and confounders
 
-The next step implements an algorithm to convert AQoL6D item responses into AQoL6D-Adolescent utility scores and to examine a range of candidate models, predictors and confounders. In this example we have chosen to override models preferred by the automated algorithm
+The next step implements an algorithm to convert AQoL6D item responses into AQoL6D-Adolescent utility scores and to examine a range of candidate models, predictors and confounders. In this example we have chosen to override models preferred by the automated algorithm with two we have pre-specified. The rationale for this choice is outlined in the main paper.
+
 ```{r}
 outp_smry_ls <- write_all_alg_outps(raw_data_tb = raw_data_tb,
                     path_to_write_to_1L_chr = path_to_write_to_1L_chr,
@@ -59,6 +60,8 @@ outp_smry_ls <- write_all_alg_outps(raw_data_tb = raw_data_tb,
 
 # Apply selected models to selected predictors
 
+The models, predictors and potential confounders selected in the previous step are now run. Note for this step to work for models other than our selected models, it will be necessary to write new functions that are passed to the fn_ls argument. We plan to do this at a later date. Also note, that CMDSTANR needs to be installed in your machine to run this function. It is possible to try to run this function with "rstan" as the backend_1L_chr argument value, but in our experience using rstan can cause RStudio to crash.
+
 ```{r}
 outp_smry_ls <- write_ts_mdls_from_alg_outp(outp_smry_ls,
                                             fn_ls = list(fit_gsn_log_lnk,fit_clg_log_tfmn),
@@ -67,6 +70,9 @@ outp_smry_ls <- write_ts_mdls_from_alg_outp(outp_smry_ls,
 ```
 
 # Create shareable version of predictive models
+It is not appropriate to share the raw models created in the previous step publicly (as they contain confidential data and are very large in file size). We therefore create shareable versions that are relatively small in file size and contain no confidential data, but that have the coefficients from the original models. This function call writes shareable models to your local machine and, if you have a Dataverse account and supply the details for the account in the dv_ls argument (which will differ from the ones we use for ours below), will push these shareable models to the Dataverse online data repository. If you do not have  a Dataverse account, do not use the dv_ls argument (or set it to its default value of NULL). The files created in the following step are available here (temporary URL, to be replaced when we publish the data repository):
+
+https://dataverse.harvard.edu/privateurl.xhtml?token=37736f13-4d32-4afa-a03a-ad82c0d7d4e0
 
 ```{r}
 outp_smry_ls <- write_shareable_mdls(outp_smry_ls,
@@ -76,25 +82,30 @@ outp_smry_ls <- write_shareable_mdls(outp_smry_ls,
                                parent_dv_dir_1L_chr = "../../../../../../Data/Dataverse"))
 ```
 
-This function call writes shareable models to your local machine and, if you have a Dataverse account and supply the details for the account in the dv_ls argument, will push these shareable models to the Dataverse online data repository. If you do not have  a Dataverse account, do not use the dv_ls argument (or set it to its default value of NULL).
+# Create shareable population data
+
+Similar to the previous step, we can create a purely synthetic dataset, representative of the source data, but containing no real data on any individual.
 
 ```{r}
 outp_smry_ls$fk_data_tb <- make_fake_ts_data(outp_smry_ls)
 ```
 
-
 # Predict
+
+We now have a range of models that we can use for prediction. To put this to use, we can run the following function. The model passed to the argument mdl can either be one you have generated yourself using the previous steps, or one created by others that you download from a data repository.
 
 ```{r}
 add_adol6d_predn_to_ds(data_tb = outp_smry_ls$fk_data_tb,
                        mdl = outp_smry_ls$sharble_mdls_ls$PHQ9_1_OLS_CLL,
-                       tfmn_1L_chr = "CLL")%>% head() 
+                       tfmn_1L_chr = "CLL") %>% head() 
 ```
 
 # Create report
+You can create reports based on the output saved to your local machine in the preceding steps. One such report is generated below and is available for viewing at the same temporary URL used for the shareable models:
+
+ https://dataverse.harvard.edu/privateurl.xhtml?token=37736f13-4d32-4afa-a03a-ad82c0d7d4e0
 
 ```{r}
-
 write_rprt(outp_smry_ls,
            nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
            output_type_1L_chr = "PDF",
@@ -104,27 +115,24 @@ write_rprt(outp_smry_ls,
            file_nm_1L_chr = "Main_Mdl_Smry")
 ```
 
-```{r}
-
-```
-
 
 ```{r}
-  dss_tb <- tibble::tibble(ds_obj_nm_chr = "Main_Mdl_Smry",
+outp_smry_ls$rprt_dss_tb <- tibble::tibble(ds_obj_nm_chr = "Main_Mdl_Smry",
                            title_chr = "Summary report of the models estimated from synthetic data to map a number of mental health measures to adolescent AQoL-6D scores.")
-ready4use::write_fls_to_dv_ds(dss_tb,
+ready4use::write_fls_to_dv_ds(outp_smry_ls$rprt_dss_tb,
                                dv_nm_1L_chr = "ready4models",
                                ds_url_1L_chr = "https://doi.org/10.7910/DVN/GRZRY5",
                                parent_dv_dir_1L_chr = "../../../../../../Data/Dataverse",
                                paths_to_dirs_chr = paste0(params$path_to_write_fls_to_1L_chr,"/Reports"),
                                inc_fl_types_chr = ".pdf")
 ```
-Report is available at: https://dataverse.harvard.edu/privateurl.xhtml?token=37736f13-4d32-4afa-a03a-ad82c0d7d4e0
+
 
 # Save work
 
-```{r}
+Finally, we save a complete record of our analysis.
 
+```{r}
 saveRDS(outp_smry_ls,paste0(outp_smry_ls$path_to_write_to_1L_chr,"/I_ALL_OUTPUT_.RDS"))
 ```
 

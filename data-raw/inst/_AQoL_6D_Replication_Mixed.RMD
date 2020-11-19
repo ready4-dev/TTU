@@ -1,0 +1,58 @@
+---
+title: "AQoL 6D Model Summary"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  word_document:
+    toc: yes
+  html_document:
+    code_folding: hide
+    toc: yes
+params:
+  root_dir_1L_chr: ./
+  mdl_smry_dir_1L_chr: ../../../../../../../Data/Project/Utility_Models/Output
+  output_type_1L_chr: HTML
+  path_to_data_1L_chr: ../Data/fake_pop_tb.rds
+---
+```{r setup, include=FALSE}
+options(brms.backend = "cmdstanr")
+knitr::opts_chunk$set(echo = TRUE)
+library(FBaqol) 
+library(magrittr)
+```
+
+```{r}
+data_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS(params$path_to_data_1L_chr))
+```
+
+```{r}
+mdl_smry_dir_1L_chr <- params$mdl_smry_dir_1L_chr
+mdl_types_chr <- c("GSN_LOG","CLL_TFN")
+predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),
+                       covars_ls = list("SOFAS"))
+fn_ls <- list(fit_gsn_log_lnk,fit_clg_log_tfmn)
+mdl_nms_ls <- make_mdl_nms_ls(predr_vars_nms_ls, mdl_types_chr = mdl_types_chr)
+```
+
+```{r}
+# Configuration steps:
+# https://web.archive.org/web/20200808073714/https://helpdeskgeek.com/windows-10/add-windows-path-environment-variable/
+# note use actual rtools path
+# https://web.archive.org/web/20200813122856/https://www.maxmantei.com/blog/2020-05-16-installing-cmdstanr-on-windows/cmdstanr-windows/
+# use syu
+# https://discourse.mc-stan.org/t/problem-running-rstan-with-r-4-0-2/17257/17
+```
+
+```{r}
+mdls_smry_tb <- write_ts_mdls(data_tb = data_tb,
+                              dep_var_nm_1L_chr = "aqol6d_total_w",
+                              predr_vars_nms_ls = predr_vars_nms_ls,
+                              id_var_nm_1L_chr = "fkClientID",
+                              round_var_nm_1L_chr = "round",
+                              round_bl_val_1L_chr = "Baseline",
+                              fn_ls = fn_ls,
+                              mdl_nms_ls = mdl_nms_ls,
+                              mdl_smry_dir_1L_chr = mdl_smry_dir_1L_chr,
+                              iters_1L_int = 4000L,
+                              seed_1L_int = 1000L)
+```
+
