@@ -670,7 +670,7 @@ write_shareable_mdls <- function(outp_smry_ls,
   if(!is.null(outp_smry_ls$dv_ls)){
     shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$sharble_mdls_ls),
                                         title_chr = paste0("A shareable statistical model, ",names(outp_smry_ls$sharble_mdls_ls),", containing no confidential information, that can be used to predict adolescent AQoL6D. Note this model is a placeholder as it has been estimated from synthetic data."))
-    ready4use::write_fls_to_dv_ds(shareable_mdls_tb ,
+    ready4use::write_fls_to_dv_ds(shareable_mdls_tb,
                                   dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
                                   ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr,
                                   parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr,
