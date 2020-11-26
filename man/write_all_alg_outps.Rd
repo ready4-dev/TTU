@@ -65,3 +65,4 @@ Output smry (a list)
 \description{
 write_all_alg_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write all algorithm outputs. The function returns Output smry (a list).
 }
+\keyword{internal}

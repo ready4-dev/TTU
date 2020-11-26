@@ -22,6 +22,7 @@
 #' @export 
 #' @importFrom utils data
 #' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
 write_all_alg_outps <- function (raw_data_tb, path_to_write_to_1L_chr, aqol6d_q_pfx_1L_chr = "aqol6d_q", 
     dep_var_nm_1L_chr = "aqol6d_total_w", candidate_predrs_chr, 
     candidate_covar_nms_chr, id_var_nm_1L_chr = "fkClientID", 
@@ -117,6 +118,7 @@ write_all_alg_outps <- function (raw_data_tb, path_to_write_to_1L_chr, aqol6d_q_
 #' @export 
 #' @importFrom utils data
 #' @importFrom MASS boxcox
+#' @keywords internal
 write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1L_chr, 
     dep_var_nm_1L_chr = "aqol6d_total_w", covar_var_nms_chr = NA_character_, 
     fl_nm_pfx_1L_chr = "A_RT", height_1L_dbl = 6, width_1L_dbl = 6, 
@@ -150,6 +152,7 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
 #' @export 
 #' @importFrom grDevices png
 #' @importFrom rlang exec
+#' @keywords internal
 write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_write_to_1L_chr, 
     plt_nm_1L_chr, grpx_fn = grDevices::png, units_1L_chr = "in", 
     width_1L_dbl = 6, height_1L_dbl = 6, rsl_1L_dbl = 300) 
@@ -192,6 +195,7 @@ write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_writ
 #' @export 
 #' @importFrom purrr map discard
 #' @importFrom stats setNames
+#' @keywords internal
 write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_write_to_1L_chr, 
     dep_var_nm_1L_chr = "aqol6d_total_w", dep_var_desc_1L_chr = "AQoL-6D utility score", 
     round_var_nm_1L_chr = "round", tfmn_fn = function(x) {
@@ -256,6 +260,7 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
 #' @rdname write_mdl_plts
 #' @export 
 #' @importFrom purrr pwalk
+#' @keywords internal
 write_mdl_plts <- function (data_tb, mdl, mdl_fl_nm_1L_chr = "OLS_NTF", dep_var_nm_1L_chr = "aqol6d_total_w", 
     tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, predr_var_desc_1L_chr, 
     predr_vals_dbl, covar_var_nms_chr = NA_character_, path_to_write_to_1L_chr, 
@@ -315,6 +320,7 @@ write_mdl_plts <- function (data_tb, mdl, mdl_fl_nm_1L_chr = "OLS_NTF", dep_var_
 #' @importFrom caret R2
 #' @importFrom dplyr pull arrange desc
 #' @importFrom rlang sym
+#' @keywords internal
 write_mdl_type_covars_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predrs_var_nms_chr, 
     covar_var_nms_chr, mdl_type_1L_chr, path_to_write_to_1L_chr, 
     fl_nm_pfx_1L_chr = "D_CT", mdl_types_lup = NULL, start_1L_chr = NA_character_) 
@@ -365,6 +371,7 @@ write_mdl_type_covars_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_tot
 #' @importFrom purrr map_dfr
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr select mutate everything arrange desc
+#' @keywords internal
 write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var_nms_chr, covar_var_nms_chr = NA_character_, 
     start_1L_chr = NULL, mdl_type_1L_chr, dep_var_nm_1L_chr = "aqol6d_total_w", 
     path_to_write_to_1L_chr, mdl_types_lup = NULL, fl_nm_pfx_1L_chr = "C_PREDR", 
@@ -423,6 +430,7 @@ write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
 #' @importFrom tibble tibble
+#' @keywords internal
 write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_1L_chr = "aqol6d_total_w", 
     start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, 
     predr_var_desc_1L_chr, predr_vals_dbl, covar_var_nms_chr = NA_character_, 
@@ -494,6 +502,7 @@ write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_
 #' @importFrom purrr pwalk
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr arrange desc filter
+#' @keywords internal
 write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, dep_var_nm_1L_chr = "aqol6d_total_w", 
     candidate_predrs_chr, max_nbr_of_boruta_mdl_runs_int = 300L) 
 {
@@ -589,6 +598,7 @@ write_results_to_csv <- function (synth_data_spine_ls, output_dir_1L_chr = ".")
 #' @rdname write_rndrd_rprt
 #' @export 
 #' @importFrom rmarkdown render
+#' @keywords internal
 write_rndrd_rprt <- function (path_to_RMD_dir_1L_chr, nm_of_RMD_1L_chr = "report.RMD", 
     params_ls = list(output_type_1L_chr = "HTML"), rltv_path_to_outpt_yaml_1L_chr = "output_yml", 
     paths_to_fls_to_copy_chr = NA_character_, path_to_write_fls_to_1L_chr = NA_character_, 
@@ -636,6 +646,7 @@ write_rndrd_rprt <- function (path_to_RMD_dir_1L_chr, nm_of_RMD_1L_chr = "report
 #' @export 
 #' @importFrom ready4use write_fls_to_dv_ds
 #' @importFrom tibble tibble
+#' @keywords internal
 write_rprt <- function (outp_smry_ls, nm_of_RMD_1L_chr = "_Mdls_Report.RMD", 
     output_type_1L_chr = "PDF", section_type_1L_chr = "#", reports_dir_1L_chr = "Reports", 
     markdown_dir_1L_chr = "Markdown", file_nm_1L_chr = "Main_Mdl_Smry") 
@@ -680,6 +691,7 @@ write_rprt <- function (outp_smry_ls, nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
 #' @importFrom stats setNames
 #' @importFrom tibble tibble
 #' @importFrom ready4use write_fls_to_dv_ds
+#' @keywords internal
 write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable") 
 {
     sharble_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>% 
@@ -744,6 +756,7 @@ write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable")
 #' @importFrom purrr map_dfr
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr arrange desc
+#' @keywords internal
 write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var_nm_1L_chr, predr_var_desc_1L_chr, 
     predr_vals_dbl, path_to_write_to_1L_chr, start_1L_chr = NULL, 
     covar_var_nms_chr = NA_character_, dep_var_nm_1L_chr = "aqol6d_total_w", 
@@ -791,6 +804,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @rdname write_ts_mdls
 #' @export 
 #' @importFrom purrr map_dfr map2_dfr
+#' @keywords internal
 write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predr_vars_nms_ls, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", backend_1L_chr = getOption("brms.backend", 
@@ -826,6 +840,7 @@ write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predr_
 #' @rdname write_ts_mdls_from_alg_outp
 #' @export 
 
+#' @keywords internal
 write_ts_mdls_from_alg_outp <- function (outp_smry_ls, fn_ls, backend_1L_chr = getOption("brms.backend", 
     "rstan"), iters_1L_int = 4000L) 
 {
