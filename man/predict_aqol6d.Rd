@@ -19,4 +19,3 @@ Predd Assessment of Quality of Life Six Dimension (a double vector)
 \description{
 predict_aqol6d() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict assessment of quality of life six dimension. The function returns Predd Assessment of Quality of Life Six Dimension (a double vector).
 }
-\keyword{internal}

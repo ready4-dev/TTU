@@ -58,3 +58,9 @@
 ^data-raw/tests/render\.R$
 ^data-raw/ToDo\.R$
 ^initial_setup\.R$
+^data-raw/MigrateInternally/_AQoL_6D_Analysis\.Rmd$
+^data-raw/MigrateInternally/_AQoL_6D_Syn_Pop\.Rmd$
+^data-raw/MigrateInternally/_consolidated_fn\.Rmd$
+^data-raw/MigrateInternally/_main_workflow\.Rmd$
+^data-raw/MigrateInternally/_Workflow\.Rmd$
+^data-raw/MigrateInternally/AQoL_Scoring\.Rmd$
