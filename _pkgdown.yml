@@ -13,6 +13,7 @@ reference:
   - aqol6d_domain_qs_lup_tb
   - aqol6d_from_8d_coeffs_lup_tb
   - BL_correlations_tb
+  - candidate_predrs_lup
   - dim_sclg_constant_lup_tb
   - disutilities_lup_tb
   - disvalues_lup_tb
@@ -24,6 +25,7 @@ reference:
   - measurements_tb
   - plt_types_lup
   - prototype_lup
+  - replication_popl_tb
   - syn_pop_with_STATA_adults_scoring_tb
   - var_class_pars_tb
   - var_summ_res_tb

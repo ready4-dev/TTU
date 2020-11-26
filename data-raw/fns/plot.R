@@ -2,7 +2,7 @@ plot_auto_lm <- function(mdl, # Requires ggfortify
                          which_dbl = 1:6,
                          ncol_1L_int = 3L,
                          label_size_1L_int = 3){
-  require(ggfortify)
+  requireNamespace(ggfortify)
   plt <- ggplot2::autoplot(mdl,which = which_dbl, ncol = ncol_1L_int, label.size = label_size_1L_int)
   if(6 %in% which_dbl)
     plt[which(which_dbl==6)] <- plt[which(which_dbl==6)] + ggtitle("Cook's vs Leverage")

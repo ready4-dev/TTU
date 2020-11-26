@@ -350,17 +350,20 @@ pkg_dss_tb <- tibble::tibble(short_name_chr = c("BADS","GAD7","K6","OASIS","PHQ9
                               abbreviations_lup = abbreviations_lup,
                               pkg_dss_tb = pkg_dss_tb)
 # 7. Save copy of package documentation to online data repo.
-ds_ls <- ready4use::write_pkg_dss_to_dv_ds_csvs(pkg_dss_tb,
-                                                dv_nm_1L_chr = "ready4models",
-                                                ds_url_1L_chr = "https://doi.org/10.7910/DVN/RXGPAT",
-                                                parent_dv_dir_1L_chr = "../../../../../Data/Dataverse",
-                                                wait_time_in_secs_int = 5L)
+# ds_ls <- ready4use::write_pkg_dss_to_dv_ds_csvs(pkg_dss_tb,
+#                                                 dv_nm_1L_chr = "ready4models",
+#                                                 ds_url_1L_chr = "https://doi.org/10.7910/DVN/RXGPAT",
+#                                                 parent_dv_dir_1L_chr = "../../../../../Data/Dataverse",
+#                                                 wait_time_in_secs_int = 5L)
 # NOTE: NEED TO UPDATE DIR PATH FOR MODELS
 ## Note files to be rewritten cannot be open in RStudio.
 ## 8. Document functions.
 usethis::use_build_ignore("initial_setup.R")
 readLines(".github/workflows/R-CMD-check.yaml")[-28] %>%
   writeLines(".github/workflows/R-CMD-check.yaml")
+usethis::use_package("ggfortify")
+usethis::use_package("knitrBootstrap")
+usethis::use_package("knitr", type = "suggests")
 ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
                                 r_dir_1L_chr = "R",
                                 dev_pkgs_chr = c("ready4fun","ready4class","ready4use"),

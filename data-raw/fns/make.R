@@ -721,7 +721,7 @@ make_vec_with_sum_of_int <- function(target_int,
     purrr::pluck("RandVecOutput") %>%
     as.vector() %>%
     round() %>% as.integer() %>%
-    force_vec_to_sum_to_int(target_1L_int = target_int,
-                            min_max_int = c(start_int,end_int))
+    force_vec_to_sum_to_int(target_1L_int = target_int#, min_max_int = c(start_int,end_int)
+                            ) # WRONG: NEEDS UPDATING
   return(vec_int)
 }
