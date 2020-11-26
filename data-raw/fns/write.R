@@ -1,6 +1,6 @@
-write_all_alg_outps <- function(raw_data_tb,
+write_all_alg_outps <- function(scored_data_tb,
                                 path_to_write_to_1L_chr,
-                                aqol6d_q_pfx_1L_chr = "aqol6d_q",
+                                #aqol6d_q_pfx_1L_chr = "aqol6d_q",
                                 dep_var_nm_1L_chr = "aqol6d_total_w",
                                 candidate_predrs_chr,
                                 candidate_covar_nms_chr,
@@ -21,11 +21,6 @@ write_all_alg_outps <- function(raw_data_tb,
   if(is.na(mdl_types_chr[1])){
     mdl_types_chr <- mdl_types_lup$short_name_chr
   }
-  scored_data_tb <- add_adol6d_scores(raw_data_tb,
-                                      prefix_1L_chr =  aqol6d_q_pfx_1L_chr,
-                                      id_var_nm_1L_chr = id_var_nm_1L_chr,
-                                      wtd_aqol_var_nm_1L_chr = dep_var_nm_1L_chr)
-
   bl_tb <- transform_ds_for_tstng(scored_data_tb,
                                   dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                                   candidate_predrs_chr = candidate_predrs_chr,
@@ -120,7 +115,7 @@ write_all_alg_outps <- function(raw_data_tb,
                        dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                        predr_vars_nms_ls = predr_vars_nms_ls,
                        mdl_nms_ls = mdl_nms_ls,
-                       aqol6d_q_pfx_1L_chr = aqol6d_q_pfx_1L_chr,
+                       #aqol6d_q_pfx_1L_chr = aqol6d_q_pfx_1L_chr,
                        id_var_nm_1L_chr = id_var_nm_1L_chr,
                        round_var_nm_1L_chr = round_var_nm_1L_chr,
                        round_bl_val_1L_chr = round_bl_val_1L_chr,

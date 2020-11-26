@@ -3,7 +3,7 @@ title: "Main Workflow"
 output: html_document
 params:
   path_to_data_1L_chr: !r NA_character_
-  path_to_write_fls_to_1L_chr: "../../../../../../Data/Project/Utility_Models"
+  path_to_write_fls_to_1L_chr: "../../../../../../../Data/Project/Utility_Models"
   run_chunks_1L_lgl: FALSE
   dir_nm_1L_chr: "One_Predr_Output"
 ---
@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE,
                       message = F,
                       eval = F)
 library(xtable) 
-library(FBaqol) 
+library(ready4u) 
 library(magrittr)
 ```
 
@@ -25,13 +25,17 @@ The first step is to import the raw data. Note, for this example, purely synthet
 if(!is.na(params$path_to_data_1L_chr)){
   raw_data_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS(params$path_to_data_1L_chr))
 }else{
-  raw_data_tb <- FBaqol::replication_popl_tb
+  raw_data_tb <- ready4u::replication_popl_tb
 }
 path_to_write_fls_to_1L_chr <- params$path_to_write_fls_to_1L_chr
 dir_nm_1L_chr <- params$dir_nm_1L_chr
 path_to_write_to_1L_chr <- paste0(path_to_write_fls_to_1L_chr,
                                                       "/",
                                                       dir_nm_1L_chr)
+if(!dir.exists(path_to_write_fls_to_1L_chr))
+  dir.create(path_to_write_fls_to_1L_chr)
+if(!dir.exists(path_to_write_to_1L_chr))
+  dir.create(path_to_write_to_1L_chr)
 ```
 
 # Calculate AQoL scores and test candidate models, predictors and confounders
@@ -39,9 +43,13 @@ path_to_write_to_1L_chr <- paste0(path_to_write_fls_to_1L_chr,
 The next step implements an algorithm to convert AQoL6D item responses into AQoL6D-Adolescent utility scores and to examine a range of candidate models, predictors and confounders. In this example we have chosen to override models preferred by the automated algorithm with two we have pre-specified. The rationale for this choice is outlined in the main paper.
 
 ```{r}
-outp_smry_ls <- write_all_alg_outps(raw_data_tb = raw_data_tb,
+scored_data_tb <- add_adol6d_scores(raw_data_tb,
+                                      prefix_1L_chr =  aqol6d_q_pfx_1L_chr,
+                                      id_var_nm_1L_chr = id_var_nm_1L_chr,
+                                      wtd_aqol_var_nm_1L_chr = dep_var_nm_1L_chr)
+outp_smry_ls <- write_all_alg_outps(scored_data_tb = scored_data_tb,
                     path_to_write_to_1L_chr = path_to_write_to_1L_chr,
-                    aqol6d_q_pfx_1L_chr = "aqol6d_q",
+                    #aqol6d_q_pfx_1L_chr = "aqol6d_q",
                     dep_var_nm_1L_chr = "aqol6d_total_w",
                     candidate_predrs_chr = c("BADS","GAD7","K6","OASIS","PHQ9","SCARED"),
                     candidate_covar_nms_chr = c("d_sex_birth_s", "SOFAS", "c_p_diag_s", "c_clinical_staging_s", "d_age",  "d_sexual_ori_s", "d_country_bir_s", "d_relation_s", "d_studying_working"),
@@ -105,7 +113,7 @@ outp_smry_ls$fk_data_tb <- make_fake_ts_data(outp_smry_ls)
 We now have a range of models that we can use for prediction. To put this to use, we can run the following function. The model passed to the argument mdl can either be one you have generated yourself using the previous steps, or one created by others that you download from a data repository.
 
 ```{r eval=T}
-add_adol6d_predn_to_ds(data_tb = outp_smry_ls$fk_data_tb,
+add_utility_predn_to_ds(data_tb = outp_smry_ls$fk_data_tb,
                        mdl = outp_smry_ls$sharble_mdls_ls$PHQ9_1_OLS_CLL,
                        tfmn_1L_chr = "CLL") %>% head() 
 ```

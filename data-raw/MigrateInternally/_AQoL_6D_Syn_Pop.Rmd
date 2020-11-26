@@ -7,7 +7,7 @@ output: html_document
 
 ```{r echo = F}
 library("magrittr")
-library(FBaqol)
+library(ready4u)
 ```
 # Introduction
 The workflow illustrated in this vignette outlines steps to generate a purely synthetic (i.e. fake - no trace of any real records) population and is appropriate for when you do not have access to original dataset whose properties you wish your fake data to represent. A different (and simpler) workflow can be implemented when you do have access to the source dataset. Instead of direct access to the original dataset, it is assumed that you have at least some summary data (e.g. means and standard deviations of variables, correlation matrices). Where you do not have all required summary data, you can use assumptions. The more comprehensive the summary data available to you (and the less assumptions you use), the more realistic will be your representation of the original data.

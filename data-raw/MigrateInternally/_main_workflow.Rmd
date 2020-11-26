@@ -10,7 +10,7 @@ params:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(xtable) 
-library(FBaqol) 
+library(ready4u) 
 library(magrittr)
 ```
 
@@ -22,7 +22,7 @@ set.seed(seed_1L_int)
 if(!is.na(params$path_to_data_1L_chr)){
   raw_data_tb <- transform_raw_aqol_tb_to_aqol6d_tb(readRDS(params$path_to_data_1L_chr))
 }else{
-  raw_data_tb <- FBaqol::replication_popl_tb
+  raw_data_tb <- ready4u::replication_popl_tb
 }
 ```
 ```{r}
@@ -41,7 +41,7 @@ prefd_mdl_types_chr <- c("GLM_GSN_LOG","OLS_CLL")
 choose_from_pfx_chr = c("GLM","OLS", "BET") ## Default
 #prefd_covars_chr <- "SOFAS"
 id_var_nm_1L_chr <-"fkClientID"
-mdl_types_chr <- FBaqol::mdl_types_lup$short_name_chr[3:14]
+mdl_types_chr <- ready4u::mdl_types_lup$short_name_chr[3:14]
 max_nbr_of_boruta_mdl_runs_int <- 300L
 ```
 

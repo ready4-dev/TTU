@@ -5,9 +5,8 @@
 \title{Write all algorithm outputs}
 \usage{
 write_all_alg_outps(
-  raw_data_tb,
+  scored_data_tb,
   path_to_write_to_1L_chr,
-  aqol6d_q_pfx_1L_chr = "aqol6d_q",
   dep_var_nm_1L_chr = "aqol6d_total_w",
   candidate_predrs_chr,
   candidate_covar_nms_chr,
@@ -25,11 +24,9 @@ write_all_alg_outps(
 )
 }
 \arguments{
-\item{raw_data_tb}{Raw data (a tibble)}
+\item{scored_data_tb}{Scored data (a tibble)}
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
-
-\item{aqol6d_q_pfx_1L_chr}{Assessment of Quality of Life Six Dimension question prefix (a character vector of length one), Default: 'aqol6d_q'}
 
 \item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
 
@@ -65,4 +62,3 @@ Output smry (a list)
 \description{
 write_all_alg_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write all algorithm outputs. The function returns Output smry (a list).
 }
-\keyword{internal}

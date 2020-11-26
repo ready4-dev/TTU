@@ -23,4 +23,3 @@ Transformed dep var value (a double vector)
 \description{
 calculate_dep_var_tfmn() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate dep var tfmn. The function returns Transformed dep var value (a double vector).
 }
-\keyword{internal}

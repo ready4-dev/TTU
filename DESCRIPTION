@@ -1,7 +1,7 @@
 Package: ready4u
 Title: Map Measures Routinely Collected in Mental Health
     Services To Health Utility
-Version: 0.0.0.9065
+Version: 0.0.0.9066
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -47,6 +47,7 @@ Imports:
     lifecycle,
     ggfortify,
     knitrBootstrap,
+    rgl,
     ready4fun (>= 0.0.0.9254),
     ready4use (>= 0.0.0.9091),
     assertthat,
@@ -85,8 +86,7 @@ Imports:
     tidyselect,
     utils,
     viridis,
-    xtable,
-    rgl
+    xtable
 VignetteBuilder: knitr
 RdMacros: lifecycle
 Depends: 

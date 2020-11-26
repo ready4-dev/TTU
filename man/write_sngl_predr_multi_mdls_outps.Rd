@@ -53,4 +53,3 @@ Smry of sngl predr mdls (a tibble)
 \description{
 write_sngl_predr_multi_mdls_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write sngl predr multi mdls outputs. The function returns Smry of sngl predr mdls (a tibble).
 }
-\keyword{internal}

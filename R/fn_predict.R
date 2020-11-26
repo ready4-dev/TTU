@@ -1,19 +1,3 @@
-#' Predict Assessment of Quality of Life Six Dimension
-#' @description predict_aqol6d() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict assessment of quality of life six dimension. The function returns Predd Assessment of Quality of Life Six Dimension (a double vector).
-#' @param data_tb Data (a tibble)
-#' @param tfmn_1L_chr Tfmn (a character vector of length one), Default: 'NTF'
-#' @param ... Additional arguments
-#' @return Predd Assessment of Quality of Life Six Dimension (a double vector)
-#' @rdname predict_aqol6d
-#' @export 
-
-#' @keywords internal
-predict_aqol6d <- function (data_tb, tfmn_1L_chr = "NTF", mdl) 
-{
-    predd_aqol6d_dbl <- predict(mdl, newdata = data_tb) %>% calculate_dep_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, 
-        tfmn_is_outp_1L_lgl = T)
-    return(predd_aqol6d_dbl)
-}
 #' Predict from mdl coefs
 #' @description predict_from_mdl_coefs() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict from mdl coefs. The function returns Pred (a double vector).
 #' @param smry_of_mdl_tb Smry of mdl (a tibble)
@@ -24,7 +8,6 @@ predict_aqol6d <- function (data_tb, tfmn_1L_chr = "NTF", mdl)
 #' @importFrom dplyr filter pull
 #' @importFrom purrr map
 #' @importFrom stringr str_replace
-#' @keywords internal
 predict_from_mdl_coefs <- function (smry_of_mdl_tb, new_data_tb) 
 {
     coef_tb <- smry_of_mdl_tb %>% dplyr::filter(!Parameter %in% 
@@ -35,4 +18,19 @@ predict_from_mdl_coefs <- function (smry_of_mdl_tb, new_data_tb)
     pred_dbl <- exp(Reduce(`+`, vecs_1_ls) + coef_tb %>% dplyr::filter(Parameter == 
         "Intercept") %>% dplyr::pull(Estimate))
     return(pred_dbl)
+}
+#' Predict utility
+#' @description predict_utility() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict utility. The function returns Predd Assessment of Quality of Life Six Dimension (a double vector).
+#' @param data_tb Data (a tibble)
+#' @param tfmn_1L_chr Tfmn (a character vector of length one), Default: 'NTF'
+#' @param ... Additional arguments
+#' @return Predd Assessment of Quality of Life Six Dimension (a double vector)
+#' @rdname predict_utility
+#' @export 
+
+predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", mdl) 
+{
+    predd_aqol6d_dbl <- predict(mdl, newdata = data_tb) %>% calculate_dep_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, 
+        tfmn_is_outp_1L_lgl = T)
+    return(predd_aqol6d_dbl)
 }

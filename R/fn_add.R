@@ -1,26 +1,3 @@
-#' Add adol6d predn to dataset
-#' @description add_adol6d_predn_to_ds() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add adol6d predn to dataset. Function argument data_tb specifies the object to be updated. The function returns Data (a tibble).
-#' @param data_tb Data (a tibble)
-#' @param ... Additional arguments
-#' @param tfmn_1L_chr Tfmn (a character vector of length one)
-#' @return Data (a tibble)
-#' @rdname add_adol6d_predn_to_ds
-#' @export 
-#' @importFrom purrr reduce
-#' @importFrom dplyr mutate
-#' @importFrom rlang sym
-#' @keywords internal
-add_adol6d_predn_to_ds <- function (data_tb, mdl, tfmn_1L_chr) 
-{
-    dep_vars_chr <- c(outp_smry_ls$dep_var_nm_1L_chr, transform_dep_var_nm(dep_var_nm_1L_chr = outp_smry_ls$dep_var_nm_1L_chr, 
-        tfmn_1L_chr = tfmn_1L_chr)) %>% unique()
-    data_tb <- purrr::reduce(dep_vars_chr, .init = data_tb, ~dplyr::mutate(.x, 
-        `:=`(!!rlang::sym(.y), NA_real_)))
-    data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(outp_smry_ls$dep_var_nm_1L_chr), 
-        predict_aqol6d(data_tb = data_tb, tfmn_1L_chr = tfmn_1L_chr, 
-            mdl = mdl)))
-    return(data_tb)
-}
 #' Add adol6d scores
 #' @description add_adol6d_scores() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add adol6d scores. Function argument unscored_aqol_tb specifies the object to be updated. The function returns Transformed Assessment of Quality of Life (a tibble).
 #' @param unscored_aqol_tb Unscored Assessment of Quality of Life (a tibble)
@@ -33,7 +10,6 @@ add_adol6d_predn_to_ds <- function (data_tb, mdl, tfmn_1L_chr)
 #' @importFrom dplyr select starts_with rename_all inner_join rename
 #' @importFrom stringr str_replace
 #' @importFrom rlang sym
-#' @keywords internal
 add_adol6d_scores <- function (unscored_aqol_tb, prefix_1L_chr = "aqol6d_q", id_var_nm_1L_chr = "fkClientID", 
     wtd_aqol_var_nm_1L_chr = "aqol6d_total_w") 
 {
@@ -62,7 +38,6 @@ add_adol6d_scores <- function (unscored_aqol_tb, prefix_1L_chr = "aqol6d_q", id_
 #' @importFrom dplyr mutate
 #' @importFrom rlang parse_expr
 #' @importFrom Hmisc label
-#' @keywords internal
 add_aqol6d_adol_dim_scrg_eqs <- function (unscored_aqol_tb) 
 {
     utils::data("adol_dim_scalg_eqs_lup", package = "ready4u", 
@@ -93,7 +68,6 @@ add_aqol6d_adol_dim_scrg_eqs <- function (unscored_aqol_tb)
 #' @importFrom simstudy defData genData
 #' @importFrom rlang sym
 #' @importFrom tibble rowid_to_column
-#' @keywords internal
 add_aqol6d_items_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, aqol_items_props_tbs_ls, prefix_chr, 
     aqol_tots_var_nms_chr, id_var_nm_1L_chr = "fkClientID", scaling_cnst_dbl = 5) 
 {
@@ -160,7 +134,6 @@ add_aqol6dU_to_aqol6d_items_tb <- function (aqol6d_items_tb, coeffs_lup_tb = aqo
 #' @export 
 #' @importFrom purrr map
 #' @importFrom dplyr mutate
-#' @keywords internal
 add_aqol6dU_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, prefix_1L_chr = "aqol6d_q", id_var_nm_1L_chr) 
 {
     aqol6d_tbs_ls <- aqol6d_tbs_ls %>% purrr::map(~.x %>% dplyr::mutate(aqol6dU = calculate_adol_aqol6dU(.x, 
@@ -180,7 +153,6 @@ add_aqol6dU_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, prefix_1L_chr = "aqol6d
 #' @rdname add_cors_and_uts_to_aqol6d_tbs_ls
 #' @export 
 
-#' @keywords internal
 add_cors_and_uts_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, aqol_scores_pars_ls, aqol_items_props_tbs_ls, 
     temporal_cors_ls, prefix_chr, aqol_tots_var_nms_chr, id_var_nm_1L_chr = "fkClientID") 
 {
@@ -352,6 +324,28 @@ add_unwtd_dim_tots <- function (items_tb, domain_items_ls, domain_pfx_1L_chr)
             domain_items_ls[[.y]])))))
     return(items_and_domains_tb)
 }
+#' Add utility predn to dataset
+#' @description add_utility_predn_to_ds() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add utility predn to dataset. Function argument data_tb specifies the object to be updated. The function returns Data (a tibble).
+#' @param data_tb Data (a tibble)
+#' @param ... Additional arguments
+#' @param tfmn_1L_chr Tfmn (a character vector of length one)
+#' @return Data (a tibble)
+#' @rdname add_utility_predn_to_ds
+#' @export 
+#' @importFrom purrr reduce
+#' @importFrom dplyr mutate
+#' @importFrom rlang sym
+add_utility_predn_to_ds <- function (data_tb, mdl, tfmn_1L_chr) 
+{
+    dep_vars_chr <- c(outp_smry_ls$dep_var_nm_1L_chr, transform_dep_var_nm(dep_var_nm_1L_chr = outp_smry_ls$dep_var_nm_1L_chr, 
+        tfmn_1L_chr = tfmn_1L_chr)) %>% unique()
+    data_tb <- purrr::reduce(dep_vars_chr, .init = data_tb, ~dplyr::mutate(.x, 
+        `:=`(!!rlang::sym(.y), NA_real_)))
+    data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(outp_smry_ls$dep_var_nm_1L_chr), 
+        predict_utility(data_tb = data_tb, tfmn_1L_chr = tfmn_1L_chr, 
+            mdl = mdl)))
+    return(data_tb)
+}
 #' Add wtd dimension totals
 #' @description add_wtd_dim_tots() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add wtd dimension totals. Function argument unwtd_dim_tb specifies the object to be updated. The function returns Wtd and unwtd dimension (a tibble).
 #' @param unwtd_dim_tb Unwtd dimension (a tibble)
@@ -365,7 +359,6 @@ add_unwtd_dim_tots <- function (items_tb, domain_items_ls, domain_pfx_1L_chr)
 #' @importFrom purrr map_dbl map2_dbl discard reduce
 #' @importFrom dplyr filter pull select_if mutate
 #' @importFrom rlang sym
-#' @keywords internal
 add_wtd_dim_tots <- function (unwtd_dim_tb, domain_items_ls, domain_unwtd_pfx_1L_chr, 
     domain_wtd_pfx_1L_chr) 
 {
