@@ -5,6 +5,10 @@ date: "13/08/2020"
 output: 
   knitrBootstrap::bootstrap_document:
      theme: journal
+vignette: >
+  %\VignetteIndexEntry{aqolscoring}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
