@@ -48,6 +48,10 @@ if(any(x < 0)){
 stop("All values in valid firstbounce_scared object must be greater than or equal to 0.",
 call. = FALSE)
 }
+ if(any(x > 82)){
+stop("All values in valid firstbounce_scared object must be less than or equal to 82.",
+call. = FALSE)
+}
 x}
 #' Is First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores
 #' @description Check whether an object is a valid instance of the First Bounce S3 class for Screen for Child Anxiety Related Disorders (SCARED) scores

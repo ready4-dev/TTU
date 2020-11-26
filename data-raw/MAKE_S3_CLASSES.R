@@ -6,9 +6,9 @@ s3_classes_to_make_tb <- ready4class::ready4_constructor_tbl() %>%
     list(c(0,27)),
     NULL, "Readyforwhatsnext S3 class for PHQ-9", NA_character_, NULL, NULL, NULL))
 
-data("prototype_lup",package = "ready4class")
+utils::data("prototype_lup",package = "ready4class")
 prototype_lup <- tibble::add_case(prototype_lup, type_chr = "integer", val_chr = "NA_integer_", pt_ns_chr = "base",fn_to_call_chr="",default_val_chr = "NA_integer_", old_class_lgl = F)
-data("abbreviations_lup")
+utils::data("abbreviations_lup")
 classes_to_make_tb <- s3_classes_to_make_tb
 name_pfx_1L_chr <- "firstbounce_"
 pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = paste0(name_pfx_1L_chr,classes_to_make_tb$name_stub_chr),
@@ -17,7 +17,7 @@ pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = paste0(name_pfx_1L_chr,
                                         no_plural_chr = NA_character_,
                                         url_1L_chr = "https://readyforwhatsnext.github.io/readyforwhatsnext/",
                                         seed_lup = abbreviations_lup)
-data("abbreviations_lup")
+utils::data("abbreviations_lup")
 
 classes_to_make_tb %>%
   ready4class::write_classes_and_make_lup(dev_pkg_ns_1L_chr = ready4fun::get_dev_pkg_nm(),

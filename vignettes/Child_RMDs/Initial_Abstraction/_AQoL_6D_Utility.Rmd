@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r}
-library(FBaqol)
+library(ready4u)
 ```
 
 

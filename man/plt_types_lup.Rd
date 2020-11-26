@@ -11,7 +11,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 plt_types_lup
 }
 \description{
-A lookup table of abbreviations to describe the different model plot types supported by FBaqol functions
+A lookup table of abbreviations to describe the different model plot types supported by ready4u functions
 }
 \details{
 A tibble

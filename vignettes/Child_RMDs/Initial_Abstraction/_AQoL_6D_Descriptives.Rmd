@@ -10,7 +10,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(xtable)
-library(FBaqol)
+library(ready4u)
 #devtools::load_all()
 ```
 

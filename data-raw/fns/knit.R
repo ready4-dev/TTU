@@ -1,5 +1,5 @@
 knit_mdl_rprt <- function(knit_pars_ls,
-                          path_to_mdl_rprt_tmpl_1L_chr = system.file("_Model_Report_Template.Rmd", package = "FBaqol")){
+                          path_to_mdl_rprt_tmpl_1L_chr = system.file("_Model_Report_Template.Rmd", package = "ready4u")){
   src <- purrr::pmap(knit_pars_ls,
                      ~  knitr::knit_expand(path_to_mdl_rprt_tmpl_1L_chr,
                                            plt_nms_chr = ..1 %>% deparse(),

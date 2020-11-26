@@ -48,6 +48,10 @@ if(any(x < 0)){
 stop("All values in valid firstbounce_oasis object must be greater than or equal to 0.",
 call. = FALSE)
 }
+ if(any(x > 20)){
+stop("All values in valid firstbounce_oasis object must be less than or equal to 20.",
+call. = FALSE)
+}
 x}
 #' Is First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores
 #' @description Check whether an object is a valid instance of the First Bounce S3 class for Overall Anxiety Severity and Impairment Scale (OASIS) scores

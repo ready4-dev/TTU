@@ -7,7 +7,7 @@ output: html_document
 
 
 ```{r}
-library(FBaqol)
+library(ready4u)
 ```
 ## log-log transformed scores subtotal scores
 

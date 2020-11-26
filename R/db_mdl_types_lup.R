@@ -1,6 +1,6 @@
 #' Model types lookup table
 #' 
-#' A lookup table of abbreviations to describe the different model types supported by FBaqol functions
+#' A lookup table of abbreviations to describe the different model types supported by ready4u functions
 #' 
 #' A tibble
 #' 

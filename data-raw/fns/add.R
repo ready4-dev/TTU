@@ -53,7 +53,7 @@ add_aqol6dU_to_aqol6d_tbs_ls <- function(aqol6d_tbs_ls, ## FUNCTION NEEDS TO BE 
   return(aqol6d_tbs_ls)
 }
 add_aqol6d_adol_dim_scrg_eqs <- function(unscored_aqol_tb){
-  data("adol_dim_scalg_eqs_lup", package = "FBaqol", envir = environment())
+  utils::data("adol_dim_scalg_eqs_lup", package = "ready4u", envir = environment())
   for(var in adol_dim_scalg_eqs_lup$Dim_scal) {
     expression = adol_dim_scalg_eqs_lup[adol_dim_scalg_eqs_lup$Dim_scal==var,]$Equ
     unscored_aqol_tb <- unscored_aqol_tb %>%
@@ -281,8 +281,8 @@ add_wtd_dim_tots <- function(unwtd_dim_tb,
                              domain_items_ls,
                              domain_unwtd_pfx_1L_chr,
                              domain_wtd_pfx_1L_chr){
-  data("aqol6d_adult_disv_lup_tb", package = "FBaqol", envir = environment())
-  data("aqol6d_domain_qs_lup_tb", package = "FBaqol", envir = environment())
+  utils::data("aqol6d_adult_disv_lup_tb", package = "ready4u", envir = environment())
+  utils::data("aqol6d_domain_qs_lup_tb", package = "ready4u", envir = environment())
   min_vals_dbl <- purrr::map_dbl(domain_items_ls,~length(.x))  %>% unname()
   max_vals_dbl <- purrr::map2_dbl(domain_items_ls,
                               names(domain_items_ls),

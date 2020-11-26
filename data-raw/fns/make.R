@@ -1,5 +1,5 @@
 make_adol_aqol6d_disv_lup <- function(){
-  #data("disvalues_lup_tb", package = "FBaqol", envir = environment())
+  #utils::data("disvalues_lup_tb", package = "ready4u", envir = environment())
   adol_aqol6d_disv_lup <- aqol6d_adult_disv_lup_tb %>%
     dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr == "Q18" ~ 0.622,
                                                   TRUE ~ Answer_4_dbl),
@@ -300,9 +300,9 @@ make_knit_pars_ls <- function(mdl_smry_dir_1L_chr,
                               plt_types_chr = c("coefs","hetg", "dnst","sctr_plt"),
                               section_type_1L_chr = "#"){
   if(is.null(mdl_types_lup))
-    data(mdl_types_lup, envir = environment())
+    utils::data(mdl_types_lup, envir = environment())
   if(is.null(plt_types_lup))
-    data(plt_types_lup, envir = environment())
+    utils::data(plt_types_lup, envir = environment())
   lab_idx_dbl <- 1:(length(mdl_types_chr)*length(predr_vars_nms_ls))
   knit_pars_ls <- purrr::pmap(list(predr_vars_nms_ls,
                                    split(lab_idx_dbl,
@@ -356,7 +356,7 @@ make_mdl <- function(data_tb,
                      control_1L_chr = NA_character_,
                      start_1L_chr = NULL){
   if(is.null(mdl_types_lup))
-    data("mdl_types_lup", envir = environment())
+    utils::data("mdl_types_lup", envir = environment())
   data_tb <- transform_ds_for_mdlng(data_tb,
                                     dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                                     predr_var_nm_1L_chr = predr_var_nm_1L_chr,
@@ -465,7 +465,7 @@ make_predn_ds_with_one_predr <- function(mdl,
 make_predr_vals <- function(predr_var_nm_1L_chr,
                             candidate_predrs_lup = NULL){
   if(is.null(candidate_predrs_lup)){
-    data("candidate_predrs_lup", envir = environment())
+    utils::data("candidate_predrs_lup", envir = environment())
   }
   args_ls<- purrr::map_dbl(names(candidate_predrs_lup)[3:5],~candidate_predrs_lup %>% ready4fun::get_from_lup_obj(match_value_xx = predr_var_nm_1L_chr, match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = .x, evaluate_lgl = F)) %>% as.list()
   predr_vals_dbl <- rlang::exec(.fn = seq, !!!args_ls)
@@ -488,7 +488,7 @@ make_prefd_mdls_vec <- function(smry_of_sngl_predr_mdls_tb,
                                 choose_from_pfx_chr = c("GLM","OLS"),
                                 mdl_types_lup = NULL){
   if(is.null(mdl_types_lup))
-    data("mdl_types_lup", envir = environment())
+    utils::data("mdl_types_lup", envir = environment())
   ordered_mdl_types_chr <- dplyr::inner_join(smry_of_sngl_predr_mdls_tb %>% dplyr::select(Model) %>% dplyr::rename(long_name_chr = Model),
                                              mdl_types_lup) %>% dplyr::pull(short_name_chr)
   prefd_mdls_chr <- purrr::map_chr(choose_from_pfx_chr, ~ ordered_mdl_types_chr[startsWith(ordered_mdl_types_chr,.x)][1])
@@ -506,7 +506,7 @@ make_shareable_mdl <- function(data_tb,
                                seed_1L_int = 12345L){
 
   if(is.null(mdl_types_lup))
-    data(mdl_types_lup, envir = environment())
+    utils::data(mdl_types_lup, envir = environment())
   all_var_nms_chr <- names(data_tb)
   tfd_dep_var_nm_1L_chr <- all_var_nms_chr[all_var_nms_chr %>%
                                              startsWith(dep_var_nm_1L_chr)]
@@ -588,7 +588,7 @@ make_smry_of_mdl <- function(data_tb,
                              mdl_types_lup = NULL,
                              pred_type_1L_chr = NULL){
   if(is.null(mdl_types_lup))
-    data("mdl_types_lup", envir = environment())
+    utils::data("mdl_types_lup", envir = environment())
   data_tb <- data_tb %>%
     dplyr::filter(!is.na(!!rlang::sym(predr_var_nm_1L_chr)))
   data_tb <- transform_ds_for_mdlng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)

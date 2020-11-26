@@ -48,6 +48,10 @@ if(any(x < 0.03)){
 stop("All values in valid firstbounce_aqol6d_adol object must be greater than or equal to 0.03.",
 call. = FALSE)
 }
+ if(any(x > 1)){
+stop("All values in valid firstbounce_aqol6d_adol object must be less than or equal to 1.",
+call. = FALSE)
+}
 x}
 #' Is First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))
 #' @description Check whether an object is a valid instance of the First Bounce S3 class for Assessment of Quality of Life Six Dimension Health Utility - Adolescent Version (AQoL6d Adolescent))

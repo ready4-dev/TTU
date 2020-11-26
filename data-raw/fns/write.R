@@ -17,7 +17,7 @@ write_all_alg_outps <- function(raw_data_tb,
                                 mdl_types_lup = NULL){
   set.seed(seed_1L_int)
   if(is.null(mdl_types_lup))
-    data("mdl_types_lup", envir = environment())
+    utils::data("mdl_types_lup", envir = environment())
   if(is.na(mdl_types_chr[1])){
     mdl_types_chr <- mdl_types_lup$short_name_chr
   }
@@ -143,7 +143,7 @@ write_box_cox_tfmn <- function(data_tb,
                                start_1L_chr = NULL,
                                mdl_types_lup = NULL){
   if(is.null(mdl_types_lup))
-    data("mdl_types_lup", envir = environment())
+    utils::data("mdl_types_lup", envir = environment())
   mdl <- make_mdl(data_tb,
                   dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                   predr_var_nm_1L_chr = predr_var_nm_1L_chr,
@@ -321,7 +321,7 @@ write_mdl_type_covars_mdls <- function(data_tb,
                                        mdl_types_lup = NULL,
                                        start_1L_chr = NA_character_){
   if(is.null(mdl_types_lup))
-   data("mdl_types_lup", envir = environment())
+   utils::data("mdl_types_lup", envir = environment())
   smry_of_mdls_with_covars_tb <- purrr::map_dfr(predrs_var_nms_chr,
                                                 ~{
                                                   mdl <- make_mdl(data_tb,
@@ -364,7 +364,7 @@ write_mdl_type_multi_outps <- function(data_tb,
                                        fl_nm_pfx_1L_chr = "C_PREDR",
                                        plt_idcs_int = c(3,5)){
   if(is.null(mdl_types_lup))
-    data("mdl_types_lup", envir = environment())
+    utils::data("mdl_types_lup", envir = environment())
   smry_of_mdl_sngl_predrs_tb <- purrr::map_dfr(predrs_var_nms_chr,
                                                ~ {
                                                  tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
@@ -421,7 +421,7 @@ write_mdl_type_sngl_outps <- function(data_tb,
                                       mdl_fl_nm_1L_chr,
                                       plt_idcs_int = NA_integer_){
   if(is.null(mdl_types_lup))
-    data("mdl_types_lup", envir = environment())
+    utils::data("mdl_types_lup", envir = environment())
   arg_vals_chr <- c("control_chr","family_chr","pred_type_chr") %>%
     purrr::map_chr(~ready4fun::get_from_lup_obj(mdl_types_lup,
                                                 match_var_nm_1L_chr = "short_name_chr",
@@ -533,7 +533,7 @@ write_rprt <- function(outp_smry_ls,
                        reports_dir_1L_chr = "Reports",
                        markdown_dir_1L_chr = "Markdown",
                        file_nm_1L_chr = "Main_Mdl_Smry"){
-  write_rndrd_rprt(system.file(package="FBaqol"),
+  write_rndrd_rprt(system.file(package="ready4u"),
                    nm_of_RMD_1L_chr = nm_of_RMD_1L_chr,
                    params_ls = list(covars_ls = list(outp_smry_ls$prefd_covars_chr),
                                     main_predrs_chr = outp_smry_ls$predr_cmprsns_tb$predr_chr,
@@ -542,7 +542,7 @@ write_rprt <- function(outp_smry_ls,
                                     output_type_1L_chr = output_type_1L_chr,
                                     section_type_1L_chr = section_type_1L_chr),
                    rltv_path_to_outpt_yaml_1L_chr = "_output.yml",
-                   paths_to_fls_to_copy_chr = list.files(system.file(package="FBaqol"), full.names = T),
+                   paths_to_fls_to_copy_chr = list.files(system.file(package="ready4u"), full.names = T),
                    path_to_write_fls_to_1L_chr = normalizePath(params$path_to_write_fls_to_1L_chr),
                    nm_of_rprt_dir_1L_chr = markdown_dir_1L_chr,
                    path_to_outpt_rtrp_1L_chr = normalizePath(paste0(params$path_to_write_fls_to_1L_chr,"/",reports_dir_1L_chr)),
@@ -695,7 +695,7 @@ write_sngl_predr_multi_mdls_outps <- function(data_tb,
                                               fl_nm_pfx_1L_chr = "A_RT_",
                                               plt_idcs_int = NA_integer_){
   if(is.null(mdl_types_lup))
-    data("mdl_types_lup", envir = environment())
+    utils::data("mdl_types_lup", envir = environment())
   data_tb <- transform_ds_for_mdlng(data_tb,
                                     dep_var_nm_1L_chr = dep_var_nm_1L_chr,
                                     predr_var_nm_1L_chr = predr_var_nm_1L_chr,

@@ -11,7 +11,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 abbreviations_lup
 }
 \description{
-A lookup table for abbreviations commonly used in object names in the FBaqolpackage.
+A lookup table for abbreviations commonly used in object names in the ready4upackage.
 }
 \details{
 A tibble

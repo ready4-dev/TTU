@@ -48,6 +48,10 @@ if(any(x < 0)){
 stop("All values in valid firstbounce_phq9 object must be greater than or equal to 0.",
 call. = FALSE)
 }
+ if(any(x > 27)){
+stop("All values in valid firstbounce_phq9 object must be less than or equal to 27.",
+call. = FALSE)
+}
 x}
 #' Is First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores
 #' @description Check whether an object is a valid instance of the First Bounce S3 class for Patient Health Questionnaire (PHQ-9) scores

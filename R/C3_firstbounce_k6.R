@@ -48,6 +48,10 @@ if(any(x < 0)){
 stop("All values in valid firstbounce_k6 object must be greater than or equal to 0.",
 call. = FALSE)
 }
+ if(any(x > 24)){
+stop("All values in valid firstbounce_k6 object must be less than or equal to 24.",
+call. = FALSE)
+}
 x}
 #' Is First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores
 #' @description Check whether an object is a valid instance of the First Bounce S3 class for Kessler Psychological Distress Scale (K6) - US Scoring System scores

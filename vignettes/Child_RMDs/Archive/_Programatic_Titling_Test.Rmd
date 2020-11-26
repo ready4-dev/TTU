@@ -13,7 +13,7 @@ knitr::opts_chunk$set(comment=NA)
 library(kableExtra)
 library(flextable)
 library(xtable) # EDIT
-library(FBaqol) # EDIT
+library(ready4u) # EDIT
 library(magrittr)
 options(tinytex.verbose = TRUE)
 options(xtable.floating = FALSE)

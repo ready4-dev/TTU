@@ -16,7 +16,7 @@ params:
 ```{r setup, include=FALSE}
 options(brms.backend = "cmdstanr")
 knitr::opts_chunk$set(echo = TRUE)
-library(FBaqol) 
+library(ready4u) 
 library(magrittr)
 ```
 

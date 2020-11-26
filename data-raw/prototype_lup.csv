@@ -9,10 +9,10 @@
 "integer","NA_integer_","base","","NA_integer_",FALSE
 "ready4_constructor_tbl","ready4class::ready4_constructor_tbl()","ready4class","ready4_constructor_tbl","",TRUE
 "ready4_class_pt_lup","ready4class::ready4_class_pt_lup()","ready4class","ready4_class_pt_lup","",TRUE
-"firstbounce_aqol6d_adol","firstbounce_aqol6d_adol()","FBaqol","firstbounce_aqol6d_adol","",TRUE
-"firstbounce_phq9","firstbounce_phq9()","FBaqol","firstbounce_phq9","",TRUE
-"firstbounce_bads","firstbounce_bads()","FBaqol","firstbounce_bads","",TRUE
-"firstbounce_gad7","firstbounce_gad7()","FBaqol","firstbounce_gad7","",TRUE
-"firstbounce_oasis","firstbounce_oasis()","FBaqol","firstbounce_oasis","",TRUE
-"firstbounce_scared","firstbounce_scared()","FBaqol","firstbounce_scared","",TRUE
-"firstbounce_k6","firstbounce_k6()","FBaqol","firstbounce_k6","",TRUE
+"firstbounce_aqol6d_adol","firstbounce_aqol6d_adol()","ready4u","firstbounce_aqol6d_adol","",TRUE
+"firstbounce_phq9","firstbounce_phq9()","ready4u","firstbounce_phq9","",TRUE
+"firstbounce_bads","firstbounce_bads()","ready4u","firstbounce_bads","",TRUE
+"firstbounce_gad7","firstbounce_gad7()","ready4u","firstbounce_gad7","",TRUE
+"firstbounce_oasis","firstbounce_oasis()","ready4u","firstbounce_oasis","",TRUE
+"firstbounce_scared","firstbounce_scared()","ready4u","firstbounce_scared","",TRUE
+"firstbounce_k6","firstbounce_k6()","ready4u","firstbounce_k6","",TRUE

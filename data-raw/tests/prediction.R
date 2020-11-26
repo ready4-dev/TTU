@@ -1,10 +1,10 @@
 #install.packages("synthpop")
 library(magrittr)
-library(FBaqol)
+library(ready4u)
 
 ## 1. REMAKE STARTER DS WITH CORRELATED SOFAS
 if(is.null(mdl_types_lup))
-  data(mdl_types_lup, envir = environment())
+  utils::data(mdl_types_lup, envir = environment())
 shrble_ols_cll_mdl <- make_shareable_mdl(data_tb = PHQ9_SOFAS_1_CLL_TFN$data %>%
                               dplyr::rename(aqol6d_total_w_CLL = aqol6d_total_w_cloglog),
                             mdl_smry_tb = test_smry)
