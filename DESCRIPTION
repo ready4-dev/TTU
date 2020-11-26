@@ -85,7 +85,8 @@ Imports:
     tidyselect,
     utils,
     viridis,
-    xtable
+    xtable,
+    rgl
 VignetteBuilder: knitr
 RdMacros: lifecycle
 Depends: 

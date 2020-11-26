@@ -364,6 +364,7 @@ readLines(".github/workflows/R-CMD-check.yaml")[-28] %>%
 usethis::use_package("ggfortify")
 usethis::use_package("knitrBootstrap")
 usethis::use_package("knitr", type = "suggests")
+usethis::use_package("rgl")
 ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
                                 r_dir_1L_chr = "R",
                                 dev_pkgs_chr = c("ready4fun","ready4class","ready4use"),
