@@ -56,3 +56,4 @@ Smry of one predr mdl (a tibble)
 \description{
 write_mdl_type_sngl_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write mdl type sngl outputs. The function returns Smry of one predr mdl (a tibble).
 }
+\keyword{internal}

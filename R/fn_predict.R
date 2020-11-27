@@ -7,6 +7,7 @@
 #' @rdname predict_utility
 #' @export 
 
+#' @keywords internal
 predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", mdl) 
 {
     predd_aqol6d_dbl <- predict(mdl, newdata = data_tb) %>% calculate_dep_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, 
