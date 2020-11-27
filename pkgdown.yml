@@ -1,0 +1,8 @@
+pandoc: 2.7.3
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  Child_RMDs/Archive/AQoL_6D_Replication_Fns: AQoL_6D_Replication_Fns.html
+  ready4u: ready4u.html
+last_built: 2020-11-27T11:51Z
+
