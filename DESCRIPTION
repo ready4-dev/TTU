@@ -1,7 +1,7 @@
 Package: ready4u
 Title: Map Measures Routinely Collected in Mental Health
     Services To Health Utility
-Version: 0.0.0.9067
+Version: 0.0.0.9068
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -47,7 +47,6 @@ Imports:
     lifecycle,
     ggfortify,
     knitrBootstrap,
-    rgl,
     ready4fun (>= 0.0.0.9255),
     ready4use (>= 0.0.0.9091),
     assertthat,
@@ -56,37 +55,20 @@ Imports:
     brms,
     caret,
     dplyr,
-    flextable,
-    ggalt,
-    ggplot2,
     grDevices,
-    Hmisc,
-    hutils,
-    kableExtra,
     magrittr,
-    MASS,
-    Matrix,
-    matrixcalc,
     methods,
-    mice,
-    officer,
     psych,
     purrr,
     randomForest,
     rlang,
-    rmarkdown,
-    simstudy,
     stats,
     stringi,
     stringr,
-    Surrogate,
     synthpop,
     tibble,
     tidyr,
-    tidyselect,
-    utils,
-    viridis,
-    xtable
+    utils
 VignetteBuilder: knitr
 RdMacros: lifecycle
 Depends: 
