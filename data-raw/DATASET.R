@@ -160,6 +160,14 @@ fns_dmt_tb <- ready4fun::make_dmt_for_all_fns(paths_ls = ready4fun::make_fn_nms(
                                               fn_type_lup_tb = fn_type_lup_tb,
                                               abbreviations_lup = abbreviations_lup)
 ##
+pkg_dss_tb <- fns_dmt_tb %>%
+  ready4fun::write_and_doc_ds(db_1L_chr = "fns_dmt_tb",
+                              title_1L_chr = "ready4u function documentation table",
+                              desc_1L_chr = "Meta-data on each ready4u function used to create package documentation",
+                              url_1L_chr = "https://ready4-dev.github.io/ready4u/",
+                              abbreviations_lup = abbreviations_lup,
+                              pkg_dss_tb = pkg_dss_tb)
+##
 pkg_dss_tb <- tibble::tribble(
   ~var_name_chr, ~coeff_dbl,
   "vD1", 0.0719264,

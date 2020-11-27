@@ -50,4 +50,3 @@ Mdls smry (a tibble)
 \description{
 write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write ts mdls. The function returns Mdls smry (a tibble).
 }
-\keyword{internal}

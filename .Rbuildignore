@@ -64,3 +64,5 @@
 ^data-raw/MigrateInternally/_main_workflow\.Rmd$
 ^data-raw/MigrateInternally/_Workflow\.Rmd$
 ^data-raw/MigrateInternally/AQoL_Scoring\.Rmd$
+^data-raw/MigrateInternally/depcheck\.R$
+^data-raw/MigrateInternally/migrate_ls\.RDS$

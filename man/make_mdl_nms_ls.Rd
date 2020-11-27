@@ -17,4 +17,3 @@ Mdl names (a list)
 \description{
 make_mdl_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make mdl names list. The function returns Mdl names (a list).
 }
-\keyword{internal}
