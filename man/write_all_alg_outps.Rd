@@ -40,9 +40,9 @@ write_all_alg_outps(
 
 \item{round_bl_val_1L_chr}{Round bl value (a character vector of length one), Default: 'Baseline'}
 
-\item{mdl_types_chr}{Mdl types (a character vector), Default: 'NA'}
+\item{mdl_types_chr}{Model types (a character vector), Default: 'NA'}
 
-\item{prefd_mdl_types_chr}{Prefd mdl types (a character vector), Default: 'NA'}
+\item{prefd_mdl_types_chr}{Prefd model types (a character vector), Default: 'NA'}
 
 \item{choose_from_pfx_chr}{Choose from prefix (a character vector), Default: c("GLM", "OLS", "BET")}
 
@@ -52,9 +52,9 @@ write_all_alg_outps(
 
 \item{n_folds_1L_int}{N folds (an integer vector of length one), Default: 10}
 
-\item{max_nbr_of_boruta_mdl_runs_int}{Max nbr of boruta mdl runs (an integer vector), Default: 300}
+\item{max_nbr_of_boruta_mdl_runs_int}{Max nbr of boruta model runs (an integer vector), Default: 300}
 
-\item{mdl_types_lup}{Mdl types (a lookup table), Default: NULL}
+\item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
 }
 \value{
 Output smry (a list)

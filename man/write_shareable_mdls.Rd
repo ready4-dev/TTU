@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_write.R
 \name{write_shareable_mdls}
 \alias{write_shareable_mdls}
-\title{Write shareable mdls}
+\title{Write shareable models}
 \usage{
 write_shareable_mdls(outp_smry_ls, sub_dir_1L_chr = "Shareable")
 }
@@ -15,5 +15,5 @@ write_shareable_mdls(outp_smry_ls, sub_dir_1L_chr = "Shareable")
 Output smry (a list)
 }
 \description{
-write_shareable_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable mdls. The function returns Output smry (a list).
+write_shareable_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models. The function returns Output smry (a list).
 }

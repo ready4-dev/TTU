@@ -22,11 +22,11 @@ write_brm_model_plts(
 )
 }
 \arguments{
-\item{mdl_ls}{Mdl (a list)}
+\item{mdl_ls}{Model (a list)}
 
 \item{tfd_data_tb}{Transformed data (a tibble)}
 
-\item{mdl_nm_1L_chr}{Mdl name (a character vector of length one)}
+\item{mdl_nm_1L_chr}{Model name (a character vector of length one)}
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
 
@@ -36,7 +36,7 @@ write_brm_model_plts(
 
 \item{round_var_nm_1L_chr}{Round var name (a character vector of length one), Default: 'round'}
 
-\item{tfmn_fn}{Tfmn (a function), Default: function(x) {
+\item{tfmn_fn}{Transformation (a function), Default: function(x) {
 x
 }}
 
@@ -53,9 +53,8 @@ x
 \item{seed_1L_dbl}{Seed (a double vector of length one), Default: 23456}
 }
 \value{
-Mdl plts paths (a list)
+Model plts paths (a list)
 }
 \description{
-write_brm_model_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm model plts. The function returns Mdl plts paths (a list).
+write_brm_model_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm model plts. The function returns Model plts paths (a list).
 }
-\keyword{internal}

@@ -9,7 +9,7 @@ transform_dep_var_nm(dep_var_nm_1L_chr, tfmn_1L_chr = "NTF")
 \arguments{
 \item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one)}
 
-\item{tfmn_1L_chr}{Tfmn (a character vector of length one), Default: 'NTF'}
+\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 }
 \value{
 Transformed dep var name (a character vector of length one)
@@ -17,4 +17,3 @@ Transformed dep var name (a character vector of length one)
 \description{
 transform_dep_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dep var name. Function argument dep_var_nm_1L_chr specifies the object to be updated. Argument tfmn_1L_chr provides the object to be updated. The function returns Transformed dep var name (a character vector of length one).
 }
-\keyword{internal}

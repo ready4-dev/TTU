@@ -2,19 +2,18 @@
 % Please edit documentation in R/fn_make.R
 \name{make_mdl_nms_ls}
 \alias{make_mdl_nms_ls}
-\title{Make mdl names}
+\title{Make model names}
 \usage{
 make_mdl_nms_ls(predr_vars_nms_ls, mdl_types_chr)
 }
 \arguments{
 \item{predr_vars_nms_ls}{Predr vars names (a list)}
 
-\item{mdl_types_chr}{Mdl types (a character vector)}
+\item{mdl_types_chr}{Model types (a character vector)}
 }
 \value{
-Mdl names (a list)
+Model names (a list)
 }
 \description{
-make_mdl_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make mdl names list. The function returns Mdl names (a list).
+make_mdl_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model names list. The function returns Model names (a list).
 }
-\keyword{internal}

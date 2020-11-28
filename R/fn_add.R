@@ -1,15 +1,15 @@
 #' Add utility predn to dataset
 #' @description add_utility_predn_to_ds() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add utility predn to dataset. Function argument data_tb specifies the object to be updated. The function returns Data (a tibble).
 #' @param data_tb Data (a tibble)
-#' @param ... Additional arguments
-#' @param tfmn_1L_chr Tfmn (a character vector of length one)
+#' @param model_mdl PARAM_DESCRIPTION
+#' @param tfmn_1L_chr Transformation (a character vector of length one)
 #' @return Data (a tibble)
 #' @rdname add_utility_predn_to_ds
 #' @export 
 #' @importFrom purrr reduce
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
-add_utility_predn_to_ds <- function (data_tb, mdl, tfmn_1L_chr) 
+add_utility_predn_to_ds <- function (data_tb, model_mdl, tfmn_1L_chr) 
 {
     dep_vars_chr <- c(outp_smry_ls$dep_var_nm_1L_chr, transform_dep_var_nm(dep_var_nm_1L_chr = outp_smry_ls$dep_var_nm_1L_chr, 
         tfmn_1L_chr = tfmn_1L_chr)) %>% unique()
@@ -17,6 +17,6 @@ add_utility_predn_to_ds <- function (data_tb, mdl, tfmn_1L_chr)
         `:=`(!!rlang::sym(.y), NA_real_)))
     data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(outp_smry_ls$dep_var_nm_1L_chr), 
         predict_utility(data_tb = data_tb, tfmn_1L_chr = tfmn_1L_chr, 
-            mdl = mdl)))
+            model_mdl = model_mdl)))
     return(data_tb)
 }

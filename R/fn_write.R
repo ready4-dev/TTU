@@ -8,14 +8,14 @@
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
 #' @param round_var_nm_1L_chr Round var name (a character vector of length one), Default: 'round'
 #' @param round_bl_val_1L_chr Round bl value (a character vector of length one), Default: 'Baseline'
-#' @param mdl_types_chr Mdl types (a character vector), Default: 'NA'
-#' @param prefd_mdl_types_chr Prefd mdl types (a character vector), Default: 'NA'
+#' @param mdl_types_chr Model types (a character vector), Default: 'NA'
+#' @param prefd_mdl_types_chr Prefd model types (a character vector), Default: 'NA'
 #' @param choose_from_pfx_chr Choose from prefix (a character vector), Default: c("GLM", "OLS", "BET")
 #' @param prefd_covars_chr Prefd covars (a character vector), Default: 'NA'
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 12345
 #' @param n_folds_1L_int N folds (an integer vector of length one), Default: 10
-#' @param max_nbr_of_boruta_mdl_runs_int Max nbr of boruta mdl runs (an integer vector), Default: 300
-#' @param mdl_types_lup Mdl types (a lookup table), Default: NULL
+#' @param max_nbr_of_boruta_mdl_runs_int Max nbr of boruta model runs (an integer vector), Default: 300
+#' @param mdl_types_lup Model types (a lookup table), Default: NULL
 #' @return Output smry (a list)
 #' @rdname write_all_alg_outps
 #' @export 
@@ -95,8 +95,8 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, dep_va
         mdl_types_lup = mdl_types_lup, file_paths_chr = list.files(path_to_write_to_1L_chr))
     return(outp_smry_ls)
 }
-#' Write brm mdl plt file
-#' @description write_brm_mdl_plt_fl() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm mdl plt file. The function returns Path to plot (a character vector of length one).
+#' Write brm model plt file
+#' @description write_brm_mdl_plt_fl() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm model plt file. The function returns Path to plot (a character vector of length one).
 #' @param plt_fn Plt (a function), Default: NULL
 #' @param fn_args_ls Function arguments (a list), Default: NULL
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
@@ -109,9 +109,8 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, dep_va
 #' @return Path to plot (a character vector of length one)
 #' @rdname write_brm_mdl_plt_fl
 #' @export 
-#' @importFrom grDevices png
+#' @importFrom grDevices png dev.off
 #' @importFrom rlang exec
-#' @keywords internal
 write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_write_to_1L_chr, 
     plt_nm_1L_chr, grpx_fn = grDevices::png, units_1L_chr = "in", 
     width_1L_dbl = 6, height_1L_dbl = 6, rsl_1L_dbl = 300) 
@@ -124,7 +123,7 @@ write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_writ
             width = width_1L_dbl, height = height_1L_dbl, res = rsl_1L_dbl))
         plt <- rlang::exec(plt_fn, !!!fn_args_ls)
         print(plt)
-        dev.off()
+        grDevices::dev.off()
     }
     else {
         path_to_plot_1L_chr <- NA_character_
@@ -132,15 +131,15 @@ write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_writ
     return(path_to_plot_1L_chr)
 }
 #' Write brm model plts
-#' @description write_brm_model_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm model plts. The function returns Mdl plts paths (a list).
-#' @param mdl_ls Mdl (a list)
+#' @description write_brm_model_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm model plts. The function returns Model plts paths (a list).
+#' @param mdl_ls Model (a list)
 #' @param tfd_data_tb Transformed data (a tibble)
-#' @param mdl_nm_1L_chr Mdl name (a character vector of length one)
+#' @param mdl_nm_1L_chr Model name (a character vector of length one)
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
 #' @param dep_var_desc_1L_chr Dep var description (a character vector of length one), Default: 'AQoL-6D utility score'
 #' @param round_var_nm_1L_chr Round var name (a character vector of length one), Default: 'round'
-#' @param tfmn_fn Tfmn (a function), Default: function(x) {
+#' @param tfmn_fn Transformation (a function), Default: function(x) {
 #'    x
 #'}
 #' @param units_1L_chr Units (a character vector of length one), Default: 'in'
@@ -149,12 +148,11 @@ write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_writ
 #' @param rsl_dbl Rsl (a double vector), Default: rep(300, 4)
 #' @param args_ls Arguments (a list), Default: NULL
 #' @param seed_1L_dbl Seed (a double vector of length one), Default: 23456
-#' @return Mdl plts paths (a list)
+#' @return Model plts paths (a list)
 #' @rdname write_brm_model_plts
 #' @export 
+#' @importFrom stats predict setNames
 #' @importFrom purrr map discard
-#' @importFrom stats setNames
-#' @keywords internal
 write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_write_to_1L_chr, 
     dep_var_nm_1L_chr = "aqol6d_total_w", dep_var_desc_1L_chr = "AQoL-6D utility score", 
     round_var_nm_1L_chr = "round", tfmn_fn = function(x) {
@@ -164,7 +162,8 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
         4), args_ls = NULL, seed_1L_dbl = 23456) 
 {
     set.seed(seed_1L_dbl)
-    tfd_data_tb$Predicted <- predict(mdl_ls)[, 1] %>% tfmn_fn()
+    tfd_data_tb$Predicted <- stats::predict(mdl_ls)[, 1] %>% 
+        tfmn_fn()
     plt_nms_chr <- paste0(mdl_nm_1L_chr, "_", c("coefs", "hetg", 
         "dnst", "sctr_plt"))
     mdl_plts_paths_ls <- purrr::map(1:4, ~{
@@ -199,28 +198,27 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
     }) %>% stats::setNames(plt_nms_chr) %>% purrr::discard(is.na)
     return(mdl_plts_paths_ls)
 }
-#' Write mdl plts
-#' @description write_mdl_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write mdl plts. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' Write model plts
+#' @description write_mdl_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model plts. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param data_tb Data (a tibble)
-#' @param ... Additional arguments
-#' @param mdl_fl_nm_1L_chr Mdl file name (a character vector of length one), Default: 'OLS_NTF'
+#' @param model_mdl PARAM_DESCRIPTION
+#' @param mdl_fl_nm_1L_chr Model file name (a character vector of length one), Default: 'OLS_NTF'
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
-#' @param tfmn_1L_chr Tfmn (a character vector of length one), Default: 'NTF'
+#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
 #' @param predr_var_desc_1L_chr Predr var description (a character vector of length one)
 #' @param predr_vals_dbl Predr values (a double vector)
 #' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
 #' @param pred_type_1L_chr Pred type (a character vector of length one), Default: NULL
-#' @param tfmn_for_bnml_1L_lgl Tfmn for bnml (a logical vector of length one), Default: F
+#' @param tfmn_for_bnml_1L_lgl Transformation for bnml (a logical vector of length one), Default: F
 #' @param family_1L_chr Family (a character vector of length one), Default: 'NA'
 #' @param plt_idcs_int Plt idcs (an integer vector), Default: 1:5
 #' @return NULL
 #' @rdname write_mdl_plts
 #' @export 
 #' @importFrom purrr pwalk
-#' @keywords internal
-write_mdl_plts <- function (data_tb, mdl, mdl_fl_nm_1L_chr = "OLS_NTF", dep_var_nm_1L_chr = "aqol6d_total_w", 
+write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", dep_var_nm_1L_chr = "aqol6d_total_w", 
     tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, predr_var_desc_1L_chr, 
     predr_vals_dbl, covar_var_nms_chr = NA_character_, path_to_write_to_1L_chr, 
     pred_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, 
@@ -228,13 +226,14 @@ write_mdl_plts <- function (data_tb, mdl, mdl_fl_nm_1L_chr = "OLS_NTF", dep_var_
 {
     data_tb <- transform_ds_for_mdlng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
-    tfd_data_tb <- transform_data_tb_for_cmprsn(data_tb, mdl = mdl, 
+    tfd_data_tb <- transform_data_tb_for_cmprsn(data_tb, model_mdl = model_mdl, 
         pred_type_1L_chr = pred_type_1L_chr, tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl, 
         family_1L_chr = family_1L_chr)
     if (1 %in% plt_idcs_int) {
-        predn_ds_tb <- make_predn_ds_with_one_predr(mdl, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
-            tfmn_1L_chr = tfmn_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr, 
-            predr_vals_dbl = predr_vals_dbl, pred_type_1L_chr = pred_type_1L_chr)
+        predn_ds_tb <- make_predn_ds_with_one_predr(model_mdl, 
+            dep_var_nm_1L_chr = dep_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr, 
+            predr_var_nm_1L_chr = predr_var_nm_1L_chr, predr_vals_dbl = predr_vals_dbl, 
+            pred_type_1L_chr = pred_type_1L_chr)
     }
     else {
         predn_ds_tb <- NULL
@@ -243,10 +242,11 @@ write_mdl_plts <- function (data_tb, mdl, mdl_fl_nm_1L_chr = "OLS_NTF", dep_var_
         plot_obsd_predd_dnst, plot_obsd_predd_dnst, plot_lnr_cmprsn_sctr_plt)[plt_idcs_int], 
         fn_args_ls_ls = list(list(data_tb = data_tb, predn_ds_tb = predn_ds_tb, 
             predr_var_nm_1L_chr = predr_var_nm_1L_chr, predr_var_desc_1L_chr = predr_var_desc_1L_chr), 
-            list(mdl, which_dbl = 1:6, ncol_1L_int = 3L, label_size_1L_int = 3), 
-            list(tfd_data_tb = tfd_data_tb), list(tfd_data_tb = transform_data_tb_for_cmprsn(data_tb, 
-                mdl = mdl, tf_type_1L_chr = ifelse(!4 %in% plt_idcs_int, 
-                  "Predicted", "Simulated"), pred_type_1L_chr = NULL, 
+            list(model_mdl, which_dbl = 1:6, ncol_1L_int = 3L, 
+                label_size_1L_int = 3), list(tfd_data_tb = tfd_data_tb), 
+            list(tfd_data_tb = transform_data_tb_for_cmprsn(data_tb, 
+                model_mdl = model_mdl, tf_type_1L_chr = ifelse(!4 %in% 
+                  plt_idcs_int, "Predicted", "Simulated"), pred_type_1L_chr = NULL, 
                 tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl, 
                 family_1L_chr = family_1L_chr), predd_val_var_nm_1L_chr = "Simulated"), 
             list(tfd_data_tb = tfd_data_tb))[plt_idcs_int], plt_nm_sfx_chr = c("_LNR_CMPRSN", 
@@ -259,18 +259,18 @@ write_mdl_plts <- function (data_tb, mdl, mdl_fl_nm_1L_chr = "OLS_NTF", dep_var_
                 3)], collapse = "")), ""), ..3), height_1L_dbl = ..4[1], 
         width_1L_dbl = ..4[2]))
 }
-#' Write mdl type covars mdls
-#' @description write_mdl_type_covars_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write mdl type covars mdls. The function returns Smry of mdls with covars (a tibble).
+#' Write model type covars models
+#' @description write_mdl_type_covars_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type covars models. The function returns Smry of models with covars (a tibble).
 #' @param data_tb Data (a tibble)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
 #' @param predrs_var_nms_chr Predrs var names (a character vector)
 #' @param covar_var_nms_chr Covar var names (a character vector)
-#' @param mdl_type_1L_chr Mdl type (a character vector of length one)
+#' @param mdl_type_1L_chr Model type (a character vector of length one)
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
 #' @param fl_nm_pfx_1L_chr File name prefix (a character vector of length one), Default: 'D_CT'
-#' @param mdl_types_lup Mdl types (a lookup table), Default: NULL
+#' @param mdl_types_lup Model types (a lookup table), Default: NULL
 #' @param start_1L_chr Start (a character vector of length one), Default: 'NA'
-#' @return Smry of mdls with covars (a tibble)
+#' @return Smry of models with covars (a tibble)
 #' @rdname write_mdl_type_covars_mdls
 #' @export 
 #' @importFrom utils data
@@ -279,7 +279,7 @@ write_mdl_plts <- function (data_tb, mdl, mdl_fl_nm_1L_chr = "OLS_NTF", dep_var_
 #' @importFrom caret R2
 #' @importFrom dplyr pull arrange desc
 #' @importFrom rlang sym
-#' @keywords internal
+#' @importFrom stats predict AIC BIC
 write_mdl_type_covars_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predrs_var_nms_chr, 
     covar_var_nms_chr, mdl_type_1L_chr, path_to_write_to_1L_chr, 
     fl_nm_pfx_1L_chr = "D_CT", mdl_types_lup = NULL, start_1L_chr = NA_character_) 
@@ -288,19 +288,20 @@ write_mdl_type_covars_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_tot
         utils::data("mdl_types_lup", envir = environment())
     smry_of_mdls_with_covars_tb <- purrr::map_dfr(predrs_var_nms_chr, 
         ~{
-            mdl <- make_mdl(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
+            model_mdl <- make_mdl(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
                 predr_var_nm_1L_chr = .x, covar_var_nms_chr = covar_var_nms_chr, 
                 tfmn_1L_chr = "NTF", mdl_type_1L_chr = mdl_type_1L_chr, 
                 control_1L_chr = NA_character_, mdl_types_lup = mdl_types_lup, 
                 start_1L_chr = start_1L_chr)
             mdl_fl_nm_1L_chr <- paste0(fl_nm_pfx_1L_chr, "_", 
                 .x, "_", mdl_type_1L_chr)
-            saveRDS(mdl, paste0(path_to_write_to_1L_chr, "/", 
-                mdl_fl_nm_1L_chr, ".RDS"))
+            saveRDS(model_mdl, paste0(path_to_write_to_1L_chr, 
+                "/", mdl_fl_nm_1L_chr, ".RDS"))
             tibble::tibble(variable = .x, Rsquare = caret::R2(data_tb %>% 
                 dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr)), 
-                predict(mdl), form = "traditional"), AIC = AIC(mdl), 
-                BIC = BIC(mdl), Significant = paste(names(which(summary(mdl)$coefficients[, 
+                stats::predict(model_mdl), form = "traditional"), 
+                AIC = stats::AIC(model_mdl), BIC = stats::BIC(model_mdl), 
+                Significant = paste(names(which(summary(model_mdl)$coefficients[, 
                   4] < 0.01)), collapse = " "))
         })
     smry_of_mdls_with_covars_tb <- smry_of_mdls_with_covars_tb %>% 
@@ -310,27 +311,26 @@ write_mdl_type_covars_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_tot
         ".RDS"))
     return(smry_of_mdls_with_covars_tb)
 }
-#' Write mdl type multi outputs
-#' @description write_mdl_type_multi_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write mdl type multi outputs. The function returns Smry of mdl sngl predrs (a tibble).
+#' Write model type multi outputs
+#' @description write_mdl_type_multi_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type multi outputs. The function returns Smry of model sngl predrs (a tibble).
 #' @param data_tb Data (a tibble)
 #' @param n_folds_1L_int N folds (an integer vector of length one), Default: 10
 #' @param predrs_var_nms_chr Predrs var names (a character vector)
 #' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
 #' @param start_1L_chr Start (a character vector of length one), Default: NULL
-#' @param mdl_type_1L_chr Mdl type (a character vector of length one)
+#' @param mdl_type_1L_chr Model type (a character vector of length one)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
-#' @param mdl_types_lup Mdl types (a lookup table), Default: NULL
+#' @param mdl_types_lup Model types (a lookup table), Default: NULL
 #' @param fl_nm_pfx_1L_chr File name prefix (a character vector of length one), Default: 'C_PREDR'
 #' @param plt_idcs_int Plt idcs (an integer vector), Default: c(3, 5)
-#' @return Smry of mdl sngl predrs (a tibble)
+#' @return Smry of model sngl predrs (a tibble)
 #' @rdname write_mdl_type_multi_outps
 #' @export 
 #' @importFrom utils data
 #' @importFrom purrr map_dfr
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr select mutate everything arrange desc
-#' @keywords internal
 write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var_nms_chr, covar_var_nms_chr = NA_character_, 
     start_1L_chr = NULL, mdl_type_1L_chr, dep_var_nm_1L_chr = "aqol6d_total_w", 
     path_to_write_to_1L_chr, mdl_types_lup = NULL, fl_nm_pfx_1L_chr = "C_PREDR", 
@@ -364,23 +364,23 @@ write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var
     }
     return(smry_of_mdl_sngl_predrs_tb)
 }
-#' Write mdl type sngl outputs
-#' @description write_mdl_type_sngl_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write mdl type sngl outputs. The function returns Smry of one predr mdl (a tibble).
+#' Write model type sngl outputs
+#' @description write_mdl_type_sngl_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type sngl outputs. The function returns Smry of one predr model (a tibble).
 #' @param data_tb Data (a tibble)
 #' @param n_folds_1L_int N folds (an integer vector of length one), Default: 10
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
 #' @param start_1L_chr Start (a character vector of length one), Default: NULL
-#' @param tfmn_1L_chr Tfmn (a character vector of length one), Default: 'NTF'
+#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
 #' @param predr_var_desc_1L_chr Predr var description (a character vector of length one)
 #' @param predr_vals_dbl Predr values (a double vector)
 #' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
-#' @param mdl_type_1L_chr Mdl type (a character vector of length one), Default: 'OLS_NTF'
-#' @param mdl_types_lup Mdl types (a lookup table), Default: NULL
+#' @param mdl_type_1L_chr Model type (a character vector of length one), Default: 'OLS_NTF'
+#' @param mdl_types_lup Model types (a lookup table), Default: NULL
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
-#' @param mdl_fl_nm_1L_chr Mdl file name (a character vector of length one)
+#' @param mdl_fl_nm_1L_chr Model file name (a character vector of length one)
 #' @param plt_idcs_int Plt idcs (an integer vector), Default: NA
-#' @return Smry of one predr mdl (a tibble)
+#' @return Smry of one predr model (a tibble)
 #' @rdname write_mdl_type_sngl_outps
 #' @export 
 #' @importFrom utils data
@@ -389,7 +389,6 @@ write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
 #' @importFrom tibble tibble
-#' @keywords internal
 write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_1L_chr = "aqol6d_total_w", 
     start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, 
     predr_var_desc_1L_chr, predr_vals_dbl, covar_var_nms_chr = NA_character_, 
@@ -420,12 +419,12 @@ write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_
     data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_dep_var_nm(dep_var_nm_1L_chr, 
         tfmn_1L_chr = tfmn_1L_chr)), !!rlang::sym(dep_var_nm_1L_chr) %>% 
         calculate_dep_var_tfmn()))
-    mdl <- make_mdl(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
+    model_mdl <- make_mdl(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
         tfmn_1L_chr = tfmn_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr, 
         covar_var_nms_chr = covar_var_nms_chr, mdl_type_1L_chr = mdl_type_1L_chr, 
         mdl_types_lup = mdl_types_lup, control_1L_chr = control_1L_chr, 
         start_1L_chr = start_1L_chr)
-    write_mdl_plts(data_tb, mdl = mdl, mdl_fl_nm_1L_chr = mdl_fl_nm_1L_chr, 
+    write_mdl_plts(data_tb, model_mdl = model_mdl, mdl_fl_nm_1L_chr = mdl_fl_nm_1L_chr, 
         dep_var_nm_1L_chr = dep_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr, 
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, predr_var_desc_1L_chr = predr_var_desc_1L_chr, 
         predr_vals_dbl = predr_vals_dbl, covar_var_nms_chr = covar_var_nms_chr, 
@@ -434,15 +433,15 @@ write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_
         plt_idcs_int = plt_idcs_int)
     if (!is.null(n_folds_1L_int)) {
         smry_of_one_predr_mdl_tb <- make_smry_of_mdl(data_tb, 
-            mdl = mdl, n_folds_1L_int = n_folds_1L_int, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
-            tfmn_1L_chr = tfmn_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr, 
-            mdl_type_1L_chr = mdl_type_1L_chr, mdl_types_lup = mdl_types_lup, 
-            pred_type_1L_chr = pred_type_1L_chr)
+            model_mdl = model_mdl, n_folds_1L_int = n_folds_1L_int, 
+            dep_var_nm_1L_chr = dep_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr, 
+            predr_var_nm_1L_chr = predr_var_nm_1L_chr, mdl_type_1L_chr = mdl_type_1L_chr, 
+            mdl_types_lup = mdl_types_lup, pred_type_1L_chr = pred_type_1L_chr)
     }
     else {
         smry_of_one_predr_mdl_tb <- tibble::tibble()
     }
-    saveRDS(mdl, paste0(path_to_write_to_1L_chr, "/", mdl_fl_nm_1L_chr, 
+    saveRDS(model_mdl, paste0(path_to_write_to_1L_chr, "/", model_mdl_fl_nm_1L_chr, 
         ".RDS"))
     return(smry_of_one_predr_mdl_tb)
 }
@@ -452,16 +451,16 @@ write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
 #' @param candidate_predrs_chr Candidate predrs (a character vector)
-#' @param max_nbr_of_boruta_mdl_runs_int Max nbr of boruta mdl runs (an integer vector), Default: 300
+#' @param max_nbr_of_boruta_mdl_runs_int Max nbr of boruta model runs (an integer vector), Default: 300
 #' @return Confirmed predrs (a tibble)
 #' @rdname write_predr_cmprsn_outps
 #' @export 
 #' @importFrom randomForest randomForest varImpPlot
+#' @importFrom stats as.formula
 #' @importFrom Boruta Boruta
 #' @importFrom purrr pwalk
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr arrange desc filter
-#' @keywords internal
 write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, dep_var_nm_1L_chr = "aqol6d_total_w", 
     candidate_predrs_chr, max_nbr_of_boruta_mdl_runs_int = 300L) 
 {
@@ -473,9 +472,9 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, dep_var_
     }
     data_tb <- transform_ds_for_mdlng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
         predr_var_nm_1L_chr = candidate_predrs_chr[1], covar_var_nms_chr = covar_var_nms_chr)
-    rf_mdl <- randomForest::randomForest(as.formula(paste0(dep_var_nm_1L_chr, 
+    rf_mdl <- randomForest::randomForest(stats::as.formula(paste0(dep_var_nm_1L_chr, 
         " ~ .")), data = data_tb, importance = TRUE)
-    boruta_mdl <- Boruta::Boruta(as.formula(paste0(dep_var_nm_1L_chr, 
+    boruta_mdl <- Boruta::Boruta(stats::as.formula(paste0(dep_var_nm_1L_chr, 
         " ~ .")), data = data_tb, maxRuns = max_nbr_of_boruta_mdl_runs_int)
     purrr::pwalk(list(fn_ls = list(randomForest::varImpPlot, 
         plot), fn_args_ls_ls = list(list(rf_mdl, main = ""), 
@@ -539,8 +538,8 @@ write_rprt <- function (outp_smry_ls, nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
     }
     return(outp_smry_ls)
 }
-#' Write shareable mdls
-#' @description write_shareable_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable mdls. The function returns Output smry (a list).
+#' Write shareable models
+#' @description write_shareable_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models. The function returns Output smry (a list).
 #' @param outp_smry_ls Output smry (a list)
 #' @param sub_dir_1L_chr Sub directory (a character vector of length one), Default: 'Shareable'
 #' @return Output smry (a list)
@@ -555,11 +554,11 @@ write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable")
 {
     sharble_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>% 
         purrr::map(~{
-            mdl <- readRDS(paste0(outp_smry_ls$path_to_write_to_1L_chr, 
+            model_mdl <- readRDS(paste0(outp_smry_ls$path_to_write_to_1L_chr, 
                 "/", .x, ".RDS"))
             mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model == 
                 .x)
-            data_tb <- mdl$data
+            data_tb <- model_mdl$data
             if (endsWith(.x, "OLS_CLL")) 
                 data_tb <- data_tb %>% dplyr::rename(aqol6d_total_w_CLL = aqol6d_total_w_cloglog)
             sharble_mdl <- make_shareable_mdl(data_tb = data_tb, 
@@ -593,10 +592,10 @@ write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable")
     outp_smry_ls$shareable_mdls_tb <- shareable_mdls_tb
     return(outp_smry_ls)
 }
-#' Write sngl predr multi mdls outputs
-#' @description write_sngl_predr_multi_mdls_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write sngl predr multi mdls outputs. The function returns Smry of sngl predr mdls (a tibble).
+#' Write sngl predr multi models outputs
+#' @description write_sngl_predr_multi_mdls_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write sngl predr multi models outputs. The function returns Smry of sngl predr models (a tibble).
 #' @param data_tb Data (a tibble)
-#' @param mdl_types_chr Mdl types (a character vector)
+#' @param mdl_types_chr Model types (a character vector)
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
 #' @param predr_var_desc_1L_chr Predr var description (a character vector of length one)
 #' @param predr_vals_dbl Predr values (a double vector)
@@ -605,17 +604,16 @@ write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable")
 #' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
 #' @param n_folds_1L_int N folds (an integer vector of length one), Default: 10
-#' @param mdl_types_lup Mdl types (a lookup table), Default: NULL
+#' @param mdl_types_lup Model types (a lookup table), Default: NULL
 #' @param fl_nm_pfx_1L_chr File name prefix (a character vector of length one), Default: 'A_RT_'
 #' @param plt_idcs_int Plt idcs (an integer vector), Default: NA
-#' @return Smry of sngl predr mdls (a tibble)
+#' @return Smry of sngl predr models (a tibble)
 #' @rdname write_sngl_predr_multi_mdls_outps
 #' @export 
 #' @importFrom utils data
 #' @importFrom purrr map_dfr
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr arrange desc
-#' @keywords internal
 write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var_nm_1L_chr, predr_var_desc_1L_chr, 
     predr_vals_dbl, path_to_write_to_1L_chr, start_1L_chr = NULL, 
     covar_var_nms_chr = NA_character_, dep_var_nm_1L_chr = "aqol6d_total_w", 
@@ -645,8 +643,8 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
             dplyr::arrange(dplyr::desc(RsquaredP))
     return(smry_of_sngl_predr_mdls_tb)
 }
-#' Write ts mdls
-#' @description write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write ts mdls. The function returns Mdls smry (a tibble).
+#' Write ts models
+#' @description write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write ts models. The function returns Models smry (a tibble).
 #' @param data_tb Data (a tibble)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
 #' @param predr_vars_nms_ls Predr vars names (a list)
@@ -655,15 +653,14 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @param round_bl_val_1L_chr Round bl value (a character vector of length one), Default: 'Baseline'
 #' @param backend_1L_chr Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")
 #' @param fn_ls Function list (a list of functions)
-#' @param mdl_nms_ls Mdl names (a list)
-#' @param mdl_smry_dir_1L_chr Mdl smry directory (a character vector of length one)
+#' @param mdl_nms_ls Model names (a list)
+#' @param mdl_smry_dir_1L_chr Model smry directory (a character vector of length one)
 #' @param iters_1L_int Iters (an integer vector of length one), Default: 4000
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 1000
-#' @return Mdls smry (a tibble)
+#' @return Models smry (a tibble)
 #' @rdname write_ts_mdls
 #' @export 
 #' @importFrom purrr map_dfr map2_dfr
-#' @keywords internal
 write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predr_vars_nms_ls, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", backend_1L_chr = getOption("brms.backend", 
@@ -689,8 +686,8 @@ write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predr_
     saveRDS(mdls_smry_tb, paste0(mdl_smry_dir_1L_chr, "/mdls_smry_tb.RDS"))
     return(mdls_smry_tb)
 }
-#' Write ts mdls from algorithm output
-#' @description write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write ts mdls from algorithm output. The function returns Output smry (a list).
+#' Write ts models from algorithm output
+#' @description write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write ts models from algorithm output. The function returns Output smry (a list).
 #' @param outp_smry_ls Output smry (a list)
 #' @param fn_ls Function list (a list of functions)
 #' @param backend_1L_chr Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")

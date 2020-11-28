@@ -4,14 +4,14 @@
 \alias{add_utility_predn_to_ds}
 \title{Add utility predn to dataset}
 \usage{
-add_utility_predn_to_ds(data_tb, mdl, tfmn_1L_chr)
+add_utility_predn_to_ds(data_tb, model_mdl, tfmn_1L_chr)
 }
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{tfmn_1L_chr}{Tfmn (a character vector of length one)}
+\item{model_mdl}{PARAM_DESCRIPTION}
 
-\item{...}{Additional arguments}
+\item{tfmn_1L_chr}{Transformation (a character vector of length one)}
 }
 \value{
 Data (a tibble)

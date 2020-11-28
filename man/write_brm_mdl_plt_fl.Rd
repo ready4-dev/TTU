@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_write.R
 \name{write_brm_mdl_plt_fl}
 \alias{write_brm_mdl_plt_fl}
-\title{Write brm mdl plt file}
+\title{Write brm model plt file}
 \usage{
 write_brm_mdl_plt_fl(
   plt_fn = NULL,
@@ -39,6 +39,5 @@ write_brm_mdl_plt_fl(
 Path to plot (a character vector of length one)
 }
 \description{
-write_brm_mdl_plt_fl() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm mdl plt file. The function returns Path to plot (a character vector of length one).
+write_brm_mdl_plt_fl() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm model plt file. The function returns Path to plot (a character vector of length one).
 }
-\keyword{internal}

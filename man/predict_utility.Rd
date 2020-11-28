@@ -4,14 +4,14 @@
 \alias{predict_utility}
 \title{Predict utility}
 \usage{
-predict_utility(data_tb, tfmn_1L_chr = "NTF", mdl)
+predict_utility(data_tb, tfmn_1L_chr = "NTF", model_mdl)
 }
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{tfmn_1L_chr}{Tfmn (a character vector of length one), Default: 'NTF'}
+\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
-\item{...}{Additional arguments}
+\item{model_mdl}{PARAM_DESCRIPTION}
 }
 \value{
 Predd aqol6d (a double vector)
@@ -19,4 +19,3 @@ Predd aqol6d (a double vector)
 \description{
 predict_utility() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict utility. The function returns Predd aqol6d (a double vector).
 }
-\keyword{internal}

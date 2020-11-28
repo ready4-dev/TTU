@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_smry_of_brm_mdl}
 \alias{make_smry_of_brm_mdl}
-\title{Make smry of brm mdl}
+\title{Make smry of brm model}
 \usage{
 make_smry_of_brm_mdl(
   mdl_ls,
@@ -15,7 +15,7 @@ make_smry_of_brm_mdl(
 )
 }
 \arguments{
-\item{mdl_ls}{Mdl (a list)}
+\item{mdl_ls}{Model (a list)}
 
 \item{data_tb}{Data (a tibble)}
 
@@ -25,14 +25,13 @@ make_smry_of_brm_mdl(
 
 \item{fn}{Function (a function), Default: calculate_rmse}
 
-\item{mdl_nm_1L_chr}{Mdl name (a character vector of length one), Default: 'NA'}
+\item{mdl_nm_1L_chr}{Model name (a character vector of length one), Default: 'NA'}
 
 \item{seed_1L_dbl}{Seed (a double vector of length one), Default: 23456}
 }
 \value{
-Smry of brm mdl (a tibble)
+Smry of brm model (a tibble)
 }
 \description{
-make_smry_of_brm_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of brm mdl. The function returns Smry of brm mdl (a tibble).
+make_smry_of_brm_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of brm model. The function returns Smry of brm model (a tibble).
 }
-\keyword{internal}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_write.R
 \name{write_sngl_predr_multi_mdls_outps}
 \alias{write_sngl_predr_multi_mdls_outps}
-\title{Write sngl predr multi mdls outputs}
+\title{Write sngl predr multi models outputs}
 \usage{
 write_sngl_predr_multi_mdls_outps(
   data_tb,
@@ -23,7 +23,7 @@ write_sngl_predr_multi_mdls_outps(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{mdl_types_chr}{Mdl types (a character vector)}
+\item{mdl_types_chr}{Model types (a character vector)}
 
 \item{predr_var_nm_1L_chr}{Predr var name (a character vector of length one)}
 
@@ -41,16 +41,15 @@ write_sngl_predr_multi_mdls_outps(
 
 \item{n_folds_1L_int}{N folds (an integer vector of length one), Default: 10}
 
-\item{mdl_types_lup}{Mdl types (a lookup table), Default: NULL}
+\item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
 
 \item{fl_nm_pfx_1L_chr}{File name prefix (a character vector of length one), Default: 'A_RT_'}
 
 \item{plt_idcs_int}{Plt idcs (an integer vector), Default: NA}
 }
 \value{
-Smry of sngl predr mdls (a tibble)
+Smry of sngl predr models (a tibble)
 }
 \description{
-write_sngl_predr_multi_mdls_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write sngl predr multi mdls outputs. The function returns Smry of sngl predr mdls (a tibble).
+write_sngl_predr_multi_mdls_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write sngl predr multi models outputs. The function returns Smry of sngl predr models (a tibble).
 }
-\keyword{internal}

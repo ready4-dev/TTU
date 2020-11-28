@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_write.R
 \name{write_mdl_type_multi_outps}
 \alias{write_mdl_type_multi_outps}
-\title{Write mdl type multi outputs}
+\title{Write model type multi outputs}
 \usage{
 write_mdl_type_multi_outps(
   data_tb,
@@ -29,22 +29,21 @@ write_mdl_type_multi_outps(
 
 \item{start_1L_chr}{Start (a character vector of length one), Default: NULL}
 
-\item{mdl_type_1L_chr}{Mdl type (a character vector of length one)}
+\item{mdl_type_1L_chr}{Model type (a character vector of length one)}
 
 \item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
 
-\item{mdl_types_lup}{Mdl types (a lookup table), Default: NULL}
+\item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
 
 \item{fl_nm_pfx_1L_chr}{File name prefix (a character vector of length one), Default: 'C_PREDR'}
 
 \item{plt_idcs_int}{Plt idcs (an integer vector), Default: c(3, 5)}
 }
 \value{
-Smry of mdl sngl predrs (a tibble)
+Smry of model sngl predrs (a tibble)
 }
 \description{
-write_mdl_type_multi_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write mdl type multi outputs. The function returns Smry of mdl sngl predrs (a tibble).
+write_mdl_type_multi_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type multi outputs. The function returns Smry of model sngl predrs (a tibble).
 }
-\keyword{internal}

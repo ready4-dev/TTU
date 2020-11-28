@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_write.R
 \name{write_ts_mdls_from_alg_outp}
 \alias{write_ts_mdls_from_alg_outp}
-\title{Write ts mdls from algorithm output}
+\title{Write ts models from algorithm output}
 \usage{
 write_ts_mdls_from_alg_outp(
   outp_smry_ls,
@@ -24,5 +24,5 @@ write_ts_mdls_from_alg_outp(
 Output smry (a list)
 }
 \description{
-write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write ts mdls from algorithm output. The function returns Output smry (a list).
+write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write ts models from algorithm output. The function returns Output smry (a list).
 }

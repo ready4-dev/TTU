@@ -21,7 +21,7 @@ write_predr_cmprsn_outps(
 
 \item{candidate_predrs_chr}{Candidate predrs (a character vector)}
 
-\item{max_nbr_of_boruta_mdl_runs_int}{Max nbr of boruta mdl runs (an integer vector), Default: 300}
+\item{max_nbr_of_boruta_mdl_runs_int}{Max nbr of boruta model runs (an integer vector), Default: 300}
 }
 \value{
 Confirmed predrs (a tibble)
@@ -29,4 +29,3 @@ Confirmed predrs (a tibble)
 \description{
 write_predr_cmprsn_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predr cmprsn outputs. The function returns Confirmed predrs (a tibble).
 }
-\keyword{internal}

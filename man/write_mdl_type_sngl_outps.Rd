@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_write.R
 \name{write_mdl_type_sngl_outps}
 \alias{write_mdl_type_sngl_outps}
-\title{Write mdl type sngl outputs}
+\title{Write model type sngl outputs}
 \usage{
 write_mdl_type_sngl_outps(
   data_tb,
@@ -30,7 +30,7 @@ write_mdl_type_sngl_outps(
 
 \item{start_1L_chr}{Start (a character vector of length one), Default: NULL}
 
-\item{tfmn_1L_chr}{Tfmn (a character vector of length one), Default: 'NTF'}
+\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
 \item{predr_var_nm_1L_chr}{Predr var name (a character vector of length one)}
 
@@ -40,20 +40,19 @@ write_mdl_type_sngl_outps(
 
 \item{covar_var_nms_chr}{Covar var names (a character vector), Default: 'NA'}
 
-\item{mdl_type_1L_chr}{Mdl type (a character vector of length one), Default: 'OLS_NTF'}
+\item{mdl_type_1L_chr}{Model type (a character vector of length one), Default: 'OLS_NTF'}
 
-\item{mdl_types_lup}{Mdl types (a lookup table), Default: NULL}
+\item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
 
-\item{mdl_fl_nm_1L_chr}{Mdl file name (a character vector of length one)}
+\item{mdl_fl_nm_1L_chr}{Model file name (a character vector of length one)}
 
 \item{plt_idcs_int}{Plt idcs (an integer vector), Default: NA}
 }
 \value{
-Smry of one predr mdl (a tibble)
+Smry of one predr model (a tibble)
 }
 \description{
-write_mdl_type_sngl_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write mdl type sngl outputs. The function returns Smry of one predr mdl (a tibble).
+write_mdl_type_sngl_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type sngl outputs. The function returns Smry of one predr model (a tibble).
 }
-\keyword{internal}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_mdl}
 \alias{make_mdl}
-\title{Make mdl}
+\title{Make model}
 \usage{
 make_mdl(
   data_tb,
@@ -21,24 +21,23 @@ make_mdl(
 
 \item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
 
-\item{tfmn_1L_chr}{Tfmn (a character vector of length one), Default: 'NTF'}
+\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
 \item{predr_var_nm_1L_chr}{Predr var name (a character vector of length one)}
 
 \item{covar_var_nms_chr}{Covar var names (a character vector), Default: 'NA'}
 
-\item{mdl_type_1L_chr}{Mdl type (a character vector of length one), Default: 'OLS_NTF'}
+\item{mdl_type_1L_chr}{Model type (a character vector of length one), Default: 'OLS_NTF'}
 
-\item{mdl_types_lup}{Mdl types (a lookup table), Default: NULL}
+\item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
 
 \item{control_1L_chr}{Control (a character vector of length one), Default: 'NA'}
 
 \item{start_1L_chr}{Start (a character vector of length one), Default: NULL}
 }
 \value{
-NA ()
+Model (a model)
 }
 \description{
-make_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make mdl. The function is called for its side effects and does not return a value.
+make_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model. The function is called for its side effects and does not return a value.
 }
-\keyword{internal}

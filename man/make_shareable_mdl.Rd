@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_shareable_mdl}
 \alias{make_shareable_mdl}
-\title{Make shareable mdl}
+\title{Make shareable model}
 \usage{
 make_shareable_mdl(
   data_tb,
@@ -20,17 +20,17 @@ make_shareable_mdl(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{mdl_smry_tb}{Mdl smry (a tibble)}
+\item{mdl_smry_tb}{Model smry (a tibble)}
 
 \item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
 
 \item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
 
-\item{tfmn_1L_chr}{Tfmn (a character vector of length one), Default: 'CLL'}
+\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'CLL'}
 
-\item{mdl_type_1L_chr}{Mdl type (a character vector of length one), Default: 'OLS_CLL'}
+\item{mdl_type_1L_chr}{Model type (a character vector of length one), Default: 'OLS_CLL'}
 
-\item{mdl_types_lup}{Mdl types (a lookup table), Default: NULL}
+\item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
 
 \item{control_1L_chr}{Control (a character vector of length one), Default: 'NA'}
 
@@ -39,9 +39,8 @@ make_shareable_mdl(
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 12345}
 }
 \value{
-NA ()
+Model (a model)
 }
 \description{
-make_shareable_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make shareable mdl. The function is called for its side effects and does not return a value.
+make_shareable_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make shareable model. The function is called for its side effects and does not return a value.
 }
-\keyword{internal}

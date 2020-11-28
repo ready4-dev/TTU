@@ -2,11 +2,11 @@
 % Please edit documentation in R/fn_write.R
 \name{write_mdl_plts}
 \alias{write_mdl_plts}
-\title{Write mdl plts}
+\title{Write model plts}
 \usage{
 write_mdl_plts(
   data_tb,
-  mdl,
+  model_mdl,
   mdl_fl_nm_1L_chr = "OLS_NTF",
   dep_var_nm_1L_chr = "aqol6d_total_w",
   tfmn_1L_chr = "NTF",
@@ -24,11 +24,13 @@ write_mdl_plts(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{mdl_fl_nm_1L_chr}{Mdl file name (a character vector of length one), Default: 'OLS_NTF'}
+\item{model_mdl}{PARAM_DESCRIPTION}
+
+\item{mdl_fl_nm_1L_chr}{Model file name (a character vector of length one), Default: 'OLS_NTF'}
 
 \item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
 
-\item{tfmn_1L_chr}{Tfmn (a character vector of length one), Default: 'NTF'}
+\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
 \item{predr_var_nm_1L_chr}{Predr var name (a character vector of length one)}
 
@@ -42,15 +44,12 @@ write_mdl_plts(
 
 \item{pred_type_1L_chr}{Pred type (a character vector of length one), Default: NULL}
 
-\item{tfmn_for_bnml_1L_lgl}{Tfmn for bnml (a logical vector of length one), Default: F}
+\item{tfmn_for_bnml_1L_lgl}{Transformation for bnml (a logical vector of length one), Default: F}
 
 \item{family_1L_chr}{Family (a character vector of length one), Default: 'NA'}
 
 \item{plt_idcs_int}{Plt idcs (an integer vector), Default: 1:5}
-
-\item{...}{Additional arguments}
 }
 \description{
-write_mdl_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write mdl plts. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+write_mdl_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model plts. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 }
-\keyword{internal}

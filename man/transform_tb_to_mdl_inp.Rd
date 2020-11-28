@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_transform.R
 \name{transform_tb_to_mdl_inp}
 \alias{transform_tb_to_mdl_inp}
-\title{Transform tibble to mdl input}
+\title{Transform tibble to model input}
 \usage{
 transform_tb_to_mdl_inp(
   data_tb,
@@ -27,9 +27,8 @@ transform_tb_to_mdl_inp(
 \item{round_bl_val_1L_chr}{Round bl value (a character vector of length one), Default: 'Baseline'}
 }
 \value{
-Transformed for gsn log mdl (a tibble)
+Transformed for gsn log model (a tibble)
 }
 \description{
-transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to mdl input. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed for gsn log mdl (a tibble).
+transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed for gsn log model (a tibble).
 }
-\keyword{internal}

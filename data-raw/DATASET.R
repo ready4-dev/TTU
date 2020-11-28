@@ -43,15 +43,16 @@ ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Map Measures Routinely Collected
 # 5. Create a lookup table of abbreviations used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
 #utils::data("abbreviations_lup",package = "ready4use")
 pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c("cnstr","con","cor",
-
                                                            "lgd",
+                                                           "mdl",
+                                                           "tfmn",
                                                            "uid","ut","unscrd","vldn"),
                                         long_name_chr = c("constraint",
                                                           "constant",
                                                           "correlation",
-
                                                           "legend",
-
+                                                          "model",
+                                                          "transformation",
                                                           "unique identifier",
                                                           "utility",
                                                           "unscored",

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_write.R
 \name{write_ts_mdls}
 \alias{write_ts_mdls}
-\title{Write ts mdls}
+\title{Write ts models}
 \usage{
 write_ts_mdls(
   data_tb,
@@ -36,18 +36,17 @@ write_ts_mdls(
 
 \item{fn_ls}{Function list (a list of functions)}
 
-\item{mdl_nms_ls}{Mdl names (a list)}
+\item{mdl_nms_ls}{Model names (a list)}
 
-\item{mdl_smry_dir_1L_chr}{Mdl smry directory (a character vector of length one)}
+\item{mdl_smry_dir_1L_chr}{Model smry directory (a character vector of length one)}
 
 \item{iters_1L_int}{Iters (an integer vector of length one), Default: 4000}
 
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 1000}
 }
 \value{
-Mdls smry (a tibble)
+Models smry (a tibble)
 }
 \description{
-write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write ts mdls. The function returns Mdls smry (a tibble).
+write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write ts models. The function returns Models smry (a tibble).
 }
-\keyword{internal}

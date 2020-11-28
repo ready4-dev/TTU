@@ -30,9 +30,8 @@ fit_gsn_log_lnk(
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 1000}
 }
 \value{
-Mdl (a list)
+Model (a list)
 }
 \description{
-fit_gsn_log_lnk() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit gsn log lnk. The function returns Mdl (a list).
+fit_gsn_log_lnk() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit gsn log lnk. The function returns Model (a list).
 }
-\keyword{internal}
