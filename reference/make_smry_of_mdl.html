@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Make smry of mdl — make_smry_of_mdl • ready4u</title>
+<title>Make smry of model — make_smry_of_mdl • ready4u</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Make smry of mdl — make_smry_of_mdl" />
-<meta property="og:description" content="make_smry_of_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of mdl. The function returns Smry of one predr mdl (a tibble)." />
+<meta property="og:title" content="Make smry of model — make_smry_of_mdl" />
+<meta property="og:description" content="make_smry_of_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of model. The function returns Smry of one predr model (a tibble)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ready4u</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9068</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9069</span>
       </span>
     </div>
 
@@ -97,18 +97,6 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/Child_RMDs/Archive/AQoL_6D_Replication_Fns.html">AQoL 6D Preferred Models</a>
-    </li>
-  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -131,18 +119,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Make smry of mdl</h1>
+    <h1>Make smry of model</h1>
     <small class="dont-index">Source: <a href='https://github.com/ready4-dev/ready4u/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
     <div class="hidden name"><code>make_smry_of_mdl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>make_smry_of_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of mdl. The function returns Smry of one predr mdl (a tibble).</p>
+    <p>make_smry_of_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of model. The function returns Smry of one predr model (a tibble).</p>
     </div>
 
     <pre class="usage"><span class='fu'>make_smry_of_mdl</span><span class='op'>(</span>
   <span class='va'>data_tb</span>,
-  <span class='va'>mdl</span>,
+  <span class='va'>model_mdl</span>,
   n_folds_1L_int <span class='op'>=</span> <span class='fl'>10</span>,
   dep_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"aqol6d_total_w"</span>,
   start_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -162,6 +150,10 @@
       <td><p>Data (a tibble)</p></td>
     </tr>
     <tr>
+      <th>model_mdl</th>
+      <td><p>PARAM_DESCRIPTION</p></td>
+    </tr>
+    <tr>
       <th>n_folds_1L_int</th>
       <td><p>N folds (an integer vector of length one), Default: 10</p></td>
     </tr>
@@ -175,7 +167,7 @@
     </tr>
     <tr>
       <th>tfmn_1L_chr</th>
-      <td><p>Tfmn (a character vector of length one), Default: 'NTF'</p></td>
+      <td><p>Transformation (a character vector of length one), Default: 'NTF'</p></td>
     </tr>
     <tr>
       <th>predr_var_nm_1L_chr</th>
@@ -187,25 +179,21 @@
     </tr>
     <tr>
       <th>mdl_type_1L_chr</th>
-      <td><p>Mdl type (a character vector of length one), Default: 'OLS_NTF'</p></td>
+      <td><p>Model type (a character vector of length one), Default: 'OLS_NTF'</p></td>
     </tr>
     <tr>
       <th>mdl_types_lup</th>
-      <td><p>Mdl types (a lookup table), Default: NULL</p></td>
+      <td><p>Model types (a lookup table), Default: NULL</p></td>
     </tr>
     <tr>
       <th>pred_type_1L_chr</th>
       <td><p>Pred type (a character vector of length one), Default: NULL</p></td>
     </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Additional arguments</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Smry of one predr mdl (a tibble)</p>
+    <p>Smry of one predr model (a tibble)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

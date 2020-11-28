@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Make shareable mdl — make_shareable_mdl • ready4u</title>
+<title>Make shareable model — make_shareable_mdl • ready4u</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Make shareable mdl — make_shareable_mdl" />
-<meta property="og:description" content="make_shareable_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make shareable mdl. The function is called for its side effects and does not return a value." />
+<meta property="og:title" content="Make shareable model — make_shareable_mdl" />
+<meta property="og:description" content="make_shareable_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make shareable model. The function is called for its side effects and does not return a value." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ready4u</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9068</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9069</span>
       </span>
     </div>
 
@@ -97,18 +97,6 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/Child_RMDs/Archive/AQoL_6D_Replication_Fns.html">AQoL 6D Preferred Models</a>
-    </li>
-  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -131,13 +119,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Make shareable mdl</h1>
+    <h1>Make shareable model</h1>
     <small class="dont-index">Source: <a href='https://github.com/ready4-dev/ready4u/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
     <div class="hidden name"><code>make_shareable_mdl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>make_shareable_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make shareable mdl. The function is called for its side effects and does not return a value.</p>
+    <p>make_shareable_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make shareable model. The function is called for its side effects and does not return a value.</p>
     </div>
 
     <pre class="usage"><span class='fu'>make_shareable_mdl</span><span class='op'>(</span>
@@ -162,7 +150,7 @@
     </tr>
     <tr>
       <th>mdl_smry_tb</th>
-      <td><p>Mdl smry (a tibble)</p></td>
+      <td><p>Model smry (a tibble)</p></td>
     </tr>
     <tr>
       <th>dep_var_nm_1L_chr</th>
@@ -174,15 +162,15 @@
     </tr>
     <tr>
       <th>tfmn_1L_chr</th>
-      <td><p>Tfmn (a character vector of length one), Default: 'CLL'</p></td>
+      <td><p>Transformation (a character vector of length one), Default: 'CLL'</p></td>
     </tr>
     <tr>
       <th>mdl_type_1L_chr</th>
-      <td><p>Mdl type (a character vector of length one), Default: 'OLS_CLL'</p></td>
+      <td><p>Model type (a character vector of length one), Default: 'OLS_CLL'</p></td>
     </tr>
     <tr>
       <th>mdl_types_lup</th>
-      <td><p>Mdl types (a lookup table), Default: NULL</p></td>
+      <td><p>Model types (a lookup table), Default: NULL</p></td>
     </tr>
     <tr>
       <th>control_1L_chr</th>
@@ -200,7 +188,7 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>NA ()</p>
+    <p>Model (a model)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

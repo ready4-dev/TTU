@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ready4u</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9068</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9069</span>
       </span>
     </div>
 
@@ -97,18 +97,6 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="../articles/Child_RMDs/Archive/AQoL_6D_Replication_Fns.html">AQoL 6D Preferred Models</a>
-    </li>
-  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -141,7 +129,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>make_predn_ds_with_one_predr</span><span class='op'>(</span>
-  <span class='va'>mdl</span>,
+  <span class='va'>model_mdl</span>,
   dep_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"aqol6d_total_w"</span>,
   tfmn_1L_chr <span class='op'>=</span> <span class='st'>"NTF"</span>,
   <span class='va'>predr_var_nm_1L_chr</span>,
@@ -153,12 +141,16 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>model_mdl</th>
+      <td><p>PARAM_DESCRIPTION</p></td>
+    </tr>
+    <tr>
       <th>dep_var_nm_1L_chr</th>
       <td><p>Dep var name (a character vector of length one), Default: 'aqol6d_total_w'</p></td>
     </tr>
     <tr>
       <th>tfmn_1L_chr</th>
-      <td><p>Tfmn (a character vector of length one), Default: 'NTF'</p></td>
+      <td><p>Transformation (a character vector of length one), Default: 'NTF'</p></td>
     </tr>
     <tr>
       <th>predr_var_nm_1L_chr</th>
@@ -171,10 +163,6 @@
     <tr>
       <th>pred_type_1L_chr</th>
       <td><p>Pred type (a character vector of length one), Default: NULL</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Additional arguments</p></td>
     </tr>
     </table>
 
