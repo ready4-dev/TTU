@@ -289,7 +289,7 @@ write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_
     else {
         smry_of_one_predr_mdl_tb <- tibble::tibble()
     }
-    saveRDS(model_mdl, paste0(path_to_write_to_1L_chr, "/", model_mdl_fl_nm_1L_chr,
+    saveRDS(model_mdl, paste0(path_to_write_to_1L_chr, "/", mdl_fl_nm_1L_chr,
         ".RDS"))
     return(smry_of_one_predr_mdl_tb)
 }
