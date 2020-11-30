@@ -7,7 +7,7 @@
 make_shareable_mdl(
   data_tb,
   mdl_smry_tb,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  dep_var_nm_1L_chr = "utl_total_w",
   id_var_nm_1L_chr = "fkClientID",
   tfmn_1L_chr = "CLL",
   mdl_type_1L_chr = "OLS_CLL",
@@ -22,7 +22,7 @@ make_shareable_mdl(
 
 \item{mdl_smry_tb}{Model smry (a tibble)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
 
@@ -44,4 +44,3 @@ Model (a model)
 \description{
 make_shareable_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make shareable model. The function is called for its side effects and does not return a value.
 }
-\keyword{internal}

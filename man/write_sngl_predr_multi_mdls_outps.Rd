@@ -13,7 +13,7 @@ write_sngl_predr_multi_mdls_outps(
   path_to_write_to_1L_chr,
   start_1L_chr = NULL,
   covar_var_nms_chr = NA_character_,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  dep_var_nm_1L_chr = "utl_total_w",
   n_folds_1L_int = 10,
   mdl_types_lup = NULL,
   fl_nm_pfx_1L_chr = "A_RT_",
@@ -37,7 +37,7 @@ write_sngl_predr_multi_mdls_outps(
 
 \item{covar_var_nms_chr}{Covar var names (a character vector), Default: 'NA'}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{n_folds_1L_int}{N folds (an integer vector of length one), Default: 10}
 
@@ -53,4 +53,3 @@ Smry of sngl predr models (a tibble)
 \description{
 write_sngl_predr_multi_mdls_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write sngl predr multi models outputs. The function returns Smry of sngl predr models (a tibble).
 }
-\keyword{internal}

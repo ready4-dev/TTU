@@ -10,7 +10,7 @@ make_smry_of_ts_mdl(
   predr_vars_nms_chr,
   mdl_nm_1L_chr,
   path_to_write_to_1L_chr = NA_character_,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  dep_var_nm_1L_chr = "utl_total_w",
   id_var_nm_1L_chr = "fkClientID",
   round_var_nm_1L_chr = "round",
   round_bl_val_1L_chr = "Baseline",
@@ -30,7 +30,7 @@ make_smry_of_ts_mdl(
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one), Default: 'NA'}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
 
@@ -50,4 +50,3 @@ Smry of ts model (a list)
 \description{
 make_smry_of_ts_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of ts model. The function returns Smry of ts model (a list).
 }
-\keyword{internal}

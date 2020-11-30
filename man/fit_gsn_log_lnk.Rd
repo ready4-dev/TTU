@@ -6,7 +6,7 @@
 \usage{
 fit_gsn_log_lnk(
   data_tb,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  dep_var_nm_1L_chr = "utl_total_w",
   predr_vars_nms_chr,
   id_var_nm_1L_chr = "fkClientID",
   backend_1L_chr = getOption("brms.backend", "rstan"),
@@ -17,7 +17,7 @@ fit_gsn_log_lnk(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{predr_vars_nms_chr}{Predr vars names (a character vector)}
 
@@ -35,4 +35,3 @@ Model (a list)
 \description{
 fit_gsn_log_lnk() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit gsn log lnk. The function returns Model (a list).
 }
-\keyword{internal}

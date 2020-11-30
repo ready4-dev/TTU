@@ -39,7 +39,6 @@ ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Map Measures Routinely Collected
 ##
 ## PART THREE
 ##
-
 # 5. Create a lookup table of abbreviations used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
 #utils::data("abbreviations_lup",package = "ready4use")
 pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c("cnstr","con","cor",
@@ -63,7 +62,6 @@ pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c("cnstr","con","cor",
                                         seed_lup = ready4use::abbreviations_lup)
 utils::data("abbreviations_lup")
 ##
-
 # 5. Create function types and generics look-up tables
 # 5.1 Create a lookup table of function types used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
 utils::data("fn_type_lup_tb",package = "ready4use")
@@ -97,7 +95,6 @@ pkg_dss_tb <- fn_type_lup_tb %>%
                                     abbreviations_lup = abbreviations_lup,
                                     pkg_dss_tb = pkg_dss_tb)
 utils::data("fn_type_lup_tb")
-
 #
 # 6. Create a table of all functions to document
 fns_dmt_tb <- ready4fun::make_dmt_for_all_fns(paths_ls = ready4fun::make_fn_nms()[1],

@@ -24,7 +24,7 @@ make_fake_ts_data <- function (outp_smry_ls)
 #' Make model
 #' @description make_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model. The function is called for its side effects and does not return a value.
 #' @param data_tb Data (a tibble)
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
 #' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
@@ -39,8 +39,7 @@ make_fake_ts_data <- function (outp_smry_ls)
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom stringi stri_locate_last_fixed
 #' @importFrom stringr str_sub
-#' @keywords internal
-make_mdl <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", tfmn_1L_chr = "NTF", 
+make_mdl <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF", 
     predr_var_nm_1L_chr, covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF", 
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NULL) 
 {
@@ -89,7 +88,6 @@ make_mdl <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", tfmn_1L_chr
 #' @rdname make_mdl_nms_ls
 #' @export 
 #' @importFrom purrr map2
-#' @keywords internal
 make_mdl_nms_ls <- function (predr_vars_nms_ls, mdl_types_chr) 
 {
     mdl_nms_ls <- purrr::map2(predr_vars_nms_ls, make_unique_ls_elmt_idx_int(predr_vars_nms_ls), 
@@ -100,7 +98,7 @@ make_mdl_nms_ls <- function (predr_vars_nms_ls, mdl_types_chr)
 #' Make predn dataset with one predr
 #' @description make_predn_ds_with_one_predr() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predn dataset with one predr. The function returns Predn dataset (a tibble).
 #' @param model_mdl PARAM_DESCRIPTION
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
 #' @param predr_vals_dbl Predr values (a double vector)
@@ -112,8 +110,7 @@ make_mdl_nms_ls <- function (predr_vars_nms_ls, mdl_types_chr)
 #' @importFrom rlang sym
 #' @importFrom dplyr mutate
 #' @importFrom stats predict
-#' @keywords internal
-make_predn_ds_with_one_predr <- function (model_mdl, dep_var_nm_1L_chr = "aqol6d_total_w", tfmn_1L_chr = "NTF", 
+make_predn_ds_with_one_predr <- function (model_mdl, dep_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF", 
     predr_var_nm_1L_chr, predr_vals_dbl, pred_type_1L_chr = NULL) 
 {
     predn_ds_tb <- tibble::tibble(`:=`(!!rlang::sym(predr_var_nm_1L_chr), 
@@ -128,7 +125,7 @@ make_predn_ds_with_one_predr <- function (model_mdl, dep_var_nm_1L_chr = "aqol6d
 #' @description make_shareable_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make shareable model. The function is called for its side effects and does not return a value.
 #' @param data_tb Data (a tibble)
 #' @param mdl_smry_tb Model smry (a tibble)
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'CLL'
 #' @param mdl_type_1L_chr Model type (a character vector of length one), Default: 'OLS_CLL'
@@ -145,8 +142,7 @@ make_predn_ds_with_one_predr <- function (model_mdl, dep_var_nm_1L_chr = "aqol6d
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_replace_all
 #' @importFrom assertthat assert_that
-#' @keywords internal
-make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "aqol6d_total_w", 
+make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "utl_total_w", 
     id_var_nm_1L_chr = "fkClientID", tfmn_1L_chr = "CLL", mdl_type_1L_chr = "OLS_CLL", 
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NA_character_, 
     seed_1L_int = 12345L) 
@@ -186,7 +182,7 @@ make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "aqol6
 #' @description make_smry_of_brm_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of brm model. The function returns Smry of brm model (a tibble).
 #' @param mdl_ls Model (a list)
 #' @param data_tb Data (a tibble)
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param predr_vars_nms_chr Predr vars names (a character vector)
 #' @param fn Function (a function), Default: calculate_rmse
 #' @param mdl_nm_1L_chr Model name (a character vector of length one), Default: 'NA'
@@ -200,8 +196,7 @@ make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "aqol6
 #' @importFrom dplyr pull mutate rename select
 #' @importFrom rlang sym
 #' @importFrom purrr map flatten_chr
-#' @keywords internal
-make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", 
+make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "utl_total_w", 
     predr_vars_nms_chr, fn = calculate_rmse, mdl_nm_1L_chr = NA_character_, 
     seed_1L_dbl = 23456) 
 {
@@ -232,7 +227,7 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_t
 #' @param data_tb Data (a tibble)
 #' @param model_mdl PARAM_DESCRIPTION
 #' @param n_folds_1L_int N folds (an integer vector of length one), Default: 10
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param start_1L_chr Start (a character vector of length one), Default: NULL
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
@@ -251,8 +246,7 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_t
 #' @importFrom stats predict
 #' @importFrom tibble tibble
 #' @importFrom caret R2 RMSE MAE
-#' @keywords internal
-make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_nm_1L_chr = "aqol6d_total_w", 
+make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_nm_1L_chr = "utl_total_w", 
     start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, 
     covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF", 
     mdl_types_lup = NULL, pred_type_1L_chr = NULL) 
@@ -299,7 +293,7 @@ make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_n
 #' @param predr_vars_nms_chr Predr vars names (a character vector)
 #' @param mdl_nm_1L_chr Model name (a character vector of length one)
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one), Default: 'NA'
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
 #' @param round_var_nm_1L_chr Round var name (a character vector of length one), Default: 'round'
 #' @param round_bl_val_1L_chr Round bl value (a character vector of length one), Default: 'Baseline'
@@ -310,9 +304,8 @@ make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_n
 #' @rdname make_smry_of_ts_mdl
 #' @export 
 #' @importFrom rlang exec
-#' @keywords internal
 make_smry_of_ts_mdl <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_, 
-    dep_var_nm_1L_chr = "aqol6d_total_w", id_var_nm_1L_chr = "fkClientID", 
+    dep_var_nm_1L_chr = "utl_total_w", id_var_nm_1L_chr = "fkClientID", 
     round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", 
     backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L, 
     seed_1L_int = 1000L) 

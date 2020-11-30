@@ -4,12 +4,18 @@
 \alias{write_shareable_mdls}
 \title{Write shareable models}
 \usage{
-write_shareable_mdls(outp_smry_ls, sub_dir_1L_chr = "Shareable")
+write_shareable_mdls(
+  outp_smry_ls,
+  sub_dir_1L_chr = "Shareable",
+  shareable_title_detail_1L_chr = ""
+)
 }
 \arguments{
 \item{outp_smry_ls}{Output smry (a list)}
 
 \item{sub_dir_1L_chr}{Sub directory (a character vector of length one), Default: 'Shareable'}
+
+\item{shareable_title_detail_1L_chr}{Shareable title detail (a character vector of length one), Default: ''}
 }
 \value{
 Output smry (a list)

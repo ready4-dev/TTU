@@ -1,4 +1,4 @@
-transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, dep_var_nm_1L_chr = "aqol6d_total_w",
+transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, dep_var_nm_1L_chr = "utl_total_w",
     source_data_nm_1L_chr = "Original", tf_type_1L_chr = "Predicted",
     pred_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_)
 {
@@ -28,7 +28,7 @@ transform_dep_var_nm_for_cll <- function (dep_var_nm_1L_chr)
     tfd_dep_var_nm_1L_chr <- paste0(dep_var_nm_1L_chr, "_cloglog")
     return(tfd_dep_var_nm_1L_chr)
 }
-transform_ds_for_mdlng <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predr_var_nm_1L_chr,
+transform_ds_for_mdlng <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_var_nm_1L_chr,
     covar_var_nms_chr = NA_character_)
 {
     mdl_vars_chr <- c(names(data_tb)[names(data_tb) %>% startsWith(dep_var_nm_1L_chr)],
@@ -37,7 +37,7 @@ transform_ds_for_mdlng <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w
         dplyr::select(!!!rlang::syms(mdl_vars_chr))
     return(tfd_data_tb)
 }
-transform_tb_to_mdl_inp <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predr_vars_nms_chr,
+transform_tb_to_mdl_inp <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr,
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round",
     round_bl_val_1L_chr = "Baseline")
 {

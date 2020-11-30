@@ -7,7 +7,7 @@
 transform_data_tb_for_cmprsn(
   data_tb,
   model_mdl,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  dep_var_nm_1L_chr = "utl_total_w",
   source_data_nm_1L_chr = "Original",
   tf_type_1L_chr = "Predicted",
   pred_type_1L_chr = NULL,
@@ -20,7 +20,7 @@ transform_data_tb_for_cmprsn(
 
 \item{model_mdl}{PARAM_DESCRIPTION}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{source_data_nm_1L_chr}{Source data name (a character vector of length one), Default: 'Original'}
 
@@ -38,4 +38,3 @@ Transformed data (a tibble)
 \description{
 transform_data_tb_for_cmprsn() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform data tibble for cmprsn. Function argument data_tb specifies the object to be updated. Argument model_mdl provides the object to be updated. The function returns Transformed data (a tibble).
 }
-\keyword{internal}

@@ -7,7 +7,7 @@
 write_all_alg_outps(
   scored_data_tb,
   path_to_write_to_1L_chr,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  dep_var_nm_1L_chr = "utl_total_w",
   candidate_predrs_chr,
   candidate_covar_nms_chr,
   id_var_nm_1L_chr = "fkClientID",
@@ -28,7 +28,7 @@ write_all_alg_outps(
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{candidate_predrs_chr}{Candidate predrs (a character vector)}
 

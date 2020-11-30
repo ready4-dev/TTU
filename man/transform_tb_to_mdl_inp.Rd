@@ -6,7 +6,7 @@
 \usage{
 transform_tb_to_mdl_inp(
   data_tb,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  dep_var_nm_1L_chr = "utl_total_w",
   predr_vars_nms_chr,
   id_var_nm_1L_chr = "fkClientID",
   round_var_nm_1L_chr = "round",
@@ -16,7 +16,7 @@ transform_tb_to_mdl_inp(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{predr_vars_nms_chr}{Predr vars names (a character vector)}
 
@@ -32,4 +32,3 @@ Transformed for gsn log model (a tibble)
 \description{
 transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed for gsn log model (a tibble).
 }
-\keyword{internal}

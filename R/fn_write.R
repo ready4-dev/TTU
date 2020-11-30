@@ -2,7 +2,7 @@
 #' @description write_all_alg_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write all algorithm outputs. The function returns Output smry (a list).
 #' @param scored_data_tb Scored data (a tibble)
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param candidate_predrs_chr Candidate predrs (a character vector)
 #' @param candidate_covar_nms_chr Candidate covar names (a character vector)
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
@@ -21,7 +21,7 @@
 #' @export 
 #' @importFrom utils data
 #' @importFrom ready4fun get_from_lup_obj
-write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, dep_var_nm_1L_chr = "aqol6d_total_w", 
+write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, dep_var_nm_1L_chr = "utl_total_w", 
     candidate_predrs_chr, candidate_covar_nms_chr, id_var_nm_1L_chr = "fkClientID", 
     round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", 
     mdl_types_chr = NA_character_, prefd_mdl_types_chr = NA_character_, 
@@ -111,7 +111,6 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, dep_va
 #' @export 
 #' @importFrom grDevices png dev.off
 #' @importFrom rlang exec
-#' @keywords internal
 write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_write_to_1L_chr, 
     plt_nm_1L_chr, grpx_fn = grDevices::png, units_1L_chr = "in", 
     width_1L_dbl = 6, height_1L_dbl = 6, rsl_1L_dbl = 300) 
@@ -137,8 +136,8 @@ write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_writ
 #' @param tfd_data_tb Transformed data (a tibble)
 #' @param mdl_nm_1L_chr Model name (a character vector of length one)
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
-#' @param dep_var_desc_1L_chr Dep var description (a character vector of length one), Default: 'AQoL-6D utility score'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
+#' @param dep_var_desc_1L_chr Dep var description (a character vector of length one), Default: 'Utility score'
 #' @param round_var_nm_1L_chr Round var name (a character vector of length one), Default: 'round'
 #' @param tfmn_fn Transformation (a function), Default: function(x) {
 #'    x
@@ -154,9 +153,8 @@ write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_writ
 #' @export 
 #' @importFrom stats predict setNames
 #' @importFrom purrr map discard
-#' @keywords internal
 write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_write_to_1L_chr, 
-    dep_var_nm_1L_chr = "aqol6d_total_w", dep_var_desc_1L_chr = "AQoL-6D utility score", 
+    dep_var_nm_1L_chr = "utl_total_w", dep_var_desc_1L_chr = "Utility score", 
     round_var_nm_1L_chr = "round", tfmn_fn = function(x) {
         x
     }, units_1L_chr = "in", height_dbl = c(rep(6, 2), rep(5, 
@@ -205,7 +203,7 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
 #' @param data_tb Data (a tibble)
 #' @param model_mdl PARAM_DESCRIPTION
 #' @param mdl_fl_nm_1L_chr Model file name (a character vector of length one), Default: 'OLS_NTF'
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
 #' @param predr_var_desc_1L_chr Predr var description (a character vector of length one)
@@ -220,8 +218,7 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
 #' @rdname write_mdl_plts
 #' @export 
 #' @importFrom purrr pwalk
-#' @keywords internal
-write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", dep_var_nm_1L_chr = "aqol6d_total_w", 
+write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", dep_var_nm_1L_chr = "utl_total_w", 
     tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, predr_var_desc_1L_chr, 
     predr_vals_dbl, covar_var_nms_chr = NA_character_, path_to_write_to_1L_chr, 
     pred_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, 
@@ -265,7 +262,7 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
 #' Write model type covars models
 #' @description write_mdl_type_covars_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type covars models. The function returns Smry of models with covars (a tibble).
 #' @param data_tb Data (a tibble)
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param predrs_var_nms_chr Predrs var names (a character vector)
 #' @param covar_var_nms_chr Covar var names (a character vector)
 #' @param mdl_type_1L_chr Model type (a character vector of length one)
@@ -283,8 +280,7 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
 #' @importFrom dplyr pull arrange desc
 #' @importFrom rlang sym
 #' @importFrom stats predict AIC BIC
-#' @keywords internal
-write_mdl_type_covars_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predrs_var_nms_chr, 
+write_mdl_type_covars_mdls <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predrs_var_nms_chr, 
     covar_var_nms_chr, mdl_type_1L_chr, path_to_write_to_1L_chr, 
     fl_nm_pfx_1L_chr = "D_CT", mdl_types_lup = NULL, start_1L_chr = NA_character_) 
 {
@@ -323,7 +319,7 @@ write_mdl_type_covars_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_tot
 #' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
 #' @param start_1L_chr Start (a character vector of length one), Default: NULL
 #' @param mdl_type_1L_chr Model type (a character vector of length one)
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
 #' @param mdl_types_lup Model types (a lookup table), Default: NULL
 #' @param fl_nm_pfx_1L_chr File name prefix (a character vector of length one), Default: 'C_PREDR'
@@ -335,9 +331,8 @@ write_mdl_type_covars_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_tot
 #' @importFrom purrr map_dfr
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr select mutate everything arrange desc
-#' @keywords internal
 write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var_nms_chr, covar_var_nms_chr = NA_character_, 
-    start_1L_chr = NULL, mdl_type_1L_chr, dep_var_nm_1L_chr = "aqol6d_total_w", 
+    start_1L_chr = NULL, mdl_type_1L_chr, dep_var_nm_1L_chr = "utl_total_w", 
     path_to_write_to_1L_chr, mdl_types_lup = NULL, fl_nm_pfx_1L_chr = "C_PREDR", 
     plt_idcs_int = c(3, 5)) 
 {
@@ -373,7 +368,7 @@ write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var
 #' @description write_mdl_type_sngl_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type sngl outputs. The function returns Smry of one predr model (a tibble).
 #' @param data_tb Data (a tibble)
 #' @param n_folds_1L_int N folds (an integer vector of length one), Default: 10
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param start_1L_chr Start (a character vector of length one), Default: NULL
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
@@ -394,8 +389,7 @@ write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
 #' @importFrom tibble tibble
-#' @keywords internal
-write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_1L_chr = "aqol6d_total_w", 
+write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_1L_chr = "utl_total_w", 
     start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, 
     predr_var_desc_1L_chr, predr_vals_dbl, covar_var_nms_chr = NA_character_, 
     mdl_type_1L_chr = "OLS_NTF", mdl_types_lup = NULL, path_to_write_to_1L_chr, 
@@ -455,7 +449,7 @@ write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_
 #' @description write_predr_cmprsn_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predr cmprsn outputs. The function returns Confirmed predrs (a tibble).
 #' @param data_tb Data (a tibble)
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param candidate_predrs_chr Candidate predrs (a character vector)
 #' @param max_nbr_of_boruta_mdl_runs_int Max nbr of boruta model runs (an integer vector), Default: 300
 #' @return Confirmed predrs (a tibble)
@@ -467,8 +461,7 @@ write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_
 #' @importFrom purrr pwalk
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr arrange desc filter
-#' @keywords internal
-write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, dep_var_nm_1L_chr = "aqol6d_total_w", 
+write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, dep_var_nm_1L_chr = "utl_total_w", 
     candidate_predrs_chr, max_nbr_of_boruta_mdl_runs_int = 300L) 
 {
     if (length(candidate_predrs_chr) > 1) {
@@ -508,14 +501,16 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, dep_var_
 #' @param reports_dir_1L_chr Reports directory (a character vector of length one), Default: 'Reports'
 #' @param markdown_dir_1L_chr Markdown directory (a character vector of length one), Default: 'Markdown'
 #' @param file_nm_1L_chr File name (a character vector of length one), Default: 'Main_Mdl_Smry'
+#' @param title_1L_chr Title (a character vector of length one), Default: 'Summary report of the models estimated from synthetic data to map a number of mental health measures to utility scores.'
 #' @return Output smry (a list)
 #' @rdname write_rprt
 #' @export 
-#' @importFrom ready4use write_fls_to_dv_ds
 #' @importFrom tibble tibble
+#' @importFrom ready4use write_fls_to_dv_ds
 write_rprt <- function (outp_smry_ls, nm_of_RMD_1L_chr = "_Mdls_Report.RMD", 
     output_type_1L_chr = "PDF", section_type_1L_chr = "#", reports_dir_1L_chr = "Reports", 
-    markdown_dir_1L_chr = "Markdown", file_nm_1L_chr = "Main_Mdl_Smry") 
+    markdown_dir_1L_chr = "Markdown", file_nm_1L_chr = "Main_Mdl_Smry", 
+    title_1L_chr = "Summary report of the models estimated from synthetic data to map a number of mental health measures to utility scores.") 
 {
     write_rndrd_rprt(system.file(package = "ready4u"), nm_of_RMD_1L_chr = nm_of_RMD_1L_chr, 
         params_ls = list(covars_ls = list(outp_smry_ls$prefd_covars_chr), 
@@ -528,13 +523,8 @@ write_rprt <- function (outp_smry_ls, nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
         nm_of_rprt_dir_1L_chr = markdown_dir_1L_chr, path_to_outpt_rtrp_1L_chr = normalizePath(paste0(params$path_to_write_fls_to_1L_chr, 
             "/", reports_dir_1L_chr)), file_nm_1L_chr = file_nm_1L_chr)
     if (!is.null(outp_smry_ls$dv_ls)) {
-        ready4use::write_fls_to_dv_ds(shareable_mdls_tb, dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
-            ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr, 
-            parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr, 
-            paths_to_dirs_chr = paste0(outp_smry_ls$path_to_write_to_1L_chr, 
-                "/", sub_dir_1L_chr), inc_fl_types_chr = ".RDS")
-        outp_smry_ls$rprt_dss_tb <- tibble::tibble(ds_obj_nm_chr = "Main_Mdl_Smry", 
-            title_chr = "Summary report of the models estimated from synthetic data to map a number of mental health measures to adolescent AQoL-6D scores.")
+        outp_smry_ls$rprt_dss_tb <- tibble::tibble(ds_obj_nm_chr = file_nm_1L_chr, 
+            title_chr = title_1L_chr)
         ready4use::write_fls_to_dv_ds(outp_smry_ls$rprt_dss_tb, 
             dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr, 
             parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr, 
@@ -549,6 +539,7 @@ write_rprt <- function (outp_smry_ls, nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
 #' @description write_shareable_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models. The function returns Output smry (a list).
 #' @param outp_smry_ls Output smry (a list)
 #' @param sub_dir_1L_chr Sub directory (a character vector of length one), Default: 'Shareable'
+#' @param shareable_title_detail_1L_chr Shareable title detail (a character vector of length one), Default: ''
 #' @return Output smry (a list)
 #' @rdname write_shareable_mdls
 #' @export 
@@ -557,9 +548,9 @@ write_rprt <- function (outp_smry_ls, nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
 #' @importFrom stats setNames
 #' @importFrom tibble tibble
 #' @importFrom ready4use write_fls_to_dv_ds
-write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable") 
+write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable", shareable_title_detail_1L_chr = "") 
 {
-    sharble_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>% 
+    shareable_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>% 
         purrr::map(~{
             model_mdl <- readRDS(paste0(outp_smry_ls$path_to_write_to_1L_chr, 
                 "/", .x, ".RDS"))
@@ -567,7 +558,7 @@ write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable")
                 .x)
             data_tb <- model_mdl$data
             if (endsWith(.x, "OLS_CLL")) 
-                data_tb <- data_tb %>% dplyr::rename(aqol6d_total_w_CLL = aqol6d_total_w_cloglog)
+                data_tb <- data_tb %>% dplyr::rename(utl_total_w_CLL = utl_total_w_cloglog)
             sharble_mdl <- make_shareable_mdl(data_tb = data_tb, 
                 mdl_smry_tb = mdl_smry_tb, dep_var_nm_1L_chr = outp_smry_ls$dep_var_nm_1L_chr, 
                 id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, 
@@ -584,12 +575,12 @@ write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable")
                 ".RDS"))
             sharble_mdl
         }) %>% stats::setNames(outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())
-    outp_smry_ls$sharble_mdls_ls <- sharble_mdls_ls
+    outp_smry_ls$shareable_mdls_ls <- shareable_mdls_ls
     shareable_mdls_tb <- NULL
     if (!is.null(outp_smry_ls$dv_ls)) {
-        shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$sharble_mdls_ls), 
-            title_chr = paste0("A shareable statistical model, ", 
-                names(outp_smry_ls$sharble_mdls_ls), ", containing no confidential information, that can be used to predict adolescent AQoL6D. Note this model is a placeholder as it has been estimated from synthetic data."))
+        shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$shareable_mdls_ls), 
+            title_chr = paste0("A shareable (contains no confidential data) statistical model, ", 
+                names(outp_smry_ls$shareable_mdls_ls), ".", shareable_title_detail_1L_chr))
         ready4use::write_fls_to_dv_ds(shareable_mdls_tb, dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
             ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr, 
             parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr, 
@@ -609,7 +600,7 @@ write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable")
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
 #' @param start_1L_chr Start (a character vector of length one), Default: NULL
 #' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param n_folds_1L_int N folds (an integer vector of length one), Default: 10
 #' @param mdl_types_lup Model types (a lookup table), Default: NULL
 #' @param fl_nm_pfx_1L_chr File name prefix (a character vector of length one), Default: 'A_RT_'
@@ -621,10 +612,9 @@ write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable")
 #' @importFrom purrr map_dfr
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr arrange desc
-#' @keywords internal
 write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var_nm_1L_chr, predr_var_desc_1L_chr, 
     predr_vals_dbl, path_to_write_to_1L_chr, start_1L_chr = NULL, 
-    covar_var_nms_chr = NA_character_, dep_var_nm_1L_chr = "aqol6d_total_w", 
+    covar_var_nms_chr = NA_character_, dep_var_nm_1L_chr = "utl_total_w", 
     n_folds_1L_int = 10, mdl_types_lup = NULL, fl_nm_pfx_1L_chr = "A_RT_", 
     plt_idcs_int = NA_integer_) 
 {
@@ -654,7 +644,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' Write ts models
 #' @description write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write ts models. The function returns Models smry (a tibble).
 #' @param data_tb Data (a tibble)
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param predr_vars_nms_ls Predr vars names (a list)
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
 #' @param round_var_nm_1L_chr Round var name (a character vector of length one), Default: 'round'
@@ -669,8 +659,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @rdname write_ts_mdls
 #' @export 
 #' @importFrom purrr map_dfr map2_dfr
-#' @keywords internal
-write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predr_vars_nms_ls, 
+write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_vars_nms_ls, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", backend_1L_chr = getOption("brms.backend", 
         "rstan"), fn_ls, mdl_nms_ls, mdl_smry_dir_1L_chr, iters_1L_int = 4000L, 

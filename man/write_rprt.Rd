@@ -11,7 +11,9 @@ write_rprt(
   section_type_1L_chr = "#",
   reports_dir_1L_chr = "Reports",
   markdown_dir_1L_chr = "Markdown",
-  file_nm_1L_chr = "Main_Mdl_Smry"
+  file_nm_1L_chr = "Main_Mdl_Smry",
+ 
+    title_1L_chr = "Summary report of the models estimated from synthetic data to map a number of mental health measures to utility scores."
 )
 }
 \arguments{
@@ -28,6 +30,8 @@ write_rprt(
 \item{markdown_dir_1L_chr}{Markdown directory (a character vector of length one), Default: 'Markdown'}
 
 \item{file_nm_1L_chr}{File name (a character vector of length one), Default: 'Main_Mdl_Smry'}
+
+\item{title_1L_chr}{Title (a character vector of length one), Default: 'Summary report of the models estimated from synthetic data to map a number of mental health measures to utility scores.'}
 }
 \value{
 Output smry (a list)

@@ -8,7 +8,7 @@ make_smry_of_mdl(
   data_tb,
   model_mdl,
   n_folds_1L_int = 10,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  dep_var_nm_1L_chr = "utl_total_w",
   start_1L_chr = NULL,
   tfmn_1L_chr = "NTF",
   predr_var_nm_1L_chr,
@@ -25,7 +25,7 @@ make_smry_of_mdl(
 
 \item{n_folds_1L_int}{N folds (an integer vector of length one), Default: 10}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{start_1L_chr}{Start (a character vector of length one), Default: NULL}
 
@@ -47,4 +47,3 @@ Smry of one predr model (a tibble)
 \description{
 make_smry_of_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of model. The function returns Smry of one predr model (a tibble).
 }
-\keyword{internal}

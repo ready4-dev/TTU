@@ -6,7 +6,7 @@
 \usage{
 make_predn_ds_with_one_predr(
   model_mdl,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  dep_var_nm_1L_chr = "utl_total_w",
   tfmn_1L_chr = "NTF",
   predr_var_nm_1L_chr,
   predr_vals_dbl,
@@ -16,7 +16,7 @@ make_predn_ds_with_one_predr(
 \arguments{
 \item{model_mdl}{PARAM_DESCRIPTION}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
@@ -32,4 +32,3 @@ Predn dataset (a tibble)
 \description{
 make_predn_ds_with_one_predr() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predn dataset with one predr. The function returns Predn dataset (a tibble).
 }
-\keyword{internal}

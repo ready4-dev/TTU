@@ -7,7 +7,7 @@
 make_smry_of_brm_mdl(
   mdl_ls,
   data_tb,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  dep_var_nm_1L_chr = "utl_total_w",
   predr_vars_nms_chr,
   fn = calculate_rmse,
   mdl_nm_1L_chr = NA_character_,
@@ -19,7 +19,7 @@ make_smry_of_brm_mdl(
 
 \item{data_tb}{Data (a tibble)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{predr_vars_nms_chr}{Predr vars names (a character vector)}
 
@@ -35,4 +35,3 @@ Smry of brm model (a tibble)
 \description{
 make_smry_of_brm_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of brm model. The function returns Smry of brm model (a tibble).
 }
-\keyword{internal}

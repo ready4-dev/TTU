@@ -9,8 +9,8 @@ write_brm_model_plts(
   tfd_data_tb,
   mdl_nm_1L_chr,
   path_to_write_to_1L_chr,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
-  dep_var_desc_1L_chr = "AQoL-6D utility score",
+  dep_var_nm_1L_chr = "utl_total_w",
+  dep_var_desc_1L_chr = "Utility score",
   round_var_nm_1L_chr = "round",
   tfmn_fn = function(x) {     x },
   units_1L_chr = "in",
@@ -30,9 +30,9 @@ write_brm_model_plts(
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
-\item{dep_var_desc_1L_chr}{Dep var description (a character vector of length one), Default: 'AQoL-6D utility score'}
+\item{dep_var_desc_1L_chr}{Dep var description (a character vector of length one), Default: 'Utility score'}
 
 \item{round_var_nm_1L_chr}{Round var name (a character vector of length one), Default: 'round'}
 
@@ -58,4 +58,3 @@ Model plts paths (a list)
 \description{
 write_brm_model_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm model plts. The function returns Model plts paths (a list).
 }
-\keyword{internal}

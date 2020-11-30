@@ -6,7 +6,7 @@
 \usage{
 write_ts_mdls(
   data_tb,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  dep_var_nm_1L_chr = "utl_total_w",
   predr_vars_nms_ls,
   id_var_nm_1L_chr = "fkClientID",
   round_var_nm_1L_chr = "round",
@@ -22,7 +22,7 @@ write_ts_mdls(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{predr_vars_nms_ls}{Predr vars names (a list)}
 
@@ -50,4 +50,3 @@ Models smry (a tibble)
 \description{
 write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write ts models. The function returns Models smry (a tibble).
 }
-\keyword{internal}

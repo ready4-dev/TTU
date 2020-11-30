@@ -7,7 +7,7 @@
 write_mdl_type_sngl_outps(
   data_tb,
   n_folds_1L_int = 10,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  dep_var_nm_1L_chr = "utl_total_w",
   start_1L_chr = NULL,
   tfmn_1L_chr = "NTF",
   predr_var_nm_1L_chr,
@@ -26,7 +26,7 @@ write_mdl_type_sngl_outps(
 
 \item{n_folds_1L_int}{N folds (an integer vector of length one), Default: 10}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{start_1L_chr}{Start (a character vector of length one), Default: NULL}
 
@@ -56,4 +56,3 @@ Smry of one predr model (a tibble)
 \description{
 write_mdl_type_sngl_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type sngl outputs. The function returns Smry of one predr model (a tibble).
 }
-\keyword{internal}

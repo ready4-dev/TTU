@@ -12,7 +12,7 @@ make_fake_ts_data <- function (outp_smry_ls)
         ~NA_real_))
     return(fk_data_tb)
 }
-make_mdl <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", tfmn_1L_chr = "NTF",
+make_mdl <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF",
     predr_var_nm_1L_chr, covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF",
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NULL)
 {
@@ -60,7 +60,7 @@ make_mdl_nms_ls <- function (predr_vars_nms_ls, mdl_types_chr)
             "_")), .y, "_", mdl_types_chr))
     return(mdl_nms_ls)
 }
-make_predn_ds_with_one_predr <- function (model_mdl, dep_var_nm_1L_chr = "aqol6d_total_w", tfmn_1L_chr = "NTF",
+make_predn_ds_with_one_predr <- function (model_mdl, dep_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF",
     predr_var_nm_1L_chr, predr_vals_dbl, pred_type_1L_chr = NULL)
 {
     predn_ds_tb <- tibble::tibble(`:=`(!!rlang::sym(predr_var_nm_1L_chr),
@@ -71,7 +71,7 @@ make_predn_ds_with_one_predr <- function (model_mdl, dep_var_nm_1L_chr = "aqol6d
                 tfmn_is_outp_1L_lgl = T)))
     return(predn_ds_tb)
 }
-make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "aqol6d_total_w",
+make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "utl_total_w",
     id_var_nm_1L_chr = "fkClientID", tfmn_1L_chr = "CLL", mdl_type_1L_chr = "OLS_CLL",
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NA_character_,
     seed_1L_int = 12345L)
@@ -107,7 +107,7 @@ make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "aqol6
     names(model_mdl$coefficients) <- par_nms_chr
     return(model_mdl)
 }
-make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_total_w",
+make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "utl_total_w",
     predr_vars_nms_chr, fn = calculate_rmse, mdl_nm_1L_chr = NA_character_,
     seed_1L_dbl = 23456)
 {
@@ -133,7 +133,7 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_t
         dplyr::select(Model, Parameter, Estimate, SE, `95% CI`)
     return(smry_of_brm_mdl_tb)
 }
-make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_nm_1L_chr = "aqol6d_total_w",
+make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_nm_1L_chr = "utl_total_w",
     start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr,
     covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF",
     mdl_types_lup = NULL, pred_type_1L_chr = NULL)
@@ -174,7 +174,7 @@ make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_n
     return(smry_of_one_predr_mdl_tb)
 }
 make_smry_of_ts_mdl <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_,
-    dep_var_nm_1L_chr = "aqol6d_total_w", id_var_nm_1L_chr = "fkClientID",
+    dep_var_nm_1L_chr = "utl_total_w", id_var_nm_1L_chr = "fkClientID",
     round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline",
     backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L,
     seed_1L_int = 1000L)

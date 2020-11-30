@@ -8,7 +8,7 @@ write_mdl_plts(
   data_tb,
   model_mdl,
   mdl_fl_nm_1L_chr = "OLS_NTF",
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  dep_var_nm_1L_chr = "utl_total_w",
   tfmn_1L_chr = "NTF",
   predr_var_nm_1L_chr,
   predr_var_desc_1L_chr,
@@ -28,7 +28,7 @@ write_mdl_plts(
 
 \item{mdl_fl_nm_1L_chr}{Model file name (a character vector of length one), Default: 'OLS_NTF'}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
@@ -53,4 +53,3 @@ write_mdl_plts(
 \description{
 write_mdl_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model plts. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 }
-\keyword{internal}

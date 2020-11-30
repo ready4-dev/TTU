@@ -1,4 +1,4 @@
-write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, dep_var_nm_1L_chr = "aqol6d_total_w",
+write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, dep_var_nm_1L_chr = "utl_total_w",
     candidate_predrs_chr, candidate_covar_nms_chr, id_var_nm_1L_chr = "fkClientID",
     round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline",
     mdl_types_chr = NA_character_, prefd_mdl_types_chr = NA_character_,
@@ -92,7 +92,7 @@ write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_writ
     return(path_to_plot_1L_chr)
 }
 write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_write_to_1L_chr,
-    dep_var_nm_1L_chr = "aqol6d_total_w", dep_var_desc_1L_chr = "AQoL-6D utility score",
+    dep_var_nm_1L_chr = "utl_total_w", dep_var_desc_1L_chr = "Utility score",
     round_var_nm_1L_chr = "round", tfmn_fn = function(x) {
         x
     }, units_1L_chr = "in", height_dbl = c(rep(6, 2), rep(5,
@@ -135,7 +135,7 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
     }) %>% stats::setNames(plt_nms_chr) %>% purrr::discard(is.na)
     return(mdl_plts_paths_ls)
 }
-write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", dep_var_nm_1L_chr = "aqol6d_total_w",
+write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", dep_var_nm_1L_chr = "utl_total_w",
     tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, predr_var_desc_1L_chr,
     predr_vals_dbl, covar_var_nms_chr = NA_character_, path_to_write_to_1L_chr,
     pred_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_,
@@ -174,7 +174,7 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
                 3)], collapse = "")), ""), ..3), height_1L_dbl = ..4[1],
         width_1L_dbl = ..4[2]))
 }
-write_mdl_type_covars_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predrs_var_nms_chr,
+write_mdl_type_covars_mdls <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predrs_var_nms_chr,
     covar_var_nms_chr, mdl_type_1L_chr, path_to_write_to_1L_chr,
     fl_nm_pfx_1L_chr = "D_CT", mdl_types_lup = NULL, start_1L_chr = NA_character_)
 {
@@ -205,7 +205,7 @@ write_mdl_type_covars_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_tot
     return(smry_of_mdls_with_covars_tb)
 }
 write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var_nms_chr, covar_var_nms_chr = NA_character_,
-    start_1L_chr = NULL, mdl_type_1L_chr, dep_var_nm_1L_chr = "aqol6d_total_w",
+    start_1L_chr = NULL, mdl_type_1L_chr, dep_var_nm_1L_chr = "utl_total_w",
     path_to_write_to_1L_chr, mdl_types_lup = NULL, fl_nm_pfx_1L_chr = "C_PREDR",
     plt_idcs_int = c(3, 5))
 {
@@ -237,7 +237,7 @@ write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var
     }
     return(smry_of_mdl_sngl_predrs_tb)
 }
-write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_1L_chr = "aqol6d_total_w",
+write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_1L_chr = "utl_total_w",
     start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr,
     predr_var_desc_1L_chr, predr_vals_dbl, covar_var_nms_chr = NA_character_,
     mdl_type_1L_chr = "OLS_NTF", mdl_types_lup = NULL, path_to_write_to_1L_chr,
@@ -293,7 +293,7 @@ write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_
         ".RDS"))
     return(smry_of_one_predr_mdl_tb)
 }
-write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, dep_var_nm_1L_chr = "aqol6d_total_w",
+write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, dep_var_nm_1L_chr = "utl_total_w",
     candidate_predrs_chr, max_nbr_of_boruta_mdl_runs_int = 300L)
 {
     if (length(candidate_predrs_chr) > 1) {
@@ -326,7 +326,7 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, dep_var_
 }
 write_rprt <- function (outp_smry_ls, nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
     output_type_1L_chr = "PDF", section_type_1L_chr = "#", reports_dir_1L_chr = "Reports",
-    markdown_dir_1L_chr = "Markdown", file_nm_1L_chr = "Main_Mdl_Smry")
+    markdown_dir_1L_chr = "Markdown", file_nm_1L_chr = "Main_Mdl_Smry", title_1L_chr = "Summary report of the models estimated from synthetic data to map a number of mental health measures to utility scores.")
 {
     write_rndrd_rprt(system.file(package = "ready4u"), nm_of_RMD_1L_chr = nm_of_RMD_1L_chr,
         params_ls = list(covars_ls = list(outp_smry_ls$prefd_covars_chr),
@@ -339,13 +339,8 @@ write_rprt <- function (outp_smry_ls, nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
         nm_of_rprt_dir_1L_chr = markdown_dir_1L_chr, path_to_outpt_rtrp_1L_chr = normalizePath(paste0(params$path_to_write_fls_to_1L_chr,
             "/", reports_dir_1L_chr)), file_nm_1L_chr = file_nm_1L_chr)
     if (!is.null(outp_smry_ls$dv_ls)) {
-        ready4use::write_fls_to_dv_ds(shareable_mdls_tb, dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
-            ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr,
-            parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr,
-            paths_to_dirs_chr = paste0(outp_smry_ls$path_to_write_to_1L_chr,
-                "/", sub_dir_1L_chr), inc_fl_types_chr = ".RDS")
-        outp_smry_ls$rprt_dss_tb <- tibble::tibble(ds_obj_nm_chr = "Main_Mdl_Smry",
-            title_chr = "Summary report of the models estimated from synthetic data to map a number of mental health measures to adolescent AQoL-6D scores.")
+        outp_smry_ls$rprt_dss_tb <- tibble::tibble(ds_obj_nm_chr = file_nm_1L_chr,
+            title_chr = title_1L_chr)
         ready4use::write_fls_to_dv_ds(outp_smry_ls$rprt_dss_tb,
             dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr,
             parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr,
@@ -356,9 +351,11 @@ write_rprt <- function (outp_smry_ls, nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
     }
     return(outp_smry_ls)
 }
-write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable")
+write_shareable_mdls <- function (outp_smry_ls,
+                                  sub_dir_1L_chr = "Shareable",
+                                  shareable_title_detail_1L_chr = "")
 {
-    sharble_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>%
+    shareable_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>%
         purrr::map(~{
             model_mdl <- readRDS(paste0(outp_smry_ls$path_to_write_to_1L_chr,
                 "/", .x, ".RDS"))
@@ -366,7 +363,7 @@ write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable")
                 .x)
             data_tb <- model_mdl$data
             if (endsWith(.x, "OLS_CLL"))
-                data_tb <- data_tb %>% dplyr::rename(aqol6d_total_w_CLL = aqol6d_total_w_cloglog)
+                data_tb <- data_tb %>% dplyr::rename(utl_total_w_CLL = utl_total_w_cloglog)
             sharble_mdl <- make_shareable_mdl(data_tb = data_tb,
                 mdl_smry_tb = mdl_smry_tb, dep_var_nm_1L_chr = outp_smry_ls$dep_var_nm_1L_chr,
                 id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr,
@@ -383,12 +380,13 @@ write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable")
                 ".RDS"))
             sharble_mdl
         }) %>% stats::setNames(outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())
-    outp_smry_ls$sharble_mdls_ls <- sharble_mdls_ls
+    outp_smry_ls$shareable_mdls_ls <- shareable_mdls_ls
     shareable_mdls_tb <- NULL
     if (!is.null(outp_smry_ls$dv_ls)) {
-        shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$sharble_mdls_ls),
-            title_chr = paste0("A shareable statistical model, ",
-                names(outp_smry_ls$sharble_mdls_ls), ", containing no confidential information, that can be used to predict adolescent AQoL6D. Note this model is a placeholder as it has been estimated from synthetic data."))
+        shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$shareable_mdls_ls),
+            title_chr = paste0("A shareable (contains no confidential data) statistical model, ",
+                names(outp_smry_ls$shareable_mdls_ls),".",
+                shareable_title_detail_1L_chr))
         ready4use::write_fls_to_dv_ds(shareable_mdls_tb, dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
             ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr,
             parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr,
@@ -400,7 +398,7 @@ write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable")
 }
 write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var_nm_1L_chr, predr_var_desc_1L_chr,
     predr_vals_dbl, path_to_write_to_1L_chr, start_1L_chr = NULL,
-    covar_var_nms_chr = NA_character_, dep_var_nm_1L_chr = "aqol6d_total_w",
+    covar_var_nms_chr = NA_character_, dep_var_nm_1L_chr = "utl_total_w",
     n_folds_1L_int = 10, mdl_types_lup = NULL, fl_nm_pfx_1L_chr = "A_RT_",
     plt_idcs_int = NA_integer_)
 {
@@ -427,7 +425,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
             dplyr::arrange(dplyr::desc(RsquaredP))
     return(smry_of_sngl_predr_mdls_tb)
 }
-write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predr_vars_nms_ls,
+write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_vars_nms_ls,
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round",
     round_bl_val_1L_chr = "Baseline", backend_1L_chr = getOption("brms.backend",
         "rstan"), fn_ls, mdl_nms_ls, mdl_smry_dir_1L_chr, iters_1L_int = 4000L,

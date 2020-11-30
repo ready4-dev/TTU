@@ -14,9 +14,8 @@ predict_utility(data_tb, tfmn_1L_chr = "NTF", model_mdl)
 \item{model_mdl}{PARAM_DESCRIPTION}
 }
 \value{
-Predd aqol6d (a double vector)
+Predd utl (a double vector)
 }
 \description{
-predict_utility() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict utility. The function returns Predd aqol6d (a double vector).
+predict_utility() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict utility. The function returns Predd utl (a double vector).
 }
-\keyword{internal}
