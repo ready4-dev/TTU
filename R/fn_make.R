@@ -39,7 +39,6 @@ make_fake_ts_data <- function (outp_smry_ls)
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom stringi stri_locate_last_fixed
 #' @importFrom stringr str_sub
-#' @keywords internal
 make_mdl <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", tfmn_1L_chr = "NTF", 
     predr_var_nm_1L_chr, covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF", 
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NULL) 
@@ -89,7 +88,6 @@ make_mdl <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", tfmn_1L_chr
 #' @rdname make_mdl_nms_ls
 #' @export 
 #' @importFrom purrr map2
-#' @keywords internal
 make_mdl_nms_ls <- function (predr_vars_nms_ls, mdl_types_chr) 
 {
     mdl_nms_ls <- purrr::map2(predr_vars_nms_ls, make_unique_ls_elmt_idx_int(predr_vars_nms_ls), 
@@ -112,7 +110,6 @@ make_mdl_nms_ls <- function (predr_vars_nms_ls, mdl_types_chr)
 #' @importFrom rlang sym
 #' @importFrom dplyr mutate
 #' @importFrom stats predict
-#' @keywords internal
 make_predn_ds_with_one_predr <- function (model_mdl, dep_var_nm_1L_chr = "aqol6d_total_w", tfmn_1L_chr = "NTF", 
     predr_var_nm_1L_chr, predr_vals_dbl, pred_type_1L_chr = NULL) 
 {
@@ -145,7 +142,6 @@ make_predn_ds_with_one_predr <- function (model_mdl, dep_var_nm_1L_chr = "aqol6d
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_replace_all
 #' @importFrom assertthat assert_that
-#' @keywords internal
 make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "aqol6d_total_w", 
     id_var_nm_1L_chr = "fkClientID", tfmn_1L_chr = "CLL", mdl_type_1L_chr = "OLS_CLL", 
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NA_character_, 
@@ -200,7 +196,6 @@ make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "aqol6
 #' @importFrom dplyr pull mutate rename select
 #' @importFrom rlang sym
 #' @importFrom purrr map flatten_chr
-#' @keywords internal
 make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", 
     predr_vars_nms_chr, fn = calculate_rmse, mdl_nm_1L_chr = NA_character_, 
     seed_1L_dbl = 23456) 
@@ -251,7 +246,6 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_t
 #' @importFrom stats predict
 #' @importFrom tibble tibble
 #' @importFrom caret R2 RMSE MAE
-#' @keywords internal
 make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_nm_1L_chr = "aqol6d_total_w", 
     start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, 
     covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF", 
@@ -310,7 +304,6 @@ make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_n
 #' @rdname make_smry_of_ts_mdl
 #' @export 
 #' @importFrom rlang exec
-#' @keywords internal
 make_smry_of_ts_mdl <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_, 
     dep_var_nm_1L_chr = "aqol6d_total_w", id_var_nm_1L_chr = "fkClientID", 
     round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", 

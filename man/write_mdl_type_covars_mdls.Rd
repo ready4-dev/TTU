@@ -41,4 +41,3 @@ Smry of models with covars (a tibble)
 \description{
 write_mdl_type_covars_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type covars models. The function returns Smry of models with covars (a tibble).
 }
-\keyword{internal}

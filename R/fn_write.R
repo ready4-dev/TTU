@@ -111,7 +111,6 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, dep_va
 #' @export 
 #' @importFrom grDevices png dev.off
 #' @importFrom rlang exec
-#' @keywords internal
 write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_write_to_1L_chr, 
     plt_nm_1L_chr, grpx_fn = grDevices::png, units_1L_chr = "in", 
     width_1L_dbl = 6, height_1L_dbl = 6, rsl_1L_dbl = 300) 
@@ -154,7 +153,6 @@ write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_writ
 #' @export 
 #' @importFrom stats predict setNames
 #' @importFrom purrr map discard
-#' @keywords internal
 write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_write_to_1L_chr, 
     dep_var_nm_1L_chr = "aqol6d_total_w", dep_var_desc_1L_chr = "AQoL-6D utility score", 
     round_var_nm_1L_chr = "round", tfmn_fn = function(x) {
@@ -220,7 +218,6 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
 #' @rdname write_mdl_plts
 #' @export 
 #' @importFrom purrr pwalk
-#' @keywords internal
 write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", dep_var_nm_1L_chr = "aqol6d_total_w", 
     tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, predr_var_desc_1L_chr, 
     predr_vals_dbl, covar_var_nms_chr = NA_character_, path_to_write_to_1L_chr, 
@@ -283,7 +280,6 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
 #' @importFrom dplyr pull arrange desc
 #' @importFrom rlang sym
 #' @importFrom stats predict AIC BIC
-#' @keywords internal
 write_mdl_type_covars_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predrs_var_nms_chr, 
     covar_var_nms_chr, mdl_type_1L_chr, path_to_write_to_1L_chr, 
     fl_nm_pfx_1L_chr = "D_CT", mdl_types_lup = NULL, start_1L_chr = NA_character_) 
@@ -335,7 +331,6 @@ write_mdl_type_covars_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_tot
 #' @importFrom purrr map_dfr
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr select mutate everything arrange desc
-#' @keywords internal
 write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var_nms_chr, covar_var_nms_chr = NA_character_, 
     start_1L_chr = NULL, mdl_type_1L_chr, dep_var_nm_1L_chr = "aqol6d_total_w", 
     path_to_write_to_1L_chr, mdl_types_lup = NULL, fl_nm_pfx_1L_chr = "C_PREDR", 
@@ -394,7 +389,6 @@ write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
 #' @importFrom tibble tibble
-#' @keywords internal
 write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_1L_chr = "aqol6d_total_w", 
     start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, 
     predr_var_desc_1L_chr, predr_vals_dbl, covar_var_nms_chr = NA_character_, 
@@ -467,7 +461,6 @@ write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_
 #' @importFrom purrr pwalk
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr arrange desc filter
-#' @keywords internal
 write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, dep_var_nm_1L_chr = "aqol6d_total_w", 
     candidate_predrs_chr, max_nbr_of_boruta_mdl_runs_int = 300L) 
 {
@@ -621,7 +614,6 @@ write_shareable_mdls <- function (outp_smry_ls, sub_dir_1L_chr = "Shareable")
 #' @importFrom purrr map_dfr
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr arrange desc
-#' @keywords internal
 write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var_nm_1L_chr, predr_var_desc_1L_chr, 
     predr_vals_dbl, path_to_write_to_1L_chr, start_1L_chr = NULL, 
     covar_var_nms_chr = NA_character_, dep_var_nm_1L_chr = "aqol6d_total_w", 
@@ -669,7 +661,6 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @rdname write_ts_mdls
 #' @export 
 #' @importFrom purrr map_dfr map2_dfr
-#' @keywords internal
 write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", predr_vars_nms_ls, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", backend_1L_chr = getOption("brms.backend", 
