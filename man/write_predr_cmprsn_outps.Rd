@@ -29,4 +29,3 @@ Confirmed predrs (a tibble)
 \description{
 write_predr_cmprsn_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predr cmprsn outputs. The function returns Confirmed predrs (a tibble).
 }
-\keyword{internal}

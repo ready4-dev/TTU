@@ -143,7 +143,7 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
 {
     data_tb <- transform_ds_for_mdlng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr,
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
-    tfd_data_tb <- transform_data_tb_for_cmprsn(data_tb, model_mdl = model_mdl,
+    tfd_data_tb <- transform_data_tb_for_cmprsn(data_tb, model_mdl = model_mdl, dep_var_nm_1L_chr = dep_var_nm_1L_chr,
         pred_type_1L_chr = pred_type_1L_chr, tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl,
         family_1L_chr = family_1L_chr)
     if (1 %in% plt_idcs_int) {
