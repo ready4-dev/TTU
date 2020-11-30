@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ready4u</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9072</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9073</span>
       </span>
     </div>
 
@@ -128,7 +128,11 @@
     <p>write_shareable_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models. The function returns Output smry (a list).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>write_shareable_mdls</span><span class='op'>(</span><span class='va'>outp_smry_ls</span>, sub_dir_1L_chr <span class='op'>=</span> <span class='st'>"Shareable"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>write_shareable_mdls</span><span class='op'>(</span>
+  <span class='va'>outp_smry_ls</span>,
+  sub_dir_1L_chr <span class='op'>=</span> <span class='st'>"Shareable"</span>,
+  shareable_title_detail_1L_chr <span class='op'>=</span> <span class='st'>""</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -140,6 +144,10 @@
     <tr>
       <th>sub_dir_1L_chr</th>
       <td><p>Sub directory (a character vector of length one), Default: 'Shareable'</p></td>
+    </tr>
+    <tr>
+      <th>shareable_title_detail_1L_chr</th>
+      <td><p>Shareable title detail (a character vector of length one), Default: ''</p></td>
     </tr>
     </table>
 
