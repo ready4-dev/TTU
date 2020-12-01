@@ -11,6 +11,7 @@ write_sngl_predr_multi_mdls_outps(
   predr_var_desc_1L_chr,
   predr_vals_dbl,
   path_to_write_to_1L_chr,
+  new_dir_nm_1L_chr = "A_Candidate_Mdls_Cmprsns",
   start_1L_chr = NULL,
   covar_var_nms_chr = NA_character_,
   dep_var_nm_1L_chr = "utl_total_w",
@@ -33,6 +34,8 @@ write_sngl_predr_multi_mdls_outps(
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
 
+\item{new_dir_nm_1L_chr}{New directory name (a character vector of length one), Default: 'A_Candidate_Mdls_Cmprsns'}
+
 \item{start_1L_chr}{Start (a character vector of length one), Default: NULL}
 
 \item{covar_var_nms_chr}{Covar var names (a character vector), Default: 'NA'}
@@ -53,4 +56,3 @@ Smry of sngl predr models (a tibble)
 \description{
 write_sngl_predr_multi_mdls_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write sngl predr multi models outputs. The function returns Smry of sngl predr models (a tibble).
 }
-\keyword{internal}

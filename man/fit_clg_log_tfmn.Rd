@@ -35,4 +35,3 @@ Model (a list)
 \description{
 fit_clg_log_tfmn() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit clg log transformation. The function returns Model (a list).
 }
-\keyword{internal}

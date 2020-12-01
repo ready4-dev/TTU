@@ -11,6 +11,7 @@ write_mdl_type_covars_mdls(
   covar_var_nms_chr,
   mdl_type_1L_chr,
   path_to_write_to_1L_chr,
+  new_dir_nm_1L_chr = "D_Covars_Selection",
   fl_nm_pfx_1L_chr = "D_CT",
   mdl_types_lup = NULL,
   start_1L_chr = NA_character_
@@ -29,6 +30,8 @@ write_mdl_type_covars_mdls(
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
 
+\item{new_dir_nm_1L_chr}{New directory name (a character vector of length one), Default: 'D_Covars_Selection'}
+
 \item{fl_nm_pfx_1L_chr}{File name prefix (a character vector of length one), Default: 'D_CT'}
 
 \item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
@@ -41,4 +44,3 @@ Smry of models with covars (a tibble)
 \description{
 write_mdl_type_covars_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type covars models. The function returns Smry of models with covars (a tibble).
 }
-\keyword{internal}

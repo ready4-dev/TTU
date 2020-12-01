@@ -13,6 +13,7 @@ write_mdl_type_multi_outps(
   mdl_type_1L_chr,
   dep_var_nm_1L_chr = "utl_total_w",
   path_to_write_to_1L_chr,
+  new_dir_nm_1L_chr,
   mdl_types_lup = NULL,
   fl_nm_pfx_1L_chr = "C_PREDR",
   plt_idcs_int = c(3, 5)
@@ -35,6 +36,8 @@ write_mdl_type_multi_outps(
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
 
+\item{new_dir_nm_1L_chr}{New directory name (a character vector of length one)}
+
 \item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
 
 \item{fl_nm_pfx_1L_chr}{File name prefix (a character vector of length one), Default: 'C_PREDR'}
@@ -47,4 +50,3 @@ Smry of model sngl predrs (a tibble)
 \description{
 write_mdl_type_multi_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type multi outputs. The function returns Smry of model sngl predrs (a tibble).
 }
-\keyword{internal}

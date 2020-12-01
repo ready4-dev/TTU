@@ -7,6 +7,7 @@
 write_ts_mdls_from_alg_outp(
   outp_smry_ls,
   fn_ls,
+  new_dir_nm_1L_chr = "F_TS_Mdls",
   backend_1L_chr = getOption("brms.backend", "rstan"),
   iters_1L_int = 4000L
 )
@@ -15,6 +16,8 @@ write_ts_mdls_from_alg_outp(
 \item{outp_smry_ls}{Output smry (a list)}
 
 \item{fn_ls}{Function list (a list of functions)}
+
+\item{new_dir_nm_1L_chr}{New directory name (a character vector of length one), Default: 'F_TS_Mdls'}
 
 \item{backend_1L_chr}{Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")}
 

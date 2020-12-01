@@ -6,14 +6,14 @@
 \usage{
 write_shareable_mdls(
   outp_smry_ls,
-  sub_dir_1L_chr = "Shareable",
+  new_dir_nm_1L_chr = "G_Shareable",
   shareable_title_detail_1L_chr = ""
 )
 }
 \arguments{
 \item{outp_smry_ls}{Output smry (a list)}
 
-\item{sub_dir_1L_chr}{Sub directory (a character vector of length one), Default: 'Shareable'}
+\item{new_dir_nm_1L_chr}{New directory name (a character vector of length one), Default: 'G_Shareable'}
 
 \item{shareable_title_detail_1L_chr}{Shareable title detail (a character vector of length one), Default: ''}
 }

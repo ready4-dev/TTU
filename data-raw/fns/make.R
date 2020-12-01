@@ -85,8 +85,7 @@ make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "utl_t
         id_var_nm_1L_chr))
     if (length(predr_var_nms_chr) > 1) {
         covar_var_nms_chr <- predr_var_nms_chr[2:length(predr_var_nms_chr)]
-    }
-    else {
+    }else{
         covar_var_nms_chr <- NA_character_
     }
     fk_data_ls <- synthpop::syn(data_tb, visit.sequence = all_var_nms_chr[all_var_nms_chr !=

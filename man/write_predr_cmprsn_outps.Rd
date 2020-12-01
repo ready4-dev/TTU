@@ -7,6 +7,7 @@
 write_predr_cmprsn_outps(
   data_tb,
   path_to_write_to_1L_chr,
+  new_dir_nm_1L_chr = "B_Candidate_Predrs_Cmprsns",
   dep_var_nm_1L_chr = "utl_total_w",
   candidate_predrs_chr,
   max_nbr_of_boruta_mdl_runs_int = 300L
@@ -16,6 +17,8 @@ write_predr_cmprsn_outps(
 \item{data_tb}{Data (a tibble)}
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
+
+\item{new_dir_nm_1L_chr}{New directory name (a character vector of length one), Default: 'B_Candidate_Predrs_Cmprsns'}
 
 \item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
@@ -29,4 +32,3 @@ Confirmed predrs (a tibble)
 \description{
 write_predr_cmprsn_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predr cmprsn outputs. The function returns Confirmed predrs (a tibble).
 }
-\keyword{internal}
