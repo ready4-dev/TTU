@@ -11,7 +11,6 @@
 #' @rdname fit_clg_log_tfmn
 #' @export 
 
-#' @keywords internal
 fit_clg_log_tfmn <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w_cloglog", 
     predr_vars_nms_chr, id_var_nm_1L_chr = "fkClientID", backend_1L_chr = getOption("brms.backend", 
         "rstan"), iters_1L_int = 4000L, seed_1L_int = 1000L) 
@@ -35,7 +34,6 @@ fit_clg_log_tfmn <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w_cloglog"
 #' @rdname fit_gsn_log_lnk
 #' @export 
 
-#' @keywords internal
 fit_gsn_log_lnk <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr, 
     id_var_nm_1L_chr = "fkClientID", backend_1L_chr = getOption("brms.backend", 
         "rstan"), iters_1L_int = 4000L, seed_1L_int = 1000L) 
