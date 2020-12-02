@@ -7,6 +7,7 @@
 #' @rdname predict_utility
 #' @export 
 
+#' @keywords internal
 predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", model_mdl) 
 {
     predd_utl_dbl <- predict(model_mdl, newdata = data_tb) %>% 
