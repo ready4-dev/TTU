@@ -1,5 +1,5 @@
 #' Calculate dep var transformation
-#' @description calculate_dep_var_tfmn() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate dep var transformation. The function returns Transformed dep var value (a double vector).
+#' @description calculate_dep_var_tfmn() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate dep var transformation. Function argument dep_var_val_dbl specifies the calculate The function returns Transformed dep var value (a double vector).
 #' @param dep_var_val_dbl Dep var value (a double vector)
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param tfmn_is_outp_1L_lgl Transformation is output (a logical vector of length one), Default: F
@@ -8,7 +8,6 @@
 #' @export 
 #' @importFrom boot inv.logit
 #' @importFrom psych logit
-#' @keywords internal
 calculate_dep_var_tfmn <- function (dep_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_is_outp_1L_lgl = F) 
 {
     tfd_dep_var_val_dbl <- dep_var_val_dbl
@@ -35,14 +34,13 @@ calculate_dep_var_tfmn <- function (dep_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_i
     return(tfd_dep_var_val_dbl)
 }
 #' Calculate rmse
-#' @description calculate_rmse() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate rmse. The function returns Rmse (a double vector).
+#' @description calculate_rmse() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate rmse. Function argument y_dbl specifies the calculate The function returns Rmse (a double vector).
 #' @param y_dbl Y (a double vector)
 #' @param yhat_dbl Yhat (a double vector)
 #' @return Rmse (a double vector)
 #' @rdname calculate_rmse
 #' @export 
 
-#' @keywords internal
 calculate_rmse <- function (y_dbl, yhat_dbl) 
 {
     rmse_dbl <- sqrt(mean((yhat_dbl - y_dbl)^2))

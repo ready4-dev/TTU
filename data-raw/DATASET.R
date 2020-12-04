@@ -77,7 +77,7 @@ pkg_dss_tb <- fn_type_lup_tb %>%
                                                         #"Impute",
                                                         #"Knit",
                                                         #"Plot",
-                                                        "Predict",
+                                                        "Predict"
                                                         #"Print",
                                                         #"Randomise","Reorder","Reset","Scramble"
                                          ),

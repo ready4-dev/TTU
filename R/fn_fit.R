@@ -1,5 +1,5 @@
 #' Fit clg log transformation
-#' @description fit_clg_log_tfmn() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit clg log transformation. The function returns Model (a list).
+#' @description fit_clg_log_tfmn() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit clg log transformation. Function argument data_tb specifies the fit The function returns Model (a list).
 #' @param data_tb Data (a tibble)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w_cloglog'
 #' @param predr_vars_nms_chr Predr vars names (a character vector)
@@ -11,7 +11,6 @@
 #' @rdname fit_clg_log_tfmn
 #' @export 
 
-#' @keywords internal
 fit_clg_log_tfmn <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w_cloglog", 
     predr_vars_nms_chr, id_var_nm_1L_chr = "fkClientID", backend_1L_chr = getOption("brms.backend", 
         "rstan"), iters_1L_int = 4000L, seed_1L_int = 1000L) 
@@ -23,7 +22,7 @@ fit_clg_log_tfmn <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w_cloglog"
     return(mdl_ls)
 }
 #' Fit gsn log lnk
-#' @description fit_gsn_log_lnk() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit gsn log lnk. The function returns Model (a list).
+#' @description fit_gsn_log_lnk() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit gsn log lnk. Function argument data_tb specifies the fit The function returns Model (a list).
 #' @param data_tb Data (a tibble)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param predr_vars_nms_chr Predr vars names (a character vector)
@@ -35,7 +34,6 @@ fit_clg_log_tfmn <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w_cloglog"
 #' @rdname fit_gsn_log_lnk
 #' @export 
 
-#' @keywords internal
 fit_gsn_log_lnk <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr, 
     id_var_nm_1L_chr = "fkClientID", backend_1L_chr = getOption("brms.backend", 
         "rstan"), iters_1L_int = 4000L, seed_1L_int = 1000L) 
