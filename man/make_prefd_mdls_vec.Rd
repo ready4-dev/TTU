@@ -23,3 +23,4 @@ Prefd models (a character vector)
 \description{
 make_prefd_mdls_vec() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make prefd models vec. The function returns Prefd models (a character vector).
 }
+\keyword{internal}
