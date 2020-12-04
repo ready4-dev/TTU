@@ -32,4 +32,3 @@ Brms model print (a list)
 \description{
 make_brms_mdl_print_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make brms model print list. The function returns Brms model print (a list).
 }
-\keyword{internal}

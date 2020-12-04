@@ -19,4 +19,3 @@ Predd utl (a double vector)
 \description{
 predict_utility() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict utility. The function returns Predd utl (a double vector).
 }
-\keyword{internal}
