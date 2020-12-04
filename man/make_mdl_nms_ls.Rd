@@ -17,4 +17,3 @@ Model names (a list)
 \description{
 make_mdl_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model names list. The function returns Model names (a list).
 }
-\keyword{internal}

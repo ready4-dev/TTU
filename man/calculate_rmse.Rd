@@ -15,6 +15,5 @@ calculate_rmse(y_dbl, yhat_dbl)
 Rmse (a double vector)
 }
 \description{
-calculate_rmse() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate rmse. Function argument y_dbl specifies the calculate The function returns Rmse (a double vector).
+calculate_rmse() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate rmse. The function returns Rmse (a double vector).
 }
-\keyword{internal}

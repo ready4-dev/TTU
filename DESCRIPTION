@@ -1,7 +1,7 @@
 Package: ready4u
 Title: Map Measures Routinely Collected in Mental Health
     Services to Health Utility
-Version: 0.0.0.9078
+Version: 0.0.0.9079
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -56,9 +56,13 @@ Imports:
     caret,
     dataverse,
     dplyr,
+    flextable,
     grDevices,
+    Hmisc,
+    kableExtra,
     magrittr,
     methods,
+    officer,
     psych,
     purrr,
     randomForest,
@@ -69,7 +73,8 @@ Imports:
     synthpop,
     tibble,
     tidyr,
-    utils
+    utils,
+    xtable
 VignetteBuilder: knitr
 RdMacros: lifecycle
 Depends: 
