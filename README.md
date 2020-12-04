@@ -1,6 +1,6 @@
 # ready4u <img src="man/figures/fav120.png" align="right" />
 
-## Map Measures Routinely Collected in Mental Health Services To Health Utility
+## Map Measures Routinely Collected in Mental Health Services to Health Utility
 
 <!-- badges: start -->
 [![R build status](https://github.com/ready4-dev/ready4u/workflows/R-CMD-check/badge.svg)](https://github.com/ready4-dev/ready4u/actions)

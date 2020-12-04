@@ -35,4 +35,3 @@ Model (a list)
 \description{
 fit_gsn_log_lnk() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit gsn log lnk. The function returns Model (a list).
 }
-\keyword{internal}

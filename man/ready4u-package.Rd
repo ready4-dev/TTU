@@ -5,7 +5,7 @@
 \alias{ready4u}
 \alias{ready4u-package}
 \title{ready4u: Map Measures Routinely Collected in Mental Health
-Services To Health Utility}
+Services to Health Utility}
 \description{
 Tools for developping Transfer To Utility (TTU)
 mapping algorithms to predict health utility from measures routinely

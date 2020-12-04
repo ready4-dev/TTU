@@ -17,4 +17,3 @@ Rmse (a double vector)
 \description{
 calculate_rmse() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate rmse. The function returns Rmse (a double vector).
 }
-\keyword{internal}

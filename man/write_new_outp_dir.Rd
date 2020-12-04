@@ -17,4 +17,3 @@ Output directory (a character vector of length one)
 \description{
 write_new_outp_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write new output directory. The function returns Output directory (a character vector of length one).
 }
-\keyword{internal}
