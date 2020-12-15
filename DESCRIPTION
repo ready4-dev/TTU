@@ -1,7 +1,7 @@
 Package: ready4u
 Title: Map Measures Routinely Collected in Mental Health
     Services to Health Utility
-Version: 0.0.0.9082
+Version: 0.0.0.9083
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
