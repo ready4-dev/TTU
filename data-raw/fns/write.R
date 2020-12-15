@@ -425,7 +425,7 @@ write_shareable_mdls <- function (outp_smry_ls,
     ds_ls <- dataverse::get_dataset(outp_smry_ls$dv_ls$ds_url_1L_chr)
     shareable_mdls_tb <- shareable_mdls_tb %>%
       dplyr::mutate(dv_nm_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
-                    fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ get_fl_id_from_dv_ls(ds_ls,
+                    fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ ready4use::get_fl_id_from_dv_ls(ds_ls,
                                                                    fl_nm_1L_chr = paste0(.x,".RDS")) %>% as.integer()))
     outp_smry_ls$shareable_mdls_tb <- shareable_mdls_tb
     return(outp_smry_ls)

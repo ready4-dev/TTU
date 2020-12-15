@@ -589,7 +589,7 @@ write_rprt <- function (outp_smry_ls, nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
 #' @importFrom rlang sym
 #' @importFrom stats setNames
 #' @importFrom tibble tibble
-#' @importFrom ready4use write_fls_to_dv_ds
+#' @importFrom ready4use write_fls_to_dv_ds get_fl_id_from_dv_ls
 #' @importFrom dataverse get_dataset
 write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "") 
 {
@@ -652,7 +652,7 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
     }
     ds_ls <- dataverse::get_dataset(outp_smry_ls$dv_ls$ds_url_1L_chr)
     shareable_mdls_tb <- shareable_mdls_tb %>% dplyr::mutate(dv_nm_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
-        fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~get_fl_id_from_dv_ls(ds_ls, 
+        fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ready4use::get_fl_id_from_dv_ls(ds_ls, 
             fl_nm_1L_chr = paste0(.x, ".RDS")) %>% as.integer()))
     outp_smry_ls$shareable_mdls_tb <- shareable_mdls_tb
     return(outp_smry_ls)
