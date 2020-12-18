@@ -717,3 +717,33 @@ make_smry_of_ts_mdl <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr,
     }
     return(smry_of_ts_mdl_ls)
 }
+#' Make unique list elmt index
+#' @description make_unique_ls_elmt_idx_int() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make unique list elmt index integer vector. The function returns Unique list elmt index (an integer vector).
+#' @param data_ls Data (a list)
+#' @return Unique list elmt index (an integer vector)
+#' @rdname make_unique_ls_elmt_idx_int
+#' @export 
+#' @importFrom tibble as_tibble
+#' @importFrom dplyr mutate case_when group_by row_number ungroup
+#' @importFrom purrr map2_chr map flatten_int
+#' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
+make_unique_ls_elmt_idx_int <- function (data_ls) 
+{
+    combos_tb <- tibble::as_tibble(data_ls, .name_repair = ~paste0("r_", 
+        1:length(data_ls))) %>% t() %>% as.data.frame()
+    combos_tb <- combos_tb %>% tibble::as_tibble()
+    combos_tb <- combos_tb %>% dplyr::mutate(V2 = dplyr::case_when(V1 == 
+        V2 ~ NA_character_, T ~ V2)) %>% dplyr::mutate(combo_chr = purrr::map2_chr(V1, 
+        V2, ~ifelse(ncol(combos_tb) == 1 | is.na(.y), .x, paste0(.x, 
+            "_", .y))))
+    combos_tb <- combos_tb %>% dplyr::group_by(combo_chr) %>% 
+        dplyr::mutate(combo_id = dplyr::row_number())
+    unique_ls_elmt_idx_int <- purrr::map(data_ls %>% unique(), 
+        ~ready4fun::get_from_lup_obj(combos_tb %>% dplyr::ungroup(), 
+            match_var_nm_1L_chr = "combo_chr", match_value_xx = paste0(.x[1], 
+                ifelse(is.na(.x[2]), "", paste0("_", .x[2]))), 
+            target_var_nm_1L_chr = "combo_id", evaluate_lgl = F)) %>% 
+        purrr::flatten_int()
+    return(unique_ls_elmt_idx_int)
+}
