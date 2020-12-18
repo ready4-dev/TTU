@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ready4u</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9083</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9084</span>
       </span>
     </div>
 
@@ -129,13 +129,13 @@
     </div>
 
     <pre class="usage"><span class='fu'>make_knit_pars_ls</span><span class='op'>(</span>
-  <span class='va'>mdl_smry_dir_1L_chr</span>,
+  <span class='va'>rltv_path_to_data_dir_1L_chr</span>,
   <span class='va'>mdl_types_chr</span>,
   <span class='va'>predr_vars_nms_ls</span>,
   output_type_1L_chr <span class='op'>=</span> <span class='st'>"HTML"</span>,
   mdl_types_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
   plt_types_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
-  plt_types_chr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"coefs"</span>, <span class='st'>"hetg"</span>, <span class='st'>"dnst"</span>, <span class='st'>"sctr_plt"</span><span class='op'>)</span>,
+  plt_types_chr <span class='op'>=</span> <span class='cn'>NA_character_</span>,
   section_type_1L_chr <span class='op'>=</span> <span class='st'>"#"</span>
 <span class='op'>)</span></pre>
 
@@ -143,8 +143,8 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>mdl_smry_dir_1L_chr</th>
-      <td><p>Model smry directory (a character vector of length one)</p></td>
+      <th>rltv_path_to_data_dir_1L_chr</th>
+      <td><p>Rltv path to data directory (a character vector of length one)</p></td>
     </tr>
     <tr>
       <th>mdl_types_chr</th>
@@ -168,7 +168,7 @@
     </tr>
     <tr>
       <th>plt_types_chr</th>
-      <td><p>Plt types (a character vector), Default: c("coefs", "hetg", "dnst", "sctr_plt")</p></td>
+      <td><p>Plt types (a character vector), Default: 'NA'</p></td>
     </tr>
     <tr>
       <th>section_type_1L_chr</th>

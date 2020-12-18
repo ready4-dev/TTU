@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Knit model rprt — knit_mdl_rprt • ready4u</title>
+<title>Report types lookup table — rprt_lup • ready4u</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Knit model rprt — knit_mdl_rprt" />
-<meta property="og:description" content="knit_mdl_rprt() is a Knit function that knits a rmarkdown file Specifically, this function implements an algorithm to knit model rprt. The function is called for its side effects and does not return a value." />
+<meta property="og:title" content="Report types lookup table — rprt_lup" />
+<meta property="og:description" content="A lookup table of the different report types supported by ready4u functions" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -119,29 +119,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Knit model rprt</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/ready4u/blob/master/R/fn_knit.R'><code>R/fn_knit.R</code></a></small>
-    <div class="hidden name"><code>knit_mdl_rprt.Rd</code></div>
+    <h1>Report types lookup table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/ready4u/blob/master/R/db_rprt_lup.R'><code>R/db_rprt_lup.R</code></a></small>
+    <div class="hidden name"><code>rprt_lup.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>knit_mdl_rprt() is a Knit function that knits a rmarkdown file Specifically, this function implements an algorithm to knit model rprt. The function is called for its side effects and does not return a value.</p>
+    <p>A lookup table of the different report types supported by ready4u functions</p>
     </div>
 
-    <pre class="usage"><span class='fu'>knit_mdl_rprt</span><span class='op'>(</span><span class='va'>knit_pars_ls</span>, <span class='va'>path_to_mdl_rprt_tmpl_1L_chr</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='va'>rprt_lup</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>knit_pars_ls</th>
-      <td><p>Knit parameters (a list)</p></td>
-    </tr>
-    <tr>
-      <th>path_to_mdl_rprt_tmpl_1L_chr</th>
-      <td><p>Path to model rprt tmpl (a character vector of length one)</p></td>
-    </tr>
-    </table>
+
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>, <code>data.frame</code>) with 1 rows and 7 columns.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>A tibble</p>
+<dl>
+<dt>rprt_nms_chr</dt><dd><p>Rprt names (a character vector)</p></dd>
+<dt>title_chr</dt><dd><p>Title (a character vector)</p></dd>
+<dt>paths_to_RMD_dir_1L_chr</dt><dd><p>Paths toMD directory (a character vector of length one)</p></dd>
+<dt>pkg_dirs_chr</dt><dd><p>Package directories (a character vector)</p></dd>
+<dt>packages_chr</dt><dd><p>Packages (a character vector)</p></dd>
+<dt>nms_of_RMD_chr</dt><dd><p>Names ofMD (a character vector)</p></dd>
+<dt>rltv_paths_to_outpt_yaml_chr</dt><dd><p>Rltv paths to outpt yaml (a character vector)</p></dd>
+
+</dl>
 
 
   </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Knit model rprt — knit_mdl_rprt • ready4u</title>
+<title>Make rprt type — make_rprt_type_ls • ready4u</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Knit model rprt — knit_mdl_rprt" />
-<meta property="og:description" content="knit_mdl_rprt() is a Knit function that knits a rmarkdown file Specifically, this function implements an algorithm to knit model rprt. The function is called for its side effects and does not return a value." />
+<meta property="og:title" content="Make rprt type — make_rprt_type_ls" />
+<meta property="og:description" content="make_rprt_type_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make rprt type list. The function returns Rprt type (a list)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -119,30 +119,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Knit model rprt</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/ready4u/blob/master/R/fn_knit.R'><code>R/fn_knit.R</code></a></small>
-    <div class="hidden name"><code>knit_mdl_rprt.Rd</code></div>
+    <h1>Make rprt type</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/ready4u/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
+    <div class="hidden name"><code>make_rprt_type_ls.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>knit_mdl_rprt() is a Knit function that knits a rmarkdown file Specifically, this function implements an algorithm to knit model rprt. The function is called for its side effects and does not return a value.</p>
+    <p>make_rprt_type_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make rprt type list. The function returns Rprt type (a list).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>knit_mdl_rprt</span><span class='op'>(</span><span class='va'>knit_pars_ls</span>, <span class='va'>path_to_mdl_rprt_tmpl_1L_chr</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>make_rprt_type_ls</span><span class='op'>(</span><span class='va'>rprt_nm_1L_chr</span>, <span class='va'>rprt_lup</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>knit_pars_ls</th>
-      <td><p>Knit parameters (a list)</p></td>
+      <th>rprt_nm_1L_chr</th>
+      <td><p>Rprt name (a character vector of length one)</p></td>
     </tr>
     <tr>
-      <th>path_to_mdl_rprt_tmpl_1L_chr</th>
-      <td><p>Path to model rprt tmpl (a character vector of length one)</p></td>
+      <th>rprt_lup</th>
+      <td><p>Rprt (a lookup table)</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Rprt type (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
