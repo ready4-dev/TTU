@@ -1,0 +1,34 @@
+---
+output: html_document
+---
+
+\blandscape
+
+{{section_ttl_1L_chr}}
+
+```{r, include=FALSE}
+# paths_to_mdl_plts_chr <- paste0({{path_to_mdl_1L_chr}} %>% stringr::str_sub(end=-5), 
+#                                 paste0("_",c("coefs","hetg", "dnst","sctr_plt"),".png"))
+# include_plots_lgl <- paths_to_mdl_plts_chr %>% purrr::map_lgl(~file.exists(.x))
+# paths_to_mdl_plts_chr <- paths_to_mdl_plts_chr[include_plots_lgl]
+# plt_nms_chr <- {{plt_nms_chr}}[include_plots_lgl]
+# if(identical(include_plots_lgl[1:2],c(T,F))){
+#   plt_nms_chr[1] <- plt_nms_chr[1] %>% stringr::str_replace("population level effects","population and group level effects")
+# }
+```
+
+```{r echo = F, results="asis"}
+brms_mdl_print_ls <- make_brms_mdl_print_ls(mdl_ls = readRDS({{path_to_mdl_1L_chr}}),
+                                            label_stub_1L_chr = {{label_stub_1L_chr}},
+                                            caption_1L_chr = {{caption_1L_chr}},
+                                            output_type_1L_chr = {{output_type_1L_chr}})
+rlang::exec(print_table_xx,!!!brms_mdl_print_ls[[5]])
+```
+\elandscape
+\newpage
+```{r, fig.cap={{plt_nms_chr}}, echo=FALSE, message=F}
+knitr::include_graphics({{paths_to_mdl_plts_chr}})
+```
+`r officer::run_pagebreak()`
+\newpage
+

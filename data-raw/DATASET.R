@@ -167,6 +167,19 @@ pkg_dss_tb <- tibble::tibble(short_name_chr = c("coefs","hetg", "dnst","sctr_plt
                               desc_1L_chr = "A lookup table of abbreviations to describe the different model plot types supported by ready4u functions",
                               abbreviations_lup = abbreviations_lup,
                               pkg_dss_tb = pkg_dss_tb)
+
+pkg_dss_tb <- tibble::tibble(rprt_nms_chr = "Main_Mdl_Smry",
+                           title_chr = "Summary report of the models estimated from synthetic data to map a number of mental health measures to utility scores.",
+                           paths_to_RMD_dir_1L_chr = NA_character_,
+                           pkg_dirs_chr = "Markdown",
+                           packages_chr = "ready4u",
+                           nms_of_RMD_chr = "_Mdls_Report.RMD",
+                           rltv_paths_to_outpt_yaml_chr = "_output.yml") %>%
+  ready4fun::write_and_doc_ds(db_1L_chr = "rprt_lup",
+                              title_1L_chr = "Report types lookup table",
+                              desc_1L_chr = "A lookup table of the different report types supported by ready4u functions",
+                              abbreviations_lup = abbreviations_lup,
+                              pkg_dss_tb = pkg_dss_tb)
 # 7. Save copy of package documentation to online data repo.
 # ds_ls <- ready4use::write_pkg_dss_to_dv_ds_csvs(pkg_dss_tb,
 #                                                 dv_nm_1L_chr = "ready4models",

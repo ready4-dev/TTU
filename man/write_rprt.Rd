@@ -5,33 +5,32 @@
 \title{Write rprt}
 \usage{
 write_rprt(
+  rprt_type_ls,
   outp_smry_ls,
-  nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
   output_type_1L_chr = "PDF",
   section_type_1L_chr = "#",
+  path_to_outpt_dir_1L_chr = "../../../../Data/Project/Utility_Models",
   reports_dir_1L_chr = "Reports",
-  markdown_dir_1L_chr = "Markdown",
-  file_nm_1L_chr = "Main_Mdl_Smry",
- 
-    title_1L_chr = "Summary report of the models estimated from synthetic data to map a number of mental health measures to utility scores."
+  rltv_path_to_data_dir_1L_chr = "../Output",
+  nm_of_mkdn_dir_1L_chr = "Markdown"
 )
 }
 \arguments{
-\item{outp_smry_ls}{Output smry (a list)}
+\item{rprt_type_ls}{Rprt type (a list)}
 
-\item{nm_of_RMD_1L_chr}{Name ofMD (a character vector of length one), Default: '_Mdls_Report.RMD'}
+\item{outp_smry_ls}{Output smry (a list)}
 
 \item{output_type_1L_chr}{Output type (a character vector of length one), Default: 'PDF'}
 
 \item{section_type_1L_chr}{Section type (a character vector of length one), Default: '#'}
 
+\item{path_to_outpt_dir_1L_chr}{Path to outpt directory (a character vector of length one), Default: '../../../../Data/Project/Utility_Models'}
+
 \item{reports_dir_1L_chr}{Reports directory (a character vector of length one), Default: 'Reports'}
 
-\item{markdown_dir_1L_chr}{Markdown directory (a character vector of length one), Default: 'Markdown'}
+\item{rltv_path_to_data_dir_1L_chr}{Rltv path to data directory (a character vector of length one), Default: '../Output'}
 
-\item{file_nm_1L_chr}{File name (a character vector of length one), Default: 'Main_Mdl_Smry'}
-
-\item{title_1L_chr}{Title (a character vector of length one), Default: 'Summary report of the models estimated from synthetic data to map a number of mental health measures to utility scores.'}
+\item{nm_of_mkdn_dir_1L_chr}{Name of mkdn directory (a character vector of length one), Default: 'Markdown'}
 }
 \value{
 Output smry (a list)

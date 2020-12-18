@@ -134,39 +134,80 @@ make_folds_ls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", n_fold
                                    k = n_folds_1L_int, list = TRUE, returnTrain = FALSE)
     return(folds_ls)
 }
-make_knit_pars_ls <- function (mdl_smry_dir_1L_chr, mdl_types_chr, predr_vars_nms_ls,
+make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, predr_vars_nms_ls,
                                output_type_1L_chr = "HTML", mdl_types_lup = NULL, plt_types_lup = NULL,
-                               plt_types_chr = c("coefs", "hetg", "dnst", "sctr_plt"), section_type_1L_chr = "#")
+                               plt_types_chr = NA_character_, section_type_1L_chr = "#")
 {
     if (is.null(mdl_types_lup))
         utils::data(mdl_types_lup, envir = environment())
     if (is.null(plt_types_lup))
         utils::data(plt_types_lup, envir = environment())
+  if(is.na(plt_types_chr)){
+    plt_types_chr <- plt_types_lup$short_name_chr
+  }
+   paths_to_all_data_fls_chr <- list.files(rltv_path_to_data_dir_1L_chr,full.names = T)
     lab_idx_dbl <- 1:(length(mdl_types_chr) * length(predr_vars_nms_ls))
-    knit_pars_ls <- purrr::pmap(list(predr_vars_nms_ls, split(lab_idx_dbl,
-                                                              ceiling(seq_along(lab_idx_dbl)/length(mdl_types_chr))),
-                                     make_unique_ls_elmt_idx_int(predr_vars_nms_ls), make_mdl_nms_ls(predr_vars_nms_ls,
-                                                                                                     mdl_types_chr = mdl_types_chr)), ~{
-                                                                                                         mdl_nms_chr <- ..4
-                                                                                                         path_to_mdl_stubs_chr <- paste0(mdl_smry_dir_1L_chr,
-                                                                                                                                         "/", mdl_nms_chr)
-                                                                                                         paths_to_mdls_chr <- paste0(path_to_mdl_stubs_chr, ".RDS")
-                                                                                                         paths_to_mdl_plts_ls <- purrr::map(path_to_mdl_stubs_chr,
-                                                                                                                                            ~paste0(..1, paste0("_", plt_types_chr, ".png")))
-                                                                                                         mdl_ttls_chr <- paste0(..1[1], ifelse(is.na(..1[2]),
-                                                                                                                                               "", paste(" with ", ..1[2])), " ", ready4fun::get_from_lup_obj(mdl_types_lup,
-                                                                                                                                                                                                              match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_types_chr,
-                                                                                                                                                                                                              target_var_nm_1L_chr = "long_name_chr", evaluate_lgl = F))
-                                                                                                         section_ttls_chr <- paste0(section_type_1L_chr, " ",
-                                                                                                                                    mdl_ttls_chr)
-                                                                                                         list(plt_nms_ls = purrr::map(mdl_ttls_chr, ~{
-                                                                                                             paste0(.x, " ", ready4fun::get_from_lup_obj(plt_types_lup,
-                                                                                                                                                         match_var_nm_1L_chr = "short_name_chr", match_value_xx = plt_types_chr,
-                                                                                                                                                         target_var_nm_1L_chr = "long_name_chr", evaluate_lgl = F))
-                                                                                                         }), paths_to_mdls_chr = paths_to_mdls_chr, tbl_captions_chr = mdl_ttls_chr,
-                                                                                                         label_stubs_chr = paste0("lab", ..2), output_type_1L_chr = output_type_1L_chr,
-                                                                                                         section_ttls_chr = section_ttls_chr, ls_elmt_idx_1L_int = ..3)
-                                                                                                     })
+    knit_pars_ls <- purrr::pmap(list(predr_vars_nms_ls,
+                                     split(lab_idx_dbl,
+                                           ceiling(seq_along(lab_idx_dbl)/length(mdl_types_chr))),
+                                     #make_unique_ls_elmt_idx_int(predr_vars_nms_ls), # POSSIBLY REMOVE AND UPDATE PURRR INDICES (..4 to ..3)
+                                     make_mdl_nms_ls(predr_vars_nms_ls,
+                                                     mdl_types_chr = mdl_types_chr)),
+                                ~{
+                                  mdl_nms_chr <- ..3#..4
+                                  mdl_data_paths_ls <- mdl_nms_chr %>%
+                                    purrr::map(~paths_to_all_data_fls_chr[stringr::str_detect(paths_to_all_data_fls_chr,.x)]) %>%
+                                    stats::setNames(mdl_nms_chr)
+                                  paths_to_mdls_chr <- mdl_data_paths_ls %>%
+                                    purrr::map_chr(~.x[endsWith(.x,".RDS")]) %>% unname()
+                                  paths_to_mdl_plts_ls <- mdl_data_paths_ls %>%
+                                    purrr::map(~{
+                                      paths_to_all_plots_chr <- .x[endsWith(.x,".png")]
+                                      plt_types_chr %>% purrr::map(~paths_to_all_plots_chr[paths_to_all_plots_chr %>%
+                                                                                                stringr::str_detect(.x)]) %>% purrr::flatten_chr()
+                                      })
+                                  mdl_ttls_chr <- paste0(..1[1], ifelse(is.na(..1[2]),
+                                                                        "",
+                                                                        paste(" with ", ..1[2])),
+                                                         " ",
+                                                         mdl_types_chr %>% purrr::map_chr(~ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                                                     match_var_nm_1L_chr = "short_name_chr",
+                                                                                     match_value_xx = .x,
+                                                                                     target_var_nm_1L_chr = "long_name_chr",
+                                                                                     evaluate_lgl = F)))
+                                  section_ttls_chr <- paste0(section_type_1L_chr, " ", mdl_ttls_chr)
+                                  plt_nms_ls <- paths_to_mdl_plts_ls %>% purrr::map2(mdl_ttls_chr,~{
+                                    paths_to_mdl_plts_chr <- .x
+                                    mdl_ttl_1L_chr <- .y
+                                    transform_1L_lgl <- paths_to_mdl_plts_chr %>% endsWith("_coefs.png") %>% any()
+                                    if(paths_to_mdl_plts_chr %>% endsWith("_hetg.png") %>% any())
+                                      transform_1L_lgl <- F # ALL OF THIS TFMN LOGIC CAN BE BINNED WHEN NEW CATEGORY OF PLOT TYPE IS ADDED.
+                                    plt_types_chr %>% purrr::map(~{
+                                      if(endsWith(paths_to_mdl_plts_chr,paste0("_",.x,".png")) %>% any()){
+                                        paste0(mdl_ttl_1L_chr,
+                                               " ",
+                                               ifelse(transform_1L_lgl & .x == "coefs",
+                                                      "population and group level effects",
+                                                      ready4fun::get_from_lup_obj(plt_types_lup,
+                                                                           match_var_nm_1L_chr = "short_name_chr",
+                                                                           match_value_xx = .x,
+                                                                           target_var_nm_1L_chr = "long_name_chr",
+                                                                           evaluate_lgl = F)))
+
+                                      }else{
+                                        character(0)
+                                      }}) %>% purrr::flatten_chr()
+                                  })
+                                  list(plt_nms_ls = plt_nms_ls,
+                                       paths_to_mdls_chr = paths_to_mdls_chr,
+                                       tbl_captions_chr = mdl_ttls_chr,
+                                       label_stubs_chr = paste0("lab", ..2),
+                                       output_type_1L_chr = output_type_1L_chr,
+                                       section_ttls_chr = section_ttls_chr,
+                                       #ls_elmt_idx_1L_int = ..3,
+                                       paths_to_mdl_plts_ls = paths_to_mdl_plts_ls)
+                                  }) %>%
+      stats::setNames(predr_vars_nms_ls %>% purrr::map_chr(~paste(.x,collapse="_")))
     return(knit_pars_ls)
 }
 make_mdl <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF",
@@ -270,6 +311,21 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
     prefd_mdls_chr <- purrr::map_chr(choose_from_pfx_chr, ~ordered_mdl_types_chr[startsWith(ordered_mdl_types_chr,
                                                                                             .x)][1])
     return(prefd_mdls_chr)
+}
+make_rprt_type_ls <- function(rprt_nm_1L_chr,
+                              rprt_lup){
+  values_chr <- names(rprt_lup)[names(rprt_lup) != "rprt_nms_chr"] %>% purrr::map_chr(~ready4fun::get_from_lup_obj(rprt_lup,
+                                                                                                                   match_value_xx = rprt_nm_1L_chr,
+                                                                                                                   match_var_nm_1L_chr = "rprt_nms_chr",
+                                                                                                                   target_var_nm_1L_chr = .x,
+                                                                                                                   evaluate_lgl = F))
+  rprt_type_ls <- list(path_to_RMD_dir_1L_chr = ifelse(!is.na(values_chr[2]),values_chr[2],system.file(values_chr[3],
+                                                                                                       package = values_chr[4])),
+                       nm_of_RMD_1L_chr = values_chr[5],
+                       rltv_path_to_outpt_yaml_1L_chr = values_chr[6],
+                       file_nm_1L_chr = rprt_nm_1L_chr,
+                       title_1L_chr = values_chr[1])
+  return(rprt_type_ls)
 }
 make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "utl_total_w",
     id_var_nm_1L_chr = "fkClientID", tfmn_1L_chr = "CLL", mdl_type_1L_chr = "OLS_CLL",

@@ -8,6 +8,7 @@ reference:
   - fns_dmt_tb
   - mdl_types_lup
   - plt_types_lup
+  - rprt_lup
 - title: "Functions"
 - contents:
   - add_utility_predn_to_ds

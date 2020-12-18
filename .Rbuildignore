@@ -49,3 +49,16 @@
 ^data-raw/MigrateInternally/_Workflow\.Rmd$
 ^data-raw/MigrateInternally/depcheck\.R$
 ^data-raw/MigrateInternally/migrate_ls\.RDS$
+^data-raw/inst/Deprecated/_mdl_rpt_tmpl\.Rmd$
+^data-raw/inst/Deprecated/_Mdls_Report\.Rmd$
+^data-raw/inst/Deprecated/_Model_Report_Template\.Rmd$
+^data-raw/inst/Deprecated/_output\.yml$
+^data-raw/inst/Deprecated/page-break\.lua$
+^data-raw/inst/Deprecated/preamble\.tex$
+^data-raw/inst/Markdown/_mdl_rpt_tmpl\.Rmd$
+^data-raw/inst/Markdown/_Mdls_Report\.Rmd$
+^data-raw/inst/Markdown/_Model_Report_Template\.Rmd$
+^data-raw/inst/Markdown/_output\.yml$
+^data-raw/inst/Markdown/_Reworked_First_Bit\.Rmd$
+^data-raw/inst/Markdown/page-break\.lua$
+^data-raw/inst/Markdown/preamble\.tex$

@@ -5,18 +5,18 @@
 \title{Make knit parameters}
 \usage{
 make_knit_pars_ls(
-  mdl_smry_dir_1L_chr,
+  rltv_path_to_data_dir_1L_chr,
   mdl_types_chr,
   predr_vars_nms_ls,
   output_type_1L_chr = "HTML",
   mdl_types_lup = NULL,
   plt_types_lup = NULL,
-  plt_types_chr = c("coefs", "hetg", "dnst", "sctr_plt"),
+  plt_types_chr = NA_character_,
   section_type_1L_chr = "#"
 )
 }
 \arguments{
-\item{mdl_smry_dir_1L_chr}{Model smry directory (a character vector of length one)}
+\item{rltv_path_to_data_dir_1L_chr}{Rltv path to data directory (a character vector of length one)}
 
 \item{mdl_types_chr}{Model types (a character vector)}
 
@@ -28,7 +28,7 @@ make_knit_pars_ls(
 
 \item{plt_types_lup}{Plt types (a lookup table), Default: NULL}
 
-\item{plt_types_chr}{Plt types (a character vector), Default: c("coefs", "hetg", "dnst", "sctr_plt")}
+\item{plt_types_chr}{Plt types (a character vector), Default: 'NA'}
 
 \item{section_type_1L_chr}{Section type (a character vector of length one), Default: '#'}
 }
