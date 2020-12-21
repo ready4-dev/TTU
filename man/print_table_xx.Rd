@@ -12,9 +12,11 @@ print_table_xx(
   merge_row_idx_int = NA_integer_,
   digits_dbl = NULL,
   big_mark_1L_chr = " ",
-  label,
-  hline.after,
-  addtorow,
+  use_lbls_as_col_nms_1L_lgl = F,
+  scroll_box_args_ls = NULL,
+  mkdn_tbl_ref_1L_chr,
+  hline_after_ls = NULL,
+  add_to_row_ls = NULL,
   sanitize_fn = getOption("xtable.sanitize.text.function", NULL)
 )
 }
@@ -33,11 +35,15 @@ print_table_xx(
 
 \item{big_mark_1L_chr}{Big mark (a character vector of length one), Default: ' '}
 
-\item{label}{PARAM_DESCRIPTION}
+\item{use_lbls_as_col_nms_1L_lgl}{Use lbls as column names (a logical vector of length one), Default: F}
 
-\item{hline.after}{PARAM_DESCRIPTION}
+\item{scroll_box_args_ls}{Scroll box arguments (a list), Default: NULL}
 
-\item{addtorow}{PARAM_DESCRIPTION}
+\item{mkdn_tbl_ref_1L_chr}{Mkdn table reference (a character vector of length one)}
+
+\item{hline_after_ls}{Hline after (a list), Default: NULL}
+
+\item{add_to_row_ls}{Add to row (a list), Default: NULL}
 
 \item{sanitize_fn}{Sanitize (a function), Default: getOption("xtable.sanitize.text.function", NULL)}
 }
