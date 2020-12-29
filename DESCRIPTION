@@ -1,6 +1,6 @@
 Package: ready4u
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9092
+Version: 0.0.0.9093
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
