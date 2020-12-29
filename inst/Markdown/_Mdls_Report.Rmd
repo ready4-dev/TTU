@@ -12,7 +12,7 @@ params:
 ---
 
 ```{r setup, include=FALSE}
-library(ready4u)
+library(TTU)
 library(magrittr)
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(comment = NA)
