@@ -11,7 +11,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 rprt_lup
 }
 \description{
-A lookup table of the different report types supported by ready4u functions
+A lookup table of the different report types supported by TTU functions
 }
 \details{
 A tibble

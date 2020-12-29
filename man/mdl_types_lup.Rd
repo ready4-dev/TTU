@@ -11,7 +11,7 @@ An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) w
 mdl_types_lup
 }
 \description{
-A lookup table of abbreviations to describe the different model types supported by ready4u functions
+A lookup table of abbreviations to describe the different model types supported by TTU functions
 }
 \details{
 A tibble

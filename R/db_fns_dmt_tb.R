@@ -1,6 +1,6 @@
-#' ready4u function documentation table
+#' TTU function documentation table
 #' 
-#' Meta-data on each ready4u function used to create package documentation
+#' Meta-data on each TTU function used to create package documentation
 #' 
 #' A tibble
 #' 
@@ -16,5 +16,5 @@
 #'   \item{file_nm_chr}{File name (a character vector)}
 #'   \item{file_pfx_chr}{File prefix (a character vector)}
 #' }
-#' @source \url{https://ready4-dev.github.io/ready4u/}
+#' @source \url{https://ready4-dev.github.io/TTU/}
 "fns_dmt_tb"

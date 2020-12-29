@@ -3,18 +3,18 @@
 \docType{data}
 \name{fns_dmt_tb}
 \alias{fns_dmt_tb}
-\title{ready4u function documentation table}
+\title{TTU function documentation table}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 49 rows and 10 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 48 rows and 10 columns.
 }
 \source{
-\url{https://ready4-dev.github.io/ready4u/}
+\url{https://ready4-dev.github.io/TTU/}
 }
 \usage{
 fns_dmt_tb
 }
 \description{
-Meta-data on each ready4u function used to create package documentation
+Meta-data on each TTU function used to create package documentation
 }
 \details{
 A tibble

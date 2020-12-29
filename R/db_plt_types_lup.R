@@ -1,6 +1,6 @@
 #' Model plot types lookup table
 #' 
-#' A lookup table of abbreviations to describe the different model plot types supported by ready4u functions
+#' A lookup table of abbreviations to describe the different model plot types supported by TTU functions
 #' 
 #' A tibble
 #' 
