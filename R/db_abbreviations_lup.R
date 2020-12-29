@@ -1,6 +1,6 @@
 #' Common abbreviations lookup table
 #' 
-#' A lookup table for abbreviations commonly used in object names in the ready4upackage.
+#' A lookup table for abbreviations commonly used in object names in the TTUpackage.
 #' 
 #' A tibble
 #' 

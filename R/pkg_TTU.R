@@ -1,4 +1,4 @@
-#' ready4u: Transfer to Utility Mapping Algorithm Toolkit
+#' TTU: Transfer to Utility Mapping Algorithm Toolkit
 #'
 #' Tools for developping Transfer To Utility (TTU)
 #' mapping algorithms to predict health utility from other health
@@ -15,7 +15,7 @@
 #' therefore quite rudimentary. Human authored documentation will follow
 #' in 2021.
 #'
-#' To learn more about ready4u, start with the vignettes:
-#' `browseVignettes(package = "ready4u")`
+#' To learn more about TTU, start with the vignettes:
+#' `browseVignettes(package = "TTU")`
 #'
 "_PACKAGE"

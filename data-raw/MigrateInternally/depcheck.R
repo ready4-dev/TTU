@@ -1,13 +1,13 @@
-library(ready4u)
+library(TTU)
 # library(dplyr)
 library(DependenciesGraphs)
 # library(mvbutils)
 # deps <- funDependencies("package:dplyr", "mutate")
-# allFunctionEnv("package:ready4u")
-# test_tb<-linksForAll("package:ready4u")
-# graphfun <- mvbutils::foodweb(where = "package:ready4u", descendents = F,
+# allFunctionEnv("package:TTU")
+# test_tb<-linksForAll("package:TTU")
+# graphfun <- mvbutils::foodweb(where = "package:TTU", descendents = F,
 #                               plotting = F, ancestors = T, plotting = F)$funmat
-pkg_depcy_ls <- DependenciesGraphs::envirDependencies("package:ready4u")
+pkg_depcy_ls <- DependenciesGraphs::envirDependencies("package:TTU")
 # saveRDS(migrate_ls,
 #         "migrate_ls.RDS")
 # write_fns_to_split_destns <- function(pkg_depcy_ls,
@@ -74,7 +74,7 @@ write_fns_to_split_destns(pkg_depcy_ls,
                                                  "write_shareable_mdls",
                                                  "write_ts_mdls_from_alg_outp"),
                           original_pkg_nm_1L_chr = get_dev_pkg_nm(),
-                          pkg_1_nm_1L_chr = "ready4u",
+                          pkg_1_nm_1L_chr = "TTU",
                           pkg_2_nm_1L_chr = "map2aqol",
                           tmp_dir_path_1L_chr = "data-raw/pkg_migration",
                           path_to_fns_dir_1L_chr = "data-raw/fns")

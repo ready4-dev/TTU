@@ -1,6 +1,6 @@
 #' Function type lookup table
 #' 
-#' A lookup table to find descriptions for different types of functions used within the ready4u package suite.
+#' A lookup table to find descriptions for different types of functions used within the TTU package suite.
 #' 
 #' A tibble
 #' 

@@ -1,4 +1,4 @@
-# ready4u <img src="man/figures/fav120.png" align="right" />
+# TTU <img src="man/figures/fav120.png" align="right" />
 
 ## Transfer to Utility Mapping Algorithm Toolkit
 
