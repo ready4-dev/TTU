@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9096
+Version: 0.0.0.9097
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -62,7 +62,6 @@ Imports:
     purrr,
     randomForest,
     rlang,
-    rmarkdown,
     stats,
     stringi,
     stringr,
