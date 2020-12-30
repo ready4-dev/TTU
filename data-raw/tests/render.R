@@ -10,7 +10,7 @@ devtools::load_all()
 #                  nm_of_rprt_dir_1L_chr = "Markdown",
 #                  path_to_outpt_rtrp_1L_chr = normalizePath("../../../../../Data/Project/Utility_Models/Reports"),
 #                  file_nm_1L_chr = "Mixed_Model_Code")
-write_rndrd_rprt("vignettes/Child_RMDs",
+ready4show::write_rndrd_rprt("vignettes/Child_RMDs",
                  nm_of_RMD_1L_chr = "_Mdls_Report.RMD",
                  params_ls = list(mdl_smry_dir_1L_chr = "../Output",
                                   output_type_1L_chr = "PDF",

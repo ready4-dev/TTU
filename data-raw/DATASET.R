@@ -98,7 +98,7 @@ fns_dmt_tb <- ready4fun::make_dmt_for_all_fns(paths_ls = ready4fun::make_fn_nms(
                                                                    inc_for_main_user_lgl_ls = list(force_true_chr = c("add_utility_predn_to_ds",
                                                                                                                       "make_fake_ts_data",
                                                                                                                       "write_all_alg_outps",
-                                                                                                                      "write_rprt",
+                                                                                                                      #"write_rprt",
                                                                                                                       "write_shareable_mdls",
                                                                                                                       "write_ts_mdls_from_alg_outp"),
                                                                                                    force_false_chr = NA_character_),

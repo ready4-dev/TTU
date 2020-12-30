@@ -14,6 +14,5 @@ reference:
   - add_utility_predn_to_ds
   - make_fake_ts_data
   - write_all_alg_outps
-  - write_rprt
   - write_shareable_mdls
   - write_ts_mdls_from_alg_outp
