@@ -57,12 +57,13 @@ make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, o
             paste0(collapse = ifelse(output_type_1L_chr == "PDF", 
                 "\n\n", "\n")), part_4 = "\n\n", part_5 = list(data_tb = data_tb, 
             output_type_1L_chr = output_type_1L_chr, caption_1L_chr = caption_1L_chr, 
-            label = paste0("tab:", label_stub_1L_chr), merge_row_idx_int = as.integer(which(bold_lgl)), 
+            mkdn_tbl_ref_1L_chr = paste0("tab:", label_stub_1L_chr), 
+            merge_row_idx_int = as.integer(which(bold_lgl)), 
             digits_dbl = c(ifelse(output_type_1L_chr == "PDF", 
                 0, NA_real_) %>% purrr::discard(is.na), names(data_tb) %>% 
                 purrr::map_dbl(~ifelse(.x %in% c("Bulk_ESS", 
                   "Tail_ESS"), 0, digits_1L_dbl))), big_mark_1L_chr = big_mark_1L_chr, 
-            hline.after = c(-1, 0), sanitize_fn = force, footnotes_chr = NA_character_), 
+            hline_after_ls = c(-1, 0), sanitize_fn = force, footnotes_chr = NA_character_), 
         part_6 = end_matter_1L_chr)
     if (output_type_1L_chr != "PDF") {
         brms_mdl_print_ls$part_5$footnotes_chr <- c(paste0(brms_mdl_print_ls$part_1, 
