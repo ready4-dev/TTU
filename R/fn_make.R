@@ -78,7 +78,7 @@ make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, o
             Hmisc::latexTranslate()
         footnotes_chr[1] <- footnotes_chr[1] %>% stringr::str_replace("~", 
             "\\\\textasciitilde")
-        brms_mdl_print_ls$part_5$addtorow <- list(pos = purrr::map(c(0, 
+        brms_mdl_print_ls$part_5$add_to_row_ls <- list(pos = purrr::map(c(0, 
             rep(nrow(data_tb), length(footnotes_chr) + 1)), ~.x), 
             command = c(names(data_tb) %>% Hmisc::latexTranslate() %>% 
                 paste0(collapse = " & ") %>% paste0("\\\\\n"), 
