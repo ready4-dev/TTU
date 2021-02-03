@@ -45,7 +45,6 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, dep_va
         match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = "long_name_chr", 
         evaluate_lgl = F)
     predr_vals_dbl <- make_predr_vals(predr_var_nm_1L_chr, candidate_predrs_lup = candidate_predrs_lup)
-    bc_plt_path_1L_chr <- NA_character_
     smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data_tb = bl_tb, 
         n_folds_1L_int = n_folds_1L_int, mdl_types_chr = mdl_types_chr, 
         dep_var_nm_1L_chr = dep_var_nm_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr, 
@@ -145,7 +144,7 @@ write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_writ
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param dep_var_desc_1L_chr Dep var description (a character vector of length one), Default: 'Utility score'
 #' @param round_var_nm_1L_chr Round var name (a character vector of length one), Default: 'round'
-#' @param tfmn_fn Transformation (a function), Default: function(x) {
+#' @param tfmn_fn Time series (a function), Default: function(x) {
 #'    x
 #'}
 #' @param units_1L_chr Units (a character vector of length one), Default: 'in'
@@ -211,14 +210,14 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
 #' @param model_mdl PARAM_DESCRIPTION
 #' @param mdl_fl_nm_1L_chr Model file name (a character vector of length one), Default: 'OLS_NTF'
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
-#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
+#' @param tfmn_1L_chr Time series (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
 #' @param predr_var_desc_1L_chr Predr var description (a character vector of length one)
 #' @param predr_vals_dbl Predr values (a double vector)
 #' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
 #' @param pred_type_1L_chr Pred type (a character vector of length one), Default: NULL
-#' @param tfmn_for_bnml_1L_lgl Transformation for bnml (a logical vector of length one), Default: F
+#' @param tfmn_for_bnml_1L_lgl Time series for bnml (a logical vector of length one), Default: F
 #' @param family_1L_chr Family (a character vector of length one), Default: 'NA'
 #' @param plt_idcs_int Plt idcs (an integer vector), Default: 1:5
 #' @return NULL
@@ -388,7 +387,7 @@ write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var
 #' @param n_folds_1L_int N folds (an integer vector of length one), Default: 10
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param start_1L_chr Start (a character vector of length one), Default: NULL
-#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
+#' @param tfmn_1L_chr Time series (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
 #' @param predr_var_desc_1L_chr Predr var description (a character vector of length one)
 #' @param predr_vals_dbl Predr values (a double vector)
@@ -669,8 +668,8 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
             dplyr::arrange(dplyr::desc(RsquaredP))
     return(smry_of_sngl_predr_mdls_tb)
 }
-#' Write ts models
-#' @description write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write ts models. The function returns Models smry (a tibble).
+#' Write transformation models
+#' @description write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write transformation models. The function returns Models smry (a tibble).
 #' @param data_tb Data (a tibble)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param predr_vars_nms_ls Predr vars names (a list)
@@ -713,8 +712,8 @@ write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_var
     saveRDS(mdls_smry_tb, paste0(mdl_smry_dir_1L_chr, "/mdls_smry_tb.RDS"))
     return(mdls_smry_tb)
 }
-#' Write ts models from algorithm output
-#' @description write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write ts models from algorithm output. The function returns Output smry (a list).
+#' Write transformation models from algorithm output
+#' @description write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write transformation models from algorithm output. The function returns Output smry (a list).
 #' @param outp_smry_ls Output smry (a list)
 #' @param fn_ls Function list (a list of functions)
 #' @param new_dir_nm_1L_chr New directory name (a character vector of length one), Default: 'F_TS_Mdls'

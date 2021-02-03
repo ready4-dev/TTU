@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_calculate.R
 \name{calculate_dep_var_tfmn}
 \alias{calculate_dep_var_tfmn}
-\title{Calculate dep var transformation}
+\title{Calculate dep var time series}
 \usage{
 calculate_dep_var_tfmn(
   dep_var_val_dbl,
@@ -13,14 +13,14 @@ calculate_dep_var_tfmn(
 \arguments{
 \item{dep_var_val_dbl}{Dep var value (a double vector)}
 
-\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
+\item{tfmn_1L_chr}{Time series (a character vector of length one), Default: 'NTF'}
 
-\item{tfmn_is_outp_1L_lgl}{Transformation is output (a logical vector of length one), Default: F}
+\item{tfmn_is_outp_1L_lgl}{Time series is output (a logical vector of length one), Default: F}
 }
 \value{
 Transformed dep var value (a double vector)
 }
 \description{
-calculate_dep_var_tfmn() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate dep var transformation. The function returns Transformed dep var value (a double vector).
+calculate_dep_var_tfmn() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate dep var time series. The function returns Transformed dep var value (a double vector).
 }
 \keyword{internal}

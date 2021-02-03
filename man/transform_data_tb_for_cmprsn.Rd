@@ -28,7 +28,7 @@ transform_data_tb_for_cmprsn(
 
 \item{pred_type_1L_chr}{Pred type (a character vector of length one), Default: NULL}
 
-\item{tfmn_for_bnml_1L_lgl}{Transformation for bnml (a logical vector of length one), Default: F}
+\item{tfmn_for_bnml_1L_lgl}{Time series for bnml (a logical vector of length one), Default: F}
 
 \item{family_1L_chr}{Family (a character vector of length one), Default: 'NA'}
 }

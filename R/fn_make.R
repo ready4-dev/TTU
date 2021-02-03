@@ -155,8 +155,8 @@ make_corstars_tbl_xx <- function (x, method = c("pearson", "spearman"), removeTr
         else print(xtable(Rnew), type = "latex")
     }
 }
-#' Make fake ts data
-#' @description make_fake_ts_data() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake ts data. The function returns Fk data (a tibble).
+#' Make fake transformation data
+#' @description make_fake_ts_data() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake transformation data. The function returns Fk data (a tibble).
 #' @param outp_smry_ls Output smry (a list)
 #' @return Fk data (a tibble)
 #' @rdname make_fake_ts_data
@@ -286,7 +286,7 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
 #' @description make_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model. The function is called for its side effects and does not return a value.
 #' @param data_tb Data (a tibble)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
-#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
+#' @param tfmn_1L_chr Time series (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
 #' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
 #' @param mdl_type_1L_chr Model type (a character vector of length one), Default: 'OLS_NTF'
@@ -376,15 +376,15 @@ make_mdl_smry_elmt_tbl <- function (mat, cat_chr)
         dplyr::bind_rows(tb)
     return(mdl_elmt_sum_tb)
 }
-#' Make predn dataset with one predr
-#' @description make_predn_ds_with_one_predr() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predn dataset with one predr. The function returns Predn dataset (a tibble).
+#' Make prediction dataset with one predr
+#' @description make_predn_ds_with_one_predr() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make prediction dataset with one predr. The function returns Prediction dataset (a tibble).
 #' @param model_mdl PARAM_DESCRIPTION
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
-#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
+#' @param tfmn_1L_chr Time series (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
 #' @param predr_vals_dbl Predr values (a double vector)
 #' @param pred_type_1L_chr Pred type (a character vector of length one), Default: NULL
-#' @return Predn dataset (a tibble)
+#' @return Prediction dataset (a tibble)
 #' @rdname make_predn_ds_with_one_predr
 #' @export 
 #' @importFrom tibble tibble
@@ -477,7 +477,7 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
 #' @param mdl_smry_tb Model smry (a tibble)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
-#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'CLL'
+#' @param tfmn_1L_chr Time series (a character vector of length one), Default: 'CLL'
 #' @param mdl_type_1L_chr Model type (a character vector of length one), Default: 'OLS_CLL'
 #' @param mdl_types_lup Model types (a lookup table), Default: NULL
 #' @param control_1L_chr Control (a character vector of length one), Default: 'NA'
@@ -581,7 +581,7 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "utl_tota
 #' @param n_folds_1L_int N folds (an integer vector of length one), Default: 10
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param start_1L_chr Start (a character vector of length one), Default: NULL
-#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
+#' @param tfmn_1L_chr Time series (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
 #' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
 #' @param mdl_type_1L_chr Model type (a character vector of length one), Default: 'OLS_NTF'
@@ -639,8 +639,8 @@ make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_n
         dplyr::select(Model, dplyr::everything())
     return(smry_of_one_predr_mdl_tb)
 }
-#' Make smry of ts model
-#' @description make_smry_of_ts_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of ts model. The function returns Smry of ts model (a list).
+#' Make smry of transformation model
+#' @description make_smry_of_ts_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of transformation model. The function returns Smry of transformation model (a list).
 #' @param data_tb Data (a tibble)
 #' @param fn Function (a function)
 #' @param predr_vars_nms_chr Predr vars names (a character vector)
@@ -653,7 +653,7 @@ make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_n
 #' @param backend_1L_chr Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")
 #' @param iters_1L_int Iters (an integer vector of length one), Default: 4000
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 1000
-#' @return Smry of ts model (a list)
+#' @return Smry of transformation model (a list)
 #' @rdname make_smry_of_ts_mdl
 #' @export 
 #' @importFrom rlang exec

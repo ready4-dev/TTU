@@ -16,8 +16,8 @@ print_all_plts_for_mdl_set <- function (output_ls, start_from_1L_int = 0L)
         title_1L_chr = names(output_ls)[.x], label_refs_chr = label_refs_mat[.x, 
             ]))
 }
-#' Print ts model plts
-#' @description print_ts_mdl_plts() is a Print function that prints output to console Specifically, this function implements an algorithm to print ts model plts. The function is called for its side effects and does not return a value.
+#' Print transformation model plts
+#' @description print_ts_mdl_plts() is a Print function that prints output to console Specifically, this function implements an algorithm to print transformation model plts. The function is called for its side effects and does not return a value.
 #' @param paths_to_plts_chr Paths to plts (a character vector)
 #' @param title_1L_chr Title (a character vector of length one)
 #' @param label_refs_chr Label references (a character vector)

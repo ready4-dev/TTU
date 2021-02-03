@@ -4,14 +4,30 @@
 \alias{predict_utility}
 \title{Predict utility}
 \usage{
-predict_utility(data_tb, tfmn_1L_chr = "NTF", model_mdl)
+predict_utility(
+  data_tb,
+  tfmn_1L_chr = "NTF",
+  model_mdl,
+  force_min_max_1L_lgl = T,
+  utl_min_val_1L_dbl = 0.03,
+  impute_1L_lgl = T,
+  utl_cls_fn = NULL
+)
 }
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
+\item{tfmn_1L_chr}{Time series (a character vector of length one), Default: 'NTF'}
 
 \item{model_mdl}{PARAM_DESCRIPTION}
+
+\item{force_min_max_1L_lgl}{Force min max (a logical vector of length one), Default: T}
+
+\item{utl_min_val_1L_dbl}{Utl min value (a double vector of length one), Default: 0.03}
+
+\item{impute_1L_lgl}{Impute (a logical vector of length one), Default: T}
+
+\item{utl_cls_fn}{Utl class (a function), Default: NULL}
 }
 \value{
 Predd utl (a double vector)

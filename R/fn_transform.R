@@ -6,7 +6,7 @@
 #' @param source_data_nm_1L_chr Source data name (a character vector of length one), Default: 'Original'
 #' @param tf_type_1L_chr Transform type (a character vector of length one), Default: 'Predicted'
 #' @param pred_type_1L_chr Pred type (a character vector of length one), Default: NULL
-#' @param tfmn_for_bnml_1L_lgl Transformation for bnml (a logical vector of length one), Default: F
+#' @param tfmn_for_bnml_1L_lgl Time series for bnml (a logical vector of length one), Default: F
 #' @param family_1L_chr Family (a character vector of length one), Default: 'NA'
 #' @return Transformed data (a tibble)
 #' @rdname transform_data_tb_for_cmprsn
@@ -37,7 +37,7 @@ transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, dep_var_nm_1L_chr 
 #' Transform dep var name
 #' @description transform_dep_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dep var name. Function argument dep_var_nm_1L_chr specifies the object to be updated. Argument tfmn_1L_chr provides the object to be updated. The function returns Transformed dep var name (a character vector of length one).
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one)
-#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
+#' @param tfmn_1L_chr Time series (a character vector of length one), Default: 'NTF'
 #' @return Transformed dep var name (a character vector of length one)
 #' @rdname transform_dep_var_nm
 #' @export 
@@ -86,34 +86,48 @@ transform_ds_for_mdlng <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", 
     return(tfd_data_tb)
 }
 #' Transform tibble to model input
-#' @description transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed for gsn log model (a tibble).
+#' @description transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble).
 #' @param data_tb Data (a tibble)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param predr_vars_nms_chr Predr vars names (a character vector)
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
 #' @param round_var_nm_1L_chr Round var name (a character vector of length one), Default: 'round'
 #' @param round_bl_val_1L_chr Round bl value (a character vector of length one), Default: 'Baseline'
-#' @return Transformed for gsn log model (a tibble)
+#' @param drop_all_msng_1L_lgl Drop all msng (a logical vector of length one), Default: T
+#' @param scaling_fctr_1L_dbl Scaling fctr (a double vector of length one), Default: 0.01
+#' @param ungroup_1L_lgl Ungroup (a logical vector of length one), Default: F
+#' @param add_cll_tfmn_1L_lgl Add cll time series (a logical vector of length one), Default: T
+#' @return Transformed for model input (a tibble)
 #' @rdname transform_tb_to_mdl_inp
 #' @export 
-#' @importFrom dplyr select all_of group_by arrange mutate across first lag
+#' @importFrom dplyr select all_of group_by arrange mutate across first lag ungroup
 #' @importFrom rlang sym
 #' @importFrom stats na.omit
 #' @keywords internal
 transform_tb_to_mdl_inp <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
-    round_bl_val_1L_chr = "Baseline") 
+    round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, 
+    scaling_fctr_1L_dbl = 0.01, ungroup_1L_lgl = F, add_cll_tfmn_1L_lgl = T) 
 {
     data_tb <- data.frame(data_tb)
-    tfd_for_gsn_log_mdl_tb <- data_tb %>% dplyr::select(dplyr::all_of(dep_var_nm_1L_chr), 
-        dplyr::all_of(id_var_nm_1L_chr), dplyr::all_of(round_var_nm_1L_chr), 
-        dplyr::all_of(predr_vars_nms_chr)) %>% dplyr::group_by(!!rlang::sym(id_var_nm_1L_chr)) %>% 
+    tfd_for_mdl_inp_tb <- data_tb %>% dplyr::select(dplyr::all_of(id_var_nm_1L_chr), 
+        dplyr::all_of(round_var_nm_1L_chr), dplyr::all_of(predr_vars_nms_chr), 
+        dplyr::all_of(dep_var_nm_1L_chr)) %>% dplyr::group_by(!!rlang::sym(id_var_nm_1L_chr)) %>% 
         dplyr::arrange(!!rlang::sym(id_var_nm_1L_chr), !!rlang::sym(round_var_nm_1L_chr))
-    tfd_for_gsn_log_mdl_tb <- tfd_for_gsn_log_mdl_tb %>% dplyr::mutate(dplyr::across(dplyr::all_of(predr_vars_nms_chr), 
-        .fns = list(baseline = ~dplyr::first(.)/100, change = ~ifelse(round == 
-            "Baseline", 0, (. - dplyr::lag(.))/100)))) %>% dplyr::mutate(`:=`(!!rlang::sym(transform_dep_var_nm_for_cll(dep_var_nm_1L_chr)), 
-        log(-log(1 - ifelse(!!rlang::sym(dep_var_nm_1L_chr) == 
-            1, 0.999, !!rlang::sym(dep_var_nm_1L_chr)))))) %>% 
-        stats::na.omit()
-    return(tfd_for_gsn_log_mdl_tb)
+    tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% dplyr::mutate(dplyr::across(dplyr::all_of(predr_vars_nms_chr), 
+        .fns = list(baseline = ~dplyr::first(.) * scaling_fctr_1L_dbl, 
+            change = ~ifelse(round == "Baseline", 0, (. - dplyr::lag(.)) * 
+                scaling_fctr_1L_dbl))))
+    if (add_cll_tfmn_1L_lgl) {
+        tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_dep_var_nm_for_cll(dep_var_nm_1L_chr)), 
+            log(-log(1 - ifelse(!!rlang::sym(dep_var_nm_1L_chr) == 
+                1, 0.999, !!rlang::sym(dep_var_nm_1L_chr))))))
+    }
+    if (drop_all_msng_1L_lgl) {
+        tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% stats::na.omit()
+    }
+    if (ungroup_1L_lgl) {
+        tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% dplyr::ungroup()
+    }
+    return(tfd_for_mdl_inp_tb)
 }

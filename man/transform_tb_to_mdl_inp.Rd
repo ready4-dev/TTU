@@ -10,7 +10,11 @@ transform_tb_to_mdl_inp(
   predr_vars_nms_chr,
   id_var_nm_1L_chr = "fkClientID",
   round_var_nm_1L_chr = "round",
-  round_bl_val_1L_chr = "Baseline"
+  round_bl_val_1L_chr = "Baseline",
+  drop_all_msng_1L_lgl = T,
+  scaling_fctr_1L_dbl = 0.01,
+  ungroup_1L_lgl = F,
+  add_cll_tfmn_1L_lgl = T
 )
 }
 \arguments{
@@ -25,11 +29,19 @@ transform_tb_to_mdl_inp(
 \item{round_var_nm_1L_chr}{Round var name (a character vector of length one), Default: 'round'}
 
 \item{round_bl_val_1L_chr}{Round bl value (a character vector of length one), Default: 'Baseline'}
+
+\item{drop_all_msng_1L_lgl}{Drop all msng (a logical vector of length one), Default: T}
+
+\item{scaling_fctr_1L_dbl}{Scaling fctr (a double vector of length one), Default: 0.01}
+
+\item{ungroup_1L_lgl}{Ungroup (a logical vector of length one), Default: F}
+
+\item{add_cll_tfmn_1L_lgl}{Add cll time series (a logical vector of length one), Default: T}
 }
 \value{
-Transformed for gsn log model (a tibble)
+Transformed for model input (a tibble)
 }
 \description{
-transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed for gsn log model (a tibble).
+transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble).
 }
 \keyword{internal}

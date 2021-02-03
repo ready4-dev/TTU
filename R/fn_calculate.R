@@ -1,8 +1,8 @@
-#' Calculate dep var transformation
-#' @description calculate_dep_var_tfmn() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate dep var transformation. The function returns Transformed dep var value (a double vector).
+#' Calculate dep var time series
+#' @description calculate_dep_var_tfmn() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate dep var time series. The function returns Transformed dep var value (a double vector).
 #' @param dep_var_val_dbl Dep var value (a double vector)
-#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
-#' @param tfmn_is_outp_1L_lgl Transformation is output (a logical vector of length one), Default: F
+#' @param tfmn_1L_chr Time series (a character vector of length one), Default: 'NTF'
+#' @param tfmn_is_outp_1L_lgl Time series is output (a logical vector of length one), Default: F
 #' @return Transformed dep var value (a double vector)
 #' @rdname calculate_dep_var_tfmn
 #' @export 

@@ -26,7 +26,7 @@ make_shareable_mdl(
 
 \item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
 
-\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'CLL'}
+\item{tfmn_1L_chr}{Time series (a character vector of length one), Default: 'CLL'}
 
 \item{mdl_type_1L_chr}{Model type (a character vector of length one), Default: 'OLS_CLL'}
 

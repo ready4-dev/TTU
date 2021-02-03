@@ -22,7 +22,7 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, dep_va
         match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = "long_name_chr",
         evaluate_lgl = F)
     predr_vals_dbl <- make_predr_vals(predr_var_nm_1L_chr, candidate_predrs_lup = candidate_predrs_lup)
-    bc_plt_path_1L_chr <- NA_character_
+    #bc_plt_path_1L_chr <- NA_character_
     smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data_tb = bl_tb,
         n_folds_1L_int = n_folds_1L_int, mdl_types_chr = mdl_types_chr,
         dep_var_nm_1L_chr = dep_var_nm_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr,

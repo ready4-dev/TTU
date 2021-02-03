@@ -39,18 +39,31 @@ transform_ds_for_mdlng <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", 
 }
 transform_tb_to_mdl_inp <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr,
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round",
-    round_bl_val_1L_chr = "Baseline")
+    round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, scaling_fctr_1L_dbl = 0.01, ungroup_1L_lgl = F,
+    add_cll_tfmn_1L_lgl = T)
 {
     data_tb <- data.frame(data_tb)
-    tfd_for_gsn_log_mdl_tb <- data_tb %>% dplyr::select(dplyr::all_of(dep_var_nm_1L_chr),
-        dplyr::all_of(id_var_nm_1L_chr), dplyr::all_of(round_var_nm_1L_chr),
-        dplyr::all_of(predr_vars_nms_chr)) %>% dplyr::group_by(!!rlang::sym(id_var_nm_1L_chr)) %>%
+    tfd_for_mdl_inp_tb <- data_tb %>% dplyr::select(dplyr::all_of(id_var_nm_1L_chr), dplyr::all_of(round_var_nm_1L_chr),
+        dplyr::all_of(predr_vars_nms_chr),
+        dplyr::all_of(dep_var_nm_1L_chr) # Moved from first var in tb
+        ) %>% dplyr::group_by(!!rlang::sym(id_var_nm_1L_chr)) %>%
         dplyr::arrange(!!rlang::sym(id_var_nm_1L_chr), !!rlang::sym(round_var_nm_1L_chr))
-    tfd_for_gsn_log_mdl_tb <- tfd_for_gsn_log_mdl_tb %>% dplyr::mutate(dplyr::across(dplyr::all_of(predr_vars_nms_chr),
-        .fns = list(baseline = ~dplyr::first(.)/100, change = ~ifelse(round ==
-            "Baseline", 0, (. - dplyr::lag(.))/100)))) %>% dplyr::mutate(`:=`(!!rlang::sym(transform_dep_var_nm_for_cll(dep_var_nm_1L_chr)),
+    tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% dplyr::mutate(dplyr::across(dplyr::all_of(predr_vars_nms_chr),
+        .fns = list(baseline = ~dplyr::first(.)*scaling_fctr_1L_dbl, change = ~ifelse(round ==
+            "Baseline", 0, (. - dplyr::lag(.))*scaling_fctr_1L_dbl))))
+    if(add_cll_tfmn_1L_lgl){
+      tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>%
+      dplyr::mutate(`:=`(!!rlang::sym(transform_dep_var_nm_for_cll(dep_var_nm_1L_chr)),
         log(-log(1 - ifelse(!!rlang::sym(dep_var_nm_1L_chr) ==
-            1, 0.999, !!rlang::sym(dep_var_nm_1L_chr)))))) %>%
+            1, 0.999, !!rlang::sym(dep_var_nm_1L_chr))))))
+    }
+    if(drop_all_msng_1L_lgl){
+      tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>%
         stats::na.omit()
-    return(tfd_for_gsn_log_mdl_tb)
+    }
+    if(ungroup_1L_lgl){
+      tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>%
+        dplyr::ungroup()
+    }
+    return(tfd_for_mdl_inp_tb)
 }

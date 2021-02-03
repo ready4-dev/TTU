@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_smry_of_ts_mdl}
 \alias{make_smry_of_ts_mdl}
-\title{Make smry of ts model}
+\title{Make smry of transformation model}
 \usage{
 make_smry_of_ts_mdl(
   data_tb,
@@ -45,9 +45,9 @@ make_smry_of_ts_mdl(
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 1000}
 }
 \value{
-Smry of ts model (a list)
+Smry of transformation model (a list)
 }
 \description{
-make_smry_of_ts_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of ts model. The function returns Smry of ts model (a list).
+make_smry_of_ts_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make smry of transformation model. The function returns Smry of transformation model (a list).
 }
 \keyword{internal}

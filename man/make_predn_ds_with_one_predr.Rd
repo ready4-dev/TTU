@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_predn_ds_with_one_predr}
 \alias{make_predn_ds_with_one_predr}
-\title{Make predn dataset with one predr}
+\title{Make prediction dataset with one predr}
 \usage{
 make_predn_ds_with_one_predr(
   model_mdl,
@@ -18,7 +18,7 @@ make_predn_ds_with_one_predr(
 
 \item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
-\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
+\item{tfmn_1L_chr}{Time series (a character vector of length one), Default: 'NTF'}
 
 \item{predr_var_nm_1L_chr}{Predr var name (a character vector of length one)}
 
@@ -27,9 +27,9 @@ make_predn_ds_with_one_predr(
 \item{pred_type_1L_chr}{Pred type (a character vector of length one), Default: NULL}
 }
 \value{
-Predn dataset (a tibble)
+Prediction dataset (a tibble)
 }
 \description{
-make_predn_ds_with_one_predr() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predn dataset with one predr. The function returns Predn dataset (a tibble).
+make_predn_ds_with_one_predr() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make prediction dataset with one predr. The function returns Prediction dataset (a tibble).
 }
 \keyword{internal}

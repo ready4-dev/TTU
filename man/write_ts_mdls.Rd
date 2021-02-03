@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_write.R
 \name{write_ts_mdls}
 \alias{write_ts_mdls}
-\title{Write ts models}
+\title{Write transformation models}
 \usage{
 write_ts_mdls(
   data_tb,
@@ -48,6 +48,6 @@ write_ts_mdls(
 Models smry (a tibble)
 }
 \description{
-write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write ts models. The function returns Models smry (a tibble).
+write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write transformation models. The function returns Models smry (a tibble).
 }
 \keyword{internal}
