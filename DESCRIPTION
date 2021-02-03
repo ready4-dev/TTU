@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9099
+Version: 0.0.0.9100
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -68,6 +68,7 @@ Imports:
     synthpop,
     tibble,
     tidyr,
+    tidyselect,
     utils
 VignetteBuilder: knitr
 Depends: 
