@@ -36,7 +36,7 @@ transform_tb_to_mdl_inp(
 
 \item{ungroup_1L_lgl}{Ungroup (a logical vector of length one), Default: F}
 
-\item{add_cll_tfmn_1L_lgl}{Add cll time series (a logical vector of length one), Default: T}
+\item{add_cll_tfmn_1L_lgl}{Add cll transformation (a logical vector of length one), Default: T}
 }
 \value{
 Transformed for model input (a tibble)

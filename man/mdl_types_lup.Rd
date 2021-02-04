@@ -24,8 +24,8 @@ A tibble
 \item{fn_chr}{Function (a character vector)}
 \item{start_chr}{Start (a character vector)}
 \item{pred_type_chr}{Pred type (a character vector)}
-\item{tfmn_chr}{Time series (a character vector)}
-\item{tfmn_for_bnml_lgl}{Time series for bnml (a logical vector)}
+\item{tfmn_chr}{Transformation (a character vector)}
+\item{tfmn_for_bnml_lgl}{Transformation for bnml (a logical vector)}
 }
 }
 \keyword{datasets}

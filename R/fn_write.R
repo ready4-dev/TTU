@@ -99,6 +99,41 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, dep_va
             recursive = T))
     return(outp_smry_ls)
 }
+#' Write box cox transformation
+#' @description write_box_cox_tfmn() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write box cox transformation. The function returns Path to plot (a character vector of length one).
+#' @param data_tb Data (a tibble)
+#' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
+#' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
+#' @param fl_nm_pfx_1L_chr File name prefix (a character vector of length one), Default: 'A_RT'
+#' @param height_1L_dbl Height (a double vector of length one), Default: 6
+#' @param width_1L_dbl Width (a double vector of length one), Default: 6
+#' @param start_1L_chr Start (a character vector of length one), Default: NULL
+#' @param mdl_types_lup Model types (a lookup table), Default: NULL
+#' @return Path to plot (a character vector of length one)
+#' @rdname write_box_cox_tfmn
+#' @export 
+#' @importFrom utils data
+#' @importFrom MASS boxcox
+#' @keywords internal
+write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1L_chr, 
+    dep_var_nm_1L_chr = "aqol6d_total_w", covar_var_nms_chr = NA_character_, 
+    fl_nm_pfx_1L_chr = "A_RT", height_1L_dbl = 6, width_1L_dbl = 6, 
+    start_1L_chr = NULL, mdl_types_lup = NULL) 
+{
+    if (is.null(mdl_types_lup)) 
+        utils::data("mdl_types_lup", envir = environment())
+    mdl <- make_mdl(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
+        predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr, 
+        mdl_type_1L_chr = "OLS_NTF", mdl_types_lup = mdl_types_lup, 
+        start_1L_chr = start_1L_chr)
+    path_to_plot_1L_chr <- write_brm_mdl_plt_fl(plt_fn = MASS::boxcox, 
+        fn_args_ls = list(mdl, plotit = T), path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
+        plt_nm_1L_chr = paste0(fl_nm_pfx_1L_chr, "_", predr_var_nm_1L_chr, 
+            "_", "BOXCOX"), height_1L_dbl = height_1L_dbl, width_1L_dbl = width_1L_dbl)
+    return(path_to_plot_1L_chr)
+}
 #' Write brm model plt file
 #' @description write_brm_mdl_plt_fl() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm model plt file. The function returns Path to plot (a character vector of length one).
 #' @param plt_fn Plt (a function), Default: NULL
@@ -144,7 +179,7 @@ write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_writ
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param dep_var_desc_1L_chr Dep var description (a character vector of length one), Default: 'Utility score'
 #' @param round_var_nm_1L_chr Round var name (a character vector of length one), Default: 'round'
-#' @param tfmn_fn Time series (a function), Default: function(x) {
+#' @param tfmn_fn Transformation (a function), Default: function(x) {
 #'    x
 #'}
 #' @param units_1L_chr Units (a character vector of length one), Default: 'in'
@@ -210,14 +245,14 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
 #' @param model_mdl PARAM_DESCRIPTION
 #' @param mdl_fl_nm_1L_chr Model file name (a character vector of length one), Default: 'OLS_NTF'
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
-#' @param tfmn_1L_chr Time series (a character vector of length one), Default: 'NTF'
+#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
 #' @param predr_var_desc_1L_chr Predr var description (a character vector of length one)
 #' @param predr_vals_dbl Predr values (a double vector)
 #' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
 #' @param pred_type_1L_chr Pred type (a character vector of length one), Default: NULL
-#' @param tfmn_for_bnml_1L_lgl Time series for bnml (a logical vector of length one), Default: F
+#' @param tfmn_for_bnml_1L_lgl Transformation for bnml (a logical vector of length one), Default: F
 #' @param family_1L_chr Family (a character vector of length one), Default: 'NA'
 #' @param plt_idcs_int Plt idcs (an integer vector), Default: 1:5
 #' @return NULL
@@ -387,7 +422,7 @@ write_mdl_type_multi_outps <- function (data_tb, n_folds_1L_int = 10, predrs_var
 #' @param n_folds_1L_int N folds (an integer vector of length one), Default: 10
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param start_1L_chr Start (a character vector of length one), Default: NULL
-#' @param tfmn_1L_chr Time series (a character vector of length one), Default: 'NTF'
+#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
 #' @param predr_var_desc_1L_chr Predr var description (a character vector of length one)
 #' @param predr_vals_dbl Predr values (a double vector)
@@ -668,8 +703,8 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
             dplyr::arrange(dplyr::desc(RsquaredP))
     return(smry_of_sngl_predr_mdls_tb)
 }
-#' Write transformation models
-#' @description write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write transformation models. The function returns Models smry (a tibble).
+#' Write time series models
+#' @description write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models. The function returns Models smry (a tibble).
 #' @param data_tb Data (a tibble)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
 #' @param predr_vars_nms_ls Predr vars names (a list)
@@ -712,8 +747,8 @@ write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_var
     saveRDS(mdls_smry_tb, paste0(mdl_smry_dir_1L_chr, "/mdls_smry_tb.RDS"))
     return(mdls_smry_tb)
 }
-#' Write transformation models from algorithm output
-#' @description write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write transformation models from algorithm output. The function returns Output smry (a list).
+#' Write time series models from algorithm output
+#' @description write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models from algorithm output. The function returns Output smry (a list).
 #' @param outp_smry_ls Output smry (a list)
 #' @param fn_ls Function list (a list of functions)
 #' @param new_dir_nm_1L_chr New directory name (a character vector of length one), Default: 'F_TS_Mdls'

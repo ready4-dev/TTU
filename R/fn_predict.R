@@ -1,7 +1,7 @@
 #' Predict utility
 #' @description predict_utility() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict utility. The function returns Predd utl (a double vector).
 #' @param data_tb Data (a tibble)
-#' @param tfmn_1L_chr Time series (a character vector of length one), Default: 'NTF'
+#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param model_mdl PARAM_DESCRIPTION
 #' @param force_min_max_1L_lgl Force min max (a logical vector of length one), Default: T
 #' @param utl_min_val_1L_dbl Utl min value (a double vector of length one), Default: 0.03

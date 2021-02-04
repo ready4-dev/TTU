@@ -17,7 +17,7 @@ predict_utility(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{tfmn_1L_chr}{Time series (a character vector of length one), Default: 'NTF'}
+\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
 \item{model_mdl}{PARAM_DESCRIPTION}
 

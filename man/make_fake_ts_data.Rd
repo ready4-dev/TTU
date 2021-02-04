@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_fake_ts_data}
 \alias{make_fake_ts_data}
-\title{Make fake transformation data}
+\title{Make fake time series data}
 \usage{
 make_fake_ts_data(outp_smry_ls)
 }
@@ -13,5 +13,5 @@ make_fake_ts_data(outp_smry_ls)
 Fk data (a tibble)
 }
 \description{
-make_fake_ts_data() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake transformation data. The function returns Fk data (a tibble).
+make_fake_ts_data() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake time series data. The function returns Fk data (a tibble).
 }

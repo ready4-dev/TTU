@@ -30,7 +30,7 @@ write_mdl_plts(
 
 \item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
 
-\item{tfmn_1L_chr}{Time series (a character vector of length one), Default: 'NTF'}
+\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
 \item{predr_var_nm_1L_chr}{Predr var name (a character vector of length one)}
 
@@ -44,7 +44,7 @@ write_mdl_plts(
 
 \item{pred_type_1L_chr}{Pred type (a character vector of length one), Default: NULL}
 
-\item{tfmn_for_bnml_1L_lgl}{Time series for bnml (a logical vector of length one), Default: F}
+\item{tfmn_for_bnml_1L_lgl}{Transformation for bnml (a logical vector of length one), Default: F}
 
 \item{family_1L_chr}{Family (a character vector of length one), Default: 'NA'}
 

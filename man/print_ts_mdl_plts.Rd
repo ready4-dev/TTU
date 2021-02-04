@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_print.R
 \name{print_ts_mdl_plts}
 \alias{print_ts_mdl_plts}
-\title{Print transformation model plts}
+\title{Print time series model plts}
 \usage{
 print_ts_mdl_plts(paths_to_plts_chr, title_1L_chr, label_refs_chr, mdl_smry_ls)
 }
@@ -16,6 +16,6 @@ print_ts_mdl_plts(paths_to_plts_chr, title_1L_chr, label_refs_chr, mdl_smry_ls)
 \item{mdl_smry_ls}{Model smry (a list)}
 }
 \description{
-print_ts_mdl_plts() is a Print function that prints output to console Specifically, this function implements an algorithm to print transformation model plts. The function is called for its side effects and does not return a value.
+print_ts_mdl_plts() is a Print function that prints output to console Specifically, this function implements an algorithm to print time series model plts. The function is called for its side effects and does not return a value.
 }
 \keyword{internal}

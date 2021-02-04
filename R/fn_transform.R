@@ -6,7 +6,7 @@
 #' @param source_data_nm_1L_chr Source data name (a character vector of length one), Default: 'Original'
 #' @param tf_type_1L_chr Transform type (a character vector of length one), Default: 'Predicted'
 #' @param pred_type_1L_chr Pred type (a character vector of length one), Default: NULL
-#' @param tfmn_for_bnml_1L_lgl Time series for bnml (a logical vector of length one), Default: F
+#' @param tfmn_for_bnml_1L_lgl Transformation for bnml (a logical vector of length one), Default: F
 #' @param family_1L_chr Family (a character vector of length one), Default: 'NA'
 #' @return Transformed data (a tibble)
 #' @rdname transform_data_tb_for_cmprsn
@@ -37,7 +37,7 @@ transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, dep_var_nm_1L_chr 
 #' Transform dep var name
 #' @description transform_dep_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dep var name. Function argument dep_var_nm_1L_chr specifies the object to be updated. Argument tfmn_1L_chr provides the object to be updated. The function returns Transformed dep var name (a character vector of length one).
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one)
-#' @param tfmn_1L_chr Time series (a character vector of length one), Default: 'NTF'
+#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @return Transformed dep var name (a character vector of length one)
 #' @rdname transform_dep_var_nm
 #' @export 
@@ -96,7 +96,7 @@ transform_ds_for_mdlng <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", 
 #' @param drop_all_msng_1L_lgl Drop all msng (a logical vector of length one), Default: T
 #' @param scaling_fctr_1L_dbl Scaling fctr (a double vector of length one), Default: 0.01
 #' @param ungroup_1L_lgl Ungroup (a logical vector of length one), Default: F
-#' @param add_cll_tfmn_1L_lgl Add cll time series (a logical vector of length one), Default: T
+#' @param add_cll_tfmn_1L_lgl Add cll transformation (a logical vector of length one), Default: T
 #' @return Transformed for model input (a tibble)
 #' @rdname transform_tb_to_mdl_inp
 #' @export 

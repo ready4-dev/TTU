@@ -1,5 +1,5 @@
-#' Fit clg log time series
-#' @description fit_clg_log_tfmn() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit clg log time series. The function returns Model (a list).
+#' Fit clg log transformation
+#' @description fit_clg_log_tfmn() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit clg log transformation. The function returns Model (a list).
 #' @param data_tb Data (a tibble)
 #' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w_cloglog'
 #' @param predr_vars_nms_chr Predr vars names (a character vector)

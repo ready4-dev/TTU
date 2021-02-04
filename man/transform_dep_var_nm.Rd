@@ -9,7 +9,7 @@ transform_dep_var_nm(dep_var_nm_1L_chr, tfmn_1L_chr = "NTF")
 \arguments{
 \item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one)}
 
-\item{tfmn_1L_chr}{Time series (a character vector of length one), Default: 'NTF'}
+\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 }
 \value{
 Transformed dep var name (a character vector of length one)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_fit.R
 \name{fit_clg_log_tfmn}
 \alias{fit_clg_log_tfmn}
-\title{Fit clg log time series}
+\title{Fit clg log transformation}
 \usage{
 fit_clg_log_tfmn(
   data_tb,
@@ -33,6 +33,6 @@ fit_clg_log_tfmn(
 Model (a list)
 }
 \description{
-fit_clg_log_tfmn() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit clg log time series. The function returns Model (a list).
+fit_clg_log_tfmn() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit clg log transformation. The function returns Model (a list).
 }
 \keyword{internal}

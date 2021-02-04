@@ -36,7 +36,7 @@ write_brm_model_plts(
 
 \item{round_var_nm_1L_chr}{Round var name (a character vector of length one), Default: 'round'}
 
-\item{tfmn_fn}{Time series (a function), Default: function(x) {
+\item{tfmn_fn}{Transformation (a function), Default: function(x) {
 x
 }}
 

@@ -29,7 +29,7 @@ make_smry_of_mdl(
 
 \item{start_1L_chr}{Start (a character vector of length one), Default: NULL}
 
-\item{tfmn_1L_chr}{Time series (a character vector of length one), Default: 'NTF'}
+\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
 \item{predr_var_nm_1L_chr}{Predr var name (a character vector of length one)}
 

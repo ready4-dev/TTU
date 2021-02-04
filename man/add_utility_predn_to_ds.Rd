@@ -22,7 +22,7 @@ add_utility_predn_to_ds(
 
 \item{model_mdl}{PARAM_DESCRIPTION}
 
-\item{tfmn_1L_chr}{Time series (a character vector of length one)}
+\item{tfmn_1L_chr}{Transformation (a character vector of length one)}
 
 \item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one)}
 
