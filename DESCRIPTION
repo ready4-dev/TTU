@@ -42,38 +42,5 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
     testthat,
-    knitr,
-    ggfortify,
-    knitrBootstrap,
-    ready4fun (>= 0.0.0.9268),
-    ready4use (>= 0.0.0.9107),
-    assertthat,
-    boot,
-    Boruta,
-    brms,
-    caret,
-    dataverse,
-    dplyr,
-    grDevices,
-    Hmisc,
-    magrittr,
-    MASS,
-    methods,
-    psych,
-    purrr,
-    randomForest,
-    rlang,
-    stats,
-    stringi,
-    stringr,
-    synthpop,
-    tibble,
-    tidyr,
-    tidyselect,
-    utils
+    knitr
 VignetteBuilder: knitr
-Depends: 
-    R (>= 2.10)
-Remotes: 
-    ready4-dev/ready4fun,
-    ready4-dev/ready4use
