@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9102
+Version: 0.0.0.9103
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -43,6 +43,7 @@ RoxygenNote: 7.1.1
 Imports: 
     testthat,
     knitr,
+    lifecycle,
     ggfortify,
     knitrBootstrap,
     ready4fun (>= 0.0.0.9268),
@@ -54,23 +55,33 @@ Imports:
     caret,
     dataverse,
     dplyr,
+    ggalt,
+    ggplot2,
     grDevices,
     Hmisc,
+    hutils,
     magrittr,
     MASS,
+    Matrix,
+    matrixcalc,
     methods,
+    mice,
+    pacman,
     psych,
     purrr,
     randomForest,
     rlang,
+    simstudy,
     stats,
     stringi,
     stringr,
+    Surrogate,
     synthpop,
     tibble,
     tidyr,
     tidyselect,
-    utils
+    utils,
+    viridis
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
