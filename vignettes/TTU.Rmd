@@ -17,4 +17,9 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(TTU)
 ```
-This development version of the TTU package has been made available as part of the process of testing and documenting the package. Currently there are no vignettes available.
+This development version of the TTU package has been made available as part of the process of testing and documenting the package. 
+
+The following vignettes demonstrate some of the tools currently included in the TTU package:
+
+- [Replication dataset](Replication_DS.html)
+- [Health utility scoring tools](Utility_Scoring.html)
