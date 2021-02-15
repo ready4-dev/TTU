@@ -426,10 +426,11 @@ usethis::use_package("knitrBootstrap")
 #
 ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
                                 r_dir_1L_chr = "R",
-                                dev_pkgs_chr = c("ready4fun","ready4class","ready4use"),
+                                dev_pkgs_chr = c("ready4fun","ready4class","ready4use","ready4show"),
                                 update_pkgdown_1L_lgl = T)
 ##
 ## PART FOUR
+devtools::build_vignettes()
 ##
 ## Add, Commit and Push
 

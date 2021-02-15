@@ -67,3 +67,5 @@
 ^data-raw/csvs/aqol_valid_stata\.csv$
 ^data-raw/csvs/fake_pop_tb\.csv$
 ^data-raw/vignettes/_AQoL_6D_Syn_Pop\.Rmd$
+^doc$
+^Meta$
