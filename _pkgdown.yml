@@ -4,13 +4,24 @@ reference:
 - title: "Datasets"
 - contents:
   - abbreviations_lup
+  - adol_dim_scalg_eqs_lup
+  - aqol_scrg_dict_r3
+  - aqol6d_adult_disv_lup_tb
+  - aqol6d_adult_itm_wrst_wghts_lup_tb
+  - aqol6d_adult_vldn_pop_with_STATA_scores_tb
+  - aqol6d_dim_sclg_con_lup_tb
+  - aqol6d_domain_qs_lup_tb
+  - aqol6d_from_8d_coeffs_lup_tb
   - fn_type_lup_tb
   - fns_dmt_tb
   - mdl_types_lup
   - plt_types_lup
+  - replication_popl_tb
+  - repln_ds_dict_r3
   - rprt_lup
 - title: "Functions"
 - contents:
+  - add_adol6d_scores
   - add_utility_predn_to_ds
   - make_fake_ts_data
   - write_all_alg_outps

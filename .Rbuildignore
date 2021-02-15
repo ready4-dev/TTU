@@ -62,3 +62,8 @@
 ^data-raw/inst/Markdown/_Reworked_First_Bit\.Rmd$
 ^data-raw/inst/Markdown/page-break\.lua$
 ^data-raw/inst/Markdown/preamble\.tex$
+^data-raw/csvs/adol_dim_scalg_eqs_lup\.csv$
+^data-raw/csvs/AQoL_6D_Dim_Scaling\.csv$
+^data-raw/csvs/aqol_valid_stata\.csv$
+^data-raw/csvs/fake_pop_tb\.csv$
+^data-raw/vignettes/_AQoL_6D_Syn_Pop\.Rmd$

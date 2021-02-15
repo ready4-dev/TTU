@@ -1,3 +1,51 @@
+make_adol_aqol6d_disv_lup <- function ()
+{
+  adol_aqol6d_disv_lup <- aqol6d_adult_disv_lup_tb %>% dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr ==
+                                                                                                       "Q18" ~ 0.622, TRUE ~ Answer_4_dbl), Answer_5_dbl = dplyr::case_when(Question_chr ==
+                                                                                                                                                                              "Q3" ~ 0.827, TRUE ~ Answer_5_dbl), Answer_6_dbl = dplyr::case_when(Question_chr ==
+                                                                                                                                                                                                                                                    "Q1" ~ 0.073, TRUE ~ Answer_5_dbl))
+  return(adol_aqol6d_disv_lup)
+}
+make_aqol6d_adol_pop_tbs_ls <- function (aqol_items_props_tbs_ls, aqol_scores_pars_ls, series_names_chr,
+                                         synth_data_spine_ls, temporal_cors_ls, id_var_nm_1L_chr = "fkClientID",
+                                         prefix_chr = c(uid = "Participant_", aqol_item = "aqol6d_q",
+                                                        domain_unwtd_pfx_1L_chr = "aqol6d_subtotal_c_", domain_wtd_pfx_1L_chr = "aqol6d_subtotal_w_"))
+{
+  item_pfx_1L_chr <- prefix_chr[["aqol_item"]]
+  uid_pfx_1L_chr <- prefix_chr[["uid"]]
+  aqol6d_adol_pop_tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls,
+                                                     series_names_chr = series_names_chr) %>% add_cors_and_uts_to_aqol6d_tbs_ls(aqol_scores_pars_ls = aqol_scores_pars_ls,
+                                                                                                                                aqol_items_props_tbs_ls = aqol_items_props_tbs_ls, temporal_cors_ls = temporal_cors_ls,
+                                                                                                                                prefix_chr = prefix_chr, aqol_tots_var_nms_chr = synth_data_spine_ls$aqol_tots_var_nms_chr,
+                                                                                                                                id_var_nm_1L_chr = id_var_nm_1L_chr) %>% purrr::map(~{
+                                                                                                                                  domain_items_ls <- make_domain_items_ls(domain_qs_lup_tb = aqol6d_domain_qs_lup_tb,
+                                                                                                                                                                          item_pfx_1L_chr = item_pfx_1L_chr)
+                                                                                                                                  domain_items_ls %>% add_unwtd_dim_tots(items_tb = .x,
+                                                                                                                                                                         domain_pfx_1L_chr = prefix_chr[["domain_unwtd_pfx_1L_chr"]]) %>%
+                                                                                                                                    add_wtd_dim_tots(domain_items_ls = domain_items_ls,
+                                                                                                                                                     domain_unwtd_pfx_1L_chr = prefix_chr[["domain_unwtd_pfx_1L_chr"]],
+                                                                                                                                                     domain_wtd_pfx_1L_chr = prefix_chr[["domain_wtd_pfx_1L_chr"]]) %>%
+                                                                                                                                    add_labels_to_aqol6d_tb()
+                                                                                                                                }) %>% purrr::map(~.x %>% dplyr::select(!!rlang::sym(id_var_nm_1L_chr),
+                                                                                                                                                                        dplyr::starts_with(item_pfx_1L_chr), dplyr::starts_with(prefix_chr[["domain_unwtd_pfx_1L_chr"]]),
+                                                                                                                                                                        dplyr::starts_with(prefix_chr[["domain_wtd_pfx_1L_chr"]]),
+                                                                                                                                                                        dplyr::everything()))
+  return(aqol6d_adol_pop_tbs_ls)
+}
+make_aqol6d_fns_ls <- function (domain_items_ls)
+{
+  aqol6d_disu_fn_ls <- paste0("calculate_aqol6d_dim_", 1:length(domain_items_ls),
+                              "_disv") %>% purrr::map(~rlang::sym(.x))
+  return(aqol6d_disu_fn_ls)
+}
+make_aqol6d_items_tb <- function (aqol_tb, old_pfx_1L_chr, new_pfx_1L_chr)
+{
+  aqol6d_items_tb <- aqol_tb %>% dplyr::select(dplyr::starts_with(old_pfx_1L_chr)) %>%
+    dplyr::rename_all(~{
+      stringr::str_replace(., old_pfx_1L_chr, new_pfx_1L_chr)
+    })
+  return(aqol6d_items_tb)
+}
 make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, output_type_1L_chr = "PDF",
                                     digits_1L_dbl = 2, big_mark_1L_chr = " ")
 {
@@ -81,6 +129,27 @@ make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, pop_1L_chr, fam_1L_
                                                                                                                                                                                                                                          cat_chr = fam_1L_chr))
     return(brms_mdl_smry_tb)
 }
+make_complete_props_tbs_ls <- function (raw_props_tbs_ls, question_var_nm_1L_chr = "Question")
+{
+  complete_props_tbs_ls <- raw_props_tbs_ls %>% purrr::map(~{
+    .x %>% dplyr::mutate(total_prop_dbl = rowSums(dplyr::select(.,
+                                                                -!!rlang::sym(question_var_nm_1L_chr)), na.rm = T) -
+                           100) %>% dplyr::mutate_if(is.numeric, ~purrr::map2_dbl(.,
+                                                                                  total_prop_dbl, ~ifelse(.x == 100, 1 - .y, .x))) %>%
+      dplyr::select(-total_prop_dbl)
+  })
+  return(complete_props_tbs_ls)
+}
+make_correlated_data_tb <- function (synth_data_spine_ls, synth_data_idx_1L_dbl = 1)
+{
+  correlated_data_tb <- simstudy::genCorData(synth_data_spine_ls$nbr_obs_dbl[synth_data_idx_1L_dbl],
+                                             mu = synth_data_spine_ls$means_ls[[synth_data_idx_1L_dbl]],
+                                             sigma = synth_data_spine_ls$sds_ls[[synth_data_idx_1L_dbl]],
+                                             corMatrix = make_pdef_cor_mat_mat(synth_data_spine_ls$cor_mat_ls[[synth_data_idx_1L_dbl]]),
+                                             cnames = synth_data_spine_ls$var_names_chr) %>% force_min_max_and_int_cnstrs(var_names_chr = synth_data_spine_ls$var_names_chr,
+                                                                                                                          min_max_ls = synth_data_spine_ls$min_max_ls, discrete_lgl = synth_data_spine_ls$discrete_lgl)
+  return(correlated_data_tb)
+}
 make_corstars_tbl_xx <- function (x, method = c("pearson", "spearman"), removeTriangle = c("upper",
                                                                                            "lower"), result = c("none", "html", "latex"))
 {
@@ -114,6 +183,22 @@ make_corstars_tbl_xx <- function (x, method = c("pearson", "spearman"), removeTr
         else print(xtable(Rnew), type = "latex")
     }
 }
+make_dim_sclg_cons_dbl <- function (domains_chr, dim_sclg_con_lup_tb)
+{
+  dim_sclg_cons_dbl <- purrr::map_dbl(domains_chr, ~ready4fun::get_from_lup_obj(dim_sclg_con_lup_tb,
+                                                                                match_var_nm_1L_chr = "Dimension_chr", match_value_xx = .x,
+                                                                                target_var_nm_1L_chr = "Constant_dbl", evaluate_lgl = F))
+  return(dim_sclg_cons_dbl)
+}
+make_domain_items_ls <- function (domain_qs_lup_tb, item_pfx_1L_chr)
+{
+  domains_chr <- domain_qs_lup_tb$Domain_chr %>% unique()
+  q_nbrs_ls <- purrr::map(domains_chr, ~domain_qs_lup_tb %>%
+                            dplyr::filter(Domain_chr == .x) %>% dplyr::pull(Question_dbl))
+  domain_items_ls <- purrr::map(q_nbrs_ls, ~paste0(item_pfx_1L_chr,
+                                                   .x)) %>% stats::setNames(domains_chr)
+  return(domain_items_ls)
+}
 make_fake_ts_data <- function (outp_smry_ls)
 {
     data_tb <- outp_smry_ls$scored_data_tb %>% transform_tb_to_mdl_inp(dep_var_nm_1L_chr = outp_smry_ls$dep_var_nm_1L_chr,
@@ -133,6 +218,17 @@ make_folds_ls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", n_fold
     folds_ls <- caret::createFolds(data_tb %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr)),
                                    k = n_folds_1L_int, list = TRUE, returnTrain = FALSE)
     return(folds_ls)
+}
+make_item_wrst_wghts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb)
+{
+  item_wrst_wghts_ls_ls <- domain_items_ls %>% purrr::map(~{
+    purrr::map_dbl(.x, ~{
+      ready4fun::get_from_lup_obj(itm_wrst_wghts_lup_tb,
+                                  match_var_nm_1L_chr = "Question_chr", match_value_xx = .x,
+                                  target_var_nm_1L_chr = "Worst_Weight_dbl", evaluate_lgl = F)
+    })
+  })
+  return(item_wrst_wghts_ls_ls)
 }
 make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, predr_vars_nms_ls,
                                output_type_1L_chr = "HTML", mdl_types_lup = NULL, plt_types_lup = NULL,
@@ -265,6 +361,15 @@ make_mdl_smry_elmt_tbl <- function (mat, cat_chr)
     mdl_elmt_sum_tb <- tb %>% dplyr::filter(F) %>% tibble::add_case(Parameter = cat_chr) %>%
         dplyr::bind_rows(tb)
     return(mdl_elmt_sum_tb)
+}
+make_pdef_cor_mat_mat <- function (lower_diag_mat)
+{
+  pdef_cor_mat <- lower_diag_mat %>% Matrix::forceSymmetric(uplo = "L") %>%
+    as.matrix()
+  if (!matrixcalc::is.positive.definite(pdef_cor_mat)) {
+    pdef_cor_mat <- psych::cor.smooth(pdef_cor_mat)
+  }
+  return(pdef_cor_mat)
 }
 make_predn_ds_with_one_predr <- function (model_mdl, dep_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF",
     predr_var_nm_1L_chr, predr_vals_dbl, pred_type_1L_chr = NULL)
@@ -450,6 +555,20 @@ make_smry_of_ts_mdl <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr,
             }))
     }
     return(smry_of_ts_mdl_ls)
+}
+make_synth_series_tbs_ls <- function (synth_data_spine_ls, series_names_chr)
+{
+  synth_series_tbs_ls <- 1:length(series_names_chr) %>% purrr::map(~make_correlated_data_tb(synth_data_spine_ls = synth_data_spine_ls,
+                                                                                            synth_data_idx_1L_dbl = .x) %>% replace_with_missing_vals(synth_data_spine_ls = synth_data_spine_ls,
+                                                                                                                                                      idx_int = .x)) %>% stats::setNames(series_names_chr)
+  return(synth_series_tbs_ls)
+}
+make_vec_with_sum_of_int <- function (target_int, start_int, end_int, length_int)
+{
+  vec_int <- Surrogate::RandVec(a = start_int, b = end_int,
+                                s = target_int, n = length_int, m = 1) %>% purrr::pluck("RandVecOutput") %>%
+    as.vector() %>% round() %>% as.integer() %>% force_vec_to_sum_to_int(target_1L_int = target_int)
+  return(vec_int)
 }
 make_unique_ls_elmt_idx_int <- function (data_ls)
 {
