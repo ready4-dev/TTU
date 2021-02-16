@@ -387,7 +387,7 @@ make_predr_vals <- function (predr_var_nm_1L_chr, candidate_predrs_lup = NULL)
     if (is.null(candidate_predrs_lup)) {
         utils::data("candidate_predrs_lup", envir = environment())
     }
-    args_ls <- purrr::map_dbl(names(candidate_predrs_lup)[3:5],
+    args_ls <- purrr::map_dbl(names(candidate_predrs_lup)[3:4],
                               ~candidate_predrs_lup %>% ready4fun::get_from_lup_obj(match_value_xx = predr_var_nm_1L_chr,
                                                                                     match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = .x,
                                                                                     evaluate_lgl = F)) %>% as.list()

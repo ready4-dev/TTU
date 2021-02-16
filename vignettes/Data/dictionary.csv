@@ -21,7 +21,7 @@
 "d_studying_working","Demographic","Education and Employment Status","character"
 "Gender","Demographic","Gender (Grouped)","factor"
 "Region","Demographic","Region of Residence (Metropolitan or Regional)","factor"
-"SOFAS","Functioning","Social and Occupational Functioning Assessment Scale","numeric"
+"SOFAS","Functioning","Social and Occupational Functioning Assessment Scale","integer"
 "fkClientID","Identifier","Unique Client Identifier","character"
 "s_centre","Service","Centre Name","character"
 "round","Temporal","Round of Data Collection","factor"

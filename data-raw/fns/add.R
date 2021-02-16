@@ -48,7 +48,9 @@ add_aqol6d_items_to_aqol6d_tbs_ls <- function (aqol6d_tbs_ls, aqol_items_props_t
                                        })
   return(updated_aqol6d_tbs_ls)
 }
-add_adol6d_scores <- function (unscored_aqol_tb, prefix_1L_chr = "aqol6d_q", id_var_nm_1L_chr = "fkClientID",
+add_adol6d_scores <- function (unscored_aqol_tb,
+                               prefix_1L_chr = "aqol6d_q",
+                               id_var_nm_1L_chr = "fkClientID",
                                wtd_aqol_var_nm_1L_chr = "aqol6d_total_w")
 {
   complete_ds_tb <- unscored_aqol_tb
@@ -60,10 +62,19 @@ add_adol6d_scores <- function (unscored_aqol_tb, prefix_1L_chr = "aqol6d_q", id_
   disvals_tb <- unscored_aqol_tb %>% add_itm_disv_to_aqol6d_itms_tb(disvalues_lup_tb = make_adol_aqol6d_disv_lup(),
                                                                     pfx_1L_chr = "Q") %>% dplyr::select(ID, dplyr::starts_with("dv_")) %>%
     dplyr::rename_all(~stringr::str_replace(.x, "dv_", "dv"))
-  scored_aqol_tb <- add_aqol6d_adol_dim_scrg_eqs(disvals_tb)
-  tfd_aqol_tb <- dplyr::inner_join(complete_ds_tb, scored_aqol_tb %>%
-                                     dplyr::rename(`:=`(!!rlang::sym(id_var_nm_1L_chr), ID),
-                                                   `:=`(!!rlang::sym(wtd_aqol_var_nm_1L_chr), uaqol)))
+  scored_aqol_tb <- add_aqol6d_adol_dim_scrg_eqs(disvals_tb) %>%
+    tibble::as_tibble() %>%
+    dplyr::rename(`:=`(!!rlang::sym(id_var_nm_1L_chr), ID),
+                  `:=`(!!rlang::sym(wtd_aqol_var_nm_1L_chr), uaqol))
+  tbs_ls <- list(complete_ds_tb, scored_aqol_tb) %>%
+    purrr::map(~.x %>% dplyr::group_by(!!rlang::sym(id_var_nm_1L_chr)) %>%
+                 dplyr::mutate(match_var_chr = paste0(!!rlang::sym(id_var_nm_1L_chr),
+                                                      "_",
+                                                      1:dplyr::n())) %>%
+                 dplyr::ungroup() %>%
+                 dplyr::arrange(!!rlang::sym(id_var_nm_1L_chr)))
+
+  tfd_aqol_tb <- dplyr::inner_join(tbs_ls[[1]], tbs_ls[[2]])
   return(tfd_aqol_tb)
 }
 add_aqol6dU_to_aqol6d_items_tb <- function (aqol6d_items_tb, coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb)
