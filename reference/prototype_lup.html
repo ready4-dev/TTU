@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate dep var transformation — calculate_dep_var_tfmn • TTU</title>
+<title>Class prototype lookup table — prototype_lup • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Calculate dep var transformation — calculate_dep_var_tfmn" />
-<meta property="og:description" content="calculate_dep_var_tfmn() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate dep var transformation. The function returns Transformed dep var value (a double vector)." />
+<meta property="og:title" content="Class prototype lookup table — prototype_lup" />
+<meta property="og:description" content="Metadata on classes used in readyforwhatsnext suite" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -134,41 +134,34 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate dep var transformation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_calculate.R'><code>R/fn_calculate.R</code></a></small>
-    <div class="hidden name"><code>calculate_dep_var_tfmn.Rd</code></div>
+    <h1>Class prototype lookup table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/db_prototype_lup.R'><code>R/db_prototype_lup.R</code></a></small>
+    <div class="hidden name"><code>prototype_lup.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>calculate_dep_var_tfmn() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate dep var transformation. The function returns Transformed dep var value (a double vector).</p>
+    <p>Metadata on classes used in readyforwhatsnext suite</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calculate_dep_var_tfmn</span><span class='op'>(</span>
-  <span class='va'>dep_var_val_dbl</span>,
-  tfmn_1L_chr <span class='op'>=</span> <span class='st'>"NTF"</span>,
-  tfmn_is_outp_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='va'>prototype_lup</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>dep_var_val_dbl</th>
-      <td><p>Dep var value (a double vector)</p></td>
-    </tr>
-    <tr>
-      <th>tfmn_1L_chr</th>
-      <td><p>Transformation (a character vector of length one), Default: 'NTF'</p></td>
-    </tr>
-    <tr>
-      <th>tfmn_is_outp_1L_lgl</th>
-      <td><p>Transformation is output (a logical vector of length one), Default: F</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>Transformed dep var value (a double vector)</p>
+    <p>An object of class <code>ready4_class_pt_lup</code> (inherits from <code>tbl_df</code>, <code>tbl</code>, <code>data.frame</code>) with 20 rows and 6 columns.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>A tibble</p>
+<dl>
+<dt>type_chr</dt><dd><p>Type (a character vector)</p></dd>
+<dt>val_chr</dt><dd><p>Val (a character vector)</p></dd>
+<dt>pt_ns_chr</dt><dd><p>Prototype namespace (a character vector)</p></dd>
+<dt>fn_to_call_chr</dt><dd><p>Function to call (a character vector)</p></dd>
+<dt>default_val_chr</dt><dd><p>Default val (a character vector)</p></dd>
+<dt>old_class_lgl</dt><dd><p>Old class (a logical vector)</p></dd>
+
+</dl>
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

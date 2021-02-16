@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate dep var transformation — calculate_dep_var_tfmn • TTU</title>
+<title>Validate TTU S3 class for candidate predictors lookup table — validate_TTU_predictors_lup • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Calculate dep var transformation — calculate_dep_var_tfmn" />
-<meta property="og:description" content="calculate_dep_var_tfmn() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate dep var transformation. The function returns Transformed dep var value (a double vector)." />
+<meta property="og:title" content="Validate TTU S3 class for candidate predictors lookup table — validate_TTU_predictors_lup" />
+<meta property="og:description" content="Validate an instance of the TTU S3 class for candidate predictors lookup table" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -134,41 +134,32 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate dep var transformation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_calculate.R'><code>R/fn_calculate.R</code></a></small>
-    <div class="hidden name"><code>calculate_dep_var_tfmn.Rd</code></div>
+    <h1>Validate TTU S3 class for candidate predictors lookup table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/C3_TTU_predictors_lup.R'><code>R/C3_TTU_predictors_lup.R</code></a></small>
+    <div class="hidden name"><code>validate_TTU_predictors_lup.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>calculate_dep_var_tfmn() is a Calculate function that calculates a numeric value. Specifically, this function implements an algorithm to calculate dep var transformation. The function returns Transformed dep var value (a double vector).</p>
+    <p>Validate an instance of the TTU S3 class for candidate predictors lookup table</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calculate_dep_var_tfmn</span><span class='op'>(</span>
-  <span class='va'>dep_var_val_dbl</span>,
-  tfmn_1L_chr <span class='op'>=</span> <span class='st'>"NTF"</span>,
-  tfmn_is_outp_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>validate_TTU_predictors_lup</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dep_var_val_dbl</th>
-      <td><p>Dep var value (a double vector)</p></td>
-    </tr>
-    <tr>
-      <th>tfmn_1L_chr</th>
-      <td><p>Transformation (a character vector of length one), Default: 'NTF'</p></td>
-    </tr>
-    <tr>
-      <th>tfmn_is_outp_1L_lgl</th>
-      <td><p>Transformation is output (a logical vector of length one), Default: F</p></td>
+      <th>x</th>
+      <td><p>An unvalidated instance of the TTU S3 class for candidate predictors lookup table</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Transformed dep var value (a double vector)</p>
+    <p>A prototpe for TTU S3 class for candidate predictors lookup table</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>TTU S3 class for candidate predictors lookup table</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
