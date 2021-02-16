@@ -2,6 +2,8 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
+  Replication_DS: Replication_DS.html
   TTU: TTU.html
-last_built: 2021-02-05T03:34Z
+  Utility_Scoring: Utility_Scoring.html
+last_built: 2021-02-16T02:06Z
 
