@@ -36,6 +36,39 @@ ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Transfer to Utility Mapping Algo
                                  addl_badges_ls = list(ready4 = "modelling"))
 
 # PAUSE FOR INTERACTIVE
+classes_to_make_tb <- ready4class::ready4_constructor_tbl() %>%
+  dplyr::bind_rows(tibble::tribble(
+    ~ make_s3_lgl, ~ name_stub_chr, ~ pt_ls, ~ pt_chkr_pfx_ls, ~ pt_ns_ls, ~ vals_ls, ~ allowed_vals_ls, ~ min_max_vals_ls, ~ start_end_vals_ls, ~ class_desc_chr, ~ parent_class_chr, ~ slots_ls, ~ meaningful_nms_ls, ~inc_clss_ls,
+    TRUE, "predictors_lup", list("tibble"), list("is_"),list("tibble"),list(short_name_chr = "character(0)",
+                                                                            long_name_chr = "character(0)",
+                                                                            min_val_dbl = "numeric(0)",
+                                                                            max_val_dbl = "numeric(0)",
+                                                                            class_chr = "character(0)",
+                                                                            increment_dbl = "numeric(0)",
+                                                                            class_fn_chr = "character(0)",
+                                                                            mdl_scaling_dbl = "numeric(0)",
+                                                                            covariate_lgl = "logical(0)"), NULL,NULL, NULL, "TTU S3 class for candidate predictors lookup table", NA_character_, NULL, NULL, NULL)
+  )
+name_pfx_1L_chr <- "TTU_"
+
+pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c(paste0(name_pfx_1L_chr,classes_to_make_tb$name_stub_chr)),
+                                        long_name_chr = c(classes_to_make_tb$class_desc_chr),
+                                        #no_plural_chr = ,
+                                        #custom_plural_ls = ,
+                                        url_1L_chr = NA_character_,
+                                        seed_lup = ready4show::abbreviations_lup)
+utils::data("abbreviations_lup")
+pkg_dss_tb <- classes_to_make_tb %>%
+  ready4class::write_classes_and_make_lup(dev_pkg_ns_1L_chr = ready4fun::get_dev_pkg_nm(),
+                                          name_pfx_1L_chr = name_pfx_1L_chr,
+                                          output_dir_1L_chr = "R",
+                                          file_exists_cdn_1L_chr = "overwrite",
+                                          abbreviations_lup = abbreviations_lup,
+                                          init_class_pt_lup = ready4use::prototype_lup)  %>% #
+  ready4fun::write_and_doc_ds(db_1L_chr = "prototype_lup",
+                              title_1L_chr = "Class prototype lookup table",
+                              desc_1L_chr = "Metadata on classes used in readyforwhatsnext suite",
+                              pkg_dss_tb = pkg_dss_tb)
 ##
 ## PART THREE
 ##
@@ -317,6 +350,7 @@ pkg_dss_tb <- read.csv("data-raw/csvs/aqol_valid_stata.csv") %>%
                               abbreviations_lup = abbreviations_lup,
                               pkg_dss_tb = pkg_dss_tb)
 replication_popl_tb <- read.csv("data-raw/csvs/fake_pop_tb.csv") %>%
+  dplyr::mutate(c_sofas = as.integer(round(c_sofas,0))) %>%
   # ready4use::ready4_dv_import_lup() %>%
   # tibble::add_case(data_repo_db_ui = "https://doi.org/10.7910/DVN/GRZRY5",
   #                  file_name = "fake_pop_tb",
@@ -432,7 +466,7 @@ ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
                                 update_pkgdown_1L_lgl = T)
 ##
 ## PART FOUR
-devtools::build_vignettes()
+# devtools::build_vignettes()
 ##
 ## Add, Commit and Push
 

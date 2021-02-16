@@ -16,9 +16,13 @@ reference:
   - fns_dmt_tb
   - mdl_types_lup
   - plt_types_lup
+  - prototype_lup
   - replication_popl_tb
   - repln_ds_dict_r3
   - rprt_lup
+- title: "Classes"
+- contents:
+  - TTU_predictors_lup
 - title: "Functions"
 - contents:
   - add_adol6d_scores
