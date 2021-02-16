@@ -112,8 +112,8 @@ transform_ds_for_tstng <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w
         covar_var_nms_chr) %>% purrr::discard(is.na)
     tfd_data_tb <- data_tb %>% dplyr::filter(!!rlang::sym(round_var_nm_1L_chr) == 
         round_val_1L_chr) %>% dplyr::select(!!!rlang::syms(vars_to_keep_chr)) %>% 
-        dplyr::mutate(`:=`(!!rlang::sym(dep_var_nm_1L_chr), ifelse(!!rlang::sym(dep_var_nm_1L_chr) == 
-            1, 0.999, !!rlang::sym(dep_var_nm_1L_chr))))
+        dplyr::mutate(`:=`(!!rlang::sym(dep_var_nm_1L_chr), ifelse(!!rlang::sym(dep_var_nm_1L_chr) > 
+            dep_var_max_val_1L_dbl, dep_var_max_val_1L_dbl, !!rlang::sym(dep_var_nm_1L_chr))))
     if (remove_all_mssng_1L_lgl) 
         tfd_data_tb <- tfd_data_tb %>% stats::na.omit()
     return(tfd_data_tb)

@@ -1,14 +1,18 @@
 ---
-title: "Test models and candidate predictors"
-author: "Matthew Hamilton"
-date: "31/12/2020"
-output: html_document
+title: "Model Transfer to Utility"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Model Transfer to Utility}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r}
 library(TTU)
 ```
+# Purpose
 
+## Set-up workspace and import data
 First, we create a directory in which we will write all output.
 
 ```{r}
@@ -31,6 +35,8 @@ Read the data files into local memory.
 data_tb <- readr::read_csv("Data/data.csv") 
 dictionary_r3 <- readr::read_csv("Data/dictionary.csv") %>% ready4use::ready4_dictionary()
 ```
+
+## Score utility and summarise meta-data
 
 We now calculate utility scores from study participant responses to the AQoL-6D questionnaire. [More detail about this step is provided in another vignette article](Utility_Scoring.html).
 
@@ -64,7 +70,7 @@ ds_smry_ls$predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short
                                               covariate_lgl = F))
 ```
 
-
+## Test candidate models, predictors and confounders
 Create a lookup table (or as in the below example, use an existing lookup table) with summary information about the types of models we might test.
 
 ```{r}
@@ -236,4 +242,45 @@ outp_smry_ls <- list(scored_data_tb = scored_data_tb,
                      mdl_types_lup = mdl_smry_ls$mdl_types_lup, 
                      file_paths_chr = list.files(path_to_write_to_1L_chr, recursive = T))
 ```
+## Apply selected models to selected predictors
+```{r}
+outp_smry_ls <- write_ts_mdls_from_alg_outp(outp_smry_ls,
+                                            fn_ls = list(fit_gsn_log_lnk,fit_clg_log_tfmn),
+                                            backend_1L_chr = "cmdstanr",
+                                            iters_1L_int = 500L)
+```
+## Create shareable version of predictive models
+It is not appropriate to share the raw models created in the previous step publicly (as they contain confidential data and are very large in file size). We therefore create shareable versions that are relatively small in file size and contain no confidential data, but that have the coefficients from the original models. 
 
+If you have a Dataverse account you can add details for your account (which will differ from the ones we use for ours below) to the `outp_smry_ls` object. If you do not have  a Dataverse account, do not use the dv_ls argument (or set it to its default value of NULL). 
+
+```{r eval=FALSE}
+outp_smry_ls$dv_ls <- list(dv_nm_1L_chr = "firstbounce",
+                               ds_url_1L_chr = "https://doi.org/10.7910/DVN/JC6PTV", 
+                               parent_dv_dir_1L_chr = "../../../../Data/Dataverse")
+```
+This following call to `write_shareable_mdls`{.R} writes shareable models to a new subdirectory (G_Shareable) of your nominated output director on your local machine. IF you added details of a Dataverse account in the previous step the function will also push these shareable models to your Dataverse online data repository.
+
+```{r eval=T}
+outp_smry_ls <- write_shareable_mdls(outp_smry_ls,
+                                     new_dir_nm_1L_chr = "G_Shareable",
+                                     shareable_title_detail_1L_chr = "The model that can be used to predict adolescent AQoL6D. Note this model is a placeholder as it has been estimated from synthetic data.")
+```
+
+The files created in the following step are available here: https://doi.org/10.7910/DVN/JC6PTV
+
+## Create shareable population data
+
+To aid replication, we can create a purely synthetic dataset, representative of the source data, but containing no real data on any individual.
+
+```{r eval=T}
+outp_smry_ls$fk_data_tb <- TTU::make_fake_ts_data(outp_smry_ls)
+```
+
+## Save work
+
+Finally, we save a complete record of our analysis.
+
+```{r}
+saveRDS(outp_smry_ls,paste0(outp_smry_ls$path_to_write_to_1L_chr,"/I_ALL_OUTPUT_.RDS"))
+```

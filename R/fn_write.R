@@ -625,12 +625,9 @@ write_results_to_csv <- function (synth_data_spine_ls, output_dir_1L_chr = ".")
 #' @export 
 #' @importFrom purrr map_chr flatten_chr map map_lgl map_int map2
 #' @importFrom stringr str_locate
-#' @importFrom dplyr filter rename mutate
+#' @importFrom dplyr filter rename
 #' @importFrom rlang sym
 #' @importFrom stats setNames
-#' @importFrom tibble tibble
-#' @importFrom ready4use write_fls_to_dv_ds get_fl_id_from_dv_ls
-#' @importFrom dataverse get_dataset
 write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "") 
 {
     output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr, 
@@ -680,22 +677,40 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
             shareable_mdl
         }) %>% stats::setNames(outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())
     outp_smry_ls$shareable_mdls_ls <- shareable_mdls_ls
-    shareable_mdls_tb <- NULL
+    outp_smry_ls$shareable_mdls_tb <- NULL
     if (!is.null(outp_smry_ls$dv_ls)) {
-        shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$shareable_mdls_ls), 
-            title_chr = paste0("A shareable (contains no confidential data) statistical model, ", 
-                names(outp_smry_ls$shareable_mdls_ls), ".", shareable_title_detail_1L_chr))
-        ready4use::write_fls_to_dv_ds(shareable_mdls_tb, dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
-            ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr, 
-            parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr, 
-            paths_to_dirs_chr = output_dir_1L_chr, inc_fl_types_chr = ".RDS")
+        outp_smry_ls$shareable_mdls_tb <- write_shareable_mdls_to_dv(outp_smry_ls, 
+            new_dir_nm_1L_chr = new_dir_nm_1L_chr, shareable_title_detail_1L_chr = shareable_title_detail_1L_chr)
     }
+    outp_smry_ls$shareable_mdls_tb <- shareable_mdls_tb
+    return(outp_smry_ls)
+}
+#' Write shareable models to dataverse
+#' @description write_shareable_mdls_to_dv() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models to dataverse. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @param outp_smry_ls Output smry (a list)
+#' @param new_dir_nm_1L_chr New directory name (a character vector of length one), Default: 'G_Shareable'
+#' @param shareable_title_detail_1L_chr Shareable title detail (a character vector of length one), Default: ''
+#' @return NULL
+#' @rdname write_shareable_mdls_to_dv
+#' @export 
+#' @importFrom tibble tibble
+#' @importFrom ready4use write_fls_to_dv_ds get_fl_id_from_dv_ls
+#' @importFrom dataverse get_dataset
+#' @importFrom dplyr mutate
+#' @importFrom purrr map_int
+#' @keywords internal
+write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "") 
+{
+    shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$shareable_mdls_ls), 
+        title_chr = paste0("A shareable (contains no confidential data) statistical model, ", 
+            names(outp_smry_ls$shareable_mdls_ls), ".", shareable_title_detail_1L_chr))
+    ready4use::write_fls_to_dv_ds(shareable_mdls_tb, dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
+        ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr, parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr, 
+        paths_to_dirs_chr = output_dir_1L_chr, inc_fl_types_chr = ".RDS")
     ds_ls <- dataverse::get_dataset(outp_smry_ls$dv_ls$ds_url_1L_chr)
     shareable_mdls_tb <- shareable_mdls_tb %>% dplyr::mutate(dv_nm_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
         fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ready4use::get_fl_id_from_dv_ls(ds_ls, 
             fl_nm_1L_chr = paste0(.x, ".RDS")) %>% as.integer()))
-    outp_smry_ls$shareable_mdls_tb <- shareable_mdls_tb
-    return(outp_smry_ls)
 }
 #' Write sngl predr multi models outputs
 #' @description write_sngl_predr_multi_mdls_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write sngl predr multi models outputs. The function returns Smry of sngl predr models (a tibble).
