@@ -682,7 +682,6 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
         outp_smry_ls$shareable_mdls_tb <- write_shareable_mdls_to_dv(outp_smry_ls, 
             new_dir_nm_1L_chr = new_dir_nm_1L_chr, shareable_title_detail_1L_chr = shareable_title_detail_1L_chr)
     }
-    outp_smry_ls$shareable_mdls_tb <- shareable_mdls_tb
     return(outp_smry_ls)
 }
 #' Write shareable models to dataverse
