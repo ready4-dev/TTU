@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9113
+Version: 0.0.0.9114
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
