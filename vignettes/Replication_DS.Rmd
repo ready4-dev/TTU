@@ -10,14 +10,14 @@ vignette: >
 library(magrittr)
 library(TTU)
 ```
-# Origin and purpose of the TTU replication dataset
+## Origin and purpose of the TTU replication dataset
 The replication dataset distributed with the TTU package is a purely synthetic (entirely fake) dataset that is nonetheless representative (in terms of constituent variables and their uni-variate and [to some extent] joint distributions) of the original study dataset to which we applied the transfer to utility algorithms included in TTU. The purpose of the replication dataset is two-fold:
 
 1) to help users replicate the results in our original study (by applying the same algorithms we used to a different but similar dataset, users will be able to get broadly similar results);
 
 2) to help users trial the functions in the TTU package before potentially applying these functions to their own data.
 
-# Replication dataset dictionary
+## Replication dataset dictionary
 
 An overview of the contents of the replication dataset is provided in a data dictionary that can be accessed with the following command.
 
@@ -35,7 +35,7 @@ dictionary_tb %>%
                           mkdn_tbl_ref_1L_chr = "tab:ddic")
 ```
 
-# Accessing the replication dataset
+## Accessing the replication dataset
 The replication dataset itself can be accessed using the following command.
 
 ```{r}

@@ -30,7 +30,8 @@ add_adol6d_scores <- function (unscored_aqol_tb, prefix_1L_chr = "aqol6d_q", id_
     tbs_ls <- list(complete_ds_tb, scored_aqol_tb) %>% purrr::map(~.x %>% 
         dplyr::group_by(!!rlang::sym(id_var_nm_1L_chr)) %>% dplyr::mutate(match_var_chr = paste0(!!rlang::sym(id_var_nm_1L_chr), 
         "_", 1:dplyr::n())) %>% dplyr::ungroup() %>% dplyr::arrange(!!rlang::sym(id_var_nm_1L_chr)))
-    tfd_aqol_tb <- dplyr::inner_join(tbs_ls[[1]], tbs_ls[[2]])
+    tfd_aqol_tb <- dplyr::inner_join(tbs_ls[[1]], tbs_ls[[2]]) %>% 
+        dplyr::select(-match_var_chr)
     return(tfd_aqol_tb)
 }
 #' Add Assessment of Quality of Life Six Dimension adolescent dimension scoring equations

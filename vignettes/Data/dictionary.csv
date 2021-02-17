@@ -7,7 +7,7 @@
 "OASIS","Clinical","Overall Anxiety Severity and Impairment Scale","integer"
 "PHQ9","Clinical","Patient Health Questionnaire","integer"
 "SCARED","Clinical","Screen for Child Anxiety Related Disorders","integer"
-"CALD","Demographic","Demographic - Culturally And Linguistically Diverse","factor"
+"CALD","Demographic","Culturally And Linguistically Diverse","factor"
 "d_age","Demographic","Age","integer"
 "d_agegroup","Demographic","Age Group","factor"
 "d_ATSI","Demographic","Aboriginal or Torres Strait Islander","character"

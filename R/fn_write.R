@@ -746,7 +746,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
         utils::data("mdl_types_lup", envir = environment())
     data_tb <- transform_ds_for_mdlng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
-    output_dir_1L_chr <- output_dir_1L_chr <- write_new_outp_dir(path_to_write_to_1L_chr, 
+    output_dir_1L_chr <- write_new_outp_dir(path_to_write_to_1L_chr, 
         new_dir_nm_1L_chr = new_dir_nm_1L_chr)
     smry_of_sngl_predr_mdls_tb <- purrr::map_dfr(mdl_types_chr, 
         ~{

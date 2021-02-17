@@ -72,9 +72,10 @@ add_adol6d_scores <- function (unscored_aqol_tb,
                                                       "_",
                                                       1:dplyr::n())) %>%
                  dplyr::ungroup() %>%
-                 dplyr::arrange(!!rlang::sym(id_var_nm_1L_chr)))
+                 dplyr::arrange(!!rlang::sym(id_var_nm_1L_chr)) )
 
-  tfd_aqol_tb <- dplyr::inner_join(tbs_ls[[1]], tbs_ls[[2]])
+  tfd_aqol_tb <- dplyr::inner_join(tbs_ls[[1]], tbs_ls[[2]]) %>%
+    dplyr::select(-match_var_chr)
   return(tfd_aqol_tb)
 }
 add_aqol6dU_to_aqol6d_items_tb <- function (aqol6d_items_tb, coeffs_lup_tb = aqol6d_from_8d_coeffs_lup_tb)

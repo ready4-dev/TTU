@@ -494,7 +494,7 @@ make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_n
     folds_ls <- make_folds_ls(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr,
         n_folds_1L_int = n_folds_1L_int)
     smry_of_one_predr_mdl_tb <- purrr::map_dfr(folds_ls, ~{
-        model_mdl <- make_mdl(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+        model_mdl <- make_mdl(data_tb[-.x,], dep_var_nm_1L_chr = dep_var_nm_1L_chr,
             start_1L_chr = start_1L_chr, tfmn_1L_chr = tfmn_1L_chr,
             predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr,
             mdl_type_1L_chr = mdl_type_1L_chr, mdl_types_lup = mdl_types_lup)

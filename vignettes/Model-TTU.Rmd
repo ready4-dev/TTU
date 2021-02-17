@@ -140,30 +140,25 @@ mdl_smry_ls$predr_var_desc_1L_chr <- ds_smry_ls$predictors_lup %>% ready4fun::ge
 ```{r}
 mdl_smry_ls$predr_var_desc_1L_chr
 ```
-Using the metadata from the predictors lookup table, we now create a vector of the range of potential integer values of the most highly correlated predictor.
+
+We now create a vector of the range of potential values of the most highly correlated predictor.
 
 ```{r}
 mdl_smry_ls$predr_vals_dbl <- make_predr_vals(mdl_smry_ls$predr_var_nm_1L_chr, candidate_predrs_lup = ds_smry_ls$predictors_lup)
 ```
 
-```{r}
-mdl_smry_ls$predr_vals_dbl
-```
+
 Compare all candidate model types, each using only the highest correlated candidate predictor (`r predr_var_desc_1L_chr`).
 
 ```{r}
-mdl_smry_ls$n_folds_1L_int <- 10L
+mdl_smry_ls$n_folds_1L_int = 10L
 mdl_smry_ls$smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data_tb = bl_tb,
         n_folds_1L_int = mdl_smry_ls$n_folds_1L_int, mdl_types_chr = mdl_smry_ls$mdl_types_chr,
         dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr, predr_var_nm_1L_chr = mdl_smry_ls$predr_var_nm_1L_chr,
-        predr_var_desc_1L_chr = mdl_smry_ls$predr_var_desc_1L_chr, 
-        predr_vals_dbl = mdl_smry_ls$predr_vals_dbl,
+        predr_var_desc_1L_chr = mdl_smry_ls$predr_var_nm_1L_chr, predr_vals_dbl = mdl_smry_ls$predr_vals_dbl,
         path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsns",
-        mdl_types_lup = mdl_smry_ls$mdl_types_lup) 
-
-```
-```{r}
-mdl_smry_ls$smry_of_sngl_predr_mdls_tb 
+        mdl_types_lup = mdl_smry_ls$mdl_types_lup) # Takes more than vignette time limit to render. Need to add and link to report summarising output.
+mdl_smry_ls$smry_of_sngl_predr_mdls_tb # Make this a class with a print method
 ```
 
 Identify the highest performing model in each category of candidate model using [STATE CRITERION].
