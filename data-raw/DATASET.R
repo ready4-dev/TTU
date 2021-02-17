@@ -464,7 +464,7 @@ usethis::use_dev_package("ready4use")
 #
 ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
                                 r_dir_1L_chr = "R",
-                                dev_pkgs_chr = c("ready4fun","ready4class","ready4use","ready4show"),
+                                dev_pkgs_chr = c("ready4fun","ready4class","ready4use","ready4show","dataverse"),
                                 update_pkgdown_1L_lgl = T)
 ##
 ## PART FOUR
