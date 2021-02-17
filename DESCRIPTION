@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9109
+Version: 0.0.0.9110
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -46,10 +46,10 @@ Imports:
     lifecycle,
     ggfortify,
     knitrBootstrap,
-    ready4show (>= 0.0.0.9009),
-    ready4use (>= 0.0.0.9107),
-    ready4class (>= 0.0.0.9184),
-    ready4fun (>= 0.0.0.9268),
+    ready4show (>= 0.0.0.9012),
+    ready4use (>= 0.0.0.9110),
+    ready4class (>= 0.0.0.9185),
+    ready4fun (>= 0.0.0.9270),
     assertthat,
     boot,
     Boruta,
