@@ -361,7 +361,8 @@ replication_popl_tb <- read.csv("data-raw/csvs/fake_pop_tb.csv") %>%
 scored_data_tb <- add_adol6d_scores(replication_popl_tb,
                                     prefix_1L_chr =  "aqol6d_q",
                                     id_var_nm_1L_chr = "fkClientID",
-                                    wtd_aqol_var_nm_1L_chr = "aqol6d_total_w")
+                                    wtd_aqol_var_nm_1L_chr = "aqol6d_total_w") %>%
+  dplyr::select(-match_var_chr)
 dictionary_tb <- ready4use::make_pt_ready4_dictionary(var_nm_chr = names(scored_data_tb),
                                                       var_cat_chr = c("Identifier", "Clinical","Service","Clinical",
                                                                       rep("Demographic",11),
@@ -404,9 +405,9 @@ dictionary_tb <- ready4use::make_pt_ready4_dictionary(var_nm_chr = names(scored_
                                                                        paste0("Assessment of Quality of Life (6 Dimension) Question ",1:20),
                                                                        "Social and Occupational Functioning Assessment Scale",
                                                                        "Round of Data Collection",
-                                                                       "Gender (Grouped)", # Check if duplicate
+                                                                       "Gender (Grouped)",
                                                                        "Region of Residence (Metropolitan or Regional)",
-                                                                       "Demographic - Culturally And Linguistically Diverse",
+                                                                       "Culturally And Linguistically Diverse",
                                                                        paste0("Assessment of Quality of Life (6 Dimension) Item Disvalue",1:20),
                                                                        lapply(scored_data_tb, Hmisc::label) %>% purrr::flatten_chr() %>% purrr::keep(c(rep(F,66),rep(T,19)))
                                                       ),
@@ -438,7 +439,8 @@ pkg_dss_tb <- replication_popl_tb %>%
                               desc_1L_chr = "A purely synthetic dataset, representative of the original study data, that can be used for replication runs of package algorithms.",
                               abbreviations_lup = tibble::tibble(short_name_chr = dictionary_tb$var_nm_chr,
                                                                  long_name_chr = dictionary_tb$var_desc_chr,
-                                                                 plural_lgl = F), #
+                                                                 plural_lgl = F),
+                              simple_lup_1L_lgl = T,#
                               pkg_dss_tb = pkg_dss_tb)
 ##
 # 7. Save copy of package documentation to online data repo.
