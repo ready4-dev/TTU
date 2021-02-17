@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9111
+Version: 0.0.0.9112
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -46,10 +46,9 @@ Imports:
     lifecycle,
     ggfortify,
     knitrBootstrap,
-    ready4show (>= 0.0.0.9012),
-    ready4use (>= 0.0.0.9110),
+    ready4show (>= 0.0.0.9013),
+    ready4use (>= 0.0.0.9111),
     dataverse (>= 0.3.0),
-    ready4class (>= 0.0.0.9185),
     ready4fun (>= 0.0.0.9270),
     assertthat,
     boot,
@@ -91,5 +90,4 @@ Remotes:
     ready4-dev/ready4show,
     ready4-dev/ready4use,
     iqss/dataverse-client-r,
-    ready4-dev/ready4class,
     ready4-dev/ready4fun
