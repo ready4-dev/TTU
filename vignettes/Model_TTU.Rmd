@@ -362,11 +362,7 @@ outp_smry_ls <- list(scored_data_tb = scored_data_tb,
                      file_paths_chr = list.files(path_to_write_to_1L_chr, recursive = T))
 ```
 ### Time series modelling
-Next we test each of the `r length(mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())` time series models we specified in the previous step. For this goal, we use the `write_ts_mdls_from_alg_outp`{.R} function that makes a call to the Stan program. This function requires that you have the `cmdstanr` package installed on your machine.
-
-```{r message=F, warning=F}
-library(cmdstanr)
-```
+Next we test each of the `r length(mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())` time series models we specified in the previous step. For this goal, we use the `write_ts_mdls_from_alg_outp`{.R} function that makes a call to the Stan program. This function requires that you have the `cmdstanr` package installed on your machine and have performed the necessary configuration of that package - refer to [https://mc-stan.org/cmdstanr/](https://mc-stan.org/cmdstanr/) for details.
 
 Note that for this example we have run only 500 iterations - in practice this number would likely be several times higher. A limitation of the current version of the `write_ts_mdls_from_alg_outp` function is that it only works with the following two model types: 
 
@@ -375,7 +371,7 @@ Note that for this example we have run only 500 iterations - in practice this nu
 
 We aim to address this limitation in future releases of TTU.
 
-```{r}
+```{r eval = F}
 outp_smry_ls <- write_ts_mdls_from_alg_outp(outp_smry_ls,
                                             fn_ls = list(fit_gsn_log_lnk,fit_clg_log_tfmn),
                                             backend_1L_chr = "cmdstanr",
@@ -383,9 +379,10 @@ outp_smry_ls <- write_ts_mdls_from_alg_outp(outp_smry_ls,
                                             iters_1L_int = 500L)
 ```
 
-The `write_ts_mdls_from_alg_outp`{.R} function writes the models it tests to the "F_TS_Mdls" sub-directory of "Output" along with three plots for each model. The three plots for the first model tested (`r mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>% `[`(1) `) are reproduced below.
+The `write_ts_mdls_from_alg_outp`{.R} function writes the models it tests to the "F_TS_Mdls" sub-directory of "Output" along with three plots for each model. 
 
-```{r out.width = "400px"}
+```{r include=F, eval=F, out.width = "400px"}
+# The three plots for the first model tested (`r mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>% `[`(1) `) are reproduced below.
 paste0(path_to_write_to_1L_chr,"/","F_TS_Mdls") %>% list.files(pattern = "\\.png$", full.names = T) %>%
   purrr::keep(stringr::str_detect(.,paste0(mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>% `[`(1)))) %>%
 knitr::include_graphics()
@@ -403,7 +400,7 @@ outp_smry_ls$dv_ls <- list(dv_nm_1L_chr = "firstbounce",
 ```
 This following call to `write_shareable_mdls`{.R} writes shareable models to a new subdirectory (G_Shareable) of "Output". If you added details of a Dataverse account in the previous step the function will also push these shareable models to your Dataverse online data repository.
 
-```{r eval=T}
+```{r eval=F}
 outp_smry_ls <- write_shareable_mdls(outp_smry_ls,
                                      new_dir_nm_1L_chr = "G_Shareable",
                                      shareable_title_detail_1L_chr = "The model that can be used to predict adolescent AQoL6D. Note this model is a placeholder as it has been estimated from synthetic data.")
@@ -425,13 +422,14 @@ The first six records from the replication dataset are reproduced below. Note th
 outp_smry_ls$fk_data_tb %>%
   head() %>%
     ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Synthetic dataset")
+                          caption_1L_chr = "Synthetic dataset",
+                          scroll_box_args_ls = list(width = "100%"))
 ```
 
 ## Save work
 
 Finally, we can save a complete record of our analysis.
 
-```{r}
+```{r eval=F}
 saveRDS(outp_smry_ls,paste0(outp_smry_ls$path_to_write_to_1L_chr,"/I_ALL_OUTPUT_.RDS"))
 ```
