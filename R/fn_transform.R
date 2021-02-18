@@ -146,6 +146,11 @@ transform_raw_aqol_tb_to_aqol6d_tb <- function (raw_aqol_tb)
         "No" | d_ATSI == "Yes", "Yes", "No"))) %>% dplyr::rename(PHQ9 = phq9_total, 
         BADS = bads_total, GAD7 = gad7_total, OASIS = oasis_total, 
         SCARED = scared_total, K6 = k6_total, SOFAS = c_sofas)
+    aqol6d_tb <- aqol6d_tb %>% dplyr::select(c(c("fkClientID", 
+        "round"), names(aqol6d_tb)[!startsWith(names(aqol6d_tb), 
+        "aqol6d_q") & !(names(aqol6d_tb) %in% c("fkClientID", 
+        "round"))], names(aqol6d_tb)[startsWith(names(aqol6d_tb), 
+        "aqol6d_q")]))
     return(aqol6d_tb)
 }
 #' Transform tibble to model input
