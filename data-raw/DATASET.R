@@ -450,6 +450,7 @@ usethis::use_build_ignore("initial_setup.R")
 readLines(".github/workflows/R-CMD-check.yaml")[-28] %>%
   writeLines(".github/workflows/R-CMD-check.yaml")
 usethis::use_package("ggfortify")
+usethis::use_package("cmdstanr")
 usethis::use_package("knitrBootstrap")
 usethis::use_dev_package("ready4show")
 usethis::use_dev_package("ready4use")

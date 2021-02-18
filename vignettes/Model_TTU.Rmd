@@ -20,19 +20,24 @@ set.seed(seed_1L_int)
 
 We next create a directory in which we will write all output.
 
-```{r}
+```{r warning = F}
 path_to_write_to_1L_chr <- "Output" 
 dir.create(path_to_write_to_1L_chr)
 ```
-We now specify the paths to the input data and its data dictionary. For this example we are going to use a slightly trimmed down version of the TTU replication dataset and its dictionary [which are described in another vignette article](Replication_DS.html).
+We now specify the paths to the input data and its data dictionary. 
 
 ```{r}
 path_to_inp_data_1L_chr <- "Data" 
+```
+As this is an illustrative example, neither the data directory nor the data files actually exist. So we are going to have to create both. To create our fake data files, we slightly trim down the TTU replication dataset [described in another vignette article](Replication_DS.html) and save it along with its dictionary to the "Data" directory.
+
+```{r warning = F}
 dir.create(path_to_inp_data_1L_chr)
 write.csv(replication_popl_tb %>% dplyr::select(-BADS,-GAD7, -OASIS,-SCARED),"Data/data.csv", row.names=FALSE)
 write.csv(repln_ds_dict_r3,"Data/dictionary.csv", row.names=FALSE)
 ```
-We can now read the data files into local memory.
+
+We read our data files into local memory.
 
 ```{r message = F}
 data_tb <- readr::read_csv("Data/data.csv") 
@@ -45,12 +50,13 @@ We now convert study participant responses to the AQoL-6D questionnaire to healt
 ```{r message=FALSE, results='hide', warning=FALSE}
 scored_data_tb <- data_tb %>% add_adol6d_scores() 
 ```
-The dataset we are using has `r nrow(scored_data_tb)` records on `r length(scored_data_tb$fkClientID %>% unique())`) study participants. The first six records are reproduced below.
+The dataset we are using has `r nrow(scored_data_tb)` records on `r length(scored_data_tb$fkClientID %>% unique())` study participants. The first six records are reproduced below.
 ```{r }
 scored_data_tb %>%
     head() %>%
   ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Input dataset")
+                          caption_1L_chr = "Input dataset",
+                          scroll_box_args_ls = list(width = "100%"))
 ```
 
 We next create an object `ds_smry_ls` to store a description of some structural properties of the dataset such as:
@@ -87,13 +93,14 @@ ds_smry_ls$predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short
 Our first main task is to test which models, predictors and covariates perform best. This tasks can be broken down into the following steps.
 
 ### Preliminary tasks
-We next create another lookup table (or as in the below example, use an existing lookup table) with summary information about the types of models we might test.
+We begin by creating another lookup table (or as in the below example, use an existing lookup table) with summary information about the types of models we might test.
 
 ```{r}
 data("mdl_types_lup",package = "TTU") 
 mdl_types_lup %>%
     ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Model types lookup table")
+                          caption_1L_chr = "Model types lookup table",
+                          scroll_box_args_ls = list(width = "100%"))
 ```
 We add this lookup table to a new object, `mdl_smry_ls` which stores information about the candidate models we will be using. We can use this step to select a subset of the models from the lookup table to compare. In the below example, we have selected all of the available GLM and OLS models.
 
@@ -152,7 +159,7 @@ mdl_smry_ls$predr_vals_dbl <- make_predr_vals(mdl_smry_ls$predr_var_nm_1L_chr, c
 ```{r}
 mdl_smry_ls$predr_vals_dbl
 ```
-We now compare all candidate model types, each using only the highest correlated candidate predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`). The `write_sngl_predr_multi_mdls_outps` function will write a summary of each model to a new sub-directory of `r path_to_write_to_1L_chr`, which takes the name passed to the `new_dir_nm_1L_chr` argument. 
+We now compare all candidate model types, each using only the highest correlated candidate predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`). 
 
 ```{r warning = FALSE, message=FALSE}
 mdl_smry_ls$n_folds_1L_int <- 10L
@@ -166,20 +173,22 @@ mdl_smry_ls$smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data
 
 ```
 
-The models that are tested are written to the "A_Candidate_Mdls_Cmprsns" sub-directory of "Output" along with five plots for each model. The plots for the first model we tested are reproduced below.
+The `write_sngl_predr_multi_mdls_outps` function will write each model to be tested to a new sub-directory of "`r path_to_write_to_1L_chr`" called "A_Candidate_Mdls_Cmprsns". Also written to that sub-directory are a number of plots for each model. The plots for the first model we test (
+`r mdl_smry_ls$mdl_types_lup %>% ready4fun::get_from_lup_obj(target_var_nm_1L_chr = "long_name_chr",match_value_xx = "OLS_NTF", match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F)`) are reproduced below.
 
-```{r }
-paste0(path_to_write_to_1L_chr,"/","A_Candidate_Mdls_Cmprsns") %>% list.files(pattern = "\\.png$", full.names = T) %>% `[`(1:5) %>%
+```{r out.width = "400px"}
+paste0(path_to_write_to_1L_chr,"/","A_Candidate_Mdls_Cmprsns") %>% list.files(pattern = "\\.png$", full.names = T) %>% purrr::keep(stringr::str_detect(.,"OLS_NTF")) %>%
 knitr::include_graphics()
 ```
 
-The function also outputs a table summarising the performance of each of the candidate models.
+The `write_sngl_predr_multi_mdls_outps` function also outputs a table summarising the performance of each of the candidate models.
 
 ```{r}
 mdl_smry_ls$smry_of_sngl_predr_mdls_tb %>%
     ready4show::print_table(output_type_1L_chr = "HTML",
                           caption_1L_chr = "Model performance for highest correlated predictor using baseline data")
 ```
+
 We can now identify the highest performing model in each category of candidate model based on the testing R^2^ statistic (RsquaredP in the previous table).
 
 ```{r message=FALSE}
@@ -195,7 +204,7 @@ We can override these automated selections and instead incorporate other conside
 mdl_smry_ls$prefd_mdl_types_chr <- c("GLM_GSN_LOG","OLS_CLL")
 ```
 
-### Compare all candidate predictors using preferred model
+### Compare all candidate predictors using most preferred model
 We can now compare all of our candidate single predictors using the most preferred model type.
 
 ```{r message=FALSE, results='hide'}
@@ -210,7 +219,7 @@ mdl_smry_ls$predr_cmprsns_tb <- write_predr_cmprsn_outps(data_tb = bl_tb,
 
 The previous call to the `write_predr_cmprsn_outps`{.R} function saved the tested models along with the model plots reproduced below in the "B_Candidate_Predrs_Cmprsns" sub-directory of "Output".
 
-```{r }
+```{r out.width = "400px"}
 paste0(path_to_write_to_1L_chr,"/","B_Candidate_Predrs_Cmprsns") %>% list.files(pattern = "\\.png$", full.names = T) %>%
 knitr::include_graphics()
 ```
@@ -232,10 +241,10 @@ Now, we compare the performance of single predictor models of our preferred mode
         path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsns",
         fl_nm_pfx_1L_chr = "C_PREDR", mdl_types_lup = mdl_smry_ls$mdl_types_lup) 
 ```
-The previous call to the `write_mdl_type_multi_outps`{.R} function saves the tested models along with the two plots for each model in the "C_Predrs_Sngl_Mdl_Cmprsns" sub-directory of "Output". The plots for the model using the best performing predictor (`mdl_smry_ls$predr_var_desc_1L_chr`) are
+The previous call to the `write_mdl_type_multi_outps`{.R} function saves the tested models along with the two plots for each model in the "C_Predrs_Sngl_Mdl_Cmprsns" sub-directory of "Output". The plots for the model using the best performing predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`) are
 reproduced below. 
 
-```{r }
+```{r out.width = "400px"}
 paste0(path_to_write_to_1L_chr,"/","C_Predrs_Sngl_Mdl_Cmprsns") %>% list.files(pattern = "\\.png$", full.names = T) %>%
   purrr::keep(stringr::str_detect(.,paste0("_",mdl_smry_ls$predr_var_nm_1L_chr,"_"))) %>%
 knitr::include_graphics()
@@ -292,7 +301,7 @@ mdl_smry_ls$prefd_covars_chr <- NA_character_
 ### Test preferred model with preferred covariates for each candidate predictor
 We now conclude our model testing by rerunning the previous step, except confining our covariates to those we prefer.
 
-```{r warning = F}
+```{r warning = F, message=F}
     empty_tb <- write_mdl_type_multi_outps(data_tb = bl_tb, n_folds_1L_int = NULL,
         start_1L_chr = NA_character_, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr,
         covar_var_nms_chr = mdl_smry_ls$prefd_covars_chr, mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1],
@@ -301,10 +310,10 @@ We now conclude our model testing by rerunning the previous step, except confini
 
 ```
 
-The previous call to the `write_mdl_type_multi_outps`{.R} function saves the tested models along with the two plots for each model in the "E_Predrs_W_Covars_Sngl_Mdl_Cmprsns" sub-directory of "Output". The plots for the model using the best performing predictor (`mdl_smry_ls$predr_var_desc_1L_chr`) are
+The previous call to the `write_mdl_type_multi_outps`{.R} function saves the tested models along with the two plots for each model in the "E_Predrs_W_Covars_Sngl_Mdl_Cmprsns" sub-directory of "Output". The plots for the model using the best performing predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`) are
 reproduced below. 
 
-```{r }
+```{r out.width = "400px"}
 paste0(path_to_write_to_1L_chr,"/","E_Predrs_W_Covars_Sngl_Mdl_Cmprsns") %>% list.files(pattern = "\\.png$", full.names = T) %>%
   purrr::keep(stringr::str_detect(.,paste0("_",mdl_smry_ls$predr_var_nm_1L_chr,"_"))) %>%
 knitr::include_graphics()
@@ -314,7 +323,7 @@ knitr::include_graphics()
 The next main step is to use the preferred model types and covariates identified from the preceding analysis of cross-sectional data in time series analysis. 
 
 ### Preliminary steps
-First we summarise what are the combinations of model types, candidate predictors and covariates that we will be using.
+First we summarise the combinations of model types, candidate predictors and covariates that we will be using.
 
 ```{r}
     mdl_smry_ls$predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr,
@@ -353,7 +362,13 @@ outp_smry_ls <- list(scored_data_tb = scored_data_tb,
                      file_paths_chr = list.files(path_to_write_to_1L_chr, recursive = T))
 ```
 ### Time series modelling
-Next we test each of the `r length(mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())` time series models we specified in the previous step. For this goal, we use the `write_ts_mdls_from_alg_outp`{.R} function that makes a call to the Stan program. Note that for this example we have run only 500 iterations - in practice this number would likely be several times higher. A limitation of the current version of the `write_ts_mdls_from_alg_outp` function is that it only works with the following two model types: 
+Next we test each of the `r length(mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())` time series models we specified in the previous step. For this goal, we use the `write_ts_mdls_from_alg_outp`{.R} function that makes a call to the Stan program. This function requires that you have the `cmdstanr` package installed on your machine.
+
+```{r message=F, warning=F}
+library(cmdstanr)
+```
+
+Note that for this example we have run only 500 iterations - in practice this number would likely be several times higher. A limitation of the current version of the `write_ts_mdls_from_alg_outp` function is that it only works with the following two model types: 
 
 - `r mdl_smry_ls$mdl_types_lup %>% ready4fun::get_from_lup_obj(target_var_nm_1L_chr = "long_name_chr",match_value_xx = mdl_smry_ls$prefd_mdl_types_chr[1], match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F)`
 - `r mdl_smry_ls$mdl_types_lup %>% ready4fun::get_from_lup_obj(target_var_nm_1L_chr = "long_name_chr",match_value_xx = mdl_smry_ls$prefd_mdl_types_chr[2], match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F)`
@@ -364,7 +379,16 @@ We aim to address this limitation in future releases of TTU.
 outp_smry_ls <- write_ts_mdls_from_alg_outp(outp_smry_ls,
                                             fn_ls = list(fit_gsn_log_lnk,fit_clg_log_tfmn),
                                             backend_1L_chr = "cmdstanr",
+                                            new_dir_nm_1L_chr = "F_TS_Mdls",
                                             iters_1L_int = 500L)
+```
+
+The `write_ts_mdls_from_alg_outp`{.R} function writes the models it tests to the "F_TS_Mdls" sub-directory of "Output" along with three plots for each model. The three plots for the first model tested (`r mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>% `[`(1) `) are reproduced below.
+
+```{r out.width = "400px"}
+paste0(path_to_write_to_1L_chr,"/","F_TS_Mdls") %>% list.files(pattern = "\\.png$", full.names = T) %>%
+  purrr::keep(stringr::str_detect(.,paste0(mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>% `[`(1)))) %>%
+knitr::include_graphics()
 ```
 
 ### Sharing models
@@ -377,7 +401,7 @@ outp_smry_ls$dv_ls <- list(dv_nm_1L_chr = "firstbounce",
                                ds_url_1L_chr = "https://doi.org/10.7910/DVN/JC6PTV", 
                                parent_dv_dir_1L_chr = "../../../../Data/Dataverse")
 ```
-This following call to `write_shareable_mdls`{.R} writes shareable models to a new subdirectory (G_Shareable) of your nominated output director on your local machine. If you added details of a Dataverse account in the previous step the function will also push these shareable models to your Dataverse online data repository.
+This following call to `write_shareable_mdls`{.R} writes shareable models to a new subdirectory (G_Shareable) of "Output". If you added details of a Dataverse account in the previous step the function will also push these shareable models to your Dataverse online data repository.
 
 ```{r eval=T}
 outp_smry_ls <- write_shareable_mdls(outp_smry_ls,
@@ -389,15 +413,24 @@ The files created in the following step are available here: https://doi.org/10.7
 
 ## Create shareable population data
 
-To aid replication, we can create a purely synthetic dataset, representative of the source data, but containing no real data on any individual.
+To aid replication, we can create a purely synthetic dataset, representative of the source data, but containing no real data on any individual. The `make_fake_ts_data`{.R} function uses the `syn`{.R} function from the `synthpop` package to perform this task.
 
 ```{r eval=T}
 outp_smry_ls$fk_data_tb <- TTU::make_fake_ts_data(outp_smry_ls)
 ```
 
+The first six records from the replication dataset are reproduced below. Note that the "change" variables are scaled by the factor we specified in the `ds_smry_ls$predictors_lup` predictors lookup table.
+
+```{r}
+outp_smry_ls$fk_data_tb %>%
+  head() %>%
+    ready4show::print_table(output_type_1L_chr = "HTML",
+                          caption_1L_chr = "Synthetic dataset")
+```
+
 ## Save work
 
-Finally, we save a complete record of our analysis.
+Finally, we can save a complete record of our analysis.
 
 ```{r}
 saveRDS(outp_smry_ls,paste0(outp_smry_ls$path_to_write_to_1L_chr,"/I_ALL_OUTPUT_.RDS"))
