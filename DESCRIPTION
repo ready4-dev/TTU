@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9119
+Version: 0.0.0.9120
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -45,7 +45,7 @@ Imports:
     knitr,
     lifecycle,
     ggfortify,
-    cmdstanr (>= 0.1.3),
+    cmdstanr (>= 0.3.0.9000),
     knitrBootstrap,
     ready4show (>= 0.0.0.9013),
     ready4use (>= 0.0.0.9111),
@@ -89,7 +89,7 @@ VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
 Remotes: 
-    https://mc-stan.org/r-packages/,
+    stan-dev/cmdstanr,
     ready4-dev/ready4show,
     ready4-dev/ready4use,
     iqss/dataverse-client-r,
