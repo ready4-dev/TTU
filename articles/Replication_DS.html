@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9107</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9118</span>
       </span>
     </div>
 
@@ -64,6 +64,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/Model_TTU.html">Model Transfer to Utility</a>
+    </li>
+    <li>
       <a href="../articles/Replication_DS.html">Replication Dataset</a>
     </li>
     <li>
@@ -106,22 +109,22 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/TTU/">TTU</a></span><span class="op">)</span></code></pre></div>
-<div id="origin-and-purpose-of-the-ttu-replication-dataset" class="section level1">
-<h1 class="hasAnchor">
-<a href="#origin-and-purpose-of-the-ttu-replication-dataset" class="anchor"></a>Origin and purpose of the TTU replication dataset</h1>
+<div id="origin-and-purpose-of-the-ttu-replication-dataset" class="section level2">
+<h2 class="hasAnchor">
+<a href="#origin-and-purpose-of-the-ttu-replication-dataset" class="anchor"></a>Origin and purpose of the TTU replication dataset</h2>
 <p>The replication dataset distributed with the TTU package is a purely synthetic (entirely fake) dataset that is nonetheless representative (in terms of constituent variables and their uni-variate and [to some extent] joint distributions) of the original study dataset to which we applied the transfer to utility algorithms included in TTU. The purpose of the replication dataset is two-fold:</p>
 <ol style="list-style-type: decimal">
 <li><p>to help users replicate the results in our original study (by applying the same algorithms we used to a different but similar dataset, users will be able to get broadly similar results);</p></li>
 <li><p>to help users trial the functions in the TTU package before potentially applying these functions to their own data.</p></li>
 </ol>
 </div>
-<div id="replication-dataset-dictionary" class="section level1">
-<h1 class="hasAnchor">
-<a href="#replication-dataset-dictionary" class="anchor"></a>Replication dataset dictionary</h1>
+<div id="replication-dataset-dictionary" class="section level2">
+<h2 class="hasAnchor">
+<a href="#replication-dataset-dictionary" class="anchor"></a>Replication dataset dictionary</h2>
 <p>An overview of the contents of the replication dataset is provided in a data dictionary that can be accessed with the following command.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dictionary_tb</span> <span class="op">&lt;-</span> <span class="va">repln_ds_dict_r3</span></code></pre></div>
-<p>The following lines print the data dictionary as a table.</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"repln_ds_dict_r3"</span>, package <span class="op">=</span> <span class="st">"TTU"</span><span class="op">)</span>
+<span class="va">dictionary_tb</span> <span class="op">&lt;-</span> <span class="va">repln_ds_dict_r3</span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dictionary_tb</span> <span class="op">%&gt;%</span>
   <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>, 
@@ -267,7 +270,7 @@ CALD
 Demographic
 </td>
 <td style="text-align:right;">
-Demographic - Culturally And Linguistically Diverse
+Culturally And Linguistically Diverse
 </td>
 <td style="text-align:right;">
 factor
@@ -799,17 +802,18 @@ integer
 </tr></tfoot>
 </table>
 </div>
-<div id="accessing-the-replication-dataset" class="section level1">
-<h1 class="hasAnchor">
-<a href="#accessing-the-replication-dataset" class="anchor"></a>Accessing the replication dataset</h1>
+<div id="accessing-the-replication-dataset" class="section level2">
+<h2 class="hasAnchor">
+<a href="#accessing-the-replication-dataset" class="anchor"></a>Accessing the replication dataset</h2>
 <p>The replication dataset itself can be accessed using the following command.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">raw_data_tb</span> <span class="op">&lt;-</span> <span class="va">replication_popl_tb</span> </code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"replication_popl_tb"</span>, package <span class="op">=</span> <span class="st">"TTU"</span><span class="op">)</span>
+<span class="va">raw_data_tb</span> <span class="op">&lt;-</span> <span class="va">replication_popl_tb</span> </code></pre></div>
 <p>Adding variable labels makes it easier to interpret the dataset. In the following command, we add lables from the data dictionary to the replication dataset.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">raw_data_tb</span> <span class="op">&lt;-</span> <span class="va">raw_data_tb</span> <span class="op">%&gt;%</span>
   <span class="fu">ready4use</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4use/reference/add_labels_from_dictionary.html">add_labels_from_dictionary</a></span><span class="op">(</span><span class="va">dictionary_tb</span><span class="op">)</span></code></pre></div>
-<p>The following command prints the first ten cases from the replication dataset as a table, using variable labels as column names.</p>
+<p>The first six cases from the replication dataset are reproduced below, using variable labels as column headings.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">raw_data_tb</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
@@ -958,7 +962,7 @@ Gender (Grouped)
 Region of Residence (Metropolitan or Regional)
 </th>
 <th style="text-align:right;">
-Demographic - Culturally And Linguistically Diverse
+Culturally And Linguistically Diverse
 </th>
 </tr></thead>
 <tbody>

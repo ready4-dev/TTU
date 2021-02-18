@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9107</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9118</span>
       </span>
     </div>
 
@@ -64,6 +64,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/Model_TTU.html">Model Transfer to Utility</a>
+    </li>
+    <li>
       <a href="../articles/Replication_DS.html">Replication Dataset</a>
     </li>
     <li>
@@ -105,35 +108,39 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/TTU/">TTU</a></span><span class="op">)</span></code></pre></div>
-<div id="converting-assessment-of-quality-of-life-six-dimension-questionnaire-response-to-health-utility-scores" class="section level1">
-<h1 class="hasAnchor">
-<a href="#converting-assessment-of-quality-of-life-six-dimension-questionnaire-response-to-health-utility-scores" class="anchor"></a>Converting Assessment of Quality of Life Six Dimension questionnaire response to Health Utility Scores</h1>
+<div id="converting-questionnaire-responses-to-health-utility-scores" class="section level2">
+<h2 class="hasAnchor">
+<a href="#converting-questionnaire-responses-to-health-utility-scores" class="anchor"></a>Converting questionnaire responses to health utility scores</h2>
 <p>To derive a health utility score from the raw responses to a multi-attribute utility instrument it is necessary to implement a scoring algorithm. Scoring algorithms for the Assessment of Quality of Life Six Dimension (AQoL-6D) are publicly available in SPSS format. However, to include scoring algorithms in reproducible research workflows, it is desirable to have these algorithms available in open science languages such as R. We therefore developed R versions of the adult and adolescent versions of the AQoL-6D scoring algorithm and have made them available as part of the TTU package.</p>
 </div>
-<div id="calculating-scores" class="section level1">
-<h1 class="hasAnchor">
-<a href="#calculating-scores" class="anchor"></a>Calculating scores</h1>
+<div id="calculating-scores" class="section level2">
+<h2 class="hasAnchor">
+<a href="#calculating-scores" class="anchor"></a>Calculating scores</h2>
 <p>To calculate AQoL 6D adolescent utility scores, a dataset with all twenty AQoL-6D questionnaire response items must be passed to the <code class="sourceCode r">add_adol6d_scores</code> function. In the following illustrative example, we use the <a href="Replication_DS.html">replication dataset</a> that is included in the TTU package.</p>
-<p>The names of the twenty questionnaire response variables must all have a common prefix and end with the item number. In our replication dataset, they are named “aqol6d_q1”, “aqol6d_q2” … “aqol6d_q20”. Details of the common prefix for the AQoL-6D response item variables, the name of the unique individual identifier variable and the desired name for the AQoL-6D adolescent utility score variable to be calculated must also be passed to the <code class="sourceCode r">add_adol6d_scores</code> function. The function returns an updated dataset, with additional variables that include the intermediate and final calculations for AQoL 6D adolescent utility scores.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"replication_popl_tb"</span>, package <span class="op">=</span> <span class="st">"TTU"</span><span class="op">)</span></code></pre></div>
+<p>The names of the twenty questionnaire response variables must all have a common prefix and end with the item number. In our replication dataset, they are named “aqol6d_q1”, “aqol6d_q2” … “aqol6d_q20”. Details of the common prefix for the AQoL-6D response item variables, the name of the unique individual identifier variable and the desired name for the AQoL-6D adolescent utility score variable to be calculated must also be passed to the <code class="sourceCode r">add_adol6d_scores</code> function. The function returns an updated dataset, with additional variables that include the intermediate and final calculations for AQoL 6D adolescent utility scores.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">scored_data_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_adol6d_scores.html">add_adol6d_scores</a></span><span class="op">(</span><span class="va">replication_popl_tb</span>,
                                               prefix_1L_chr <span class="op">=</span>  <span class="st">"aqol6d_q"</span>,
                                               id_var_nm_1L_chr <span class="op">=</span> <span class="st">"fkClientID"</span>,
                                               wtd_aqol_var_nm_1L_chr <span class="op">=</span> <span class="st">"aqol6d_total_w"</span><span class="op">)</span> </code></pre></div>
 </div>
-<div id="viewing-the-updated-dataset" class="section level1">
-<h1 class="hasAnchor">
-<a href="#viewing-the-updated-dataset" class="anchor"></a>Viewing the updated dataset</h1>
+<div id="viewing-the-updated-dataset" class="section level2">
+<h2 class="hasAnchor">
+<a href="#viewing-the-updated-dataset" class="anchor"></a>Viewing the updated dataset</h2>
 <p>Before displaying the updated dataset, it may be desirable to label variables so that their meaning is clearer. The first step to do this is to create a data dictionary that extends to all variables in the updated dataset, by combining a data dictionary for the source (unscored) dataset (in our case <code class="sourceCode r">repln_ds_dict_r3</code>) with a data dictionary for a template scored dataset (<code class="sourceCode r">aqol_scrg_dict_r3</code> for this example).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dictionary_tb</span> <span class="op">&lt;-</span> <span class="fu">ready4use</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4use/reference/bind_lups-methods.html">bind_lups</a></span><span class="op">(</span><span class="va">repln_ds_dict_r3</span>,
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"repln_ds_dict_r3"</span>, package <span class="op">=</span> <span class="st">"TTU"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"aqol_scrg_dict_r3"</span>, package <span class="op">=</span> <span class="st">"TTU"</span><span class="op">)</span>
+<span class="va">dictionary_tb</span> <span class="op">&lt;-</span> <span class="fu">ready4use</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4use/reference/bind_lups-methods.html">bind_lups</a></span><span class="op">(</span><span class="va">repln_ds_dict_r3</span>,
                                       new_ready4_dictionary <span class="op">=</span> <span class="va">aqol_scrg_dict_r3</span><span class="op">)</span></code></pre></div>
 <p>Labels from the new data dictionary can then be added to our updated (scored) dataset.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">scored_data_tb</span> <span class="op">&lt;-</span> <span class="va">scored_data_tb</span> <span class="op">%&gt;%</span>
   <span class="fu">ready4use</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4use/reference/add_labels_from_dictionary.html">add_labels_from_dictionary</a></span><span class="op">(</span><span class="va">dictionary_tb</span><span class="op">)</span></code></pre></div>
-<p>The following lines then print the first ten lines of the updated dataset as a table, using variable labels as column names.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p>The following lines then print the first six lines of the updated dataset as a table, using variable labels as column names.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">scored_data_tb</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
@@ -282,7 +289,7 @@ Gender (Grouped)
 Region of Residence (Metropolitan or Regional)
 </th>
 <th style="text-align:right;">
-Demographic - Culturally And Linguistically Diverse
+Culturally And Linguistically Diverse
 </th>
 <th style="text-align:right;">
 Assessment of Quality of Life (6 Dimension) Item Disvalue1
@@ -615,7 +622,7 @@ No
 0.7708396
 </td>
 <td style="text-align:right;">
-0.26192852
+0.2619285
 </td>
 <td style="text-align:right;">
 0.03009428
@@ -645,10 +652,10 @@ No
 0.7286568
 </td>
 <td style="text-align:right;">
-0.5583894
+0.55838936
 </td>
 <td style="text-align:right;">
-0.5583894
+0.55838936
 </td>
 <td style="text-align:right;">
 0.4416106
@@ -662,22 +669,22 @@ No
 </tr>
 <tr>
 <td style="text-align:left;">
-Participant_2
+Participant_10
 </td>
 <td style="text-align:right;">
-Anxiety
+Other
 </td>
 <td style="text-align:right;">
-Regional Centre
+Canberra
 </td>
 <td style="text-align:right;">
 0-1a
 </td>
 <td style="text-align:right;">
-19
+15
 </td>
 <td style="text-align:right;">
-Age 18-26
+Age 12-17
 </td>
 <td style="text-align:left;">
 Female
@@ -686,7 +693,7 @@ Female
 Female
 </td>
 <td style="text-align:right;">
-Straight
+Other
 </td>
 <td style="text-align:right;">
 Other
@@ -701,60 +708,57 @@ No
 No
 </td>
 <td style="text-align:right;">
-REPLACE_ME_3
+REPLACE_ME_1
 </td>
 <td style="text-align:right;">
-Studying only
+Studying and working
 </td>
 <td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+34
+</td>
+<td style="text-align:left;">
 13
 </td>
 <td style="text-align:right;">
-13
+15
 </td>
 <td style="text-align:right;">
-63
-</td>
-<td style="text-align:left;">
-12
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-41
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
+38
 </td>
 <td style="text-align:right;">
 1
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-2
+3
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 4
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 4
 </td>
 <td style="text-align:right;">
@@ -767,6 +771,9 @@ Studying only
 3
 </td>
 <td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
 1
 </td>
 <td style="text-align:left;">
@@ -776,19 +783,276 @@ Studying only
 2
 </td>
 <td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-58
+60
 </td>
 <td style="text-align:left;">
 Baseline
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Metro
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:left;">
+0.041
+</td>
+<td style="text-align:right;">
+0.297
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.648
+</td>
+<td style="text-align:right;">
+0.392
+</td>
+<td style="text-align:left;">
+0.824
+</td>
+<td style="text-align:right;">
+0.784
+</td>
+<td style="text-align:right;">
+0.368
+</td>
+<td style="text-align:right;">
+0.722
+</td>
+<td style="text-align:right;">
+0.382
+</td>
+<td style="text-align:right;">
+0.423
+</td>
+<td style="text-align:left;">
+0.000
+</td>
+<td style="text-align:right;">
+0.2
+</td>
+<td style="text-align:right;">
+0.072
+</td>
+<td style="text-align:right;">
+0.223
+</td>
+<td style="text-align:right;">
+0.024
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:left;">
+0.27064870
+</td>
+<td style="text-align:right;">
+0.7770111
+</td>
+<td style="text-align:right;">
+0.8683514
+</td>
+<td style="text-align:right;">
+0.6579841
+</td>
+<td style="text-align:right;">
+0.1935407
+</td>
+<td style="text-align:right;">
+0.13938313
+</td>
+<td style="text-align:left;">
+0.7293513
+</td>
+<td style="text-align:right;">
+0.2229889
+</td>
+<td style="text-align:right;">
+0.1316486
+</td>
+<td style="text-align:right;">
+0.3420159
+</td>
+<td style="text-align:right;">
+0.8064593
+</td>
+<td style="text-align:right;">
+0.8606169
+</td>
+<td style="text-align:left;">
+0.7541542
+</td>
+<td style="text-align:right;">
+0.8537026
+</td>
+<td style="text-align:right;">
+0.74739738
+</td>
+<td style="text-align:right;">
+0.74739738
+</td>
+<td style="text-align:right;">
+0.2526026
+</td>
+<td style="text-align:right;">
+0.3413671
+</td>
+<td style="text-align:left;">
+0.3916050
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Participant_10
+</td>
+<td style="text-align:right;">
+Depression
+</td>
+<td style="text-align:right;">
+Regional Centre
+</td>
+<td style="text-align:right;">
+1b
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+Age 12-17
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Other
+</td>
+<td style="text-align:right;">
+Other
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+No
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+REPLACE_ME_1
+</td>
+<td style="text-align:right;">
+Not studying or working
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+95
+</td>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+48
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+64
+</td>
+<td style="text-align:left;">
+Follow-up
 </td>
 <td style="text-align:right;">
 Female
@@ -800,263 +1064,6 @@ Regional
 Yes
 </td>
 <td style="text-align:right;">
-0.435
-</td>
-<td style="text-align:right;">
-0.240
-</td>
-<td style="text-align:left;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.461
-</td>
-<td style="text-align:right;">
-0.193
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.392
-</td>
-<td style="text-align:left;">
-0.142
-</td>
-<td style="text-align:right;">
-0.784
-</td>
-<td style="text-align:right;">
-0.837
-</td>
-<td style="text-align:right;">
-0.338
-</td>
-<td style="text-align:right;">
-0.774
-</td>
-<td style="text-align:right;">
-0.423
-</td>
-<td style="text-align:left;">
-0.000
-</td>
-<td style="text-align:right;">
-0.2
-</td>
-<td style="text-align:right;">
-0.072
-</td>
-<td style="text-align:right;">
-0.033
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:left;">
-0.28680293
-</td>
-<td style="text-align:right;">
-0.3942554
-</td>
-<td style="text-align:right;">
-0.8714053
-</td>
-<td style="text-align:right;">
-0.7230895
-</td>
-<td style="text-align:right;">
-0.19354065
-</td>
-<td style="text-align:right;">
-0.01916297
-</td>
-<td style="text-align:left;">
-0.7131971
-</td>
-<td style="text-align:right;">
-0.6057446
-</td>
-<td style="text-align:right;">
-0.1285947
-</td>
-<td style="text-align:right;">
-0.2769105
-</td>
-<td style="text-align:right;">
-0.8064593
-</td>
-<td style="text-align:right;">
-0.9808370
-</td>
-<td style="text-align:left;">
-0.6834328
-</td>
-<td style="text-align:right;">
-0.7736459
-</td>
-<td style="text-align:right;">
-0.6234942
-</td>
-<td style="text-align:right;">
-0.6234942
-</td>
-<td style="text-align:right;">
-0.3765058
-</td>
-<td style="text-align:right;">
-0.4504886
-</td>
-<td style="text-align:left;">
-0.5095754
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Participant_3
-</td>
-<td style="text-align:right;">
-Anxiety
-</td>
-<td style="text-align:right;">
-Canberra
-</td>
-<td style="text-align:right;">
-1b
-</td>
-<td style="text-align:right;">
-21
-</td>
-<td style="text-align:right;">
-Age 18-26
-</td>
-<td style="text-align:left;">
-Female
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Other
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:left;">
-NA
-</td>
-<td style="text-align:right;">
-REPLACE_ME_2
-</td>
-<td style="text-align:right;">
-Studying only
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-17
-</td>
-<td style="text-align:right;">
-72
-</td>
-<td style="text-align:left;">
-16
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-43
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-5
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:left;">
-5
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-72
-</td>
-<td style="text-align:left;">
-Baseline
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Metro
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
 0.073
 </td>
 <td style="text-align:right;">
@@ -1066,521 +1073,7 @@ NA
 0.041
 </td>
 <td style="text-align:right;">
-1.000
-</td>
-<td style="text-align:right;">
 0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.133
-</td>
-<td style="text-align:left;">
-0.824
-</td>
-<td style="text-align:right;">
-1.000
-</td>
-<td style="text-align:right;">
-0.064
-</td>
-<td style="text-align:right;">
-0.722
-</td>
-<td style="text-align:right;">
-0.055
-</td>
-<td style="text-align:right;">
-0.057
-</td>
-<td style="text-align:left;">
-0.133
-</td>
-<td style="text-align:right;">
-0.0
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:left;">
-0.83681670
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.8484607
-</td>
-<td style="text-align:right;">
-0.3561263
-</td>
-<td style="text-align:right;">
-0.08403379
-</td>
-<td style="text-align:right;">
-0.00000000
-</td>
-<td style="text-align:left;">
-0.1631833
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:right;">
-0.1515393
-</td>
-<td style="text-align:right;">
-0.6438737
-</td>
-<td style="text-align:right;">
-0.9159662
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:left;">
-0.6509563
-</td>
-<td style="text-align:right;">
-0.7368825
-</td>
-<td style="text-align:right;">
-0.5700479
-</td>
-<td style="text-align:right;">
-0.5700479
-</td>
-<td style="text-align:right;">
-0.4299521
-</td>
-<td style="text-align:right;">
-0.4975589
-</td>
-<td style="text-align:left;">
-0.5591495
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Participant_4
-</td>
-<td style="text-align:right;">
-Depression and Anxiety
-</td>
-<td style="text-align:right;">
-Southport
-</td>
-<td style="text-align:right;">
-2-4
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-Age 12-17
-</td>
-<td style="text-align:left;">
-Female
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Straight
-</td>
-<td style="text-align:right;">
-Other
-</td>
-<td style="text-align:right;">
-Yes
-</td>
-<td style="text-align:right;">
-No
-</td>
-<td style="text-align:left;">
-No
-</td>
-<td style="text-align:right;">
-REPLACE_ME_3
-</td>
-<td style="text-align:right;">
-Not studying or working
-</td>
-<td style="text-align:right;">
-17
-</td>
-<td style="text-align:right;">
-17
-</td>
-<td style="text-align:right;">
-75
-</td>
-<td style="text-align:left;">
-12
-</td>
-<td style="text-align:right;">
-10
-</td>
-<td style="text-align:right;">
-51
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-88
-</td>
-<td style="text-align:left;">
-Baseline
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Metro
-</td>
-<td style="text-align:right;">
-Yes
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.033
-</td>
-<td style="text-align:left;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.461
-</td>
-<td style="text-align:right;">
-0.759
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.838
-</td>
-<td style="text-align:left;">
-0.824
-</td>
-<td style="text-align:right;">
-0.330
-</td>
-<td style="text-align:right;">
-0.368
-</td>
-<td style="text-align:right;">
-0.338
-</td>
-<td style="text-align:right;">
-0.774
-</td>
-<td style="text-align:right;">
-0.057
-</td>
-<td style="text-align:left;">
-0.000
-</td>
-<td style="text-align:right;">
-0.0
-</td>
-<td style="text-align:right;">
-0.072
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.205
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:left;">
-0.01959603
-</td>
-<td style="text-align:right;">
-0.6811223
-</td>
-<td style="text-align:right;">
-0.8697702
-</td>
-<td style="text-align:right;">
-0.5898622
-</td>
-<td style="text-align:right;">
-0.04696135
-</td>
-<td style="text-align:right;">
-0.09491951
-</td>
-<td style="text-align:left;">
-0.9804040
-</td>
-<td style="text-align:right;">
-0.3188777
-</td>
-<td style="text-align:right;">
-0.1302298
-</td>
-<td style="text-align:right;">
-0.4101378
-</td>
-<td style="text-align:right;">
-0.9530386
-</td>
-<td style="text-align:right;">
-0.9050805
-</td>
-<td style="text-align:left;">
-0.6606646
-</td>
-<td style="text-align:right;">
-0.7478723
-</td>
-<td style="text-align:right;">
-0.5857954
-</td>
-<td style="text-align:right;">
-0.5857954
-</td>
-<td style="text-align:right;">
-0.4142046
-</td>
-<td style="text-align:right;">
-0.4836900
-</td>
-<td style="text-align:left;">
-0.5446309
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Participant_4
-</td>
-<td style="text-align:right;">
-Depression and Anxiety
-</td>
-<td style="text-align:right;">
-Southport
-</td>
-<td style="text-align:right;">
-2-4
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-Age 12-17
-</td>
-<td style="text-align:left;">
-Female
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Straight
-</td>
-<td style="text-align:right;">
-Other
-</td>
-<td style="text-align:right;">
-Yes
-</td>
-<td style="text-align:right;">
-No
-</td>
-<td style="text-align:left;">
-No
-</td>
-<td style="text-align:right;">
-REPLACE_ME_3
-</td>
-<td style="text-align:right;">
-Not studying or working
-</td>
-<td style="text-align:right;">
-17
-</td>
-<td style="text-align:right;">
-17
-</td>
-<td style="text-align:right;">
-75
-</td>
-<td style="text-align:left;">
-12
-</td>
-<td style="text-align:right;">
-10
-</td>
-<td style="text-align:right;">
-51
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-88
-</td>
-<td style="text-align:left;">
-Baseline
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Metro
-</td>
-<td style="text-align:right;">
-Yes
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.033
-</td>
-<td style="text-align:left;">
-0.000
-</td>
-<td style="text-align:right;">
-0.297
 </td>
 <td style="text-align:right;">
 0.074
@@ -1592,120 +1085,377 @@ Yes
 0.197
 </td>
 <td style="text-align:right;">
-0.838
+0.133
 </td>
 <td style="text-align:left;">
-0.000
+0.142
 </td>
 <td style="text-align:right;">
-0.784
+0.330
 </td>
 <td style="text-align:right;">
-0.064
+0.368
 </td>
 <td style="text-align:right;">
-0.338
+1.000
 </td>
 <td style="text-align:right;">
-0.055
+0.382
 </td>
 <td style="text-align:right;">
-0.423
+0.057
 </td>
 <td style="text-align:left;">
-0.000
+0.642
 </td>
 <td style="text-align:right;">
-0.2
+0.0
 </td>
 <td style="text-align:right;">
-0.000
+0.072
 </td>
 <td style="text-align:right;">
-0.000
+0.033
 </td>
 <td style="text-align:right;">
-0.000
+0.205
 </td>
 <td style="text-align:right;">
-0.000
+0.187
 </td>
 <td style="text-align:left;">
-0.25115328
+0.18835933
 </td>
 <td style="text-align:right;">
 0.2602305
 </td>
 <td style="text-align:right;">
-0.7877054
+0.5155772
 </td>
 <td style="text-align:right;">
-0.4460579
+0.5858738
 </td>
 <td style="text-align:right;">
-0.15351460
+0.4342728
 </td>
 <td style="text-align:right;">
-0.00000000
+0.21476953
 </td>
 <td style="text-align:left;">
-0.7488467
+0.8116407
 </td>
 <td style="text-align:right;">
 0.7397695
 </td>
 <td style="text-align:right;">
-0.2122946
+0.4844228
 </td>
 <td style="text-align:right;">
-0.5539421
+0.4141262
 </td>
 <td style="text-align:right;">
-0.8464854
+0.5657272
 </td>
 <td style="text-align:right;">
-1.0000000
+0.7852305
 </td>
 <td style="text-align:left;">
-0.5799329
+0.6473112
 </td>
 <td style="text-align:right;">
-0.6564841
+0.7327563
 </td>
 <td style="text-align:right;">
-0.4608426
+0.56418597
 </td>
 <td style="text-align:right;">
-0.4608426
+0.56418597
 </td>
 <td style="text-align:right;">
-0.5391574
+0.4358140
 </td>
 <td style="text-align:right;">
-0.5937359
+0.5027214
 </td>
 <td style="text-align:left;">
-0.6576407
+0.5645345
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Participant_5
+Participant_100
 </td>
 <td style="text-align:right;">
 Depression and Anxiety
 </td>
 <td style="text-align:right;">
-Southport
+Canberra
 </td>
 <td style="text-align:right;">
 0-1a
 </td>
 <td style="text-align:right;">
-19
+25
 </td>
 <td style="text-align:right;">
 Age 18-26
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Other
+</td>
+<td style="text-align:right;">
+Other
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+No
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+REPLACE_ME_3
+</td>
+<td style="text-align:right;">
+Working only
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+120
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+76
+</td>
+<td style="text-align:left;">
+Baseline
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Metro
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:left;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.074
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.197
+</td>
+<td style="text-align:right;">
+0.133
+</td>
+<td style="text-align:left;">
+0.142
+</td>
+<td style="text-align:right;">
+0.097
+</td>
+<td style="text-align:right;">
+0.064
+</td>
+<td style="text-align:right;">
+0.056
+</td>
+<td style="text-align:right;">
+1.000
+</td>
+<td style="text-align:right;">
+0.423
+</td>
+<td style="text-align:left;">
+0.133
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.338
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:left;">
+0.00000000
+</td>
+<td style="text-align:right;">
+0.1433888
+</td>
+<td style="text-align:right;">
+0.2505682
+</td>
+<td style="text-align:right;">
+0.7769222
+</td>
+<td style="text-align:right;">
+0.2866694
+</td>
+<td style="text-align:right;">
+0.00000000
+</td>
+<td style="text-align:left;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.8566112
+</td>
+<td style="text-align:right;">
+0.7494318
+</td>
+<td style="text-align:right;">
+0.2230778
+</td>
+<td style="text-align:right;">
+0.7133306
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:left;">
+0.4558633
+</td>
+<td style="text-align:right;">
+0.5160373
+</td>
+<td style="text-align:right;">
+0.29587849
+</td>
+<td style="text-align:right;">
+0.29587849
+</td>
+<td style="text-align:right;">
+0.7041215
+</td>
+<td style="text-align:right;">
+0.7390198
+</td>
+<td style="text-align:left;">
+0.7978085
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Participant_1000
+</td>
+<td style="text-align:right;">
+Anxiety
+</td>
+<td style="text-align:right;">
+Canberra
+</td>
+<td style="text-align:right;">
+0-1a
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+Age 12-17
 </td>
 <td style="text-align:left;">
 Male
@@ -1735,61 +1485,43 @@ REPLACE_ME_2
 Not studying or working
 </td>
 <td style="text-align:right;">
-12
+0
 </td>
 <td style="text-align:right;">
-22
+0
 </td>
 <td style="text-align:right;">
-82
+128
 </td>
 <td style="text-align:left;">
-14
+0
 </td>
 <td style="text-align:right;">
-14
+0
 </td>
 <td style="text-align:right;">
-51
+0
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
 1
-</td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-5
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 2
@@ -1801,10 +1533,10 @@ Not studying or working
 2
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
-3
+1
 </td>
 <td style="text-align:right;">
 2
@@ -1813,10 +1545,285 @@ Not studying or working
 3
 </td>
 <td style="text-align:right;">
-67
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+71
 </td>
 <td style="text-align:left;">
 Baseline
+</td>
+<td style="text-align:right;">
+Male
+</td>
+<td style="text-align:right;">
+Metro
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+0.073
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:left;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.193
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.133
+</td>
+<td style="text-align:left;">
+0.000
+</td>
+<td style="text-align:right;">
+0.097
+</td>
+<td style="text-align:right;">
+0.064
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.055
+</td>
+<td style="text-align:right;">
+0.423
+</td>
+<td style="text-align:left;">
+0.000
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.033
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:left;">
+0.02813508
+</td>
+<td style="text-align:right;">
+0.1346642
+</td>
+<td style="text-align:right;">
+0.1819574
+</td>
+<td style="text-align:right;">
+0.3514811
+</td>
+<td style="text-align:right;">
+0.0000000
+</td>
+<td style="text-align:right;">
+0.01916297
+</td>
+<td style="text-align:left;">
+0.9718649
+</td>
+<td style="text-align:right;">
+0.8653358
+</td>
+<td style="text-align:right;">
+0.8180426
+</td>
+<td style="text-align:right;">
+0.6485189
+</td>
+<td style="text-align:right;">
+1.0000000
+</td>
+<td style="text-align:right;">
+0.9808370
+</td>
+<td style="text-align:left;">
+0.2379252
+</td>
+<td style="text-align:right;">
+0.2693314
+</td>
+<td style="text-align:right;">
+0.08939064
+</td>
+<td style="text-align:right;">
+0.08939064
+</td>
+<td style="text-align:right;">
+0.9106094
+</td>
+<td style="text-align:right;">
+0.9208737
+</td>
+<td style="text-align:left;">
+0.9511345
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Participant_1000
+</td>
+<td style="text-align:right;">
+Anxiety
+</td>
+<td style="text-align:right;">
+Southport
+</td>
+<td style="text-align:right;">
+1b
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+Age 12-17
+</td>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:right;">
+Male
+</td>
+<td style="text-align:right;">
+Straight
+</td>
+<td style="text-align:right;">
+Other
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+No
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+REPLACE_ME_2
+</td>
+<td style="text-align:right;">
+Not studying or working
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+117
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+71
+</td>
+<td style="text-align:left;">
+Follow-up
 </td>
 <td style="text-align:right;">
 Male
@@ -1837,34 +1844,34 @@ Yes
 0.000
 </td>
 <td style="text-align:right;">
-0.297
+0.000
 </td>
 <td style="text-align:right;">
-1.000
+0.000
 </td>
 <td style="text-align:right;">
 0.000
 </td>
 <td style="text-align:right;">
-0.000
+0.197
 </td>
 <td style="text-align:right;">
 0.000
 </td>
 <td style="text-align:left;">
+0.392
+</td>
+<td style="text-align:right;">
 0.000
 </td>
 <td style="text-align:right;">
-1.000
+0.064
 </td>
 <td style="text-align:right;">
-0.837
+0.338
 </td>
 <td style="text-align:right;">
-0.722
-</td>
-<td style="text-align:right;">
-0.382
+0.055
 </td>
 <td style="text-align:right;">
 0.057
@@ -1873,76 +1880,76 @@ Yes
 0.000
 </td>
 <td style="text-align:right;">
-0.2
+0.0
 </td>
 <td style="text-align:right;">
 0.000
 </td>
 <td style="text-align:right;">
-0.223
+0.000
 </td>
 <td style="text-align:right;">
 0.024
 </td>
 <td style="text-align:right;">
-0.695
+0.000
 </td>
 <td style="text-align:left;">
-0.27237759
+0.04719190
 </td>
 <td style="text-align:right;">
-0.6430300
+0.1002056
 </td>
 <td style="text-align:right;">
-0.8644105
+0.2658587
 </td>
 <td style="text-align:right;">
-0.5001278
+0.2080310
 </td>
 <td style="text-align:right;">
-0.15351460
+0.0000000
 </td>
 <td style="text-align:right;">
-0.50974641
+0.01111253
 </td>
 <td style="text-align:left;">
-0.7276224
+0.9528081
 </td>
 <td style="text-align:right;">
-0.3569700
+0.8997944
 </td>
 <td style="text-align:right;">
-0.1355895
+0.7341413
 </td>
 <td style="text-align:right;">
-0.4998722
+0.7919690
 </td>
 <td style="text-align:right;">
-0.8464854
+1.0000000
 </td>
 <td style="text-align:right;">
-0.4902536
+0.9888875
 </td>
 <td style="text-align:left;">
-0.7797905
+0.2228889
 </td>
 <td style="text-align:right;">
-0.8827228
+0.2523102
 </td>
 <td style="text-align:right;">
-0.7948320
+0.07926885
 </td>
 <td style="text-align:right;">
-0.7948320
+0.07926885
 </td>
 <td style="text-align:right;">
-0.2051680
+0.9207312
 </td>
 <td style="text-align:right;">
-0.2995915
+0.9297879
 </td>
 <td style="text-align:left;">
-0.3454117
+0.9576133
 </td>
 </tr>
 </tbody>
