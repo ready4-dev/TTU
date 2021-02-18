@@ -55,8 +55,7 @@ The dataset we are using has `r nrow(scored_data_tb)` records on `r length(score
 scored_data_tb %>%
     head() %>%
   ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Input dataset",
-                          scroll_box_args_ls = list(width = "100%"))
+                          caption_1L_chr = "Input dataset")
 ```
 
 We next create an object `ds_smry_ls` to store a description of some structural properties of the dataset such as:
@@ -99,8 +98,7 @@ We begin by creating another lookup table (or as in the below example, use an ex
 data("mdl_types_lup",package = "TTU") 
 mdl_types_lup %>%
     ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Model types lookup table",
-                          scroll_box_args_ls = list(width = "100%"))
+                          caption_1L_chr = "Model types lookup table")
 ```
 We add this lookup table to a new object, `mdl_smry_ls` which stores information about the candidate models we will be using. We can use this step to select a subset of the models from the lookup table to compare. In the below example, we have selected all of the available GLM and OLS models.
 
@@ -173,10 +171,11 @@ mdl_smry_ls$smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data
 
 ```
 
-The `write_sngl_predr_multi_mdls_outps` function will write each model to be tested to a new sub-directory of "`r path_to_write_to_1L_chr`" called "A_Candidate_Mdls_Cmprsns". Also written to that sub-directory are a number of plots for each model. The plots for the first model we test (
-`r mdl_smry_ls$mdl_types_lup %>% ready4fun::get_from_lup_obj(target_var_nm_1L_chr = "long_name_chr",match_value_xx = "OLS_NTF", match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F)`) are reproduced below.
+The `write_sngl_predr_multi_mdls_outps` function will write each model to be tested to a new sub-directory of "`r path_to_write_to_1L_chr`" called "A_Candidate_Mdls_Cmprsns". Also written to that sub-directory are a number of plots for each model. 
 
-```{r out.width = "400px"}
+```{r include=F, eval=F, out.width = "400px"}
+# The plots for the first model we test (
+# `r mdl_smry_ls$mdl_types_lup %>% ready4fun::get_from_lup_obj(target_var_nm_1L_chr = "long_name_chr",match_value_xx = "OLS_NTF", match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F)`) are reproduced below.
 paste0(path_to_write_to_1L_chr,"/","A_Candidate_Mdls_Cmprsns") %>% list.files(pattern = "\\.png$", full.names = T) %>% purrr::keep(stringr::str_detect(.,"OLS_NTF")) %>%
 knitr::include_graphics()
 ```
@@ -217,9 +216,9 @@ mdl_smry_ls$predr_cmprsns_tb <- write_predr_cmprsn_outps(data_tb = bl_tb,
                                              max_nbr_of_boruta_mdl_runs_int = mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int)
 ```
 
-The previous call to the `write_predr_cmprsn_outps`{.R} function saved the tested models along with the model plots reproduced below in the "B_Candidate_Predrs_Cmprsns" sub-directory of "Output".
+The previous call to the `write_predr_cmprsn_outps`{.R} function saved the tested models along with model plots in the "B_Candidate_Predrs_Cmprsns" sub-directory of "Output".
 
-```{r out.width = "400px"}
+```{r include=F, eval=F, out.width = "400px"}
 paste0(path_to_write_to_1L_chr,"/","B_Candidate_Predrs_Cmprsns") %>% list.files(pattern = "\\.png$", full.names = T) %>%
 knitr::include_graphics()
 ```
@@ -241,10 +240,11 @@ Now, we compare the performance of single predictor models of our preferred mode
         path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsns",
         fl_nm_pfx_1L_chr = "C_PREDR", mdl_types_lup = mdl_smry_ls$mdl_types_lup) 
 ```
-The previous call to the `write_mdl_type_multi_outps`{.R} function saves the tested models along with the two plots for each model in the "C_Predrs_Sngl_Mdl_Cmprsns" sub-directory of "Output". The plots for the model using the best performing predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`) are
-reproduced below. 
+The previous call to the `write_mdl_type_multi_outps`{.R} function saves the tested models along with the two plots for each model in the "C_Predrs_Sngl_Mdl_Cmprsns" sub-directory of "Output". 
 
-```{r out.width = "400px"}
+```{r include=F, eval=F, out.width = "400px"}
+# The plots for the model using the best performing predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`) are
+# reproduced below. 
 paste0(path_to_write_to_1L_chr,"/","C_Predrs_Sngl_Mdl_Cmprsns") %>% list.files(pattern = "\\.png$", full.names = T) %>%
   purrr::keep(stringr::str_detect(.,paste0("_",mdl_smry_ls$predr_var_nm_1L_chr,"_"))) %>%
 knitr::include_graphics()
@@ -310,10 +310,11 @@ We now conclude our model testing by rerunning the previous step, except confini
 
 ```
 
-The previous call to the `write_mdl_type_multi_outps`{.R} function saves the tested models along with the two plots for each model in the "E_Predrs_W_Covars_Sngl_Mdl_Cmprsns" sub-directory of "Output". The plots for the model using the best performing predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`) are
-reproduced below. 
+The previous call to the `write_mdl_type_multi_outps`{.R} function saves the tested models along with the two plots for each model in the "E_Predrs_W_Covars_Sngl_Mdl_Cmprsns" sub-directory of "Output". 
 
-```{r out.width = "400px"}
+```{r include=F, eval=F, out.width = "400px"}
+# The plots for the model using the best performing predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`) are
+# reproduced below. 
 paste0(path_to_write_to_1L_chr,"/","E_Predrs_W_Covars_Sngl_Mdl_Cmprsns") %>% list.files(pattern = "\\.png$", full.names = T) %>%
   purrr::keep(stringr::str_detect(.,paste0("_",mdl_smry_ls$predr_var_nm_1L_chr,"_"))) %>%
 knitr::include_graphics()

@@ -355,8 +355,7 @@ replication_popl_tb <- read.csv("data-raw/csvs/fake_pop_tb.csv") %>%
 scored_data_tb <- add_adol6d_scores(replication_popl_tb,
                                     prefix_1L_chr =  "aqol6d_q",
                                     id_var_nm_1L_chr = "fkClientID",
-                                    wtd_aqol_var_nm_1L_chr = "aqol6d_total_w") %>%
-  dplyr::select(-match_var_chr)
+                                    wtd_aqol_var_nm_1L_chr = "aqol6d_total_w")
 dictionary_tb <- ready4use::make_pt_ready4_dictionary(var_nm_chr = names(scored_data_tb),
                                                       var_cat_chr = c("Identifier", "Clinical","Service","Clinical",
                                                                       rep("Demographic",11),
@@ -450,7 +449,7 @@ usethis::use_build_ignore("initial_setup.R")
 readLines(".github/workflows/R-CMD-check.yaml")[-28] %>%
   writeLines(".github/workflows/R-CMD-check.yaml")
 usethis::use_package("ggfortify")
-usethis::use_dev_package("cmdstanr", remote = "https://mc-stan.org/r-packages/")
+usethis::use_dev_package("cmdstanr")
 usethis::use_package("knitrBootstrap")
 usethis::use_dev_package("ready4show")
 usethis::use_dev_package("ready4use")
@@ -463,7 +462,7 @@ ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
                                 update_pkgdown_1L_lgl = T)
 ##
 ## PART FOUR
-# devtools::build_vignettes()
+devtools::build_vignettes()
 ##
 ## Add, Commit and Push
 
