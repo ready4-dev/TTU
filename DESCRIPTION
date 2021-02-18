@@ -45,7 +45,7 @@ Imports:
     knitr,
     lifecycle,
     ggfortify,
-    cmdstanr,
+    cmdstanr (>= 0.1.3),
     knitrBootstrap,
     ready4show (>= 0.0.0.9013),
     ready4use (>= 0.0.0.9111),
@@ -88,9 +88,10 @@ Imports:
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
-Remotes: 
+Remotes:  
     ready4-dev/ready4show,
     ready4-dev/ready4use,
     iqss/dataverse-client-r,
     ready4-dev/ready4class,
-    ready4-dev/ready4fun
+    ready4-dev/ready4fun,
+    stan-dev/cmdstanr

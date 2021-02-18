@@ -450,7 +450,7 @@ usethis::use_build_ignore("initial_setup.R")
 readLines(".github/workflows/R-CMD-check.yaml")[-28] %>%
   writeLines(".github/workflows/R-CMD-check.yaml")
 usethis::use_package("ggfortify")
-usethis::use_package("cmdstanr")
+usethis::use_dev_package("cmdstanr")
 usethis::use_package("knitrBootstrap")
 usethis::use_dev_package("ready4show")
 usethis::use_dev_package("ready4use")
@@ -459,7 +459,7 @@ usethis::use_dev_package("ready4use")
 #
 ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
                                 r_dir_1L_chr = "R",
-                                dev_pkgs_chr = c("ready4fun","ready4class","ready4use","ready4show","dataverse"),
+                                dev_pkgs_chr = c("ready4fun","ready4class","ready4use","ready4show","dataverse","cmdstanr"),
                                 update_pkgdown_1L_lgl = T)
 ##
 ## PART FOUR
