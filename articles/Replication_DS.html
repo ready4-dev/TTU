@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9118</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9120</span>
       </span>
     </div>
 
@@ -158,7 +158,7 @@ BADS
 Clinical
 </td>
 <td style="text-align:right;">
-Behavioural Activation for Depression Scale
+Generalised Anxiety Disorder Scale
 </td>
 <td style="text-align:right;">
 integer
@@ -166,27 +166,13 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;">
-c_clinical_staging_s
+d_studying_working
 </td>
 <td style="text-align:right;">
 Clinical
 </td>
 <td style="text-align:right;">
-Clinical Stage
-</td>
-<td style="text-align:right;">
-character
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-c_p_diag_s
-</td>
-<td style="text-align:right;">
-Clinical
-</td>
-<td style="text-align:right;">
-Primary Diagnosis
+Kessler Psychological Distress Scale (6 Dimension)
 </td>
 <td style="text-align:right;">
 character
@@ -200,7 +186,7 @@ GAD7
 Clinical
 </td>
 <td style="text-align:right;">
-Generalised Anxiety Disorder Scale
+Overall Anxiety Severity and Impairment Scale
 </td>
 <td style="text-align:right;">
 integer
@@ -214,7 +200,7 @@ K6
 Clinical
 </td>
 <td style="text-align:right;">
-Kessler Psychological Distress Scale (6 Dimension)
+Patient Health Questionnaire
 </td>
 <td style="text-align:right;">
 integer
@@ -228,7 +214,7 @@ OASIS
 Clinical
 </td>
 <td style="text-align:right;">
-Overall Anxiety Severity and Impairment Scale
+Screen for Child Anxiety Related Disorders
 </td>
 <td style="text-align:right;">
 integer
@@ -242,7 +228,7 @@ PHQ9
 Clinical
 </td>
 <td style="text-align:right;">
-Patient Health Questionnaire
+Behavioural Activation for Depression Scale
 </td>
 <td style="text-align:right;">
 integer
@@ -250,13 +236,41 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;">
-SCARED
+round
 </td>
 <td style="text-align:right;">
 Clinical
 </td>
 <td style="text-align:right;">
-Screen for Child Anxiety Related Disorders
+Primary Diagnosis
+</td>
+<td style="text-align:right;">
+factor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+s_centre
+</td>
+<td style="text-align:right;">
+Clinical
+</td>
+<td style="text-align:right;">
+Clinical Stage
+</td>
+<td style="text-align:right;">
+character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q18
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Gender (Grouped)
 </td>
 <td style="text-align:right;">
 integer
@@ -264,7 +278,21 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;">
-CALD
+aqol6d_q19
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Region of Residence (Metropolitan or Regional)
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q20
 </td>
 <td style="text-align:right;">
 Demographic
@@ -273,7 +301,21 @@ Demographic
 Culturally And Linguistically Diverse
 </td>
 <td style="text-align:right;">
-factor
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+c_clinical_staging_s
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Age
+</td>
+<td style="text-align:right;">
+character
 </td>
 </tr>
 <tr>
@@ -284,7 +326,7 @@ d_age
 Demographic
 </td>
 <td style="text-align:right;">
-Age
+Age Group
 </td>
 <td style="text-align:right;">
 integer
@@ -298,7 +340,7 @@ d_agegroup
 Demographic
 </td>
 <td style="text-align:right;">
-Age Group
+Gender
 </td>
 <td style="text-align:right;">
 factor
@@ -312,7 +354,7 @@ d_ATSI
 Demographic
 </td>
 <td style="text-align:right;">
-Aboriginal or Torres Strait Islander
+Speaks English At Home
 </td>
 <td style="text-align:right;">
 character
@@ -326,7 +368,7 @@ d_country_bir_s
 Demographic
 </td>
 <td style="text-align:right;">
-Country Of Birth
+Aboriginal or Torres Strait Islander
 </td>
 <td style="text-align:right;">
 character
@@ -340,7 +382,7 @@ d_english_home
 Demographic
 </td>
 <td style="text-align:right;">
-Speaks English At Home
+Native English Speaker
 </td>
 <td style="text-align:right;">
 character
@@ -354,7 +396,7 @@ d_english_native
 Demographic
 </td>
 <td style="text-align:right;">
-Native English Speaker
+Relationship Status
 </td>
 <td style="text-align:right;">
 character
@@ -368,7 +410,7 @@ d_gender
 Demographic
 </td>
 <td style="text-align:right;">
-Gender
+Sex at Birth
 </td>
 <td style="text-align:right;">
 character
@@ -382,7 +424,7 @@ d_relation_s
 Demographic
 </td>
 <td style="text-align:right;">
-Relationship Status
+Education and Employment Status
 </td>
 <td style="text-align:right;">
 character
@@ -396,7 +438,7 @@ d_sex_birth_s
 Demographic
 </td>
 <td style="text-align:right;">
-Sex at Birth
+Sexual Orientation
 </td>
 <td style="text-align:right;">
 character
@@ -410,7 +452,7 @@ d_sexual_ori_s
 Demographic
 </td>
 <td style="text-align:right;">
-Sexual Orientation
+Country Of Birth
 </td>
 <td style="text-align:right;">
 character
@@ -418,49 +460,7 @@ character
 </tr>
 <tr>
 <td style="text-align:left;">
-d_studying_working
-</td>
-<td style="text-align:right;">
-Demographic
-</td>
-<td style="text-align:right;">
-Education and Employment Status
-</td>
-<td style="text-align:right;">
-character
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Gender
-</td>
-<td style="text-align:right;">
-Demographic
-</td>
-<td style="text-align:right;">
-Gender (Grouped)
-</td>
-<td style="text-align:right;">
-factor
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Region
-</td>
-<td style="text-align:right;">
-Demographic
-</td>
-<td style="text-align:right;">
-Region of Residence (Metropolitan or Regional)
-</td>
-<td style="text-align:right;">
-factor
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-SOFAS
+aqol6d_q16
 </td>
 <td style="text-align:right;">
 Functioning
@@ -488,7 +488,7 @@ character
 </tr>
 <tr>
 <td style="text-align:left;">
-s_centre
+c_p_diag_s
 </td>
 <td style="text-align:right;">
 Service
@@ -502,7 +502,7 @@ character
 </tr>
 <tr>
 <td style="text-align:left;">
-round
+aqol6d_q17
 </td>
 <td style="text-align:right;">
 Temporal
@@ -511,236 +511,12 @@ Temporal
 Round of Data Collection
 </td>
 <td style="text-align:right;">
-factor
+integer
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
 aqol6d_q1
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 1
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q10
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 10
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q11
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 11
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q12
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 12
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q13
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 13
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q14
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 14
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q15
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 15
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q16
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 16
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q17
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 17
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q18
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 18
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q19
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 19
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q2
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 2
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q20
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 20
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q3
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 3
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q4
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 4
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q5
-</td>
-<td style="text-align:right;">
-Utility Questionaire Response
-</td>
-<td style="text-align:right;">
-Assessment of Quality of Life (6 Dimension) Question 5
-</td>
-<td style="text-align:right;">
-integer
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-aqol6d_q6
 </td>
 <td style="text-align:right;">
 Utility Questionaire Response
@@ -754,7 +530,91 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;">
-aqol6d_q7
+aqol6d_q10
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 15
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q11
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 16
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q12
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 17
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q13
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 18
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q14
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 19
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q15
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 20
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q2
 </td>
 <td style="text-align:right;">
 Utility Questionaire Response
@@ -768,7 +628,7 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;">
-aqol6d_q8
+aqol6d_q3
 </td>
 <td style="text-align:right;">
 Utility Questionaire Response
@@ -782,13 +642,153 @@ integer
 </tr>
 <tr>
 <td style="text-align:left;">
-aqol6d_q9
+aqol6d_q4
 </td>
 <td style="text-align:right;">
 Utility Questionaire Response
 </td>
 <td style="text-align:right;">
 Assessment of Quality of Life (6 Dimension) Question 9
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q5
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 10
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q6
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 11
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q7
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 12
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q8
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 13
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q9
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 14
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CALD
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 5
+</td>
+<td style="text-align:right;">
+factor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gender
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 3
+</td>
+<td style="text-align:right;">
+factor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Region
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 4
+</td>
+<td style="text-align:right;">
+factor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SCARED
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 1
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SOFAS
+</td>
+<td style="text-align:right;">
+Utility Questionaire Response
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 2
 </td>
 <td style="text-align:right;">
 integer
@@ -971,6 +971,9 @@ Culturally And Linguistically Diverse
 Participant_1
 </td>
 <td style="text-align:right;">
+Baseline
+</td>
+<td style="text-align:right;">
 Other
 </td>
 <td style="text-align:right;">
@@ -982,10 +985,10 @@ Southport
 <td style="text-align:right;">
 14
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Age 12-17
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 Male
 </td>
 <td style="text-align:right;">
@@ -1000,10 +1003,10 @@ Australia
 <td style="text-align:right;">
 No
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Yes
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 Yes
 </td>
 <td style="text-align:right;">
@@ -1018,10 +1021,10 @@ Not studying or working
 <td style="text-align:right;">
 7
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 96
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 6
 </td>
 <td style="text-align:right;">
@@ -1031,84 +1034,84 @@ Not studying or working
 28
 </td>
 <td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
 69
-</td>
-<td style="text-align:left;">
-Baseline
 </td>
 <td style="text-align:right;">
 Male
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Metro
 </td>
 <td style="text-align:right;">
 No
 </td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
 Participant_2
+</td>
+<td style="text-align:right;">
+Baseline
 </td>
 <td style="text-align:right;">
 Anxiety
@@ -1122,10 +1125,10 @@ Regional Centre
 <td style="text-align:right;">
 19
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Age 18-26
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 Female
 </td>
 <td style="text-align:right;">
@@ -1140,10 +1143,10 @@ Other
 <td style="text-align:right;">
 Yes
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 No
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 No
 </td>
 <td style="text-align:right;">
@@ -1158,10 +1161,10 @@ Studying only
 <td style="text-align:right;">
 13
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 63
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 12
 </td>
 <td style="text-align:right;">
@@ -1171,84 +1174,84 @@ Studying only
 41
 </td>
 <td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-4
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
 58
-</td>
-<td style="text-align:left;">
-Baseline
 </td>
 <td style="text-align:right;">
 Female
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Regional
 </td>
 <td style="text-align:right;">
 Yes
 </td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
 Participant_3
+</td>
+<td style="text-align:right;">
+Baseline
 </td>
 <td style="text-align:right;">
 Anxiety
@@ -1262,10 +1265,10 @@ Canberra
 <td style="text-align:right;">
 21
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Age 18-26
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 Female
 </td>
 <td style="text-align:right;">
@@ -1280,10 +1283,10 @@ NA
 <td style="text-align:right;">
 NA
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 NA
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 NA
 </td>
 <td style="text-align:right;">
@@ -1298,10 +1301,10 @@ Studying only
 <td style="text-align:right;">
 17
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 72
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 16
 </td>
 <td style="text-align:right;">
@@ -1309,6 +1312,18 @@ Studying only
 </td>
 <td style="text-align:right;">
 43
+</td>
+<td style="text-align:right;">
+72
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:left;">
+Metro
+</td>
+<td style="text-align:right;">
+NA
 </td>
 <td style="text-align:right;">
 2
@@ -1319,10 +1334,10 @@ Studying only
 <td style="text-align:right;">
 2
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 5
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 1
 </td>
 <td style="text-align:right;">
@@ -1337,10 +1352,10 @@ Studying only
 <td style="text-align:right;">
 4
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 5
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 2
 </td>
 <td style="text-align:right;">
@@ -1355,6 +1370,9 @@ Studying only
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
 1
 </td>
@@ -1366,29 +1384,14 @@ Studying only
 </td>
 <td style="text-align:right;">
 1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-72
-</td>
-<td style="text-align:left;">
-Baseline
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Metro
-</td>
-<td style="text-align:right;">
-NA
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
 Participant_4
+</td>
+<td style="text-align:right;">
+Baseline
 </td>
 <td style="text-align:right;">
 Depression and Anxiety
@@ -1402,10 +1405,10 @@ Southport
 <td style="text-align:right;">
 12
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Age 12-17
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 Female
 </td>
 <td style="text-align:right;">
@@ -1420,10 +1423,10 @@ Other
 <td style="text-align:right;">
 Yes
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 No
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 No
 </td>
 <td style="text-align:right;">
@@ -1438,10 +1441,10 @@ Not studying or working
 <td style="text-align:right;">
 17
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 75
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 12
 </td>
 <td style="text-align:right;">
@@ -1451,84 +1454,84 @@ Not studying or working
 51
 </td>
 <td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
 88
-</td>
-<td style="text-align:left;">
-Baseline
 </td>
 <td style="text-align:right;">
 Female
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Metro
 </td>
 <td style="text-align:right;">
 Yes
 </td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
 Participant_5
+</td>
+<td style="text-align:right;">
+Baseline
 </td>
 <td style="text-align:right;">
 Depression and Anxiety
@@ -1542,10 +1545,10 @@ Southport
 <td style="text-align:right;">
 19
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Age 18-26
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 Male
 </td>
 <td style="text-align:right;">
@@ -1560,10 +1563,10 @@ Other
 <td style="text-align:right;">
 Yes
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 No
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 No
 </td>
 <td style="text-align:right;">
@@ -1578,10 +1581,10 @@ Not studying or working
 <td style="text-align:right;">
 22
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 82
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 14
 </td>
 <td style="text-align:right;">
@@ -1591,84 +1594,84 @@ Not studying or working
 51
 </td>
 <td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-5
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
 67
-</td>
-<td style="text-align:left;">
-Baseline
 </td>
 <td style="text-align:right;">
 Male
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Metro
 </td>
 <td style="text-align:right;">
 Yes
 </td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
 Participant_6
+</td>
+<td style="text-align:right;">
+Baseline
 </td>
 <td style="text-align:right;">
 Anxiety
@@ -1682,10 +1685,10 @@ Regional Centre
 <td style="text-align:right;">
 19
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Age 18-26
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 Male
 </td>
 <td style="text-align:right;">
@@ -1700,10 +1703,10 @@ Other
 <td style="text-align:right;">
 Yes
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 No
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 No
 </td>
 <td style="text-align:right;">
@@ -1718,10 +1721,10 @@ Studying only
 <td style="text-align:right;">
 8
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 105
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 8
 </td>
 <td style="text-align:right;">
@@ -1731,79 +1734,76 @@ Studying only
 46
 </td>
 <td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
 60
-</td>
-<td style="text-align:left;">
-Baseline
 </td>
 <td style="text-align:right;">
 Male
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Regional
 </td>
 <td style="text-align:right;">
 Yes
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
 </td>
 </tr>
 </tbody>

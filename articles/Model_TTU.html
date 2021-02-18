@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9118</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9120</span>
       </span>
     </div>
 
@@ -143,16 +143,17 @@
 <code class="sourceCode R"><span class="va">scored_data_tb</span> <span class="op">%&gt;%</span>
     <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
-                          caption_1L_chr <span class="op">=</span> <span class="st">"Input dataset"</span>,
-                          scroll_box_args_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"100%"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100%; ">
-<table class="table  lightable-paper lightable-hover lightable-paper">
+                          caption_1L_chr <span class="op">=</span> <span class="st">"Input dataset"</span><span class="op">)</span></code></pre></div>
+<table class="table  lightable-paper lightable-hover">
 <caption>
 Input dataset
 </caption>
 <thead><tr>
 <th style="text-align:left;">
 fkClientID
+</th>
+<th style="text-align:right;">
+round
 </th>
 <th style="text-align:right;">
 c_p_diag_s
@@ -166,10 +167,10 @@ c_clinical_staging_s
 <th style="text-align:right;">
 d_age
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 d_agegroup
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 d_gender
 </th>
 <th style="text-align:right;">
@@ -184,10 +185,10 @@ d_country_bir_s
 <th style="text-align:right;">
 d_ATSI
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 d_english_home
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 d_english_native
 </th>
 <th style="text-align:right;">
@@ -202,13 +203,25 @@ K6
 <th style="text-align:right;">
 PHQ9
 </th>
+<th style="text-align:left;">
+SOFAS
+</th>
+<th style="text-align:right;">
+Gender
+</th>
+<th style="text-align:right;">
+Region
+</th>
+<th style="text-align:right;">
+CALD
+</th>
 <th style="text-align:right;">
 aqol6d_q1
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 aqol6d_q2
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 aqol6d_q3
 </th>
 <th style="text-align:right;">
@@ -223,10 +236,10 @@ aqol6d_q6
 <th style="text-align:right;">
 aqol6d_q7
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 aqol6d_q8
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 aqol6d_q9
 </th>
 <th style="text-align:right;">
@@ -241,10 +254,10 @@ aqol6d_q12
 <th style="text-align:right;">
 aqol6d_q13
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 aqol6d_q14
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 aqol6d_q15
 </th>
 <th style="text-align:right;">
@@ -259,23 +272,8 @@ aqol6d_q18
 <th style="text-align:right;">
 aqol6d_q19
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 aqol6d_q20
-</th>
-<th style="text-align:right;">
-SOFAS
-</th>
-<th style="text-align:right;">
-round
-</th>
-<th style="text-align:right;">
-Gender
-</th>
-<th style="text-align:right;">
-Region
-</th>
-<th style="text-align:right;">
-CALD
 </th>
 <th style="text-align:left;">
 dvQ1
@@ -401,6 +399,9 @@ aqol6d_total_w
 Participant_1
 </td>
 <td style="text-align:right;">
+Baseline
+</td>
+<td style="text-align:right;">
 Other
 </td>
 <td style="text-align:right;">
@@ -412,10 +413,10 @@ Southport
 <td style="text-align:right;">
 14
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Age 12-17
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 Male
 </td>
 <td style="text-align:right;">
@@ -430,10 +431,10 @@ Australia
 <td style="text-align:right;">
 No
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Yes
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 Yes
 </td>
 <td style="text-align:right;">
@@ -448,71 +449,8 @@ Not studying or working
 <td style="text-align:right;">
 7
 </td>
-<td style="text-align:right;">
-2
-</td>
 <td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-4
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
 69
-</td>
-<td style="text-align:right;">
-Baseline
 </td>
 <td style="text-align:right;">
 Male
@@ -522,6 +460,66 @@ Metro
 </td>
 <td style="text-align:right;">
 No
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
 </td>
 <td style="text-align:left;">
 0.073
@@ -646,6 +644,9 @@ No
 Participant_10
 </td>
 <td style="text-align:right;">
+Baseline
+</td>
+<td style="text-align:right;">
 Other
 </td>
 <td style="text-align:right;">
@@ -657,10 +658,10 @@ Canberra
 <td style="text-align:right;">
 15
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Age 12-17
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 Female
 </td>
 <td style="text-align:right;">
@@ -675,10 +676,10 @@ Other
 <td style="text-align:right;">
 Yes
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 No
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 No
 </td>
 <td style="text-align:right;">
@@ -693,13 +694,25 @@ Studying and working
 <td style="text-align:right;">
 17
 </td>
+<td style="text-align:left;">
+60
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Metro
+</td>
+<td style="text-align:right;">
+Yes
+</td>
 <td style="text-align:right;">
 1
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 2
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 2
 </td>
 <td style="text-align:right;">
@@ -714,59 +727,44 @@ Studying and working
 <td style="text-align:right;">
 3
 </td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-4
-</td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:left;">
-3
+4
 </td>
 <td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
+4
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
-2
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
 </td>
 <td style="text-align:left;">
 1
 </td>
 <td style="text-align:right;">
-60
+2
 </td>
 <td style="text-align:right;">
-Baseline
+2
 </td>
 <td style="text-align:right;">
-Female
+3
 </td>
 <td style="text-align:right;">
-Metro
+2
 </td>
 <td style="text-align:right;">
-Yes
+1
 </td>
 <td style="text-align:left;">
 0.000
@@ -891,6 +889,9 @@ Yes
 Participant_10
 </td>
 <td style="text-align:right;">
+Follow-up
+</td>
+<td style="text-align:right;">
 Depression
 </td>
 <td style="text-align:right;">
@@ -902,10 +903,10 @@ Regional Centre
 <td style="text-align:right;">
 15
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Age 12-17
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 Female
 </td>
 <td style="text-align:right;">
@@ -920,10 +921,10 @@ Other
 <td style="text-align:right;">
 Yes
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 No
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 No
 </td>
 <td style="text-align:right;">
@@ -938,13 +939,25 @@ Not studying or working
 <td style="text-align:right;">
 17
 </td>
+<td style="text-align:left;">
+64
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Regional
+</td>
+<td style="text-align:right;">
+Yes
+</td>
 <td style="text-align:right;">
 2
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 3
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 2
 </td>
 <td style="text-align:right;">
@@ -959,10 +972,10 @@ Not studying or working
 <td style="text-align:right;">
 2
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 2
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 2
 </td>
 <td style="text-align:right;">
@@ -977,10 +990,10 @@ Not studying or working
 <td style="text-align:right;">
 3
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 2
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 3
 </td>
 <td style="text-align:right;">
@@ -995,23 +1008,8 @@ Not studying or working
 <td style="text-align:right;">
 3
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 2
-</td>
-<td style="text-align:right;">
-64
-</td>
-<td style="text-align:right;">
-Follow-up
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Regional
-</td>
-<td style="text-align:right;">
-Yes
 </td>
 <td style="text-align:left;">
 0.073
@@ -1136,6 +1134,9 @@ Yes
 Participant_100
 </td>
 <td style="text-align:right;">
+Baseline
+</td>
+<td style="text-align:right;">
 Depression and Anxiety
 </td>
 <td style="text-align:right;">
@@ -1147,10 +1148,10 @@ Canberra
 <td style="text-align:right;">
 25
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Age 18-26
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 Female
 </td>
 <td style="text-align:right;">
@@ -1165,10 +1166,10 @@ Other
 <td style="text-align:right;">
 Yes
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 No
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 No
 </td>
 <td style="text-align:right;">
@@ -1183,6 +1184,21 @@ Working only
 <td style="text-align:right;">
 0
 </td>
+<td style="text-align:left;">
+76
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Metro
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:right;">
 1
 </td>
@@ -1193,21 +1209,18 @@ Working only
 1
 </td>
 <td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
 1
+</td>
+<td style="text-align:right;">
+2
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
@@ -1222,10 +1235,10 @@ Working only
 <td style="text-align:right;">
 5
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 3
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 2
 </td>
 <td style="text-align:right;">
@@ -1240,23 +1253,8 @@ Working only
 <td style="text-align:right;">
 1
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 1
-</td>
-<td style="text-align:right;">
-76
-</td>
-<td style="text-align:right;">
-Baseline
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Metro
-</td>
-<td style="text-align:right;">
-Yes
 </td>
 <td style="text-align:left;">
 0.000
@@ -1381,6 +1379,9 @@ Yes
 Participant_1000
 </td>
 <td style="text-align:right;">
+Baseline
+</td>
+<td style="text-align:right;">
 Anxiety
 </td>
 <td style="text-align:right;">
@@ -1392,10 +1393,10 @@ Canberra
 <td style="text-align:right;">
 16
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Age 12-17
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 Male
 </td>
 <td style="text-align:right;">
@@ -1410,10 +1411,10 @@ Other
 <td style="text-align:right;">
 Yes
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 No
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 No
 </td>
 <td style="text-align:right;">
@@ -1428,71 +1429,8 @@ Not studying or working
 <td style="text-align:right;">
 0
 </td>
-<td style="text-align:right;">
-2
-</td>
 <td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
 71
-</td>
-<td style="text-align:right;">
-Baseline
 </td>
 <td style="text-align:right;">
 Male
@@ -1502,6 +1440,66 @@ Metro
 </td>
 <td style="text-align:right;">
 Yes
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
 </td>
 <td style="text-align:left;">
 0.073
@@ -1626,6 +1624,9 @@ Yes
 Participant_1000
 </td>
 <td style="text-align:right;">
+Follow-up
+</td>
+<td style="text-align:right;">
 Anxiety
 </td>
 <td style="text-align:right;">
@@ -1637,10 +1638,10 @@ Southport
 <td style="text-align:right;">
 16
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 Age 12-17
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 Male
 </td>
 <td style="text-align:right;">
@@ -1655,10 +1656,10 @@ Other
 <td style="text-align:right;">
 Yes
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 No
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 No
 </td>
 <td style="text-align:right;">
@@ -1673,71 +1674,8 @@ Not studying or working
 <td style="text-align:right;">
 0
 </td>
-<td style="text-align:right;">
-2
-</td>
 <td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
 71
-</td>
-<td style="text-align:right;">
-Follow-up
 </td>
 <td style="text-align:right;">
 Male
@@ -1747,6 +1685,66 @@ Metro
 </td>
 <td style="text-align:right;">
 Yes
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
 </td>
 <td style="text-align:left;">
 0.073
@@ -1873,7 +1871,6 @@ Yes
 </td>
 </tr></tfoot>
 </table>
-</div>
 <p>We next create an object <code>ds_smry_ls</code> to store a description of some structural properties of the dataset such as:</p>
 <ul>
 <li>the name of the dependent variable (ie total health utility score);</li>
@@ -1912,10 +1909,8 @@ Yes
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"mdl_types_lup"</span>,package <span class="op">=</span> <span class="st">"TTU"</span><span class="op">)</span> 
 <span class="va">mdl_types_lup</span> <span class="op">%&gt;%</span>
     <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
-                          caption_1L_chr <span class="op">=</span> <span class="st">"Model types lookup table"</span>,
-                          scroll_box_args_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"100%"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100%; ">
-<table class="table  lightable-paper lightable-hover lightable-paper">
+                          caption_1L_chr <span class="op">=</span> <span class="st">"Model types lookup table"</span><span class="op">)</span></code></pre></div>
+<table class="table  lightable-paper lightable-hover">
 <caption>
 Model types lookup table
 </caption>
@@ -2304,7 +2299,6 @@ FALSE
 </td>
 </tr></tfoot>
 </table>
-</div>
 <p>We add this lookup table to a new object, <code>mdl_smry_ls</code> which stores information about the candidate models we will be using. We can use this step to select a subset of the models from the lookup table to compare. In the below example, we have selected all of the available GLM and OLS models.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mdl_types_lup <span class="op">=</span> <span class="va">mdl_types_lup</span>,
@@ -2450,13 +2444,9 @@ PHQ9
         predr_vals_dbl <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_vals_dbl</span>,
         path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>, new_dir_nm_1L_chr <span class="op">=</span>  <span class="st">"A_Candidate_Mdls_Cmprsns"</span>,
         mdl_types_lup <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_lup</span><span class="op">)</span> </code></pre></div>
-<p>The <code>write_sngl_predr_multi_mdls_outps</code> function will write each model to be tested to a new sub-directory of “Output” called “A_Candidate_Mdls_Cmprsns”. Also written to that sub-directory are a number of plots for each model. The plots for the first model we test ( Ordinary Least Squares (No transformation)) are reproduced below.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path_to_write_to_1L_chr</span>,<span class="st">"/"</span>,<span class="st">"A_Candidate_Mdls_Cmprsns"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"\\.png$"</span>, full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/keep.html">keep</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">.</span>,<span class="st">"OLS_NTF"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="Output/A_Candidate_Mdls_Cmprsns/A_RT_PHQ9_OLS_NTF_AUTOPLT.png" width="400px"><img src="Output/A_Candidate_Mdls_Cmprsns/A_RT_PHQ9_OLS_NTF_LNR_CMPRSN.png" width="400px"><img src="Output/A_Candidate_Mdls_Cmprsns/A_RT_PHQ9_OLS_NTF_PRED_DNSTY.png" width="400px"><img src="Output/A_Candidate_Mdls_Cmprsns/A_RT_PHQ9_OLS_NTF_PRED_SCTR.png" width="400px"><img src="Output/A_Candidate_Mdls_Cmprsns/A_RT_PHQ9_OLS_NTF_SIM_DNSTY.png" width="400px"></p>
+<p>The <code>write_sngl_predr_multi_mdls_outps</code> function will write each model to be tested to a new sub-directory of “Output” called “A_Candidate_Mdls_Cmprsns”. Also written to that sub-directory are a number of plots for each model.</p>
 <p>The <code>write_sngl_predr_multi_mdls_outps</code> function also outputs a table summarising the performance of each of the candidate models.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_sngl_predr_mdls_tb</span> <span class="op">%&gt;%</span>
     <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
                           caption_1L_chr <span class="op">=</span> <span class="st">"Model performance for highest correlated predictor using baseline data"</span><span class="op">)</span></code></pre></div>
@@ -2703,21 +2693,21 @@ Ordinary Least Squares (Log transformation)
 </tr></tfoot>
 </table>
 <p>We can now identify the highest performing model in each category of candidate model based on the testing R<sup>2</sup> statistic (RsquaredP in the previous table).</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_prefd_mdls_vec.html">make_prefd_mdls_vec</a></span><span class="op">(</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_sngl_predr_mdls_tb</span>,
                                            choose_from_pfx_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">choose_from_pfx_chr</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span></code></pre></div>
 <pre><code>## [1] "GLM_BNL_CLL" "OLS_NTF"</code></pre>
 <p>We can override these automated selections and instead incorporate other considerations (possibly based on judgments informed by visual inspection of the density plots). We do this in the following command, specifying new preferred model types, in descending order of preference.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GLM_GSN_LOG"</span>,<span class="st">"OLS_CLL"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="compare-all-candidate-predictors-using-most-preferred-model" class="section level3">
 <h3 class="hasAnchor">
 <a href="#compare-all-candidate-predictors-using-most-preferred-model" class="anchor"></a>Compare all candidate predictors using most preferred model</h3>
 <p>We can now compare all of our candidate single predictors using the most preferred model type.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">max_nbr_of_boruta_mdl_runs_int</span> <span class="op">=</span> <span class="fl">300L</span>
 <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsns_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_predr_cmprsn_outps.html">write_predr_cmprsn_outps</a></span><span class="op">(</span>data_tb <span class="op">=</span> <span class="va">bl_tb</span>,
                                              path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>,
@@ -2725,13 +2715,9 @@ Ordinary Least Squares (Log transformation)
                                              dep_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">dep_var_nm_1L_chr</span>, 
                                              candidate_predrs_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
                                              max_nbr_of_boruta_mdl_runs_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">max_nbr_of_boruta_mdl_runs_int</span><span class="op">)</span></code></pre></div>
-<p>The previous call to the <code class="sourceCode r">write_predr_cmprsn_outps</code> function saved the tested models along with the model plots reproduced below in the “B_Candidate_Predrs_Cmprsns” sub-directory of “Output”.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path_to_write_to_1L_chr</span>,<span class="st">"/"</span>,<span class="st">"B_Candidate_Predrs_Cmprsns"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"\\.png$"</span>, full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">%&gt;%</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="Output/B_Candidate_Predrs_Cmprsns/B_PRED_CMPRSN_BORUTA_VAR_IMP.png" width="400px"><img src="Output/B_Candidate_Predrs_Cmprsns/B_PRED_CMPRSN_RF_VAR_IMP.png" width="400px"></p>
+<p>The previous call to the <code class="sourceCode r">write_predr_cmprsn_outps</code> function saved the tested models along with model plots in the “B_Candidate_Predrs_Cmprsns” sub-directory of “Output”.</p>
 <p>These results are also viewable as a table.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsns_tb</span> <span class="op">%&gt;%</span>
     <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
                           caption_1L_chr <span class="op">=</span> <span class="st">"Comparison of all candidate predictors using preferred model"</span><span class="op">)</span></code></pre></div>
@@ -2785,20 +2771,15 @@ K6
 <h3 class="hasAnchor">
 <a href="#compare-single-predictor-model-performance-across-all-candidate-predictors" class="anchor"></a>Compare single predictor model performance across all candidate predictors</h3>
 <p>Now, we compare the performance of single predictor models of our preferred model type (in our case, a Generalised Linear Mixed Model with Gaussian distribution and log link) for each candidate predictor.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R">    <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_mdl_sngl_predrs_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_type_multi_outps.html">write_mdl_type_multi_outps</a></span><span class="op">(</span>data_tb <span class="op">=</span> <span class="va">bl_tb</span>,
         n_folds_1L_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">n_folds_1L_int</span>, predrs_var_nms_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsns_tb</span><span class="op">$</span><span class="va">predr_chr</span>,
         mdl_type_1L_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, dep_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">dep_var_nm_1L_chr</span>,
         path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>, new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"C_Predrs_Sngl_Mdl_Cmprsns"</span>,
         fl_nm_pfx_1L_chr <span class="op">=</span> <span class="st">"C_PREDR"</span>, mdl_types_lup <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_lup</span><span class="op">)</span> </code></pre></div>
-<p>The previous call to the <code class="sourceCode r">write_mdl_type_multi_outps</code> function saves the tested models along with the two plots for each model in the “C_Predrs_Sngl_Mdl_Cmprsns” sub-directory of “Output”. The plots for the model using the best performing predictor (PHQ9 total score) are reproduced below.</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path_to_write_to_1L_chr</span>,<span class="st">"/"</span>,<span class="st">"C_Predrs_Sngl_Mdl_Cmprsns"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"\\.png$"</span>, full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/keep.html">keep</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">.</span>,<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"_"</span>,<span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_var_nm_1L_chr</span>,<span class="st">"_"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="Output/C_Predrs_Sngl_Mdl_Cmprsns/C_PREDR_PHQ9_GLM_GSN_LOG_PRED_DNSTY.png" width="400px"><img src="Output/C_Predrs_Sngl_Mdl_Cmprsns/C_PREDR_PHQ9_GLM_GSN_LOG_PRED_SCTR.png" width="400px"></p>
+<p>The previous call to the <code class="sourceCode r">write_mdl_type_multi_outps</code> function saves the tested models along with the two plots for each model in the “C_Predrs_Sngl_Mdl_Cmprsns” sub-directory of “Output”.</p>
 <p>The performance of each single predictor model can also be summarised in a table.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_mdl_sngl_predrs_tb</span> <span class="op">%&gt;%</span>
     <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
                           caption_1L_chr <span class="op">=</span> <span class="st">"Preferred single predictor model performance by candidate predictor"</span><span class="op">)</span></code></pre></div>
@@ -2888,7 +2869,7 @@ K6
 <h3 class="hasAnchor">
 <a href="#compare-candidate-covariates" class="anchor"></a>Compare candidate covariates</h3>
 <p>We rerun each of the models from the previous step, but this time add all our candidate covariates to each model.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bl_tb</span> <span class="op">&lt;-</span> <span class="va">scored_data_tb</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/transform_ds_for_tstng.html">transform_ds_for_tstng</a></span><span class="op">(</span>candidate_predrs_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
         covar_var_nms_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_covar_nms_chr</span>, remove_all_mssng_1L_lgl <span class="op">=</span> <span class="cn">T</span>,
         round_val_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">round_bl_val_1L_chr</span><span class="op">)</span>
@@ -2899,7 +2880,7 @@ K6
         fl_nm_pfx_1L_chr <span class="op">=</span> <span class="st">"D_CT"</span>,
         mdl_types_lup <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_lup</span><span class="op">)</span></code></pre></div>
 <p>The updated models are saved to the “D_Predr_Covars_Cmprsn” subdirectory of “Output” and we can summarise the performance of each of the updated models, along with all model terms, in a table.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdls_with_covars_smry_tb</span> <span class="op">%&gt;%</span>
     <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
                           caption_1L_chr <span class="op">=</span> <span class="st">"Preferred performance of models with covariate predictors by candidate predictor"</span>, 
@@ -2968,15 +2949,15 @@ PHQ9
 </tr></tfoot>
 </table>
 <p>We can now identify which covariates are significant predictors in any of the models.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">signt_covars_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_signft_covars.html">get_signft_covars</a></span><span class="op">(</span>mdls_with_covars_smry_tb <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdls_with_covars_smry_tb</span>,
                                       covar_var_nms_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_covar_nms_chr</span><span class="op">)</span> 
 <span class="co"># NOTE: THIS FUNCTION NEEDS UPDATING TO WORK FOR CATEGORICAL VARS</span></code></pre></div>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">signt_covars_chr</span></code></pre></div>
 <pre><code>## [1] "SOFAS"</code></pre>
 <p>We can override the covariates to select, potentially because we want to select only covariates that are significant for all or most of the models. However, in the below example we have opted not to do so and continue to use the significant predictor (SOFAS) selected by the algorithm in the previous step.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_covars_chr</span> <span class="op">&lt;-</span> <span class="cn">NA_character_</span>
     <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_covars_chr</span><span class="op">)</span><span class="op">)</span>
         <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_covars_chr</span> <span class="op">&lt;-</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">signt_covars_chr</span></code></pre></div>
@@ -2985,18 +2966,13 @@ PHQ9
 <h3 class="hasAnchor">
 <a href="#test-preferred-model-with-preferred-covariates-for-each-candidate-predictor" class="anchor"></a>Test preferred model with preferred covariates for each candidate predictor</h3>
 <p>We now conclude our model testing by rerunning the previous step, except confining our covariates to those we prefer.</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R">    <span class="va">empty_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_type_multi_outps.html">write_mdl_type_multi_outps</a></span><span class="op">(</span>data_tb <span class="op">=</span> <span class="va">bl_tb</span>, n_folds_1L_int <span class="op">=</span> <span class="cn">NULL</span>,
         start_1L_chr <span class="op">=</span> <span class="cn">NA_character_</span>, predrs_var_nms_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsns_tb</span><span class="op">$</span><span class="va">predr_chr</span>,
         covar_var_nms_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_covars_chr</span>, mdl_type_1L_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
         dep_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">dep_var_nm_1L_chr</span>, path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>,
         new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"E_Predrs_W_Covars_Sngl_Mdl_Cmprsns"</span>, mdl_types_lup <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_lup</span>, fl_nm_pfx_1L_chr <span class="op">=</span> <span class="st">"E_CK_CV"</span><span class="op">)</span></code></pre></div>
-<p>The previous call to the <code class="sourceCode r">write_mdl_type_multi_outps</code> function saves the tested models along with the two plots for each model in the “E_Predrs_W_Covars_Sngl_Mdl_Cmprsns” sub-directory of “Output”. The plots for the model using the best performing predictor (PHQ9 total score) are reproduced below.</p>
-<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">path_to_write_to_1L_chr</span>,<span class="st">"/"</span>,<span class="st">"E_Predrs_W_Covars_Sngl_Mdl_Cmprsns"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>pattern <span class="op">=</span> <span class="st">"\\.png$"</span>, full.names <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/keep.html">keep</a></span><span class="op">(</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_detect.html">str_detect</a></span><span class="op">(</span><span class="va">.</span>,<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"_"</span>,<span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_var_nm_1L_chr</span>,<span class="st">"_"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">include_graphics</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<p><img src="Output/E_Predrs_W_Covars_Sngl_Mdl_Cmprsns/E_CK_CV_PHQ9_GLM_GSN_LOG_%20SOFAS_PRED_DNSTY.png" width="400px"><img src="Output/E_Predrs_W_Covars_Sngl_Mdl_Cmprsns/E_CK_CV_PHQ9_GLM_GSN_LOG_%20SOFAS_PRED_SCTR.png" width="400px"></p>
+<p>The previous call to the <code class="sourceCode r">write_mdl_type_multi_outps</code> function saves the tested models along with the two plots for each model in the “E_Predrs_W_Covars_Sngl_Mdl_Cmprsns” sub-directory of “Output”.</p>
 </div>
 </div>
 <div id="apply-preferred-model-types-and-predictors-to-time-series-data" class="section level2">
@@ -3007,19 +2983,19 @@ PHQ9
 <h3 class="hasAnchor">
 <a href="#preliminary-steps" class="anchor"></a>Preliminary steps</h3>
 <p>First we summarise the combinations of model types, candidate predictors and covariates that we will be using.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R">    <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_vars_nms_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_predr_vars_nms_ls.html">make_predr_vars_nms_ls</a></span><span class="op">(</span>main_predrs_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsns_tb</span><span class="op">$</span><span class="va">predr_chr</span>,
         covars_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_covars_chr</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_nms_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mdl_nms_ls.html">make_mdl_nms_ls</a></span><span class="op">(</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_vars_nms_ls</span>, mdl_types_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_nms_ls</span> <span class="op">%&gt;%</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/flatten.html">flatten_chr</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] "PHQ9_1_GLM_GSN_LOG"       "PHQ9_1_OLS_CLL"          
 ## [3] "K6_1_GLM_GSN_LOG"         "K6_1_OLS_CLL"            
 ## [5] "PHQ9_SOFAS_1_GLM_GSN_LOG" "PHQ9_SOFAS_1_OLS_CLL"    
 ## [7] "K6_SOFAS_1_GLM_GSN_LOG"   "K6_SOFAS_1_OLS_CLL"</code></pre>
 <p>We now create a composite object <code>outp_smry_ls</code> that contains the key input and output data used in testing models, predictors and covariates that we will need for the time series modelling.</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">outp_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>scored_data_tb <span class="op">=</span> <span class="va">scored_data_tb</span>, 
                      smry_of_sngl_predr_mdls_tb <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_sngl_predr_mdls_tb</span>,
                      prefd_mdl_types_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span>, 
@@ -3051,7 +3027,7 @@ PHQ9
 <li>Ordinary Least Squares (Complementary Log Log transformation)</li>
 </ul>
 <p>We aim to address this limitation in future releases of TTU.</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">outp_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_ts_mdls_from_alg_outp.html">write_ts_mdls_from_alg_outp</a></span><span class="op">(</span><span class="va">outp_smry_ls</span>,
                                             fn_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">fit_gsn_log_lnk</span>,<span class="va">fit_clg_log_tfmn</span><span class="op">)</span>,
                                             backend_1L_chr <span class="op">=</span> <span class="st">"cmdstanr"</span>,
@@ -3064,12 +3040,12 @@ PHQ9
 <a href="#sharing-models" class="anchor"></a>Sharing models</h3>
 <p>It may not be appropriate to share the raw models outputted by <code class="sourceCode r">write_ts_mdls_from_alg_outp</code> as they both may contain confidential data and are very large in file size. We therefore create shareable versions that are relatively small in file size and do not contain the source dataset, but that have the coefficients from the original models.</p>
 <p>If you have a Dataverse account you can add details for your account (which will differ from the ones we use for ours below) to the <code>outp_smry_ls</code> object. If you do not have a Dataverse account, do not add a dv_ls list element (or set it to its default value of NULL).</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">outp_smry_ls</span><span class="op">$</span><span class="va">dv_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>dv_nm_1L_chr <span class="op">=</span> <span class="st">"firstbounce"</span>,
                                ds_url_1L_chr <span class="op">=</span> <span class="st">"https://doi.org/10.7910/DVN/JC6PTV"</span>, 
                                parent_dv_dir_1L_chr <span class="op">=</span> <span class="st">"../../../../Data/Dataverse"</span><span class="op">)</span></code></pre></div>
 <p>This following call to <code class="sourceCode r">write_shareable_mdls</code> writes shareable models to a new subdirectory (G_Shareable) of “Output”. If you added details of a Dataverse account in the previous step the function will also push these shareable models to your Dataverse online data repository.</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">outp_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_shareable_mdls.html">write_shareable_mdls</a></span><span class="op">(</span><span class="va">outp_smry_ls</span>,
                                      new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"G_Shareable"</span>,
                                      shareable_title_detail_1L_chr <span class="op">=</span> <span class="st">"The model that can be used to predict adolescent AQoL6D. Note this model is a placeholder as it has been estimated from synthetic data."</span><span class="op">)</span></code></pre></div>
@@ -3080,7 +3056,7 @@ PHQ9
 <h2 class="hasAnchor">
 <a href="#create-shareable-population-data" class="anchor"></a>Create shareable population data</h2>
 <p>To aid replication, we can create a purely synthetic dataset, representative of the source data, but containing no real data on any individual. The <code class="sourceCode r">make_fake_ts_data</code> function uses the <code class="sourceCode r">syn</code> function from the <code>synthpop</code> package to perform this task.</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">outp_smry_ls</span><span class="op">$</span><span class="va">fk_data_tb</span> <span class="op">&lt;-</span> <span class="fu">TTU</span><span class="fu">::</span><span class="fu"><a href="../reference/make_fake_ts_data.html">make_fake_ts_data</a></span><span class="op">(</span><span class="va">outp_smry_ls</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ## Variable(s): round have been changed from character to factor.
@@ -3092,7 +3068,7 @@ PHQ9
 ## -----------
 ##  round PHQ9 K6 aqol6d_total_w PHQ9_baseline PHQ9_change K6_baseline K6_change aqol6d_total_w_cloglog</code></pre>
 <p>The first six records from the replication dataset are reproduced below. Note that the “change” variables are scaled by the factor we specified in the <code>ds_smry_ls$predictors_lup</code> predictors lookup table.</p>
-<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">outp_smry_ls</span><span class="op">$</span><span class="va">fk_data_tb</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
@@ -3341,7 +3317,7 @@ NA
 <h2 class="hasAnchor">
 <a href="#save-work" class="anchor"></a>Save work</h2>
 <p>Finally, we can save a complete record of our analysis.</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">outp_smry_ls</span>,<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">outp_smry_ls</span><span class="op">$</span><span class="va">path_to_write_to_1L_chr</span>,<span class="st">"/I_ALL_OUTPUT_.RDS"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
   </div>
