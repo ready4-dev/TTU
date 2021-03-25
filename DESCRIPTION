@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9122
+Version: 0.0.0.9123
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -45,7 +45,7 @@ Imports:
     brms,
     caret,
     cmdstanr (>= 0.3.0.9000),
-    dataverse (>= 0.3.0),
+    dataverse (>= 0.3.7),
     dplyr,
     ggalt,
     ggfortify,
