@@ -237,6 +237,7 @@ readLines(".github/workflows/R-CMD-check.yaml")[-28] %>%
 usethis::use_package("ggfortify")
 usethis::use_dev_package("cmdstanr")
 usethis::use_package("knitrBootstrap")
+usethis::use_dev_package("readr")
 usethis::use_dev_package("ready4show")
 usethis::use_dev_package("ready4use")
 usethis::use_dev_package("youthvars")
