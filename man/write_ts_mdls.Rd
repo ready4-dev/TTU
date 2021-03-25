@@ -15,6 +15,7 @@ write_ts_mdls(
   fn_ls,
   mdl_nms_ls,
   mdl_smry_dir_1L_chr,
+  predictors_lup,
   iters_1L_int = 4000L,
   seed_1L_int = 1000L
 )
@@ -39,6 +40,8 @@ write_ts_mdls(
 \item{mdl_nms_ls}{Model names (a list)}
 
 \item{mdl_smry_dir_1L_chr}{Model smry directory (a character vector of length one)}
+
+\item{predictors_lup}{Predictors (a lookup table)}
 
 \item{iters_1L_int}{Iters (an integer vector of length one), Default: 4000}
 

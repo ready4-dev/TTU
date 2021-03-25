@@ -2,16 +2,16 @@
 % Please edit documentation in R/fn_knit.R
 \name{knit_mdl_rprt}
 \alias{knit_mdl_rprt}
-\title{Knit model rprt}
+\title{Knit model report}
 \usage{
 knit_mdl_rprt(knit_pars_ls, path_to_mdl_rprt_tmpl_1L_chr)
 }
 \arguments{
 \item{knit_pars_ls}{Knit parameters (a list)}
 
-\item{path_to_mdl_rprt_tmpl_1L_chr}{Path to model rprt tmpl (a character vector of length one)}
+\item{path_to_mdl_rprt_tmpl_1L_chr}{Path to model report tmpl (a character vector of length one)}
 }
 \description{
-knit_mdl_rprt() is a Knit function that knits a rmarkdown file Specifically, this function implements an algorithm to knit model rprt. The function is called for its side effects and does not return a value.
+knit_mdl_rprt() is a Knit function that knits a rmarkdown file Specifically, this function implements an algorithm to knit model report. The function is called for its side effects and does not return a value.
 }
 \keyword{internal}

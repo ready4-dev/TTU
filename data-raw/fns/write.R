@@ -156,6 +156,90 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
     }) %>% stats::setNames(plt_nms_chr) %>% purrr::discard(is.na)
     return(mdl_plts_paths_ls)
 }
+write_mdl_cmprsns <- function(scored_data_tb,
+                              ds_smry_ls,
+                              mdl_smry_ls,
+                              output_data_dir_1L_chr,
+                              seed_1L_int = 1234){
+  bl_tb <- transform_ds_for_tstng(scored_data_tb,
+                                  dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr,
+                                  candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
+                                  dep_var_max_val_1L_dbl = 0.999,
+                                  round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr,
+                                  round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
+  ds_smry_ls$candidate_predrs_chr <- reorder_cndt_predrs_chr(ds_smry_ls$candidate_predrs_chr,
+                                                             data_tb = bl_tb,
+                                                             dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr)
+  mdl_smry_ls$predr_var_nm_1L_chr <- ds_smry_ls$candidate_predrs_chr[1]
+  mdl_smry_ls$predr_var_desc_1L_chr <- ds_smry_ls$predictors_lup %>%
+    ready4fun::get_from_lup_obj(match_value_xx = mdl_smry_ls$predr_var_nm_1L_chr,
+                                match_var_nm_1L_chr = "short_name_chr",
+                                target_var_nm_1L_chr = "long_name_chr",
+                                evaluate_lgl = F)
+  mdl_smry_ls$predr_vals_dbl <- make_predr_vals(mdl_smry_ls$predr_var_nm_1L_chr,
+                                                candidate_predrs_lup = ds_smry_ls$predictors_lup)
+  mdl_smry_ls$smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data_tb = bl_tb,
+                                                                              n_folds_1L_int = mdl_smry_ls$n_folds_1L_int,
+                                                                              mdl_types_chr = mdl_smry_ls$mdl_types_chr,
+                                                                              dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr,
+                                                                              predr_var_nm_1L_chr = mdl_smry_ls$predr_var_nm_1L_chr,
+                                                                              predr_var_desc_1L_chr = mdl_smry_ls$predr_var_desc_1L_chr,
+                                                                              predr_vals_dbl = mdl_smry_ls$predr_vals_dbl,
+                                                                              path_to_write_to_1L_chr = output_data_dir_1L_chr,
+                                                                              new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsns",
+                                                                              mdl_types_lup = mdl_smry_ls$mdl_types_lup)
+  mdl_cmprsns_ls <- list(bl_tb = bl_tb,
+                         ds_smry_ls = ds_smry_ls,
+                         mdl_smry_ls)
+  return(mdl_cmprsns_ls)
+}
+write_mdls_with_covars_cmprsns <- function(scored_data_tb,
+                                           bl_tb,
+                                           ds_smry_ls,
+                                           mdl_smry_ls,
+                                           output_data_dir_1L_chr,
+                                           seed_1L_int = 1234,
+                                           session_data_ls){
+  empty_tb <- write_mdl_type_multi_outps(data_tb = bl_tb,
+                                         n_folds_1L_int = NULL,
+                                         start_1L_chr = NA_character_,
+                                         predrs_var_nms_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr,
+                                         covar_var_nms_chr = mdl_smry_ls$prefd_covars_chr,
+                                         mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1],
+                                         dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr,
+                                         path_to_write_to_1L_chr = output_data_dir_1L_chr,
+                                         new_dir_nm_1L_chr = "E_Predrs_W_Covars_Sngl_Mdl_Cmprsns",
+                                         mdl_types_lup = mdl_smry_ls$mdl_types_lup,
+                                         fl_nm_pfx_1L_chr = "E_CK_CV")
+  mdl_smry_ls$predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr,
+                                                          covars_ls = list(mdl_smry_ls$prefd_covars_chr))
+  mdl_smry_ls$mdl_nms_ls <- make_mdl_nms_ls(mdl_smry_ls$predr_vars_nms_ls,
+                                            mdl_types_chr = mdl_smry_ls$prefd_mdl_types_chr)
+  outp_smry_ls <- list(scored_data_tb = scored_data_tb,
+                       smry_of_sngl_predr_mdls_tb = mdl_smry_ls$smry_of_sngl_predr_mdls_tb,
+                       prefd_mdl_types_chr = mdl_smry_ls$prefd_mdl_types_chr,
+                       predr_cmprsns_tb = mdl_smry_ls$predr_cmprsns_tb,
+                       smry_of_mdl_sngl_predrs_tb = mdl_smry_ls$smry_of_mdl_sngl_predrs_tb,
+                       mdls_with_covars_smry_tb = mdl_smry_ls$mdls_with_covars_smry_tb,
+                       signt_covars_chr = mdl_smry_ls$signt_covars_chr,
+                       prefd_covars_chr = mdl_smry_ls$prefd_covars_chr,
+                       dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr,
+                       predr_vars_nms_ls = mdl_smry_ls$predr_vars_nms_ls,
+                       mdl_nms_ls = mdl_smry_ls$mdl_nms_ls,
+                       id_var_nm_1L_chr = ds_smry_ls$id_var_nm_1L_chr,
+                       round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr,
+                       round_bl_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr,
+                       path_to_write_to_1L_chr = output_data_dir_1L_chr,
+                       seed_1L_int = seed_1L_int,
+                       n_folds_1L_int = mdl_smry_ls$n_folds_1L_int,
+                       max_nbr_of_boruta_mdl_runs_int = mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int,
+                       mdl_types_lup = mdl_smry_ls$mdl_types_lup,
+                       file_paths_chr = list.files(output_data_dir_1L_chr, recursive = T),
+                       session_data_ls = session_data_ls)
+  saveRDS(outp_smry_ls,
+          paste0(outp_smry_ls$path_to_write_to_1L_chr,"/I_PRE_TS_OUTPUT_.RDS"))
+  return(outp_smry_ls)
+}
 write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", dep_var_nm_1L_chr = "utl_total_w",
     tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, predr_var_desc_1L_chr,
     predr_vals_dbl, covar_var_nms_chr = NA_character_, path_to_write_to_1L_chr,
@@ -324,6 +408,86 @@ write_new_outp_dir <- function(path_to_write_to_1L_chr,
     dir.create(output_dir_1L_chr)
   return(output_dir_1L_chr)
 }
+write_predr_and_covars_cmprsns <- function(scored_data_tb,
+                                           bl_tb,
+                                           ds_smry_ls,
+                                           mdl_smry_ls,
+                                           output_data_dir_1L_chr,
+                                           seed_1L_int = 1234){
+  mdl_smry_ls$predr_cmprsns_tb <- write_predr_cmprsn_outps(data_tb = bl_tb,
+                                                           path_to_write_to_1L_chr = output_data_dir_1L_chr,
+                                                           new_dir_nm_1L_chr = "B_Candidate_Predrs_Cmprsns",
+                                                           dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr,
+                                                           candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
+                                                           max_nbr_of_boruta_mdl_runs_int = mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int)
+  mdl_smry_ls$smry_of_mdl_sngl_predrs_tb <- write_mdl_type_multi_outps(data_tb = bl_tb,
+                                                                       n_folds_1L_int = mdl_smry_ls$n_folds_1L_int,
+                                                                       predrs_var_nms_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr,
+                                                                       mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1],
+                                                                       dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr,
+                                                                       path_to_write_to_1L_chr = output_data_dir_1L_chr,
+                                                                       new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsns",
+                                                                       fl_nm_pfx_1L_chr = "C_PREDR",
+                                                                       mdl_types_lup = mdl_smry_ls$mdl_types_lup)
+  bl_tb <- scored_data_tb %>%
+    transform_ds_for_tstng(candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
+                           covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr,
+                           remove_all_mssng_1L_lgl = T,
+                           round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
+  mdl_smry_ls$mdls_with_covars_smry_tb <- write_mdl_type_covars_mdls(bl_tb,
+                                                                     dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr,
+                                                                     predrs_var_nms_chr = ds_smry_ls$candidate_predrs_chr,
+                                                                     covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr,
+                                                                     mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1],
+                                                                     path_to_write_to_1L_chr = output_data_dir_1L_chr,
+                                                                     new_dir_nm_1L_chr = "D_Predr_Covars_Cmprsn",
+                                                                     fl_nm_pfx_1L_chr = "D_CT",
+                                                                     mdl_types_lup = mdl_smry_ls$mdl_types_lup)
+  mdl_smry_ls$signt_covars_chr <- get_signft_covars(mdls_with_covars_smry_tb = mdl_smry_ls$mdls_with_covars_smry_tb,
+                                                    covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr)
+  predr_and_covars_cmprsns_ls <- list(bl_tb = bl_tb,
+                                      mdl_smry_ls = mdl_smry_ls)
+  return(predr_and_covars_cmprsns_ls)
+}
+write_predr_and_mdl_tstng_results <- function(scored_data_tb,
+                                              ds_smry_ls,
+                                              mdl_smry_ls,
+                                              session_data_ls,
+                                              output_data_dir_1L_chr,
+                                              seed_1L_int = 1234){
+
+  cmprsns_ls <- write_mdl_cmprsns(scored_data_tb = scored_data_tb,
+                                  ds_smry_ls = ds_smry_ls,
+                                  mdl_smry_ls = mdl_smry_ls,
+                                  output_data_dir_1L_chr = output_data_dir_1L_chr,
+                                  seed_1L_int = seed_1L_int)
+  if(ifelse(is.null(cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr),
+            T,
+            is.na(cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr[1]))){
+    cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr <- make_prefd_mdls_vec(cmprsns_ls$mdl_smry_ls$smry_of_sngl_predr_mdls_tb,
+                                                                      choose_from_pfx_chr = cmprsns_ls$mdl_smry_ls$choose_from_pfx_chr)
+  }
+  cmprsns_ls <- write_predr_and_covars_cmprsns(scored_data_tb = scored_data_tb,
+                                               bl_tb = cmprsns_ls$bl_tb,
+                                               ds_smry_ls = cmprsns_ls$ds_smry_ls,
+                                               mdl_smry_ls  = cmprsns_ls$mdl_smry_ls,
+                                               output_data_dir_1L_chr = output_data_dir_1L_chr,
+                                               seed_1L_int = seed_1L_int)
+  if(ifelse(is.null(cmprsns_ls$mdl_smry_ls$prefd_covars_chr),
+            T,
+            is.na(cmprsns_ls$mdl_smry_ls$prefd_covars_chr[1]))){
+    cmprsns_ls$mdl_smry_ls$prefd_covars_chr <- cmprsns_ls$mdl_smry_ls$signt_covars_chr
+  }
+  outp_smry_ls <- write_mdls_with_covars_cmprsns(scored_data_tb = scored_data_tb,
+                                                 bl_tb = cmprsns_ls$bl_tb,
+                                                 ds_smry_ls = cmprsns_ls$ds_smry_ls,
+                                                 mdl_smry_ls = cmprsns_ls$mdl_smry_ls,
+                                                 output_data_dir_1L_chr = output_data_dir_1L_chr,
+                                                 seed_1L_int = seed_1L_int,
+                                                 session_data_ls = session_data_ls)
+  return(outp_smry_ls)
+}
+
 write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_nm_1L_chr = "B_Candidate_Predrs_Cmprsns", dep_var_nm_1L_chr = "utl_total_w",
     candidate_predrs_chr, max_nbr_of_boruta_mdl_runs_int = 300L)
 {
@@ -394,8 +558,6 @@ write_results_to_csv <- function (synth_data_spine_ls, output_dir_1L_chr = ".")
                                                        file = paste0(output_dir_1L_chr, "/", .y, ".csv"), row.names = F))
   return(dss_tb)
 }
-
-
 write_shareable_mdls <- function (outp_smry_ls,
                                   new_dir_nm_1L_chr = "G_Shareable",
                                   shareable_title_detail_1L_chr = "")
@@ -449,23 +611,21 @@ write_shareable_mdls <- function (outp_smry_ls,
    # outp_smry_ls$shareable_mdls_tb <- shareable_mdls_tb
     return(outp_smry_ls)
 }
-write_shareable_mdls_to_dv <- function (outp_smry_ls,
-                                  new_dir_nm_1L_chr = "G_Shareable",
-                                  shareable_title_detail_1L_chr = ""){
+write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable",
+                                        shareable_title_detail_1L_chr = ""){
+  output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr,
+                                          new_dir_nm_1L_chr = new_dir_nm_1L_chr)
   shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$shareable_mdls_ls),
                                       title_chr = paste0("A shareable (contains no confidential data) statistical model, ",
-                                                         names(outp_smry_ls$shareable_mdls_ls),".",
+                                                         names(outp_smry_ls$shareable_mdls_ls), ".",
                                                          shareable_title_detail_1L_chr))
   ready4use::write_fls_to_dv_ds(shareable_mdls_tb, dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
-                                ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr,
-                                parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr,
+                                ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr, parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr,
                                 paths_to_dirs_chr = output_dir_1L_chr, inc_fl_types_chr = ".RDS")
-
   ds_ls <- dataverse::get_dataset(outp_smry_ls$dv_ls$ds_url_1L_chr)
-  shareable_mdls_tb <- shareable_mdls_tb %>%
-    dplyr::mutate(dv_nm_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
-                  fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ ready4use::get_fl_id_from_dv_ls(ds_ls,
-                                                                                                  fl_nm_1L_chr = paste0(.x,".RDS")) %>% as.integer()))
+  shareable_mdls_tb <- shareable_mdls_tb %>% dplyr::mutate(dv_nm_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
+                                                           fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ready4use::get_fl_id_from_dv_ls(ds_ls,
+                                                                                                                                          fl_nm_1L_chr = paste0(.x, ".RDS")) %>% as.integer()))
 }
 write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var_nm_1L_chr, predr_var_desc_1L_chr,
     predr_vals_dbl, path_to_write_to_1L_chr, new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsns", start_1L_chr = NULL,
@@ -501,7 +661,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_vars_nms_ls,
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round",
     round_bl_val_1L_chr = "Baseline", backend_1L_chr = getOption("brms.backend",
-        "rstan"), fn_ls, mdl_nms_ls, mdl_smry_dir_1L_chr, iters_1L_int = 4000L,
+        "rstan"), fn_ls, mdl_nms_ls, mdl_smry_dir_1L_chr, predictors_lup,iters_1L_int = 4000L,
     seed_1L_int = 1000L)
 {
     if (!dir.exists(mdl_smry_dir_1L_chr))
@@ -514,7 +674,7 @@ write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_var
                 mdl_nm_1L_chr = .y, path_to_write_to_1L_chr = mdl_smry_dir_1L_chr,
                 dep_var_nm_1L_chr = dep_var_nm_1L_chr, id_var_nm_1L_chr = id_var_nm_1L_chr,
                 round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr,
-                backend_1L_chr = backend_1L_chr, iters_1L_int = iters_1L_int,
+                predictors_lup = predictors_lup, backend_1L_chr = backend_1L_chr, iters_1L_int = iters_1L_int,
                 seed_1L_int = seed_1L_int)
             Sys.sleep(5)
             smry_ls$smry_of_ts_mdl_tb
@@ -523,7 +683,7 @@ write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_var
     saveRDS(mdls_smry_tb, paste0(mdl_smry_dir_1L_chr, "/mdls_smry_tb.RDS"))
     return(mdls_smry_tb)
 }
-write_ts_mdls_from_alg_outp <- function (outp_smry_ls, fn_ls, new_dir_nm_1L_chr = "F_TS_Mdls",
+write_ts_mdls_from_alg_outp <- function (outp_smry_ls, fn_ls, new_dir_nm_1L_chr = "F_TS_Mdls", predictors_lup,
                                          backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L)
 {
   output_dir_1L_chr <- output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr,
@@ -535,6 +695,7 @@ write_ts_mdls_from_alg_outp <- function (outp_smry_ls, fn_ls, new_dir_nm_1L_chr 
         round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr,
         fn_ls = fn_ls, mdl_nms_ls = outp_smry_ls$mdl_nms_ls,
         mdl_smry_dir_1L_chr = output_dir_1L_chr,
+        predictors_lup = predictors_lup,
         backend_1L_chr = backend_1L_chr, iters_1L_int = iters_1L_int,
         seed_1L_int = outp_smry_ls$seed_1L_int)
     outp_smry_ls$mdls_smry_tb <- mdls_smry_tb

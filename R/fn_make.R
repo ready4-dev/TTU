@@ -1,19 +1,3 @@
-#' Make adolescent Assessment of Quality of Life Six Dimension disvalue
-#' @description make_adol_aqol6d_disv_lup() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make adolescent assessment of quality of life six dimension disvalue lookup table. The function returns Adolescent Assessment of Quality of Life Six Dimension disvalue (a lookup table).
-
-#' @return Adolescent Assessment of Quality of Life Six Dimension disvalue (a lookup table)
-#' @rdname make_adol_aqol6d_disv_lup
-#' @export 
-#' @importFrom dplyr mutate case_when
-#' @keywords internal
-make_adol_aqol6d_disv_lup <- function () 
-{
-    adol_aqol6d_disv_lup <- aqol6d_adult_disv_lup_tb %>% dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr == 
-        "Q18" ~ 0.622, TRUE ~ Answer_4_dbl), Answer_5_dbl = dplyr::case_when(Question_chr == 
-        "Q3" ~ 0.827, TRUE ~ Answer_5_dbl), Answer_6_dbl = dplyr::case_when(Question_chr == 
-        "Q1" ~ 0.073, TRUE ~ Answer_5_dbl))
-    return(adol_aqol6d_disv_lup)
-}
 #' Make Assessment of Quality of Life Six Dimension adolescent pop tibbles
 #' @description make_aqol6d_adol_pop_tbs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make assessment of quality of life six dimension adolescent pop tibbles list. The function returns Assessment of Quality of Life Six Dimension adolescent pop tibbles (a list).
 #' @param aqol_items_props_tbs_ls Assessment of Quality of Life items props tibbles (a list)
@@ -861,23 +845,32 @@ make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_n
 #' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
 #' @param round_var_nm_1L_chr Round var name (a character vector of length one), Default: 'round'
 #' @param round_bl_val_1L_chr Round bl value (a character vector of length one), Default: 'Baseline'
+#' @param predictors_lup Predictors (a lookup table)
 #' @param backend_1L_chr Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")
 #' @param iters_1L_int Iters (an integer vector of length one), Default: 4000
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 1000
 #' @return Smry of time series model (a list)
 #' @rdname make_smry_of_ts_mdl
 #' @export 
+#' @importFrom purrr map_dbl
+#' @importFrom ready4fun get_from_lup_obj
 #' @importFrom rlang exec
 #' @keywords internal
 make_smry_of_ts_mdl <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_, 
     dep_var_nm_1L_chr = "utl_total_w", id_var_nm_1L_chr = "fkClientID", 
     round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", 
-    backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L, 
-    seed_1L_int = 1000L) 
+    predictors_lup, backend_1L_chr = getOption("brms.backend", 
+        "rstan"), iters_1L_int = 4000L, seed_1L_int = 1000L) 
 {
+    scaling_fctr_dbl <- predr_vars_nms_chr %>% purrr::map_dbl(~ifelse(.x %in% 
+        predictors_lup$short_name_chr, ready4fun::get_from_lup_obj(predictors_lup, 
+        target_var_nm_1L_chr = mdl_scaling_dbl, match_value_xx = .x, 
+        match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F), 
+        1))
     tfd_data_tb <- transform_tb_to_mdl_inp(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr, 
         predr_vars_nms_chr = predr_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr, 
-        round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr)
+        round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr, 
+        scaling_fctr_dbl = scaling_fctr_dbl)
     tfd_dep_var_nm_1L_chr <- ifelse(identical(fn, fit_clg_log_tfmn), 
         transform_dep_var_nm_for_cll(dep_var_nm_1L_chr), dep_var_nm_1L_chr)
     args_ls <- list(data_tb = tfd_data_tb, dep_var_nm_1L_chr = tfd_dep_var_nm_1L_chr, 

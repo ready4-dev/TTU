@@ -1,7 +1,7 @@
-#' Knit model rprt
-#' @description knit_mdl_rprt() is a Knit function that knits a rmarkdown file Specifically, this function implements an algorithm to knit model rprt. The function is called for its side effects and does not return a value.
+#' Knit model report
+#' @description knit_mdl_rprt() is a Knit function that knits a rmarkdown file Specifically, this function implements an algorithm to knit model report. The function is called for its side effects and does not return a value.
 #' @param knit_pars_ls Knit parameters (a list)
-#' @param path_to_mdl_rprt_tmpl_1L_chr Path to model rprt tmpl (a character vector of length one)
+#' @param path_to_mdl_rprt_tmpl_1L_chr Path to model report tmpl (a character vector of length one)
 #' @return NULL
 #' @rdname knit_mdl_rprt
 #' @export 

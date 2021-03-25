@@ -1,11 +1,4 @@
-make_adol_aqol6d_disv_lup <- function ()
-{
-  adol_aqol6d_disv_lup <- aqol6d_adult_disv_lup_tb %>% dplyr::mutate(Answer_4_dbl = dplyr::case_when(Question_chr ==
-                                                                                                       "Q18" ~ 0.622, TRUE ~ Answer_4_dbl), Answer_5_dbl = dplyr::case_when(Question_chr ==
-                                                                                                                                                                              "Q3" ~ 0.827, TRUE ~ Answer_5_dbl), Answer_6_dbl = dplyr::case_when(Question_chr ==
-                                                                                                                                                                                                                                                    "Q1" ~ 0.073, TRUE ~ Answer_5_dbl))
-  return(adol_aqol6d_disv_lup)
-}
+
 make_aqol6d_adol_pop_tbs_ls <- function (aqol_items_props_tbs_ls, aqol_scores_pars_ls, series_names_chr,
                                          synth_data_spine_ls, temporal_cors_ls, id_var_nm_1L_chr = "fkClientID",
                                          prefix_chr = c(uid = "Participant_", aqol_item = "aqol6d_q",
@@ -520,13 +513,23 @@ make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_n
 }
 make_smry_of_ts_mdl <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_,
     dep_var_nm_1L_chr = "utl_total_w", id_var_nm_1L_chr = "fkClientID",
-    round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline",
+    round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", predictors_lup,
     backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L,
     seed_1L_int = 1000L)
 {
+  scaling_fctr_dbl <- predr_vars_nms_chr %>% purrr::map_dbl(~
+      ifelse(.x %in% predictors_lup$short_name_chr,
+             ready4fun::get_from_lup_obj(predictors_lup,
+                                         target_var_nm_1L_chr = mdl_scaling_dbl,
+                                         match_value_xx = .x,
+                                         match_var_nm_1L_chr = "short_name_chr",
+                                         evaluate_lgl = F),
+             1)
+    )
     tfd_data_tb <- transform_tb_to_mdl_inp(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr,
         predr_vars_nms_chr = predr_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr,
-        round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr)
+        round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr,
+        scaling_fctr_dbl = scaling_fctr_dbl)
     tfd_dep_var_nm_1L_chr <- ifelse(identical(fn, fit_clg_log_tfmn),
         transform_dep_var_nm_for_cll(dep_var_nm_1L_chr), dep_var_nm_1L_chr)
     args_ls <- list(data_tb = tfd_data_tb, dep_var_nm_1L_chr = tfd_dep_var_nm_1L_chr,

@@ -29,11 +29,11 @@ We now specify the paths to the input data and its data dictionary.
 ```{r}
 path_to_inp_data_1L_chr <- "Data" 
 ```
-As this is an illustrative example, neither the data directory nor the data files actually exist. So we are going to have to create both. To create our fake data files, we slightly trim down the TTU replication dataset [described in another vignette article](Replication_DS.html) and save it along with its dictionary to the "Data" directory.
+As this is an illustrative example, neither the data directory nor the data files actually exist. So we are going to have to create both. To create our fake data files, we slightly trim down the replication dataset from the related [youthvars](https://ready4-dev.github.io/youthvars/) package and save it along with its dictionary to the "Data" directory.
 
 ```{r warning = F}
 dir.create(path_to_inp_data_1L_chr)
-write.csv(replication_popl_tb %>% dplyr::select(-BADS,-GAD7, -OASIS,-SCARED),"Data/data.csv", row.names=FALSE)
+write.csv(youthsvars::replication_popl_tb %>% dplyr::select(-BADS,-GAD7, -OASIS,-SCARED),"Data/data.csv", row.names=FALSE)
 write.csv(repln_ds_dict_r3,"Data/dictionary.csv", row.names=FALSE)
 ```
 
@@ -45,10 +45,10 @@ dictionary_r3 <- readr::read_csv("Data/dictionary.csv") %>% ready4use::ready4_di
 ```
 
 ## Score utility and summarise meta-data
-We now convert study participant responses to the AQoL-6D questionnaire to health utility scores. [More detail about this step is provided in another vignette article](Utility_Scoring.html).
+We now convert study participant responses to the AQoL-6D questionnaire to health utility scores. 
 
 ```{r message=FALSE, results='hide', warning=FALSE}
-scored_data_tb <- data_tb %>% add_adol6d_scores() 
+scored_data_tb <- data_tb %>% youthvars::add_adol6d_scores() 
 ```
 The dataset we are using has `r nrow(scored_data_tb)` records on `r length(scored_data_tb$fkClientID %>% unique())` study participants. The first six records are reproduced below.
 ```{r }

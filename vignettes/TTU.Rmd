@@ -19,8 +19,6 @@ library(TTU)
 ```
 This development version of the TTU package has been made available as part of the process of testing and documenting the package. 
 
-The following vignettes demonstrate some of the tools currently included in the TTU package:
+The following vignette demonstrates some of the tools currently included in the TTU package:
 
-- [Replication dataset](Replication_DS.html)
-- [Health utility scoring tools](Utility_Scoring.html)
 - [Modelling Transfer to Utility](Model_TTU.html)

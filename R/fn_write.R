@@ -239,6 +239,43 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
     }) %>% stats::setNames(plt_nms_chr) %>% purrr::discard(is.na)
     return(mdl_plts_paths_ls)
 }
+#' Write model cmprsns
+#' @description write_mdl_cmprsns() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model cmprsns. The function returns Model cmprsns (a list).
+#' @param scored_data_tb Scored data (a tibble)
+#' @param ds_smry_ls Dataset smry (a list)
+#' @param mdl_smry_ls Model smry (a list)
+#' @param output_data_dir_1L_chr Output data directory (a character vector of length one)
+#' @param seed_1L_int Seed (an integer vector of length one), Default: 1234
+#' @return Model cmprsns (a list)
+#' @rdname write_mdl_cmprsns
+#' @export 
+#' @importFrom ready4fun get_from_lup_obj
+write_mdl_cmprsns <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, output_data_dir_1L_chr, 
+    seed_1L_int = 1234) 
+{
+    bl_tb <- transform_ds_for_tstng(scored_data_tb, dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr, 
+        candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr, 
+        dep_var_max_val_1L_dbl = 0.999, round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr, 
+        round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
+    ds_smry_ls$candidate_predrs_chr <- reorder_cndt_predrs_chr(ds_smry_ls$candidate_predrs_chr, 
+        data_tb = bl_tb, dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr)
+    mdl_smry_ls$predr_var_nm_1L_chr <- ds_smry_ls$candidate_predrs_chr[1]
+    mdl_smry_ls$predr_var_desc_1L_chr <- ds_smry_ls$predictors_lup %>% 
+        ready4fun::get_from_lup_obj(match_value_xx = mdl_smry_ls$predr_var_nm_1L_chr, 
+            match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = "long_name_chr", 
+            evaluate_lgl = F)
+    mdl_smry_ls$predr_vals_dbl <- make_predr_vals(mdl_smry_ls$predr_var_nm_1L_chr, 
+        candidate_predrs_lup = ds_smry_ls$predictors_lup)
+    mdl_smry_ls$smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data_tb = bl_tb, 
+        n_folds_1L_int = mdl_smry_ls$n_folds_1L_int, mdl_types_chr = mdl_smry_ls$mdl_types_chr, 
+        dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr, predr_var_nm_1L_chr = mdl_smry_ls$predr_var_nm_1L_chr, 
+        predr_var_desc_1L_chr = mdl_smry_ls$predr_var_desc_1L_chr, 
+        predr_vals_dbl = mdl_smry_ls$predr_vals_dbl, path_to_write_to_1L_chr = output_data_dir_1L_chr, 
+        new_dir_nm_1L_chr = "A_Candidate_Mdls_Cmprsns", mdl_types_lup = mdl_smry_ls$mdl_types_lup)
+    mdl_cmprsns_ls <- list(bl_tb = bl_tb, ds_smry_ls = ds_smry_ls, 
+        mdl_smry_ls)
+    return(mdl_cmprsns_ls)
+}
 #' Write model plts
 #' @description write_mdl_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model plts. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param data_tb Data (a tibble)
@@ -498,6 +535,49 @@ write_mdl_type_sngl_outps <- function (data_tb, n_folds_1L_int = 10, dep_var_nm_
         ".RDS"))
     return(smry_of_one_predr_mdl_tb)
 }
+#' Write models with covars cmprsns
+#' @description write_mdls_with_covars_cmprsns() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write models with covars cmprsns. The function returns Output smry (a list).
+#' @param scored_data_tb Scored data (a tibble)
+#' @param bl_tb Bl (a tibble)
+#' @param ds_smry_ls Dataset smry (a list)
+#' @param mdl_smry_ls Model smry (a list)
+#' @param output_data_dir_1L_chr Output data directory (a character vector of length one)
+#' @param seed_1L_int Seed (an integer vector of length one), Default: 1234
+#' @param session_data_ls Session data (a list)
+#' @return Output smry (a list)
+#' @rdname write_mdls_with_covars_cmprsns
+#' @export 
+
+write_mdls_with_covars_cmprsns <- function (scored_data_tb, bl_tb, ds_smry_ls, mdl_smry_ls, output_data_dir_1L_chr, 
+    seed_1L_int = 1234, session_data_ls) 
+{
+    empty_tb <- write_mdl_type_multi_outps(data_tb = bl_tb, n_folds_1L_int = NULL, 
+        start_1L_chr = NA_character_, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr, 
+        covar_var_nms_chr = mdl_smry_ls$prefd_covars_chr, mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1], 
+        dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr, path_to_write_to_1L_chr = output_data_dir_1L_chr, 
+        new_dir_nm_1L_chr = "E_Predrs_W_Covars_Sngl_Mdl_Cmprsns", 
+        mdl_types_lup = mdl_smry_ls$mdl_types_lup, fl_nm_pfx_1L_chr = "E_CK_CV")
+    mdl_smry_ls$predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr, 
+        covars_ls = list(mdl_smry_ls$prefd_covars_chr))
+    mdl_smry_ls$mdl_nms_ls <- make_mdl_nms_ls(mdl_smry_ls$predr_vars_nms_ls, 
+        mdl_types_chr = mdl_smry_ls$prefd_mdl_types_chr)
+    outp_smry_ls <- list(scored_data_tb = scored_data_tb, smry_of_sngl_predr_mdls_tb = mdl_smry_ls$smry_of_sngl_predr_mdls_tb, 
+        prefd_mdl_types_chr = mdl_smry_ls$prefd_mdl_types_chr, 
+        predr_cmprsns_tb = mdl_smry_ls$predr_cmprsns_tb, smry_of_mdl_sngl_predrs_tb = mdl_smry_ls$smry_of_mdl_sngl_predrs_tb, 
+        mdls_with_covars_smry_tb = mdl_smry_ls$mdls_with_covars_smry_tb, 
+        signt_covars_chr = mdl_smry_ls$signt_covars_chr, prefd_covars_chr = mdl_smry_ls$prefd_covars_chr, 
+        dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr, predr_vars_nms_ls = mdl_smry_ls$predr_vars_nms_ls, 
+        mdl_nms_ls = mdl_smry_ls$mdl_nms_ls, id_var_nm_1L_chr = ds_smry_ls$id_var_nm_1L_chr, 
+        round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr, 
+        round_bl_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr, 
+        path_to_write_to_1L_chr = output_data_dir_1L_chr, seed_1L_int = seed_1L_int, 
+        n_folds_1L_int = mdl_smry_ls$n_folds_1L_int, max_nbr_of_boruta_mdl_runs_int = mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int, 
+        mdl_types_lup = mdl_smry_ls$mdl_types_lup, file_paths_chr = list.files(output_data_dir_1L_chr, 
+            recursive = T), session_data_ls = session_data_ls)
+    saveRDS(outp_smry_ls, paste0(outp_smry_ls$path_to_write_to_1L_chr, 
+        "/I_PRE_TS_OUTPUT_.RDS"))
+    return(outp_smry_ls)
+}
 #' Write new output directory
 #' @description write_new_outp_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write new output directory. The function returns Output directory (a character vector of length one).
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
@@ -514,6 +594,83 @@ write_new_outp_dir <- function (path_to_write_to_1L_chr, new_dir_nm_1L_chr)
     if (!dir.exists(output_dir_1L_chr)) 
         dir.create(output_dir_1L_chr)
     return(output_dir_1L_chr)
+}
+#' Write predr and covars cmprsns
+#' @description write_predr_and_covars_cmprsns() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predr and covars cmprsns. The function returns Predr and covars cmprsns (a list).
+#' @param scored_data_tb Scored data (a tibble)
+#' @param bl_tb Bl (a tibble)
+#' @param ds_smry_ls Dataset smry (a list)
+#' @param mdl_smry_ls Model smry (a list)
+#' @param output_data_dir_1L_chr Output data directory (a character vector of length one)
+#' @param seed_1L_int Seed (an integer vector of length one), Default: 1234
+#' @return Predr and covars cmprsns (a list)
+#' @rdname write_predr_and_covars_cmprsns
+#' @export 
+
+write_predr_and_covars_cmprsns <- function (scored_data_tb, bl_tb, ds_smry_ls, mdl_smry_ls, output_data_dir_1L_chr, 
+    seed_1L_int = 1234) 
+{
+    mdl_smry_ls$predr_cmprsns_tb <- write_predr_cmprsn_outps(data_tb = bl_tb, 
+        path_to_write_to_1L_chr = output_data_dir_1L_chr, new_dir_nm_1L_chr = "B_Candidate_Predrs_Cmprsns", 
+        dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr, candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr, 
+        max_nbr_of_boruta_mdl_runs_int = mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int)
+    mdl_smry_ls$smry_of_mdl_sngl_predrs_tb <- write_mdl_type_multi_outps(data_tb = bl_tb, 
+        n_folds_1L_int = mdl_smry_ls$n_folds_1L_int, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr, 
+        mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1], 
+        dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr, path_to_write_to_1L_chr = output_data_dir_1L_chr, 
+        new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsns", fl_nm_pfx_1L_chr = "C_PREDR", 
+        mdl_types_lup = mdl_smry_ls$mdl_types_lup)
+    bl_tb <- scored_data_tb %>% transform_ds_for_tstng(candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr, 
+        covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr, 
+        remove_all_mssng_1L_lgl = T, round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
+    mdl_smry_ls$mdls_with_covars_smry_tb <- write_mdl_type_covars_mdls(bl_tb, 
+        dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr, predrs_var_nms_chr = ds_smry_ls$candidate_predrs_chr, 
+        covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr, 
+        mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1], 
+        path_to_write_to_1L_chr = output_data_dir_1L_chr, new_dir_nm_1L_chr = "D_Predr_Covars_Cmprsn", 
+        fl_nm_pfx_1L_chr = "D_CT", mdl_types_lup = mdl_smry_ls$mdl_types_lup)
+    mdl_smry_ls$signt_covars_chr <- get_signft_covars(mdls_with_covars_smry_tb = mdl_smry_ls$mdls_with_covars_smry_tb, 
+        covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr)
+    predr_and_covars_cmprsns_ls <- list(bl_tb = bl_tb, mdl_smry_ls = mdl_smry_ls)
+    return(predr_and_covars_cmprsns_ls)
+}
+#' Write predr and model tstng results
+#' @description write_predr_and_mdl_tstng_results() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predr and model tstng results. The function returns Output smry (a list).
+#' @param scored_data_tb Scored data (a tibble)
+#' @param ds_smry_ls Dataset smry (a list)
+#' @param mdl_smry_ls Model smry (a list)
+#' @param session_data_ls Session data (a list)
+#' @param output_data_dir_1L_chr Output data directory (a character vector of length one)
+#' @param seed_1L_int Seed (an integer vector of length one), Default: 1234
+#' @return Output smry (a list)
+#' @rdname write_predr_and_mdl_tstng_results
+#' @export 
+
+#' @keywords internal
+write_predr_and_mdl_tstng_results <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, session_data_ls, 
+    output_data_dir_1L_chr, seed_1L_int = 1234) 
+{
+    cmprsns_ls <- write_mdl_cmprsns(scored_data_tb = scored_data_tb, 
+        ds_smry_ls = ds_smry_ls, mdl_smry_ls = mdl_smry_ls, output_data_dir_1L_chr = output_data_dir_1L_chr, 
+        seed_1L_int = seed_1L_int)
+    if (ifelse(is.null(cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr), 
+        T, is.na(cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr[1]))) {
+        cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr <- make_prefd_mdls_vec(cmprsns_ls$mdl_smry_ls$smry_of_sngl_predr_mdls_tb, 
+            choose_from_pfx_chr = cmprsns_ls$mdl_smry_ls$choose_from_pfx_chr)
+    }
+    cmprsns_ls <- write_predr_and_covars_cmprsns(scored_data_tb = scored_data_tb, 
+        bl_tb = cmprsns_ls$bl_tb, ds_smry_ls = cmprsns_ls$ds_smry_ls, 
+        mdl_smry_ls = cmprsns_ls$mdl_smry_ls, output_data_dir_1L_chr = output_data_dir_1L_chr, 
+        seed_1L_int = seed_1L_int)
+    if (ifelse(is.null(cmprsns_ls$mdl_smry_ls$prefd_covars_chr), 
+        T, is.na(cmprsns_ls$mdl_smry_ls$prefd_covars_chr[1]))) {
+        cmprsns_ls$mdl_smry_ls$prefd_covars_chr <- cmprsns_ls$mdl_smry_ls$signt_covars_chr
+    }
+    outp_smry_ls <- write_mdls_with_covars_cmprsns(scored_data_tb = scored_data_tb, 
+        bl_tb = cmprsns_ls$bl_tb, ds_smry_ls = cmprsns_ls$ds_smry_ls, 
+        mdl_smry_ls = cmprsns_ls$mdl_smry_ls, output_data_dir_1L_chr = output_data_dir_1L_chr, 
+        seed_1L_int = seed_1L_int, session_data_ls = session_data_ls)
+    return(outp_smry_ls)
 }
 #' Write predr cmprsn outputs
 #' @description write_predr_cmprsn_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predr cmprsn outputs. The function returns Confirmed predrs (a tibble).
@@ -700,6 +857,8 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
 #' @keywords internal
 write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "") 
 {
+    output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr, 
+        new_dir_nm_1L_chr = new_dir_nm_1L_chr)
     shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$shareable_mdls_ls), 
         title_chr = paste0("A shareable (contains no confidential data) statistical model, ", 
             names(outp_smry_ls$shareable_mdls_ls), ".", shareable_title_detail_1L_chr))
@@ -778,6 +937,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @param fn_ls Function list (a list of functions)
 #' @param mdl_nms_ls Model names (a list)
 #' @param mdl_smry_dir_1L_chr Model smry directory (a character vector of length one)
+#' @param predictors_lup Predictors (a lookup table)
 #' @param iters_1L_int Iters (an integer vector of length one), Default: 4000
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 1000
 #' @return Models smry (a tibble)
@@ -788,8 +948,8 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_vars_nms_ls, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", backend_1L_chr = getOption("brms.backend", 
-        "rstan"), fn_ls, mdl_nms_ls, mdl_smry_dir_1L_chr, iters_1L_int = 4000L, 
-    seed_1L_int = 1000L) 
+        "rstan"), fn_ls, mdl_nms_ls, mdl_smry_dir_1L_chr, predictors_lup, 
+    iters_1L_int = 4000L, seed_1L_int = 1000L) 
 {
     if (!dir.exists(mdl_smry_dir_1L_chr)) 
         dir.create(mdl_smry_dir_1L_chr)
@@ -801,8 +961,8 @@ write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_var
                 mdl_nm_1L_chr = .y, path_to_write_to_1L_chr = mdl_smry_dir_1L_chr, 
                 dep_var_nm_1L_chr = dep_var_nm_1L_chr, id_var_nm_1L_chr = id_var_nm_1L_chr, 
                 round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr, 
-                backend_1L_chr = backend_1L_chr, iters_1L_int = iters_1L_int, 
-                seed_1L_int = seed_1L_int)
+                predictors_lup = predictors_lup, backend_1L_chr = backend_1L_chr, 
+                iters_1L_int = iters_1L_int, seed_1L_int = seed_1L_int)
             Sys.sleep(5)
             smry_ls$smry_of_ts_mdl_tb
         })
@@ -815,6 +975,7 @@ write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_var
 #' @param outp_smry_ls Output smry (a list)
 #' @param fn_ls Function list (a list of functions)
 #' @param new_dir_nm_1L_chr New directory name (a character vector of length one), Default: 'F_TS_Mdls'
+#' @param predictors_lup Predictors (a lookup table)
 #' @param backend_1L_chr Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")
 #' @param iters_1L_int Iters (an integer vector of length one), Default: 4000
 #' @return Output smry (a list)
@@ -822,7 +983,8 @@ write_ts_mdls <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_var
 #' @export 
 
 write_ts_mdls_from_alg_outp <- function (outp_smry_ls, fn_ls, new_dir_nm_1L_chr = "F_TS_Mdls", 
-    backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L) 
+    predictors_lup, backend_1L_chr = getOption("brms.backend", 
+        "rstan"), iters_1L_int = 4000L) 
 {
     output_dir_1L_chr <- output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr, 
         new_dir_nm_1L_chr = new_dir_nm_1L_chr)
@@ -831,8 +993,9 @@ write_ts_mdls_from_alg_outp <- function (outp_smry_ls, fn_ls, new_dir_nm_1L_chr 
         id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr, 
         round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr, 
         fn_ls = fn_ls, mdl_nms_ls = outp_smry_ls$mdl_nms_ls, 
-        mdl_smry_dir_1L_chr = output_dir_1L_chr, backend_1L_chr = backend_1L_chr, 
-        iters_1L_int = iters_1L_int, seed_1L_int = outp_smry_ls$seed_1L_int)
+        mdl_smry_dir_1L_chr = output_dir_1L_chr, predictors_lup = predictors_lup, 
+        backend_1L_chr = backend_1L_chr, iters_1L_int = iters_1L_int, 
+        seed_1L_int = outp_smry_ls$seed_1L_int)
     outp_smry_ls$mdls_smry_tb <- mdls_smry_tb
     outp_smry_ls$file_paths_chr <- list.files(outp_smry_ls$path_to_write_to_1L_chr, 
         recursive = T)

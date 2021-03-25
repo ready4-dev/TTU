@@ -36,6 +36,9 @@ ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Transfer to Utility Mapping Algo
                                  addl_badges_ls = list(ready4 = "modelling"))
 
 # PAUSE FOR INTERACTIVE
+##
+## PART THREE
+##
 classes_to_make_tb <- ready4class::ready4_constructor_tbl() %>%
   dplyr::bind_rows(tibble::tribble(
     ~ make_s3_lgl, ~ name_stub_chr, ~ pt_ls, ~ pt_chkr_pfx_ls, ~ pt_ns_ls, ~ vals_ls, ~ allowed_vals_ls, ~ min_max_vals_ls, ~ start_end_vals_ls, ~ class_desc_chr, ~ parent_class_chr, ~ slots_ls, ~ meaningful_nms_ls, ~inc_clss_ls,
@@ -50,13 +53,12 @@ classes_to_make_tb <- ready4class::ready4_constructor_tbl() %>%
                                                                             covariate_lgl = "logical(0)"), NULL,NULL, NULL, "TTU S3 class for candidate predictors lookup table", NA_character_, NULL, NULL, NULL)
   )
 name_pfx_1L_chr <- "TTU_"
-
 pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c(paste0(name_pfx_1L_chr,classes_to_make_tb$name_stub_chr)),
                                         long_name_chr = c(classes_to_make_tb$class_desc_chr),
                                         #no_plural_chr = ,
                                         #custom_plural_ls = ,
                                         url_1L_chr = NA_character_,
-                                        seed_lup = ready4show::abbreviations_lup)
+                                        seed_lup = youthvars::abbreviations_lup)
 utils::data("abbreviations_lup")
 pkg_dss_tb <- classes_to_make_tb %>%
   ready4class::write_classes_and_make_lup(dev_pkg_ns_1L_chr = ready4fun::get_dev_pkg_nm(),
@@ -64,63 +66,43 @@ pkg_dss_tb <- classes_to_make_tb %>%
                                           output_dir_1L_chr = "R",
                                           file_exists_cdn_1L_chr = "overwrite",
                                           abbreviations_lup = abbreviations_lup,
-                                          init_class_pt_lup = ready4use::prototype_lup)  %>% #
+                                          init_class_pt_lup = youthvars::prototype_lup)  %>% #
   ready4fun::write_and_doc_ds(db_1L_chr = "prototype_lup",
                               title_1L_chr = "Class prototype lookup table",
                               desc_1L_chr = "Metadata on classes used in readyforwhatsnext suite",
                               pkg_dss_tb = pkg_dss_tb)
 ##
-## PART THREE
-##
 # 5. Create a lookup table of abbreviations used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
 #utils::data("abbreviations_lup",package = "ready4use")
-pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c("adol","aqol","aqol6d","aqol6dU",
-                                                           "cnstr","con","cor",
-                                                           "dim","disv","eq","lev",
+pkg_dss_tb <- ready4fun::write_abbr_lup(short_name_chr = c("cnstr","con","cor",
                                                            "lgd",
                                                            "mdl",
                                                            "predn",
-                                                           "q",
-                                                           "scrg",
                                                            "tfmn",
                                                            "tot",
                                                            "ts",
-                                                           "uid","ut","unscrd","vldn"),
-                                        long_name_chr = c("adolescent",
-                                                          "Assessment of Quality of Life",
-                                                          "Assessment of Quality of Life Six Dimension",
-                                                          "Assessment of Quality of Life Six Dimension Health Utility",
-                                                          "constraint",
+                                                           "uid",
+                                                           "ut"),
+                                        long_name_chr = c("constraint",
                                                           "constant",
                                                           "correlation",
-                                                          "dimension",
-                                                          "disvalue",
-                                                          "equation",
-                                                          "level",
                                                           "legend",
                                                           "model",
                                                           "prediction",
-                                                          "question",
-                                                          "scoring",
                                                           "transformation",
                                                           "total",
                                                           "time series",
                                                           "unique identifier",
-                                                          "utility",
-                                                          "unscored",
-                                                          "validation"),
-                                        no_plural_chr = c("Assessment of Quality of Life",
-                                                            "Assessment of Quality of Life Six Dimension",
-                                                            "Assessment of Quality of Life Six Dimension Health Utility",
-                                                          "prediction","time series","validation"),
+                                                          "utility"),
+                                        no_plural_chr = c("prediction","time series"),
                                         custom_plural_ls = list(utility = "utilities"),
                                         url_1L_chr = NA_character_,
-                                        seed_lup = ready4use::abbreviations_lup)
+                                        seed_lup = youthvars::abbreviations_lup)
 utils::data("abbreviations_lup")
 ##
 # 5. Create function types and generics look-up tables
 # 5.1 Create a lookup table of function types used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
-utils::data("fn_type_lup_tb",package = "ready4use")
+utils::data("fn_type_lup_tb", package = "youthvars")
 # ready4fun::get_new_fn_types(abbreviations_lup = abbreviations_lup,
 #                             fn_type_lup_tb = fn_type_lup_tb)
 pkg_dss_tb <- fn_type_lup_tb %>%
@@ -129,11 +111,11 @@ pkg_dss_tb <- fn_type_lup_tb %>%
                                   fn_type_desc_chr = c("Calculates a numeric value.",
                                                        #"Extracts data from an object.",
                                                        "Fits a model of a specified type to a dataset",
-                                                       "Imputes data.",
+                                                       #"Imputes data.",
                                                        "Knits a rmarkdown file",
                                                        "Plots data",
                                                        "Makes predictions from data using a specified statistical model.",
-                                                       "Prints output to console",
+                                                       #"Prints output to console",
                                                        "Randomly samples from data.",
                                                        "Reorders an object to conform to a pre-specified schema.",
                                                        # "Resets the value of an object to a default.",
@@ -151,10 +133,13 @@ utils::data("fn_type_lup_tb")
 fns_dmt_tb <- ready4fun::make_dmt_for_all_fns(paths_ls = ready4fun::make_fn_nms()[1],
                                               undocumented_fns_dir_chr = ready4fun::make_undmtd_fns_dir_chr()[1],
                                               custom_dmt_ls = list(details_ls = NULL,
-                                                                   inc_for_main_user_lgl_ls = list(force_true_chr = c("add_adol6d_scores",
+                                                                   inc_for_main_user_lgl_ls = list(force_true_chr = c("add_interval_var",
                                                                                                                       "add_utility_predn_to_ds",
                                                                                                                       "make_fake_ts_data",
                                                                                                                       "write_all_alg_outps",
+                                                                                                                      "write_mdl_cmprsns",
+                                                                                                                      "write_predr_and_covars_cmprsns",
+                                                                                                                      "write_mdls_with_covars_cmprsns",
                                                                                                                       #"write_rprt",
                                                                                                                       "write_shareable_mdls",
                                                                                                                       "write_ts_mdls_from_alg_outp"),
@@ -236,206 +221,7 @@ pkg_dss_tb <- tibble::tibble(rprt_nms_chr = "Main_Mdl_Smry",
                               desc_1L_chr = "A lookup table of the different report types supported by TTU functions",
                               abbreviations_lup = abbreviations_lup,
                               pkg_dss_tb = pkg_dss_tb)
-##
-pkg_dss_tb <- tibble::tribble(
-  ~var_name_chr, ~coeff_dbl,
-  "vD1", 0.0719264,
-  "vD2", 0.1027818,
-  "vD3", 0.2519563,
-  "vD4", 0.3201172,
-  "vD5", 0.1288289,
-  "vD6", 0.2052164,
-  "Constant", - 0.0444493
-) %>% ready4fun::write_and_doc_ds(db_1L_chr = "aqol6d_from_8d_coeffs_lup_tb",
-                                  title_1L_chr = "Model 2A Coefficients To Weight AQoL6D",
-                                  desc_1L_chr = "Coefficients for model to predict AQoL-6D utility score from AQoL-8D. The optimal model is Model 2A (see Richardson et al (2011, 18-19)*/",
-                                  url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
-                                  abbreviations_lup = abbreviations_lup,
-                                  pkg_dss_tb = pkg_dss_tb)
-pkg_dss_tb <- tibble::tribble(
-  ~Question_chr, ~Answer_1_dbl, ~Answer_2_dbl, ~Answer_3_dbl, ~Answer_4_dbl, ~Answer_5_dbl, ~Answer_6_dbl,
-  "Q1", 0, 0.073, 0.435, 0.820, 1, NA_real_,
-  "Q2", 0, 0.033, 0.240, 0.471, 0.840,1,
-  "Q3", 0, 0.041, 0.251, 0.570, 0.830, 1,
-  "Q4", 0, 0.040, 0.297, 0.797, 1, NA_real_,
-  "Q5", 0, 0.074, 0.461, 0.841, 1, NA_real_,
-  "Q6", 0, 0.193, 0.759, 1, NA_real_,NA_real_,
-  "Q7", 0, 0.197, 0.648, 1, NA_real_, NA_real_,
-  "Q8", 0, 0.133, 0.392, 0.838, 1, NA_real_,
-  "Q9", 0, 0.142, 0.392, 0.824, 1, NA_real_,
-  "Q10", 0, 0.097, 0.330, 0.784, 1, NA_real_,
-  "Q11", 0, 0.064, 0.368, 0.837, 1, NA_real_,
-  "Q12", 0, 0.056, 0.338, 0.722, 1, NA_real_,
-  "Q13", 0, 0.055, 0.382, 0.774, 1, NA_real_,
-  "Q14", 0, 0.057, 0.423, 0.826, 1, NA_real_,
-  "Q15", 0, 0.133, 0.642, 1, NA_real_,NA_real_,
-  "Q16", 0, 0.200, 0.758, 1, NA_real_, NA_real_,
-  "Q17", 0, 0.072, 0.338, 0.752, 1, NA_real_,
-  "Q18", 0, 0.033, 0.223, 0.621, 0.843, 1,
-  "Q19", 0, 0.024, 0.205, 0.586, 0.826, 1,
-  "Q20", 0, 0.187, 0.695, 1, NA_real_,NA_real_
-) %>% ready4fun::write_and_doc_ds(db_1L_chr = "aqol6d_adult_disv_lup_tb",
-                                  title_1L_chr = "AQoL6D (adult version) item disvalues lookup table",
-                                  desc_1L_chr = "Disutility weights for individual AQoL6D (adult version) items.",
-                                  url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
-                                  abbreviations_lup = abbreviations_lup,
-                                  pkg_dss_tb = pkg_dss_tb)
-pkg_dss_tb <- tibble::tibble(Question_dbl = 1:20,
-                             Domain_chr = c(rep("IL",4),
-                                            rep("REL",3),
-                                            rep("MH",4),
-                                            rep("COP",3),
-                                            rep("P",3),
-                                            rep("SEN",3))) %>%
-  ready4fun::write_and_doc_ds(db_1L_chr = "aqol6d_domain_qs_lup_tb",
-                              title_1L_chr = "AQoL6D dimension questions lookup table",
-                              desc_1L_chr = "Breakdown of which questions relate to which dimension of the AQoL6D.",
-                              url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
-                              abbreviations_lup = abbreviations_lup,
-                              pkg_dss_tb = pkg_dss_tb)
-pkg_dss_tb <- tibble::tribble(
-  ~Dimension_chr, ~Constant_dbl,
-  "IL",-0.978,
-  "RL", -0.923,
-  "MH", -0.983,
-  "COP", -0.930,
-  "P", -0.96,
-  "SEN", -0.851) %>% ready4fun::write_and_doc_ds(db_1L_chr = "aqol6d_dim_sclg_con_lup_tb",
-                                                 title_1L_chr = "AQoL6D dimension scaling constants lookup table",
-                                                 desc_1L_chr = "Scaling constants for each dimension of AQoL6D.",
-                                                 url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
-                                                 abbreviations_lup = abbreviations_lup,
-                                                 pkg_dss_tb = pkg_dss_tb)
 
-pkg_dss_tb <- tibble::tribble(
-  ~Question_chr, ~Worst_Weight_dbl,
-  "Q1", 0.385412,
-  "Q2", 0.593819,
-  "Q3", 0.630323,
-  "Q4", 0.794888,
-  "Q5", 0.64303,
-  "Q6", 0.697742,
-  "Q7", 0.508658,
-  "Q8", 0.640377,
-  "Q9", 0.588422,
-  "Q10", 0.648748,
-  "Q11", 0.71122,
-  "Q12", 0.415694,
-  "Q13", 0.636994,
-  "Q14", 0.773296,
-  "Q15", 0.631833,
-  "Q16", 0.767573,
-  "Q17", 0.652241,
-  "Q18", 0.580696,
-  "Q19", 0.463022,
-  "Q20", 0.604613
-) %>% ready4fun::write_and_doc_ds(db_1L_chr = "aqol6d_adult_itm_wrst_wghts_lup_tb",
-                                  title_1L_chr = "AQoL6D (adult) item worst weightings lookup table",
-                                  desc_1L_chr = "Worst weightings for individual items in AQoL6D (adult version).",
-                                  url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
-                                  abbreviations_lup = abbreviations_lup,
-                                  pkg_dss_tb = pkg_dss_tb)
-pkg_dss_tb <- read.csv("data-raw/csvs/AQoL_6D_Dim_Scaling.csv", stringsAsFactors = F, fileEncoding="UTF-8-BOM") %>%
-  ready4fun::write_and_doc_ds(db_1L_chr = "adol_dim_scalg_eqs_lup",
-                              title_1L_chr = "AQoL6D (adolescent) item worst weightings equations lookup table",
-                              desc_1L_chr = "Dimension scaling equations for adolescent version of AQoL6D scoring algorithm.",
-                              url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
-                              abbreviations_lup = abbreviations_lup,
-                              pkg_dss_tb = pkg_dss_tb)
-pkg_dss_tb <- read.csv("data-raw/csvs/aqol_valid_stata.csv") %>%
-  ready4fun::write_and_doc_ds(db_1L_chr = "aqol6d_adult_vldn_pop_with_STATA_scores_tb",
-                              title_1L_chr = "STATA comparison validation synthetic population",
-                              desc_1L_chr = "Synthetic population following application of STATA adult scoring algorithm.",
-                              url_1L_chr = "https://www.aqol.com.au/index.php/scoring-algorithms",
-                              abbreviations_lup = abbreviations_lup,
-                              pkg_dss_tb = pkg_dss_tb)
-replication_popl_tb <- read.csv("data-raw/csvs/fake_pop_tb.csv") %>%
-  dplyr::mutate(c_sofas = as.integer(round(c_sofas,0))) %>%
-  transform_raw_aqol_tb_to_aqol6d_tb()
-scored_data_tb <- add_adol6d_scores(replication_popl_tb,
-                                    prefix_1L_chr =  "aqol6d_q",
-                                    id_var_nm_1L_chr = "fkClientID",
-                                    wtd_aqol_var_nm_1L_chr = "aqol6d_total_w")
-dictionary_tb <- ready4use::make_pt_ready4_dictionary(var_nm_chr = names(scored_data_tb),
-                                                      var_cat_chr = c("Identifier","Temporal",
-                                                                      "Clinical","Service","Clinical",
-                                                                      rep("Demographic",11),
-                                                                      rep("Clinical",6),
-                                                                      "Functioning",
-                                                                      rep("Demographic",3),
-                                                                      rep("Utility Questionaire Response",20),
-                                                                      rep("Utility Item Disvalue",20),
-                                                                      rep("Utility Dimension Disvalue",6),
-                                                                      rep("Utility Dimension Score (Adult)",6),
-                                                                      "Utility Overall Score (Disvalue Scale)",
-                                                                      "Utility Overall Score (Life-Death Scale)",
-                                                                      rep("Utility Overall Score (Adolescent Disutility Scale)",2), # Includes Testing Duplicate
-                                                                      "Utility Overall Score (Instrument)",
-                                                                      "Utility Overall Score (Instrument - Rotated)",
-                                                                      "Utility Overall Score (Final Weighted)"
-                                                      ),
-                                                      var_desc_chr = c("Unique Client Identifier",
-                                                                       "Round of Data Collection",
-                                                                       "Primary Diagnosis",
-                                                                       "Centre Name",
-                                                                       "Clinical Stage",
-                                                                       "Age",
-                                                                       "Age Group",
-                                                                       "Gender",
-                                                                       "Sex at Birth",
-                                                                       "Sexual Orientation",
-                                                                       "Country Of Birth",
-                                                                       "Aboriginal or Torres Strait Islander",
-                                                                       "Speaks English At Home",
-                                                                       "Native English Speaker",
-                                                                       "Relationship Status",
-                                                                       "Education and Employment Status",
-                                                                       "Kessler Psychological Distress Scale (6 Dimension)",
-                                                                       "Patient Health Questionnaire",
-                                                                       "Behavioural Activation for Depression Scale",
-                                                                       "Generalised Anxiety Disorder Scale",
-                                                                       "Overall Anxiety Severity and Impairment Scale",
-                                                                       "Screen for Child Anxiety Related Disorders",
-                                                                       "Social and Occupational Functioning Assessment Scale",
-                                                                       "Gender (Grouped)",
-                                                                       "Region of Residence (Metropolitan or Regional)",
-                                                                       "Culturally And Linguistically Diverse",
-                                                                       paste0("Assessment of Quality of Life (6 Dimension) Question ",1:20),
-                                                                       paste0("Assessment of Quality of Life (6 Dimension) Item Disvalue",1:20),
-                                                                       lapply(scored_data_tb, Hmisc::label) %>% purrr::flatten_chr() %>% purrr::keep(c(rep(F,66),rep(T,19)))
-                                                      ),
-                                                      var_type_chr = names(scored_data_tb) %>% purrr::map_chr(~{
-                                                        class_chr <- class(scored_data_tb %>% dplyr::pull(.x))
-                                                        class_chr[class_chr!="labelled"][1]
-                                                      })) %>% ready4use::ready4_dictionary()
-Hmisc::label(dictionary_tb) = as.list(c("Variable","Category", "Description", "Class"))
-dictionary_tb <- dictionary_tb %>%
-  dplyr::arrange(var_cat_chr,var_nm_chr)
-pkg_dss_tb <- dictionary_tb %>%
-  dplyr::filter(var_nm_chr %in% names(replication_popl_tb)) %>%
-  ready4fun::write_and_doc_ds(db_1L_chr = "repln_ds_dict_r3",
-                              title_1L_chr = "Data dictionary for study population dataset",
-                              desc_1L_chr = "A data dictionary of the variables used in the source and replication (synthetic) datasets for the First Bounce transfer to utility study",
-                              abbreviations_lup = abbreviations_lup,
-                              pkg_dss_tb = pkg_dss_tb)
-pkg_dss_tb <- dictionary_tb %>%
-  dplyr::filter((!var_nm_chr %in% names(replication_popl_tb)) | startsWith(var_nm_chr, "aqol")) %>%
-  ready4fun::write_and_doc_ds(db_1L_chr = "aqol_scrg_dict_r3",
-                              title_1L_chr = "Data dictionary for AQoL scoring",
-                              desc_1L_chr = "A data dictionary of the variables used in scoring AQoL 6D utility questionnaire responses.",
-                              abbreviations_lup = abbreviations_lup,
-                              pkg_dss_tb = pkg_dss_tb)
-pkg_dss_tb <- replication_popl_tb %>%
-  #add_labels_from_dictionary(dictionary_tb = dictionary_tb) %>%
-  ready4fun::write_and_doc_ds(db_1L_chr = "replication_popl_tb",
-                              title_1L_chr = "Synthetic population replication dataset",
-                              desc_1L_chr = "A purely synthetic dataset, representative of the original study data, that can be used for replication runs of package algorithms.",
-                              abbreviations_lup = tibble::tibble(short_name_chr = dictionary_tb$var_nm_chr,
-                                                                 long_name_chr = dictionary_tb$var_desc_chr,
-                                                                 plural_lgl = F),
-                              simple_lup_1L_lgl = T,#
-                              pkg_dss_tb = pkg_dss_tb)
-##
 # 7. Save copy of package documentation to online data repo.
 # ds_ls <- ready4use::write_pkg_dss_to_dv_ds_csvs(pkg_dss_tb,
 #                                                 dv_nm_1L_chr = "ready4models",
@@ -453,12 +239,13 @@ usethis::use_dev_package("cmdstanr")
 usethis::use_package("knitrBootstrap")
 usethis::use_dev_package("ready4show")
 usethis::use_dev_package("ready4use")
+usethis::use_dev_package("youthvars")
 #usethis::use_package("knitr", type = "suggests")
 #usethis::use_package("rgl")
 #
 ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
                                 r_dir_1L_chr = "R",
-                                dev_pkgs_chr = c("ready4fun","ready4class","ready4use","ready4show","dataverse","cmdstanr"),
+                                dev_pkgs_chr = c("ready4fun","ready4class","ready4use","ready4show","youthvars","dataverse","cmdstanr"),
                                 update_pkgdown_1L_lgl = T)
 ##
 ## PART FOUR

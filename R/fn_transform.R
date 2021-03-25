@@ -118,41 +118,6 @@ transform_ds_for_tstng <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w
         tfd_data_tb <- tfd_data_tb %>% stats::na.omit()
     return(tfd_data_tb)
 }
-#' Transform raw Assessment of Quality of Life tibble to Assessment of Quality of Life Six Dimension
-#' @description transform_raw_aqol_tb_to_aqol6d_tb() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform raw assessment of quality of life tibble to assessment of quality of life six dimension tibble. Function argument raw_aqol_tb specifies the object to be updated. The function returns Assessment of Quality of Life Six Dimension (a tibble).
-#' @param raw_aqol_tb Raw Assessment of Quality of Life (a tibble)
-#' @return Assessment of Quality of Life Six Dimension (a tibble)
-#' @rdname transform_raw_aqol_tb_to_aqol6d_tb
-#' @export 
-#' @importFrom dplyr mutate select contains rename
-#' @keywords internal
-transform_raw_aqol_tb_to_aqol6d_tb <- function (raw_aqol_tb) 
-{
-    aqol6d_tb <- raw_aqol_tb %>% dplyr::mutate(d_agegroup = cut(d_age, 
-        breaks = c(11, 17, 30), labels = c("Age 12-17", "Age 18-26"))) %>% 
-        dplyr::mutate(round = factor(round, labels = c("Baseline", 
-            "Follow-up"))) %>% dplyr::select(fkClientID, c_p_diag_s, 
-        s_centre, c_clinical_staging_s, d_age, d_agegroup, d_gender, 
-        d_sex_birth_s, d_sexual_ori_s, d_country_bir_s, d_ATSI, 
-        d_english_home, d_english_native, d_relation_s, d_studying_working, 
-        k6_total, phq9_total, bads_total, gad7_total, oasis_total, 
-        scared_total, dplyr::contains("aqol6d"), c_sofas, round) %>% 
-        dplyr::mutate(Gender = factor(ifelse(d_gender == "Genderqueer/gender nonconforming/agender" | 
-            d_gender == "Transgender", "Other", as.character(d_gender)))) %>% 
-        dplyr::mutate(Region = as.factor(ifelse(s_centre == "Canberra" | 
-            s_centre == "Southport" | s_centre == "Knox", "Metro", 
-            "Regional"))) %>% dplyr::mutate(CALD = factor(ifelse(d_country_bir_s == 
-        "Other" | d_english_home == "No" | d_english_native == 
-        "No" | d_ATSI == "Yes", "Yes", "No"))) %>% dplyr::rename(PHQ9 = phq9_total, 
-        BADS = bads_total, GAD7 = gad7_total, OASIS = oasis_total, 
-        SCARED = scared_total, K6 = k6_total, SOFAS = c_sofas)
-    aqol6d_tb <- aqol6d_tb %>% dplyr::select(c(c("fkClientID", 
-        "round"), names(aqol6d_tb)[!startsWith(names(aqol6d_tb), 
-        "aqol6d_q") & !(names(aqol6d_tb) %in% c("fkClientID", 
-        "round"))], names(aqol6d_tb)[startsWith(names(aqol6d_tb), 
-        "aqol6d_q")]))
-    return(aqol6d_tb)
-}
 #' Transform tibble to model input
 #' @description transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble).
 #' @param data_tb Data (a tibble)
