@@ -1,0 +1,201 @@
+#' Transform data tibble for cmprsn
+#' @description transform_data_tb_for_cmprsn() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform data tibble for cmprsn. Function argument data_tb specifies the object to be updated. Argument model_mdl provides the object to be updated. The function returns Transformed data (a tibble).
+#' @param data_tb Data (a tibble)
+#' @param model_mdl PARAM_DESCRIPTION
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
+#' @param source_data_nm_1L_chr Source data name (a character vector of length one), Default: 'Original'
+#' @param tf_type_1L_chr Transform type (a character vector of length one), Default: 'Predicted'
+#' @param pred_type_1L_chr Pred type (a character vector of length one), Default: NULL
+#' @param tfmn_for_bnml_1L_lgl Transformation for bnml (a logical vector of length one), Default: F
+#' @param family_1L_chr Family (a character vector of length one), Default: 'NA'
+#' @return Transformed data (a tibble)
+#' @rdname transform_data_tb_for_cmprsn
+#' @export 
+#' @importFrom stats predict simulate rnorm sigma
+#' @importFrom dplyr mutate
+#' @importFrom rlang sym
+#' @keywords internal
+transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, dep_var_nm_1L_chr = "utl_total_w", 
+    source_data_nm_1L_chr = "Original", tf_type_1L_chr = "Predicted", 
+    pred_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_) 
+{
+    if (tf_type_1L_chr == "Predicted") 
+        new_data_dbl <- stats::predict(model_mdl, type = pred_type_1L_chr)
+    if (tf_type_1L_chr == "Simulated" & !tfmn_for_bnml_1L_lgl) 
+        new_data_dbl <- stats::simulate(model_mdl)$sim_1
+    if (tf_type_1L_chr == "Simulated" & tfmn_for_bnml_1L_lgl) 
+        new_data_dbl <- (stats::predict(model_mdl) + stats::rnorm(nrow(data_tb), 
+            0, stats::sigma(model_mdl))) %>% calculate_dep_var_tfmn(tfmn_1L_chr = ifelse(family_1L_chr == 
+            "quasibinomial(log)", "LOG", ifelse(family_1L_chr == 
+            "quasibinomial(logit)", "LOGIT", ifelse(family_1L_chr == 
+            "quasibinomial(cloglog)", "CLL", "NTF"))), tfmn_is_outp_1L_lgl = T)
+    tfd_data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(tf_type_1L_chr), 
+        new_data_dbl), `:=`(!!rlang::sym(source_data_nm_1L_chr), 
+        !!rlang::sym(dep_var_nm_1L_chr)))
+    return(tfd_data_tb)
+}
+#' Transform dep var name
+#' @description transform_dep_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dep var name. Function argument dep_var_nm_1L_chr specifies the object to be updated. Argument tfmn_1L_chr provides the object to be updated. The function returns Transformed dep var name (a character vector of length one).
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one)
+#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
+#' @return Transformed dep var name (a character vector of length one)
+#' @rdname transform_dep_var_nm
+#' @export 
+
+#' @keywords internal
+transform_dep_var_nm <- function (dep_var_nm_1L_chr, tfmn_1L_chr = "NTF") 
+{
+    tfd_dep_var_nm_1L_chr <- paste0(dep_var_nm_1L_chr, ifelse(tfmn_1L_chr == 
+        "NTF", "", paste0("_", tfmn_1L_chr)))
+    return(tfd_dep_var_nm_1L_chr)
+}
+#' Transform dep var name for cll
+#' @description transform_dep_var_nm_for_cll() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dep var name for cll. Function argument dep_var_nm_1L_chr specifies the object to be updated. The function returns Transformed dep var name (a character vector of length one).
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one)
+#' @return Transformed dep var name (a character vector of length one)
+#' @rdname transform_dep_var_nm_for_cll
+#' @export 
+
+#' @keywords internal
+transform_dep_var_nm_for_cll <- function (dep_var_nm_1L_chr) 
+{
+    tfd_dep_var_nm_1L_chr <- paste0(dep_var_nm_1L_chr, "_cloglog")
+    return(tfd_dep_var_nm_1L_chr)
+}
+#' Transform dataset for mdlng
+#' @description transform_ds_for_mdlng() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dataset for mdlng. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed data (a tibble).
+#' @param data_tb Data (a tibble)
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
+#' @param predr_var_nm_1L_chr Predr var name (a character vector of length one)
+#' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
+#' @return Transformed data (a tibble)
+#' @rdname transform_ds_for_mdlng
+#' @export 
+#' @importFrom purrr discard
+#' @importFrom tidyr drop_na
+#' @importFrom rlang syms
+#' @importFrom dplyr select
+#' @keywords internal
+transform_ds_for_mdlng <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_var_nm_1L_chr, 
+    covar_var_nms_chr = NA_character_) 
+{
+    mdl_vars_chr <- c(names(data_tb)[names(data_tb) %>% startsWith(dep_var_nm_1L_chr)], 
+        predr_var_nm_1L_chr, covar_var_nms_chr) %>% purrr::discard(is.na)
+    tfd_data_tb <- data_tb %>% tidyr::drop_na(!!!rlang::syms(mdl_vars_chr)) %>% 
+        dplyr::select(!!!rlang::syms(mdl_vars_chr))
+    return(tfd_data_tb)
+}
+#' Transform dataset for tstng
+#' @description transform_ds_for_tstng() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dataset for tstng. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed data (a tibble).
+#' @param data_tb Data (a tibble)
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param dep_var_max_val_1L_dbl Dep var max value (a double vector of length one), Default: 0.999
+#' @param candidate_predrs_chr Candidate predrs (a character vector), Default: 'NA'
+#' @param covar_var_nms_chr Covar var names (a character vector), Default: 'NA'
+#' @param round_var_nm_1L_chr Round var name (a character vector of length one), Default: 'round'
+#' @param round_val_1L_chr Round value (a character vector of length one), Default: 'Baseline'
+#' @param remove_all_mssng_1L_lgl Remove all mssng (a logical vector of length one), Default: F
+#' @return Transformed data (a tibble)
+#' @rdname transform_ds_for_tstng
+#' @export 
+#' @importFrom purrr discard
+#' @importFrom dplyr filter select mutate
+#' @importFrom rlang sym syms
+#' @importFrom stats na.omit
+#' @keywords internal
+transform_ds_for_tstng <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", dep_var_max_val_1L_dbl = 0.999, 
+    candidate_predrs_chr = NA_character_, covar_var_nms_chr = NA_character_, 
+    round_var_nm_1L_chr = "round", round_val_1L_chr = "Baseline", 
+    remove_all_mssng_1L_lgl = F) 
+{
+    vars_to_keep_chr <- c(dep_var_nm_1L_chr, candidate_predrs_chr, 
+        covar_var_nms_chr) %>% purrr::discard(is.na)
+    tfd_data_tb <- data_tb %>% dplyr::filter(!!rlang::sym(round_var_nm_1L_chr) == 
+        round_val_1L_chr) %>% dplyr::select(!!!rlang::syms(vars_to_keep_chr)) %>% 
+        dplyr::mutate(`:=`(!!rlang::sym(dep_var_nm_1L_chr), ifelse(!!rlang::sym(dep_var_nm_1L_chr) > 
+            dep_var_max_val_1L_dbl, dep_var_max_val_1L_dbl, !!rlang::sym(dep_var_nm_1L_chr))))
+    if (remove_all_mssng_1L_lgl) 
+        tfd_data_tb <- tfd_data_tb %>% stats::na.omit()
+    return(tfd_data_tb)
+}
+#' Transform tibble to model input
+#' @description transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble).
+#' @param data_tb Data (a tibble)
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'utl_total_w'
+#' @param predr_vars_nms_chr Predr vars names (a character vector)
+#' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
+#' @param round_var_nm_1L_chr Round var name (a character vector of length one), Default: 'round'
+#' @param round_bl_val_1L_chr Round bl value (a character vector of length one), Default: 'Baseline'
+#' @param drop_all_msng_1L_lgl Drop all msng (a logical vector of length one), Default: T
+#' @param scaling_fctr_dbl Scaling fctr (a double vector), Default: 0.01
+#' @param ungroup_1L_lgl Ungroup (a logical vector of length one), Default: F
+#' @param add_cll_tfmn_1L_lgl Add cll transformation (a logical vector of length one), Default: T
+#' @return Transformed for model input (a tibble)
+#' @rdname transform_tb_to_mdl_inp
+#' @export 
+#' @importFrom dplyr select all_of group_by arrange mutate across first lag ungroup
+#' @importFrom rlang sym
+#' @importFrom purrr reduce
+#' @importFrom stats na.omit
+#' @keywords internal
+transform_tb_to_mdl_inp <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr, 
+    id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
+    round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, 
+    scaling_fctr_dbl = 0.01, ungroup_1L_lgl = F, add_cll_tfmn_1L_lgl = T) 
+{
+    if (length(scaling_fctr_dbl) != length(predr_vars_nms_chr)) {
+        scaling_fctr_dbl <- rep(scaling_fctr_dbl[1], length(predr_vars_nms_chr))
+    }
+    data_tb <- data.frame(data_tb)
+    tfd_for_mdl_inp_tb <- data_tb %>% dplyr::select(dplyr::all_of(id_var_nm_1L_chr), 
+        dplyr::all_of(round_var_nm_1L_chr), dplyr::all_of(predr_vars_nms_chr), 
+        dplyr::all_of(dep_var_nm_1L_chr)) %>% dplyr::group_by(!!rlang::sym(id_var_nm_1L_chr)) %>% 
+        dplyr::arrange(!!rlang::sym(id_var_nm_1L_chr), !!rlang::sym(round_var_nm_1L_chr))
+    tfd_for_mdl_inp_tb <- purrr::reduce(1:length(predr_vars_nms_chr), 
+        .init = tfd_for_mdl_inp_tb, ~{
+            idx_1L_int <- as.integer(.y)
+            .x %>% dplyr::mutate(dplyr::across(dplyr::all_of(predr_vars_nms_chr[idx_1L_int]), 
+                .fns = list(baseline = ~dplyr::first(.) * scaling_fctr_dbl[idx_1L_int], 
+                  change = ~ifelse(!!rlang::sym(round_var_nm_1L_chr) == 
+                    "Baseline", 0, (. - dplyr::lag(.)) * scaling_fctr_dbl[idx_1L_int]))))
+        })
+    if (add_cll_tfmn_1L_lgl) {
+        tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_dep_var_nm_for_cll(dep_var_nm_1L_chr)), 
+            log(-log(1 - ifelse(!!rlang::sym(dep_var_nm_1L_chr) == 
+                1, 0.999, !!rlang::sym(dep_var_nm_1L_chr))))))
+    }
+    if (drop_all_msng_1L_lgl) {
+        tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% stats::na.omit()
+    }
+    if (ungroup_1L_lgl) {
+        tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% dplyr::ungroup()
+    }
+    return(tfd_for_mdl_inp_tb)
+}
+#' Transform time series model data
+#' @description transform_ts_mdl_data() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform time series model data. Function argument mdl_ls specifies the object to be updated. Argument data_tb provides the object to be updated. The function returns Cnfdl model (a list).
+#' @param mdl_ls Model (a list)
+#' @param data_tb Data (a tibble)
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param predr_vars_nms_chr Predr vars names (a character vector)
+#' @param id_var_nm_1L_chr Id var name (a character vector of length one), Default: 'fkClientID'
+#' @param mdl_nm_1L_chr Model name (a character vector of length one)
+#' @return Cnfdl model (a list)
+#' @rdname transform_ts_mdl_data
+#' @export 
+#' @importFrom dplyr select all_of summarise across everything
+#' @importFrom purrr map flatten_chr
+#' @keywords internal
+transform_ts_mdl_data <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", 
+    predr_vars_nms_chr, id_var_nm_1L_chr = "fkClientID", mdl_nm_1L_chr) 
+{
+    old_data_tb <- data_tb %>% dplyr::select(c(dplyr::all_of(id_var_nm_1L_chr), 
+        dplyr::all_of(dep_var_nm_1L_chr), predr_vars_nms_chr %>% 
+            purrr::map(~paste0(.x, c("", "_baseline", "_change"))) %>% 
+            purrr::flatten_chr()))
+    cnfdl_mdl_ls <- mdl_ls
+    cnfdl_mdl_ls$data <- old_data_tb %>% as.data.frame() %>% 
+        dplyr::summarise(dplyr::across(dplyr::everything(), ~sample(.x, 
+            1)))
+    return(cnfdl_mdl_ls)
+}
