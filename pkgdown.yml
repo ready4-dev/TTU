@@ -3,8 +3,6 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   Model_TTU: Model_TTU.html
-  Replication_DS: Replication_DS.html
   TTU: TTU.html
-  Utility_Scoring: Utility_Scoring.html
-last_built: 2021-02-19T21:35Z
+last_built: 2021-03-25T04:24Z
 

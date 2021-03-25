@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot auto lm — plot_auto_lm • TTU</title>
+<title>Add interval var — add_interval_var • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Plot auto lm — plot_auto_lm" />
-<meta property="og:description" content="plot_auto_lm() is a Plot function that plots data Specifically, this function implements an algorithm to plot auto lm. The function is called for its side effects and does not return a value." />
+<meta property="og:title" content="Add interval var — add_interval_var" />
+<meta property="og:description" content="add_interval_var() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add interval var. Function argument data_tb specifies the object to be updated. The function returns Updated data (a tibble)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,38 +131,66 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot auto lm</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_plot.R'><code>R/fn_plot.R</code></a></small>
-    <div class="hidden name"><code>plot_auto_lm.Rd</code></div>
+    <h1>Add interval var</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_add.R'><code>R/fn_add.R</code></a></small>
+    <div class="hidden name"><code>add_interval_var.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>plot_auto_lm() is a Plot function that plots data Specifically, this function implements an algorithm to plot auto lm. The function is called for its side effects and does not return a value.</p>
+    <p>add_interval_var() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add interval var. Function argument data_tb specifies the object to be updated. The function returns Updated data (a tibble).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_auto_lm</span><span class='op'>(</span><span class='va'>mdl</span>, which_dbl <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, ncol_1L_int <span class='op'>=</span> <span class='fl'>3L</span>, label_size_1L_int <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>add_interval_var</span><span class='op'>(</span>
+  <span class='va'>data_tb</span>,
+  id_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"fkClientID"</span>,
+  msrmnt_date_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"d_interview_date"</span>,
+  time_unit_1L_chr <span class='op'>=</span> <span class='st'>"days"</span>,
+  bl_date_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"bl_date_dtm"</span>,
+  interval_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"interval_dbl"</span>,
+  temp_row_nbr_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"temp_row_nbr_int"</span>,
+  drop_bl_date_var <span class='op'>=</span> <span class='cn'>F</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>which_dbl</th>
-      <td><p>Which (a double vector), Default: 1:6</p></td>
+      <th>data_tb</th>
+      <td><p>Data (a tibble)</p></td>
     </tr>
     <tr>
-      <th>ncol_1L_int</th>
-      <td><p>Ncol (an integer vector of length one), Default: 3</p></td>
+      <th>id_var_nm_1L_chr</th>
+      <td><p>Id var name (a character vector of length one), Default: 'fkClientID'</p></td>
     </tr>
     <tr>
-      <th>label_size_1L_int</th>
-      <td><p>Label size (an integer vector of length one), Default: 3</p></td>
+      <th>msrmnt_date_var_nm_1L_chr</th>
+      <td><p>Msrmnt date var name (a character vector of length one), Default: 'd_interview_date'</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Additional arguments</p></td>
+      <th>time_unit_1L_chr</th>
+      <td><p>Time unit (a character vector of length one), Default: 'days'</p></td>
+    </tr>
+    <tr>
+      <th>bl_date_var_nm_1L_chr</th>
+      <td><p>Bl date var name (a character vector of length one), Default: 'bl_date_dtm'</p></td>
+    </tr>
+    <tr>
+      <th>interval_var_nm_1L_chr</th>
+      <td><p>Interval var name (a character vector of length one), Default: 'interval_dbl'</p></td>
+    </tr>
+    <tr>
+      <th>temp_row_nbr_var_nm_1L_chr</th>
+      <td><p>Temp row nbr var name (a character vector of length one), Default: 'temp_row_nbr_int'</p></td>
+    </tr>
+    <tr>
+      <th>drop_bl_date_var</th>
+      <td><p>PARAM_DESCRIPTION, Default: F</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Updated data (a tibble)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

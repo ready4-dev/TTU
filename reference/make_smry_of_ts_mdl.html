@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9121</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9124</span>
       </span>
     </div>
 
@@ -107,12 +107,6 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/Model_TTU.html">Model Transfer to Utility</a>
-    </li>
-    <li>
-      <a href="../articles/Replication_DS.html">Replication Dataset</a>
-    </li>
-    <li>
-      <a href="../articles/Utility_Scoring.html">Health Utility Scoring Tools</a>
     </li>
   </ul>
 </li>
@@ -156,6 +150,7 @@
   id_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"fkClientID"</span>,
   round_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"round"</span>,
   round_bl_val_1L_chr <span class='op'>=</span> <span class='st'>"Baseline"</span>,
+  <span class='va'>predictors_lup</span>,
   backend_1L_chr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"brms.backend"</span>, <span class='st'>"rstan"</span><span class='op'>)</span>,
   iters_1L_int <span class='op'>=</span> <span class='fl'>4000L</span>,
   seed_1L_int <span class='op'>=</span> <span class='fl'>1000L</span>
@@ -199,6 +194,10 @@
     <tr>
       <th>round_bl_val_1L_chr</th>
       <td><p>Round bl value (a character vector of length one), Default: 'Baseline'</p></td>
+    </tr>
+    <tr>
+      <th>predictors_lup</th>
+      <td><p>Predictors (a lookup table)</p></td>
     </tr>
     <tr>
       <th>backend_1L_chr</th>

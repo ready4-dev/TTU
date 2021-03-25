@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9121</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9124</span>
       </span>
     </div>
 
@@ -65,12 +65,6 @@
   <ul class="dropdown-menu" role="menu">
 <li>
       <a href="../articles/Model_TTU.html">Model Transfer to Utility</a>
-    </li>
-    <li>
-      <a href="../articles/Replication_DS.html">Replication Dataset</a>
-    </li>
-    <li>
-      <a href="../articles/Utility_Scoring.html">Health Utility Scoring Tools</a>
     </li>
   </ul>
 </li>
@@ -122,10 +116,10 @@
 <p>We now specify the paths to the input data and its data dictionary.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">path_to_inp_data_1L_chr</span> <span class="op">&lt;-</span> <span class="st">"Data"</span> </code></pre></div>
-<p>As this is an illustrative example, neither the data directory nor the data files actually exist. So we are going to have to create both. To create our fake data files, we slightly trim down the TTU replication dataset <a href="Replication_DS.html">described in another vignette article</a> and save it along with its dictionary to the “Data” directory.</p>
+<p>As this is an illustrative example, neither the data directory nor the data files actually exist. So we are going to have to create both. To create our fake data files, we slightly trim down the replication dataset from the related <a href="https://ready4-dev.github.io/youthvars/">youthvars</a> package and save it along with its dictionary to the “Data” directory.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="va">path_to_inp_data_1L_chr</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">replication_popl_tb</span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">BADS</span>,<span class="op">-</span><span class="va">GAD7</span>, <span class="op">-</span><span class="va">OASIS</span>,<span class="op">-</span><span class="va">SCARED</span><span class="op">)</span>,<span class="st">"Data/data.csv"</span>, row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="fu">youthvars</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/youthvars/reference/replication_popl_tb.html">replication_popl_tb</a></span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">BADS</span>,<span class="op">-</span><span class="va">GAD7</span>, <span class="op">-</span><span class="va">OASIS</span>,<span class="op">-</span><span class="va">SCARED</span><span class="op">)</span>,<span class="st">"Data/data.csv"</span>, row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">repln_ds_dict_r3</span>,<span class="st">"Data/dictionary.csv"</span>, row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>We read our data files into local memory.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -135,9 +129,9 @@
 <div id="score-utility-and-summarise-meta-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#score-utility-and-summarise-meta-data" class="anchor"></a>Score utility and summarise meta-data</h2>
-<p>We now convert study participant responses to the AQoL-6D questionnaire to health utility scores. <a href="Utility_Scoring.html">More detail about this step is provided in another vignette article</a>.</p>
+<p>We now convert study participant responses to the AQoL-6D questionnaire to health utility scores.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">scored_data_tb</span> <span class="op">&lt;-</span> <span class="va">data_tb</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/add_adol6d_scores.html">add_adol6d_scores</a></span><span class="op">(</span><span class="op">)</span> </code></pre></div>
+<code class="sourceCode R"><span class="va">scored_data_tb</span> <span class="op">&lt;-</span> <span class="va">data_tb</span> <span class="op">%&gt;%</span> <span class="fu">youthvars</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/youthvars/reference/add_adol6d_scores.html">add_adol6d_scores</a></span><span class="op">(</span><span class="op">)</span> </code></pre></div>
 <p>The dataset we are using has 1711 records on 1068 study participants. The first six records are reproduced below.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">scored_data_tb</span> <span class="op">%&gt;%</span>
@@ -156,19 +150,10 @@ fkClientID
 round
 </th>
 <th style="text-align:right;">
-c_p_diag_s
-</th>
-<th style="text-align:right;">
-s_centre
-</th>
-<th style="text-align:right;">
-c_clinical_staging_s
+d_interview_date
 </th>
 <th style="text-align:right;">
 d_age
-</th>
-<th style="text-align:left;">
-d_agegroup
 </th>
 <th style="text-align:right;">
 d_gender
@@ -176,26 +161,35 @@ d_gender
 <th style="text-align:right;">
 d_sex_birth_s
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 d_sexual_ori_s
+</th>
+<th style="text-align:right;">
+d_ATSI
 </th>
 <th style="text-align:right;">
 d_country_bir_s
 </th>
 <th style="text-align:right;">
-d_ATSI
-</th>
-<th style="text-align:left;">
 d_english_home
 </th>
 <th style="text-align:right;">
 d_english_native
 </th>
 <th style="text-align:right;">
+d_studying_working
+</th>
+<th style="text-align:left;">
 d_relation_s
 </th>
 <th style="text-align:right;">
-d_studying_working
+s_centre
+</th>
+<th style="text-align:right;">
+c_p_diag_s
+</th>
+<th style="text-align:right;">
+c_clinical_staging_s
 </th>
 <th style="text-align:right;">
 K6
@@ -207,21 +201,12 @@ PHQ9
 SOFAS
 </th>
 <th style="text-align:right;">
-Gender
-</th>
-<th style="text-align:right;">
-Region
-</th>
-<th style="text-align:right;">
-CALD
-</th>
-<th style="text-align:right;">
 aqol6d_q1
 </th>
 <th style="text-align:right;">
 aqol6d_q2
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 aqol6d_q3
 </th>
 <th style="text-align:right;">
@@ -230,7 +215,7 @@ aqol6d_q4
 <th style="text-align:right;">
 aqol6d_q5
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 aqol6d_q6
 </th>
 <th style="text-align:right;">
@@ -239,7 +224,7 @@ aqol6d_q7
 <th style="text-align:right;">
 aqol6d_q8
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 aqol6d_q9
 </th>
 <th style="text-align:right;">
@@ -248,7 +233,7 @@ aqol6d_q10
 <th style="text-align:right;">
 aqol6d_q11
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 aqol6d_q12
 </th>
 <th style="text-align:right;">
@@ -257,7 +242,7 @@ aqol6d_q13
 <th style="text-align:right;">
 aqol6d_q14
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 aqol6d_q15
 </th>
 <th style="text-align:right;">
@@ -266,7 +251,7 @@ aqol6d_q16
 <th style="text-align:right;">
 aqol6d_q17
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 aqol6d_q18
 </th>
 <th style="text-align:right;">
@@ -275,7 +260,7 @@ aqol6d_q19
 <th style="text-align:right;">
 aqol6d_q20
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 dvQ1
 </th>
 <th style="text-align:right;">
@@ -284,7 +269,7 @@ dvQ2
 <th style="text-align:right;">
 dvQ3
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 dvQ4
 </th>
 <th style="text-align:right;">
@@ -293,7 +278,7 @@ dvQ5
 <th style="text-align:right;">
 dvQ6
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 dvQ7
 </th>
 <th style="text-align:right;">
@@ -302,7 +287,7 @@ dvQ8
 <th style="text-align:right;">
 dvQ9
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 dvQ10
 </th>
 <th style="text-align:right;">
@@ -311,7 +296,7 @@ dvQ11
 <th style="text-align:right;">
 dvQ12
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 dvQ13
 </th>
 <th style="text-align:right;">
@@ -320,7 +305,7 @@ dvQ14
 <th style="text-align:right;">
 dvQ15
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 dvQ16
 </th>
 <th style="text-align:right;">
@@ -329,7 +314,7 @@ dvQ17
 <th style="text-align:right;">
 dvQ18
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 dvQ19
 </th>
 <th style="text-align:right;">
@@ -338,7 +323,7 @@ dvQ20
 <th style="text-align:right;">
 dvD1
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 dvD2
 </th>
 <th style="text-align:right;">
@@ -347,7 +332,7 @@ dvD3
 <th style="text-align:right;">
 dvD4
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 dvD5
 </th>
 <th style="text-align:right;">
@@ -356,7 +341,7 @@ dvD6
 <th style="text-align:right;">
 vD1
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 vD2
 </th>
 <th style="text-align:right;">
@@ -365,7 +350,7 @@ vD3
 <th style="text-align:right;">
 vD4
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 vD5
 </th>
 <th style="text-align:right;">
@@ -374,7 +359,7 @@ vD6
 <th style="text-align:right;">
 duaqol
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 duaqolld
 </th>
 <th style="text-align:right;">
@@ -383,7 +368,7 @@ duAQoL6D_t
 <th style="text-align:right;">
 duAQoL6D
 </th>
-<th style="text-align:left;">
+<th style="text-align:right;">
 uAQoL6D
 </th>
 <th style="text-align:right;">
@@ -402,46 +387,46 @@ Participant_1
 Baseline
 </td>
 <td style="text-align:right;">
-Other
-</td>
-<td style="text-align:right;">
-Southport
-</td>
-<td style="text-align:right;">
-0-1a
+2019-09-30
 </td>
 <td style="text-align:right;">
 14
 </td>
+<td style="text-align:right;">
+Male
+</td>
+<td style="text-align:right;">
+Male
+</td>
 <td style="text-align:left;">
-Age 12-17
+Heterosexual
 </td>
 <td style="text-align:right;">
-Male
-</td>
-<td style="text-align:right;">
-Male
-</td>
-<td style="text-align:right;">
-Straight
+No
 </td>
 <td style="text-align:right;">
 Australia
 </td>
 <td style="text-align:right;">
-No
-</td>
-<td style="text-align:left;">
 Yes
 </td>
 <td style="text-align:right;">
 Yes
-</td>
-<td style="text-align:right;">
-REPLACE_ME_3
 </td>
 <td style="text-align:right;">
 Not studying or working
+</td>
+<td style="text-align:left;">
+In a relationship
+</td>
+<td style="text-align:right;">
+Southport
+</td>
+<td style="text-align:right;">
+Other
+</td>
+<td style="text-align:right;">
+0-1a
 </td>
 <td style="text-align:right;">
 8
@@ -453,13 +438,13 @@ Not studying or working
 69
 </td>
 <td style="text-align:right;">
-Male
+2
 </td>
 <td style="text-align:right;">
-Metro
+3
 </td>
 <td style="text-align:right;">
-No
+1
 </td>
 <td style="text-align:right;">
 2
@@ -471,21 +456,12 @@ No
 1
 </td>
 <td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
 2
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 4
 </td>
 <td style="text-align:right;">
@@ -494,7 +470,7 @@ No
 <td style="text-align:right;">
 3
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 4
 </td>
 <td style="text-align:right;">
@@ -502,17 +478,17 @@ No
 </td>
 <td style="text-align:right;">
 4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
 </td>
 <td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
@@ -521,7 +497,7 @@ No
 <td style="text-align:right;">
 1
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.073
 </td>
 <td style="text-align:right;">
@@ -530,7 +506,7 @@ No
 <td style="text-align:right;">
 0.000
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.040
 </td>
 <td style="text-align:right;">
@@ -539,7 +515,7 @@ No
 <td style="text-align:right;">
 0.000
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.000
 </td>
 <td style="text-align:right;">
@@ -548,7 +524,7 @@ No
 <td style="text-align:right;">
 0.824
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.330
 </td>
 <td style="text-align:right;">
@@ -557,7 +533,7 @@ No
 <td style="text-align:right;">
 0.722
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.055
 </td>
 <td style="text-align:right;">
@@ -566,7 +542,7 @@ No
 <td style="text-align:right;">
 0.133
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.2
 </td>
 <td style="text-align:right;">
@@ -575,7 +551,7 @@ No
 <td style="text-align:right;">
 0.033
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.024
 </td>
 <td style="text-align:right;">
@@ -584,7 +560,7 @@ No
 <td style="text-align:right;">
 0.19334101
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.2964368
 </td>
 <td style="text-align:right;">
@@ -593,7 +569,7 @@ No
 <td style="text-align:right;">
 0.7708396
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.2619285
 </td>
 <td style="text-align:right;">
@@ -602,7 +578,7 @@ No
 <td style="text-align:right;">
 0.8066590
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.7035632
 </td>
 <td style="text-align:right;">
@@ -611,7 +587,7 @@ No
 <td style="text-align:right;">
 0.2291604
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.7380715
 </td>
 <td style="text-align:right;">
@@ -620,7 +596,7 @@ No
 <td style="text-align:right;">
 0.6436897
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.7286568
 </td>
 <td style="text-align:right;">
@@ -629,7 +605,7 @@ No
 <td style="text-align:right;">
 0.55838936
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.4416106
 </td>
 <td style="text-align:right;">
@@ -647,46 +623,46 @@ Participant_10
 Baseline
 </td>
 <td style="text-align:right;">
-Other
-</td>
-<td style="text-align:right;">
-Canberra
-</td>
-<td style="text-align:right;">
-0-1a
+2019-08-13
 </td>
 <td style="text-align:right;">
 15
 </td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Female
+</td>
 <td style="text-align:left;">
-Age 12-17
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Other
-</td>
-<td style="text-align:right;">
 Other
 </td>
 <td style="text-align:right;">
 Yes
 </td>
-<td style="text-align:left;">
-No
+<td style="text-align:right;">
+Other
 </td>
 <td style="text-align:right;">
 No
 </td>
 <td style="text-align:right;">
-REPLACE_ME_1
+No
 </td>
 <td style="text-align:right;">
 Studying and working
+</td>
+<td style="text-align:left;">
+Not in a relationship
+</td>
+<td style="text-align:right;">
+Canberra
+</td>
+<td style="text-align:right;">
+Other
+</td>
+<td style="text-align:right;">
+0-1a
 </td>
 <td style="text-align:right;">
 11
@@ -698,21 +674,12 @@ Studying and working
 60
 </td>
 <td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Metro
-</td>
-<td style="text-align:right;">
-Yes
-</td>
-<td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
 2
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
@@ -721,7 +688,7 @@ Yes
 <td style="text-align:right;">
 5
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 1
 </td>
 <td style="text-align:right;">
@@ -730,7 +697,7 @@ Yes
 <td style="text-align:right;">
 3
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 4
 </td>
 <td style="text-align:right;">
@@ -739,7 +706,7 @@ Yes
 <td style="text-align:right;">
 3
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 4
 </td>
 <td style="text-align:right;">
@@ -748,7 +715,7 @@ Yes
 <td style="text-align:right;">
 3
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
@@ -757,7 +724,7 @@ Yes
 <td style="text-align:right;">
 2
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 3
 </td>
 <td style="text-align:right;">
@@ -766,7 +733,7 @@ Yes
 <td style="text-align:right;">
 1
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.000
 </td>
 <td style="text-align:right;">
@@ -775,7 +742,7 @@ Yes
 <td style="text-align:right;">
 0.041
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.297
 </td>
 <td style="text-align:right;">
@@ -784,7 +751,7 @@ Yes
 <td style="text-align:right;">
 0.000
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.648
 </td>
 <td style="text-align:right;">
@@ -793,7 +760,7 @@ Yes
 <td style="text-align:right;">
 0.824
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.784
 </td>
 <td style="text-align:right;">
@@ -802,7 +769,7 @@ Yes
 <td style="text-align:right;">
 0.722
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.382
 </td>
 <td style="text-align:right;">
@@ -811,7 +778,7 @@ Yes
 <td style="text-align:right;">
 0.000
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.2
 </td>
 <td style="text-align:right;">
@@ -820,7 +787,7 @@ Yes
 <td style="text-align:right;">
 0.223
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.024
 </td>
 <td style="text-align:right;">
@@ -829,7 +796,7 @@ Yes
 <td style="text-align:right;">
 0.27064870
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.7770111
 </td>
 <td style="text-align:right;">
@@ -838,7 +805,7 @@ Yes
 <td style="text-align:right;">
 0.6579841
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.1935407
 </td>
 <td style="text-align:right;">
@@ -847,7 +814,7 @@ Yes
 <td style="text-align:right;">
 0.7293513
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.2229889
 </td>
 <td style="text-align:right;">
@@ -856,7 +823,7 @@ Yes
 <td style="text-align:right;">
 0.3420159
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.8064593
 </td>
 <td style="text-align:right;">
@@ -865,7 +832,7 @@ Yes
 <td style="text-align:right;">
 0.7541542
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.8537026
 </td>
 <td style="text-align:right;">
@@ -874,7 +841,7 @@ Yes
 <td style="text-align:right;">
 0.74739738
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.2526026
 </td>
 <td style="text-align:right;">
@@ -892,46 +859,46 @@ Participant_10
 Follow-up
 </td>
 <td style="text-align:right;">
-Depression
-</td>
-<td style="text-align:right;">
-Regional Centre
-</td>
-<td style="text-align:right;">
-1b
+2019-11-13
 </td>
 <td style="text-align:right;">
 15
 </td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Female
+</td>
 <td style="text-align:left;">
-Age 12-17
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Other
-</td>
-<td style="text-align:right;">
 Other
 </td>
 <td style="text-align:right;">
 Yes
 </td>
-<td style="text-align:left;">
-No
+<td style="text-align:right;">
+Other
 </td>
 <td style="text-align:right;">
 No
 </td>
 <td style="text-align:right;">
-REPLACE_ME_1
+No
 </td>
 <td style="text-align:right;">
 Not studying or working
+</td>
+<td style="text-align:left;">
+Not in a relationship
+</td>
+<td style="text-align:right;">
+Regional Centre
+</td>
+<td style="text-align:right;">
+Depression
+</td>
+<td style="text-align:right;">
+1b
 </td>
 <td style="text-align:right;">
 7
@@ -943,21 +910,12 @@ Not studying or working
 64
 </td>
 <td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Regional
-</td>
-<td style="text-align:right;">
-Yes
-</td>
-<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
 3
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
@@ -966,25 +924,25 @@ Yes
 <td style="text-align:right;">
 2
 </td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
 <td style="text-align:left;">
 2
 </td>
 <td style="text-align:right;">
-3
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
 </td>
 <td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
 5
 </td>
 <td style="text-align:right;">
@@ -993,7 +951,7 @@ Yes
 <td style="text-align:right;">
 2
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
@@ -1002,7 +960,7 @@ Yes
 <td style="text-align:right;">
 2
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 2
 </td>
 <td style="text-align:right;">
@@ -1011,7 +969,7 @@ Yes
 <td style="text-align:right;">
 2
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.073
 </td>
 <td style="text-align:right;">
@@ -1020,7 +978,7 @@ Yes
 <td style="text-align:right;">
 0.041
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.000
 </td>
 <td style="text-align:right;">
@@ -1029,7 +987,7 @@ Yes
 <td style="text-align:right;">
 0.193
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.197
 </td>
 <td style="text-align:right;">
@@ -1038,7 +996,7 @@ Yes
 <td style="text-align:right;">
 0.142
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.330
 </td>
 <td style="text-align:right;">
@@ -1047,7 +1005,7 @@ Yes
 <td style="text-align:right;">
 1.000
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.382
 </td>
 <td style="text-align:right;">
@@ -1056,7 +1014,7 @@ Yes
 <td style="text-align:right;">
 0.642
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.0
 </td>
 <td style="text-align:right;">
@@ -1065,7 +1023,7 @@ Yes
 <td style="text-align:right;">
 0.033
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.205
 </td>
 <td style="text-align:right;">
@@ -1074,7 +1032,7 @@ Yes
 <td style="text-align:right;">
 0.18835933
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.2602305
 </td>
 <td style="text-align:right;">
@@ -1083,7 +1041,7 @@ Yes
 <td style="text-align:right;">
 0.5858738
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.4342728
 </td>
 <td style="text-align:right;">
@@ -1092,7 +1050,7 @@ Yes
 <td style="text-align:right;">
 0.8116407
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.7397695
 </td>
 <td style="text-align:right;">
@@ -1101,7 +1059,7 @@ Yes
 <td style="text-align:right;">
 0.4141262
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.5657272
 </td>
 <td style="text-align:right;">
@@ -1110,7 +1068,7 @@ Yes
 <td style="text-align:right;">
 0.6473112
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.7327563
 </td>
 <td style="text-align:right;">
@@ -1119,7 +1077,7 @@ Yes
 <td style="text-align:right;">
 0.56418597
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.4358140
 </td>
 <td style="text-align:right;">
@@ -1137,46 +1095,46 @@ Participant_100
 Baseline
 </td>
 <td style="text-align:right;">
-Depression and Anxiety
-</td>
-<td style="text-align:right;">
-Canberra
-</td>
-<td style="text-align:right;">
-0-1a
+2019-08-03
 </td>
 <td style="text-align:right;">
 25
 </td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Female
+</td>
 <td style="text-align:left;">
-Age 18-26
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Other
-</td>
-<td style="text-align:right;">
 Other
 </td>
 <td style="text-align:right;">
 Yes
 </td>
-<td style="text-align:left;">
-No
+<td style="text-align:right;">
+Other
 </td>
 <td style="text-align:right;">
 No
 </td>
 <td style="text-align:right;">
-REPLACE_ME_3
+No
 </td>
 <td style="text-align:right;">
 Working only
+</td>
+<td style="text-align:left;">
+In a relationship
+</td>
+<td style="text-align:right;">
+Canberra
+</td>
+<td style="text-align:right;">
+Depression and Anxiety
+</td>
+<td style="text-align:right;">
+0-1a
 </td>
 <td style="text-align:right;">
 7
@@ -1188,31 +1146,31 @@ Working only
 76
 </td>
 <td style="text-align:right;">
-Female
+1
 </td>
 <td style="text-align:right;">
-Metro
-</td>
-<td style="text-align:right;">
-Yes
+1
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
 1
+</td>
+<td style="text-align:right;">
+2
 </td>
 <td style="text-align:left;">
 1
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 2
@@ -1221,15 +1179,6 @@ Yes
 2
 </td>
 <td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
@@ -1238,7 +1187,7 @@ Yes
 <td style="text-align:right;">
 3
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
@@ -1247,7 +1196,7 @@ Yes
 <td style="text-align:right;">
 3
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 1
 </td>
 <td style="text-align:right;">
@@ -1255,17 +1204,17 @@ Yes
 </td>
 <td style="text-align:right;">
 1
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
 </td>
 <td style="text-align:left;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
 0.000
 </td>
 <td style="text-align:right;">
@@ -1274,7 +1223,7 @@ Yes
 <td style="text-align:right;">
 0.000
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.197
 </td>
 <td style="text-align:right;">
@@ -1283,7 +1232,7 @@ Yes
 <td style="text-align:right;">
 0.142
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.097
 </td>
 <td style="text-align:right;">
@@ -1292,7 +1241,7 @@ Yes
 <td style="text-align:right;">
 0.056
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 1.000
 </td>
 <td style="text-align:right;">
@@ -1301,7 +1250,7 @@ Yes
 <td style="text-align:right;">
 0.133
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.0
 </td>
 <td style="text-align:right;">
@@ -1310,7 +1259,7 @@ Yes
 <td style="text-align:right;">
 0.000
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.000
 </td>
 <td style="text-align:right;">
@@ -1319,7 +1268,7 @@ Yes
 <td style="text-align:right;">
 0.00000000
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.1433888
 </td>
 <td style="text-align:right;">
@@ -1328,7 +1277,7 @@ Yes
 <td style="text-align:right;">
 0.7769222
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.2866694
 </td>
 <td style="text-align:right;">
@@ -1337,7 +1286,7 @@ Yes
 <td style="text-align:right;">
 1.0000000
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.8566112
 </td>
 <td style="text-align:right;">
@@ -1346,7 +1295,7 @@ Yes
 <td style="text-align:right;">
 0.2230778
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.7133306
 </td>
 <td style="text-align:right;">
@@ -1355,7 +1304,7 @@ Yes
 <td style="text-align:right;">
 0.4558633
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.5160373
 </td>
 <td style="text-align:right;">
@@ -1364,7 +1313,7 @@ Yes
 <td style="text-align:right;">
 0.29587849
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.7041215
 </td>
 <td style="text-align:right;">
@@ -1382,46 +1331,46 @@ Participant_1000
 Baseline
 </td>
 <td style="text-align:right;">
-Anxiety
-</td>
-<td style="text-align:right;">
-Canberra
-</td>
-<td style="text-align:right;">
-0-1a
+2019-08-24
 </td>
 <td style="text-align:right;">
 16
 </td>
+<td style="text-align:right;">
+Male
+</td>
+<td style="text-align:right;">
+Male
+</td>
 <td style="text-align:left;">
-Age 12-17
+Heterosexual
 </td>
 <td style="text-align:right;">
-Male
-</td>
-<td style="text-align:right;">
-Male
-</td>
-<td style="text-align:right;">
-Straight
+Yes
 </td>
 <td style="text-align:right;">
 Other
 </td>
 <td style="text-align:right;">
-Yes
-</td>
-<td style="text-align:left;">
 No
 </td>
 <td style="text-align:right;">
 No
-</td>
-<td style="text-align:right;">
-REPLACE_ME_2
 </td>
 <td style="text-align:right;">
 Not studying or working
+</td>
+<td style="text-align:left;">
+Not in a relationship
+</td>
+<td style="text-align:right;">
+Canberra
+</td>
+<td style="text-align:right;">
+Anxiety
+</td>
+<td style="text-align:right;">
+0-1a
 </td>
 <td style="text-align:right;">
 0
@@ -1433,25 +1382,22 @@ Not studying or working
 71
 </td>
 <td style="text-align:right;">
-Male
-</td>
-<td style="text-align:right;">
-Metro
-</td>
-<td style="text-align:right;">
-Yes
-</td>
-<td style="text-align:right;">
 2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 1
@@ -1461,20 +1407,14 @@ Yes
 </td>
 <td style="text-align:right;">
 1
+</td>
+<td style="text-align:right;">
+2
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
@@ -1483,16 +1423,16 @@ Yes
 <td style="text-align:right;">
 3
 </td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
@@ -1501,7 +1441,7 @@ Yes
 <td style="text-align:right;">
 1
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.073
 </td>
 <td style="text-align:right;">
@@ -1510,7 +1450,7 @@ Yes
 <td style="text-align:right;">
 0.000
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.000
 </td>
 <td style="text-align:right;">
@@ -1519,7 +1459,7 @@ Yes
 <td style="text-align:right;">
 0.193
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.000
 </td>
 <td style="text-align:right;">
@@ -1528,7 +1468,7 @@ Yes
 <td style="text-align:right;">
 0.000
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.097
 </td>
 <td style="text-align:right;">
@@ -1537,7 +1477,7 @@ Yes
 <td style="text-align:right;">
 0.000
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.055
 </td>
 <td style="text-align:right;">
@@ -1546,7 +1486,7 @@ Yes
 <td style="text-align:right;">
 0.000
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.0
 </td>
 <td style="text-align:right;">
@@ -1555,7 +1495,7 @@ Yes
 <td style="text-align:right;">
 0.033
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.000
 </td>
 <td style="text-align:right;">
@@ -1564,7 +1504,7 @@ Yes
 <td style="text-align:right;">
 0.02813508
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.1346642
 </td>
 <td style="text-align:right;">
@@ -1573,7 +1513,7 @@ Yes
 <td style="text-align:right;">
 0.3514811
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.0000000
 </td>
 <td style="text-align:right;">
@@ -1582,7 +1522,7 @@ Yes
 <td style="text-align:right;">
 0.9718649
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.8653358
 </td>
 <td style="text-align:right;">
@@ -1591,7 +1531,7 @@ Yes
 <td style="text-align:right;">
 0.6485189
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 1.0000000
 </td>
 <td style="text-align:right;">
@@ -1600,7 +1540,7 @@ Yes
 <td style="text-align:right;">
 0.2379252
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.2693314
 </td>
 <td style="text-align:right;">
@@ -1609,7 +1549,7 @@ Yes
 <td style="text-align:right;">
 0.08939064
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.9106094
 </td>
 <td style="text-align:right;">
@@ -1627,46 +1567,46 @@ Participant_1000
 Follow-up
 </td>
 <td style="text-align:right;">
-Anxiety
-</td>
-<td style="text-align:right;">
-Southport
-</td>
-<td style="text-align:right;">
-1b
+2019-12-01
 </td>
 <td style="text-align:right;">
 16
 </td>
+<td style="text-align:right;">
+Male
+</td>
+<td style="text-align:right;">
+Male
+</td>
 <td style="text-align:left;">
-Age 12-17
+Heterosexual
 </td>
 <td style="text-align:right;">
-Male
-</td>
-<td style="text-align:right;">
-Male
-</td>
-<td style="text-align:right;">
-Straight
+Yes
 </td>
 <td style="text-align:right;">
 Other
 </td>
 <td style="text-align:right;">
-Yes
-</td>
-<td style="text-align:left;">
 No
 </td>
 <td style="text-align:right;">
 No
-</td>
-<td style="text-align:right;">
-REPLACE_ME_2
 </td>
 <td style="text-align:right;">
 Not studying or working
+</td>
+<td style="text-align:left;">
+Not in a relationship
+</td>
+<td style="text-align:right;">
+Southport
+</td>
+<td style="text-align:right;">
+Anxiety
+</td>
+<td style="text-align:right;">
+1b
 </td>
 <td style="text-align:right;">
 5
@@ -1678,39 +1618,30 @@ Not studying or working
 71
 </td>
 <td style="text-align:right;">
-Male
-</td>
-<td style="text-align:right;">
-Metro
-</td>
-<td style="text-align:right;">
-Yes
-</td>
-<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
 2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
 </td>
 <td style="text-align:left;">
 1
 </td>
 <td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
 1
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 3
 </td>
 <td style="text-align:right;">
@@ -1719,7 +1650,7 @@ Yes
 <td style="text-align:right;">
 2
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 3
 </td>
 <td style="text-align:right;">
@@ -1728,16 +1659,16 @@ Yes
 <td style="text-align:right;">
 2
 </td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
 <td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
@@ -1746,7 +1677,7 @@ Yes
 <td style="text-align:right;">
 1
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.073
 </td>
 <td style="text-align:right;">
@@ -1755,16 +1686,16 @@ Yes
 <td style="text-align:right;">
 0.000
 </td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
 <td style="text-align:left;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
+0.000
+</td>
+<td style="text-align:right;">
 0.197
 </td>
 <td style="text-align:right;">
@@ -1773,7 +1704,7 @@ Yes
 <td style="text-align:right;">
 0.392
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.000
 </td>
 <td style="text-align:right;">
@@ -1782,7 +1713,7 @@ Yes
 <td style="text-align:right;">
 0.338
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.055
 </td>
 <td style="text-align:right;">
@@ -1791,7 +1722,7 @@ Yes
 <td style="text-align:right;">
 0.000
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.0
 </td>
 <td style="text-align:right;">
@@ -1800,7 +1731,7 @@ Yes
 <td style="text-align:right;">
 0.000
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.024
 </td>
 <td style="text-align:right;">
@@ -1809,7 +1740,7 @@ Yes
 <td style="text-align:right;">
 0.04719190
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.1002056
 </td>
 <td style="text-align:right;">
@@ -1818,7 +1749,7 @@ Yes
 <td style="text-align:right;">
 0.2080310
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.0000000
 </td>
 <td style="text-align:right;">
@@ -1827,7 +1758,7 @@ Yes
 <td style="text-align:right;">
 0.9528081
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.8997944
 </td>
 <td style="text-align:right;">
@@ -1836,7 +1767,7 @@ Yes
 <td style="text-align:right;">
 0.7919690
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 1.0000000
 </td>
 <td style="text-align:right;">
@@ -1845,7 +1776,7 @@ Yes
 <td style="text-align:right;">
 0.2228889
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 0.2523102
 </td>
 <td style="text-align:right;">
@@ -1854,7 +1785,7 @@ Yes
 <td style="text-align:right;">
 0.07926885
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 0.9207312
 </td>
 <td style="text-align:right;">
@@ -2912,13 +2843,13 @@ Significant
 K6
 </td>
 <td style="text-align:right;">
--24.60476
+-24.43622
 </td>
 <td style="text-align:left;">
--944.8643
+-969.2429
 </td>
 <td style="text-align:right;">
--861.4646
+-890.0349
 </td>
 <td style="text-align:left;">
 (Intercept) K6 SOFAS
@@ -2929,13 +2860,13 @@ K6
 PHQ9
 </td>
 <td style="text-align:right;">
--20.81895
+-20.65298
 </td>
 <td style="text-align:left;">
--1122.8255
+-1150.9173
 </td>
 <td style="text-align:right;">
--1039.4257
+-1071.7093
 </td>
 <td style="text-align:left;">
 (Intercept) PHQ9 SOFAS

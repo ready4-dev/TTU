@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Plot auto lm — plot_auto_lm • TTU</title>
+<title>Write predr and covars cmprsns — write_predr_and_covars_cmprsns • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Plot auto lm — plot_auto_lm" />
-<meta property="og:description" content="plot_auto_lm() is a Plot function that plots data Specifically, this function implements an algorithm to plot auto lm. The function is called for its side effects and does not return a value." />
+<meta property="og:title" content="Write predr and covars cmprsns — write_predr_and_covars_cmprsns" />
+<meta property="og:description" content="write_predr_and_covars_cmprsns() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predr and covars cmprsns. The function returns Predr and covars cmprsns (a list)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,38 +131,56 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Plot auto lm</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_plot.R'><code>R/fn_plot.R</code></a></small>
-    <div class="hidden name"><code>plot_auto_lm.Rd</code></div>
+    <h1>Write predr and covars cmprsns</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_write.R'><code>R/fn_write.R</code></a></small>
+    <div class="hidden name"><code>write_predr_and_covars_cmprsns.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>plot_auto_lm() is a Plot function that plots data Specifically, this function implements an algorithm to plot auto lm. The function is called for its side effects and does not return a value.</p>
+    <p>write_predr_and_covars_cmprsns() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predr and covars cmprsns. The function returns Predr and covars cmprsns (a list).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_auto_lm</span><span class='op'>(</span><span class='va'>mdl</span>, which_dbl <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>, ncol_1L_int <span class='op'>=</span> <span class='fl'>3L</span>, label_size_1L_int <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>write_predr_and_covars_cmprsns</span><span class='op'>(</span>
+  <span class='va'>scored_data_tb</span>,
+  <span class='va'>bl_tb</span>,
+  <span class='va'>ds_smry_ls</span>,
+  <span class='va'>mdl_smry_ls</span>,
+  <span class='va'>output_data_dir_1L_chr</span>,
+  seed_1L_int <span class='op'>=</span> <span class='fl'>1234</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>which_dbl</th>
-      <td><p>Which (a double vector), Default: 1:6</p></td>
+      <th>scored_data_tb</th>
+      <td><p>Scored data (a tibble)</p></td>
     </tr>
     <tr>
-      <th>ncol_1L_int</th>
-      <td><p>Ncol (an integer vector of length one), Default: 3</p></td>
+      <th>bl_tb</th>
+      <td><p>Bl (a tibble)</p></td>
     </tr>
     <tr>
-      <th>label_size_1L_int</th>
-      <td><p>Label size (an integer vector of length one), Default: 3</p></td>
+      <th>ds_smry_ls</th>
+      <td><p>Dataset smry (a list)</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Additional arguments</p></td>
+      <th>mdl_smry_ls</th>
+      <td><p>Model smry (a list)</p></td>
+    </tr>
+    <tr>
+      <th>output_data_dir_1L_chr</th>
+      <td><p>Output data directory (a character vector of length one)</p></td>
+    </tr>
+    <tr>
+      <th>seed_1L_int</th>
+      <td><p>Seed (an integer vector of length one), Default: 1234</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Predr and covars cmprsns (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
