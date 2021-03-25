@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9124
+Version: 0.0.0.9125
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -39,6 +39,61 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
+    assertthat,
+    boot,
+    Boruta,
+    brms,
+    caret,
+    cmdstanr (>= 0.3.0.9000),
+    dataverse (>= 0.3.7),
+    dplyr,
+    ggalt,
+    ggfortify,
+    ggplot2,
+    grDevices,
+    Hmisc,
+    hutils,
     knitr,
-    testthat
+    knitrBootstrap,
+    lifecycle,
+    lubridate,
+    magrittr,
+    MASS,
+    Matrix,
+    matrixcalc,
+    methods,
+    pacman,
+    psych,
+    purrr,
+    randomForest,
+    readr (>= 1.4.0),
+    ready4class (>= 0.0.0.9185),
+    ready4fun (>= 0.0.0.9270),
+    ready4show (>= 0.0.0.9013),
+    ready4use (>= 0.0.0.9111),
+    rlang,
+    simstudy,
+    stats,
+    stringi,
+    stringr,
+    Surrogate,
+    synthpop,
+    testthat,
+    tibble,
+    tidyr,
+    tidyselect,
+    utils,
+    viridis,
+    youthvars (>= 0.0.0.9007)
 VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)
+Remotes: 
+    stan-dev/cmdstanr,
+    tidyverse/readr,
+    ready4-dev/ready4show,
+    ready4-dev/ready4use,
+    ready4-dev/youthvars,
+    iqss/dataverse-client-r,
+    ready4-dev/ready4class,
+    ready4-dev/ready4fun
