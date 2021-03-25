@@ -33,7 +33,7 @@ As this is an illustrative example, neither the data directory nor the data file
 
 ```{r warning = F}
 dir.create(path_to_inp_data_1L_chr)
-write.csv(youthsvars::replication_popl_tb %>% dplyr::select(-BADS,-GAD7, -OASIS,-SCARED),"Data/data.csv", row.names=FALSE)
+write.csv(youthvars::replication_popl_tb %>% dplyr::select(-BADS,-GAD7, -OASIS,-SCARED),"Data/data.csv", row.names=FALSE)
 write.csv(repln_ds_dict_r3,"Data/dictionary.csv", row.names=FALSE)
 ```
 
