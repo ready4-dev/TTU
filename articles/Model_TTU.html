@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9124</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9126</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="va">path_to_inp_data_1L_chr</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="fu">youthvars</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/youthvars/reference/replication_popl_tb.html">replication_popl_tb</a></span> <span class="op">%&gt;%</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">BADS</span>,<span class="op">-</span><span class="va">GAD7</span>, <span class="op">-</span><span class="va">OASIS</span>,<span class="op">-</span><span class="va">SCARED</span><span class="op">)</span>,<span class="st">"Data/data.csv"</span>, row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="va">repln_ds_dict_r3</span>,<span class="st">"Data/dictionary.csv"</span>, row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="fu">youthvars</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/youthvars/reference/repln_ds_dict_r3.html">repln_ds_dict_r3</a></span>,<span class="st">"Data/dictionary.csv"</span>, row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p>We read our data files into local memory.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">data_tb</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"Data/data.csv"</span><span class="op">)</span> 
@@ -387,7 +387,7 @@ Participant_1
 Baseline
 </td>
 <td style="text-align:right;">
-2019-09-30
+2020-01-05
 </td>
 <td style="text-align:right;">
 14
@@ -623,7 +623,7 @@ Participant_10
 Baseline
 </td>
 <td style="text-align:right;">
-2019-08-13
+2019-11-13
 </td>
 <td style="text-align:right;">
 15
@@ -859,7 +859,7 @@ Participant_10
 Follow-up
 </td>
 <td style="text-align:right;">
-2019-11-13
+2020-02-03
 </td>
 <td style="text-align:right;">
 15
@@ -1095,7 +1095,7 @@ Participant_100
 Baseline
 </td>
 <td style="text-align:right;">
-2019-08-03
+2019-12-13
 </td>
 <td style="text-align:right;">
 25
@@ -1331,7 +1331,7 @@ Participant_1000
 Baseline
 </td>
 <td style="text-align:right;">
-2019-08-24
+2019-11-20
 </td>
 <td style="text-align:right;">
 16
@@ -1567,7 +1567,7 @@ Participant_1000
 Follow-up
 </td>
 <td style="text-align:right;">
-2019-12-01
+2020-03-05
 </td>
 <td style="text-align:right;">
 16
