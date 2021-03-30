@@ -118,6 +118,58 @@ transform_ds_for_tstng <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w
         tfd_data_tb <- tfd_data_tb %>% stats::na.omit()
     return(tfd_data_tb)
 }
+#' Transform model vars with classes
+#' @description transform_mdl_vars_with_clss() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform model vars with classes. Function argument ds_tb specifies the object to be updated. Argument predictors_lup provides the object to be updated. The function returns Transformed dataset (a tibble).
+#' @param ds_tb Dataset (a tibble)
+#' @param predictors_lup Predictors (a lookup table), Default: NULL
+#' @param prototype_lup Prototype (a lookup table), Default: NULL
+#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param class_fn_1L_chr Class function (a character vector of length one), Default: 'youthvars::youthvars_aqol6d_adol'
+#' @return Transformed dataset (a tibble)
+#' @rdname transform_mdl_vars_with_clss
+#' @export 
+#' @importFrom tibble add_case
+#' @importFrom purrr reduce
+#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom dplyr mutate
+#' @importFrom rlang sym exec
+#' @keywords internal
+transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototype_lup = NULL, 
+    dep_var_nm_1L_chr = "aqol6d_total_w", class_fn_1L_chr = "youthvars::youthvars_aqol6d_adol") 
+{
+    if (is.null(predictors_lup)) 
+        data("predictors_lup", package = "TTU", envir = environment())
+    if (is.null(prototype_lup)) 
+        data("prototype_lup", package = "TTU", envir = environment())
+    predictors_lup <- tibble::add_case(predictors_lup, short_name_chr = dep_var_nm_1L_chr, 
+        class_chr = "numeric", class_fn_chr = class_fn_1L_chr)
+    tfd_ds_tb <- purrr::reduce(predictors_lup$short_name_chr, 
+        .init = ds_tb, ~if (.y %in% names(.x)) {
+            class_1L_chr <- ready4fun::get_from_lup_obj(predictors_lup, 
+                match_var_nm_1L_chr = "short_name_chr", match_value_xx = .y, 
+                target_var_nm_1L_chr = "class_chr", evaluate_lgl = F)
+            ns_1L_chr <- ready4fun::get_from_lup_obj(prototype_lup, 
+                match_var_nm_1L_chr = "type_chr", match_value_xx = class_1L_chr, 
+                target_var_nm_1L_chr = "pt_ns_chr", evaluate_lgl = F)
+            ns_and_ext_1L_chr <- ifelse(ns_1L_chr == "base", 
+                "", paste0(ns_1L_chr, "::"))
+            fn <- ifelse(exists(paste0("as.", class_1L_chr), 
+                where = paste0("package:", ns_1L_chr)), eval(parse(text = paste0(ns_and_ext_1L_chr, 
+                "as.", class_1L_chr))), ifelse(exists(paste0("as_", 
+                class_1L_chr), where = paste0("package:", ns_1L_chr)), 
+                eval(parse(text = paste0(ns_and_ext_1L_chr, "as_", 
+                  class_1L_chr))), eval(parse(text = paste0(ns_and_ext_1L_chr, 
+                  class_1L_chr)))))
+            .x %>% dplyr::mutate(`:=`(!!rlang::sym(.y), rlang::exec(ready4fun::get_from_lup_obj(predictors_lup, 
+                match_var_nm_1L_chr = "short_name_chr", match_value_xx = .y, 
+                target_var_nm_1L_chr = "class_fn_chr", evaluate_lgl = T), 
+                !!rlang::sym(.y) %>% fn)))
+        }
+        else {
+            .x
+        })
+    return(tfd_ds_tb)
+}
 #' Transform tibble to model input
 #' @description transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble).
 #' @param data_tb Data (a tibble)

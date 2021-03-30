@@ -8,6 +8,7 @@ reference:
   - fns_dmt_tb
   - mdl_types_lup
   - plt_types_lup
+  - predictors_lup
   - prototype_lup
   - rprt_lup
 - title: "Classes"
