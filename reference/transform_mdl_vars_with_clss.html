@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Write all algorithm outputs — write_all_alg_outps • TTU</title>
+<title>Transform model vars with classes — transform_mdl_vars_with_clss • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Write all algorithm outputs — write_all_alg_outps" />
-<meta property="og:description" content="write_all_alg_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write all algorithm outputs. The function returns Output smry (a list)." />
+<meta property="og:title" content="Transform model vars with classes — transform_mdl_vars_with_clss" />
+<meta property="og:description" content="transform_mdl_vars_with_clss() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform model vars with classes. Function argument ds_tb specifies the object to be updated. Argument predictors_lup provides the object to be updated. The function returns Transformed dataset (a tibble)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,106 +131,51 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Write all algorithm outputs</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_write.R'><code>R/fn_write.R</code></a></small>
-    <div class="hidden name"><code>write_all_alg_outps.Rd</code></div>
+    <h1>Transform model vars with classes</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_transform.R'><code>R/fn_transform.R</code></a></small>
+    <div class="hidden name"><code>transform_mdl_vars_with_clss.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>write_all_alg_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write all algorithm outputs. The function returns Output smry (a list).</p>
+    <p>transform_mdl_vars_with_clss() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform model vars with classes. Function argument ds_tb specifies the object to be updated. Argument predictors_lup provides the object to be updated. The function returns Transformed dataset (a tibble).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>write_all_alg_outps</span><span class='op'>(</span>
-  <span class='va'>scored_data_tb</span>,
-  <span class='va'>path_to_write_to_1L_chr</span>,
-  dep_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
-  <span class='va'>candidate_predrs_chr</span>,
-  <span class='va'>candidate_covar_nms_chr</span>,
-  id_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"fkClientID"</span>,
-  round_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"round"</span>,
-  round_bl_val_1L_chr <span class='op'>=</span> <span class='st'>"Baseline"</span>,
-  mdl_types_chr <span class='op'>=</span> <span class='cn'>NA_character_</span>,
-  prefd_mdl_types_chr <span class='op'>=</span> <span class='cn'>NA_character_</span>,
-  choose_from_pfx_chr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"GLM"</span>, <span class='st'>"OLS"</span>, <span class='st'>"BET"</span><span class='op'>)</span>,
-  prefd_covars_chr <span class='op'>=</span> <span class='cn'>NA_character_</span>,
-  seed_1L_int <span class='op'>=</span> <span class='fl'>12345</span>,
-  n_folds_1L_int <span class='op'>=</span> <span class='fl'>10L</span>,
-  max_nbr_of_boruta_mdl_runs_int <span class='op'>=</span> <span class='fl'>300L</span>,
-  mdl_types_lup <span class='op'>=</span> <span class='cn'>NULL</span>
+    <pre class="usage"><span class='fu'>transform_mdl_vars_with_clss</span><span class='op'>(</span>
+  <span class='va'>ds_tb</span>,
+  predictors_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
+  prototype_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
+  dep_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"aqol6d_total_w"</span>,
+  class_fn_1L_chr <span class='op'>=</span> <span class='st'>"youthvars::youthvars_aqol6d_adol"</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>scored_data_tb</th>
-      <td><p>Scored data (a tibble)</p></td>
+      <th>ds_tb</th>
+      <td><p>Dataset (a tibble)</p></td>
     </tr>
     <tr>
-      <th>path_to_write_to_1L_chr</th>
-      <td><p>Path to write to (a character vector of length one)</p></td>
+      <th>predictors_lup</th>
+      <td><p>Predictors (a lookup table), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>prototype_lup</th>
+      <td><p>Prototype (a lookup table), Default: NULL</p></td>
     </tr>
     <tr>
       <th>dep_var_nm_1L_chr</th>
-      <td><p>Dep var name (a character vector of length one), Default: 'utl_total_w'</p></td>
+      <td><p>Dep var name (a character vector of length one), Default: 'aqol6d_total_w'</p></td>
     </tr>
     <tr>
-      <th>candidate_predrs_chr</th>
-      <td><p>Candidate predrs (a character vector)</p></td>
-    </tr>
-    <tr>
-      <th>candidate_covar_nms_chr</th>
-      <td><p>Candidate covar names (a character vector)</p></td>
-    </tr>
-    <tr>
-      <th>id_var_nm_1L_chr</th>
-      <td><p>Id var name (a character vector of length one), Default: 'fkClientID'</p></td>
-    </tr>
-    <tr>
-      <th>round_var_nm_1L_chr</th>
-      <td><p>Round var name (a character vector of length one), Default: 'round'</p></td>
-    </tr>
-    <tr>
-      <th>round_bl_val_1L_chr</th>
-      <td><p>Round bl value (a character vector of length one), Default: 'Baseline'</p></td>
-    </tr>
-    <tr>
-      <th>mdl_types_chr</th>
-      <td><p>Model types (a character vector), Default: 'NA'</p></td>
-    </tr>
-    <tr>
-      <th>prefd_mdl_types_chr</th>
-      <td><p>Prefd model types (a character vector), Default: 'NA'</p></td>
-    </tr>
-    <tr>
-      <th>choose_from_pfx_chr</th>
-      <td><p>Choose from prefix (a character vector), Default: c("GLM", "OLS", "BET")</p></td>
-    </tr>
-    <tr>
-      <th>prefd_covars_chr</th>
-      <td><p>Prefd covars (a character vector), Default: 'NA'</p></td>
-    </tr>
-    <tr>
-      <th>seed_1L_int</th>
-      <td><p>Seed (an integer vector of length one), Default: 12345</p></td>
-    </tr>
-    <tr>
-      <th>n_folds_1L_int</th>
-      <td><p>N folds (an integer vector of length one), Default: 10</p></td>
-    </tr>
-    <tr>
-      <th>max_nbr_of_boruta_mdl_runs_int</th>
-      <td><p>Max nbr of boruta model runs (an integer vector), Default: 300</p></td>
-    </tr>
-    <tr>
-      <th>mdl_types_lup</th>
-      <td><p>Model types (a lookup table), Default: NULL</p></td>
+      <th>class_fn_1L_chr</th>
+      <td><p>Class function (a character vector of length one), Default: 'youthvars::youthvars_aqol6d_adol'</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Output smry (a list)</p>
+    <p>Transformed dataset (a tibble)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
