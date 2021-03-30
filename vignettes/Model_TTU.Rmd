@@ -33,8 +33,10 @@ As this is an illustrative example, neither the data directory nor the data file
 
 ```{r warning = F}
 dir.create(path_to_inp_data_1L_chr)
-write.csv(youthvars::replication_popl_tb %>% dplyr::select(-BADS,-GAD7, -OASIS,-SCARED),"Data/data.csv", row.names=FALSE)
-write.csv(youthvars::repln_ds_dict_r3,"Data/dictionary.csv", row.names=FALSE)
+write.csv(youthvars::replication_popl_tb %>% 
+            youthvars::transform_raw_ds_for_analysis() %>%
+            dplyr::select(-BADS,-GAD7, -OASIS,-SCARED),"Data/data.csv", row.names=FALSE)
+write.csv(youthvars::make_tfd_repln_ds_dict_r3(),"Data/dictionary.csv", row.names=FALSE)
 ```
 
 We read our data files into local memory.
