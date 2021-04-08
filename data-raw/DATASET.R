@@ -199,6 +199,9 @@ if(!identical(prototype_lup,ready4fun::get_rds_from_dv("prototype_lup"))){
                                          desc_1L_chr = "Prototypes lookup table")
 }
 # devtools::build_vignettes()
+ready4fun::write_links_for_website(user_manual_url_1L_chr = "https://github.com/ready4-dev/TTU/files/6277705/TTU_user_0.0.0.9133.pdf",
+                                   developer_manual_url_1L_chr = "https://github.com/ready4-dev/TTU/files/6277710/TTU_developer_0.0.0.9133.pdf")
+##
 ##
 ## Add, Commit and Push
 
