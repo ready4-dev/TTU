@@ -7,7 +7,7 @@
 write_all_alg_outps(
   scored_data_tb,
   path_to_write_to_1L_chr,
-  dep_var_nm_1L_chr = "utl_total_w",
+  depnt_var_nm_1L_chr = "utl_total_w",
   candidate_predrs_chr,
   candidate_covar_nms_chr,
   id_var_nm_1L_chr = "fkClientID",
@@ -18,7 +18,7 @@ write_all_alg_outps(
   choose_from_pfx_chr = c("GLM", "OLS", "BET"),
   prefd_covars_chr = NA_character_,
   seed_1L_int = 12345,
-  n_folds_1L_int = 10L,
+  folds_1L_int = 10L,
   max_nbr_of_boruta_mdl_runs_int = 300L,
   mdl_types_lup = NULL
 )
@@ -28,37 +28,37 @@ write_all_alg_outps(
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
-\item{candidate_predrs_chr}{Candidate predrs (a character vector)}
+\item{candidate_predrs_chr}{Candidate predictors (a character vector)}
 
-\item{candidate_covar_nms_chr}{Candidate covar names (a character vector)}
+\item{candidate_covar_nms_chr}{Candidate covariate names (a character vector)}
 
-\item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
+\item{id_var_nm_1L_chr}{Identity variable name (a character vector of length one), Default: 'fkClientID'}
 
-\item{round_var_nm_1L_chr}{Round var name (a character vector of length one), Default: 'round'}
+\item{round_var_nm_1L_chr}{Round variable name (a character vector of length one), Default: 'round'}
 
-\item{round_bl_val_1L_chr}{Round bl value (a character vector of length one), Default: 'Baseline'}
+\item{round_bl_val_1L_chr}{Round baseline value (a character vector of length one), Default: 'Baseline'}
 
 \item{mdl_types_chr}{Model types (a character vector), Default: 'NA'}
 
-\item{prefd_mdl_types_chr}{Prefd model types (a character vector), Default: 'NA'}
+\item{prefd_mdl_types_chr}{Preferred model types (a character vector), Default: 'NA'}
 
 \item{choose_from_pfx_chr}{Choose from prefix (a character vector), Default: c("GLM", "OLS", "BET")}
 
-\item{prefd_covars_chr}{Prefd covars (a character vector), Default: 'NA'}
+\item{prefd_covars_chr}{Preferred covariates (a character vector), Default: 'NA'}
 
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 12345}
 
-\item{n_folds_1L_int}{N folds (an integer vector of length one), Default: 10}
+\item{folds_1L_int}{Folds (an integer vector of length one), Default: 10}
 
-\item{max_nbr_of_boruta_mdl_runs_int}{Max nbr of boruta model runs (an integer vector), Default: 300}
+\item{max_nbr_of_boruta_mdl_runs_int}{Maximum number of boruta model runs (an integer vector), Default: 300}
 
 \item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
 }
 \value{
-Output smry (a list)
+Output summary (a list)
 }
 \description{
-write_all_alg_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write all algorithm outputs. The function returns Output smry (a list).
+write_all_alg_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write all algorithm outputs. The function returns Output summary (a list).
 }

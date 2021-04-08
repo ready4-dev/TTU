@@ -9,7 +9,7 @@ knit_mdl_rprt(knit_pars_ls, path_to_mdl_rprt_tmpl_1L_chr)
 \arguments{
 \item{knit_pars_ls}{Knit parameters (a list)}
 
-\item{path_to_mdl_rprt_tmpl_1L_chr}{Path to model report tmpl (a character vector of length one)}
+\item{path_to_mdl_rprt_tmpl_1L_chr}{Path to model report template (a character vector of length one)}
 }
 \description{
 knit_mdl_rprt() is a Knit function that knits a rmarkdown file Specifically, this function implements an algorithm to knit model report. The function is called for its side effects and does not return a value.

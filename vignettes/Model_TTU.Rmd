@@ -70,7 +70,7 @@ We next create an object `ds_smry_ls` to store a description of some structural 
 ```{r}
 ds_smry_ls <- list(candidate_predrs_chr = c("K6","PHQ9"),
                    candidate_covar_nms_chr = c("d_sex_birth_s", "SOFAS", "c_p_diag_s", "c_clinical_staging_s", "d_age",  "d_sexual_ori_s", "d_country_bir_s", "d_relation_s", "d_studying_working"),
-                   dep_var_nm_1L_chr = "aqol6d_total_w",
+                   depnt_var_nm_1L_chr = "aqol6d_total_w",
                    id_var_nm_1L_chr = "fkClientID",
                    round_var_nm_1L_chr = "round",
                    round_bl_val_1L_chr = "Baseline")
@@ -114,7 +114,7 @@ For the initial set of tests on candidate models, we just need data from one tim
 
 ```{r}
 bl_tb <- transform_ds_for_tstng(scored_data_tb, 
-                                dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr,
+                                depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,
                                 candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
                                 dep_var_max_val_1L_dbl = 0.999,
                                 round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr, 
@@ -136,7 +136,7 @@ By exploring correlations in the slimmed down dataset, we can reorder our vector
 
 ```{r}
 ds_smry_ls$candidate_predrs_chr <- reorder_cndt_predrs_chr(ds_smry_ls$candidate_predrs_chr,
-        data_tb = bl_tb, dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr)
+        data_tb = bl_tb, depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr)
 ```
 
 Based on this reordering, we can specify the the candidate predictor with the highest correlation with our utility variable, adding its description to `mdl_smry_ls`.
@@ -162,23 +162,23 @@ mdl_smry_ls$predr_vals_dbl
 We now compare all candidate model types, each using only the highest correlated candidate predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`). 
 
 ```{r warning = FALSE, message=FALSE}
-mdl_smry_ls$n_folds_1L_int <- 10L
+mdl_smry_ls$folds_1L_int <- 10L
 mdl_smry_ls$smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data_tb = bl_tb,
-        n_folds_1L_int = mdl_smry_ls$n_folds_1L_int, mdl_types_chr = mdl_smry_ls$mdl_types_chr,
-        dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr, predr_var_nm_1L_chr = mdl_smry_ls$predr_var_nm_1L_chr,
+        folds_1L_int = mdl_smry_ls$folds_1L_int, mdl_types_chr = mdl_smry_ls$mdl_types_chr,
+        depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, predr_var_nm_1L_chr = mdl_smry_ls$predr_var_nm_1L_chr,
         predr_var_desc_1L_chr = mdl_smry_ls$predr_var_desc_1L_chr, 
         predr_vals_dbl = mdl_smry_ls$predr_vals_dbl,
-        path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsns",
+        path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsn",
         mdl_types_lup = mdl_smry_ls$mdl_types_lup) 
 
 ```
 
-The `write_sngl_predr_multi_mdls_outps` function will write each model to be tested to a new sub-directory of "`r path_to_write_to_1L_chr`" called "A_Candidate_Mdls_Cmprsns". Also written to that sub-directory are a number of plots for each model. 
+The `write_sngl_predr_multi_mdls_outps` function will write each model to be tested to a new sub-directory of "`r path_to_write_to_1L_chr`" called "A_Candidate_Mdls_Cmprsn". Also written to that sub-directory are a number of plots for each model. 
 
 ```{r include=F, eval=F, out.width = "400px"}
 # The plots for the first model we test (
 # `r mdl_smry_ls$mdl_types_lup %>% ready4fun::get_from_lup_obj(target_var_nm_1L_chr = "long_name_chr",match_value_xx = "OLS_NTF", match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F)`) are reproduced below.
-paste0(path_to_write_to_1L_chr,"/","A_Candidate_Mdls_Cmprsns") %>% list.files(pattern = "\\.png$", full.names = T) %>% purrr::keep(stringr::str_detect(.,"OLS_NTF")) %>%
+paste0(path_to_write_to_1L_chr,"/","A_Candidate_Mdls_Cmprsn") %>% list.files(pattern = "\\.png$", full.names = T) %>% purrr::keep(stringr::str_detect(.,"OLS_NTF")) %>%
 knitr::include_graphics()
 ```
 
@@ -210,25 +210,25 @@ We can now compare all of our candidate single predictors using the most preferr
 
 ```{r message=FALSE, results='hide'}
 mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int = 300L
-mdl_smry_ls$predr_cmprsns_tb <- write_predr_cmprsn_outps(data_tb = bl_tb,
+mdl_smry_ls$predr_cmprsn_tb <- write_predr_cmprsn_outps(data_tb = bl_tb,
                                              path_to_write_to_1L_chr = path_to_write_to_1L_chr,
-                                             new_dir_nm_1L_chr = "B_Candidate_Predrs_Cmprsns",
-                                             dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr, 
+                                             new_dir_nm_1L_chr = "B_Candidate_Predrs_Cmprsn",
+                                             depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, 
                                              candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
                                              max_nbr_of_boruta_mdl_runs_int = mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int)
 ```
 
-The previous call to the `write_predr_cmprsn_outps`{.R} function saved the tested models along with model plots in the "B_Candidate_Predrs_Cmprsns" sub-directory of "Output".
+The previous call to the `write_predr_cmprsn_outps`{.R} function saved the tested models along with model plots in the "B_Candidate_Predrs_Cmprsn" sub-directory of "Output".
 
 ```{r include=F, eval=F, out.width = "400px"}
-paste0(path_to_write_to_1L_chr,"/","B_Candidate_Predrs_Cmprsns") %>% list.files(pattern = "\\.png$", full.names = T) %>%
+paste0(path_to_write_to_1L_chr,"/","B_Candidate_Predrs_Cmprsn") %>% list.files(pattern = "\\.png$", full.names = T) %>%
 knitr::include_graphics()
 ```
 
 These results are also viewable as a table.
 
 ```{r}
-mdl_smry_ls$predr_cmprsns_tb %>%
+mdl_smry_ls$predr_cmprsn_tb %>%
     ready4show::print_table(output_type_1L_chr = "HTML",
                           caption_1L_chr = "Comparison of all candidate predictors using preferred model")
 ```
@@ -237,17 +237,17 @@ Now, we compare the performance of single predictor models of our preferred mode
 
 ```{r message=FALSE, warning=F}
     mdl_smry_ls$smry_of_mdl_sngl_predrs_tb <- write_mdl_type_multi_outps(data_tb = bl_tb,
-        n_folds_1L_int = mdl_smry_ls$n_folds_1L_int, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr,
-        mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1], dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr,
-        path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsns",
+        folds_1L_int = mdl_smry_ls$folds_1L_int, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsn_tb$predr_chr,
+        mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1], depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,
+        path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsn",
         fl_nm_pfx_1L_chr = "C_PREDR", mdl_types_lup = mdl_smry_ls$mdl_types_lup) 
 ```
-The previous call to the `write_mdl_type_multi_outps`{.R} function saves the tested models along with the two plots for each model in the "C_Predrs_Sngl_Mdl_Cmprsns" sub-directory of "Output". 
+The previous call to the `write_mdl_type_multi_outps`{.R} function saves the tested models along with the two plots for each model in the "C_Predrs_Sngl_Mdl_Cmprsn" sub-directory of "Output". 
 
 ```{r include=F, eval=F, out.width = "400px"}
 # The plots for the model using the best performing predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`) are
 # reproduced below. 
-paste0(path_to_write_to_1L_chr,"/","C_Predrs_Sngl_Mdl_Cmprsns") %>% list.files(pattern = "\\.png$", full.names = T) %>%
+paste0(path_to_write_to_1L_chr,"/","C_Predrs_Sngl_Mdl_Cmprsn") %>% list.files(pattern = "\\.png$", full.names = T) %>%
   purrr::keep(stringr::str_detect(.,paste0("_",mdl_smry_ls$predr_var_nm_1L_chr,"_"))) %>%
 knitr::include_graphics()
 ```
@@ -264,10 +264,10 @@ We rerun each of the models from the previous step, but this time add all our ca
 
 ```{r}
 bl_tb <- scored_data_tb %>% transform_ds_for_tstng(candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
-        covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr, remove_all_mssng_1L_lgl = T,
+        covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr, remove_all_msng_1L_lgl = T,
         round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
 mdl_smry_ls$mdls_with_covars_smry_tb <- write_mdl_type_covars_mdls(bl_tb,
-        dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr, predrs_var_nms_chr = ds_smry_ls$candidate_predrs_chr,
+        depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, predrs_var_nms_chr = ds_smry_ls$candidate_predrs_chr,
         covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr, mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1],
         path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr = "D_Predr_Covars_Cmprsn",
         fl_nm_pfx_1L_chr = "D_CT",
@@ -304,20 +304,20 @@ mdl_smry_ls$prefd_covars_chr <- NA_character_
 We now conclude our model testing by rerunning the previous step, except confining our covariates to those we prefer.
 
 ```{r warning = F, message=F}
-    empty_tb <- write_mdl_type_multi_outps(data_tb = bl_tb, n_folds_1L_int = NULL,
-        start_1L_chr = NA_character_, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr,
+    empty_tb <- write_mdl_type_multi_outps(data_tb = bl_tb, folds_1L_int = NULL,
+        start_1L_chr = NA_character_, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsn_tb$predr_chr,
         covar_var_nms_chr = mdl_smry_ls$prefd_covars_chr, mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1],
-        dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr, path_to_write_to_1L_chr = path_to_write_to_1L_chr,
-        new_dir_nm_1L_chr = "E_Predrs_W_Covars_Sngl_Mdl_Cmprsns", mdl_types_lup = mdl_smry_ls$mdl_types_lup, fl_nm_pfx_1L_chr = "E_CK_CV")
+        depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, path_to_write_to_1L_chr = path_to_write_to_1L_chr,
+        new_dir_nm_1L_chr = "E_Predrs_W_Covars_Sngl_Mdl_Cmprsn", mdl_types_lup = mdl_smry_ls$mdl_types_lup, fl_nm_pfx_1L_chr = "E_CK_CV")
 
 ```
 
-The previous call to the `write_mdl_type_multi_outps`{.R} function saves the tested models along with the two plots for each model in the "E_Predrs_W_Covars_Sngl_Mdl_Cmprsns" sub-directory of "Output". 
+The previous call to the `write_mdl_type_multi_outps`{.R} function saves the tested models along with the two plots for each model in the "E_Predrs_W_Covars_Sngl_Mdl_Cmprsn" sub-directory of "Output". 
 
 ```{r include=F, eval=F, out.width = "400px"}
 # The plots for the model using the best performing predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`) are
 # reproduced below. 
-paste0(path_to_write_to_1L_chr,"/","E_Predrs_W_Covars_Sngl_Mdl_Cmprsns") %>% list.files(pattern = "\\.png$", full.names = T) %>%
+paste0(path_to_write_to_1L_chr,"/","E_Predrs_W_Covars_Sngl_Mdl_Cmprsn") %>% list.files(pattern = "\\.png$", full.names = T) %>%
   purrr::keep(stringr::str_detect(.,paste0("_",mdl_smry_ls$predr_var_nm_1L_chr,"_"))) %>%
 knitr::include_graphics()
 ```
@@ -329,7 +329,7 @@ The next main step is to use the preferred model types and covariates identified
 First we summarise the combinations of model types, candidate predictors and covariates that we will be using.
 
 ```{r}
-    mdl_smry_ls$predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr,
+    mdl_smry_ls$predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = mdl_smry_ls$predr_cmprsn_tb$predr_chr,
         covars_ls = list(mdl_smry_ls$prefd_covars_chr))
 ```
 
@@ -346,12 +346,12 @@ We now create a composite object `outp_smry_ls` that contains the key input and 
 outp_smry_ls <- list(scored_data_tb = scored_data_tb, 
                      smry_of_sngl_predr_mdls_tb = mdl_smry_ls$smry_of_sngl_predr_mdls_tb,
                      prefd_mdl_types_chr = mdl_smry_ls$prefd_mdl_types_chr, 
-                     predr_cmprsns_tb = mdl_smry_ls$predr_cmprsns_tb,
+                     predr_cmprsn_tb = mdl_smry_ls$predr_cmprsn_tb,
                      smry_of_mdl_sngl_predrs_tb = mdl_smry_ls$smry_of_mdl_sngl_predrs_tb,
                      mdls_with_covars_smry_tb = mdl_smry_ls$mdls_with_covars_smry_tb,
                      signt_covars_chr = mdl_smry_ls$signt_covars_chr, 
                      prefd_covars_chr = mdl_smry_ls$prefd_covars_chr,
-                     dep_var_nm_1L_chr = ds_smry_ls$dep_var_nm_1L_chr, 
+                     depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, 
                      predr_vars_nms_ls = mdl_smry_ls$predr_vars_nms_ls,
                      mdl_nms_ls = mdl_smry_ls$mdl_nms_ls, 
                      id_var_nm_1L_chr = ds_smry_ls$id_var_nm_1L_chr,
@@ -359,7 +359,7 @@ outp_smry_ls <- list(scored_data_tb = scored_data_tb,
                      round_bl_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr,
                      path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
                      seed_1L_int = seed_1L_int,
-                     n_folds_1L_int = mdl_smry_ls$n_folds_1L_int, 
+                     folds_1L_int = mdl_smry_ls$folds_1L_int, 
                      max_nbr_of_boruta_mdl_runs_int = mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int,
                      mdl_types_lup = mdl_smry_ls$mdl_types_lup, 
                      file_paths_chr = list.files(path_to_write_to_1L_chr, recursive = T))

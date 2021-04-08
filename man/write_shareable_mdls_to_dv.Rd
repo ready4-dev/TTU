@@ -11,7 +11,7 @@ write_shareable_mdls_to_dv(
 )
 }
 \arguments{
-\item{outp_smry_ls}{Output smry (a list)}
+\item{outp_smry_ls}{Output summary (a list)}
 
 \item{new_dir_nm_1L_chr}{New directory name (a character vector of length one), Default: 'G_Shareable'}
 

@@ -1,7 +1,7 @@
-#' Randomise changes in factor levels
-#' @description randomise_changes_in_fct_levs() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise changes in factor levels. The function is called for its side effects and does not return a value.
-#' @param vector_fct Vector (a factor)
-#' @param prob_unchanged_dbl Prob unchanged (a double vector)
+#' Randomise changes in factor vector levels
+#' @description randomise_changes_in_fct_levs() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise changes in factor vector levels. The function is called for its side effects and does not return a value.
+#' @param vector_fct Vector (a factor vector)
+#' @param prob_unchanged_dbl Probability unchanged (a double vector)
 #' @return NULL
 #' @rdname randomise_changes_in_fct_levs
 #' @export 

@@ -6,7 +6,7 @@
 \usage{
 write_ts_mdls(
   data_tb,
-  dep_var_nm_1L_chr = "utl_total_w",
+  depnt_var_nm_1L_chr = "utl_total_w",
   predr_vars_nms_ls,
   id_var_nm_1L_chr = "fkClientID",
   round_var_nm_1L_chr = "round",
@@ -23,15 +23,15 @@ write_ts_mdls(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
-\item{predr_vars_nms_ls}{Predr vars names (a list)}
+\item{predr_vars_nms_ls}{Predictor variables names (a list)}
 
-\item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
+\item{id_var_nm_1L_chr}{Identity variable name (a character vector of length one), Default: 'fkClientID'}
 
-\item{round_var_nm_1L_chr}{Round var name (a character vector of length one), Default: 'round'}
+\item{round_var_nm_1L_chr}{Round variable name (a character vector of length one), Default: 'round'}
 
-\item{round_bl_val_1L_chr}{Round bl value (a character vector of length one), Default: 'Baseline'}
+\item{round_bl_val_1L_chr}{Round baseline value (a character vector of length one), Default: 'Baseline'}
 
 \item{backend_1L_chr}{Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")}
 
@@ -39,18 +39,18 @@ write_ts_mdls(
 
 \item{mdl_nms_ls}{Model names (a list)}
 
-\item{mdl_smry_dir_1L_chr}{Model smry directory (a character vector of length one)}
+\item{mdl_smry_dir_1L_chr}{Model summary directory (a character vector of length one)}
 
 \item{predictors_lup}{Predictors (a lookup table)}
 
-\item{iters_1L_int}{Iters (an integer vector of length one), Default: 4000}
+\item{iters_1L_int}{Iterations (an integer vector of length one), Default: 4000}
 
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 1000}
 }
 \value{
-Models smry (a tibble)
+Models summary (a tibble)
 }
 \description{
-write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models. The function returns Models smry (a tibble).
+write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models. The function returns Models summary (a tibble).
 }
 \keyword{internal}

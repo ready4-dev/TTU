@@ -1,8 +1,8 @@
-#' Get signft covars
-#' @description get_signft_covars() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get signft covars. Function argument mdls_with_covars_smry_tb specifies the where to look for the required object. The function returns Signt covars (a character vector).
-#' @param mdls_with_covars_smry_tb Models with covars smry (a tibble)
-#' @param covar_var_nms_chr Covar var names (a character vector)
-#' @return Signt covars (a character vector)
+#' Get significant covariates
+#' @description get_signft_covars() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get significant covariates. Function argument mdls_with_covars_smry_tb specifies the where to look for the required object. The function returns Signt covariates (a character vector).
+#' @param mdls_with_covars_smry_tb Models with covariates summary (a tibble)
+#' @param covar_var_nms_chr Covariate variable names (a character vector)
+#' @return Signt covariates (a character vector)
 #' @rdname get_signft_covars
 #' @export 
 #' @importFrom purrr map flatten flatten_chr

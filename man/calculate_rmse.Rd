@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_calculate.R
 \name{calculate_rmse}
 \alias{calculate_rmse}
-\title{Calculate rmse}
+\title{Calculate root mean square error}
 \usage{
 calculate_rmse(y_dbl, yhat_dbl)
 }
@@ -12,9 +12,9 @@ calculate_rmse(y_dbl, yhat_dbl)
 \item{yhat_dbl}{Yhat (a double vector)}
 }
 \value{
-Rmse (a double vector)
+Root mean square error (a double vector)
 }
 \description{
-calculate_rmse() is a Calculate function that imputes data. Specifically, this function implements an algorithm to calculate rmse. The function returns Rmse (a double vector).
+calculate_rmse() is a Calculate function that performs a numeric calculation. Specifically, this function implements an algorithm to calculate root mean square error. The function returns Root mean square error (a double vector).
 }
 \keyword{internal}

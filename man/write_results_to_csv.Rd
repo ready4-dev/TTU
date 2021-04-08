@@ -7,7 +7,7 @@
 write_results_to_csv(synth_data_spine_ls, output_dir_1L_chr = ".")
 }
 \arguments{
-\item{synth_data_spine_ls}{Synth data spine (a list)}
+\item{synth_data_spine_ls}{Synthetic data spine (a list)}
 
 \item{output_dir_1L_chr}{Output directory (a character vector of length one), Default: '.'}
 }

@@ -2,12 +2,12 @@
 % Please edit documentation in R/fn_make.R
 \name{make_shareable_mdl}
 \alias{make_shareable_mdl}
-\title{Make shareable model}
+\title{Make shareable}
 \usage{
 make_shareable_mdl(
   data_tb,
   mdl_smry_tb,
-  dep_var_nm_1L_chr = "utl_total_w",
+  depnt_var_nm_1L_chr = "utl_total_w",
   id_var_nm_1L_chr = "fkClientID",
   tfmn_1L_chr = "CLL",
   mdl_type_1L_chr = "OLS_CLL",
@@ -20,11 +20,11 @@ make_shareable_mdl(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{mdl_smry_tb}{Model smry (a tibble)}
+\item{mdl_smry_tb}{Model summary (a tibble)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
-\item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
+\item{id_var_nm_1L_chr}{Identity variable name (a character vector of length one), Default: 'fkClientID'}
 
 \item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'CLL'}
 
@@ -42,6 +42,6 @@ make_shareable_mdl(
 Model (a model)
 }
 \description{
-make_shareable_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make shareable model. The function is called for its side effects and does not return a value.
+make_shareable_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make shareable model. The function returns Model (a model).
 }
 \keyword{internal}

@@ -19,11 +19,11 @@ A tibble
 \describe{
 \item{rprt_nms_chr}{Report names (a character vector)}
 \item{title_chr}{Title (a character vector)}
-\item{paths_to_RMD_dir_1L_chr}{Paths toMD directory (a character vector of length one)}
+\item{paths_to_rmd_dir_1L_chr}{Paths to Markdown directory (a character vector of length one)}
 \item{pkg_dirs_chr}{Package directories (a character vector)}
 \item{packages_chr}{Packages (a character vector)}
-\item{nms_of_RMD_chr}{Names ofMD (a character vector)}
-\item{rltv_paths_to_outpt_yaml_chr}{Rltv paths to outpt yaml (a character vector)}
+\item{nms_of_rmd_chr}{Names of Markdown (a character vector)}
+\item{rltv_paths_to_outpt_yaml_chr}{Relative paths to outpt yaml (a character vector)}
 }
 }
 \keyword{datasets}

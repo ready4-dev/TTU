@@ -5,7 +5,7 @@
 \title{Make Assessment of Quality of Life Six Dimension adolescent pop tibbles}
 \usage{
 make_aqol6d_adol_pop_tbs_ls(
-  aqol_items_props_tbs_ls,
+  aqol_items_prpns_tbs_ls,
   aqol_scores_pars_ls,
   series_names_chr,
   synth_data_spine_ls,
@@ -16,17 +16,17 @@ make_aqol6d_adol_pop_tbs_ls(
 )
 }
 \arguments{
-\item{aqol_items_props_tbs_ls}{Assessment of Quality of Life items props tibbles (a list)}
+\item{aqol_items_prpns_tbs_ls}{Assessment of Quality of Life items proportions tibbles (a list)}
 
 \item{aqol_scores_pars_ls}{Assessment of Quality of Life scores parameters (a list)}
 
 \item{series_names_chr}{Series names (a character vector)}
 
-\item{synth_data_spine_ls}{Synth data spine (a list)}
+\item{synth_data_spine_ls}{Synthetic data spine (a list)}
 
 \item{temporal_cors_ls}{Temporal correlations (a list)}
 
-\item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
+\item{id_var_nm_1L_chr}{Identity variable name (a character vector of length one), Default: 'fkClientID'}
 
 \item{prefix_chr}{Prefix (a character vector), Default: c(uid = "Participant_", aqol_item = "aqol6d_q", domain_unwtd_pfx_1L_chr = "aqol6d_subtotal_c_",
 domain_wtd_pfx_1L_chr = "aqol6d_subtotal_w_")}

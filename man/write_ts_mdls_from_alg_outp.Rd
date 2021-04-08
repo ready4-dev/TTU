@@ -14,7 +14,7 @@ write_ts_mdls_from_alg_outp(
 )
 }
 \arguments{
-\item{outp_smry_ls}{Output smry (a list)}
+\item{outp_smry_ls}{Output summary (a list)}
 
 \item{fn_ls}{Function list (a list of functions)}
 
@@ -24,11 +24,11 @@ write_ts_mdls_from_alg_outp(
 
 \item{backend_1L_chr}{Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")}
 
-\item{iters_1L_int}{Iters (an integer vector of length one), Default: 4000}
+\item{iters_1L_int}{Iterations (an integer vector of length one), Default: 4000}
 }
 \value{
-Output smry (a list)
+Output summary (a list)
 }
 \description{
-write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models from algorithm output. The function returns Output smry (a list).
+write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models from algorithm output. The function returns Output summary (a list).
 }

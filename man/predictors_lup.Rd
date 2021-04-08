@@ -19,8 +19,8 @@ A tibble
 \describe{
 \item{short_name_chr}{Short name (a character vector)}
 \item{long_name_chr}{Long name (a character vector)}
-\item{min_val_dbl}{Min value (a double vector)}
-\item{max_val_dbl}{Max value (a double vector)}
+\item{min_val_dbl}{Minimum value (a double vector)}
+\item{max_val_dbl}{Maximum value (a double vector)}
 \item{class_chr}{Class (a character vector)}
 \item{increment_dbl}{Increment (a double vector)}
 \item{class_fn_chr}{Class function (a character vector)}

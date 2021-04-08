@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_prefd_mdls_vec}
 \alias{make_prefd_mdls_vec}
-\title{Make prefd models vec}
+\title{Make preferred models vector}
 \usage{
 make_prefd_mdls_vec(
   smry_of_sngl_predr_mdls_tb,
@@ -11,16 +11,16 @@ make_prefd_mdls_vec(
 )
 }
 \arguments{
-\item{smry_of_sngl_predr_mdls_tb}{Smry of sngl predr models (a tibble)}
+\item{smry_of_sngl_predr_mdls_tb}{Summary of single predictor models (a tibble)}
 
 \item{choose_from_pfx_chr}{Choose from prefix (a character vector), Default: c("GLM", "OLS")}
 
 \item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
 }
 \value{
-Prefd models (a character vector)
+Preferred models (a character vector)
 }
 \description{
-make_prefd_mdls_vec() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make prefd models vec. The function returns Prefd models (a character vector).
+make_prefd_mdls_vec() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make preferred models vector. The function returns Preferred models (a character vector).
 }
 \keyword{internal}

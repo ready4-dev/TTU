@@ -7,9 +7,9 @@
 make_correlated_data_tb(synth_data_spine_ls, synth_data_idx_1L_dbl = 1)
 }
 \arguments{
-\item{synth_data_spine_ls}{Synth data spine (a list)}
+\item{synth_data_spine_ls}{Synthetic data spine (a list)}
 
-\item{synth_data_idx_1L_dbl}{Synth data index (a double vector of length one), Default: 1}
+\item{synth_data_idx_1L_dbl}{Synthetic data index (a double vector of length one), Default: 1}
 }
 \value{
 Correlated data (a tibble)

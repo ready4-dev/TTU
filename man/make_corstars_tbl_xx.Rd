@@ -6,19 +6,19 @@
 \usage{
 make_corstars_tbl_xx(
   x,
-  method = c("pearson", "spearman"),
-  removeTriangle = c("upper", "lower"),
-  result = c("none", "html", "latex")
+  method_chr = c("pearson", "spearman"),
+  removeTriangle_chr = c("upper", "lower"),
+  result_chr = c("none", "html", "latex")
 )
 }
 \arguments{
-\item{x}{PARAM_DESCRIPTION}
+\item{x}{An object}
 
-\item{method}{PARAM_DESCRIPTION, Default: c("pearson", "spearman")}
+\item{method_chr}{Method (a character vector), Default: c("pearson", "spearman")}
 
-\item{removeTriangle}{PARAM_DESCRIPTION, Default: c("upper", "lower")}
+\item{removeTriangle_chr}{RemoveTriangle (a character vector), Default: c("upper", "lower")}
 
-\item{result}{PARAM_DESCRIPTION, Default: c("none", "html", "latex")}
+\item{result_chr}{Result (a character vector), Default: c("none", "html", "latex")}
 }
 \description{
 make_corstars_tbl_xx() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make corstars table output object of multiple potential types. The function is called for its side effects and does not return a value.

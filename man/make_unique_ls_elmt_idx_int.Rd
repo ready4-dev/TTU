@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_unique_ls_elmt_idx_int}
 \alias{make_unique_ls_elmt_idx_int}
-\title{Make unique list elmt index}
+\title{Make unique list element index}
 \usage{
 make_unique_ls_elmt_idx_int(data_ls)
 }
@@ -10,9 +10,9 @@ make_unique_ls_elmt_idx_int(data_ls)
 \item{data_ls}{Data (a list)}
 }
 \value{
-Unique list elmt index (an integer vector)
+Unique list element index (an integer vector)
 }
 \description{
-make_unique_ls_elmt_idx_int() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make unique list elmt index integer vector. The function returns Unique list elmt index (an integer vector).
+make_unique_ls_elmt_idx_int() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make unique list element index integer vector. The function returns Unique list element index (an integer vector).
 }
 \keyword{internal}

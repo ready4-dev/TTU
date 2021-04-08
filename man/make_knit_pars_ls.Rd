@@ -16,19 +16,19 @@ make_knit_pars_ls(
 )
 }
 \arguments{
-\item{rltv_path_to_data_dir_1L_chr}{Rltv path to data directory (a character vector of length one)}
+\item{rltv_path_to_data_dir_1L_chr}{Relative path to data directory (a character vector of length one)}
 
 \item{mdl_types_chr}{Model types (a character vector)}
 
-\item{predr_vars_nms_ls}{Predr vars names (a list)}
+\item{predr_vars_nms_ls}{Predictor variables names (a list)}
 
 \item{output_type_1L_chr}{Output type (a character vector of length one), Default: 'HTML'}
 
 \item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
 
-\item{plt_types_lup}{Plt types (a lookup table), Default: NULL}
+\item{plt_types_lup}{Plot types (a lookup table), Default: NULL}
 
-\item{plt_types_chr}{Plt types (a character vector), Default: 'NA'}
+\item{plt_types_chr}{Plot types (a character vector), Default: 'NA'}
 
 \item{section_type_1L_chr}{Section type (a character vector of length one), Default: '#'}
 }

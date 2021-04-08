@@ -20,8 +20,8 @@ reference:
   - add_utility_predn_to_ds
   - make_fake_ts_data
   - write_all_alg_outps
-  - write_mdl_cmprsns
-  - write_mdls_with_covars_cmprsns
-  - write_predr_and_covars_cmprsns
+  - write_mdl_cmprsn
+  - write_mdls_with_covars_cmprsn
+  - write_predr_and_covars_cmprsn
   - write_shareable_mdls
   - write_ts_mdls_from_alg_outp

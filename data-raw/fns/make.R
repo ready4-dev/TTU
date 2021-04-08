@@ -1,5 +1,5 @@
 
-make_aqol6d_adol_pop_tbs_ls <- function (aqol_items_props_tbs_ls, aqol_scores_pars_ls, series_names_chr,
+make_aqol6d_adol_pop_tbs_ls <- function (aqol_items_prpns_tbs_ls, aqol_scores_pars_ls, series_names_chr,
                                          synth_data_spine_ls, temporal_cors_ls, id_var_nm_1L_chr = "fkClientID",
                                          prefix_chr = c(uid = "Participant_", aqol_item = "aqol6d_q",
                                                         domain_unwtd_pfx_1L_chr = "aqol6d_subtotal_c_", domain_wtd_pfx_1L_chr = "aqol6d_subtotal_w_"))
@@ -7,8 +7,8 @@ make_aqol6d_adol_pop_tbs_ls <- function (aqol_items_props_tbs_ls, aqol_scores_pa
   item_pfx_1L_chr <- prefix_chr[["aqol_item"]]
   uid_pfx_1L_chr <- prefix_chr[["uid"]]
   aqol6d_adol_pop_tbs_ls <- make_synth_series_tbs_ls(synth_data_spine_ls,
-                                                     series_names_chr = series_names_chr) %>% add_cors_and_uts_to_aqol6d_tbs_ls(aqol_scores_pars_ls = aqol_scores_pars_ls,
-                                                                                                                                aqol_items_props_tbs_ls = aqol_items_props_tbs_ls, temporal_cors_ls = temporal_cors_ls,
+                                                     series_names_chr = series_names_chr) %>% add_cors_and_utls_to_aqol6d_tbs_ls(aqol_scores_pars_ls = aqol_scores_pars_ls,
+                                                                                                                                aqol_items_prpns_tbs_ls = aqol_items_prpns_tbs_ls, temporal_cors_ls = temporal_cors_ls,
                                                                                                                                 prefix_chr = prefix_chr, aqol_tots_var_nms_chr = synth_data_spine_ls$aqol_tots_var_nms_chr,
                                                                                                                                 id_var_nm_1L_chr = id_var_nm_1L_chr) %>% purrr::map(~{
                                                                                                                                   domain_items_ls <- make_domain_items_ls(domain_qs_lup_tb = aqol6d_domain_qs_lup_tb,
@@ -49,7 +49,7 @@ make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, o
                  "Samples were drawn using ") %>% purrr::map_dbl(~mdl_smry_chr %>%
                                                                      startsWith(.x) %>% which())
     data_tb <- make_brms_mdl_smry_tbl(smry_mdl_ls, grp_1L_chr = mdl_smry_chr[idx_dbl[3]],
-                                      pop_1L_chr = mdl_smry_chr[idx_dbl[4]], fam_1L_chr = mdl_smry_chr[idx_dbl[5]])
+                                      popl_1L_chr = mdl_smry_chr[idx_dbl[4]], fam_1L_chr = mdl_smry_chr[idx_dbl[5]])
     bold_lgl <- data_tb$Parameter %in% c(mdl_smry_chr[idx_dbl[3]],
                                          mdl_smry_chr[idx_dbl[4]], mdl_smry_chr[idx_dbl[5]])
     if (output_type_1L_chr == "PDF") {
@@ -111,27 +111,27 @@ make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, o
     }
     return(brms_mdl_print_ls)
 }
-make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, pop_1L_chr, fam_1L_chr)
+make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, popl_1L_chr, fam_1L_chr)
 {
     brms_mdl_smry_tb <- purrr::map(1:length(smry_mdl_ls$random),
-                                   ~make_mdl_smry_elmt_tbl(cat_chr = c(ifelse(.x == 1, grp_1L_chr,
+                                   ~make_mdl_smry_elmt_tbl(ctg_chr = c(ifelse(.x == 1, grp_1L_chr,
                                                                               character(0)), paste0(names(smry_mdl_ls$ngrps)[.x],
                                                                                                     " (Number of levels: ", smry_mdl_ls$ngrps[.x][[1]],
                                                                                                     ")")), mat = smry_mdl_ls$random[.x][[1]])) %>% dplyr::bind_rows(make_mdl_smry_elmt_tbl(mat = smry_mdl_ls$fixed,
-                                                                                                                                                                                           cat_chr = pop_1L_chr), make_mdl_smry_elmt_tbl(mat = smry_mdl_ls$spec_pars,
-                                                                                                                                                                                                                                         cat_chr = fam_1L_chr))
+                                                                                                                                                                                           ctg_chr = popl_1L_chr), make_mdl_smry_elmt_tbl(mat = smry_mdl_ls$spec_pars,
+                                                                                                                                                                                                                                         ctg_chr = fam_1L_chr))
     return(brms_mdl_smry_tb)
 }
-make_complete_props_tbs_ls <- function (raw_props_tbs_ls, question_var_nm_1L_chr = "Question")
+make_complete_prpns_tbs_ls <- function (raw_prpns_tbs_ls, question_var_nm_1L_chr = "Question")
 {
-  complete_props_tbs_ls <- raw_props_tbs_ls %>% purrr::map(~{
+  complete_prpns_tbs_ls <- raw_prpns_tbs_ls %>% purrr::map(~{
     .x %>% dplyr::mutate(total_prop_dbl = rowSums(dplyr::select(.,
                                                                 -!!rlang::sym(question_var_nm_1L_chr)), na.rm = T) -
                            100) %>% dplyr::mutate_if(is.numeric, ~purrr::map2_dbl(.,
                                                                                   total_prop_dbl, ~ifelse(.x == 100, 1 - .y, .x))) %>%
       dplyr::select(-total_prop_dbl)
   })
-  return(complete_props_tbs_ls)
+  return(complete_prpns_tbs_ls)
 }
 make_correlated_data_tb <- function (synth_data_spine_ls, synth_data_idx_1L_dbl = 1)
 {
@@ -143,11 +143,11 @@ make_correlated_data_tb <- function (synth_data_spine_ls, synth_data_idx_1L_dbl 
                                                                                                                           min_max_ls = synth_data_spine_ls$min_max_ls, discrete_lgl = synth_data_spine_ls$discrete_lgl)
   return(correlated_data_tb)
 }
-make_corstars_tbl_xx <- function (x, method = c("pearson", "spearman"), removeTriangle = c("upper",
-                                                                                           "lower"), result = c("none", "html", "latex"))
+make_corstars_tbl_xx <- function (x, method_chr = c("pearson", "spearman"), removeTriangle_chr = c("upper",
+                                                                                           "lower"), result_chr = c("none", "html", "latex"))
 {
     x <- as.matrix(x)
-    correlation_matrix <- Hmisc::rcorr(x, type = method[1])
+    correlation_matrix <- Hmisc::rcorr(x, type = method_chr[1])
     R <- correlation_matrix$r
     p <- correlation_matrix$P
     mystars <- ifelse(p < 1e-04, "****", ifelse(p < 0.001, "*** ",
@@ -157,21 +157,21 @@ make_corstars_tbl_xx <- function (x, method = c("pearson", "spearman"), removeTr
     diag(Rnew) <- paste(diag(R), " ", sep = "")
     rownames(Rnew) <- colnames(x)
     colnames(Rnew) <- paste(colnames(x), "", sep = "")
-    if (removeTriangle[1] == "upper") {
+    if (removeTriangle_chr[1] == "upper") {
         Rnew <- as.matrix(Rnew)
         Rnew[upper.tri(Rnew, diag = TRUE)] <- ""
         Rnew <- as.data.frame(Rnew)
     }
-    else if (removeTriangle[1] == "lower") {
+    else if (removeTriangle_chr[1] == "lower") {
         Rnew <- as.matrix(Rnew)
         Rnew[lower.tri(Rnew, diag = TRUE)] <- ""
         Rnew <- as.data.frame(Rnew)
     }
     Rnew <- cbind(Rnew[1:length(Rnew) - 1])
-    if (result[1] == "none")
+    if (result_chr[1] == "none")
         return(Rnew)
     else {
-        if (result[1] == "html")
+        if (result_chr[1] == "html")
             print(xtable(Rnew), type = "html")
         else print(xtable(Rnew), type = "latex")
     }
@@ -194,34 +194,34 @@ make_domain_items_ls <- function (domain_qs_lup_tb, item_pfx_1L_chr)
 }
 make_fake_ts_data <- function (outp_smry_ls)
 {
-    data_tb <- outp_smry_ls$scored_data_tb %>% transform_tb_to_mdl_inp(dep_var_nm_1L_chr = outp_smry_ls$dep_var_nm_1L_chr,
-        predr_vars_nms_chr = outp_smry_ls$predr_cmprsns_tb$predr_chr,
+    data_tb <- outp_smry_ls$scored_data_tb %>% transform_tb_to_mdl_inp(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
+        predr_vars_nms_chr = outp_smry_ls$predr_cmprsn_tb$predr_chr,
         id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr,
         round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr)
     fk_data_ls <- synthpop::syn(data_tb, visit.sequence = names(data_tb)[names(data_tb) !=
         outp_smry_ls$id_var_nm_1L_chr], seed = outp_smry_ls$seed_1L_int)
     dep_vars_chr <- names(fk_data_ls$syn)[names(fk_data_ls$syn) %>%
-        purrr::map_lgl(~startsWith(.x, outp_smry_ls$dep_var_nm_1L_chr))]
+        purrr::map_lgl(~startsWith(.x, outp_smry_ls$depnt_var_nm_1L_chr))]
     fk_data_tb <- fk_data_ls$syn %>% dplyr::mutate(dplyr::across(dplyr::all_of(dep_vars_chr),
         ~NA_real_))
     return(fk_data_tb)
 }
-make_folds_ls <- function (data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", n_folds_1L_int = 10L)
+make_folds_ls <- function (data_tb, depnt_var_nm_1L_chr = "aqol6d_total_w", folds_1L_int = 10L)
 {
-    folds_ls <- caret::createFolds(data_tb %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr)),
-                                   k = n_folds_1L_int, list = TRUE, returnTrain = FALSE)
+    folds_ls <- caret::createFolds(data_tb %>% dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr)),
+                                   k = folds_1L_int, list = TRUE, returnTrain = FALSE)
     return(folds_ls)
 }
-make_item_wrst_wghts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb)
+make_make_item_wrst_wts_ls_ls <- function (domain_items_ls, itm_wrst_wghts_lup_tb)
 {
-  item_wrst_wghts_ls_ls <- domain_items_ls %>% purrr::map(~{
+  make_item_wrst_wts_ls_ls <- domain_items_ls %>% purrr::map(~{
     purrr::map_dbl(.x, ~{
       ready4fun::get_from_lup_obj(itm_wrst_wghts_lup_tb,
                                   match_var_nm_1L_chr = "Question_chr", match_value_xx = .x,
                                   target_var_nm_1L_chr = "Worst_Weight_dbl", evaluate_lgl = F)
     })
   })
-  return(item_wrst_wghts_ls_ls)
+  return(make_item_wrst_wts_ls_ls)
 }
 make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, predr_vars_nms_ls,
                                output_type_1L_chr = "HTML", mdl_types_lup = NULL, plt_types_lup = NULL,
@@ -299,13 +299,13 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
       stats::setNames(predr_vars_nms_ls %>% purrr::map_chr(~paste(.x,collapse="_")))
     return(knit_pars_ls)
 }
-make_mdl <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF",
+make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF",
     predr_var_nm_1L_chr, covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF",
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NULL)
 {
     if (is.null(mdl_types_lup))
         utils::data("mdl_types_lup", envir = environment())
-    data_tb <- transform_ds_for_mdlng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+    data_tb <- transform_ds_for_mdlng(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
     if (is.null(start_1L_chr)) {
         start_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
@@ -323,7 +323,7 @@ make_mdl <- function (data_tb, dep_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = 
     mdl_1L_chr <- paste0(ready4fun::get_from_lup_obj(mdl_types_lup,
         match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr,
         target_var_nm_1L_chr = "fn_chr", evaluate_lgl = F), "(",
-        transform_dep_var_nm(dep_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr),
+        transform_depnt_var_nm(depnt_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr),
         " ~ ", predr_var_nm_1L_chr, ifelse(is.na(covar_var_nms_chr[1]),
             "", paste0(" + ", paste0(covar_var_nms_chr, collapse = " + "))),
         ", data = data_tb", ifelse(!is.na(ready4fun::get_from_lup_obj(mdl_types_lup,
@@ -347,11 +347,11 @@ make_mdl_nms_ls <- function (predr_vars_nms_ls, mdl_types_chr)
             "_")), .y, "_", mdl_types_chr))
     return(mdl_nms_ls)
 }
-make_mdl_smry_elmt_tbl <- function (mat, cat_chr)
+make_mdl_smry_elmt_tbl <- function (mat, ctg_chr)
 {
     tb <- mat %>% tibble::as_tibble() %>% dplyr::mutate(Parameter = rownames(mat)) %>%
         dplyr::select(Parameter, dplyr::everything())
-    mdl_elmt_sum_tb <- tb %>% dplyr::filter(F) %>% tibble::add_case(Parameter = cat_chr) %>%
+    mdl_elmt_sum_tb <- tb %>% dplyr::filter(F) %>% tibble::add_case(Parameter = ctg_chr) %>%
         dplyr::bind_rows(tb)
     return(mdl_elmt_sum_tb)
 }
@@ -364,14 +364,14 @@ make_pdef_cor_mat_mat <- function (lower_diag_mat)
   }
   return(pdef_cor_mat)
 }
-make_predn_ds_with_one_predr <- function (model_mdl, dep_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF",
-    predr_var_nm_1L_chr, predr_vals_dbl, pred_type_1L_chr = NULL)
+make_predn_ds_with_one_predr <- function (model_mdl, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF",
+    predr_var_nm_1L_chr, predr_vals_dbl, predn_type_1L_chr = NULL)
 {
     predn_ds_tb <- tibble::tibble(`:=`(!!rlang::sym(predr_var_nm_1L_chr),
         predr_vals_dbl))
-    predn_ds_tb <- predn_ds_tb %>% dplyr::mutate(`:=`(!!rlang::sym(dep_var_nm_1L_chr),
-        stats::predict(model_mdl, newdata = predn_ds_tb, type = pred_type_1L_chr) %>%
-            calculate_dep_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
+    predn_ds_tb <- predn_ds_tb %>% dplyr::mutate(`:=`(!!rlang::sym(depnt_var_nm_1L_chr),
+        stats::predict(model_mdl, newdata = predn_ds_tb, type = predn_type_1L_chr) %>%
+            calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
                 tfmn_is_outp_1L_lgl = T)))
     return(predn_ds_tb)
 }
@@ -410,7 +410,7 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
                                                                                             .x)][1])
     return(prefd_mdls_chr)
 }
-make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "utl_total_w",
+make_shareable_mdl <- function (data_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "utl_total_w",
     id_var_nm_1L_chr = "fkClientID", tfmn_1L_chr = "CLL", mdl_type_1L_chr = "OLS_CLL",
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NA_character_,
     seed_1L_int = 12345L)
@@ -418,9 +418,9 @@ make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "utl_t
     if (is.null(mdl_types_lup))
         utils::data(mdl_types_lup, envir = environment())
     all_var_nms_chr <- names(data_tb)
-    tfd_dep_var_nm_1L_chr <- all_var_nms_chr[all_var_nms_chr %>%
-        startsWith(dep_var_nm_1L_chr)]
-    predr_var_nms_chr <- setdiff(all_var_nms_chr, c(tfd_dep_var_nm_1L_chr,
+    tfd_depnt_var_nm_1L_chr <- all_var_nms_chr[all_var_nms_chr %>%
+        startsWith(depnt_var_nm_1L_chr)]
+    predr_var_nms_chr <- setdiff(all_var_nms_chr, c(tfd_depnt_var_nm_1L_chr,
         id_var_nm_1L_chr))
     if (length(predr_var_nms_chr) > 1) {
         covar_var_nms_chr <- predr_var_nms_chr[2:length(predr_var_nms_chr)]
@@ -429,7 +429,7 @@ make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "utl_t
     }
     fk_data_ls <- synthpop::syn(data_tb, visit.sequence = all_var_nms_chr[all_var_nms_chr !=
         id_var_nm_1L_chr], seed = seed_1L_int)
-    model_mdl <- make_mdl(fk_data_ls$syn, dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+    model_mdl <- make_mdl(fk_data_ls$syn, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         predr_var_nm_1L_chr = predr_var_nms_chr[1], covar_var_nms_chr = covar_var_nms_chr,
         tfmn_1L_chr = tfmn_1L_chr, mdl_type_1L_chr = mdl_type_1L_chr,
         mdl_types_lup = mdl_types_lup, control_1L_chr = control_1L_chr,
@@ -445,7 +445,7 @@ make_shareable_mdl <- function (data_tb, mdl_smry_tb, dep_var_nm_1L_chr = "utl_t
     names(model_mdl$coefficients) <- par_nms_chr
     return(model_mdl)
 }
-make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "utl_total_w",
+make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_total_w",
     predr_vars_nms_chr, fn = calculate_rmse, mdl_nm_1L_chr = NA_character_,
     seed_1L_dbl = 23456)
 {
@@ -457,7 +457,7 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "utl_tota
     coef <- coef[1:nrow(coef), 1:4]
     R2 <- brms::bayes_R2(mdl_ls)
     RMSE <- psych::describe(apply(predictions, 1, fn, y_dbl = data_tb %>%
-        dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))), quant = c(0.25,
+        dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr))), quant = c(0.25,
         0.75), skew = F, ranges = F)
     RMSE <- cbind(RMSE$mean, RMSE$sd, RMSE$Q0.25, RMSE$Q0.75) %>%
         as.vector()
@@ -471,48 +471,48 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, dep_var_nm_1L_chr = "utl_tota
         dplyr::select(Model, Parameter, Estimate, SE, `95% CI`)
     return(smry_of_brm_mdl_tb)
 }
-make_smry_of_mdl <- function (data_tb, model_mdl, n_folds_1L_int = 10, dep_var_nm_1L_chr = "utl_total_w",
+make_smry_of_mdl_outp <- function (data_tb, model_mdl, folds_1L_int = 10, depnt_var_nm_1L_chr = "utl_total_w",
     start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr,
     covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF",
-    mdl_types_lup = NULL, pred_type_1L_chr = NULL)
+    mdl_types_lup = NULL, predn_type_1L_chr = NULL)
 {
     if (is.null(mdl_types_lup))
         utils::data("mdl_types_lup", envir = environment())
     data_tb <- data_tb %>% dplyr::filter(!is.na(!!rlang::sym(predr_var_nm_1L_chr)))
-    data_tb <- transform_ds_for_mdlng(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+    data_tb <- transform_ds_for_mdlng(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
     mdl_desc_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
         match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr,
         target_var_nm_1L_chr = "long_name_chr", evaluate_lgl = F)
-    folds_ls <- make_folds_ls(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr,
-        n_folds_1L_int = n_folds_1L_int)
+    folds_ls <- make_folds_ls(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+        folds_1L_int = folds_1L_int)
     smry_of_one_predr_mdl_tb <- purrr::map_dfr(folds_ls, ~{
-        model_mdl <- make_mdl(data_tb[-.x,], dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+        model_mdl <- make_mdl(data_tb[-.x,], depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
             start_1L_chr = start_1L_chr, tfmn_1L_chr = tfmn_1L_chr,
             predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr,
             mdl_type_1L_chr = mdl_type_1L_chr, mdl_types_lup = mdl_types_lup)
-        pred_old_dbl <- stats::predict(model_mdl, type = pred_type_1L_chr)
+        pred_old_dbl <- stats::predict(model_mdl, type = predn_type_1L_chr)
         pred_new_dbl <- stats::predict(model_mdl, newdata = data_tb[.x, ],
-            type = pred_type_1L_chr) %>% calculate_dep_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
+            type = predn_type_1L_chr) %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
             tfmn_is_outp_1L_lgl = T)
         tibble::tibble(Rsquared = caret::R2(pred_old_dbl, data_tb[-.x,
-            ] %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr)),
+            ] %>% dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr)),
             form = "traditional"), RMSE = caret::RMSE(pred_old_dbl,
-            data_tb[-.x, ] %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))),
+            data_tb[-.x, ] %>% dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr))),
             MAE = caret::MAE(pred_old_dbl, data_tb[-.x, ] %>%
-                dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))),
+                dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr))),
             RsquaredP = caret::R2(pred_new_dbl, data_tb[.x, ] %>%
-                dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr)),
+                dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr)),
                 form = "traditional"), RMSEP = caret::RMSE(pred_new_dbl,
-                data_tb[.x, ] %>% dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))),
+                data_tb[.x, ] %>% dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr))),
             MAEP = caret::MAE(pred_new_dbl, data_tb[.x, ] %>%
-                dplyr::pull(!!rlang::sym(dep_var_nm_1L_chr))))
+                dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr))))
     }) %>% dplyr::summarise_all(mean) %>% dplyr::mutate(Model = mdl_desc_1L_chr) %>%
         dplyr::select(Model, dplyr::everything())
     return(smry_of_one_predr_mdl_tb)
 }
-make_smry_of_ts_mdl <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_,
-    dep_var_nm_1L_chr = "utl_total_w", id_var_nm_1L_chr = "fkClientID",
+make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_,
+    depnt_var_nm_1L_chr = "utl_total_w", id_var_nm_1L_chr = "fkClientID",
     round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", predictors_lup,
     backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L,
     seed_1L_int = 1000L)
@@ -526,18 +526,18 @@ make_smry_of_ts_mdl <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr,
                                          evaluate_lgl = F),
              1)
     )
-    tfd_data_tb <- transform_tb_to_mdl_inp(data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+    tfd_data_tb <- transform_tb_to_mdl_inp(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         predr_vars_nms_chr = predr_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr,
         round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr,
         scaling_fctr_dbl = scaling_fctr_dbl)
-    tfd_dep_var_nm_1L_chr <- ifelse(identical(fn, fit_clg_log_tfmn),
-        transform_dep_var_nm_for_cll(dep_var_nm_1L_chr), dep_var_nm_1L_chr)
-    args_ls <- list(data_tb = tfd_data_tb, dep_var_nm_1L_chr = tfd_dep_var_nm_1L_chr,
+    tfd_depnt_var_nm_1L_chr <- ifelse(identical(fn, fit_clg_log_tfmn),
+        transform_depnt_var_nm_for_cll(depnt_var_nm_1L_chr), depnt_var_nm_1L_chr)
+    args_ls <- list(data_tb = tfd_data_tb, depnt_var_nm_1L_chr = tfd_depnt_var_nm_1L_chr,
         predr_vars_nms_chr = predr_vars_nms_chr, iters_1L_int = iters_1L_int,
         backend_1L_chr = backend_1L_chr, seed_1L_int = seed_1L_int)
     mdl_ls <- rlang::exec(fn, !!!args_ls)
     smry_of_ts_mdl_ls <- list(smry_of_ts_mdl_tb = make_smry_of_brm_mdl(mdl_ls,
-        data_tb = tfd_data_tb, dep_var_nm_1L_chr = tfd_dep_var_nm_1L_chr,
+        data_tb = tfd_data_tb, depnt_var_nm_1L_chr = tfd_depnt_var_nm_1L_chr,
         predr_vars_nms_chr = predr_vars_nms_chr, fn = ifelse(identical(fn,
             fit_gsn_log_lnk), calculate_rmse, calculate_rmse_tfmn),
         mdl_nm_1L_chr = mdl_nm_1L_chr))
@@ -548,7 +548,7 @@ make_smry_of_ts_mdl <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr,
             file.remove(smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)
         saveRDS(mdl_ls, smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)
         smry_of_ts_mdl_ls$paths_to_mdl_plts_chr <- write_brm_model_plts(mdl_ls,
-            tfd_data_tb, dep_var_nm_1L_chr = dep_var_nm_1L_chr,
+            tfd_data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
             mdl_nm_1L_chr = mdl_nm_1L_chr, path_to_write_to_1L_chr = path_to_write_to_1L_chr,
             round_var_nm_1L_chr = round_var_nm_1L_chr, tfmn_fn = ifelse(identical(fn,
                 fit_gsn_log_lnk), function(x) {
@@ -566,7 +566,7 @@ make_synth_series_tbs_ls <- function (synth_data_spine_ls, series_names_chr)
                                                                                                                                                       idx_int = .x)) %>% stats::setNames(series_names_chr)
   return(synth_series_tbs_ls)
 }
-make_vec_with_sum_of_int <- function (target_int, start_int, end_int, length_int)
+make_vec_with_sum_of_int_val <- function (target_int, start_int, end_int, length_int)
 {
   vec_int <- Surrogate::RandVec(a = start_int, b = end_int,
                                 s = target_int, n = length_int, m = 1) %>% purrr::pluck("RandVecOutput") %>%

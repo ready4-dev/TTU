@@ -1,15 +1,15 @@
-#' Calculate dep var transformation
-#' @description calculate_dep_var_tfmn() is a Calculate function that imputes data. Specifically, this function implements an algorithm to calculate dep var transformation. The function returns Transformed dep var value (a double vector).
-#' @param dep_var_val_dbl Dep var value (a double vector)
+#' Calculate dpnt variable transformation
+#' @description calculate_dpnt_var_tfmn() is a Calculate function that performs a numeric calculation. Specifically, this function implements an algorithm to calculate dpnt variable transformation. The function returns Transformed dep variable value (a double vector).
+#' @param dep_var_val_dbl Dep variable value (a double vector)
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param tfmn_is_outp_1L_lgl Transformation is output (a logical vector of length one), Default: F
-#' @return Transformed dep var value (a double vector)
-#' @rdname calculate_dep_var_tfmn
+#' @return Transformed dep variable value (a double vector)
+#' @rdname calculate_dpnt_var_tfmn
 #' @export 
 #' @importFrom boot inv.logit
 #' @importFrom psych logit
 #' @keywords internal
-calculate_dep_var_tfmn <- function (dep_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_is_outp_1L_lgl = F) 
+calculate_dpnt_var_tfmn <- function (dep_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_is_outp_1L_lgl = F) 
 {
     tfd_dep_var_val_dbl <- dep_var_val_dbl
     if (tfmn_1L_chr == "LOG") {
@@ -34,11 +34,11 @@ calculate_dep_var_tfmn <- function (dep_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_i
     }
     return(tfd_dep_var_val_dbl)
 }
-#' Calculate rmse
-#' @description calculate_rmse() is a Calculate function that imputes data. Specifically, this function implements an algorithm to calculate rmse. The function returns Rmse (a double vector).
+#' Calculate root mean square error
+#' @description calculate_rmse() is a Calculate function that performs a numeric calculation. Specifically, this function implements an algorithm to calculate root mean square error. The function returns Root mean square error (a double vector).
 #' @param y_dbl Y (a double vector)
 #' @param yhat_dbl Yhat (a double vector)
-#' @return Rmse (a double vector)
+#' @return Root mean square error (a double vector)
 #' @rdname calculate_rmse
 #' @export 
 
@@ -48,11 +48,11 @@ calculate_rmse <- function (y_dbl, yhat_dbl)
     rmse_dbl <- sqrt(mean((yhat_dbl - y_dbl)^2))
     return(rmse_dbl)
 }
-#' Calculate rmse transformation
-#' @description calculate_rmse_tfmn() is a Calculate function that imputes data. Specifically, this function implements an algorithm to calculate rmse transformation. The function returns Rmse transformation (a double vector).
+#' Calculate root mean square error transformation
+#' @description calculate_rmse_tfmn() is a Calculate function that performs a numeric calculation. Specifically, this function implements an algorithm to calculate root mean square error transformation. The function returns Root mean square error transformation (a double vector).
 #' @param y_dbl Y (a double vector)
 #' @param yhat_dbl Yhat (a double vector)
-#' @return Rmse transformation (a double vector)
+#' @return Root mean square error transformation (a double vector)
 #' @rdname calculate_rmse_tfmn
 #' @export 
 

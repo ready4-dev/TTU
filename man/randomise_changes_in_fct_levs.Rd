@@ -2,16 +2,16 @@
 % Please edit documentation in R/fn_randomise.R
 \name{randomise_changes_in_fct_levs}
 \alias{randomise_changes_in_fct_levs}
-\title{Randomise changes in factor levels}
+\title{Randomise changes in factor vector levels}
 \usage{
 randomise_changes_in_fct_levs(vector_fct, prob_unchanged_dbl)
 }
 \arguments{
-\item{vector_fct}{Vector (a factor)}
+\item{vector_fct}{Vector (a factor vector)}
 
-\item{prob_unchanged_dbl}{Prob unchanged (a double vector)}
+\item{prob_unchanged_dbl}{Probability unchanged (a double vector)}
 }
 \description{
-randomise_changes_in_fct_levs() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise changes in factor levels. The function is called for its side effects and does not return a value.
+randomise_changes_in_fct_levs() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise changes in factor vector levels. The function is called for its side effects and does not return a value.
 }
 \keyword{internal}

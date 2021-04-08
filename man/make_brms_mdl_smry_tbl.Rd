@@ -2,23 +2,23 @@
 % Please edit documentation in R/fn_make.R
 \name{make_brms_mdl_smry_tbl}
 \alias{make_brms_mdl_smry_tbl}
-\title{Make brms model smry table}
+\title{Make bayesian regression models model summary table}
 \usage{
-make_brms_mdl_smry_tbl(smry_mdl_ls, grp_1L_chr, pop_1L_chr, fam_1L_chr)
+make_brms_mdl_smry_tbl(smry_mdl_ls, grp_1L_chr, popl_1L_chr, fam_1L_chr)
 }
 \arguments{
-\item{smry_mdl_ls}{Smry model (a list)}
+\item{smry_mdl_ls}{Summary (a list of models)}
 
-\item{grp_1L_chr}{Grp (a character vector of length one)}
+\item{grp_1L_chr}{Group (a character vector of length one)}
 
-\item{pop_1L_chr}{Pop (a character vector of length one)}
+\item{popl_1L_chr}{Population (a character vector of length one)}
 
 \item{fam_1L_chr}{Fam (a character vector of length one)}
 }
 \value{
-Brms model smry (a tibble)
+Bayesian regression models model summary (a tibble)
 }
 \description{
-make_brms_mdl_smry_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make brms model smry table. The function returns Brms model smry (a tibble).
+make_brms_mdl_smry_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make bayesian regression models model summary table. The function returns Bayesian regression models model summary (a tibble).
 }
 \keyword{internal}

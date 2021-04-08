@@ -2,15 +2,15 @@
 % Please edit documentation in R/fn_write.R
 \name{write_brm_model_plts}
 \alias{write_brm_model_plts}
-\title{Write brm model plts}
+\title{Write bayesian regression model model plots}
 \usage{
 write_brm_model_plts(
   mdl_ls,
   tfd_data_tb,
   mdl_nm_1L_chr,
   path_to_write_to_1L_chr,
-  dep_var_nm_1L_chr = "utl_total_w",
-  dep_var_desc_1L_chr = "Utility score",
+  depnt_var_nm_1L_chr = "utl_total_w",
+  depnt_var_desc_1L_chr = "Utility score",
   round_var_nm_1L_chr = "round",
   tfmn_fn = function(x) {     x },
   units_1L_chr = "in",
@@ -22,7 +22,7 @@ write_brm_model_plts(
 )
 }
 \arguments{
-\item{mdl_ls}{Model (a list)}
+\item{mdl_ls}{Model list (a list of models)}
 
 \item{tfd_data_tb}{Transformed data (a tibble)}
 
@@ -30,11 +30,11 @@ write_brm_model_plts(
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
-\item{dep_var_desc_1L_chr}{Dep var description (a character vector of length one), Default: 'Utility score'}
+\item{depnt_var_desc_1L_chr}{Dependent variable description (a character vector of length one), Default: 'Utility score'}
 
-\item{round_var_nm_1L_chr}{Round var name (a character vector of length one), Default: 'round'}
+\item{round_var_nm_1L_chr}{Round variable name (a character vector of length one), Default: 'round'}
 
 \item{tfmn_fn}{Transformation (a function), Default: function(x) {
 x
@@ -46,16 +46,16 @@ x
 
 \item{width_dbl}{Width (a double vector), Default: c(rep(6, 2), rep(6, 2))}
 
-\item{rsl_dbl}{Rsl (a double vector), Default: rep(300, 4)}
+\item{rsl_dbl}{Resolution (a double vector), Default: rep(300, 4)}
 
 \item{args_ls}{Arguments (a list), Default: NULL}
 
 \item{seed_1L_dbl}{Seed (a double vector of length one), Default: 23456}
 }
 \value{
-Model plts paths (a list)
+Model plots paths (a list)
 }
 \description{
-write_brm_model_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm model plts. The function returns Model plts paths (a list).
+write_brm_model_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write bayesian regression model model plots. The function returns Model plots paths (a list).
 }
 \keyword{internal}

@@ -69,3 +69,12 @@
 ^data-raw/vignettes/_AQoL_6D_Syn_Pop\.Rmd$
 ^doc$
 ^Meta$
+^data-raw/dataverse/abbreviations_lup/abbreviations_lup\.csv$
+^data-raw/dataverse/abbreviations_lup/abbreviations_lup\.RDS$
+^data-raw/dataverse/fn_type_lup_tb/fn_type_lup_tb\.csv$
+^data-raw/dataverse/fn_type_lup_tb/fn_type_lup_tb\.RDS$
+^data-raw/MAKE_CLASSES\.R$
+^data-raw/MAKE_HOUSESTYLE_DSS\.R$
+^data-raw/dataverse/prototype_lup/prototype_lup\.csv$
+^data-raw/dataverse/prototype_lup/prototype_lup\.RDS$
+^data-raw/extra_abbrs\.txt$

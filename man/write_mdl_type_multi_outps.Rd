@@ -6,33 +6,33 @@
 \usage{
 write_mdl_type_multi_outps(
   data_tb,
-  n_folds_1L_int = 10,
+  folds_1L_int = 10,
   predrs_var_nms_chr,
   covar_var_nms_chr = NA_character_,
   start_1L_chr = NULL,
   mdl_type_1L_chr,
-  dep_var_nm_1L_chr = "utl_total_w",
+  depnt_var_nm_1L_chr = "utl_total_w",
   path_to_write_to_1L_chr,
   new_dir_nm_1L_chr,
   mdl_types_lup = NULL,
   fl_nm_pfx_1L_chr = "C_PREDR",
-  plt_idcs_int = c(3, 5)
+  plt_idxs_int = c(3, 5)
 )
 }
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{n_folds_1L_int}{N folds (an integer vector of length one), Default: 10}
+\item{folds_1L_int}{Folds (an integer vector of length one), Default: 10}
 
-\item{predrs_var_nms_chr}{Predrs var names (a character vector)}
+\item{predrs_var_nms_chr}{Predictors variable names (a character vector)}
 
-\item{covar_var_nms_chr}{Covar var names (a character vector), Default: 'NA'}
+\item{covar_var_nms_chr}{Covariate variable names (a character vector), Default: 'NA'}
 
 \item{start_1L_chr}{Start (a character vector of length one), Default: NULL}
 
 \item{mdl_type_1L_chr}{Model type (a character vector of length one)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
 
@@ -42,12 +42,12 @@ write_mdl_type_multi_outps(
 
 \item{fl_nm_pfx_1L_chr}{File name prefix (a character vector of length one), Default: 'C_PREDR'}
 
-\item{plt_idcs_int}{Plt idcs (an integer vector), Default: c(3, 5)}
+\item{plt_idxs_int}{Plot indices (an integer vector), Default: c(3, 5)}
 }
 \value{
-Smry of model sngl predrs (a tibble)
+Summary of model single predictors (a tibble)
 }
 \description{
-write_mdl_type_multi_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type multi outputs. The function returns Smry of model sngl predrs (a tibble).
+write_mdl_type_multi_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type multi outputs. The function returns Summary of model single predictors (a tibble).
 }
 \keyword{internal}

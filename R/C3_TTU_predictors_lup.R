@@ -29,12 +29,12 @@ x
 #' @description Create a new prototype for the TTU S3 class for candidate predictors lookup table
 #' @param short_name_chr Short name (a character vector), Default: character(0)
 #' @param long_name_chr Long name (a character vector), Default: character(0)
-#' @param min_val_dbl Min value (a double vector), Default: numeric(0)
-#' @param max_val_dbl Max value (a double vector), Default: numeric(0)
+#' @param min_val_dbl Minimum value (a double vector), Default: numeric(0)
+#' @param max_val_dbl Maximum value (a double vector), Default: numeric(0)
 #' @param class_chr Class (a character vector), Default: character(0)
 #' @param increment_dbl Increment (a double vector), Default: numeric(0)
 #' @param class_fn_chr Class function (a character vector), Default: character(0)
-#' @param mdl_scaling_dbl Mdl scaling (a double vector), Default: numeric(0)
+#' @param mdl_scaling_dbl Model scaling (a double vector), Default: numeric(0)
 #' @param covariate_lgl Covariate (a logical vector), Default: logical(0)
 #' @return A prototype for TTU S3 class for candidate predictors lookup table
 #' @details TTU S3 class for candidate predictors lookup table
@@ -81,6 +81,7 @@ stop(paste0("TIBBLE must include columns named: ",
 names(make_pt_TTU_predictors_lup()) %>% stringr::str_c(sep="", collapse = ", ")),
 call. = FALSE)
 }
+
  if(!identical(make_pt_TTU_predictors_lup() %>% 
 dplyr::summarise_all(class) %>% 
  tidyr::gather(variable,class) %>% 
@@ -102,6 +103,7 @@ dplyr::pull(2),
 stringr::str_c(sep="", collapse = ", ")),
 call. = FALSE)
 }
+
 x}
 #' Is TTU S3 class for candidate predictors lookup table
 #' @description Check whether an object is a valid instance of the TTU S3 class for candidate predictors lookup table

@@ -1,10 +1,10 @@
-#' Reorder cndt predrs
-#' @description reorder_cndt_predrs_chr() is a Reorder function that reorders an object to conform to a pre-specified schema. Specifically, this function implements an algorithm to reorder cndt predrs character vector. The function is called for its side effects and does not return a value.
-#' @param candidate_predrs_chr Candidate predrs (a character vector)
+#' Reorder candidate predictors
+#' @description reorder_cndt_predrs_chr() is a Reorder function that reorders an object to conform to a pre-specified schema. Specifically, this function implements an algorithm to reorder candidate predictors character vector. The function is called for its side effects and does not return a value.
+#' @param candidate_predrs_chr Candidate predictors (a character vector)
 #' @param data_tb Data (a tibble)
-#' @param dep_var_nm_1L_chr Dep var name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'
 #' @param method_1L_chr Method (a character vector of length one), Default: 'pearson'
-#' @return NA ()
+#' @return Reordered candidate (predictors)
 #' @rdname reorder_cndt_predrs_chr
 #' @export 
 #' @importFrom dplyr select all_of mutate across arrange desc filter pull
@@ -12,25 +12,25 @@
 #' @importFrom tibble as_tibble
 #' @importFrom rlang sym
 #' @keywords internal
-reorder_cndt_predrs_chr <- function (candidate_predrs_chr, data_tb, dep_var_nm_1L_chr = "aqol6d_total_w", 
+reorder_cndt_predrs_chr <- function (candidate_predrs_chr, data_tb, depnt_var_nm_1L_chr = "aqol6d_total_w", 
     method_1L_chr = "pearson") 
 {
-    data_mat <- as.matrix(data_tb %>% dplyr::select(c(dplyr::all_of(dep_var_nm_1L_chr), 
+    data_mat <- as.matrix(data_tb %>% dplyr::select(c(dplyr::all_of(depnt_var_nm_1L_chr), 
         dplyr::all_of(candidate_predrs_chr))))
     corr_ls <- Hmisc::rcorr(data_mat, type = method_1L_chr)
     reordered_cndt_predrs <- corr_ls$r %>% tibble::as_tibble(rownames = "var_nms_chr") %>% 
         dplyr::mutate(dplyr::across(where(is.numeric), abs)) %>% 
-        dplyr::arrange(dplyr::desc(!!rlang::sym(dep_var_nm_1L_chr))) %>% 
-        dplyr::filter(var_nms_chr != dep_var_nm_1L_chr) %>% dplyr::pull(var_nms_chr) %>% 
-        as.vector()
+        dplyr::arrange(dplyr::desc(!!rlang::sym(depnt_var_nm_1L_chr))) %>% 
+        dplyr::filter(var_nms_chr != depnt_var_nm_1L_chr) %>% 
+        dplyr::pull(var_nms_chr) %>% as.vector()
     return(reordered_cndt_predrs)
 }
 #' Reorder tibbles for target correlations
 #' @description reorder_tbs_for_target_cors() is a Reorder function that reorders an object to conform to a pre-specified schema. Specifically, this function implements an algorithm to reorder tibbles for target correlations. The function returns Tibbles (a list).
 #' @param tbs_ls Tibbles (a list)
 #' @param cor_dbl Correlation (a double vector)
-#' @param cor_var_chr Correlation var (a character vector)
-#' @param id_var_to_rm_1L_chr Id var to rm (a character vector of length one), Default: 'NA'
+#' @param cor_var_chr Correlation variable (a character vector)
+#' @param id_var_to_rm_1L_chr Identity variable to rm (a character vector of length one), Default: 'NA'
 #' @return Tibbles (a list)
 #' @rdname reorder_tbs_for_target_cors
 #' @export 

@@ -7,7 +7,7 @@
 make_fake_ts_data(outp_smry_ls)
 }
 \arguments{
-\item{outp_smry_ls}{Output smry (a list)}
+\item{outp_smry_ls}{Output summary (a list)}
 }
 \value{
 Fk data (a tibble)

@@ -11,15 +11,15 @@ write_shareable_mdls(
 )
 }
 \arguments{
-\item{outp_smry_ls}{Output smry (a list)}
+\item{outp_smry_ls}{Output summary (a list)}
 
 \item{new_dir_nm_1L_chr}{New directory name (a character vector of length one), Default: 'G_Shareable'}
 
 \item{shareable_title_detail_1L_chr}{Shareable title detail (a character vector of length one), Default: ''}
 }
 \value{
-Output smry (a list)
+Output summary (a list)
 }
 \description{
-write_shareable_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models. The function returns Output smry (a list).
+write_shareable_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models. The function returns Output summary (a list).
 }

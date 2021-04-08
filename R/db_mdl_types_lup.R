@@ -11,8 +11,8 @@
 #'   \item{family_chr}{Family (a character vector)}
 #'   \item{fn_chr}{Function (a character vector)}
 #'   \item{start_chr}{Start (a character vector)}
-#'   \item{pred_type_chr}{Pred type (a character vector)}
+#'   \item{predn_type_chr}{Prediction type (a character vector)}
 #'   \item{tfmn_chr}{Transformation (a character vector)}
-#'   \item{tfmn_for_bnml_lgl}{Transformation for bnml (a logical vector)}
+#'   \item{tfmn_for_bnml_lgl}{Transformation for binomial (a logical vector)}
 #' }
 "mdl_types_lup"

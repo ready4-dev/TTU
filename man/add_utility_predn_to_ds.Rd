@@ -8,35 +8,35 @@ add_utility_predn_to_ds(
   data_tb,
   model_mdl,
   tfmn_1L_chr,
-  dep_var_nm_1L_chr,
+  depnt_var_nm_1L_chr,
   predr_vars_nms_chr = NULL,
   force_min_max_1L_lgl = T,
   utl_min_val_1L_dbl = 0.03,
   impute_1L_lgl = T,
   utl_cls_fn = NULL,
-  rmv_tfmd_dep_var_1L_lgl = F
+  rmv_tfd_depnt_var_1L_lgl = F
 )
 }
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{model_mdl}{PARAM_DESCRIPTION}
+\item{model_mdl}{Model (a model)}
 
 \item{tfmn_1L_chr}{Transformation (a character vector of length one)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one)}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one)}
 
-\item{predr_vars_nms_chr}{Predr vars names (a character vector), Default: NULL}
+\item{predr_vars_nms_chr}{Predictor variables names (a character vector), Default: NULL}
 
-\item{force_min_max_1L_lgl}{Force min max (a logical vector of length one), Default: T}
+\item{force_min_max_1L_lgl}{Force minimum maximum (a logical vector of length one), Default: T}
 
-\item{utl_min_val_1L_dbl}{Utl min value (a double vector of length one), Default: 0.03}
+\item{utl_min_val_1L_dbl}{Utility minimum value (a double vector of length one), Default: 0.03}
 
 \item{impute_1L_lgl}{Impute (a logical vector of length one), Default: T}
 
-\item{utl_cls_fn}{Utl class (a function), Default: NULL}
+\item{utl_cls_fn}{Utility class (a function), Default: NULL}
 
-\item{rmv_tfmd_dep_var_1L_lgl}{Rmv tfmd dep var (a logical vector of length one), Default: F}
+\item{rmv_tfd_depnt_var_1L_lgl}{Remove transformed dependent variable (a logical vector of length one), Default: F}
 }
 \value{
 Data (a tibble)

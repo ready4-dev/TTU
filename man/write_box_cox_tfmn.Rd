@@ -8,7 +8,7 @@ write_box_cox_tfmn(
   data_tb,
   predr_var_nm_1L_chr,
   path_to_write_to_1L_chr,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  depnt_var_nm_1L_chr = "aqol6d_total_w",
   covar_var_nms_chr = NA_character_,
   fl_nm_pfx_1L_chr = "A_RT",
   height_1L_dbl = 6,
@@ -20,13 +20,13 @@ write_box_cox_tfmn(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{predr_var_nm_1L_chr}{Predr var name (a character vector of length one)}
+\item{predr_var_nm_1L_chr}{Predictor variable name (a character vector of length one)}
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'}
 
-\item{covar_var_nms_chr}{Covar var names (a character vector), Default: 'NA'}
+\item{covar_var_nms_chr}{Covariate variable names (a character vector), Default: 'NA'}
 
 \item{fl_nm_pfx_1L_chr}{File name prefix (a character vector of length one), Default: 'A_RT'}
 

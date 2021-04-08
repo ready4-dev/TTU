@@ -6,7 +6,7 @@
 \usage{
 transform_tb_to_mdl_inp(
   data_tb,
-  dep_var_nm_1L_chr = "utl_total_w",
+  depnt_var_nm_1L_chr = "utl_total_w",
   predr_vars_nms_chr,
   id_var_nm_1L_chr = "fkClientID",
   round_var_nm_1L_chr = "round",
@@ -20,28 +20,28 @@ transform_tb_to_mdl_inp(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
-\item{predr_vars_nms_chr}{Predr vars names (a character vector)}
+\item{predr_vars_nms_chr}{Predictor variables names (a character vector)}
 
-\item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
+\item{id_var_nm_1L_chr}{Identity variable name (a character vector of length one), Default: 'fkClientID'}
 
-\item{round_var_nm_1L_chr}{Round var name (a character vector of length one), Default: 'round'}
+\item{round_var_nm_1L_chr}{Round variable name (a character vector of length one), Default: 'round'}
 
-\item{round_bl_val_1L_chr}{Round bl value (a character vector of length one), Default: 'Baseline'}
+\item{round_bl_val_1L_chr}{Round baseline value (a character vector of length one), Default: 'Baseline'}
 
-\item{drop_all_msng_1L_lgl}{Drop all msng (a logical vector of length one), Default: T}
+\item{drop_all_msng_1L_lgl}{Drop all missing (a logical vector of length one), Default: T}
 
-\item{scaling_fctr_dbl}{Scaling fctr (a double vector), Default: 0.01}
+\item{scaling_fctr_dbl}{Scaling factor (a double vector), Default: 0.01}
 
 \item{ungroup_1L_lgl}{Ungroup (a logical vector of length one), Default: F}
 
-\item{add_cll_tfmn_1L_lgl}{Add cll transformation (a logical vector of length one), Default: T}
+\item{add_cll_tfmn_1L_lgl}{Add complementary log log transformation (a logical vector of length one), Default: T}
 }
 \value{
 Transformed for model input (a tibble)
 }
 \description{
-transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble).
+transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument depnt_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble).
 }
 \keyword{internal}

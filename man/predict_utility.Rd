@@ -19,20 +19,20 @@ predict_utility(
 
 \item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
-\item{model_mdl}{PARAM_DESCRIPTION}
+\item{model_mdl}{Model (a model)}
 
-\item{force_min_max_1L_lgl}{Force min max (a logical vector of length one), Default: T}
+\item{force_min_max_1L_lgl}{Force minimum maximum (a logical vector of length one), Default: T}
 
-\item{utl_min_val_1L_dbl}{Utl min value (a double vector of length one), Default: 0.03}
+\item{utl_min_val_1L_dbl}{Utility minimum value (a double vector of length one), Default: 0.03}
 
 \item{impute_1L_lgl}{Impute (a logical vector of length one), Default: T}
 
-\item{utl_cls_fn}{Utl class (a function), Default: NULL}
+\item{utl_cls_fn}{Utility class (a function), Default: NULL}
 }
 \value{
-Predd utl (a double vector)
+Predicted utility (a double vector)
 }
 \description{
-predict_utility() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict utility. The function returns Predd utl (a double vector).
+predict_utility() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict utility. The function returns Predicted utility (a double vector).
 }
 \keyword{internal}

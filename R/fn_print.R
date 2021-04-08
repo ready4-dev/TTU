@@ -1,5 +1,5 @@
-#' Print all plts for model set
-#' @description print_all_plts_for_mdl_set() is a Print function that prints output to console Specifically, this function implements an algorithm to print all plts for model set. The function is called for its side effects and does not return a value.
+#' Print all plots for model set
+#' @description print_all_plts_for_mdl_set() is a Print function that prints output to console Specifically, this function implements an algorithm to print all plots for model set. The function is called for its side effects and does not return a value.
 #' @param output_ls Output (a list)
 #' @param start_from_1L_int Start from (an integer vector of length one), Default: 0
 #' @return NULL
@@ -16,12 +16,12 @@ print_all_plts_for_mdl_set <- function (output_ls, start_from_1L_int = 0L)
         title_1L_chr = names(output_ls)[.x], label_refs_chr = label_refs_mat[.x, 
             ]))
 }
-#' Print time series model plts
-#' @description print_ts_mdl_plts() is a Print function that prints output to console Specifically, this function implements an algorithm to print time series model plts. The function is called for its side effects and does not return a value.
-#' @param paths_to_plts_chr Paths to plts (a character vector)
+#' Print time series model plots
+#' @description print_ts_mdl_plts() is a Print function that prints output to console Specifically, this function implements an algorithm to print time series model plots. The function is called for its side effects and does not return a value.
+#' @param paths_to_plts_chr Paths to plots (a character vector)
 #' @param title_1L_chr Title (a character vector of length one)
 #' @param label_refs_chr Label references (a character vector)
-#' @param mdl_smry_ls Model smry (a list)
+#' @param mdl_smry_ls Model summary (a list)
 #' @return NULL
 #' @rdname print_ts_mdl_plts
 #' @export 

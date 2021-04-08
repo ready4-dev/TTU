@@ -6,16 +6,16 @@
 \usage{
 make_folds_ls(
   data_tb,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
-  n_folds_1L_int = 10L
+  depnt_var_nm_1L_chr = "aqol6d_total_w",
+  folds_1L_int = 10L
 )
 }
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'}
 
-\item{n_folds_1L_int}{N folds (an integer vector of length one), Default: 10}
+\item{folds_1L_int}{Folds (an integer vector of length one), Default: 10}
 }
 \value{
 Folds (a list)

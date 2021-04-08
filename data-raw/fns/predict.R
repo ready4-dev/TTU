@@ -6,7 +6,7 @@ predict_utility <- function (data_tb,
                              impute_1L_lgl = T,
                              utl_cls_fn = NULL)
 {
-    predd_utl_dbl <- predict(model_mdl, newdata = data_tb) %>% calculate_dep_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
+    predd_utl_dbl <- predict(model_mdl, newdata = data_tb) %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
         tfmn_is_outp_1L_lgl = T) %>% as.vector()
     if(impute_1L_lgl)
       predd_utl_dbl[which(is.na(predd_utl_dbl))] <- predd_utl_dbl %>% na.omit() %>% mean()

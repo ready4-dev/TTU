@@ -4,19 +4,19 @@
 \alias{replace_with_missing_vals}
 \title{Replace with missing values}
 \usage{
-replace_with_missing_vals(data_tbl, synth_data_spine_ls, idx_int)
+replace_with_missing_vals(data_tbl_tb, synth_data_spine_ls, idx_int)
 }
 \arguments{
-\item{data_tbl}{PARAM_DESCRIPTION}
+\item{data_tbl_tb}{Data table (a tibble)}
 
-\item{synth_data_spine_ls}{Synth data spine (a list)}
+\item{synth_data_spine_ls}{Synthetic data spine (a list)}
 
 \item{idx_int}{Index (an integer vector)}
 }
 \value{
-Synth (a table)
+Synthetic (a table)
 }
 \description{
-replace_with_missing_vals() is a Replace function that edits an object, replacing a specified element with another specified element. Specifically, this function implements an algorithm to replace with missing values. Function argument data_tbl specifies the object to be updated. Argument synth_data_spine_ls provides the object to be updated. The function is called for its side effects and does not return a value.
+replace_with_missing_vals() is a Replace function that edits an object, replacing a specified element with another specified element. Specifically, this function implements an algorithm to replace with missing values. Function argument data_tbl_tb specifies the object to be updated. Argument synth_data_spine_ls provides the object to be updated. The function is called for its side effects and does not return a value.
 }
 \keyword{internal}

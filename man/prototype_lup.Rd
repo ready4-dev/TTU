@@ -5,7 +5,7 @@
 \alias{prototype_lup}
 \title{Class prototype lookup table}
 \format{
-An object of class \code{ready4_class_pt_lup} (inherits from \code{tbl_df}, \code{tbl}, \code{data.frame}) with 28 rows and 6 columns.
+An object of class \code{ready4_class_pt_lup} (inherits from \code{ready4_class_pt_lup}, \code{tbl_df}, \code{tbl}, \code{data.frame}) with 28 rows and 6 columns.
 }
 \usage{
 prototype_lup
@@ -18,10 +18,10 @@ A tibble
 
 \describe{
 \item{type_chr}{Type (a character vector)}
-\item{val_chr}{Val (a character vector)}
+\item{val_chr}{Value (a character vector)}
 \item{pt_ns_chr}{Prototype namespace (a character vector)}
 \item{fn_to_call_chr}{Function to call (a character vector)}
-\item{default_val_chr}{Default val (a character vector)}
+\item{default_val_chr}{Default value (a character vector)}
 \item{old_class_lgl}{Old class (a logical vector)}
 }
 }

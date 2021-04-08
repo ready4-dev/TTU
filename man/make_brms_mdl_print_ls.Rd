@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_brms_mdl_print_ls}
 \alias{make_brms_mdl_print_ls}
-\title{Make brms model print list}
+\title{Make bayesian regression models model print list}
 \usage{
 make_brms_mdl_print_ls(
   mdl_ls,
@@ -14,7 +14,7 @@ make_brms_mdl_print_ls(
 )
 }
 \arguments{
-\item{mdl_ls}{Model (a list)}
+\item{mdl_ls}{Model list (a list of models)}
 
 \item{label_stub_1L_chr}{Label stub (a character vector of length one)}
 
@@ -27,9 +27,9 @@ make_brms_mdl_print_ls(
 \item{big_mark_1L_chr}{Big mark (a character vector of length one), Default: ' '}
 }
 \value{
-Brms model print (a list)
+Bayesian regression models model print (a list)
 }
 \description{
-make_brms_mdl_print_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make brms model print list. The function returns Brms model print (a list).
+make_brms_mdl_print_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make bayesian regression models model print list. The function returns Bayesian regression models model print (a list).
 }
 \keyword{internal}

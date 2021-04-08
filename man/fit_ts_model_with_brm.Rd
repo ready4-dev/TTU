@@ -2,11 +2,11 @@
 % Please edit documentation in R/fn_fit.R
 \name{fit_ts_model_with_brm}
 \alias{fit_ts_model_with_brm}
-\title{Fit time series model with brm}
+\title{Fit time series model with bayesian regression model}
 \usage{
 fit_ts_model_with_brm(
   data_tb,
-  dep_var_nm_1L_chr,
+  depnt_var_nm_1L_chr,
   predr_vars_nms_chr,
   id_var_nm_1L_chr,
   backend_1L_chr = getOption("brms.backend", "rstan"),
@@ -18,24 +18,24 @@ fit_ts_model_with_brm(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one)}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one)}
 
-\item{predr_vars_nms_chr}{Predr vars names (a character vector)}
+\item{predr_vars_nms_chr}{Predictor variables names (a character vector)}
 
-\item{id_var_nm_1L_chr}{Id var name (a character vector of length one)}
+\item{id_var_nm_1L_chr}{Identity variable name (a character vector of length one)}
 
 \item{backend_1L_chr}{Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")}
 
 \item{link_1L_chr}{Link (a character vector of length one), Default: 'identity'}
 
-\item{iters_1L_int}{Iters (an integer vector of length one), Default: 4000}
+\item{iters_1L_int}{Iterations (an integer vector of length one), Default: 4000}
 
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 1000}
 }
 \value{
-Model (a list)
+Model list (a list of models)
 }
 \description{
-fit_ts_model_with_brm() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit time series model with brm. The function returns Model (a list).
+fit_ts_model_with_brm() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit time series model with bayesian regression model. The function returns Model list (a list of models).
 }
 \keyword{internal}

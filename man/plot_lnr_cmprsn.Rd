@@ -2,14 +2,14 @@
 % Please edit documentation in R/fn_plot.R
 \name{plot_lnr_cmprsn}
 \alias{plot_lnr_cmprsn}
-\title{Plot lnr cmprsn}
+\title{Plot linear comparison}
 \usage{
 plot_lnr_cmprsn(
   data_tb,
   predn_ds_tb,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  depnt_var_nm_1L_chr = "aqol6d_total_w",
   predr_var_nm_1L_chr,
-  dep_var_desc_1L_chr = "AQoL-6D utility score",
+  depnt_var_desc_1L_chr = "AQoL-6D utility score",
   predr_var_desc_1L_chr
 )
 }
@@ -18,15 +18,15 @@ plot_lnr_cmprsn(
 
 \item{predn_ds_tb}{Prediction dataset (a tibble)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'}
 
-\item{predr_var_nm_1L_chr}{Predr var name (a character vector of length one)}
+\item{predr_var_nm_1L_chr}{Predictor variable name (a character vector of length one)}
 
-\item{dep_var_desc_1L_chr}{Dep var description (a character vector of length one), Default: 'AQoL-6D utility score'}
+\item{depnt_var_desc_1L_chr}{Dependent variable description (a character vector of length one), Default: 'AQoL-6D utility score'}
 
-\item{predr_var_desc_1L_chr}{Predr var description (a character vector of length one)}
+\item{predr_var_desc_1L_chr}{Predictor variable description (a character vector of length one)}
 }
 \description{
-plot_lnr_cmprsn() is a Plot function that plots data Specifically, this function implements an algorithm to plot lnr cmprsn. The function is called for its side effects and does not return a value.
+plot_lnr_cmprsn() is a Plot function that plots data Specifically, this function implements an algorithm to plot linear comparison. The function is called for its side effects and does not return a value.
 }
 \keyword{internal}

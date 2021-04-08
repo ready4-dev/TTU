@@ -21,9 +21,9 @@ make_pt_TTU_predictors_lup(
 
 \item{long_name_chr}{Long name (a character vector), Default: character(0)}
 
-\item{min_val_dbl}{Min value (a double vector), Default: numeric(0)}
+\item{min_val_dbl}{Minimum value (a double vector), Default: numeric(0)}
 
-\item{max_val_dbl}{Max value (a double vector), Default: numeric(0)}
+\item{max_val_dbl}{Maximum value (a double vector), Default: numeric(0)}
 
 \item{class_chr}{Class (a character vector), Default: character(0)}
 
@@ -31,7 +31,7 @@ make_pt_TTU_predictors_lup(
 
 \item{class_fn_chr}{Class function (a character vector), Default: character(0)}
 
-\item{mdl_scaling_dbl}{Mdl scaling (a double vector), Default: numeric(0)}
+\item{mdl_scaling_dbl}{Model scaling (a double vector), Default: numeric(0)}
 
 \item{covariate_lgl}{Covariate (a logical vector), Default: logical(0)}
 }

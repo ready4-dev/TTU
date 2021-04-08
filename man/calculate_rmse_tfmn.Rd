@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_calculate.R
 \name{calculate_rmse_tfmn}
 \alias{calculate_rmse_tfmn}
-\title{Calculate rmse transformation}
+\title{Calculate root mean square error transformation}
 \usage{
 calculate_rmse_tfmn(y_dbl, yhat_dbl)
 }
@@ -12,9 +12,9 @@ calculate_rmse_tfmn(y_dbl, yhat_dbl)
 \item{yhat_dbl}{Yhat (a double vector)}
 }
 \value{
-Rmse transformation (a double vector)
+Root mean square error transformation (a double vector)
 }
 \description{
-calculate_rmse_tfmn() is a Calculate function that imputes data. Specifically, this function implements an algorithm to calculate rmse transformation. The function returns Rmse transformation (a double vector).
+calculate_rmse_tfmn() is a Calculate function that performs a numeric calculation. Specifically, this function implements an algorithm to calculate root mean square error transformation. The function returns Root mean square error transformation (a double vector).
 }
 \keyword{internal}

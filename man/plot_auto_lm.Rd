@@ -2,20 +2,20 @@
 % Please edit documentation in R/fn_plot.R
 \name{plot_auto_lm}
 \alias{plot_auto_lm}
-\title{Plot auto lm}
+\title{Plot automatic linear model}
 \usage{
 plot_auto_lm(mdl, which_dbl = 1:6, ncol_1L_int = 3L, label_size_1L_int = 3)
 }
 \arguments{
+\item{mdl}{Model (a model)}
+
 \item{which_dbl}{Which (a double vector), Default: 1:6}
 
 \item{ncol_1L_int}{Ncol (an integer vector of length one), Default: 3}
 
 \item{label_size_1L_int}{Label size (an integer vector of length one), Default: 3}
-
-\item{...}{Additional arguments}
 }
 \description{
-plot_auto_lm() is a Plot function that plots data Specifically, this function implements an algorithm to plot auto lm. The function is called for its side effects and does not return a value.
+plot_auto_lm() is a Plot function that plots data Specifically, this function implements an algorithm to plot automatic linear model. The function is called for its side effects and does not return a value.
 }
 \keyword{internal}

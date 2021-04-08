@@ -2,11 +2,11 @@
 % Please edit documentation in R/fn_write.R
 \name{write_mdl_type_covars_mdls}
 \alias{write_mdl_type_covars_mdls}
-\title{Write model type covars models}
+\title{Write model type covariates models}
 \usage{
 write_mdl_type_covars_mdls(
   data_tb,
-  dep_var_nm_1L_chr = "utl_total_w",
+  depnt_var_nm_1L_chr = "utl_total_w",
   predrs_var_nms_chr,
   covar_var_nms_chr,
   mdl_type_1L_chr,
@@ -20,11 +20,11 @@ write_mdl_type_covars_mdls(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
-\item{predrs_var_nms_chr}{Predrs var names (a character vector)}
+\item{predrs_var_nms_chr}{Predictors variable names (a character vector)}
 
-\item{covar_var_nms_chr}{Covar var names (a character vector)}
+\item{covar_var_nms_chr}{Covariate variable names (a character vector)}
 
 \item{mdl_type_1L_chr}{Model type (a character vector of length one)}
 
@@ -39,9 +39,9 @@ write_mdl_type_covars_mdls(
 \item{start_1L_chr}{Start (a character vector of length one), Default: 'NA'}
 }
 \value{
-Smry of models with covars (a tibble)
+Summary of models with covariates (a tibble)
 }
 \description{
-write_mdl_type_covars_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type covars models. The function returns Smry of models with covars (a tibble).
+write_mdl_type_covars_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type covariates models. The function returns Summary of models with covariates (a tibble).
 }
 \keyword{internal}

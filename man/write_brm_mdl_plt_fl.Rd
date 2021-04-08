@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_write.R
 \name{write_brm_mdl_plt_fl}
 \alias{write_brm_mdl_plt_fl}
-\title{Write brm model plt file}
+\title{Write bayesian regression model model plot file}
 \usage{
 write_brm_mdl_plt_fl(
   plt_fn = NULL,
@@ -17,13 +17,13 @@ write_brm_mdl_plt_fl(
 )
 }
 \arguments{
-\item{plt_fn}{Plt (a function), Default: NULL}
+\item{plt_fn}{Plot (a function), Default: NULL}
 
 \item{fn_args_ls}{Function arguments (a list), Default: NULL}
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
 
-\item{plt_nm_1L_chr}{Plt name (a character vector of length one)}
+\item{plt_nm_1L_chr}{Plot name (a character vector of length one)}
 
 \item{grpx_fn}{Grpx (a function), Default: grDevices::png}
 
@@ -33,12 +33,12 @@ write_brm_mdl_plt_fl(
 
 \item{height_1L_dbl}{Height (a double vector of length one), Default: 6}
 
-\item{rsl_1L_dbl}{Rsl (a double vector of length one), Default: 300}
+\item{rsl_1L_dbl}{Resolution (a double vector of length one), Default: 300}
 }
 \value{
 Path to plot (a character vector of length one)
 }
 \description{
-write_brm_mdl_plt_fl() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write brm model plt file. The function returns Path to plot (a character vector of length one).
+write_brm_mdl_plt_fl() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write bayesian regression model model plot file. The function returns Path to plot (a character vector of length one).
 }
 \keyword{internal}

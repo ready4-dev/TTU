@@ -1,4 +1,4 @@
-"short_name_chr","long_name_chr","control_chr","family_chr","fn_chr","start_chr","pred_type_chr","tfmn_chr","tfmn_for_bnml_lgl"
+"short_name_chr","long_name_chr","control_chr","family_chr","fn_chr","start_chr","predn_type_chr","tfmn_chr","tfmn_for_bnml_lgl"
 "OLS_NTF","Ordinary Least Squares (No transformation)",NA,NA,"lm",NA,NA,"NTF",FALSE
 "OLS_LOG","Ordinary Least Squares (Log transformation)",NA,NA,"lm",NA,NA,"LOG",FALSE
 "OLS_LOGIT","Ordinary Least Squares (Logit transformation)",NA,NA,"lm",NA,NA,"LOGIT",FALSE

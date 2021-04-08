@@ -26,7 +26,7 @@ params_ls <- params
 ```
 
 ```{r echo=FALSE}
-predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = params_ls$outp_smry_ls$predr_cmprsns_tb$predr_chr, 
+predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = params_ls$outp_smry_ls$predr_cmprsn_tb$predr_chr, 
                        covars_ls = list(params_ls$outp_smry_ls$prefd_covars_chr)
                        )
 knit_pars_ls <- make_knit_pars_ls(rltv_path_to_data_dir_1L_chr = params_ls$rltv_path_to_data_dir_1L_chr,

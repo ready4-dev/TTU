@@ -11,7 +11,7 @@ add_uids_to_tbs_ls(tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkClientID")
 
 \item{prefix_1L_chr}{Prefix (a character vector of length one)}
 
-\item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
+\item{id_var_nm_1L_chr}{Identity variable name (a character vector of length one), Default: 'fkClientID'}
 }
 \value{
 Tibbles (a list)

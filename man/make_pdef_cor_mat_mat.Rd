@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_pdef_cor_mat_mat}
 \alias{make_pdef_cor_mat_mat}
-\title{Make pdef correlation matrix}
+\title{Make positive definite correlation matrix}
 \usage{
 make_pdef_cor_mat_mat(lower_diag_mat)
 }
@@ -10,9 +10,9 @@ make_pdef_cor_mat_mat(lower_diag_mat)
 \item{lower_diag_mat}{Lower diag (a matrix)}
 }
 \value{
-Pdef correlation (a matrix)
+Positive definite correlation (a matrix)
 }
 \description{
-make_pdef_cor_mat_mat() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make pdef correlation matrix matrix. The function returns Pdef correlation (a matrix).
+make_pdef_cor_mat_mat() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make positive definite correlation matrix matrix. The function returns Positive definite correlation (a matrix).
 }
 \keyword{internal}

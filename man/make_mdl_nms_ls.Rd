@@ -7,7 +7,7 @@
 make_mdl_nms_ls(predr_vars_nms_ls, mdl_types_chr)
 }
 \arguments{
-\item{predr_vars_nms_ls}{Predr vars names (a list)}
+\item{predr_vars_nms_ls}{Predictor variables names (a list)}
 
 \item{mdl_types_chr}{Model types (a character vector)}
 }

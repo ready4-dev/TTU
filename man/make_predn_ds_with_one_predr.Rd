@@ -2,34 +2,34 @@
 % Please edit documentation in R/fn_make.R
 \name{make_predn_ds_with_one_predr}
 \alias{make_predn_ds_with_one_predr}
-\title{Make prediction dataset with one predr}
+\title{Make prediction dataset with one predictor}
 \usage{
 make_predn_ds_with_one_predr(
   model_mdl,
-  dep_var_nm_1L_chr = "utl_total_w",
+  depnt_var_nm_1L_chr = "utl_total_w",
   tfmn_1L_chr = "NTF",
   predr_var_nm_1L_chr,
   predr_vals_dbl,
-  pred_type_1L_chr = NULL
+  predn_type_1L_chr = NULL
 )
 }
 \arguments{
-\item{model_mdl}{PARAM_DESCRIPTION}
+\item{model_mdl}{Model (a model)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
-\item{predr_var_nm_1L_chr}{Predr var name (a character vector of length one)}
+\item{predr_var_nm_1L_chr}{Predictor variable name (a character vector of length one)}
 
-\item{predr_vals_dbl}{Predr values (a double vector)}
+\item{predr_vals_dbl}{Predictor values (a double vector)}
 
-\item{pred_type_1L_chr}{Pred type (a character vector of length one), Default: NULL}
+\item{predn_type_1L_chr}{Prediction type (a character vector of length one), Default: NULL}
 }
 \value{
 Prediction dataset (a tibble)
 }
 \description{
-make_predn_ds_with_one_predr() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make prediction dataset with one predr. The function returns Prediction dataset (a tibble).
+make_predn_ds_with_one_predr() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make prediction dataset with one predictor. The function returns Prediction dataset (a tibble).
 }
 \keyword{internal}

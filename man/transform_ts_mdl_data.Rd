@@ -7,29 +7,29 @@
 transform_ts_mdl_data(
   mdl_ls,
   data_tb,
-  dep_var_nm_1L_chr = "aqol6d_total_w",
+  depnt_var_nm_1L_chr = "aqol6d_total_w",
   predr_vars_nms_chr,
   id_var_nm_1L_chr = "fkClientID",
   mdl_nm_1L_chr
 )
 }
 \arguments{
-\item{mdl_ls}{Model (a list)}
+\item{mdl_ls}{Model list (a list of models)}
 
 \item{data_tb}{Data (a tibble)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'}
 
-\item{predr_vars_nms_chr}{Predr vars names (a character vector)}
+\item{predr_vars_nms_chr}{Predictor variables names (a character vector)}
 
-\item{id_var_nm_1L_chr}{Id var name (a character vector of length one), Default: 'fkClientID'}
+\item{id_var_nm_1L_chr}{Identity variable name (a character vector of length one), Default: 'fkClientID'}
 
 \item{mdl_nm_1L_chr}{Model name (a character vector of length one)}
 }
 \value{
-Cnfdl model (a list)
+Cnfdl (a list of models)
 }
 \description{
-transform_ts_mdl_data() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform time series model data. Function argument mdl_ls specifies the object to be updated. Argument data_tb provides the object to be updated. The function returns Cnfdl model (a list).
+transform_ts_mdl_data() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform time series model data. Function argument mdl_ls specifies the object to be updated. Argument data_tb provides the object to be updated. The function returns Cnfdl (a list of models).
 }
 \keyword{internal}

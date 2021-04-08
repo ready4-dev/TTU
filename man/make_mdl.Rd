@@ -2,11 +2,11 @@
 % Please edit documentation in R/fn_make.R
 \name{make_mdl}
 \alias{make_mdl}
-\title{Make model}
+\title{Make}
 \usage{
 make_mdl(
   data_tb,
-  dep_var_nm_1L_chr = "utl_total_w",
+  depnt_var_nm_1L_chr = "utl_total_w",
   tfmn_1L_chr = "NTF",
   predr_var_nm_1L_chr,
   covar_var_nms_chr = NA_character_,
@@ -19,13 +19,13 @@ make_mdl(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{dep_var_nm_1L_chr}{Dep var name (a character vector of length one), Default: 'utl_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
-\item{predr_var_nm_1L_chr}{Predr var name (a character vector of length one)}
+\item{predr_var_nm_1L_chr}{Predictor variable name (a character vector of length one)}
 
-\item{covar_var_nms_chr}{Covar var names (a character vector), Default: 'NA'}
+\item{covar_var_nms_chr}{Covariate variable names (a character vector), Default: 'NA'}
 
 \item{mdl_type_1L_chr}{Model type (a character vector of length one), Default: 'OLS_NTF'}
 
@@ -39,6 +39,6 @@ make_mdl(
 Model (a model)
 }
 \description{
-make_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model. The function is called for its side effects and does not return a value.
+make_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model. The function returns Model (a model).
 }
 \keyword{internal}

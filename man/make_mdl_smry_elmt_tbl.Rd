@@ -2,19 +2,19 @@
 % Please edit documentation in R/fn_make.R
 \name{make_mdl_smry_elmt_tbl}
 \alias{make_mdl_smry_elmt_tbl}
-\title{Make model smry elmt table}
+\title{Make model summary element table}
 \usage{
-make_mdl_smry_elmt_tbl(mat, cat_chr)
+make_mdl_smry_elmt_tbl(mat, ctg_chr)
 }
 \arguments{
 \item{mat}{Matrix (a matrix)}
 
-\item{cat_chr}{Cat (a character vector)}
+\item{ctg_chr}{Category categories (a character vector)}
 }
 \value{
-Model elmt sum (a tibble)
+Model element sum (a tibble)
 }
 \description{
-make_mdl_smry_elmt_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model smry elmt table. The function returns Model elmt sum (a tibble).
+make_mdl_smry_elmt_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model summary element table. The function returns Model element sum (a tibble).
 }
 \keyword{internal}

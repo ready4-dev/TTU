@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_write.R
 \name{write_predr_and_mdl_tstng_results}
 \alias{write_predr_and_mdl_tstng_results}
-\title{Write predr and model tstng results}
+\title{Write predictor and model testing results}
 \usage{
 write_predr_and_mdl_tstng_results(
   scored_data_tb,
@@ -16,9 +16,9 @@ write_predr_and_mdl_tstng_results(
 \arguments{
 \item{scored_data_tb}{Scored data (a tibble)}
 
-\item{ds_smry_ls}{Dataset smry (a list)}
+\item{ds_smry_ls}{Dataset summary (a list)}
 
-\item{mdl_smry_ls}{Model smry (a list)}
+\item{mdl_smry_ls}{Model summary (a list)}
 
 \item{session_data_ls}{Session data (a list)}
 
@@ -27,9 +27,9 @@ write_predr_and_mdl_tstng_results(
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 1234}
 }
 \value{
-Output smry (a list)
+Output summary (a list)
 }
 \description{
-write_predr_and_mdl_tstng_results() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predr and model tstng results. The function returns Output smry (a list).
+write_predr_and_mdl_tstng_results() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predictor and model testing results. The function returns Output summary (a list).
 }
 \keyword{internal}

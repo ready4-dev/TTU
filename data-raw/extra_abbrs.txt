@@ -1,0 +1,73 @@
+
+Change
+add_cors_and_utls_to_aqol6d_tbs_ls to add_cors_and_utls_to_aqol6d_tbs_ls
+aqol_items_prpns_tbs_ls to aqol_items_prpns_tbs_ls
+calculate_dpnt_var_tfmn to calculate_dpnt_var_tfmn 
+ctg_chr to ctg_chr # check
+data_tbl_tb to data_tbl_tb_tb or data_tb # Be careful
+depnt_var_desc_1L_chr to depnt_var_desc_1L_chr
+drop_bl_date_var_1L_lgl to drop_bl_date_var_1L_lgl
+make_make_item_wrst_wts_ls_ls to make_item_wrst_wts_ls_ls
+make_smry_of_mdl_outp to make_smry_of_mdl_outp_outp
+make_smry_of_ts_mdl_outp make_smry_of_ts_mdl_outp_outp
+make_vec_with_sum_of_int_val to make_vec_with_sum_of_int_val_val
+folds_1L_int to folds_1L_int
+plt_idxs_int to plt_idxs_int
+plot_sctr_plt_cmprsn to plot_sctr_plt_cmprsn_outp
+plot_obsd_predd_sctr_cmprsn_cmprsn
+popl_1L_chr to popl_1L_chr
+predn_type_1L_chr to predn_type_1L_chr
+raw_prpns_tbs_ls to raw_prpns_tbs_ls
+remove_all_msng_1L_lgl to remove_all_msng_1L_lgl
+transform_depnt_var_nm to transform_depnt_var_nm
+
+##
+complete_prpns_tbs_ls to complete_prpns_tbs_ls
+make_complete_prpns_tbs_ls to make_complete_prpns_tbs_ls
+##
+## in make_corstars_tbl_xx
+method to method_chr
+removeTriangle = removeTriangle_chr,
+result to result_chr
+
+
+
+Add
+auto automatic
+brm bayesian regression model
+clg complementary log
+cll complementary log log
+cndt candidate
+dnst density
+elmt element
+fctr factor
+grp group
+gsn gaussian np
+itm item
+lm linear model
+lnr linear
+mdlng modelling
+msng missing
+obsd observed np
+pdef positive definite
+plt plot # check if in object_lup
+
+prefd preferred np
+popl population np
+
+predd predicted np
+prob probability probabilities
+prpn proportion
+rmse root mean square error
+rsl resolution
+sclg scaling
+sctr scatter
+signft significant np
+sngl single
+synth synthetic
+temp temporary np
+tmpl templates
+tstng testing
+#ttu transfer to utility np
+vec vector
+wrst worst np
