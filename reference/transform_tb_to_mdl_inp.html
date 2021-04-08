@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Transform tibble to model input — transform_tb_to_mdl_inp" />
-<meta property="og:description" content="transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble)." />
+<meta property="og:description" content="transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument depnt_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9130</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9133</span>
       </span>
     </div>
 
@@ -137,12 +137,12 @@
     </div>
 
     <div class="ref-description">
-    <p>transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble).</p>
+    <p>transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument depnt_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble).</p>
     </div>
 
     <pre class="usage"><span class='fu'>transform_tb_to_mdl_inp</span><span class='op'>(</span>
   <span class='va'>data_tb</span>,
-  dep_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
+  depnt_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
   <span class='va'>predr_vars_nms_chr</span>,
   id_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"fkClientID"</span>,
   round_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"round"</span>,
@@ -161,32 +161,32 @@
       <td><p>Data (a tibble)</p></td>
     </tr>
     <tr>
-      <th>dep_var_nm_1L_chr</th>
-      <td><p>Dep var name (a character vector of length one), Default: 'utl_total_w'</p></td>
+      <th>depnt_var_nm_1L_chr</th>
+      <td><p>Dependent variable name (a character vector of length one), Default: 'utl_total_w'</p></td>
     </tr>
     <tr>
       <th>predr_vars_nms_chr</th>
-      <td><p>Predr vars names (a character vector)</p></td>
+      <td><p>Predictor variables names (a character vector)</p></td>
     </tr>
     <tr>
       <th>id_var_nm_1L_chr</th>
-      <td><p>Id var name (a character vector of length one), Default: 'fkClientID'</p></td>
+      <td><p>Identity variable name (a character vector of length one), Default: 'fkClientID'</p></td>
     </tr>
     <tr>
       <th>round_var_nm_1L_chr</th>
-      <td><p>Round var name (a character vector of length one), Default: 'round'</p></td>
+      <td><p>Round variable name (a character vector of length one), Default: 'round'</p></td>
     </tr>
     <tr>
       <th>round_bl_val_1L_chr</th>
-      <td><p>Round bl value (a character vector of length one), Default: 'Baseline'</p></td>
+      <td><p>Round baseline value (a character vector of length one), Default: 'Baseline'</p></td>
     </tr>
     <tr>
       <th>drop_all_msng_1L_lgl</th>
-      <td><p>Drop all msng (a logical vector of length one), Default: T</p></td>
+      <td><p>Drop all missing (a logical vector of length one), Default: T</p></td>
     </tr>
     <tr>
       <th>scaling_fctr_dbl</th>
-      <td><p>Scaling fctr (a double vector), Default: 0.01</p></td>
+      <td><p>Scaling factor (a double vector), Default: 0.01</p></td>
     </tr>
     <tr>
       <th>ungroup_1L_lgl</th>
@@ -194,7 +194,7 @@
     </tr>
     <tr>
       <th>add_cll_tfmn_1L_lgl</th>
-      <td><p>Add cll transformation (a logical vector of length one), Default: T</p></td>
+      <td><p>Add complementary log log transformation (a logical vector of length one), Default: T</p></td>
     </tr>
     </table>
 

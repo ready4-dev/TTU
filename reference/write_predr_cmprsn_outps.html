@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Write predr cmprsn outputs — write_predr_cmprsn_outps • TTU</title>
+<title>Write predictor comparison outputs — write_predr_cmprsn_outps • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Write predr cmprsn outputs — write_predr_cmprsn_outps" />
-<meta property="og:description" content="write_predr_cmprsn_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predr cmprsn outputs. The function returns Confirmed predrs (a tibble)." />
+<meta property="og:title" content="Write predictor comparison outputs — write_predr_cmprsn_outps" />
+<meta property="og:description" content="write_predr_cmprsn_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predictor comparison outputs. The function returns Confirmed predictors (a tibble)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9130</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9133</span>
       </span>
     </div>
 
@@ -131,20 +131,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Write predr cmprsn outputs</h1>
+    <h1>Write predictor comparison outputs</h1>
     <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_write.R'><code>R/fn_write.R</code></a></small>
     <div class="hidden name"><code>write_predr_cmprsn_outps.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>write_predr_cmprsn_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predr cmprsn outputs. The function returns Confirmed predrs (a tibble).</p>
+    <p>write_predr_cmprsn_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predictor comparison outputs. The function returns Confirmed predictors (a tibble).</p>
     </div>
 
     <pre class="usage"><span class='fu'>write_predr_cmprsn_outps</span><span class='op'>(</span>
   <span class='va'>data_tb</span>,
   <span class='va'>path_to_write_to_1L_chr</span>,
-  new_dir_nm_1L_chr <span class='op'>=</span> <span class='st'>"B_Candidate_Predrs_Cmprsns"</span>,
-  dep_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
+  new_dir_nm_1L_chr <span class='op'>=</span> <span class='st'>"B_Candidate_Predrs_Cmprsn"</span>,
+  depnt_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
   <span class='va'>candidate_predrs_chr</span>,
   max_nbr_of_boruta_mdl_runs_int <span class='op'>=</span> <span class='fl'>300L</span>
 <span class='op'>)</span></pre>
@@ -162,25 +162,25 @@
     </tr>
     <tr>
       <th>new_dir_nm_1L_chr</th>
-      <td><p>New directory name (a character vector of length one), Default: 'B_Candidate_Predrs_Cmprsns'</p></td>
+      <td><p>New directory name (a character vector of length one), Default: 'B_Candidate_Predrs_Cmprsn'</p></td>
     </tr>
     <tr>
-      <th>dep_var_nm_1L_chr</th>
-      <td><p>Dep var name (a character vector of length one), Default: 'utl_total_w'</p></td>
+      <th>depnt_var_nm_1L_chr</th>
+      <td><p>Dependent variable name (a character vector of length one), Default: 'utl_total_w'</p></td>
     </tr>
     <tr>
       <th>candidate_predrs_chr</th>
-      <td><p>Candidate predrs (a character vector)</p></td>
+      <td><p>Candidate predictors (a character vector)</p></td>
     </tr>
     <tr>
       <th>max_nbr_of_boruta_mdl_runs_int</th>
-      <td><p>Max nbr of boruta model runs (an integer vector), Default: 300</p></td>
+      <td><p>Maximum number of boruta model runs (an integer vector), Default: 300</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Confirmed predrs (a tibble)</p>
+    <p>Confirmed predictors (a tibble)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

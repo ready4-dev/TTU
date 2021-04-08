@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9130</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9133</span>
       </span>
     </div>
 
@@ -144,13 +144,13 @@
   <span class='va'>data_tb</span>,
   <span class='va'>model_mdl</span>,
   <span class='va'>tfmn_1L_chr</span>,
-  <span class='va'>dep_var_nm_1L_chr</span>,
+  <span class='va'>depnt_var_nm_1L_chr</span>,
   predr_vars_nms_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
   force_min_max_1L_lgl <span class='op'>=</span> <span class='cn'>T</span>,
   utl_min_val_1L_dbl <span class='op'>=</span> <span class='fl'>0.03</span>,
   impute_1L_lgl <span class='op'>=</span> <span class='cn'>T</span>,
   utl_cls_fn <span class='op'>=</span> <span class='cn'>NULL</span>,
-  rmv_tfmd_dep_var_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>
+  rmv_tfd_depnt_var_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -162,27 +162,27 @@
     </tr>
     <tr>
       <th>model_mdl</th>
-      <td><p>PARAM_DESCRIPTION</p></td>
+      <td><p>Model (a model)</p></td>
     </tr>
     <tr>
       <th>tfmn_1L_chr</th>
       <td><p>Transformation (a character vector of length one)</p></td>
     </tr>
     <tr>
-      <th>dep_var_nm_1L_chr</th>
-      <td><p>Dep var name (a character vector of length one)</p></td>
+      <th>depnt_var_nm_1L_chr</th>
+      <td><p>Dependent variable name (a character vector of length one)</p></td>
     </tr>
     <tr>
       <th>predr_vars_nms_chr</th>
-      <td><p>Predr vars names (a character vector), Default: NULL</p></td>
+      <td><p>Predictor variables names (a character vector), Default: NULL</p></td>
     </tr>
     <tr>
       <th>force_min_max_1L_lgl</th>
-      <td><p>Force min max (a logical vector of length one), Default: T</p></td>
+      <td><p>Force minimum maximum (a logical vector of length one), Default: T</p></td>
     </tr>
     <tr>
       <th>utl_min_val_1L_dbl</th>
-      <td><p>Utl min value (a double vector of length one), Default: 0.03</p></td>
+      <td><p>Utility minimum value (a double vector of length one), Default: 0.03</p></td>
     </tr>
     <tr>
       <th>impute_1L_lgl</th>
@@ -190,11 +190,11 @@
     </tr>
     <tr>
       <th>utl_cls_fn</th>
-      <td><p>Utl class (a function), Default: NULL</p></td>
+      <td><p>Utility class (a function), Default: NULL</p></td>
     </tr>
     <tr>
-      <th>rmv_tfmd_dep_var_1L_lgl</th>
-      <td><p>Rmv tfmd dep var (a logical vector of length one), Default: F</p></td>
+      <th>rmv_tfd_depnt_var_1L_lgl</th>
+      <td><p>Remove transformed dependent variable (a logical vector of length one), Default: F</p></td>
     </tr>
     </table>
 

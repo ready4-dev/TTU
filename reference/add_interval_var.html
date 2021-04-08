@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add interval var — add_interval_var • TTU</title>
+<title>Add interval variable — add_interval_var • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Add interval var — add_interval_var" />
-<meta property="og:description" content="add_interval_var() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add interval var. Function argument data_tb specifies the object to be updated. The function returns Updated data (a tibble)." />
+<meta property="og:title" content="Add interval variable — add_interval_var" />
+<meta property="og:description" content="add_interval_var() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add interval variable. Function argument data_tb specifies the object to be updated. The function returns Updated data (a tibble)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9130</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9133</span>
       </span>
     </div>
 
@@ -131,13 +131,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add interval var</h1>
+    <h1>Add interval variable</h1>
     <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_add.R'><code>R/fn_add.R</code></a></small>
     <div class="hidden name"><code>add_interval_var.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>add_interval_var() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add interval var. Function argument data_tb specifies the object to be updated. The function returns Updated data (a tibble).</p>
+    <p>add_interval_var() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add interval variable. Function argument data_tb specifies the object to be updated. The function returns Updated data (a tibble).</p>
     </div>
 
     <pre class="usage"><span class='fu'>add_interval_var</span><span class='op'>(</span>
@@ -148,7 +148,7 @@
   bl_date_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"bl_date_dtm"</span>,
   interval_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"interval_dbl"</span>,
   temp_row_nbr_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"temp_row_nbr_int"</span>,
-  drop_bl_date_var <span class='op'>=</span> <span class='cn'>F</span>
+  drop_bl_date_var_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -160,11 +160,11 @@
     </tr>
     <tr>
       <th>id_var_nm_1L_chr</th>
-      <td><p>Id var name (a character vector of length one), Default: 'fkClientID'</p></td>
+      <td><p>Identity variable name (a character vector of length one), Default: 'fkClientID'</p></td>
     </tr>
     <tr>
       <th>msrmnt_date_var_nm_1L_chr</th>
-      <td><p>Msrmnt date var name (a character vector of length one), Default: 'd_interview_date'</p></td>
+      <td><p>Measurement date variable name (a character vector of length one), Default: 'd_interview_date'</p></td>
     </tr>
     <tr>
       <th>time_unit_1L_chr</th>
@@ -172,19 +172,19 @@
     </tr>
     <tr>
       <th>bl_date_var_nm_1L_chr</th>
-      <td><p>Bl date var name (a character vector of length one), Default: 'bl_date_dtm'</p></td>
+      <td><p>Baseline date variable name (a character vector of length one), Default: 'bl_date_dtm'</p></td>
     </tr>
     <tr>
       <th>interval_var_nm_1L_chr</th>
-      <td><p>Interval var name (a character vector of length one), Default: 'interval_dbl'</p></td>
+      <td><p>Interval variable name (a character vector of length one), Default: 'interval_dbl'</p></td>
     </tr>
     <tr>
       <th>temp_row_nbr_var_nm_1L_chr</th>
-      <td><p>Temp row nbr var name (a character vector of length one), Default: 'temp_row_nbr_int'</p></td>
+      <td><p>Temporary row number variable name (a character vector of length one), Default: 'temp_row_nbr_int'</p></td>
     </tr>
     <tr>
-      <th>drop_bl_date_var</th>
-      <td><p>PARAM_DESCRIPTION, Default: F</p></td>
+      <th>drop_bl_date_var_1L_lgl</th>
+      <td><p>Drop baseline date variable (a logical vector of length one), Default: F</p></td>
     </tr>
     </table>
 

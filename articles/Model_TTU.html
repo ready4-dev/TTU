@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9130</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9133</span>
       </span>
     </div>
 
@@ -401,7 +401,7 @@ Participant_1
 Baseline
 </td>
 <td style="text-align:right;">
-2019-08-10
+2019-08-27
 </td>
 <td style="text-align:right;">
 14
@@ -649,7 +649,7 @@ Participant_10
 Baseline
 </td>
 <td style="text-align:right;">
-2019-11-05
+2019-09-11
 </td>
 <td style="text-align:right;">
 15
@@ -897,7 +897,7 @@ Participant_10
 Follow-up
 </td>
 <td style="text-align:right;">
-2020-02-05
+2019-12-05
 </td>
 <td style="text-align:right;">
 15
@@ -1145,7 +1145,7 @@ Participant_100
 Baseline
 </td>
 <td style="text-align:right;">
-2019-11-27
+2019-10-28
 </td>
 <td style="text-align:right;">
 25
@@ -1393,7 +1393,7 @@ Participant_1000
 Baseline
 </td>
 <td style="text-align:right;">
-2020-01-16
+2019-10-17
 </td>
 <td style="text-align:right;">
 16
@@ -1641,7 +1641,7 @@ Participant_1000
 Follow-up
 </td>
 <td style="text-align:right;">
-2020-04-16
+2020-01-29
 </td>
 <td style="text-align:right;">
 16
@@ -1898,7 +1898,7 @@ Anxiety
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ds_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>candidate_predrs_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"K6"</span>,<span class="st">"PHQ9"</span><span class="op">)</span>,
                    candidate_covar_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d_sex_birth_s"</span>, <span class="st">"SOFAS"</span>, <span class="st">"c_p_diag_s"</span>, <span class="st">"c_clinical_staging_s"</span>, <span class="st">"d_age"</span>,  <span class="st">"d_sexual_ori_s"</span>, <span class="st">"d_country_bir_s"</span>, <span class="st">"d_relation_s"</span>, <span class="st">"d_studying_working"</span><span class="op">)</span>,
-                   dep_var_nm_1L_chr <span class="op">=</span> <span class="st">"aqol6d_total_w"</span>,
+                   depnt_var_nm_1L_chr <span class="op">=</span> <span class="st">"aqol6d_total_w"</span>,
                    id_var_nm_1L_chr <span class="op">=</span> <span class="st">"fkClientID"</span>,
                    round_var_nm_1L_chr <span class="op">=</span> <span class="st">"round"</span>,
                    round_bl_val_1L_chr <span class="op">=</span> <span class="st">"Baseline"</span><span class="op">)</span></code></pre></div>
@@ -1951,7 +1951,7 @@ fn_chr
 start_chr
 </th>
 <th style="text-align:right;">
-pred_type_chr
+predn_type_chr
 </th>
 <th style="text-align:right;">
 tfmn_chr
@@ -2324,7 +2324,7 @@ FALSE
 <p>For the initial set of tests on candidate models, we just need data from one timepoint as we are not exploring longitudinal change at this stage. We also only need data on the candidate predictors and total utility score. so can slim down our dataset to these parameters.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bl_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/transform_ds_for_tstng.html">transform_ds_for_tstng</a></span><span class="op">(</span><span class="va">scored_data_tb</span>, 
-                                dep_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">dep_var_nm_1L_chr</span>,
+                                depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span>,
                                 candidate_predrs_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
                                 dep_var_max_val_1L_dbl <span class="op">=</span> <span class="fl">0.999</span>,
                                 round_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">round_var_nm_1L_chr</span>, 
@@ -2431,7 +2431,7 @@ PHQ9
 <p>By exploring correlations in the slimmed down dataset, we can reorder our vector of candidate predictors to reflect the descending order of correlation with the dependent variable.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reorder_cndt_predrs_chr.html">reorder_cndt_predrs_chr</a></span><span class="op">(</span><span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
-        data_tb <span class="op">=</span> <span class="va">bl_tb</span>, dep_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">dep_var_nm_1L_chr</span><span class="op">)</span></code></pre></div>
+        data_tb <span class="op">=</span> <span class="va">bl_tb</span>, depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span><span class="op">)</span></code></pre></div>
 <p>Based on this reordering, we can specify the the candidate predictor with the highest correlation with our utility variable, adding its description to <code>mdl_smry_ls</code>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_var_nm_1L_chr</span> <span class="op">&lt;-</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
@@ -2453,15 +2453,15 @@ PHQ9
 ## [26] 25 26 27</code></pre>
 <p>We now compare all candidate model types, each using only the highest correlated candidate predictor (PHQ9 total score).</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">n_folds_1L_int</span> <span class="op">&lt;-</span> <span class="fl">10L</span>
+<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">folds_1L_int</span> <span class="op">&lt;-</span> <span class="fl">10L</span>
 <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_sngl_predr_mdls_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_sngl_predr_multi_mdls_outps.html">write_sngl_predr_multi_mdls_outps</a></span><span class="op">(</span>data_tb <span class="op">=</span> <span class="va">bl_tb</span>,
-        n_folds_1L_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">n_folds_1L_int</span>, mdl_types_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_chr</span>,
-        dep_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">dep_var_nm_1L_chr</span>, predr_var_nm_1L_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_var_nm_1L_chr</span>,
+        folds_1L_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">folds_1L_int</span>, mdl_types_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_chr</span>,
+        depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span>, predr_var_nm_1L_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_var_nm_1L_chr</span>,
         predr_var_desc_1L_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_var_desc_1L_chr</span>, 
         predr_vals_dbl <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_vals_dbl</span>,
-        path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>, new_dir_nm_1L_chr <span class="op">=</span>  <span class="st">"A_Candidate_Mdls_Cmprsns"</span>,
+        path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>, new_dir_nm_1L_chr <span class="op">=</span>  <span class="st">"A_Candidate_Mdls_Cmprsn"</span>,
         mdl_types_lup <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_lup</span><span class="op">)</span> </code></pre></div>
-<p>The <code>write_sngl_predr_multi_mdls_outps</code> function will write each model to be tested to a new sub-directory of “Output” called “A_Candidate_Mdls_Cmprsns”. Also written to that sub-directory are a number of plots for each model.</p>
+<p>The <code>write_sngl_predr_multi_mdls_outps</code> function will write each model to be tested to a new sub-directory of “Output” called “A_Candidate_Mdls_Cmprsn”. Also written to that sub-directory are a number of plots for each model.</p>
 <p>The <code>write_sngl_predr_multi_mdls_outps</code> function also outputs a table summarising the performance of each of the candidate models.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_sngl_predr_mdls_tb</span> <span class="op">%&gt;%</span>
@@ -2726,16 +2726,16 @@ Ordinary Least Squares (Log transformation)
 <p>We can now compare all of our candidate single predictors using the most preferred model type.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">max_nbr_of_boruta_mdl_runs_int</span> <span class="op">=</span> <span class="fl">300L</span>
-<span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsns_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_predr_cmprsn_outps.html">write_predr_cmprsn_outps</a></span><span class="op">(</span>data_tb <span class="op">=</span> <span class="va">bl_tb</span>,
+<span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsn_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_predr_cmprsn_outps.html">write_predr_cmprsn_outps</a></span><span class="op">(</span>data_tb <span class="op">=</span> <span class="va">bl_tb</span>,
                                              path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>,
-                                             new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"B_Candidate_Predrs_Cmprsns"</span>,
-                                             dep_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">dep_var_nm_1L_chr</span>, 
+                                             new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"B_Candidate_Predrs_Cmprsn"</span>,
+                                             depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span>, 
                                              candidate_predrs_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
                                              max_nbr_of_boruta_mdl_runs_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">max_nbr_of_boruta_mdl_runs_int</span><span class="op">)</span></code></pre></div>
-<p>The previous call to the <code class="sourceCode r">write_predr_cmprsn_outps</code> function saved the tested models along with model plots in the “B_Candidate_Predrs_Cmprsns” sub-directory of “Output”.</p>
+<p>The previous call to the <code class="sourceCode r">write_predr_cmprsn_outps</code> function saved the tested models along with model plots in the “B_Candidate_Predrs_Cmprsn” sub-directory of “Output”.</p>
 <p>These results are also viewable as a table.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsns_tb</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsn_tb</span> <span class="op">%&gt;%</span>
     <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
                           caption_1L_chr <span class="op">=</span> <span class="st">"Comparison of all candidate predictors using preferred model"</span><span class="op">)</span></code></pre></div>
 <table class="table  lightable-paper lightable-hover">
@@ -2790,11 +2790,11 @@ K6
 <p>Now, we compare the performance of single predictor models of our preferred model type (in our case, a Generalised Linear Mixed Model with Gaussian distribution and log link) for each candidate predictor.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R">    <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_mdl_sngl_predrs_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_type_multi_outps.html">write_mdl_type_multi_outps</a></span><span class="op">(</span>data_tb <span class="op">=</span> <span class="va">bl_tb</span>,
-        n_folds_1L_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">n_folds_1L_int</span>, predrs_var_nms_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsns_tb</span><span class="op">$</span><span class="va">predr_chr</span>,
-        mdl_type_1L_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, dep_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">dep_var_nm_1L_chr</span>,
-        path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>, new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"C_Predrs_Sngl_Mdl_Cmprsns"</span>,
+        folds_1L_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">folds_1L_int</span>, predrs_var_nms_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsn_tb</span><span class="op">$</span><span class="va">predr_chr</span>,
+        mdl_type_1L_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span>,
+        path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>, new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"C_Predrs_Sngl_Mdl_Cmprsn"</span>,
         fl_nm_pfx_1L_chr <span class="op">=</span> <span class="st">"C_PREDR"</span>, mdl_types_lup <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_lup</span><span class="op">)</span> </code></pre></div>
-<p>The previous call to the <code class="sourceCode r">write_mdl_type_multi_outps</code> function saves the tested models along with the two plots for each model in the “C_Predrs_Sngl_Mdl_Cmprsns” sub-directory of “Output”.</p>
+<p>The previous call to the <code class="sourceCode r">write_mdl_type_multi_outps</code> function saves the tested models along with the two plots for each model in the “C_Predrs_Sngl_Mdl_Cmprsn” sub-directory of “Output”.</p>
 <p>The performance of each single predictor model can also be summarised in a table.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_mdl_sngl_predrs_tb</span> <span class="op">%&gt;%</span>
@@ -2888,10 +2888,10 @@ K6
 <p>We rerun each of the models from the previous step, but this time add all our candidate covariates to each model.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">bl_tb</span> <span class="op">&lt;-</span> <span class="va">scored_data_tb</span> <span class="op">%&gt;%</span> <span class="fu"><a href="../reference/transform_ds_for_tstng.html">transform_ds_for_tstng</a></span><span class="op">(</span>candidate_predrs_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
-        covar_var_nms_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_covar_nms_chr</span>, remove_all_mssng_1L_lgl <span class="op">=</span> <span class="cn">T</span>,
+        covar_var_nms_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_covar_nms_chr</span>, remove_all_msng_1L_lgl <span class="op">=</span> <span class="cn">T</span>,
         round_val_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">round_bl_val_1L_chr</span><span class="op">)</span>
 <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdls_with_covars_smry_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_type_covars_mdls.html">write_mdl_type_covars_mdls</a></span><span class="op">(</span><span class="va">bl_tb</span>,
-        dep_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">dep_var_nm_1L_chr</span>, predrs_var_nms_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
+        depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span>, predrs_var_nms_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
         covar_var_nms_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_covar_nms_chr</span>, mdl_type_1L_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
         path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>, new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"D_Predr_Covars_Cmprsn"</span>,
         fl_nm_pfx_1L_chr <span class="op">=</span> <span class="st">"D_CT"</span>,
@@ -2984,12 +2984,12 @@ PHQ9
 <a href="#test-preferred-model-with-preferred-covariates-for-each-candidate-predictor" class="anchor"></a>Test preferred model with preferred covariates for each candidate predictor</h3>
 <p>We now conclude our model testing by rerunning the previous step, except confining our covariates to those we prefer.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R">    <span class="va">empty_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_type_multi_outps.html">write_mdl_type_multi_outps</a></span><span class="op">(</span>data_tb <span class="op">=</span> <span class="va">bl_tb</span>, n_folds_1L_int <span class="op">=</span> <span class="cn">NULL</span>,
-        start_1L_chr <span class="op">=</span> <span class="cn">NA_character_</span>, predrs_var_nms_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsns_tb</span><span class="op">$</span><span class="va">predr_chr</span>,
+<code class="sourceCode R">    <span class="va">empty_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_type_multi_outps.html">write_mdl_type_multi_outps</a></span><span class="op">(</span>data_tb <span class="op">=</span> <span class="va">bl_tb</span>, folds_1L_int <span class="op">=</span> <span class="cn">NULL</span>,
+        start_1L_chr <span class="op">=</span> <span class="cn">NA_character_</span>, predrs_var_nms_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsn_tb</span><span class="op">$</span><span class="va">predr_chr</span>,
         covar_var_nms_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_covars_chr</span>, mdl_type_1L_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
-        dep_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">dep_var_nm_1L_chr</span>, path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>,
-        new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"E_Predrs_W_Covars_Sngl_Mdl_Cmprsns"</span>, mdl_types_lup <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_lup</span>, fl_nm_pfx_1L_chr <span class="op">=</span> <span class="st">"E_CK_CV"</span><span class="op">)</span></code></pre></div>
-<p>The previous call to the <code class="sourceCode r">write_mdl_type_multi_outps</code> function saves the tested models along with the two plots for each model in the “E_Predrs_W_Covars_Sngl_Mdl_Cmprsns” sub-directory of “Output”.</p>
+        depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span>, path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>,
+        new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"E_Predrs_W_Covars_Sngl_Mdl_Cmprsn"</span>, mdl_types_lup <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_lup</span>, fl_nm_pfx_1L_chr <span class="op">=</span> <span class="st">"E_CK_CV"</span><span class="op">)</span></code></pre></div>
+<p>The previous call to the <code class="sourceCode r">write_mdl_type_multi_outps</code> function saves the tested models along with the two plots for each model in the “E_Predrs_W_Covars_Sngl_Mdl_Cmprsn” sub-directory of “Output”.</p>
 </div>
 </div>
 <div id="apply-preferred-model-types-and-predictors-to-time-series-data" class="section level2">
@@ -3001,7 +3001,7 @@ PHQ9
 <a href="#preliminary-steps" class="anchor"></a>Preliminary steps</h3>
 <p>First we summarise the combinations of model types, candidate predictors and covariates that we will be using.</p>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R">    <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_vars_nms_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_predr_vars_nms_ls.html">make_predr_vars_nms_ls</a></span><span class="op">(</span>main_predrs_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsns_tb</span><span class="op">$</span><span class="va">predr_chr</span>,
+<code class="sourceCode R">    <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_vars_nms_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_predr_vars_nms_ls.html">make_predr_vars_nms_ls</a></span><span class="op">(</span>main_predrs_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsn_tb</span><span class="op">$</span><span class="va">predr_chr</span>,
         covars_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_covars_chr</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_nms_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mdl_nms_ls.html">make_mdl_nms_ls</a></span><span class="op">(</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_vars_nms_ls</span>, mdl_types_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span><span class="op">)</span></code></pre></div>
@@ -3016,12 +3016,12 @@ PHQ9
 <code class="sourceCode R"><span class="va">outp_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>scored_data_tb <span class="op">=</span> <span class="va">scored_data_tb</span>, 
                      smry_of_sngl_predr_mdls_tb <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_sngl_predr_mdls_tb</span>,
                      prefd_mdl_types_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span>, 
-                     predr_cmprsns_tb <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsns_tb</span>,
+                     predr_cmprsn_tb <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsn_tb</span>,
                      smry_of_mdl_sngl_predrs_tb <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_mdl_sngl_predrs_tb</span>,
                      mdls_with_covars_smry_tb <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdls_with_covars_smry_tb</span>,
                      signt_covars_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">signt_covars_chr</span>, 
                      prefd_covars_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_covars_chr</span>,
-                     dep_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">dep_var_nm_1L_chr</span>, 
+                     depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span>, 
                      predr_vars_nms_ls <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_vars_nms_ls</span>,
                      mdl_nms_ls <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_nms_ls</span>, 
                      id_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">id_var_nm_1L_chr</span>,
@@ -3029,7 +3029,7 @@ PHQ9
                      round_bl_val_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">round_bl_val_1L_chr</span>,
                      path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>, 
                      seed_1L_int <span class="op">=</span> <span class="va">seed_1L_int</span>,
-                     n_folds_1L_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">n_folds_1L_int</span>, 
+                     folds_1L_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">folds_1L_int</span>, 
                      max_nbr_of_boruta_mdl_runs_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">max_nbr_of_boruta_mdl_runs_int</span>,
                      mdl_types_lup <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_lup</span>, 
                      file_paths_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="va">path_to_write_to_1L_chr</span>, recursive <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span></code></pre></div>

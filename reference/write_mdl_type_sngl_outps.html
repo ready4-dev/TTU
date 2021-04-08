@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Write model type sngl outputs — write_mdl_type_sngl_outps • TTU</title>
+<title>Write model type single outputs — write_mdl_type_sngl_outps • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Write model type sngl outputs — write_mdl_type_sngl_outps" />
-<meta property="og:description" content="write_mdl_type_sngl_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type sngl outputs. The function returns Smry of one predr model (a tibble)." />
+<meta property="og:title" content="Write model type single outputs — write_mdl_type_sngl_outps" />
+<meta property="og:description" content="write_mdl_type_sngl_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type single outputs. The function returns Summary of one predictor model (a tibble)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9130</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9133</span>
       </span>
     </div>
 
@@ -131,19 +131,19 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Write model type sngl outputs</h1>
+    <h1>Write model type single outputs</h1>
     <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_write.R'><code>R/fn_write.R</code></a></small>
     <div class="hidden name"><code>write_mdl_type_sngl_outps.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>write_mdl_type_sngl_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type sngl outputs. The function returns Smry of one predr model (a tibble).</p>
+    <p>write_mdl_type_sngl_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type single outputs. The function returns Summary of one predictor model (a tibble).</p>
     </div>
 
     <pre class="usage"><span class='fu'>write_mdl_type_sngl_outps</span><span class='op'>(</span>
   <span class='va'>data_tb</span>,
-  n_folds_1L_int <span class='op'>=</span> <span class='fl'>10</span>,
-  dep_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
+  folds_1L_int <span class='op'>=</span> <span class='fl'>10</span>,
+  depnt_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
   start_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
   tfmn_1L_chr <span class='op'>=</span> <span class='st'>"NTF"</span>,
   <span class='va'>predr_var_nm_1L_chr</span>,
@@ -154,7 +154,7 @@
   mdl_types_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>path_to_write_to_1L_chr</span>,
   <span class='va'>mdl_fl_nm_1L_chr</span>,
-  plt_idcs_int <span class='op'>=</span> <span class='cn'>NA_integer_</span>
+  plt_idxs_int <span class='op'>=</span> <span class='cn'>NA_integer_</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -165,12 +165,12 @@
       <td><p>Data (a tibble)</p></td>
     </tr>
     <tr>
-      <th>n_folds_1L_int</th>
-      <td><p>N folds (an integer vector of length one), Default: 10</p></td>
+      <th>folds_1L_int</th>
+      <td><p>Folds (an integer vector of length one), Default: 10</p></td>
     </tr>
     <tr>
-      <th>dep_var_nm_1L_chr</th>
-      <td><p>Dep var name (a character vector of length one), Default: 'utl_total_w'</p></td>
+      <th>depnt_var_nm_1L_chr</th>
+      <td><p>Dependent variable name (a character vector of length one), Default: 'utl_total_w'</p></td>
     </tr>
     <tr>
       <th>start_1L_chr</th>
@@ -182,19 +182,19 @@
     </tr>
     <tr>
       <th>predr_var_nm_1L_chr</th>
-      <td><p>Predr var name (a character vector of length one)</p></td>
+      <td><p>Predictor variable name (a character vector of length one)</p></td>
     </tr>
     <tr>
       <th>predr_var_desc_1L_chr</th>
-      <td><p>Predr var description (a character vector of length one)</p></td>
+      <td><p>Predictor variable description (a character vector of length one)</p></td>
     </tr>
     <tr>
       <th>predr_vals_dbl</th>
-      <td><p>Predr values (a double vector)</p></td>
+      <td><p>Predictor values (a double vector)</p></td>
     </tr>
     <tr>
       <th>covar_var_nms_chr</th>
-      <td><p>Covar var names (a character vector), Default: 'NA'</p></td>
+      <td><p>Covariate variable names (a character vector), Default: 'NA'</p></td>
     </tr>
     <tr>
       <th>mdl_type_1L_chr</th>
@@ -213,14 +213,14 @@
       <td><p>Model file name (a character vector of length one)</p></td>
     </tr>
     <tr>
-      <th>plt_idcs_int</th>
-      <td><p>Plt idcs (an integer vector), Default: NA</p></td>
+      <th>plt_idxs_int</th>
+      <td><p>Plot indices (an integer vector), Default: NA</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Smry of one predr model (a tibble)</p>
+    <p>Summary of one predictor model (a tibble)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

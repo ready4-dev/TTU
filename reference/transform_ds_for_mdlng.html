@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Transform dataset for mdlng — transform_ds_for_mdlng • TTU</title>
+<title>Transform dataset for modelling — transform_ds_for_mdlng • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Transform dataset for mdlng — transform_ds_for_mdlng" />
-<meta property="og:description" content="transform_ds_for_mdlng() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dataset for mdlng. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed data (a tibble)." />
+<meta property="og:title" content="Transform dataset for modelling — transform_ds_for_mdlng" />
+<meta property="og:description" content="transform_ds_for_mdlng() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dataset for modelling. Function argument data_tb specifies the object to be updated. Argument depnt_var_nm_1L_chr provides the object to be updated. The function returns Transformed data (a tibble)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9130</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9133</span>
       </span>
     </div>
 
@@ -131,18 +131,18 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Transform dataset for mdlng</h1>
+    <h1>Transform dataset for modelling</h1>
     <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_transform.R'><code>R/fn_transform.R</code></a></small>
     <div class="hidden name"><code>transform_ds_for_mdlng.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>transform_ds_for_mdlng() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dataset for mdlng. Function argument data_tb specifies the object to be updated. Argument dep_var_nm_1L_chr provides the object to be updated. The function returns Transformed data (a tibble).</p>
+    <p>transform_ds_for_mdlng() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dataset for modelling. Function argument data_tb specifies the object to be updated. Argument depnt_var_nm_1L_chr provides the object to be updated. The function returns Transformed data (a tibble).</p>
     </div>
 
     <pre class="usage"><span class='fu'>transform_ds_for_mdlng</span><span class='op'>(</span>
   <span class='va'>data_tb</span>,
-  dep_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
+  depnt_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
   <span class='va'>predr_var_nm_1L_chr</span>,
   covar_var_nms_chr <span class='op'>=</span> <span class='cn'>NA_character_</span>
 <span class='op'>)</span></pre>
@@ -155,16 +155,16 @@
       <td><p>Data (a tibble)</p></td>
     </tr>
     <tr>
-      <th>dep_var_nm_1L_chr</th>
-      <td><p>Dep var name (a character vector of length one), Default: 'utl_total_w'</p></td>
+      <th>depnt_var_nm_1L_chr</th>
+      <td><p>Dependent variable name (a character vector of length one), Default: 'utl_total_w'</p></td>
     </tr>
     <tr>
       <th>predr_var_nm_1L_chr</th>
-      <td><p>Predr var name (a character vector of length one)</p></td>
+      <td><p>Predictor variable name (a character vector of length one)</p></td>
     </tr>
     <tr>
       <th>covar_var_nms_chr</th>
-      <td><p>Covar var names (a character vector), Default: 'NA'</p></td>
+      <td><p>Covariate variable names (a character vector), Default: 'NA'</p></td>
     </tr>
     </table>
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Randomise changes in factor levels — randomise_changes_in_fct_levs • TTU</title>
+<title>Randomise changes in factor vector levels — randomise_changes_in_fct_levs • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Randomise changes in factor levels — randomise_changes_in_fct_levs" />
-<meta property="og:description" content="randomise_changes_in_fct_levs() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise changes in factor levels. The function is called for its side effects and does not return a value." />
+<meta property="og:title" content="Randomise changes in factor vector levels — randomise_changes_in_fct_levs" />
+<meta property="og:description" content="randomise_changes_in_fct_levs() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise changes in factor vector levels. The function is called for its side effects and does not return a value." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9130</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9133</span>
       </span>
     </div>
 
@@ -131,13 +131,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Randomise changes in factor levels</h1>
+    <h1>Randomise changes in factor vector levels</h1>
     <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_randomise.R'><code>R/fn_randomise.R</code></a></small>
     <div class="hidden name"><code>randomise_changes_in_fct_levs.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>randomise_changes_in_fct_levs() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise changes in factor levels. The function is called for its side effects and does not return a value.</p>
+    <p>randomise_changes_in_fct_levs() is a Randomise function that randomly samples from data. Specifically, this function implements an algorithm to randomise changes in factor vector levels. The function is called for its side effects and does not return a value.</p>
     </div>
 
     <pre class="usage"><span class='fu'>randomise_changes_in_fct_levs</span><span class='op'>(</span><span class='va'>vector_fct</span>, <span class='va'>prob_unchanged_dbl</span><span class='op'>)</span></pre>
@@ -147,11 +147,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>vector_fct</th>
-      <td><p>Vector (a factor)</p></td>
+      <td><p>Vector (a factor vector)</p></td>
     </tr>
     <tr>
       <th>prob_unchanged_dbl</th>
-      <td><p>Prob unchanged (a double vector)</p></td>
+      <td><p>Probability unchanged (a double vector)</p></td>
     </tr>
     </table>
 

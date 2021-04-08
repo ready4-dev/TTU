@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Transform model vars with classes — transform_mdl_vars_with_clss • TTU</title>
+<title>Transform model variables with classes — transform_mdl_vars_with_clss • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Transform model vars with classes — transform_mdl_vars_with_clss" />
-<meta property="og:description" content="transform_mdl_vars_with_clss() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform model vars with classes. Function argument ds_tb specifies the object to be updated. Argument predictors_lup provides the object to be updated. The function returns Transformed dataset (a tibble)." />
+<meta property="og:title" content="Transform model variables with classes — transform_mdl_vars_with_clss" />
+<meta property="og:description" content="transform_mdl_vars_with_clss() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform model variables with classes. Function argument ds_tb specifies the object to be updated. Argument predictors_lup provides the object to be updated. The function returns Transformed dataset (a tibble)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9130</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9133</span>
       </span>
     </div>
 
@@ -131,20 +131,20 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Transform model vars with classes</h1>
+    <h1>Transform model variables with classes</h1>
     <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_transform.R'><code>R/fn_transform.R</code></a></small>
     <div class="hidden name"><code>transform_mdl_vars_with_clss.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>transform_mdl_vars_with_clss() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform model vars with classes. Function argument ds_tb specifies the object to be updated. Argument predictors_lup provides the object to be updated. The function returns Transformed dataset (a tibble).</p>
+    <p>transform_mdl_vars_with_clss() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform model variables with classes. Function argument ds_tb specifies the object to be updated. Argument predictors_lup provides the object to be updated. The function returns Transformed dataset (a tibble).</p>
     </div>
 
     <pre class="usage"><span class='fu'>transform_mdl_vars_with_clss</span><span class='op'>(</span>
   <span class='va'>ds_tb</span>,
   predictors_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
   prototype_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
-  dep_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"aqol6d_total_w"</span>,
+  depnt_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"aqol6d_total_w"</span>,
   class_fn_1L_chr <span class='op'>=</span> <span class='st'>"youthvars::youthvars_aqol6d_adol"</span>
 <span class='op'>)</span></pre>
 
@@ -164,8 +164,8 @@
       <td><p>Prototype (a lookup table), Default: NULL</p></td>
     </tr>
     <tr>
-      <th>dep_var_nm_1L_chr</th>
-      <td><p>Dep var name (a character vector of length one), Default: 'aqol6d_total_w'</p></td>
+      <th>depnt_var_nm_1L_chr</th>
+      <td><p>Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'</p></td>
     </tr>
     <tr>
       <th>class_fn_1L_chr</th>

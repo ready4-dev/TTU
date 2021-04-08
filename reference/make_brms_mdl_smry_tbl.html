@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Make brms model smry table — make_brms_mdl_smry_tbl • TTU</title>
+<title>Make bayesian regression models model summary table — make_brms_mdl_smry_tbl • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Make brms model smry table — make_brms_mdl_smry_tbl" />
-<meta property="og:description" content="make_brms_mdl_smry_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make brms model smry table. The function returns Brms model smry (a tibble)." />
+<meta property="og:title" content="Make bayesian regression models model summary table — make_brms_mdl_smry_tbl" />
+<meta property="og:description" content="make_brms_mdl_smry_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make bayesian regression models model summary table. The function returns Bayesian regression models model summary (a tibble)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9130</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9133</span>
       </span>
     </div>
 
@@ -131,31 +131,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Make brms model smry table</h1>
+    <h1>Make bayesian regression models model summary table</h1>
     <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
     <div class="hidden name"><code>make_brms_mdl_smry_tbl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>make_brms_mdl_smry_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make brms model smry table. The function returns Brms model smry (a tibble).</p>
+    <p>make_brms_mdl_smry_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make bayesian regression models model summary table. The function returns Bayesian regression models model summary (a tibble).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_brms_mdl_smry_tbl</span><span class='op'>(</span><span class='va'>smry_mdl_ls</span>, <span class='va'>grp_1L_chr</span>, <span class='va'>pop_1L_chr</span>, <span class='va'>fam_1L_chr</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>make_brms_mdl_smry_tbl</span><span class='op'>(</span><span class='va'>smry_mdl_ls</span>, <span class='va'>grp_1L_chr</span>, <span class='va'>popl_1L_chr</span>, <span class='va'>fam_1L_chr</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>smry_mdl_ls</th>
-      <td><p>Smry model (a list)</p></td>
+      <td><p>Summary (a list of models)</p></td>
     </tr>
     <tr>
       <th>grp_1L_chr</th>
-      <td><p>Grp (a character vector of length one)</p></td>
+      <td><p>Group (a character vector of length one)</p></td>
     </tr>
     <tr>
-      <th>pop_1L_chr</th>
-      <td><p>Pop (a character vector of length one)</p></td>
+      <th>popl_1L_chr</th>
+      <td><p>Population (a character vector of length one)</p></td>
     </tr>
     <tr>
       <th>fam_1L_chr</th>
@@ -165,7 +165,7 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Brms model smry (a tibble)</p>
+    <p>Bayesian regression models model summary (a tibble)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

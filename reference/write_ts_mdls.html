@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Write time series models — write_ts_mdls" />
-<meta property="og:description" content="write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models. The function returns Models smry (a tibble)." />
+<meta property="og:description" content="write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models. The function returns Models summary (a tibble)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9130</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9133</span>
       </span>
     </div>
 
@@ -137,12 +137,12 @@
     </div>
 
     <div class="ref-description">
-    <p>write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models. The function returns Models smry (a tibble).</p>
+    <p>write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models. The function returns Models summary (a tibble).</p>
     </div>
 
     <pre class="usage"><span class='fu'>write_ts_mdls</span><span class='op'>(</span>
   <span class='va'>data_tb</span>,
-  dep_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
+  depnt_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
   <span class='va'>predr_vars_nms_ls</span>,
   id_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"fkClientID"</span>,
   round_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"round"</span>,
@@ -164,24 +164,24 @@
       <td><p>Data (a tibble)</p></td>
     </tr>
     <tr>
-      <th>dep_var_nm_1L_chr</th>
-      <td><p>Dep var name (a character vector of length one), Default: 'utl_total_w'</p></td>
+      <th>depnt_var_nm_1L_chr</th>
+      <td><p>Dependent variable name (a character vector of length one), Default: 'utl_total_w'</p></td>
     </tr>
     <tr>
       <th>predr_vars_nms_ls</th>
-      <td><p>Predr vars names (a list)</p></td>
+      <td><p>Predictor variables names (a list)</p></td>
     </tr>
     <tr>
       <th>id_var_nm_1L_chr</th>
-      <td><p>Id var name (a character vector of length one), Default: 'fkClientID'</p></td>
+      <td><p>Identity variable name (a character vector of length one), Default: 'fkClientID'</p></td>
     </tr>
     <tr>
       <th>round_var_nm_1L_chr</th>
-      <td><p>Round var name (a character vector of length one), Default: 'round'</p></td>
+      <td><p>Round variable name (a character vector of length one), Default: 'round'</p></td>
     </tr>
     <tr>
       <th>round_bl_val_1L_chr</th>
-      <td><p>Round bl value (a character vector of length one), Default: 'Baseline'</p></td>
+      <td><p>Round baseline value (a character vector of length one), Default: 'Baseline'</p></td>
     </tr>
     <tr>
       <th>backend_1L_chr</th>
@@ -197,7 +197,7 @@
     </tr>
     <tr>
       <th>mdl_smry_dir_1L_chr</th>
-      <td><p>Model smry directory (a character vector of length one)</p></td>
+      <td><p>Model summary directory (a character vector of length one)</p></td>
     </tr>
     <tr>
       <th>predictors_lup</th>
@@ -205,7 +205,7 @@
     </tr>
     <tr>
       <th>iters_1L_int</th>
-      <td><p>Iters (an integer vector of length one), Default: 4000</p></td>
+      <td><p>Iterations (an integer vector of length one), Default: 4000</p></td>
     </tr>
     <tr>
       <th>seed_1L_int</th>
@@ -215,7 +215,7 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Models smry (a tibble)</p>
+    <p>Models summary (a tibble)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
