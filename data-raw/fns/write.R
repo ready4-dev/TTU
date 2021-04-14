@@ -189,7 +189,7 @@ write_mdl_cmprsn <- function(scored_data_tb,
                                                                               new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsn",
                                                                               mdl_types_lup = mdl_smry_ls$mdl_types_lup)
   mdl_cmprsn_ls <- list(bl_tb = bl_tb,
-                         ds_smry_ls = ds_smry_ls,
+                        ds_smry_ls = ds_smry_ls,
                         mdl_smry_ls = mdl_smry_ls)
   return(mdl_cmprsn_ls)
 }
@@ -446,7 +446,8 @@ write_predr_and_covars_cmprsn <- function(scored_data_tb,
   mdl_smry_ls$signt_covars_chr <- get_signft_covars(mdls_with_covars_smry_tb = mdl_smry_ls$mdls_with_covars_smry_tb,
                                                     covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr)
   predr_and_covars_cmprsn_ls <- list(bl_tb = bl_tb,
-                                      mdl_smry_ls = mdl_smry_ls)
+                                     ds_smry_ls = ds_smry_ls,
+                                     mdl_smry_ls = mdl_smry_ls)
   return(predr_and_covars_cmprsn_ls)
 }
 write_predr_and_mdl_tstng_results <- function(scored_data_tb,
