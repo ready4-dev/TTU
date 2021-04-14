@@ -40,8 +40,9 @@ ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Transfer to Utility Mapping Algo
 ## PART THREE
 ##
 # 5. Create a lookup table of abbreviations used in this package and save it as a package dataset (data gets saved in the data directory, documentation script is created in R directory).
+object_type_lup <- ready4fun::get_rds_from_dv("object_type_lup")
 pkg_dss_tb <- ready4fun::get_rds_from_dv("abbreviations_lup") %>%
-  ready4fun::write_abbr_lup()
+  ready4fun::write_abbr_lup(object_type_lup = object_type_lup)
 utils::data("abbreviations_lup")
 #
 # 6. Make classes
@@ -52,15 +53,19 @@ pkg_dss_tb <- classes_to_make_tb %>%
                                           output_dir_1L_chr = "R",
                                           file_exists_cdn_1L_chr = "overwrite",
                                           abbreviations_lup = abbreviations_lup,
-                                          init_class_pt_lup = ready4fun::get_rds_from_dv("prototype_lup"))  %>% #
+                                          init_class_pt_lup = ready4fun::get_rds_from_dv("prototype_lup"),
+                                          object_type_lup = object_type_lup)  %>% #
   ready4fun::write_and_doc_ds(db_1L_chr = "prototype_lup",
                               title_1L_chr = "Class prototype lookup table",
                               desc_1L_chr = "Metadata on classes used in readyforwhatsnext suite",
+                              abbreviations_lup = abbreviations_lup,
+                              object_type_lup = object_type_lup,
                               pkg_dss_tb = pkg_dss_tb)
 ##
 # 7. Create function types look-up table and save it as a package dataset
 pkg_dss_tb <- ready4fun::get_rds_from_dv("fn_type_lup_tb") %>%
   ready4fun::write_dmtd_fn_type_lup(abbreviations_lup = abbreviations_lup,
+                                    object_type_lup = object_type_lup,
                                     pkg_dss_tb = pkg_dss_tb)
 utils::data("fn_type_lup_tb")
 #
@@ -81,7 +86,8 @@ fns_dmt_tb <- ready4fun::make_dmt_for_all_fns(paths_ls = ready4fun::make_fn_nms(
                                                                                                    force_false_chr = NA_character_),
                                                                    args_ls_ls = NULL),
                                               fn_type_lup_tb = fn_type_lup_tb,
-                                              abbreviations_lup = abbreviations_lup)
+                                              abbreviations_lup = abbreviations_lup,
+                                              object_type_lup = object_type_lup)
 ##
 pkg_dss_tb <- fns_dmt_tb %>%
   ready4fun::write_and_doc_ds(db_1L_chr = "fns_dmt_tb",
@@ -133,6 +139,7 @@ pkg_dss_tb <- tibble::tibble(short_name_chr = c("OLS_NTF",
                               title_1L_chr = "Model types lookup table",
                               desc_1L_chr = "A lookup table of abbreviations to describe the different model types supported by TTU functions",
                               abbreviations_lup = abbreviations_lup,
+                              object_type_lup = object_type_lup,
                               pkg_dss_tb = pkg_dss_tb)
 pkg_dss_tb <- tibble::tibble(short_name_chr = c("coefs","hetg", "dnst","sctr_plt"),
                                long_name_chr = c("population level effects",
@@ -143,6 +150,7 @@ pkg_dss_tb <- tibble::tibble(short_name_chr = c("coefs","hetg", "dnst","sctr_plt
                               title_1L_chr = "Model plot types lookup table",
                               desc_1L_chr = "A lookup table of abbreviations to describe the different model plot types supported by TTU functions",
                               abbreviations_lup = abbreviations_lup,
+                              object_type_lup = object_type_lup,
                               pkg_dss_tb = pkg_dss_tb)
 pkg_dss_tb <- tibble::tibble(rprt_nms_chr = "Main_Mdl_Smry",
                            title_chr = "Summary report of the models estimated from synthetic data to map a number of mental health measures to utility scores.",
@@ -155,6 +163,7 @@ pkg_dss_tb <- tibble::tibble(rprt_nms_chr = "Main_Mdl_Smry",
                               title_1L_chr = "Report types lookup table",
                               desc_1L_chr = "A lookup table of the different report types supported by TTU functions",
                               abbreviations_lup = abbreviations_lup,
+                              object_type_lup = object_type_lup,
                               pkg_dss_tb = pkg_dss_tb)
 pkg_dss_tb <- tibble::tibble(short_name_chr = c("BADS","GAD7","K6","OASIS","PHQ9","SCARED","SOFAS"),
                              long_name_chr = short_name_chr %>% purrr::map_chr(~paste0(.x, " total score")),
@@ -169,6 +178,7 @@ pkg_dss_tb <- tibble::tibble(short_name_chr = c("BADS","GAD7","K6","OASIS","PHQ9
                               title_1L_chr = "Predictors lookup table",
                               desc_1L_chr = "A lookup table of the short name and long name of each predictor used in the models included with the youthu package.",
                               abbreviations_lup = abbreviations_lup,
+                              object_type_lup = object_type_lup,
                               pkg_dss_tb = pkg_dss_tb)
 # NOTE: NEED TO UPDATE DIR PATH FOR MODELS
 ## Note files to be rewritten cannot be open in RStudio.
@@ -200,7 +210,8 @@ if(!identical(prototype_lup,ready4fun::get_rds_from_dv("prototype_lup"))){
 }
 # devtools::build_vignettes()
 ready4fun::write_links_for_website(user_manual_url_1L_chr = "https://github.com/ready4-dev/TTU/files/6277705/TTU_user_0.0.0.9133.pdf",
-                                   developer_manual_url_1L_chr = "https://github.com/ready4-dev/TTU/files/6277710/TTU_developer_0.0.0.9133.pdf")
+                                   developer_manual_url_1L_chr = "https://github.com/ready4-dev/TTU/files/6277710/TTU_developer_0.0.0.9133.pdf",
+                                   project_website_url_1L_chr = "https://www.ready4-dev.com/")
 ##
 ##
 ## Add, Commit and Push

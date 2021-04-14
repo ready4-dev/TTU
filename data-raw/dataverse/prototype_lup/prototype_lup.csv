@@ -9,14 +9,6 @@
 "integer","NA_integer_","base","","NA_integer_",FALSE
 "ready4_constructor_tbl","ready4class::ready4_constructor_tbl()","ready4class","ready4_constructor_tbl","",TRUE
 "ready4_class_pt_lup","ready4class::ready4_class_pt_lup()","ready4class","ready4_class_pt_lup","",TRUE
-"youthvars_aqol6d_adol","youthvars::youthvars_aqol6d_adol()","youthvars","youthvars_aqol6d_adol","",TRUE
-"youthvars_phq9","youthvars::youthvars_phq9()","youthvars","youthvars_phq9","",TRUE
-"youthvars_bads","youthvars::youthvars_bads()","youthvars","youthvars_bads","",TRUE
-"youthvars_gad7","youthvars::youthvars_gad7()","youthvars","youthvars_gad7","",TRUE
-"youthvars_oasis","youthvars::youthvars_oasis()","youthvars","youthvars_oasis","",TRUE
-"youthvars_scared","youthvars::youthvars_scared()","youthvars","youthvars_scared","",TRUE
-"youthvars_k6","youthvars::youthvars_k6()","youthvars","youthvars_k6","",TRUE
-"youthvars_sofas","youthvars::youthvars_sofas()","youthvars","youthvars_sofas","",TRUE
 "ready4_dist","ready4use::ready4_dist()","ready4use","ready4_dist","",TRUE
 "ready4_dv_import_lup","ready4use::ready4_dv_import_lup()","ready4use","ready4_dv_import_lup","",TRUE
 "ready4_all_import_lup","ready4use::ready4_all_import_lup()","ready4use","ready4_all_import_lup","",TRUE
@@ -26,4 +18,12 @@
 "ready4_local_raw","ready4use::ready4_local_raw()","ready4use","ready4_local_raw","",FALSE
 "ready4_local_proc","ready4use::ready4_local_proc()","ready4use","ready4_local_proc","",FALSE
 "ready4_script_data","ready4use::ready4_script_data()","ready4use","ready4_script_data","",FALSE
+"youthvars_aqol6d_adol","youthvars::youthvars_aqol6d_adol()","youthvars","youthvars_aqol6d_adol","",TRUE
+"youthvars_phq9","youthvars::youthvars_phq9()","youthvars","youthvars_phq9","",TRUE
+"youthvars_bads","youthvars::youthvars_bads()","youthvars","youthvars_bads","",TRUE
+"youthvars_gad7","youthvars::youthvars_gad7()","youthvars","youthvars_gad7","",TRUE
+"youthvars_oasis","youthvars::youthvars_oasis()","youthvars","youthvars_oasis","",TRUE
+"youthvars_scared","youthvars::youthvars_scared()","youthvars","youthvars_scared","",TRUE
+"youthvars_k6","youthvars::youthvars_k6()","youthvars","youthvars_k6","",TRUE
+"youthvars_sofas","youthvars::youthvars_sofas()","youthvars","youthvars_sofas","",TRUE
 "TTU_predictors_lup","TTU_predictors_lup()","TTU","TTU_predictors_lup","",TRUE

@@ -16,7 +16,8 @@
 #                                         custom_plural_ls = NULL,
 #                                         no_plural_chr = NA_character_,
 #                                         url_1L_chr = "https://readyforwhatsnext.github.io/readyforwhatsnext/",
-#                                         seed_lup = abbreviations_lup)
+#                                         seed_lup = abbreviations_lup,
+#                                         object_type_lup = object_type_lup)
 # utils::data("abbreviations_lup")
 #
 # classes_to_make_tb %>%
@@ -25,4 +26,4 @@
 #                                           output_dir_1L_chr = "R",
 #                                           file_exists_cdn_1L_chr = "overwrite",
 #                                           abbreviations_lup = abbreviations_lup,
-#                                           init_class_pt_lup = prototype_lup)
+#                                           init_class_pt_lup = prototype_lup, object_type_lup = object_type_lup)

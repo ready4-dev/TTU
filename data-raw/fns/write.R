@@ -190,7 +190,7 @@ write_mdl_cmprsn <- function(scored_data_tb,
                                                                               mdl_types_lup = mdl_smry_ls$mdl_types_lup)
   mdl_cmprsn_ls <- list(bl_tb = bl_tb,
                          ds_smry_ls = ds_smry_ls,
-                         mdl_smry_ls)
+                        mdl_smry_ls = mdl_smry_ls)
   return(mdl_cmprsn_ls)
 }
 write_mdls_with_covars_cmprsn <- function(scored_data_tb,
