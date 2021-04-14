@@ -1,3 +1,11 @@
+home:
+  links:
+  - text: User manual (PDF)
+    href: https://github.com/ready4-dev/TTU/files/6277705/TTU_user_0.0.0.9133.pdf
+  - text: Developer version of usual manual (PDF)
+    href: https://github.com/ready4-dev/TTU/files/6277710/TTU_developer_0.0.0.9133.pdf
+  - text: Project website
+    href: https://www.ready4-dev.com/
 development:
   mode: auto
 reference:

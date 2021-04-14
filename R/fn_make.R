@@ -864,7 +864,7 @@ make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L
 {
     scaling_fctr_dbl <- predr_vars_nms_chr %>% purrr::map_dbl(~ifelse(.x %in% 
         predictors_lup$short_name_chr, ready4fun::get_from_lup_obj(predictors_lup, 
-        target_var_nm_1L_chr = mdl_scaling_dbl, match_value_xx = .x, 
+        target_var_nm_1L_chr = "mdl_scaling_dbl", match_value_xx = .x, 
         match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F), 
         1))
     tfd_data_tb <- transform_tb_to_mdl_inp(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
