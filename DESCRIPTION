@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9137
+Version: 0.0.0.9138
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -95,3 +95,5 @@ Remotes:
     iqss/dataverse-client-r,
     ready4-dev/ready4class,
     ready4-dev/ready4fun
+Suggests: 
+    rmarkdown
