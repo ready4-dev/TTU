@@ -577,7 +577,7 @@ write_mdls_with_covars_cmprsn <- function (scored_data_tb, bl_tb, ds_smry_ls, md
         mdl_types_lup = mdl_smry_ls$mdl_types_lup, file_paths_chr = list.files(output_data_dir_1L_chr, 
             recursive = T), session_data_ls = session_data_ls)
     saveRDS(outp_smry_ls, paste0(outp_smry_ls$path_to_write_to_1L_chr, 
-        "/I_PRE_TS_OUTPUT_.RDS"))
+        "/I_ALL_OUTPUT_.RDS"))
     return(outp_smry_ls)
 }
 #' Write new output directory
@@ -847,11 +847,11 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
     return(outp_smry_ls)
 }
 #' Write shareable models to dataverse
-#' @description write_shareable_mdls_to_dv() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models to dataverse. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @description write_shareable_mdls_to_dv() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models to dataverse. The function returns Shareable models (a tibble).
 #' @param outp_smry_ls Output summary (a list)
 #' @param new_dir_nm_1L_chr New directory name (a character vector of length one), Default: 'G_Shareable'
 #' @param shareable_title_detail_1L_chr Shareable title detail (a character vector of length one), Default: ''
-#' @return NULL
+#' @return Shareable models (a tibble)
 #' @rdname write_shareable_mdls_to_dv
 #' @export 
 #' @importFrom tibble tibble
@@ -869,11 +869,13 @@ write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Sha
             names(outp_smry_ls$shareable_mdls_ls), ".", shareable_title_detail_1L_chr))
     ready4use::write_fls_to_dv_ds(shareable_mdls_tb, dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
         ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr, parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr, 
-        paths_to_dirs_chr = output_dir_1L_chr, inc_fl_types_chr = ".RDS")
+        paths_to_dirs_chr = output_dir_1L_chr, paths_are_rltv_1L_lgl = F, 
+        inc_fl_types_chr = ".RDS")
     ds_ls <- dataverse::get_dataset(outp_smry_ls$dv_ls$ds_url_1L_chr)
     shareable_mdls_tb <- shareable_mdls_tb %>% dplyr::mutate(dv_nm_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
         fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ready4use::get_fl_id_from_dv_ls(ds_ls, 
             fl_nm_1L_chr = paste0(.x, ".RDS")) %>% as.integer()))
+    return(shareable_mdls_tb)
 }
 #' Write single predictor multi models outputs
 #' @description write_sngl_predr_multi_mdls_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write single predictor multi models outputs. The function returns Summary of single predictor models (a tibble).

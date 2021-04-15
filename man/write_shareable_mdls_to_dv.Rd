@@ -17,7 +17,10 @@ write_shareable_mdls_to_dv(
 
 \item{shareable_title_detail_1L_chr}{Shareable title detail (a character vector of length one), Default: ''}
 }
+\value{
+Shareable models (a tibble)
+}
 \description{
-write_shareable_mdls_to_dv() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models to dataverse. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+write_shareable_mdls_to_dv() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models to dataverse. The function returns Shareable models (a tibble).
 }
 \keyword{internal}

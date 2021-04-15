@@ -7,6 +7,7 @@ params:
   outp_smry_ls: !r NULL
   output_type_1L_chr: HTML
   rltv_path_to_data_dir_1L_chr: ../Output/F_TS_Mdls
+  ref_for_main_ss_1L_chr: a scientific summary being prepared for publication
   root_dir_1L_chr: ./
   section_type_1L_chr: "#"
 ---
@@ -37,8 +38,9 @@ knit_pars_ls <- make_knit_pars_ls(rltv_path_to_data_dir_1L_chr = params_ls$rltv_
                   output_type_1L_chr = params_ls$output_type_1L_chr,
                   section_type_1L_chr = params_ls$section_type_1L_chr
                   ) 
-# paths_to_all_data_fls_chr <- list.files(rltv_path_to_data_dir_1L_chr, full.names = T)
 ```
+
+This report is supplementary information to `r params_ls$ref_for_main_ss_1L_chr` and provides a summary of transfer to utility models produced in that study. 
 
 ```{r, echo=FALSE, results='asis'}
  knit_pars_ls %>%
