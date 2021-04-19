@@ -139,7 +139,7 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
     depnt_var_nm_1L_chr = "aqol6d_total_w", class_fn_1L_chr = "youthvars::youthvars_aqol6d_adol") 
 {
     if (is.null(predictors_lup)) 
-        data("predictors_lup", package = "TTU", envir = environment())
+        data("predictors_lup", package = "youthvars", envir = environment())
     if (is.null(prototype_lup)) 
         data("prototype_lup", package = "TTU", envir = environment())
     predictors_lup <- tibble::add_case(predictors_lup, short_name_chr = depnt_var_nm_1L_chr, 
