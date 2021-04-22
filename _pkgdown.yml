@@ -23,7 +23,6 @@ reference:
   - TTU_predictors_lup
 - title: "Functions"
 - contents:
-  - add_interval_var
   - add_utility_predn_to_ds
   - make_fake_ts_data
   - write_all_alg_outps

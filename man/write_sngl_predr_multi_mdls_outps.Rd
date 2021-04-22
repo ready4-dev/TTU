@@ -18,7 +18,8 @@ write_sngl_predr_multi_mdls_outps(
   folds_1L_int = 10,
   mdl_types_lup = NULL,
   fl_nm_pfx_1L_chr = "A_RT_",
-  plt_idxs_int = NA_integer_
+  plt_idxs_int = NA_integer_,
+  dictionary_tb
 )
 }
 \arguments{
@@ -49,6 +50,8 @@ write_sngl_predr_multi_mdls_outps(
 \item{fl_nm_pfx_1L_chr}{File name prefix (a character vector of length one), Default: 'A_RT_'}
 
 \item{plt_idxs_int}{Plot indices (an integer vector), Default: NA}
+
+\item{dictionary_tb}{Dictionary (a tibble)}
 }
 \value{
 Summary of single predictor models (a tibble)

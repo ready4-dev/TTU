@@ -16,10 +16,12 @@
 #' @param folds_1L_int Folds (an integer vector of length one), Default: 10
 #' @param max_nbr_of_boruta_mdl_runs_int Maximum number of boruta model runs (an integer vector), Default: 300
 #' @param mdl_types_lup Model types (a lookup table), Default: NULL
+#' @param ds_smry_ls Dataset summary (a list)
 #' @return Output summary (a list)
 #' @rdname write_all_alg_outps
 #' @export 
 #' @importFrom utils data
+#' @importFrom youthvars transform_ds_for_tstng
 #' @importFrom ready4fun get_from_lup_obj
 write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, depnt_var_nm_1L_chr = "utl_total_w", 
     candidate_predrs_chr, candidate_covar_nms_chr, id_var_nm_1L_chr = "fkClientID", 
@@ -27,7 +29,7 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, depnt_
     mdl_types_chr = NA_character_, prefd_mdl_types_chr = NA_character_, 
     choose_from_pfx_chr = c("GLM", "OLS", "BET"), prefd_covars_chr = NA_character_, 
     seed_1L_int = 12345, folds_1L_int = 10L, max_nbr_of_boruta_mdl_runs_int = 300L, 
-    mdl_types_lup = NULL) 
+    mdl_types_lup = NULL, ds_smry_ls) 
 {
     set.seed(seed_1L_int)
     if (is.null(mdl_types_lup)) 
@@ -35,9 +37,10 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, depnt_
     if (is.na(mdl_types_chr[1])) {
         mdl_types_chr <- mdl_types_lup$short_name_chr
     }
-    bl_tb <- transform_ds_for_tstng(scored_data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
-        candidate_predrs_chr = candidate_predrs_chr, dep_var_max_val_1L_dbl = 0.999, 
-        round_var_nm_1L_chr = round_var_nm_1L_chr, round_val_1L_chr = round_bl_val_1L_chr)
+    bl_tb <- youthvars::transform_ds_for_tstng(scored_data_tb, 
+        depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, candidate_predrs_chr = candidate_predrs_chr, 
+        dep_var_max_val_1L_dbl = 0.999, round_var_nm_1L_chr = round_var_nm_1L_chr, 
+        round_val_1L_chr = round_bl_val_1L_chr)
     candidate_predrs_chr <- reorder_cndt_predrs_chr(candidate_predrs_chr, 
         data_tb = bl_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr)
     predr_var_nm_1L_chr <- candidate_predrs_chr[1]
@@ -50,7 +53,7 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, depnt_
         depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr, 
         predr_var_desc_1L_chr = predr_var_nm_1L_chr, predr_vals_dbl = predr_vals_dbl, 
         path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr = "A_Candidate_Mdls_Cmprsn", 
-        mdl_types_lup = mdl_types_lup)
+        mdl_types_lup = mdl_types_lup, dictionary_tb = ds_smry_ls$dictionary_tb)
     if (is.na(prefd_mdl_types_chr[1])) {
         prefd_mdl_types_chr <- make_prefd_mdls_vec(smry_of_sngl_predr_mdls_tb, 
             choose_from_pfx_chr = choose_from_pfx_chr)
@@ -64,7 +67,7 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, depnt_
         mdl_type_1L_chr = prefd_mdl_types_chr[1], depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
         path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsn", 
         fl_nm_pfx_1L_chr = "C_PREDR", mdl_types_lup = mdl_types_lup)
-    bl_tb <- scored_data_tb %>% transform_ds_for_tstng(candidate_predrs_chr = candidate_predrs_chr, 
+    bl_tb <- scored_data_tb %>% youthvars::transform_ds_for_tstng(candidate_predrs_chr = candidate_predrs_chr, 
         covar_var_nms_chr = candidate_covar_nms_chr, remove_all_msng_1L_lgl = T, 
         round_val_1L_chr = round_bl_val_1L_chr)
     mdls_with_covars_smry_tb <- write_mdl_type_covars_mdls(bl_tb, 
@@ -128,46 +131,10 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr, 
         mdl_type_1L_chr = "OLS_NTF", mdl_types_lup = mdl_types_lup, 
         start_1L_chr = start_1L_chr)
-    path_to_plot_1L_chr <- write_brm_mdl_plt_fl(plt_fn = MASS::boxcox, 
+    path_to_plot_1L_chr <- write_mdl_plt_fl(plt_fn = MASS::boxcox, 
         fn_args_ls = list(mdl, plotit = T), path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
         plt_nm_1L_chr = paste0(fl_nm_pfx_1L_chr, "_", predr_var_nm_1L_chr, 
             "_", "BOXCOX"), height_1L_dbl = height_1L_dbl, width_1L_dbl = width_1L_dbl)
-    return(path_to_plot_1L_chr)
-}
-#' Write bayesian regression model model plot file
-#' @description write_brm_mdl_plt_fl() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write bayesian regression model model plot file. The function returns Path to plot (a character vector of length one).
-#' @param plt_fn Plot (a function), Default: NULL
-#' @param fn_args_ls Function arguments (a list), Default: NULL
-#' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
-#' @param plt_nm_1L_chr Plot name (a character vector of length one)
-#' @param grpx_fn Grpx (a function), Default: grDevices::png
-#' @param units_1L_chr Units (a character vector of length one), Default: 'in'
-#' @param width_1L_dbl Width (a double vector of length one), Default: 6
-#' @param height_1L_dbl Height (a double vector of length one), Default: 6
-#' @param rsl_1L_dbl Resolution (a double vector of length one), Default: 300
-#' @return Path to plot (a character vector of length one)
-#' @rdname write_brm_mdl_plt_fl
-#' @export 
-#' @importFrom grDevices png dev.off
-#' @importFrom rlang exec
-#' @keywords internal
-write_brm_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_write_to_1L_chr, 
-    plt_nm_1L_chr, grpx_fn = grDevices::png, units_1L_chr = "in", 
-    width_1L_dbl = 6, height_1L_dbl = 6, rsl_1L_dbl = 300) 
-{
-    if (!is.null(plt_fn)) {
-        path_to_plot_1L_chr <- paste0(path_to_write_to_1L_chr, 
-            "/", plt_nm_1L_chr, ifelse(identical(grpx_fn, grDevices::png), 
-                ".png", ".tiff"))
-        rlang::exec(grpx_fn, !!!list(path_to_plot_1L_chr, units = units_1L_chr, 
-            width = width_1L_dbl, height = height_1L_dbl, res = rsl_1L_dbl))
-        plt <- rlang::exec(plt_fn, !!!fn_args_ls)
-        print(plt)
-        grDevices::dev.off()
-    }
-    else {
-        path_to_plot_1L_chr <- NA_character_
-    }
     return(path_to_plot_1L_chr)
 }
 #' Write bayesian regression model model plots
@@ -232,8 +199,7 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
                   args_ls = args_ls)
             }
         }
-        write_brm_mdl_plt_fl(plt_fn, fn_args_ls = fn_args_ls, 
-            path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
+        write_mdl_plt_fl(plt_fn, fn_args_ls = fn_args_ls, path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
             plt_nm_1L_chr = plt_nms_chr[.x], units_1L_chr = units_1L_chr, 
             width_1L_dbl = width_dbl[.x], height_1L_dbl = height_dbl[.x], 
             rsl_1L_dbl = rsl_dbl[.x])
@@ -250,11 +216,13 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
 #' @return Model comparison (a list)
 #' @rdname write_mdl_cmprsn
 #' @export 
+#' @importFrom youthvars transform_ds_for_tstng
 #' @importFrom ready4fun get_from_lup_obj
 write_mdl_cmprsn <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, output_data_dir_1L_chr, 
     seed_1L_int = 1234) 
 {
-    bl_tb <- transform_ds_for_tstng(scored_data_tb, depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, 
+    bl_tb <- youthvars::transform_ds_for_tstng(scored_data_tb, 
+        depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, 
         candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr, 
         dep_var_max_val_1L_dbl = 0.999, round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr, 
         round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
@@ -273,10 +241,47 @@ write_mdl_cmprsn <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, output_da
         predr_var_nm_1L_chr = mdl_smry_ls$predr_var_nm_1L_chr, 
         predr_var_desc_1L_chr = mdl_smry_ls$predr_var_desc_1L_chr, 
         predr_vals_dbl = mdl_smry_ls$predr_vals_dbl, path_to_write_to_1L_chr = output_data_dir_1L_chr, 
-        new_dir_nm_1L_chr = "A_Candidate_Mdls_Cmprsn", mdl_types_lup = mdl_smry_ls$mdl_types_lup)
+        new_dir_nm_1L_chr = "A_Candidate_Mdls_Cmprsn", mdl_types_lup = mdl_smry_ls$mdl_types_lup, 
+        dictionary_tb = ds_smry_ls$dictionary_tb)
     mdl_cmprsn_ls <- list(bl_tb = bl_tb, ds_smry_ls = ds_smry_ls, 
         mdl_smry_ls = mdl_smry_ls)
     return(mdl_cmprsn_ls)
+}
+#' Write model plot file
+#' @description write_mdl_plt_fl() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model plot file. The function returns Path to plot (a character vector of length one).
+#' @param plt_fn Plot (a function), Default: NULL
+#' @param fn_args_ls Function arguments (a list), Default: NULL
+#' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
+#' @param plt_nm_1L_chr Plot name (a character vector of length one)
+#' @param grpx_fn Grpx (a function), Default: grDevices::png
+#' @param units_1L_chr Units (a character vector of length one), Default: 'in'
+#' @param width_1L_dbl Width (a double vector of length one), Default: 6
+#' @param height_1L_dbl Height (a double vector of length one), Default: 6
+#' @param rsl_1L_dbl Resolution (a double vector of length one), Default: 300
+#' @return Path to plot (a character vector of length one)
+#' @rdname write_mdl_plt_fl
+#' @export 
+#' @importFrom grDevices png dev.off
+#' @importFrom rlang exec
+#' @keywords internal
+write_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_write_to_1L_chr, 
+    plt_nm_1L_chr, grpx_fn = grDevices::png, units_1L_chr = "in", 
+    width_1L_dbl = 6, height_1L_dbl = 6, rsl_1L_dbl = 300) 
+{
+    if (!is.null(plt_fn)) {
+        path_to_plot_1L_chr <- paste0(path_to_write_to_1L_chr, 
+            "/", plt_nm_1L_chr, ifelse(identical(grpx_fn, grDevices::png), 
+                ".png", ".tiff"))
+        rlang::exec(grpx_fn, !!!list(path_to_plot_1L_chr, units = units_1L_chr, 
+            width = width_1L_dbl, height = height_1L_dbl, res = rsl_1L_dbl))
+        plt <- rlang::exec(plt_fn, !!!fn_args_ls)
+        print(plt)
+        grDevices::dev.off()
+    }
+    else {
+        path_to_plot_1L_chr <- NA_character_
+    }
+    return(path_to_plot_1L_chr)
 }
 #' Write model plots
 #' @description write_mdl_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model plots. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
@@ -334,7 +339,7 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
             list(tfd_data_tb = tfd_data_tb))[plt_idxs_int], plt_nm_sfx_chr = c("_LNR_CMPRSN", 
             "_AUTOPLT", "_PRED_DNSTY", "_SIM_DNSTY", "_PRED_SCTR")[plt_idxs_int], 
         size_ls = list(c(6, 6), c(4, 7), c(6, 6), c(6, 6), c(6, 
-            6))[plt_idxs_int]), ~write_brm_mdl_plt_fl(plt_fn = ..1, 
+            6))[plt_idxs_int]), ~write_mdl_plt_fl(plt_fn = ..1, 
         fn_args_ls = ..2, path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
         plt_nm_1L_chr = paste0(mdl_fl_nm_1L_chr, ifelse(!is.na(covar_var_nms_chr[1]), 
             paste("_", paste0(covar_var_nms_chr[1:min(length(covar_var_nms_chr), 
@@ -608,7 +613,7 @@ write_new_outp_dir <- function (path_to_write_to_1L_chr, new_dir_nm_1L_chr)
 #' @return Predictor and covariates comparison (a list)
 #' @rdname write_predr_and_covars_cmprsn
 #' @export 
-
+#' @importFrom youthvars transform_ds_for_tstng
 write_predr_and_covars_cmprsn <- function (scored_data_tb, bl_tb, ds_smry_ls, mdl_smry_ls, output_data_dir_1L_chr, 
     seed_1L_int = 1234) 
 {
@@ -623,7 +628,7 @@ write_predr_and_covars_cmprsn <- function (scored_data_tb, bl_tb, ds_smry_ls, md
         depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, 
         path_to_write_to_1L_chr = output_data_dir_1L_chr, new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsn", 
         fl_nm_pfx_1L_chr = "C_PREDR", mdl_types_lup = mdl_smry_ls$mdl_types_lup)
-    bl_tb <- scored_data_tb %>% transform_ds_for_tstng(candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr, 
+    bl_tb <- scored_data_tb %>% youthvars::transform_ds_for_tstng(candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr, 
         covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr, 
         remove_all_msng_1L_lgl = T, round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
     mdl_smry_ls$mdls_with_covars_smry_tb <- write_mdl_type_covars_mdls(bl_tb, 
@@ -718,9 +723,9 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_
         list(boruta_mdl, cex = 1.5, cex.axis = 0.8, las = 2, 
             xlab = "", main = "")), plt_nm_sfx_chr = c("_RF_VAR_IMP", 
         "_BORUTA_VAR_IMP"), size_ls = list(c(6, 6), c(4, 6))), 
-        ~write_brm_mdl_plt_fl(plt_fn = ..1, fn_args_ls = ..2, 
-            path_to_write_to_1L_chr = output_dir_1L_chr, plt_nm_1L_chr = paste0("B_PRED_CMPRSN", 
-                ..3), height_1L_dbl = ..4[1], width_1L_dbl = ..4[2]))
+        ~write_mdl_plt_fl(plt_fn = ..1, fn_args_ls = ..2, path_to_write_to_1L_chr = output_dir_1L_chr, 
+            plt_nm_1L_chr = paste0("B_PRED_CMPRSN", ..3), height_1L_dbl = ..4[1], 
+            width_1L_dbl = ..4[2]))
     confirmed_predrs_chr <- names(boruta_mdl$finalDecision)[boruta_mdl$finalDecision == 
         "Confirmed"]
     confirmed_predrs_tb <- rf_mdl$importance %>% tibble::as_tibble(rownames = "predr_chr") %>% 
@@ -893,6 +898,7 @@ write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Sha
 #' @param mdl_types_lup Model types (a lookup table), Default: NULL
 #' @param fl_nm_pfx_1L_chr File name prefix (a character vector of length one), Default: 'A_RT_'
 #' @param plt_idxs_int Plot indices (an integer vector), Default: NA
+#' @param dictionary_tb Dictionary (a tibble)
 #' @return Summary of single predictor models (a tibble)
 #' @rdname write_sngl_predr_multi_mdls_outps
 #' @export 
@@ -905,7 +911,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
     predr_vals_dbl, path_to_write_to_1L_chr, new_dir_nm_1L_chr = "A_Candidate_Mdls_Cmprsn", 
     start_1L_chr = NULL, covar_var_nms_chr = NA_character_, depnt_var_nm_1L_chr = "utl_total_w", 
     folds_1L_int = 10, mdl_types_lup = NULL, fl_nm_pfx_1L_chr = "A_RT_", 
-    plt_idxs_int = NA_integer_) 
+    plt_idxs_int = NA_integer_, dictionary_tb) 
 {
     if (is.null(mdl_types_lup)) 
         utils::data("mdl_types_lup", envir = environment())
@@ -913,6 +919,10 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
     output_dir_1L_chr <- write_new_outp_dir(path_to_write_to_1L_chr, 
         new_dir_nm_1L_chr = new_dir_nm_1L_chr)
+    write_mdl_plt_fl(plt_fn = make_tfmn_cmprsn_plt, fn_args_ls = list(data_tb = data_tb, 
+        depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, dictionary_tb = dictionary_tb), 
+        path_to_write_to_1L_chr = path_to_write_to_1L_chr, plt_nm_1L_chr = "A_TFMN_CMPRSN_DNSTY", 
+        height_1L_dbl = 6, width_1L_dbl = 10)
     smry_of_sngl_predr_mdls_tb <- purrr::map_dfr(mdl_types_chr, 
         ~{
             tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 

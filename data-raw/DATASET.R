@@ -73,7 +73,7 @@ utils::data("fn_type_lup_tb")
 fns_dmt_tb <- ready4fun::make_dmt_for_all_fns(paths_ls = ready4fun::make_fn_nms()[1],
                                               undocumented_fns_dir_chr = ready4fun::make_undmtd_fns_dir_chr()[1],
                                               custom_dmt_ls = list(details_ls = NULL,
-                                                                   inc_for_main_user_lgl_ls = list(force_true_chr = c("add_interval_var",
+                                                                   inc_for_main_user_lgl_ls = list(force_true_chr = c(#"add_interval_var",
                                                                                                                       "add_utility_predn_to_ds",
                                                                                                                       "make_fake_ts_data",
                                                                                                                       "write_all_alg_outps",

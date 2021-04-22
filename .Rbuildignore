@@ -78,3 +78,4 @@
 ^data-raw/dataverse/prototype_lup/prototype_lup\.csv$
 ^data-raw/dataverse/prototype_lup/prototype_lup\.RDS$
 ^data-raw/extra_abbrs\.txt$
+^data-raw/vignettes/Fake_Data_Generator\.Rmd$

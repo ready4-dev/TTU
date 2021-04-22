@@ -20,7 +20,8 @@ write_all_alg_outps(
   seed_1L_int = 12345,
   folds_1L_int = 10L,
   max_nbr_of_boruta_mdl_runs_int = 300L,
-  mdl_types_lup = NULL
+  mdl_types_lup = NULL,
+  ds_smry_ls
 )
 }
 \arguments{
@@ -55,6 +56,8 @@ write_all_alg_outps(
 \item{max_nbr_of_boruta_mdl_runs_int}{Maximum number of boruta model runs (an integer vector), Default: 300}
 
 \item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
+
+\item{ds_smry_ls}{Dataset summary (a list)}
 }
 \value{
 Output summary (a list)
