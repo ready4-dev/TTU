@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Print time series model plots — print_ts_mdl_plts • TTU</title>
+<title>Make transformation comparison — make_tfmn_cmprsn_plt • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Print time series model plots — print_ts_mdl_plts" />
-<meta property="og:description" content="print_ts_mdl_plts() is a Print function that prints output to console Specifically, this function implements an algorithm to print time series model plots. The function is called for its side effects and does not return a value." />
+<meta property="og:title" content="Make transformation comparison — make_tfmn_cmprsn_plt" />
+<meta property="og:description" content="make_tfmn_cmprsn_plt() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make transformation comparison plot. The function returns Transformation comparison (a plot)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,38 +131,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Print time series model plots</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_print.R'><code>R/fn_print.R</code></a></small>
-    <div class="hidden name"><code>print_ts_mdl_plts.Rd</code></div>
+    <h1>Make transformation comparison</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
+    <div class="hidden name"><code>make_tfmn_cmprsn_plt.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>print_ts_mdl_plts() is a Print function that prints output to console Specifically, this function implements an algorithm to print time series model plots. The function is called for its side effects and does not return a value.</p>
+    <p>make_tfmn_cmprsn_plt() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make transformation comparison plot. The function returns Transformation comparison (a plot).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>print_ts_mdl_plts</span><span class='op'>(</span><span class='va'>paths_to_plts_chr</span>, <span class='va'>title_1L_chr</span>, <span class='va'>label_refs_chr</span>, <span class='va'>mdl_smry_ls</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>make_tfmn_cmprsn_plt</span><span class='op'>(</span><span class='va'>data_tb</span>, <span class='va'>depnt_var_nm_1L_chr</span>, <span class='va'>dictionary_tb</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>paths_to_plts_chr</th>
-      <td><p>Paths to plots (a character vector)</p></td>
+      <th>data_tb</th>
+      <td><p>Data (a tibble)</p></td>
     </tr>
     <tr>
-      <th>title_1L_chr</th>
-      <td><p>Title (a character vector of length one)</p></td>
+      <th>depnt_var_nm_1L_chr</th>
+      <td><p>Dependent variable name (a character vector of length one)</p></td>
     </tr>
     <tr>
-      <th>label_refs_chr</th>
-      <td><p>Label references (a character vector)</p></td>
-    </tr>
-    <tr>
-      <th>mdl_smry_ls</th>
-      <td><p>Model summary (a list)</p></td>
+      <th>dictionary_tb</th>
+      <td><p>Dictionary (a tibble)</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Transformation comparison (a plot)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Print time series model plots — print_ts_mdl_plts • TTU</title>
+<title>Make analysis dataset summary — make_analysis_ds_smry_ls • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Print time series model plots — print_ts_mdl_plts" />
-<meta property="og:description" content="print_ts_mdl_plts() is a Print function that prints output to console Specifically, this function implements an algorithm to print time series model plots. The function is called for its side effects and does not return a value." />
+<meta property="og:title" content="Make analysis dataset summary — make_analysis_ds_smry_ls" />
+<meta property="og:description" content="make_analysis_ds_smry_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make analysis dataset summary list. The function returns Analysis dataset summary (a list)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,38 +131,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Print time series model plots</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_print.R'><code>R/fn_print.R</code></a></small>
-    <div class="hidden name"><code>print_ts_mdl_plts.Rd</code></div>
+    <h1>Make analysis dataset summary</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
+    <div class="hidden name"><code>make_analysis_ds_smry_ls.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>print_ts_mdl_plts() is a Print function that prints output to console Specifically, this function implements an algorithm to print time series model plots. The function is called for its side effects and does not return a value.</p>
+    <p>make_analysis_ds_smry_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make analysis dataset summary list. The function returns Analysis dataset summary (a list).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>print_ts_mdl_plts</span><span class='op'>(</span><span class='va'>paths_to_plts_chr</span>, <span class='va'>title_1L_chr</span>, <span class='va'>label_refs_chr</span>, <span class='va'>mdl_smry_ls</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>make_analysis_ds_smry_ls</span><span class='op'>(</span><span class='va'>ds_descvs_ls</span>, <span class='va'>candidate_covar_nms_chr</span>, <span class='va'>predictors_lup</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>paths_to_plts_chr</th>
-      <td><p>Paths to plots (a character vector)</p></td>
+      <th>ds_descvs_ls</th>
+      <td><p>Dataset descriptives (a list)</p></td>
     </tr>
     <tr>
-      <th>title_1L_chr</th>
-      <td><p>Title (a character vector of length one)</p></td>
+      <th>candidate_covar_nms_chr</th>
+      <td><p>Candidate covariate names (a character vector)</p></td>
     </tr>
     <tr>
-      <th>label_refs_chr</th>
-      <td><p>Label references (a character vector)</p></td>
-    </tr>
-    <tr>
-      <th>mdl_smry_ls</th>
-      <td><p>Model summary (a list)</p></td>
+      <th>predictors_lup</th>
+      <td><p>Predictors (a lookup table)</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Analysis dataset summary (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
