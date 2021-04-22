@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9142
+Version: 0.0.0.9143
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -44,7 +44,7 @@ Imports:
     Boruta,
     brms,
     caret,
-    cmdstanr (>= 0.4.0),
+    cmdstanr (>= 0.4.0.9000),
     dataverse (>= 0.3.8.9000),
     dplyr,
     ggalt,
@@ -55,11 +55,8 @@ Imports:
     knitr,
     knitrBootstrap,
     lifecycle,
-    lubridate,
     magrittr,
     MASS,
-    Matrix,
-    matrixcalc,
     methods,
     pacman,
     psych,
@@ -75,7 +72,6 @@ Imports:
     stats,
     stringi,
     stringr,
-    Surrogate,
     synthpop,
     testthat,
     tibble,
@@ -83,7 +79,7 @@ Imports:
     tidyselect,
     utils,
     viridis,
-    youthvars (>= 0.0.0.9030)
+    youthvars (>= 0.0.0.9031)
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
