@@ -26,3 +26,4 @@ New (a tibble)
 \description{
 make_sngl_mdl_smry_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make single model summary tibble. The function returns New (a tibble).
 }
+\keyword{internal}

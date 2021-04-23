@@ -6,6 +6,7 @@
 #' @rdname transform_chr_digit_pairs
 #' @export 
 #' @importFrom purrr map_chr pluck
+#' @keywords internal
 transform_chr_digit_pairs <- function (digit_pairs_chr, nbr_of_digits_1L_int = 2L) 
 {
     tfd_digit_pairs_chr <- digit_pairs_chr %>% purrr::map_chr(~{
@@ -39,6 +40,7 @@ transform_chr_digit_pairs <- function (digit_pairs_chr, nbr_of_digits_1L_int = 2
 #' @importFrom stats predict simulate rnorm sigma
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
+#' @keywords internal
 transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_chr = "utl_total_w", 
     source_data_nm_1L_chr = "Original", tf_type_1L_chr = "Predicted", 
     predn_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_) 
@@ -66,6 +68,7 @@ transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_ch
 #' @rdname transform_depnt_var_nm
 #' @export 
 
+#' @keywords internal
 transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF") 
 {
     tfd_depnt_var_nm_1L_chr <- paste0(depnt_var_nm_1L_chr, ifelse(tfmn_1L_chr == 
@@ -79,6 +82,7 @@ transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF")
 #' @rdname transform_depnt_var_nm_for_cll
 #' @export 
 
+#' @keywords internal
 transform_depnt_var_nm_for_cll <- function (depnt_var_nm_1L_chr) 
 {
     tfd_depnt_var_nm_1L_chr <- paste0(depnt_var_nm_1L_chr, "_cloglog")
@@ -97,6 +101,7 @@ transform_depnt_var_nm_for_cll <- function (depnt_var_nm_1L_chr)
 #' @importFrom tidyr drop_na
 #' @importFrom rlang syms
 #' @importFrom dplyr select
+#' @keywords internal
 transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_var_nm_1L_chr, 
     covar_var_nms_chr = NA_character_) 
 {
@@ -122,6 +127,7 @@ transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w"
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym exec
+#' @keywords internal
 transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototype_lup = NULL, 
     depnt_var_nm_1L_chr = "aqol6d_total_w", class_fn_1L_chr = "youthvars::youthvars_aqol6d_adol") 
 {
@@ -175,6 +181,7 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
 #' @importFrom tibble tibble
 #' @importFrom purrr map_chr map_lgl
 #' @importFrom stringr str_detect str_replace
+#' @keywords internal
 transform_predr_nm_part_of_phrases <- function (phrases_chr, old_nms_chr = NULL, new_nms_chr = NULL) 
 {
     if (is.null(old_nms_chr)) {
@@ -217,6 +224,7 @@ transform_predr_nm_part_of_phrases <- function (phrases_chr, old_nms_chr = NULL,
 #' @importFrom rlang sym
 #' @importFrom purrr reduce
 #' @importFrom stats na.omit
+#' @keywords internal
 transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, 
@@ -264,6 +272,7 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
 #' @export 
 #' @importFrom dplyr select all_of summarise across everything
 #' @importFrom purrr map flatten_chr
+#' @keywords internal
 transform_ts_mdl_data <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "aqol6d_total_w", 
     predr_vars_nms_chr, id_var_nm_1L_chr = "fkClientID", mdl_nm_1L_chr) 
 {

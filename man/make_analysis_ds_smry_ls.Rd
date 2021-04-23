@@ -19,3 +19,4 @@ Analysis dataset summary (a list)
 \description{
 make_analysis_ds_smry_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make analysis dataset summary list. The function returns Analysis dataset summary (a list).
 }
+\keyword{internal}

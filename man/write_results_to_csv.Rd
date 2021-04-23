@@ -17,3 +17,4 @@ Datasets (a tibble)
 \description{
 write_results_to_csv() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write results to comma separated variables file. The function returns Datasets (a tibble).
 }
+\keyword{internal}

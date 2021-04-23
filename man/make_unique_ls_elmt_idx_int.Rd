@@ -15,3 +15,4 @@ Unique list element index (an integer vector)
 \description{
 make_unique_ls_elmt_idx_int() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make unique list element index integer vector. The function returns Unique list element index (an integer vector).
 }
+\keyword{internal}

@@ -32,3 +32,4 @@ Prediction dataset (a tibble)
 \description{
 make_predn_ds_with_one_predr() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make prediction dataset with one predictor. The function returns Prediction dataset (a tibble).
 }
+\keyword{internal}

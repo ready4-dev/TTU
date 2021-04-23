@@ -58,3 +58,4 @@ Model plots paths (a list)
 \description{
 write_brm_model_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write bayesian regression model model plots. The function returns Model plots paths (a list).
 }
+\keyword{internal}

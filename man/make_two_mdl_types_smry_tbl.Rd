@@ -17,3 +17,4 @@ Two model types summary table (a tibble)
 \description{
 make_two_mdl_types_smry_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make two model types summary table. The function returns Two model types summary table (a tibble).
 }
+\keyword{internal}

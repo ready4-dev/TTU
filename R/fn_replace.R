@@ -8,6 +8,7 @@
 #' @export 
 #' @importFrom purrr reduce
 #' @importFrom simstudy defMiss genMiss genObs
+#' @keywords internal
 replace_with_missing_vals <- function (data_tbl_tb, synth_data_spine_ls, idx_int) 
 {
     missing_def_tbl <- purrr::reduce(1:length(synth_data_spine_ls$var_names_chr), 

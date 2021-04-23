@@ -8,6 +8,7 @@
 #' @export 
 #' @importFrom boot inv.logit
 #' @importFrom psych logit
+#' @keywords internal
 calculate_dpnt_var_tfmn <- function (dep_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_is_outp_1L_lgl = F) 
 {
     tfd_dep_var_val_dbl <- dep_var_val_dbl
@@ -41,6 +42,7 @@ calculate_dpnt_var_tfmn <- function (dep_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_
 #' @rdname calculate_rmse
 #' @export 
 
+#' @keywords internal
 calculate_rmse <- function (y_dbl, yhat_dbl) 
 {
     rmse_dbl <- sqrt(mean((yhat_dbl - y_dbl)^2))
@@ -54,6 +56,7 @@ calculate_rmse <- function (y_dbl, yhat_dbl)
 #' @rdname calculate_rmse_tfmn
 #' @export 
 
+#' @keywords internal
 calculate_rmse_tfmn <- function (y_dbl, yhat_dbl) 
 {
     rmse_tfmn_dbl <- sqrt(mean((1 - exp(-exp(yhat_dbl)) - y_dbl)^2))
