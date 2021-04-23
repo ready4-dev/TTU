@@ -1,3 +1,29 @@
+#' Transform character vector digit pairs
+#' @description transform_chr_digit_pairs() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform character vector digit pairs. Function argument digit_pairs_chr specifies the object to be updated. Argument nbr_of_digits_1L_int provides the object to be updated. The function returns Transformed digit pairs (a character vector).
+#' @param digit_pairs_chr Digit pairs (a character vector)
+#' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
+#' @return Transformed digit pairs (a character vector)
+#' @rdname transform_chr_digit_pairs
+#' @export 
+#' @importFrom purrr map_chr pluck
+#' @keywords internal
+transform_chr_digit_pairs <- function (digit_pairs_chr, nbr_of_digits_1L_int = 2L) 
+{
+    tfd_digit_pairs_chr <- digit_pairs_chr %>% purrr::map_chr(~{
+        abs_vals_elmnts_chr <- .x %>% regmatches(gregexpr("[[:digit:]]+", 
+            .)) %>% purrr::pluck(1)
+        abs_vals_chr <- c(paste0(abs_vals_elmnts_chr[1:2], collapse = "."), 
+            paste0(abs_vals_elmnts_chr[3:4], collapse = "."))
+        abs_vals_chr[1] <- ifelse(startsWith(.x, paste0("-", 
+            abs_vals_chr[1])), paste0("-", abs_vals_chr[1]), 
+            abs_vals_chr[1])
+        abs_vals_chr[2] <- ifelse(endsWith(.x, paste0("-", abs_vals_chr[2])), 
+            paste0("-", abs_vals_chr[2]), abs_vals_chr[2])
+        as.numeric(abs_vals_chr) %>% round(digits = nbr_of_digits_1L_int) %>% 
+            format(nsmall = nbr_of_digits_1L_int) %>% paste0(collapse = ", ")
+    })
+    return(tfd_digit_pairs_chr)
+}
 #' Transform data tibble for comparison
 #' @description transform_data_tb_for_cmprsn() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform data tibble for comparison. Function argument data_tb specifies the object to be updated. Argument model_mdl provides the object to be updated. The function returns Transformed data (a tibble).
 #' @param data_tb Data (a tibble)
@@ -97,6 +123,7 @@ transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w"
 #' @export 
 #' @importFrom tibble add_case
 #' @importFrom purrr reduce
+#' @importFrom Hmisc label
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym exec
@@ -112,6 +139,7 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
         class_chr = "numeric", class_fn_chr = class_fn_1L_chr)
     tfd_ds_tb <- purrr::reduce(predictors_lup$short_name_chr, 
         .init = ds_tb, ~if (.y %in% names(.x)) {
+            label_1L_chr <- Hmisc::label(.x[[.y]])
             class_1L_chr <- ready4fun::get_from_lup_obj(predictors_lup, 
                 match_var_nm_1L_chr = "short_name_chr", match_value_xx = .y, 
                 target_var_nm_1L_chr = "class_chr", evaluate_lgl = F)
@@ -127,15 +155,55 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
                 eval(parse(text = paste0(ns_and_ext_1L_chr, "as_", 
                   class_1L_chr))), eval(parse(text = paste0(ns_and_ext_1L_chr, 
                   class_1L_chr)))))
-            .x %>% dplyr::mutate(`:=`(!!rlang::sym(.y), rlang::exec(ready4fun::get_from_lup_obj(predictors_lup, 
-                match_var_nm_1L_chr = "short_name_chr", match_value_xx = .y, 
-                target_var_nm_1L_chr = "class_fn_chr", evaluate_lgl = T), 
-                !!rlang::sym(.y) %>% fn)))
+            tb <- .x %>% dplyr::mutate(`:=`(!!rlang::sym(.y), 
+                rlang::exec(ready4fun::get_from_lup_obj(predictors_lup, 
+                  match_var_nm_1L_chr = "short_name_chr", match_value_xx = .y, 
+                  target_var_nm_1L_chr = "class_fn_chr", evaluate_lgl = T), 
+                  !!rlang::sym(.y) %>% fn)))
+            if (label_1L_chr != "") {
+                Hmisc::label(tb[[.y]]) <- label_1L_chr
+            }
+            tb
         }
         else {
             .x
         })
     return(tfd_ds_tb)
+}
+#' Transform predictor name part of phrases
+#' @description transform_predr_nm_part_of_phrases() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform predictor name part of phrases. Function argument phrases_chr specifies the object to be updated. Argument old_nms_chr provides the object to be updated. The function returns Transformed phrases (a character vector).
+#' @param phrases_chr Phrases (a character vector)
+#' @param old_nms_chr Old names (a character vector), Default: NULL
+#' @param new_nms_chr New names (a character vector), Default: NULL
+#' @return Transformed phrases (a character vector)
+#' @rdname transform_predr_nm_part_of_phrases
+#' @export 
+#' @importFrom tibble tibble
+#' @importFrom purrr map_chr map_lgl
+#' @importFrom stringr str_detect str_replace
+#' @keywords internal
+transform_predr_nm_part_of_phrases <- function (phrases_chr, old_nms_chr = NULL, new_nms_chr = NULL) 
+{
+    if (is.null(old_nms_chr)) {
+        tfd_phrases_chr <- phrases_chr
+    }
+    else {
+        nm_changes_lup_tb = tibble::tibble(old_nms_chr = old_nms_chr, 
+            new_nms_chr = new_nms_chr)
+        tfd_phrases_chr <- phrases_chr %>% purrr::map_chr(~{
+            phrase_1L_chr <- .x
+            match_lgl <- nm_changes_lup_tb$old_nms_chr %>% purrr::map_lgl(~stringr::str_detect(phrase_1L_chr, 
+                .x))
+            if (any(match_lgl)) {
+                stringr::str_replace(phrase_1L_chr, nm_changes_lup_tb$old_nms_chr[match_lgl], 
+                  nm_changes_lup_tb$new_nms_chr[match_lgl])
+            }
+            else {
+                phrase_1L_chr
+            }
+        })
+    }
+    return(tfd_phrases_chr)
 }
 #' Transform tibble to model input
 #' @description transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument depnt_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble).

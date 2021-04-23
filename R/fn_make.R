@@ -131,6 +131,34 @@ make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, popl_1L_chr, fam_1L
         ctg_chr = fam_1L_chr))
     return(brms_mdl_smry_tb)
 }
+#' Make cmpst scatter and dnsty
+#' @description make_cmpst_sctr_and_dnsty_plt() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make cmpst scatter and dnsty plot. The function is called for its side effects and does not return a value.
+#' @param outp_smry_ls Output summary (a list)
+#' @param predr_var_nms_chr Predictor variable names (a character vector)
+#' @param labels_chr Labels (a character vector), Default: c("A", "B", "C", "D")
+#' @param label_x_1L_dbl Label x (a double vector of length one), Default: 0.1
+#' @param label_y_1L_dbl Label y (a double vector of length one), Default: 0.9
+#' @param label_size_1L_dbl Label size (a double vector of length one), Default: 22
+#' @return NULL
+#' @rdname make_cmpst_sctr_and_dnsty_plt
+#' @export 
+#' @importFrom purrr map_lgl map
+#' @importFrom stringr str_detect
+#' @importFrom cowplot ggdraw draw_image plot_grid
+#' @keywords internal
+make_cmpst_sctr_and_dnsty_plt <- function (outp_smry_ls, predr_var_nms_chr, labels_chr = c("A", 
+    "B", "C", "D"), label_x_1L_dbl = 0.1, label_y_1L_dbl = 0.9, 
+    label_size_1L_dbl = 22) 
+{
+    plot_ls <- paste0(output_data_dir_1L_chr, "/", outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% 
+        purrr::map_lgl(~stringr::str_detect(.x, paste0(predr_var_nms_chr, 
+            "_1")) & (stringr::str_detect(.x, "_dnst.png") | 
+            stringr::str_detect(.x, "_sctr_plt.png")))]) %>% 
+        purrr::map(~cowplot::ggdraw() + cowplot::draw_image(.x))
+    composite_plt <- cowplot::plot_grid(plot_ls[[1]], plot_ls[[2]], 
+        plot_ls[[3]], plot_ls[[4]], nrow = 2, labels = labels_chr, 
+        label_x = label_x_1L_dbl, label_y = label_y_1L_dbl, label_size = label_size_1L_dbl)
+}
 #' Make fake time series data
 #' @description make_fake_ts_data() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake time series data. The function returns Fk data (a tibble).
 #' @param outp_smry_ls Output summary (a list)
@@ -171,6 +199,52 @@ make_folds_ls <- function (data_tb, depnt_var_nm_1L_chr = "aqol6d_total_w", fold
     folds_ls <- caret::createFolds(data_tb %>% dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr)), 
         k = folds_1L_int, list = TRUE, returnTrain = FALSE)
     return(folds_ls)
+}
+#' Make health utility and predictors
+#' @description make_hlth_utl_and_predrs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make health utility and predictors list. The function returns Health utility and predictors (a list).
+#' @param outp_smry_ls Output summary (a list)
+#' @param descv_tbls_ls Descriptive tables (a list)
+#' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
+#' @param old_nms_chr Old names (a character vector), Default: NULL
+#' @param new_nms_chr New names (a character vector), Default: NULL
+#' @return Health utility and predictors (a list)
+#' @rdname make_hlth_utl_and_predrs_ls
+#' @export 
+#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom dplyr filter
+#' @importFrom stringr str_remove
+#' @keywords internal
+make_hlth_utl_and_predrs_ls <- function (outp_smry_ls, descv_tbls_ls, nbr_of_digits_1L_int = 2L, 
+    old_nms_chr = NULL, new_nms_chr = NULL) 
+{
+    ranked_predrs_ls <- make_ranked_predrs_ls(descv_tbls_ls, 
+        old_nms_chr = old_nms_chr, new_nms_chr = new_nms_chr)
+    var_nm_1L_chr <- descv_tbls_ls$ds_descvs_ls$dictionary_tb %>% 
+        ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "var_nm_chr", 
+            match_value_xx = outp_smry_ls$depnt_var_nm_1L_chr, 
+            target_var_nm_1L_chr = "var_desc_chr", evaluate_lgl = F) %>% 
+        as.vector()
+    hlth_utl_and_predrs_ls = list(bl_hu_mean_1L_dbl = descv_tbls_ls$main_outc_tbl_tb %>% 
+        dplyr::filter(label == "Mean (SD)") %>% ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable", 
+        match_value_xx = var_nm_1L_chr, target_var_nm_1L_chr = "Baseline_val_1_dbl", 
+        evaluate_lgl = F) %>% as.numeric() %>% round(nbr_of_digits_1L_int), 
+        bl_hu_sd_1L_dbl = descv_tbls_ls$main_outc_tbl_tb %>% 
+            dplyr::filter(label == "Mean (SD)") %>% ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable", 
+            match_value_xx = var_nm_1L_chr, target_var_nm_1L_chr = "Baseline_val_2_ls", 
+            evaluate_lgl = F) %>% stringr::str_remove("\\(") %>% 
+            stringr::str_remove("\\)") %>% as.numeric() %>% round(nbr_of_digits_1L_int), 
+        fup_hu_mean_1L_dbl = descv_tbls_ls$main_outc_tbl_tb %>% 
+            dplyr::filter(label == "Mean (SD)") %>% ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable", 
+            match_value_xx = var_nm_1L_chr, target_var_nm_1L_chr = "Follow-up_val_1_dbl", 
+            evaluate_lgl = F) %>% as.numeric() %>% round(nbr_of_digits_1L_int), 
+        fup_hu_sd_1L_dbl = descv_tbls_ls$main_outc_tbl_tb %>% 
+            dplyr::filter(label == "Mean (SD)") %>% ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable", 
+            match_value_xx = var_nm_1L_chr, target_var_nm_1L_chr = "Follow-up_val_2_ls", 
+            evaluate_lgl = F) %>% stringr::str_remove("\\(") %>% 
+            stringr::str_remove("\\)") %>% as.numeric() %>% round(nbr_of_digits_1L_int), 
+        predrs_nartv_seq_chr = ranked_predrs_ls$unranked_predrs_chr, 
+        cor_seq_dscdng_chr = ranked_predrs_ls$ranked_predrs_chr)
+    return(hlth_utl_and_predrs_ls)
 }
 #' Make knit parameters
 #' @description make_knit_pars_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make knit parameters list. The function returns Knit parameters (a list).
@@ -318,6 +392,41 @@ make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr 
     model_mdl <- eval(parse(text = mdl_1L_chr))
     return(model_mdl)
 }
+#' Make model coefficient ratio
+#' @description make_mdl_coef_ratio_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model coefficient ratio list. The function returns Model coefficient ratios (a list).
+#' @param outp_smry_ls Output summary (a list)
+#' @param predr_ctgs_ls Predictor category categoriess (a list), Default: NULL
+#' @return Model coefficient ratios (a list)
+#' @rdname make_mdl_coef_ratio_ls
+#' @export 
+#' @importFrom purrr map map2 map_dbl
+#' @importFrom dplyr filter pull
+#' @importFrom stats setNames
+#' @keywords internal
+make_mdl_coef_ratio_ls <- function (outp_smry_ls, predr_ctgs_ls = NULL) 
+{
+    main_mdls_ls <- outp_smry_ls$predr_cmprsn_tb$predr_chr %>% 
+        purrr::map(~paste0(paste0(.x, "_1_"), outp_smry_ls$prefd_mdl_types_chr))
+    ratios_ls <- main_mdls_ls %>% purrr::map2(outp_smry_ls$predr_cmprsn_tb$predr_chr, 
+        ~{
+            mdls_chr <- .x
+            predr_1L_chr <- .y
+            mdls_chr %>% purrr::map_dbl(~{
+                coefs_dbl <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model %in% 
+                  .x) %>% dplyr::filter(Parameter %in% paste0(predr_1L_chr, 
+                  (c(" baseline", " change")))) %>% dplyr::pull(Estimate)
+                coefs_dbl[2]/coefs_dbl[1]
+            })
+        })
+    mdl_coef_ratios_ls = list(mean_ratios_dbl = ratios_ls %>% 
+        purrr::map_dbl(~mean(.x)))
+    if (!is.null(predr_ctgs_ls)) {
+        append_ls <- purrr::map(predr_ctgs_ls, ~mdl_coef_ratios_ls$mean_ratios_dbl[outp_smry_ls$predr_cmprsn_tb$predr_chr %in% 
+            .x]) %>% stats::setNames(names(predr_ctgs_ls))
+        mdl_coef_ratios_ls <- append(mdl_coef_ratios_ls, append_ls)
+    }
+    return(mdl_coef_ratios_ls)
+}
 #' Make model names
 #' @description make_mdl_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model names list. The function returns Model names (a list).
 #' @param predr_vars_nms_ls Predictor variables names (a list)
@@ -351,6 +460,68 @@ make_mdl_smry_elmt_tbl <- function (mat, ctg_chr)
     mdl_elmt_sum_tb <- tb %>% dplyr::filter(F) %>% tibble::add_case(Parameter = ctg_chr) %>% 
         dplyr::bind_rows(tb)
     return(mdl_elmt_sum_tb)
+}
+#' Make model type summary table
+#' @description make_mdl_type_smry_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model type summary table. The function returns Model type summary table (a tibble).
+#' @param mdls_tb Models (a tibble)
+#' @param mdl_nms_chr Model names (a character vector)
+#' @param mdl_type_1L_chr Model type (a character vector of length one)
+#' @param add_mdl_nm_sfx_1L_lgl Add model name suffix (a logical vector of length one), Default: T
+#' @return Model type summary table (a tibble)
+#' @rdname make_mdl_type_smry_tbl
+#' @export 
+#' @importFrom purrr map_dfr
+#' @keywords internal
+make_mdl_type_smry_tbl <- function (mdls_tb, mdl_nms_chr, mdl_type_1L_chr, add_mdl_nm_sfx_1L_lgl = T) 
+{
+    mdl_type_smry_tbl_tb <- mdl_nms_chr %>% purrr::map_dfr(~make_sngl_mdl_smry_tb(mdls_tb, 
+        mdl_nm_1L_chr = .x, mdl_type_1L_chr = mdl_type_1L_chr, 
+        add_mdl_nm_sfx_1L_lgl = add_mdl_nm_sfx_1L_lgl))
+    return(mdl_type_smry_tbl_tb)
+}
+#' Make models list
+#' @description make_mdls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make models list. The function returns Models (a list).
+#' @param outp_smry_ls Output summary (a list)
+#' @param mdls_tb Models (a tibble)
+#' @return Models (a list)
+#' @rdname make_mdls_ls
+#' @export 
+#' @importFrom purrr map
+#' @keywords internal
+make_mdls_ls <- function (outp_smry_ls, mdls_tb) 
+{
+    mdls_chr <- mdls_tb$Model %>% unique()
+    mdls_ls <- outp_smry_ls$prefd_mdl_types_chr %>% purrr::map(~mdls_chr[mdls_chr %>% 
+        endsWith(.x)])
+    return(mdls_ls)
+}
+#' Make models summary tables list
+#' @description make_mdls_smry_tbls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make models summary tables list. The function returns Models summary tables (a list).
+#' @param outp_smry_ls Output summary (a list)
+#' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
+#' @return Models summary tables (a list)
+#' @rdname make_mdls_smry_tbls_ls
+#' @export 
+#' @importFrom dplyr mutate across filter
+#' @importFrom purrr map flatten_chr map_lgl
+#' @keywords internal
+make_mdls_smry_tbls_ls <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L) 
+{
+    mdls_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::mutate(dplyr::across(c("Estimate", 
+        "SE"), ~round(.x, nbr_of_digits_1L_int) %>% format(nsmall = nbr_of_digits_1L_int))) %>% 
+        dplyr::mutate(`95% CI` = `95% CI` %>% transform_chr_digit_pairs())
+    rownames(mdls_smry_tb) <- NULL
+    indpt_predrs_mdls_tb <- mdls_smry_tb %>% dplyr::filter(Model %in% 
+        (paste0(outp_smry_ls$predr_cmprsn_tb$predr_chr, "_1_") %>% 
+            purrr::map(~paste0(.x, outp_smry_ls$prefd_mdl_types_chr)) %>% 
+            purrr::flatten_chr()))
+    covar_mdls_tb <- mdls_smry_tb %>% dplyr::filter(!Model %in% 
+        indpt_predrs_mdls_tb$Model)
+    prefd_predr_mdl_smry_tb <- indpt_predrs_mdls_tb %>% dplyr::filter(Model %>% 
+        purrr::map_lgl(~startsWith(.x, outp_smry_ls$predr_vars_nms_ls[[1]])))
+    mdls_smry_tbls_ls <- list(indpt_predrs_mdls_tb = indpt_predrs_mdls_tb, 
+        covar_mdls_tb = covar_mdls_tb, prefd_predr_mdl_smry_tb = prefd_predr_mdl_smry_tb)
+    return(mdls_smry_tbls_ls)
 }
 #' Make prediction dataset with one predictor
 #' @description make_predn_ds_with_one_predr() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make prediction dataset with one predictor. The function returns Prediction dataset (a tibble).
@@ -423,6 +594,45 @@ make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls)
         length))]
     return(predr_vars_nms_ls)
 }
+#' Make predictors for best models
+#' @description make_predrs_for_best_mdls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictors for best models. The function returns Predictors for best models (a character vector).
+#' @param outp_smry_ls Output summary (a list)
+#' @param old_nms_chr Old names (a character vector), Default: NULL
+#' @param new_nms_chr New names (a character vector)
+#' @return Predictors for best models (a character vector)
+#' @rdname make_predrs_for_best_mdls
+#' @export 
+#' @importFrom dplyr filter arrange desc pull
+#' @importFrom purrr map flatten_chr map_lgl map2_chr
+#' @importFrom stringr str_remove
+#' @keywords internal
+make_predrs_for_best_mdls <- function (outp_smry_ls, old_nms_chr = NULL, new_nms_chr) 
+{
+    ordered_mdl_nms_chr <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Parameter == 
+        "R2") %>% dplyr::arrange(dplyr::desc(Estimate)) %>% dplyr::pull(Model)
+    ind_predr_mdls_by_mdl_type_ls <- outp_smry_ls$prefd_mdl_types_chr %>% 
+        purrr::map(~{
+            mdl_type_1L_chr <- .x
+            paste0(outp_smry_ls$predr_cmprsn_tb$predr_chr, "_1_") %>% 
+                purrr::map(~paste0(.x, mdl_type_1L_chr)) %>% 
+                purrr::flatten_chr()
+        })
+    ordered_mdls_by_type_ls <- ind_predr_mdls_by_mdl_type_ls %>% 
+        purrr::map(~{
+            ind_predr_mdls_chr <- .x
+            ordered_mdl_nms_chr[ordered_mdl_nms_chr %>% purrr::map_lgl(~.x %in% 
+                ind_predr_mdls_chr)]
+        })
+    predrs_for_best_mdls_chr <- ordered_mdls_by_type_ls %>% purrr::map2_chr(outp_smry_ls$prefd_mdl_types_chr, 
+        ~{
+            .x[1] %>% stringr::str_remove(paste0("_1_", .y))
+        })
+    if (!is.null(old_nms_chr)) {
+        predrs_for_best_mdls_chr <- transform_predr_nm_part_of_phrases(predrs_for_best_mdls_chr, 
+            old_nms_chr = old_nms_chr, new_nms_chr = new_nms_chr)
+    }
+    return(predrs_for_best_mdls_chr)
+}
 #' Make preferred models vector
 #' @description make_prefd_mdls_vec() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make preferred models vector. The function returns Preferred models (a character vector).
 #' @param smry_of_sngl_predr_mdls_tb Summary of single predictor models (a tibble)
@@ -446,6 +656,34 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
     prefd_mdls_chr <- purrr::map_chr(choose_from_pfx_chr, ~ordered_mdl_types_chr[startsWith(ordered_mdl_types_chr, 
         .x)][1])
     return(prefd_mdls_chr)
+}
+#' Make ranked predictors
+#' @description make_ranked_predrs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ranked predictors list. The function returns Ranked predictors (a list).
+#' @param descv_tbls_ls Descriptive tables (a list)
+#' @param old_nms_chr Old names (a character vector), Default: NULL
+#' @param new_nms_chr New names (a character vector), Default: NULL
+#' @return Ranked predictors (a list)
+#' @rdname make_ranked_predrs_ls
+#' @export 
+#' @importFrom purrr map_dbl map flatten_chr
+#' @keywords internal
+make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_chr = NULL) 
+{
+    unranked_predrs_chr <- rownames(descv_tbls_ls[["bl_cors_tb"]])[-1] %>% 
+        transform_predr_nm_part_of_phrases(old_nms_chr = old_nms_chr, 
+            new_nms_chr = new_nms_chr)
+    ranks_dbl <- descv_tbls_ls[["bl_cors_tb"]][2:nrow(descv_tbls_ls[["bl_cors_tb"]]), 
+        1] %>% purrr::map_dbl(~{
+        vec_dbl <- regmatches(.x, gregexpr("[[:digit:]]+", .x)) %>% 
+            unlist() %>% as.numeric()
+        vec_dbl[1] + vec_dbl[2]/100
+    }) %>% rank()
+    unique_ranks_dbl <- unique(ranks_dbl) %>% sort(decreasing = T)
+    ranked_predrs_chr <- purrr::map(unique_ranks_dbl, ~unranked_predrs_chr[ranks_dbl == 
+        .x]) %>% purrr::flatten_chr()
+    ranked_predrs_ls <- list(unranked_predrs_chr = unranked_predrs_chr, 
+        ranked_predrs_chr = ranked_predrs_chr)
+    return(ranked_predrs_ls)
 }
 #' Make shareable
 #' @description make_shareable_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make shareable model. The function returns Model (a model).
@@ -682,6 +920,48 @@ make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L
     }
     return(smry_of_ts_mdl_ls)
 }
+#' Make single model summary
+#' @description make_sngl_mdl_smry_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make single model summary tibble. The function returns New (a tibble).
+#' @param mdls_tb Models (a tibble)
+#' @param mdl_nm_1L_chr Model name (a character vector of length one)
+#' @param mdl_type_1L_chr Model type (a character vector of length one)
+#' @param add_mdl_nm_sfx_1L_lgl Add model name suffix (a logical vector of length one), Default: T
+#' @return New (a tibble)
+#' @rdname make_sngl_mdl_smry_tb
+#' @export 
+#' @importFrom dplyr filter select mutate case_when rename_with
+#' @importFrom tibble add_case
+#' @importFrom rlang sym
+#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom purrr map_chr
+#' @importFrom stringr str_replace
+#' @keywords internal
+make_sngl_mdl_smry_tb <- function (mdls_tb, mdl_nm_1L_chr, mdl_type_1L_chr, add_mdl_nm_sfx_1L_lgl = T) 
+{
+    new_tb <- mdls_tb %>% dplyr::filter(Model == mdl_nm_1L_chr) %>% 
+        tibble::add_case(Parameter = mdl_nm_1L_chr, .before = 1) %>% 
+        dplyr::select(-Model)
+    mdl_nm_sfx_1L_chr <- ifelse(add_mdl_nm_sfx_1L_lgl, paste0("_", 
+        mdl_type_1L_chr), "")
+    new_tb <- new_tb %>% dplyr::mutate(`:=`(!!rlang::sym(paste0("R2", 
+        mdl_nm_sfx_1L_chr)), dplyr::case_when(Parameter == mdl_nm_1L_chr ~ 
+        ready4fun::get_from_lup_obj(new_tb, match_value_xx = "R2", 
+            match_var_nm_1L_chr = "Parameter", target_var_nm_1L_chr = "Estimate", 
+            evaluate_lgl = F), T ~ NA_character_)), `:=`(!!rlang::sym(paste0("Sigma", 
+        mdl_nm_sfx_1L_chr)), dplyr::case_when(Parameter == mdl_nm_1L_chr ~ 
+        ready4fun::get_from_lup_obj(new_tb, match_value_xx = "Sigma", 
+            match_var_nm_1L_chr = "Parameter", target_var_nm_1L_chr = "Estimate", 
+            evaluate_lgl = F), T ~ NA_character_))) %>% dplyr::filter(!Parameter %in% 
+        c("R2", "RMSE", "Sigma")) %>% dplyr::rename_with(~paste0(.x, 
+        mdl_nm_sfx_1L_chr), .cols = c("Parameter", "Estimate", 
+        "SE")) %>% dplyr::rename_with(~paste0("CI", mdl_nm_sfx_1L_chr), 
+        .cols = c("95% CI")) %>% dplyr::mutate(`:=`(!!rlang::sym(paste0("Parameter", 
+        mdl_nm_sfx_1L_chr)), !!rlang::sym(paste0("Parameter", 
+        mdl_nm_sfx_1L_chr)) %>% purrr::map_chr(~stringr::str_replace(.x, 
+        paste0("_1_", mdl_type_1L_chr), " model"))))
+    rownames(new_tb) <- NULL
+    return(new_tb)
+}
 #' Make transformation comparison
 #' @description make_tfmn_cmprsn_plt() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make transformation comparison plot. The function returns Transformation comparison (a plot).
 #' @param data_tb Data (a tibble)
@@ -723,6 +1003,28 @@ make_tfmn_cmprsn_plt <- function (data_tb, depnt_var_nm_1L_chr, dictionary_tb)
             match_value_xx = depnt_var_nm_1L_chr, target_var_nm_1L_chr = "var_desc_chr", 
             evaluate_lgl = F)))
     return(tfmn_cmprsn_plt)
+}
+#' Make two model types summary table
+#' @description make_two_mdl_types_smry_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make two model types summary table. The function returns Two model types summary table (a tibble).
+#' @param outp_smry_ls Output summary (a list)
+#' @param mdls_tb Models (a tibble)
+#' @return Two model types summary table (a tibble)
+#' @rdname make_two_mdl_types_smry_tbl
+#' @export 
+#' @importFrom purrr map_dfc
+#' @importFrom dplyr select rename_with
+#' @keywords internal
+make_two_mdl_types_smry_tbl <- function (outp_smry_ls, mdls_tb) 
+{
+    mdls_ls <- make_mdls_ls(outp_smry_ls, mdls_tb = mdls_tb)
+    two_mdl_types_smry_tbl_tb <- 1:2 %>% purrr::map_dfc(~{
+        make_mdl_type_smry_tbl(mdls_tb = mdls_tb, mdl_nms_chr = mdls_ls[[.x]], 
+            mdl_type_1L_chr = outp_smry_ls$prefd_mdl_types_chr[.x], 
+            add_mdl_nm_sfx_1L_lgl = T)
+    }) %>% dplyr::select(-paste0("Parameter_", outp_smry_ls$prefd_mdl_types_chr[2])) %>% 
+        dplyr::rename_with(~"Parameter", .cols = paste0("Parameter_", 
+            outp_smry_ls$prefd_mdl_types_chr[1]))
+    return(two_mdl_types_smry_tbl_tb)
 }
 #' Make unique list element index
 #' @description make_unique_ls_elmt_idx_int() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make unique list element index integer vector. The function returns Unique list element index (an integer vector).

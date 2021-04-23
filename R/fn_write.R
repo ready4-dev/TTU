@@ -118,6 +118,7 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, depnt_
 #' @rdname write_box_cox_tfmn
 #' @export 
 #' @importFrom utils data
+#' @importFrom ready4show write_mdl_plt_fl
 #' @importFrom MASS boxcox
 #' @keywords internal
 write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1L_chr, 
@@ -131,7 +132,7 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr, 
         mdl_type_1L_chr = "OLS_NTF", mdl_types_lup = mdl_types_lup, 
         start_1L_chr = start_1L_chr)
-    path_to_plot_1L_chr <- write_mdl_plt_fl(plt_fn = MASS::boxcox, 
+    path_to_plot_1L_chr <- ready4show::write_mdl_plt_fl(plt_fn = MASS::boxcox, 
         fn_args_ls = list(mdl, plotit = T), path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
         plt_nm_1L_chr = paste0(fl_nm_pfx_1L_chr, "_", predr_var_nm_1L_chr, 
             "_", "BOXCOX"), height_1L_dbl = height_1L_dbl, width_1L_dbl = width_1L_dbl)
@@ -160,6 +161,7 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
 #' @export 
 #' @importFrom stats predict setNames
 #' @importFrom purrr map discard
+#' @importFrom ready4show write_mdl_plt_fl
 #' @keywords internal
 write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_write_to_1L_chr, 
     depnt_var_nm_1L_chr = "utl_total_w", depnt_var_desc_1L_chr = "Utility score", 
@@ -199,7 +201,8 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
                   args_ls = args_ls)
             }
         }
-        write_mdl_plt_fl(plt_fn, fn_args_ls = fn_args_ls, path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
+        ready4show::write_mdl_plt_fl(plt_fn, fn_args_ls = fn_args_ls, 
+            path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
             plt_nm_1L_chr = plt_nms_chr[.x], units_1L_chr = units_1L_chr, 
             width_1L_dbl = width_dbl[.x], height_1L_dbl = height_dbl[.x], 
             rsl_1L_dbl = rsl_dbl[.x])
@@ -247,42 +250,6 @@ write_mdl_cmprsn <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, output_da
         mdl_smry_ls = mdl_smry_ls)
     return(mdl_cmprsn_ls)
 }
-#' Write model plot file
-#' @description write_mdl_plt_fl() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model plot file. The function returns Path to plot (a character vector of length one).
-#' @param plt_fn Plot (a function), Default: NULL
-#' @param fn_args_ls Function arguments (a list), Default: NULL
-#' @param path_to_write_to_1L_chr Path to write to (a character vector of length one)
-#' @param plt_nm_1L_chr Plot name (a character vector of length one)
-#' @param grpx_fn Grpx (a function), Default: grDevices::png
-#' @param units_1L_chr Units (a character vector of length one), Default: 'in'
-#' @param width_1L_dbl Width (a double vector of length one), Default: 6
-#' @param height_1L_dbl Height (a double vector of length one), Default: 6
-#' @param rsl_1L_dbl Resolution (a double vector of length one), Default: 300
-#' @return Path to plot (a character vector of length one)
-#' @rdname write_mdl_plt_fl
-#' @export 
-#' @importFrom grDevices png dev.off
-#' @importFrom rlang exec
-#' @keywords internal
-write_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_write_to_1L_chr, 
-    plt_nm_1L_chr, grpx_fn = grDevices::png, units_1L_chr = "in", 
-    width_1L_dbl = 6, height_1L_dbl = 6, rsl_1L_dbl = 300) 
-{
-    if (!is.null(plt_fn)) {
-        path_to_plot_1L_chr <- paste0(path_to_write_to_1L_chr, 
-            "/", plt_nm_1L_chr, ifelse(identical(grpx_fn, grDevices::png), 
-                ".png", ".tiff"))
-        rlang::exec(grpx_fn, !!!list(path_to_plot_1L_chr, units = units_1L_chr, 
-            width = width_1L_dbl, height = height_1L_dbl, res = rsl_1L_dbl))
-        plt <- rlang::exec(plt_fn, !!!fn_args_ls)
-        print(plt)
-        grDevices::dev.off()
-    }
-    else {
-        path_to_plot_1L_chr <- NA_character_
-    }
-    return(path_to_plot_1L_chr)
-}
 #' Write model plots
 #' @description write_mdl_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model plots. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param data_tb Data (a tibble)
@@ -303,6 +270,7 @@ write_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_write_to
 #' @rdname write_mdl_plts
 #' @export 
 #' @importFrom purrr pwalk
+#' @importFrom ready4show write_mdl_plt_fl
 #' @keywords internal
 write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", depnt_var_nm_1L_chr = "utl_total_w", 
     tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, predr_var_desc_1L_chr, 
@@ -339,7 +307,7 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
             list(tfd_data_tb = tfd_data_tb))[plt_idxs_int], plt_nm_sfx_chr = c("_LNR_CMPRSN", 
             "_AUTOPLT", "_PRED_DNSTY", "_SIM_DNSTY", "_PRED_SCTR")[plt_idxs_int], 
         size_ls = list(c(6, 6), c(4, 7), c(6, 6), c(6, 6), c(6, 
-            6))[plt_idxs_int]), ~write_mdl_plt_fl(plt_fn = ..1, 
+            6))[plt_idxs_int]), ~ready4show::write_mdl_plt_fl(plt_fn = ..1, 
         fn_args_ls = ..2, path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
         plt_nm_1L_chr = paste0(mdl_fl_nm_1L_chr, ifelse(!is.na(covar_var_nms_chr[1]), 
             paste("_", paste0(covar_var_nms_chr[1:min(length(covar_var_nms_chr), 
@@ -697,6 +665,7 @@ write_predr_and_mdl_tstng_results <- function (scored_data_tb, ds_smry_ls, mdl_s
 #' @importFrom stats as.formula
 #' @importFrom Boruta Boruta
 #' @importFrom purrr pwalk
+#' @importFrom ready4show write_mdl_plt_fl
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr arrange desc filter
 #' @keywords internal
@@ -723,9 +692,9 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_
         list(boruta_mdl, cex = 1.5, cex.axis = 0.8, las = 2, 
             xlab = "", main = "")), plt_nm_sfx_chr = c("_RF_VAR_IMP", 
         "_BORUTA_VAR_IMP"), size_ls = list(c(6, 6), c(4, 6))), 
-        ~write_mdl_plt_fl(plt_fn = ..1, fn_args_ls = ..2, path_to_write_to_1L_chr = output_dir_1L_chr, 
-            plt_nm_1L_chr = paste0("B_PRED_CMPRSN", ..3), height_1L_dbl = ..4[1], 
-            width_1L_dbl = ..4[2]))
+        ~ready4show::write_mdl_plt_fl(plt_fn = ..1, fn_args_ls = ..2, 
+            path_to_write_to_1L_chr = output_dir_1L_chr, plt_nm_1L_chr = paste0("B_PRED_CMPRSN", 
+                ..3), height_1L_dbl = ..4[1], width_1L_dbl = ..4[2]))
     confirmed_predrs_chr <- names(boruta_mdl$finalDecision)[boruta_mdl$finalDecision == 
         "Confirmed"]
     confirmed_predrs_tb <- rf_mdl$importance %>% tibble::as_tibble(rownames = "predr_chr") %>% 
@@ -903,6 +872,7 @@ write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Sha
 #' @rdname write_sngl_predr_multi_mdls_outps
 #' @export 
 #' @importFrom utils data
+#' @importFrom ready4show write_mdl_plt_fl
 #' @importFrom purrr map_dfr
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr arrange desc
@@ -919,10 +889,11 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
     output_dir_1L_chr <- write_new_outp_dir(path_to_write_to_1L_chr, 
         new_dir_nm_1L_chr = new_dir_nm_1L_chr)
-    write_mdl_plt_fl(plt_fn = make_tfmn_cmprsn_plt, fn_args_ls = list(data_tb = data_tb, 
-        depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, dictionary_tb = dictionary_tb), 
-        path_to_write_to_1L_chr = path_to_write_to_1L_chr, plt_nm_1L_chr = "A_TFMN_CMPRSN_DNSTY", 
-        height_1L_dbl = 6, width_1L_dbl = 10)
+    ready4show::write_mdl_plt_fl(plt_fn = make_tfmn_cmprsn_plt, 
+        fn_args_ls = list(data_tb = data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+            dictionary_tb = dictionary_tb), path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
+        plt_nm_1L_chr = "A_TFMN_CMPRSN_DNSTY", height_1L_dbl = 6, 
+        width_1L_dbl = 10)
     smry_of_sngl_predr_mdls_tb <- purrr::map_dfr(mdl_types_chr, 
         ~{
             tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 

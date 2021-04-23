@@ -87,30 +87,11 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
                   predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr,
                   mdl_type_1L_chr = "OLS_NTF", mdl_types_lup = mdl_types_lup,
                   start_1L_chr = start_1L_chr)
-  path_to_plot_1L_chr <- write_mdl_plt_fl(plt_fn = MASS::boxcox,
+  path_to_plot_1L_chr <- ready4show::write_mdl_plt_fl(plt_fn = MASS::boxcox,
                                               fn_args_ls = list(mdl, plotit = T), path_to_write_to_1L_chr = path_to_write_to_1L_chr,
                                               plt_nm_1L_chr = paste0(fl_nm_pfx_1L_chr, "_", predr_var_nm_1L_chr,
                                                                      "_", "BOXCOX"), height_1L_dbl = height_1L_dbl, width_1L_dbl = width_1L_dbl)
   return(path_to_plot_1L_chr)
-}
-write_mdl_plt_fl <- function (plt_fn = NULL, fn_args_ls = NULL, path_to_write_to_1L_chr,
-    plt_nm_1L_chr, grpx_fn = grDevices::png, units_1L_chr = "in",
-    width_1L_dbl = 6, height_1L_dbl = 6, rsl_1L_dbl = 300)
-{
-    if (!is.null(plt_fn)) {
-        path_to_plot_1L_chr <- paste0(path_to_write_to_1L_chr,
-            "/", plt_nm_1L_chr, ifelse(identical(grpx_fn, grDevices::png),
-                ".png", ".tiff"))
-        rlang::exec(grpx_fn, !!!list(path_to_plot_1L_chr, units = units_1L_chr,
-            width = width_1L_dbl, height = height_1L_dbl, res = rsl_1L_dbl))
-        plt <- rlang::exec(plt_fn, !!!fn_args_ls)
-        print(plt)
-        grDevices::dev.off()
-    }
-    else {
-        path_to_plot_1L_chr <- NA_character_
-    }
-    return(path_to_plot_1L_chr)
 }
 write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_write_to_1L_chr,
     depnt_var_nm_1L_chr = "utl_total_w", depnt_var_desc_1L_chr = "Utility score",
@@ -148,7 +129,7 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
                   args_ls = args_ls)
             }
         }
-        write_mdl_plt_fl(plt_fn, fn_args_ls = fn_args_ls,
+        ready4show::write_mdl_plt_fl(plt_fn, fn_args_ls = fn_args_ls,
             path_to_write_to_1L_chr = path_to_write_to_1L_chr,
             plt_nm_1L_chr = plt_nms_chr[.x], units_1L_chr = units_1L_chr,
             width_1L_dbl = width_dbl[.x], height_1L_dbl = height_dbl[.x],
@@ -272,7 +253,7 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
             list(tfd_data_tb = tfd_data_tb))[plt_idxs_int], plt_nm_sfx_chr = c("_LNR_CMPRSN",
             "_AUTOPLT", "_PRED_DNSTY", "_SIM_DNSTY", "_PRED_SCTR")[plt_idxs_int],
         size_ls = list(c(6, 6), c(4, 7), c(6, 6), c(6, 6), c(6,
-            6))[plt_idxs_int]), ~write_mdl_plt_fl(plt_fn = ..1,
+            6))[plt_idxs_int]), ~ ready4show::write_mdl_plt_fl(plt_fn = ..1,
         fn_args_ls = ..2, path_to_write_to_1L_chr = path_to_write_to_1L_chr,
         plt_nm_1L_chr = paste0(mdl_fl_nm_1L_chr, ifelse(!is.na(covar_var_nms_chr[1]),
             paste("_", paste0(covar_var_nms_chr[1:min(length(covar_var_nms_chr),
@@ -512,7 +493,7 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_
         list(boruta_mdl, cex = 1.5, cex.axis = 0.8, las = 2,
             xlab = "", main = "")), plt_nm_sfx_chr = c("_RF_VAR_IMP",
         "_BORUTA_VAR_IMP"), size_ls = list(c(6, 6), c(4, 6))),
-        ~write_mdl_plt_fl(plt_fn = ..1, fn_args_ls = ..2,
+        ~ ready4show::write_mdl_plt_fl(plt_fn = ..1, fn_args_ls = ..2,
             path_to_write_to_1L_chr = output_dir_1L_chr,
             plt_nm_1L_chr = paste0("B_PRED_CMPRSN", ..3), height_1L_dbl = ..4[1],
             width_1L_dbl = ..4[2]))
@@ -642,7 +623,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
     output_dir_1L_chr <- write_new_outp_dir(path_to_write_to_1L_chr,
                                             new_dir_nm_1L_chr = new_dir_nm_1L_chr)
-    write_mdl_plt_fl(plt_fn = make_tfmn_cmprsn_plt,
+    ready4show::write_mdl_plt_fl(plt_fn = make_tfmn_cmprsn_plt,
                      fn_args_ls = list(data_tb = data_tb,
                                        depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
                                        dictionary_tb = dictionary_tb),

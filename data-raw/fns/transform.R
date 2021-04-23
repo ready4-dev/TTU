@@ -1,3 +1,16 @@
+transform_chr_digit_pairs <- function(digit_pairs_chr,
+                                      nbr_of_digits_1L_int = 2L){
+  tfd_digit_pairs_chr <- digit_pairs_chr %>%
+    purrr::map_chr(~{
+      abs_vals_elmnts_chr <- .x  %>% regmatches(gregexpr("[[:digit:]]+", .)) %>% purrr::pluck(1)
+      abs_vals_chr <- c(paste0(abs_vals_elmnts_chr[1:2], collapse = "."),
+                        paste0(abs_vals_elmnts_chr[3:4], collapse = "."))
+      abs_vals_chr[1] <- ifelse(startsWith(.x,paste0("-",abs_vals_chr[1])),paste0("-",abs_vals_chr[1]),abs_vals_chr[1])
+      abs_vals_chr[2] <- ifelse(endsWith(.x,paste0("-",abs_vals_chr[2])),paste0("-",abs_vals_chr[2]),abs_vals_chr[2])
+      as.numeric(abs_vals_chr) %>% round(digits=nbr_of_digits_1L_int) %>% format(nsmall=nbr_of_digits_1L_int) %>% paste0(collapse = ", ")
+    })
+  return(tfd_digit_pairs_chr)
+}
 transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_chr = "utl_total_w",
     source_data_nm_1L_chr = "Original", tf_type_1L_chr = "Predicted",
     predn_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_)
@@ -53,6 +66,7 @@ transform_mdl_vars_with_clss <- function(ds_tb,
   tfd_ds_tb <- purrr::reduce(predictors_lup$short_name_chr,
                              .init = ds_tb,
                              ~ if(.y %in% names(.x)){
+                               label_1L_chr <- Hmisc::label(.x[[.y]])
                                class_1L_chr <- ready4fun::get_from_lup_obj(predictors_lup,
                                                                            match_var_nm_1L_chr = "short_name_chr",
                                                                            match_value_xx = .y,
@@ -71,16 +85,44 @@ transform_mdl_vars_with_clss <- function(ds_tb,
                                             ifelse(exists(paste0("as_",class_1L_chr), where = paste0("package:",ns_1L_chr)),
                                                    eval(parse(text = paste0(ns_and_ext_1L_chr,"as_",class_1L_chr))),
                                                    eval(parse(text = paste0(ns_and_ext_1L_chr,class_1L_chr)))))
-                               .x %>% dplyr::mutate(!!rlang::sym(.y) := rlang::exec(ready4fun::get_from_lup_obj(predictors_lup,
-                                                                                                                match_var_nm_1L_chr = "short_name_chr",
-                                                                                                                match_value_xx = .y,
-                                                                                                                target_var_nm_1L_chr = "class_fn_chr",
-                                                                                                                evaluate_lgl = T),
-                                                                                    !!rlang::sym(.y) %>% fn))
+                               tb <- .x %>% dplyr::mutate(!!rlang::sym(.y) := rlang::exec(ready4fun::get_from_lup_obj(predictors_lup,
+                                                                                                                      match_var_nm_1L_chr = "short_name_chr",
+                                                                                                                      match_value_xx = .y,
+                                                                                                                      target_var_nm_1L_chr = "class_fn_chr",
+                                                                                                                      evaluate_lgl = T),
+                                                                                          !!rlang::sym(.y) %>% fn))
+                               if(label_1L_chr != ""){
+                                Hmisc::label(tb[[.y]]) <- label_1L_chr
+                               }
+                               tb
                              }else{
                                .x
                              })
   return(tfd_ds_tb)
+}
+transform_predr_nm_part_of_phrases <- function(phrases_chr,
+                                               old_nms_chr = NULL,
+                                               new_nms_chr = NULL){
+  if(is.null(old_nms_chr)){
+    tfd_phrases_chr <- phrases_chr
+  }else{
+    nm_changes_lup_tb = tibble::tibble(old_nms_chr = old_nms_chr,
+                                       new_nms_chr = new_nms_chr)
+    tfd_phrases_chr <- phrases_chr %>%
+      purrr::map_chr(~{
+        phrase_1L_chr <- .x
+        match_lgl <- nm_changes_lup_tb$old_nms_chr %>%
+          purrr::map_lgl(~stringr::str_detect(phrase_1L_chr, .x))
+        if(any(match_lgl)){
+          stringr::str_replace(phrase_1L_chr,
+                               nm_changes_lup_tb$old_nms_chr[match_lgl],
+                               nm_changes_lup_tb$new_nms_chr[match_lgl])
+        }else{
+          phrase_1L_chr
+        }
+      })
+  }
+  return(tfd_phrases_chr)
 }
 transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr,
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round",
