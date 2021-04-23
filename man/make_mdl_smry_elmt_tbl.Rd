@@ -17,4 +17,3 @@ Model element sum (a tibble)
 \description{
 make_mdl_smry_elmt_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model summary element table. The function returns Model element sum (a tibble).
 }
-\keyword{internal}

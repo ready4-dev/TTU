@@ -20,4 +20,3 @@ plot_sctr_plt_cmprsn(
 \description{
 plot_sctr_plt_cmprsn() is a Plot function that plots data Specifically, this function implements an algorithm to plot scatter plot comparison. The function is called for its side effects and does not return a value.
 }
-\keyword{internal}

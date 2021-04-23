@@ -12,7 +12,6 @@
 #' @importFrom tidyselect all_of
 #' @importFrom stringr str_replace
 #' @importFrom stats setNames
-#' @keywords internal
 add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkClientID") 
 {
     participant_ids <- paste0(prefix_1L_chr, 1:nrow(tbs_ls[[1]])) %>% 

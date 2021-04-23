@@ -17,4 +17,3 @@ Models summary tables (a list)
 \description{
 make_mdls_smry_tbls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make models summary tables list. The function returns Models summary tables (a list).
 }
-\keyword{internal}

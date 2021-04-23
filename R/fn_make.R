@@ -7,7 +7,6 @@
 #' @rdname make_analysis_ds_smry_ls
 #' @export 
 
-#' @keywords internal
 make_analysis_ds_smry_ls <- function (ds_descvs_ls, candidate_covar_nms_chr, predictors_lup) 
 {
     analysis_ds_smry_ls <- list(candidate_predrs_chr = ds_descvs_ls$candidate_predrs_chr, 
@@ -34,7 +33,6 @@ make_analysis_ds_smry_ls <- function (ds_descvs_ls, candidate_covar_nms_chr, pre
 #' @importFrom dplyr mutate all_of across case_when
 #' @importFrom Hmisc latexTranslate
 #' @importFrom stringr str_replace
-#' @keywords internal
 make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, output_type_1L_chr = "PDF", 
     digits_1L_dbl = 2, big_mark_1L_chr = " ") 
 {
@@ -119,7 +117,6 @@ make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, o
 #' @export 
 #' @importFrom purrr map
 #' @importFrom dplyr bind_rows
-#' @keywords internal
 make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, popl_1L_chr, fam_1L_chr) 
 {
     brms_mdl_smry_tb <- purrr::map(1:length(smry_mdl_ls$random), 
@@ -145,7 +142,6 @@ make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, popl_1L_chr, fam_1L
 #' @importFrom purrr map_lgl map
 #' @importFrom stringr str_detect
 #' @importFrom cowplot ggdraw draw_image plot_grid
-#' @keywords internal
 make_cmpst_sctr_and_dnsty_plt <- function (outp_smry_ls, predr_var_nms_chr, labels_chr = c("A", 
     "B", "C", "D"), label_x_1L_dbl = 0.1, label_y_1L_dbl = 0.9, 
     label_size_1L_dbl = 22) 
@@ -193,7 +189,6 @@ make_fake_ts_data <- function (outp_smry_ls)
 #' @importFrom caret createFolds
 #' @importFrom dplyr pull
 #' @importFrom rlang sym
-#' @keywords internal
 make_folds_ls <- function (data_tb, depnt_var_nm_1L_chr = "aqol6d_total_w", folds_1L_int = 10L) 
 {
     folds_ls <- caret::createFolds(data_tb %>% dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr)), 
@@ -213,7 +208,6 @@ make_folds_ls <- function (data_tb, depnt_var_nm_1L_chr = "aqol6d_total_w", fold
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr filter
 #' @importFrom stringr str_remove
-#' @keywords internal
 make_hlth_utl_and_predrs_ls <- function (outp_smry_ls, descv_tbls_ls, nbr_of_digits_1L_int = 2L, 
     old_nms_chr = NULL, new_nms_chr = NULL) 
 {
@@ -264,7 +258,6 @@ make_hlth_utl_and_predrs_ls <- function (outp_smry_ls, descv_tbls_ls, nbr_of_dig
 #' @importFrom stringr str_detect
 #' @importFrom stats setNames
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, predr_vars_nms_ls, 
     output_type_1L_chr = "HTML", mdl_types_lup = NULL, plt_types_lup = NULL, 
     plt_types_chr = NA_character_, section_type_1L_chr = "#") 
@@ -350,7 +343,6 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom stringi stri_locate_last_fixed
 #' @importFrom stringr str_sub
-#' @keywords internal
 make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF", 
     predr_var_nm_1L_chr, covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF", 
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NULL) 
@@ -402,7 +394,6 @@ make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr 
 #' @importFrom purrr map map2 map_dbl
 #' @importFrom dplyr filter pull
 #' @importFrom stats setNames
-#' @keywords internal
 make_mdl_coef_ratio_ls <- function (outp_smry_ls, predr_ctgs_ls = NULL) 
 {
     main_mdls_ls <- outp_smry_ls$predr_cmprsn_tb$predr_chr %>% 
@@ -435,7 +426,6 @@ make_mdl_coef_ratio_ls <- function (outp_smry_ls, predr_ctgs_ls = NULL)
 #' @rdname make_mdl_nms_ls
 #' @export 
 #' @importFrom purrr map2
-#' @keywords internal
 make_mdl_nms_ls <- function (predr_vars_nms_ls, mdl_types_chr) 
 {
     mdl_nms_ls <- purrr::map2(predr_vars_nms_ls, make_unique_ls_elmt_idx_int(predr_vars_nms_ls), 
@@ -452,7 +442,6 @@ make_mdl_nms_ls <- function (predr_vars_nms_ls, mdl_types_chr)
 #' @export 
 #' @importFrom tibble as_tibble add_case
 #' @importFrom dplyr mutate select everything filter bind_rows
-#' @keywords internal
 make_mdl_smry_elmt_tbl <- function (mat, ctg_chr) 
 {
     tb <- mat %>% tibble::as_tibble() %>% dplyr::mutate(Parameter = rownames(mat)) %>% 
@@ -471,7 +460,6 @@ make_mdl_smry_elmt_tbl <- function (mat, ctg_chr)
 #' @rdname make_mdl_type_smry_tbl
 #' @export 
 #' @importFrom purrr map_dfr
-#' @keywords internal
 make_mdl_type_smry_tbl <- function (mdls_tb, mdl_nms_chr, mdl_type_1L_chr, add_mdl_nm_sfx_1L_lgl = T) 
 {
     mdl_type_smry_tbl_tb <- mdl_nms_chr %>% purrr::map_dfr(~make_sngl_mdl_smry_tb(mdls_tb, 
@@ -487,7 +475,6 @@ make_mdl_type_smry_tbl <- function (mdls_tb, mdl_nms_chr, mdl_type_1L_chr, add_m
 #' @rdname make_mdls_ls
 #' @export 
 #' @importFrom purrr map
-#' @keywords internal
 make_mdls_ls <- function (outp_smry_ls, mdls_tb) 
 {
     mdls_chr <- mdls_tb$Model %>% unique()
@@ -504,7 +491,6 @@ make_mdls_ls <- function (outp_smry_ls, mdls_tb)
 #' @export 
 #' @importFrom dplyr mutate across filter
 #' @importFrom purrr map flatten_chr map_lgl
-#' @keywords internal
 make_mdls_smry_tbls_ls <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L) 
 {
     mdls_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::mutate(dplyr::across(c("Estimate", 
@@ -538,7 +524,6 @@ make_mdls_smry_tbls_ls <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L)
 #' @importFrom rlang sym
 #' @importFrom dplyr mutate
 #' @importFrom stats predict
-#' @keywords internal
 make_predn_ds_with_one_predr <- function (model_mdl, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF", 
     predr_var_nm_1L_chr, predr_vals_dbl, predn_type_1L_chr = NULL) 
 {
@@ -561,7 +546,6 @@ make_predn_ds_with_one_predr <- function (model_mdl, depnt_var_nm_1L_chr = "utl_
 #' @importFrom purrr map_dbl
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom rlang exec
-#' @keywords internal
 make_predr_vals <- function (predr_var_nm_1L_chr, candidate_predrs_lup = NULL) 
 {
     if (is.null(candidate_predrs_lup)) {
@@ -582,7 +566,6 @@ make_predr_vals <- function (predr_var_nm_1L_chr, candidate_predrs_lup = NULL)
 #' @rdname make_predr_vars_nms_ls
 #' @export 
 #' @importFrom purrr map flatten
-#' @keywords internal
 make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls) 
 {
     predr_vars_nms_ls <- covars_ls %>% purrr::map(~{
@@ -605,7 +588,6 @@ make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls)
 #' @importFrom dplyr filter arrange desc pull
 #' @importFrom purrr map flatten_chr map_lgl map2_chr
 #' @importFrom stringr str_remove
-#' @keywords internal
 make_predrs_for_best_mdls <- function (outp_smry_ls, old_nms_chr = NULL, new_nms_chr) 
 {
     ordered_mdl_nms_chr <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Parameter == 
@@ -644,7 +626,6 @@ make_predrs_for_best_mdls <- function (outp_smry_ls, old_nms_chr = NULL, new_nms
 #' @importFrom utils data
 #' @importFrom dplyr inner_join select rename pull
 #' @importFrom purrr map_chr
-#' @keywords internal
 make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr = c("GLM", 
     "OLS"), mdl_types_lup = NULL) 
 {
@@ -666,7 +647,6 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
 #' @rdname make_ranked_predrs_ls
 #' @export 
 #' @importFrom purrr map_dbl map flatten_chr
-#' @keywords internal
 make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_chr = NULL) 
 {
     unranked_predrs_chr <- rownames(descv_tbls_ls[["bl_cors_tb"]])[-1] %>% 
@@ -706,7 +686,6 @@ make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_ch
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_replace_all
 #' @importFrom assertthat assert_that
-#' @keywords internal
 make_shareable_mdl <- function (data_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "utl_total_w", 
     id_var_nm_1L_chr = "fkClientID", tfmn_1L_chr = "CLL", mdl_type_1L_chr = "OLS_CLL", 
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NA_character_, 
@@ -761,7 +740,6 @@ make_shareable_mdl <- function (data_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "utl
 #' @importFrom dplyr pull mutate rename select
 #' @importFrom rlang sym
 #' @importFrom purrr map flatten_chr
-#' @keywords internal
 make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_total_w", 
     predr_vars_nms_chr, fn = calculate_rmse, mdl_nm_1L_chr = NA_character_, 
     seed_1L_dbl = 23456) 
@@ -812,7 +790,6 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_to
 #' @importFrom stats predict
 #' @importFrom tibble tibble
 #' @importFrom caret R2 RMSE MAE
-#' @keywords internal
 make_smry_of_mdl_outp <- function (data_tb, model_mdl, folds_1L_int = 10, depnt_var_nm_1L_chr = "utl_total_w", 
     start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, 
     covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF", 
@@ -874,7 +851,6 @@ make_smry_of_mdl_outp <- function (data_tb, model_mdl, folds_1L_int = 10, depnt_
 #' @importFrom purrr map_dbl
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom rlang exec
-#' @keywords internal
 make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_, 
     depnt_var_nm_1L_chr = "utl_total_w", id_var_nm_1L_chr = "fkClientID", 
     round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", 
@@ -935,7 +911,6 @@ make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_replace
-#' @keywords internal
 make_sngl_mdl_smry_tb <- function (mdls_tb, mdl_nm_1L_chr, mdl_type_1L_chr, add_mdl_nm_sfx_1L_lgl = T) 
 {
     new_tb <- mdls_tb %>% dplyr::filter(Model == mdl_nm_1L_chr) %>% 
@@ -978,7 +953,6 @@ make_sngl_mdl_smry_tb <- function (mdls_tb, mdl_nm_1L_chr, mdl_type_1L_chr, add_
 #' @importFrom ggalt geom_bkde
 #' @importFrom viridis scale_fill_viridis
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 make_tfmn_cmprsn_plt <- function (data_tb, depnt_var_nm_1L_chr, dictionary_tb) 
 {
     tfmn_cmprsn_plt <- tidyr::gather(data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(paste0(depnt_var_nm_1L_chr, 
@@ -1013,7 +987,6 @@ make_tfmn_cmprsn_plt <- function (data_tb, depnt_var_nm_1L_chr, dictionary_tb)
 #' @export 
 #' @importFrom purrr map_dfc
 #' @importFrom dplyr select rename_with
-#' @keywords internal
 make_two_mdl_types_smry_tbl <- function (outp_smry_ls, mdls_tb) 
 {
     mdls_ls <- make_mdls_ls(outp_smry_ls, mdls_tb = mdls_tb)
@@ -1036,7 +1009,6 @@ make_two_mdl_types_smry_tbl <- function (outp_smry_ls, mdls_tb)
 #' @importFrom dplyr mutate case_when group_by row_number ungroup
 #' @importFrom purrr map2_chr map flatten_int
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 make_unique_ls_elmt_idx_int <- function (data_ls) 
 {
     combos_tb <- tibble::as_tibble(data_ls, .name_repair = ~paste0("r_", 

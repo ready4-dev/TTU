@@ -23,4 +23,3 @@ Preferred models (a character vector)
 \description{
 make_prefd_mdls_vec() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make preferred models vector. The function returns Preferred models (a character vector).
 }
-\keyword{internal}

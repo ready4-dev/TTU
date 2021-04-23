@@ -53,4 +53,3 @@ Models summary (a tibble)
 \description{
 write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models. The function returns Models summary (a tibble).
 }
-\keyword{internal}

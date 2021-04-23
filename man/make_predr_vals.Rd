@@ -17,4 +17,3 @@ Predictor values (a double vector)
 \description{
 make_predr_vals() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictor values. The function returns Predictor values (a double vector).
 }
-\keyword{internal}

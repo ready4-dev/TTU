@@ -17,4 +17,3 @@ Root mean square error transformation (a double vector)
 \description{
 calculate_rmse_tfmn() is a Calculate function that performs a numeric calculation. Specifically, this function implements an algorithm to calculate root mean square error transformation. The function returns Root mean square error transformation (a double vector).
 }
-\keyword{internal}
