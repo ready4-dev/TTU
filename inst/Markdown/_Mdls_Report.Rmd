@@ -7,6 +7,7 @@ params:
   output_type_1L_chr: HTML
   rltv_path_to_data_dir_1L_chr: ../Output/F_TS_Mdls
   ref_for_main_ss_1L_chr: a scientific summary being prepared for publication
+  report_title_1L_chr: "Summary of time series models"
   root_dir_1L_chr: ./
   section_type_1L_chr: "#"
 title: "`r params$report_title_1L_chr`"
