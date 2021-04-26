@@ -1,16 +1,59 @@
 ---
-output:
-  pdf_document: default
-  html_document: default
+output: 
+  bookdown::pdf_document2: 
+    includes:
+      in_header: preamble.tex
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua'
+    toc: no
+  bookdown::pdf_book: 
+    includes:
+      in_header: preamble.tex
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua'
+  bookdown::html_document2:
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua' 
+    toc: yes
+  bookdown::markdown_document2:
+    base_format: "officedown::rdocx_document"
+    number_sections: yes
+    toc: yes
+    tables:
+      style: Table
+      layout: autofit
+      width: 1.0
+      caption:
+        style: Table Caption
+        pre: 'Table '
+        sep: ': '
+      conditional:
+        first_row: true
+        first_column: false
+        last_row: false
+        last_column: false
+        no_hband: false
+        no_vband: true
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua'
+      - '--lua-filter=Filters/pagebreaks.lua'
 params:
   outp_smry_ls: !r NULL
   output_type_1L_chr: HTML
   rltv_path_to_data_dir_1L_chr: ../Output/F_TS_Mdls
-  ref_for_main_ss_1L_chr: a scientific summary being prepared for publication
-  report_title_1L_chr: "Summary of time series models"
+  report_title_1L_chr: "Catalogue of time series models"
   root_dir_1L_chr: ./
   section_type_1L_chr: "#"
-title: "`r params$report_title_1L_chr`"
+subtitle: "`r params$report_title_1L_chr`"
+graphics: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -41,7 +84,6 @@ knit_pars_ls <- make_knit_pars_ls(rltv_path_to_data_dir_1L_chr = params_ls$rltv_
                   ) 
 ```
 
-This report is supplementary information to `r params_ls$ref_for_main_ss_1L_chr` and provides a summary of transfer to utility models produced in that study. 
 
 ```{r, echo=FALSE, results='asis'}
  knit_pars_ls %>%
