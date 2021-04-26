@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Write model type single outputs — write_mdl_type_sngl_outps • TTU</title>
+<title>Write to delete model files — write_to_delete_mdl_fls • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Write model type single outputs — write_mdl_type_sngl_outps" />
-<meta property="og:description" content="write_mdl_type_sngl_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type single outputs. The function returns Summary of one predictor model (a tibble)." />
+<meta property="og:title" content="Write to delete model files — write_to_delete_mdl_fls" />
+<meta property="og:description" content="write_to_delete_mdl_fls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write to delete model files. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,96 +131,26 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Write model type single outputs</h1>
+    <h1>Write to delete model files</h1>
     <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_write.R'><code>R/fn_write.R</code></a></small>
-    <div class="hidden name"><code>write_mdl_type_sngl_outps.Rd</code></div>
+    <div class="hidden name"><code>write_to_delete_mdl_fls.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>write_mdl_type_sngl_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type single outputs. The function returns Summary of one predictor model (a tibble).</p>
+    <p>write_to_delete_mdl_fls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write to delete model files. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour</p>
     </div>
 
-    <pre class="usage"><span class='fu'>write_mdl_type_sngl_outps</span><span class='op'>(</span>
-  <span class='va'>data_tb</span>,
-  folds_1L_int <span class='op'>=</span> <span class='fl'>10</span>,
-  depnt_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
-  start_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
-  tfmn_1L_chr <span class='op'>=</span> <span class='st'>"NTF"</span>,
-  <span class='va'>predr_var_nm_1L_chr</span>,
-  <span class='va'>predr_var_desc_1L_chr</span>,
-  <span class='va'>predr_vals_dbl</span>,
-  covar_var_nms_chr <span class='op'>=</span> <span class='cn'>NA_character_</span>,
-  mdl_type_1L_chr <span class='op'>=</span> <span class='st'>"OLS_NTF"</span>,
-  mdl_types_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>path_to_write_to_1L_chr</span>,
-  <span class='va'>mdl_fl_nm_1L_chr</span>,
-  plt_idxs_int <span class='op'>=</span> <span class='cn'>NA_integer_</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>write_to_delete_mdl_fls</span><span class='op'>(</span><span class='va'>outp_smry_ls</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data_tb</th>
-      <td><p>Data (a tibble)</p></td>
-    </tr>
-    <tr>
-      <th>folds_1L_int</th>
-      <td><p>Folds (an integer vector of length one), Default: 10</p></td>
-    </tr>
-    <tr>
-      <th>depnt_var_nm_1L_chr</th>
-      <td><p>Dependent variable name (a character vector of length one), Default: 'utl_total_w'</p></td>
-    </tr>
-    <tr>
-      <th>start_1L_chr</th>
-      <td><p>Start (a character vector of length one), Default: NULL</p></td>
-    </tr>
-    <tr>
-      <th>tfmn_1L_chr</th>
-      <td><p>Transformation (a character vector of length one), Default: 'NTF'</p></td>
-    </tr>
-    <tr>
-      <th>predr_var_nm_1L_chr</th>
-      <td><p>Predictor variable name (a character vector of length one)</p></td>
-    </tr>
-    <tr>
-      <th>predr_var_desc_1L_chr</th>
-      <td><p>Predictor variable description (a character vector of length one)</p></td>
-    </tr>
-    <tr>
-      <th>predr_vals_dbl</th>
-      <td><p>Predictor values (a double vector)</p></td>
-    </tr>
-    <tr>
-      <th>covar_var_nms_chr</th>
-      <td><p>Covariate variable names (a character vector), Default: 'NA'</p></td>
-    </tr>
-    <tr>
-      <th>mdl_type_1L_chr</th>
-      <td><p>Model type (a character vector of length one), Default: 'OLS_NTF'</p></td>
-    </tr>
-    <tr>
-      <th>mdl_types_lup</th>
-      <td><p>Model types (a lookup table), Default: NULL</p></td>
-    </tr>
-    <tr>
-      <th>path_to_write_to_1L_chr</th>
-      <td><p>Path to write to (a character vector of length one)</p></td>
-    </tr>
-    <tr>
-      <th>mdl_fl_nm_1L_chr</th>
-      <td><p>Model file name (a character vector of length one)</p></td>
-    </tr>
-    <tr>
-      <th>plt_idxs_int</th>
-      <td><p>Plot indices (an integer vector), Default: NA</p></td>
+      <th>outp_smry_ls</th>
+      <td><p>Output summary (a list)</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Summary of one predictor model (a tibble)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
