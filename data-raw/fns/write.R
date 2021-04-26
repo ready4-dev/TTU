@@ -650,6 +650,17 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
             dplyr::arrange(dplyr::desc(RsquaredP))
     return(smry_of_sngl_predr_mdls_tb)
 }
+write_to_delete_mdl_fls <- function(outp_smry_ls){
+  paths_to_mdls_chr <- outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>%
+                                                     purrr::map_lgl(~endsWith(.x,".RDS") &
+                                                                      (startsWith(.x,"A_Candidate_Mdls_Cmprsn") |
+                                                                         startsWith(.x,"C_Predrs_Sngl_Mdl_Cmprsn") |
+                                                                         startsWith(.x,"D_Predr_Covars_Cmprsn") |
+                                                                         startsWith(.x,"E_Predrs_W_Covars_Sngl_Mdl_Cmprsn") |
+                                                                         startsWith(.x,"F_TS_Mdls") ) &
+                                                                      !endsWith(.x,"mdls_smry_tb.RDS"))]
+  paths_to_mdls_chr %>% purrr::walk(~unlink(.x))
+}
 write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_ls,
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round",
     round_bl_val_1L_chr = "Baseline", backend_1L_chr = getOption("brms.backend",

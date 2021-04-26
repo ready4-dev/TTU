@@ -913,6 +913,24 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
             dplyr::arrange(dplyr::desc(RsquaredP))
     return(smry_of_sngl_predr_mdls_tb)
 }
+#' Write to delete model files
+#' @description write_to_delete_mdl_fls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write to delete model files. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @param outp_smry_ls Output summary (a list)
+#' @return NULL
+#' @rdname write_to_delete_mdl_fls
+#' @export 
+#' @importFrom purrr map_lgl walk
+#' @keywords internal
+write_to_delete_mdl_fls <- function (outp_smry_ls) 
+{
+    paths_to_mdls_chr <- outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% 
+        purrr::map_lgl(~endsWith(.x, ".RDS") & (startsWith(.x, 
+            "A_Candidate_Mdls_Cmprsn") | startsWith(.x, "C_Predrs_Sngl_Mdl_Cmprsn") | 
+            startsWith(.x, "D_Predr_Covars_Cmprsn") | startsWith(.x, 
+            "E_Predrs_W_Covars_Sngl_Mdl_Cmprsn") | startsWith(.x, 
+            "F_TS_Mdls")) & !endsWith(.x, "mdls_smry_tb.RDS"))]
+    paths_to_mdls_chr %>% purrr::walk(~unlink(.x))
+}
 #' Write time series models
 #' @description write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models. The function returns Models summary (a tibble).
 #' @param data_tb Data (a tibble)

@@ -1,5 +1,4 @@
 ---
-title: "Summary of Models"
 output:
   pdf_document: default
   html_document: default
@@ -10,6 +9,7 @@ params:
   ref_for_main_ss_1L_chr: a scientific summary being prepared for publication
   root_dir_1L_chr: ./
   section_type_1L_chr: "#"
+title: "`r params$report_title_1L_chr`"
 ---
 
 ```{r setup, include=FALSE}
