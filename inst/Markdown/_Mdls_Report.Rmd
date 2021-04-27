@@ -66,6 +66,7 @@ options(tinytex.verbose = TRUE)
 options(xtable.floating = FALSE)
 options(xtable.timestamp = "")
 ```
+
 ```{r include=FALSE}
 params_ls <- params
 ```
