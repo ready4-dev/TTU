@@ -49,10 +49,10 @@ params:
   outp_smry_ls: !r NULL
   output_type_1L_chr: HTML
   rltv_path_to_data_dir_1L_chr: ../Output/F_TS_Mdls
-  report_title_1L_chr: "Catalogue of time series models"
+  subtitle_1L_chr: "Catalogue of time series models"
   root_dir_1L_chr: ./
   section_type_1L_chr: "#"
-subtitle: "`r params$report_title_1L_chr`"
+subtitle: "`r params$subtitle_1L_chr`"
 graphics: yes
 ---
 
