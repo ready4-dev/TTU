@@ -202,4 +202,5 @@ ready4fun::write_links_for_website(user_manual_url_1L_chr = "https://github.com/
 ##
 ##
 ## Add, Commit and Push
-
+# system("git add .")
+# system("git commit -m \"message\"")
