@@ -702,6 +702,37 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_
         confirmed_predrs_chr)
     return(confirmed_predrs_tb)
 }
+#' Write report
+#' @description write_report() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write report. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @param params_ls Params (a list)
+#' @param paths_ls Paths (a list)
+#' @param R_fl_nm_1L_chr R file name (a character vector of length one)
+#' @param rprt_nm_1L_chr Report name (a character vector of length one)
+#' @param abstract_args_ls Abstract arguments (a list), Default: NULL
+#' @param header_yaml_args_ls Header yaml arguments (a list), Default: NULL
+#' @param rprt_lup Report (a lookup table), Default: NULL
+#' @return NULL
+#' @rdname write_report
+#' @export 
+#' @importFrom ready4show make_rprt_type_ls write_rprt_from_tmpl
+#' @importFrom here i_am here
+#' @importFrom rlang exec
+#' @keywords internal
+write_report <- function (params_ls, paths_ls, R_fl_nm_1L_chr, rprt_nm_1L_chr, 
+    abstract_args_ls = NULL, header_yaml_args_ls = NULL, rprt_lup = NULL) 
+{
+    if (is.null(rprt_lup)) 
+        data("rprt_lup", package = "TTU", envir = environment())
+    rprt_type_ls <- rprt_lup %>% ready4show::make_rprt_type_ls(rprt_nm_1L_chr = rprt_nm_1L_chr)
+    here::i_am(paste0(paths_ls$path_from_top_level_1L_chr, "/", 
+        paths_ls$path_to_current_1L_chr, "/", R_fl_nm_1L_chr))
+    args_ls <- list(rprt_type_ls = rprt_type_ls, params_ls = params_ls, 
+        output_type_1L_chr = params_ls$output_type_1L_chr, path_to_prjs_dir_1L_chr = here::here(paths_ls$path_from_top_level_1L_chr), 
+        prj_dir_1L_chr = paths_ls$write_to_dir_nm_1L_chr, header_yaml_args_ls = header_yaml_args_ls, 
+        abstract_args_ls = abstract_args_ls, reports_dir_1L_chr = "Reports", 
+        rltv_path_to_data_dir_1L_chr = "../Output", nm_of_mkdn_dir_1L_chr = "Markdown")
+    rlang::exec(ready4show::write_rprt_from_tmpl, !!!args_ls)
+}
 #' Write results to comma separated variables file
 #' @description write_results_to_csv() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write results to comma separated variables file. The function returns Datasets (a tibble).
 #' @param synth_data_spine_ls Synthetic data spine (a list)

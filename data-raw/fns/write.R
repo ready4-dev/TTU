@@ -504,6 +504,35 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_
         confirmed_predrs_chr)
     return(confirmed_predrs_tb)
 }
+write_report <- function(params_ls,
+                         paths_ls,
+                         R_fl_nm_1L_chr,
+                         rprt_nm_1L_chr,
+                         abstract_args_ls = NULL,
+                         header_yaml_args_ls = NULL,
+                         rprt_lup = NULL){
+  if(is.null(rprt_lup))
+    data("rprt_lup", package = "TTU", envir = environment())
+  rprt_type_ls <- rprt_lup %>%
+    ready4show::make_rprt_type_ls(rprt_nm_1L_chr = rprt_nm_1L_chr)
+  here::i_am(paste0(paths_ls$path_from_top_level_1L_chr,
+                    "/",
+                    paths_ls$path_to_current_1L_chr,
+                    "/",
+                    R_fl_nm_1L_chr
+  ))
+  args_ls <- list(rprt_type_ls = rprt_type_ls,
+                  params_ls = params_ls,
+                  output_type_1L_chr = params_ls$output_type_1L_chr,
+                  path_to_prjs_dir_1L_chr = here::here(paths_ls$path_from_top_level_1L_chr),
+                  prj_dir_1L_chr = paths_ls$write_to_dir_nm_1L_chr,
+                  header_yaml_args_ls = header_yaml_args_ls,
+                  abstract_args_ls = abstract_args_ls,
+                  reports_dir_1L_chr = "Reports",
+                  rltv_path_to_data_dir_1L_chr = "../Output",
+                  nm_of_mkdn_dir_1L_chr = "Markdown")
+  rlang::exec(ready4show::write_rprt_from_tmpl,!!!args_ls)
+}
 write_results_to_csv <- function (synth_data_spine_ls, output_dir_1L_chr = ".")
 {
   measurements_tb <- tibble::tibble(timepoint_nms_chr = synth_data_spine_ls$timepoint_nms_chr,
