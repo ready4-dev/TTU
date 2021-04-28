@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9152
+Version: 0.0.0.9153
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -47,6 +47,7 @@ Imports:
     ggalt,
     ggfortify,
     ggplot2,
+    here,
     Hmisc,
     knitr,
     knitrBootstrap,
@@ -61,7 +62,7 @@ Imports:
     readr,
     ready4class (>= 0.0.0.9198),
     ready4fun (>= 0.0.0.9294),
-    ready4show (>= 0.0.0.9027),
+    ready4show (>= 0.0.0.9030),
     ready4use (>= 0.0.0.9131),
     rlang,
     simstudy,
@@ -75,7 +76,7 @@ Imports:
     tidyselect,
     utils,
     viridis,
-    youthvars (>= 0.0.0.9038)
+    youthvars (>= 0.0.0.9039)
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
