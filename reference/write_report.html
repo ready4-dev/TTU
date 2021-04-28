@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculate root mean square error — calculate_rmse • TTU</title>
+<title>Write report — write_report • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Calculate root mean square error — calculate_rmse" />
-<meta property="og:description" content="calculate_rmse() is a Calculate function that performs a numeric calculation. Specifically, this function implements an algorithm to calculate root mean square error. The function returns Root mean square error (a double vector)." />
+<meta property="og:title" content="Write report — write_report" />
+<meta property="og:description" content="write_report() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write report. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,33 +131,58 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Calculate root mean square error</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_calculate.R'><code>R/fn_calculate.R</code></a></small>
-    <div class="hidden name"><code>calculate_rmse.Rd</code></div>
+    <h1>Write report</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_write.R'><code>R/fn_write.R</code></a></small>
+    <div class="hidden name"><code>write_report.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>calculate_rmse() is a Calculate function that performs a numeric calculation. Specifically, this function implements an algorithm to calculate root mean square error. The function returns Root mean square error (a double vector).</p>
+    <p>write_report() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write report. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour</p>
     </div>
 
-    <pre class="usage"><span class='fu'>calculate_rmse</span><span class='op'>(</span><span class='va'>y_dbl</span>, <span class='va'>yhat_dbl</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>write_report</span><span class='op'>(</span>
+  <span class='va'>params_ls</span>,
+  <span class='va'>paths_ls</span>,
+  <span class='va'>R_fl_nm_1L_chr</span>,
+  <span class='va'>rprt_nm_1L_chr</span>,
+  abstract_args_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  header_yaml_args_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rprt_lup <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>y_dbl</th>
-      <td><p>Y (a double vector)</p></td>
+      <th>params_ls</th>
+      <td><p>Params (a list)</p></td>
     </tr>
     <tr>
-      <th>yhat_dbl</th>
-      <td><p>Yhat (a double vector)</p></td>
+      <th>paths_ls</th>
+      <td><p>Paths (a list)</p></td>
+    </tr>
+    <tr>
+      <th>R_fl_nm_1L_chr</th>
+      <td><p>R file name (a character vector of length one)</p></td>
+    </tr>
+    <tr>
+      <th>rprt_nm_1L_chr</th>
+      <td><p>Report name (a character vector of length one)</p></td>
+    </tr>
+    <tr>
+      <th>abstract_args_ls</th>
+      <td><p>Abstract arguments (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>header_yaml_args_ls</th>
+      <td><p>Header yaml arguments (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>rprt_lup</th>
+      <td><p>Report (a lookup table), Default: NULL</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Root mean square error (a double vector)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
