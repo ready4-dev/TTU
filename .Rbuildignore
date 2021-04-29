@@ -79,3 +79,4 @@
 ^data-raw/dataverse/prototype_lup/prototype_lup\.RDS$
 ^data-raw/extra_abbrs\.txt$
 ^data-raw/vignettes/Fake_Data_Generator\.Rmd$
+^data-raw/inst/Markdown/Report_TS_Mdls\.Rmd$

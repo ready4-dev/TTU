@@ -5,7 +5,7 @@
 \alias{rprt_lup}
 \title{Report types lookup table}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 2 rows and 7 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 3 rows and 7 columns.
 }
 \usage{
 rprt_lup

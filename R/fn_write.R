@@ -782,6 +782,49 @@ write_results_to_csv <- function (synth_data_spine_ls, output_dir_1L_chr = ".")
         file = paste0(output_dir_1L_chr, "/", .y, ".csv"), row.names = F))
     return(dss_tb)
 }
+#' Write report with rcrd
+#' @description write_rprt_with_rcrd() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write report with rcrd. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @param path_to_outp_fl_1L_chr Path to output file (a character vector of length one)
+#' @param paths_ls Paths (a list)
+#' @param R_fl_nm_1L_chr R file name (a character vector of length one)
+#' @param header_yaml_args_ls Header yaml arguments (a list), Default: NULL
+#' @param rprt_lup Report (a lookup table)
+#' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one)
+#' @param subtitle_1L_chr Subtitle (a character vector of length one), Default: 'Results Supplementary Report 1: Catalogue of time series models'
+#' @param rprt_subtitle_1L_chr Report subtitle (a character vector of length one), Default: 'Methods Supplementary Report 2: Record of auto-generation of model catalogue.'
+#' @param rprt_nm_1L_chr Report name (a character vector of length one), Default: 'TS_TTU_Mdls_Smry'
+#' @param rcrd_nm_1L_chr Rcrd name (a character vector of length one), Default: 'Write_Rprt_Rcrd'
+#' @param output_type_1L_chr Output type (a character vector of length one), Default: 'PDF'
+#' @param rprt_output_type_1L_chr Report output type (a character vector of length one), Default: 'PDF'
+#' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
+#' @param abstract_args_ls Abstract arguments (a list), Default: NULL
+#' @return NULL
+#' @rdname write_rprt_with_rcrd
+#' @export 
+
+#' @keywords internal
+write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, R_fl_nm_1L_chr, header_yaml_args_ls = NULL, 
+    rprt_lup, use_fake_data_1L_lgl, subtitle_1L_chr = "Results Supplementary Report 1: Catalogue of time series models", 
+    rprt_subtitle_1L_chr = "Methods Supplementary Report 2: Record of auto-generation of model catalogue.", 
+    rprt_nm_1L_chr = "TS_TTU_Mdls_Smry", rcrd_nm_1L_chr = "Write_Rprt_Rcrd", 
+    output_type_1L_chr = "PDF", rprt_output_type_1L_chr = "PDF", 
+    nbr_of_digits_1L_int = 2L, abstract_args_ls = NULL) 
+{
+    list(outp_smry_ls = append(readRDS(path_to_outp_fl_1L_chr), 
+        list(rprt_lup = rprt_lup)), output_type_1L_chr = output_type_1L_chr, 
+        subtitle_1L_chr = subtitle_1L_chr) %>% write_report(paths_ls = paths_ls, 
+        R_fl_nm_1L_chr = R_fl_nm_1L_chr, rprt_nm_1L_chr = rprt_nm_1L_chr, 
+        abstract_args_ls = abstract_args_ls, header_yaml_args_ls = header_yaml_args_ls, 
+        rprt_lup = rprt_lup)
+    list(abstract_args_ls = NULL, eval_1L_lgl = F, header_yaml_args_ls = header_yaml_args_ls, 
+        output_type_1L_chr = rprt_output_type_1L_chr, nbr_of_digits_1L_int = nbr_of_digits_1L_int, 
+        rprt_lup = rprt_lup, rprt_nm_1L_chr = rprt_nm_1L_chr, 
+        rprt_output_type_1L_chr = output_type_1L_chr, rprt_subtitle_1L_chr = subtitle_1L_chr, 
+        subtitle_1L_chr = rprt_subtitle_1L_chr, use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>% 
+        write_report(paths_ls = paths_ls, R_fl_nm_1L_chr = R_fl_nm_1L_chr, 
+            rprt_nm_1L_chr = rcrd_nm_1L_chr, abstract_args_ls = NULL, 
+            header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
+}
 #' Write shareable models
 #' @description write_shareable_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models. The function returns Output summary (a list).
 #' @param outp_smry_ls Output summary (a list)

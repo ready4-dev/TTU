@@ -53,6 +53,7 @@ params:
   root_dir_1L_chr: ./
   section_type_1L_chr: "#"
 subtitle: "`r params$subtitle_1L_chr`"
+date: "`r format.Date(Sys.Date(),'%B %d, %Y')`"
 graphics: yes
 ---
 
