@@ -209,6 +209,33 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
     }) %>% stats::setNames(plt_nms_chr) %>% purrr::discard(is.na)
     return(mdl_plts_paths_ls)
 }
+#' Write main oupt directory
+#' @description write_main_oupt_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write main oupt directory. The function returns Paths (a list).
+#' @param params_ls Params (a list), Default: NULL
+#' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: F
+#' @return Paths (a list)
+#' @rdname write_main_oupt_dir
+#' @export 
+#' @importFrom purrr pluck
+#' @importFrom ready4show make_paths_ls
+#' @importFrom here i_am here
+#' @importFrom youthvars write_all_outp_dirs
+#' @keywords internal
+write_main_oupt_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F) 
+{
+    R_fl_nm_1L_chr <- list.files() %>% purrr::pluck(1)
+    paths_ls <- ready4show::make_paths_ls(append(params_ls, list(use_fake_data_1L_lgl = use_fake_data_1L_lgl)), 
+        depth_1L_int = 0)
+    paths_ls$path_to_current_1L_chr <- ifelse(!is.null(paths_ls$path_to_current_1L_chr), 
+        paths_ls$path_to_current_1L_chr, params_ls$path_to_current_1L_chr)
+    here::i_am(paste0(paths_ls$path_from_top_level_1L_chr, "/", 
+        paths_ls$path_to_current_1L_chr, "/", R_fl_nm_1L_chr))
+    dir.create(paste0(here::here(paths_ls$path_from_top_level_1L_chr), 
+        "/", paths_ls$write_to_dir_nm_1L_chr))
+    paths_ls$R_fl_nm_1L_chr <- R_fl_nm_1L_chr
+    paths_ls <- youthvars::write_all_outp_dirs(paths_ls)
+    return(paths_ls)
+}
 #' Write model comparison
 #' @description write_mdl_cmprsn() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model comparison. The function returns Model comparison (a list).
 #' @param scored_data_tb Scored data (a tibble)

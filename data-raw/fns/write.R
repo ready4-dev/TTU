@@ -137,6 +137,26 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
     }) %>% stats::setNames(plt_nms_chr) %>% purrr::discard(is.na)
     return(mdl_plts_paths_ls)
 }
+write_main_oupt_dir <- function(params_ls = NULL,
+                                use_fake_data_1L_lgl = F){
+  R_fl_nm_1L_chr <- list.files() %>% purrr::pluck(1)
+  paths_ls <- ready4show::make_paths_ls(append(params_ls,list(use_fake_data_1L_lgl = use_fake_data_1L_lgl)),
+                                        depth_1L_int = 0) #
+  paths_ls$path_to_current_1L_chr <- ifelse(!is.null(paths_ls$path_to_current_1L_chr),
+                                            paths_ls$path_to_current_1L_chr,
+                                            params_ls$path_to_current_1L_chr)
+  here::i_am(paste0(paths_ls$path_from_top_level_1L_chr,
+                    "/",
+                    paths_ls$path_to_current_1L_chr,
+                    "/",
+                    R_fl_nm_1L_chr))
+  dir.create(paste0(here::here(paths_ls$path_from_top_level_1L_chr),
+                    "/",
+                    paths_ls$write_to_dir_nm_1L_chr))
+  paths_ls$R_fl_nm_1L_chr <- R_fl_nm_1L_chr
+  paths_ls <- youthvars::write_all_outp_dirs(paths_ls)
+  return(paths_ls)
+}
 write_mdl_cmprsn <- function(scored_data_tb,
                               ds_smry_ls,
                               mdl_smry_ls,
