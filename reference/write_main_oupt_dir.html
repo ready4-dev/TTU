@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Transform data tibble for comparison — transform_data_tb_for_cmprsn • TTU</title>
+<title>Write main oupt directory — write_main_oupt_dir • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Transform data tibble for comparison — transform_data_tb_for_cmprsn" />
-<meta property="og:description" content="transform_data_tb_for_cmprsn() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform data tibble for comparison. Function argument data_tb specifies the object to be updated. Argument model_mdl provides the object to be updated. The function returns Transformed data (a tibble)." />
+<meta property="og:title" content="Write main oupt directory — write_main_oupt_dir" />
+<meta property="og:description" content="write_main_oupt_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write main oupt directory. The function returns Paths (a list)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,66 +131,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Transform data tibble for comparison</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_transform.R'><code>R/fn_transform.R</code></a></small>
-    <div class="hidden name"><code>transform_data_tb_for_cmprsn.Rd</code></div>
+    <h1>Write main oupt directory</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_write.R'><code>R/fn_write.R</code></a></small>
+    <div class="hidden name"><code>write_main_oupt_dir.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>transform_data_tb_for_cmprsn() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform data tibble for comparison. Function argument data_tb specifies the object to be updated. Argument model_mdl provides the object to be updated. The function returns Transformed data (a tibble).</p>
+    <p>write_main_oupt_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write main oupt directory. The function returns Paths (a list).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>transform_data_tb_for_cmprsn</span><span class='op'>(</span>
-  <span class='va'>data_tb</span>,
-  <span class='va'>model_mdl</span>,
-  depnt_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
-  source_data_nm_1L_chr <span class='op'>=</span> <span class='st'>"Original"</span>,
-  tf_type_1L_chr <span class='op'>=</span> <span class='st'>"Predicted"</span>,
-  predn_type_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
-  tfmn_for_bnml_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>,
-  family_1L_chr <span class='op'>=</span> <span class='cn'>NA_character_</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>write_main_oupt_dir</span><span class='op'>(</span>params_ls <span class='op'>=</span> <span class='cn'>NULL</span>, use_fake_data_1L_lgl <span class='op'>=</span> <span class='cn'>F</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data_tb</th>
-      <td><p>Data (a tibble)</p></td>
+      <th>params_ls</th>
+      <td><p>Params (a list), Default: NULL</p></td>
     </tr>
     <tr>
-      <th>model_mdl</th>
-      <td><p>Model (a model)</p></td>
-    </tr>
-    <tr>
-      <th>depnt_var_nm_1L_chr</th>
-      <td><p>Dependent variable name (a character vector of length one), Default: 'utl_total_w'</p></td>
-    </tr>
-    <tr>
-      <th>source_data_nm_1L_chr</th>
-      <td><p>Source data name (a character vector of length one), Default: 'Original'</p></td>
-    </tr>
-    <tr>
-      <th>tf_type_1L_chr</th>
-      <td><p>Transform type (a character vector of length one), Default: 'Predicted'</p></td>
-    </tr>
-    <tr>
-      <th>predn_type_1L_chr</th>
-      <td><p>Prediction type (a character vector of length one), Default: NULL</p></td>
-    </tr>
-    <tr>
-      <th>tfmn_for_bnml_1L_lgl</th>
-      <td><p>Transformation for binomial (a logical vector of length one), Default: F</p></td>
-    </tr>
-    <tr>
-      <th>family_1L_chr</th>
-      <td><p>Family (a character vector of length one), Default: 'NA'</p></td>
+      <th>use_fake_data_1L_lgl</th>
+      <td><p>Use fake data (a logical vector of length one), Default: F</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Transformed data (a tibble)</p>
+    <p>Paths (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
