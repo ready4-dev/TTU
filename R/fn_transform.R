@@ -170,6 +170,22 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
         })
     return(tfd_ds_tb)
 }
+#' Transform paths list for scndry
+#' @description transform_paths_ls_for_scndry() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform paths list for scndry. Function argument paths_ls specifies the object to be updated. Argument reference_1L_int provides the object to be updated. The function returns Paths (a list).
+#' @param paths_ls Paths (a list)
+#' @param reference_1L_int Reference (an integer vector of length one), Default: 1
+#' @return Paths (a list)
+#' @rdname transform_paths_ls_for_scndry
+#' @export 
+
+#' @keywords internal
+transform_paths_ls_for_scndry <- function (paths_ls, reference_1L_int = 1) 
+{
+    paths_ls$prmry_analysis_dir_nm_1L_chr <- paths_ls$write_to_dir_nm_1L_chr
+    paths_ls$write_to_dir_nm_1L_chr <- paste0(paths_ls$write_to_dir_nm_1L_chr, 
+        "/secondary_", reference_1L_int)
+    return(paths_ls)
+}
 #' Transform predictor name part of phrases
 #' @description transform_predr_nm_part_of_phrases() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform predictor name part of phrases. Function argument phrases_chr specifies the object to be updated. Argument old_nms_chr provides the object to be updated. The function returns Transformed phrases (a character vector).
 #' @param phrases_chr Phrases (a character vector)
@@ -204,6 +220,34 @@ transform_predr_nm_part_of_phrases <- function (phrases_chr, old_nms_chr = NULL,
         })
     }
     return(tfd_phrases_chr)
+}
+#' Transform report
+#' @description transform_rprt_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform report lookup table. Function argument rprt_lup specifies the object to be updated. Argument add_suplry_rprt_1L_lgl provides the object to be updated. The function returns Report (a lookup table).
+#' @param rprt_lup Report (a lookup table)
+#' @param add_suplry_rprt_1L_lgl Add suplry report (a logical vector of length one), Default: T
+#' @param add_sharing_rprt_1L_lgl Add sharing report (a logical vector of length one), Default: F
+#' @return Report (a lookup table)
+#' @rdname transform_rprt_lup
+#' @export 
+#' @importFrom tibble add_case
+#' @importFrom dplyr filter
+#' @keywords internal
+transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharing_rprt_1L_lgl = F) 
+{
+    if (add_suplry_rprt_1L_lgl) {
+        rprt_lup <- rprt_lup %>% tibble::add_case(rprt_nms_chr = "Suplry_Analysis_Rprt", 
+            title_chr = "Report outlining the algorithm to run the supplemenatary analysis.", 
+            paths_to_rmd_dir_1L_chr = "../aqol6d_ttu_analysis/Markdown", 
+            nms_of_rmd_chr = "Supplement.Rmd") %>% dplyr::filter(rprt_nms_chr != 
+            "Main_Analysis_Rprt")
+    }
+    if (add_sharing_rprt_1L_lgl) {
+        rprt_lup <- rprt_lup %>% tibble::add_case(rprt_nms_chr = "Share_Outp_Rprt", 
+            title_chr = "Supplementary report outlining the algorithm to create and disseminate shareable study output.", 
+            paths_to_rmd_dir_1L_chr = "../aqol6d_ttu_analysis/Markdown", 
+            nms_of_rmd_chr = "Share.Rmd")
+    }
+    return(rprt_lup)
 }
 #' Transform tibble to model input
 #' @description transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument depnt_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble).

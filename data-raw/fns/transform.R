@@ -100,6 +100,14 @@ transform_mdl_vars_with_clss <- function(ds_tb,
                              })
   return(tfd_ds_tb)
 }
+transform_paths_ls_for_scndry <- function(paths_ls,
+                                          reference_1L_int = 1){
+  paths_ls$prmry_analysis_dir_nm_1L_chr <- paths_ls$write_to_dir_nm_1L_chr
+  paths_ls$write_to_dir_nm_1L_chr <- paste0(paths_ls$write_to_dir_nm_1L_chr,
+                                            "/secondary_",
+                                            reference_1L_int)
+  return(paths_ls)
+}
 transform_predr_nm_part_of_phrases <- function(phrases_chr,
                                                old_nms_chr = NULL,
                                                new_nms_chr = NULL){
@@ -123,6 +131,26 @@ transform_predr_nm_part_of_phrases <- function(phrases_chr,
       })
   }
   return(tfd_phrases_chr)
+}
+transform_rprt_lup <- function(rprt_lup,
+                               add_suplry_rprt_1L_lgl = T,
+                               add_sharing_rprt_1L_lgl = F){
+  if(add_suplry_rprt_1L_lgl){
+    rprt_lup <- rprt_lup  %>%
+      tibble::add_case(rprt_nms_chr = "Suplry_Analysis_Rprt",
+                       title_chr = "Report outlining the algorithm to run the supplemenatary analysis.",
+                       paths_to_rmd_dir_1L_chr = "../aqol6d_ttu_analysis/Markdown",
+                       nms_of_rmd_chr = "Supplement.Rmd") %>%
+      dplyr::filter(rprt_nms_chr != "Main_Analysis_Rprt")
+  }
+  if(add_sharing_rprt_1L_lgl){
+    rprt_lup <- rprt_lup  %>%
+      tibble::add_case(rprt_nms_chr = "Share_Outp_Rprt",
+                       title_chr = "Supplementary report outlining the algorithm to create and disseminate shareable study output.",
+                       paths_to_rmd_dir_1L_chr = "../aqol6d_ttu_analysis/Markdown",
+                       nms_of_rmd_chr = "Share.Rmd")
+  }
+  return(rprt_lup)
 }
 transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr,
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round",

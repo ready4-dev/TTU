@@ -400,7 +400,7 @@ write_mdl_type_multi_outps <- function (data_tb, folds_1L_int = 10, predrs_var_n
 {
     if (is.null(mdl_types_lup)) 
         utils::data("mdl_types_lup", envir = environment())
-    output_dir_1L_chr <- output_dir_1L_chr <- write_new_outp_dir(path_to_write_to_1L_chr, 
+    output_dir_1L_chr <- write_new_outp_dir(path_to_write_to_1L_chr, 
         new_dir_nm_1L_chr = new_dir_nm_1L_chr)
     smry_of_mdl_sngl_predrs_tb <- purrr::map_dfr(predrs_var_nms_chr, 
         ~{
@@ -825,6 +825,54 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, R_fl_nm_1L_c
             rprt_nm_1L_chr = rcrd_nm_1L_chr, abstract_args_ls = NULL, 
             header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
 }
+#' Write scndry analysis
+#' @description write_scndry_analysis() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scndry analysis. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @param analysis_params_ls Analysis params (a list)
+#' @param candidate_covar_nms_chr Candidate covariate names (a character vector)
+#' @param candidate_predrs_chr Candidate predictors (a character vector)
+#' @param prefd_covars_chr Preferred covariates (a character vector)
+#' @param header_yaml_args_ls Header yaml arguments (a list)
+#' @param subtitle_1L_chr Subtitle (a character vector of length one)
+#' @param reference_1L_int Reference (an integer vector of length one)
+#' @param paths_ls Paths (a list)
+#' @param R_fl_nm_1L_chr R file name (a character vector of length one)
+#' @param rprt_lup Report (a lookup table)
+#' @param abstract_args_ls Abstract arguments (a list), Default: NULL
+#' @return NULL
+#' @rdname write_scndry_analysis
+#' @export 
+
+#' @keywords internal
+write_scndry_analysis <- function (analysis_params_ls, candidate_covar_nms_chr, candidate_predrs_chr, 
+    prefd_covars_chr, header_yaml_args_ls, subtitle_1L_chr, reference_1L_int, 
+    paths_ls, R_fl_nm_1L_chr, rprt_lup, abstract_args_ls = NULL) 
+{
+    paths_ls <- write_scndry_analysis_dir(paths_ls, reference_1L_int = reference_1L_int)
+    list(candidate_covar_nms_chr = candidate_covar_nms_chr, candidate_predrs_chr = candidate_predrs_chr, 
+        prefd_covars_chr = prefd_covars_chr, subtitle_1L_chr = subtitle_1L_chr, 
+        transform_paths_ls = list(fn = transform_paths_ls_for_scndry, 
+            args_ls = list(reference_1L_int = reference_1L_int))) %>% 
+        append(analysis_params_ls) %>% write_report(paths_ls = paths_ls, 
+        R_fl_nm_1L_chr = R_fl_nm_1L_chr, rprt_nm_1L_chr = "Suplry_Analysis_Rprt", 
+        abstract_args_ls = NULL, header_yaml_args_ls = header_yaml_args_ls, 
+        rprt_lup = transform_rprt_lup(rprt_lup))
+}
+#' Write scndry analysis directory
+#' @description write_scndry_analysis_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scndry analysis directory. The function returns Paths (a list).
+#' @param paths_ls Paths (a list)
+#' @param reference_1L_int Reference (an integer vector of length one), Default: 1
+#' @return Paths (a list)
+#' @rdname write_scndry_analysis_dir
+#' @export 
+#' @importFrom here here
+#' @keywords internal
+write_scndry_analysis_dir <- function (paths_ls, reference_1L_int = 1) 
+{
+    paths_ls <- transform_paths_ls_for_scndry(paths_ls, reference_1L_int = reference_1L_int)
+    paste0(here::here(paths_ls$path_from_top_level_1L_chr), "/", 
+        paths_ls$write_to_dir_nm_1L_chr) %>% dir.create()
+    return(paths_ls)
+}
 #' Write shareable models
 #' @description write_shareable_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models. The function returns Output summary (a list).
 #' @param outp_smry_ls Output summary (a list)
@@ -1066,7 +1114,7 @@ write_ts_mdls_from_alg_outp <- function (outp_smry_ls, fn_ls, new_dir_nm_1L_chr 
     predictors_lup, backend_1L_chr = getOption("brms.backend", 
         "rstan"), iters_1L_int = 4000L) 
 {
-    output_dir_1L_chr <- output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr, 
+    output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr, 
         new_dir_nm_1L_chr = new_dir_nm_1L_chr)
     mdls_smry_tb <- write_ts_mdls(data_tb = outp_smry_ls$scored_data_tb, 
         depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 

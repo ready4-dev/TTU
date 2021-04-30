@@ -299,7 +299,7 @@ write_mdl_type_multi_outps <- function (data_tb, folds_1L_int = 10, predrs_var_n
 {
     if (is.null(mdl_types_lup))
         utils::data("mdl_types_lup", envir = environment())
-  output_dir_1L_chr <- output_dir_1L_chr <- write_new_outp_dir(path_to_write_to_1L_chr,
+  output_dir_1L_chr <- write_new_outp_dir(path_to_write_to_1L_chr,
                                                                new_dir_nm_1L_chr = new_dir_nm_1L_chr)
     smry_of_mdl_sngl_predrs_tb <- purrr::map_dfr(predrs_var_nms_chr,
         ~{
@@ -470,7 +470,6 @@ write_predr_and_mdl_tstng_results <- function(scored_data_tb,
                                                  session_data_ls = session_data_ls)
   return(outp_smry_ls)
 }
-
 write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_nm_1L_chr = "B_Candidate_Predrs_Cmprsn", depnt_var_nm_1L_chr = "utl_total_w",
     candidate_predrs_chr, max_nbr_of_boruta_mdl_runs_int = 300L)
 {
@@ -611,6 +610,42 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                       abstract_args_ls = NULL,
                       header_yaml_args_ls = header_yaml_args_ls,
                       rprt_lup = rprt_lup)
+}
+write_scndry_analysis <- function(analysis_params_ls,
+                                  candidate_covar_nms_chr,
+                                  candidate_predrs_chr,
+                                  prefd_covars_chr,
+                                  header_yaml_args_ls,
+                                  subtitle_1L_chr,
+                                  reference_1L_int,
+                                  paths_ls,
+                                  R_fl_nm_1L_chr,
+                                  rprt_lup,
+                                  abstract_args_ls = NULL) {
+  paths_ls <- write_scndry_analysis_dir(paths_ls,
+                                        reference_1L_int = reference_1L_int)
+  list(candidate_covar_nms_chr = candidate_covar_nms_chr,
+       candidate_predrs_chr = candidate_predrs_chr,
+       prefd_covars_chr = prefd_covars_chr,
+       subtitle_1L_chr = subtitle_1L_chr,
+       transform_paths_ls = list(fn = transform_paths_ls_for_scndry,
+                                 args_ls = list(reference_1L_int = reference_1L_int))) %>%
+    append(analysis_params_ls) %>%
+    write_report(paths_ls = paths_ls,
+                 R_fl_nm_1L_chr = R_fl_nm_1L_chr,
+                 rprt_nm_1L_chr = "Suplry_Analysis_Rprt",
+                 abstract_args_ls = NULL,
+                 header_yaml_args_ls = header_yaml_args_ls,
+                 rprt_lup = transform_rprt_lup(rprt_lup))
+}
+write_scndry_analysis_dir <- function(paths_ls,
+                                      reference_1L_int = 1){
+  paths_ls <- transform_paths_ls_for_scndry(paths_ls,
+                                            reference_1L_int = reference_1L_int)
+  paste0(here::here(paths_ls$path_from_top_level_1L_chr),
+         "/", paths_ls$write_to_dir_nm_1L_chr) %>%
+    dir.create()
+  return(paths_ls)
 }
 write_shareable_mdls <- function (outp_smry_ls,
                                   new_dir_nm_1L_chr = "G_Shareable",
@@ -760,7 +795,7 @@ write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_v
 write_ts_mdls_from_alg_outp <- function (outp_smry_ls, fn_ls, new_dir_nm_1L_chr = "F_TS_Mdls", predictors_lup,
                                          backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L)
 {
-  output_dir_1L_chr <- output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr,
+  output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr,
                                                                new_dir_nm_1L_chr = new_dir_nm_1L_chr)
 
     mdls_smry_tb <- write_ts_mdls(data_tb = outp_smry_ls$scored_data_tb,
