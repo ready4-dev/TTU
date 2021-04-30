@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Make ranked predictors — make_ranked_predrs_ls • TTU</title>
+<title>Write scndry analysis — write_scndry_analysis • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Make ranked predictors — make_ranked_predrs_ls" />
-<meta property="og:description" content="make_ranked_predrs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ranked predictors list. The function returns Ranked predictors (a list)." />
+<meta property="og:title" content="Write scndry analysis — write_scndry_analysis" />
+<meta property="og:description" content="write_scndry_analysis() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scndry analysis. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,37 +131,78 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Make ranked predictors</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
-    <div class="hidden name"><code>make_ranked_predrs_ls.Rd</code></div>
+    <h1>Write scndry analysis</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_write.R'><code>R/fn_write.R</code></a></small>
+    <div class="hidden name"><code>write_scndry_analysis.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>make_ranked_predrs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ranked predictors list. The function returns Ranked predictors (a list).</p>
+    <p>write_scndry_analysis() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scndry analysis. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_ranked_predrs_ls</span><span class='op'>(</span><span class='va'>descv_tbls_ls</span>, old_nms_chr <span class='op'>=</span> <span class='cn'>NULL</span>, new_nms_chr <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>write_scndry_analysis</span><span class='op'>(</span>
+  <span class='va'>analysis_params_ls</span>,
+  <span class='va'>candidate_covar_nms_chr</span>,
+  <span class='va'>candidate_predrs_chr</span>,
+  <span class='va'>prefd_covars_chr</span>,
+  <span class='va'>header_yaml_args_ls</span>,
+  <span class='va'>subtitle_1L_chr</span>,
+  <span class='va'>reference_1L_int</span>,
+  <span class='va'>paths_ls</span>,
+  <span class='va'>R_fl_nm_1L_chr</span>,
+  <span class='va'>rprt_lup</span>,
+  abstract_args_ls <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>descv_tbls_ls</th>
-      <td><p>Descriptive tables (a list)</p></td>
+      <th>analysis_params_ls</th>
+      <td><p>Analysis params (a list)</p></td>
     </tr>
     <tr>
-      <th>old_nms_chr</th>
-      <td><p>Old names (a character vector), Default: NULL</p></td>
+      <th>candidate_covar_nms_chr</th>
+      <td><p>Candidate covariate names (a character vector)</p></td>
     </tr>
     <tr>
-      <th>new_nms_chr</th>
-      <td><p>New names (a character vector), Default: NULL</p></td>
+      <th>candidate_predrs_chr</th>
+      <td><p>Candidate predictors (a character vector)</p></td>
+    </tr>
+    <tr>
+      <th>prefd_covars_chr</th>
+      <td><p>Preferred covariates (a character vector)</p></td>
+    </tr>
+    <tr>
+      <th>header_yaml_args_ls</th>
+      <td><p>Header yaml arguments (a list)</p></td>
+    </tr>
+    <tr>
+      <th>subtitle_1L_chr</th>
+      <td><p>Subtitle (a character vector of length one)</p></td>
+    </tr>
+    <tr>
+      <th>reference_1L_int</th>
+      <td><p>Reference (an integer vector of length one)</p></td>
+    </tr>
+    <tr>
+      <th>paths_ls</th>
+      <td><p>Paths (a list)</p></td>
+    </tr>
+    <tr>
+      <th>R_fl_nm_1L_chr</th>
+      <td><p>R file name (a character vector of length one)</p></td>
+    </tr>
+    <tr>
+      <th>rprt_lup</th>
+      <td><p>Report (a lookup table)</p></td>
+    </tr>
+    <tr>
+      <th>abstract_args_ls</th>
+      <td><p>Abstract arguments (a list), Default: NULL</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Ranked predictors (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

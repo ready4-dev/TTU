@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Make ranked predictors — make_ranked_predrs_ls • TTU</title>
+<title>Transform paths list for scndry — transform_paths_ls_for_scndry • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Make ranked predictors — make_ranked_predrs_ls" />
-<meta property="og:description" content="make_ranked_predrs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ranked predictors list. The function returns Ranked predictors (a list)." />
+<meta property="og:title" content="Transform paths list for scndry — transform_paths_ls_for_scndry" />
+<meta property="og:description" content="transform_paths_ls_for_scndry() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform paths list for scndry. Function argument paths_ls specifies the object to be updated. Argument reference_1L_int provides the object to be updated. The function returns Paths (a list)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,37 +131,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Make ranked predictors</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
-    <div class="hidden name"><code>make_ranked_predrs_ls.Rd</code></div>
+    <h1>Transform paths list for scndry</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_transform.R'><code>R/fn_transform.R</code></a></small>
+    <div class="hidden name"><code>transform_paths_ls_for_scndry.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>make_ranked_predrs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ranked predictors list. The function returns Ranked predictors (a list).</p>
+    <p>transform_paths_ls_for_scndry() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform paths list for scndry. Function argument paths_ls specifies the object to be updated. Argument reference_1L_int provides the object to be updated. The function returns Paths (a list).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_ranked_predrs_ls</span><span class='op'>(</span><span class='va'>descv_tbls_ls</span>, old_nms_chr <span class='op'>=</span> <span class='cn'>NULL</span>, new_nms_chr <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>transform_paths_ls_for_scndry</span><span class='op'>(</span><span class='va'>paths_ls</span>, reference_1L_int <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>descv_tbls_ls</th>
-      <td><p>Descriptive tables (a list)</p></td>
+      <th>paths_ls</th>
+      <td><p>Paths (a list)</p></td>
     </tr>
     <tr>
-      <th>old_nms_chr</th>
-      <td><p>Old names (a character vector), Default: NULL</p></td>
-    </tr>
-    <tr>
-      <th>new_nms_chr</th>
-      <td><p>New names (a character vector), Default: NULL</p></td>
+      <th>reference_1L_int</th>
+      <td><p>Reference (an integer vector of length one), Default: 1</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Ranked predictors (a list)</p>
+    <p>Paths (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
