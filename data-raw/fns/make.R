@@ -449,7 +449,7 @@ make_predrs_for_best_mdls <- function(outp_smry_ls,
   }
   return(predrs_for_best_mdls_chr)
 }
-make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls)
+make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls, existing_predrs_chr = NULL)
 {
     predr_vars_nms_ls <- covars_ls %>% purrr::map(~{
         covars_chr <- .x
@@ -458,6 +458,13 @@ make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls)
     }) %>% purrr::flatten() %>% unique()
     predr_vars_nms_ls <- predr_vars_nms_ls[order(sapply(predr_vars_nms_ls,
                                                         length))]
+    if(!is.null(existing_predrs_chr)){
+      predr_vars_nms_ls <- predr_vars_nms_ls[predr_vars_nms_ls %>% purrr::map_lgl(~{
+        test_chr <- .x
+        !any(existing_predrs_chr %>% purrr::map_lgl(~identical(.x,test_chr))
+        )})]
+    }
+
     return(predr_vars_nms_ls)
 }
 make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr = c("GLM",

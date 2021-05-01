@@ -825,6 +825,8 @@ write_results_to_csv <- function (synth_data_spine_ls, output_dir_1L_chr = ".")
 #' @param rprt_output_type_1L_chr Report output type (a character vector of length one), Default: 'PDF'
 #' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
+#' @param main_rprt_append_ls Main report append (a list), Default: NULL
+#' @param rcrd_rprt_append_ls Rcrd report append (a list), Default: NULL
 #' @return NULL
 #' @rdname write_rprt_with_rcrd
 #' @export 
@@ -835,22 +837,24 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, R_fl_nm_1L_c
     rprt_subtitle_1L_chr = "Methods Supplementary Report 2: Record of auto-generation of model catalogue.", 
     rprt_nm_1L_chr = "TS_TTU_Mdls_Smry", rcrd_nm_1L_chr = "Write_Rprt_Rcrd", 
     output_type_1L_chr = "PDF", rprt_output_type_1L_chr = "PDF", 
-    nbr_of_digits_1L_int = 2L, abstract_args_ls = NULL) 
+    nbr_of_digits_1L_int = 2L, abstract_args_ls = NULL, main_rprt_append_ls = NULL, 
+    rcrd_rprt_append_ls = NULL) 
 {
     list(outp_smry_ls = append(readRDS(path_to_outp_fl_1L_chr), 
         list(rprt_lup = rprt_lup)), output_type_1L_chr = output_type_1L_chr, 
-        subtitle_1L_chr = subtitle_1L_chr) %>% write_report(paths_ls = paths_ls, 
-        R_fl_nm_1L_chr = R_fl_nm_1L_chr, rprt_nm_1L_chr = rprt_nm_1L_chr, 
-        abstract_args_ls = abstract_args_ls, header_yaml_args_ls = header_yaml_args_ls, 
-        rprt_lup = rprt_lup)
+        subtitle_1L_chr = subtitle_1L_chr) %>% append(main_rprt_append_ls) %>% 
+        write_report(paths_ls = paths_ls, R_fl_nm_1L_chr = R_fl_nm_1L_chr, 
+            rprt_nm_1L_chr = rprt_nm_1L_chr, abstract_args_ls = abstract_args_ls, 
+            header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
     list(abstract_args_ls = NULL, eval_1L_lgl = F, header_yaml_args_ls = header_yaml_args_ls, 
         output_type_1L_chr = rprt_output_type_1L_chr, nbr_of_digits_1L_int = nbr_of_digits_1L_int, 
         rprt_lup = rprt_lup, rprt_nm_1L_chr = rprt_nm_1L_chr, 
         rprt_output_type_1L_chr = output_type_1L_chr, rprt_subtitle_1L_chr = subtitle_1L_chr, 
         subtitle_1L_chr = rprt_subtitle_1L_chr, use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>% 
-        write_report(paths_ls = paths_ls, R_fl_nm_1L_chr = R_fl_nm_1L_chr, 
-            rprt_nm_1L_chr = rcrd_nm_1L_chr, abstract_args_ls = NULL, 
-            header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
+        append(rcrd_rprt_append_ls) %>% write_report(paths_ls = paths_ls, 
+        R_fl_nm_1L_chr = R_fl_nm_1L_chr, rprt_nm_1L_chr = rcrd_nm_1L_chr, 
+        abstract_args_ls = NULL, header_yaml_args_ls = header_yaml_args_ls, 
+        rprt_lup = rprt_lup)
 }
 #' Write scndry analysis
 #' @description write_scndry_analysis() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scndry analysis. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour

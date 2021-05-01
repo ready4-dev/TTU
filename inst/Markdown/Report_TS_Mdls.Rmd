@@ -46,6 +46,7 @@ output:
       - '--lua-filter=Filters/author-info-blocks.lua'
       - '--lua-filter=Filters/pagebreaks.lua'
 params:
+  existing_predrs_chr: !r NULL
   outp_smry_ls: !r NULL
   output_type_1L_chr: HTML
   rltv_path_to_data_dir_1L_chr: ../Output/F_TS_Mdls
@@ -74,8 +75,10 @@ params_ls <- params
 
 ```{r echo=FALSE}
 predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = params_ls$outp_smry_ls$predr_cmprsn_tb$predr_chr, 
-                       covars_ls = list(params_ls$outp_smry_ls$prefd_covars_chr)
+                       covars_ls = list(params_ls$outp_smry_ls$prefd_covars_chr),
+                       existing_predrs_chr = params_ls$existing_predrs_chr 
                        )
+
 knit_pars_ls <- make_knit_pars_ls(rltv_path_to_data_dir_1L_chr = params_ls$rltv_path_to_data_dir_1L_chr,
                   mdl_types_chr = params_ls$outp_smry_ls$prefd_mdl_types_chr,
                   predr_vars_nms_ls = predr_vars_nms_ls,
@@ -85,10 +88,3 @@ knit_pars_ls <- make_knit_pars_ls(rltv_path_to_data_dir_1L_chr = params_ls$rltv_
                   section_type_1L_chr = params_ls$section_type_1L_chr
                   ) 
 ```
-
-
-```{r, echo=FALSE, results='asis'}
- knit_pars_ls %>%
-  purrr::walk(~knit_mdl_rprt(.x, path_to_mdl_rprt_tmpl_1L_chr = "_mdl_rpt_tmpl.Rmd"))
-```
-

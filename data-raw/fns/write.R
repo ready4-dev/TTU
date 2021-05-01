@@ -602,11 +602,14 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                                  output_type_1L_chr = "PDF",
                                  rprt_output_type_1L_chr = "PDF",
                                  nbr_of_digits_1L_int = 2L,
-                                 abstract_args_ls = NULL){
+                                 abstract_args_ls = NULL,
+                                 main_rprt_append_ls = NULL,
+                                 rcrd_rprt_append_ls = NULL){
   list(outp_smry_ls =  append(readRDS(path_to_outp_fl_1L_chr),
                               list(rprt_lup = rprt_lup)),
        output_type_1L_chr = output_type_1L_chr,
        subtitle_1L_chr = subtitle_1L_chr) %>%
+    append(main_rprt_append_ls) %>%
     write_report(paths_ls = paths_ls,
                       R_fl_nm_1L_chr = R_fl_nm_1L_chr,
                       rprt_nm_1L_chr = rprt_nm_1L_chr,
@@ -624,6 +627,7 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
        rprt_subtitle_1L_chr = subtitle_1L_chr,
        subtitle_1L_chr = rprt_subtitle_1L_chr,
        use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>%
+    append(rcrd_rprt_append_ls) %>%
     write_report(paths_ls = paths_ls,
                       R_fl_nm_1L_chr = R_fl_nm_1L_chr,
                       rprt_nm_1L_chr = rcrd_nm_1L_chr,

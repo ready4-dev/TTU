@@ -19,7 +19,9 @@ write_rprt_with_rcrd(
   output_type_1L_chr = "PDF",
   rprt_output_type_1L_chr = "PDF",
   nbr_of_digits_1L_int = 2L,
-  abstract_args_ls = NULL
+  abstract_args_ls = NULL,
+  main_rprt_append_ls = NULL,
+  rcrd_rprt_append_ls = NULL
 )
 }
 \arguments{
@@ -50,6 +52,10 @@ write_rprt_with_rcrd(
 \item{nbr_of_digits_1L_int}{Number of digits (an integer vector of length one), Default: 2}
 
 \item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
+
+\item{main_rprt_append_ls}{Main report append (a list), Default: NULL}
+
+\item{rcrd_rprt_append_ls}{Rcrd report append (a list), Default: NULL}
 }
 \description{
 write_rprt_with_rcrd() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write report with rcrd. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
