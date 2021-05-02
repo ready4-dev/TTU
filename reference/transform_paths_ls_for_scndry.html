@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9158</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9159</span>
       </span>
     </div>
 
@@ -140,7 +140,11 @@
     <p>transform_paths_ls_for_scndry() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform paths list for scndry. Function argument paths_ls specifies the object to be updated. Argument reference_1L_int provides the object to be updated. The function returns Paths (a list).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>transform_paths_ls_for_scndry</span><span class='op'>(</span><span class='va'>paths_ls</span>, reference_1L_int <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>transform_paths_ls_for_scndry</span><span class='op'>(</span>
+  <span class='va'>paths_ls</span>,
+  reference_1L_int <span class='op'>=</span> <span class='fl'>1</span>,
+  remove_prmry_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,6 +156,10 @@
     <tr>
       <th>reference_1L_int</th>
       <td><p>Reference (an integer vector of length one), Default: 1</p></td>
+    </tr>
+    <tr>
+      <th>remove_prmry_1L_lgl</th>
+      <td><p>Remove prmry (a logical vector of length one), Default: F</p></td>
     </tr>
     </table>
 
