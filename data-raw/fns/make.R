@@ -449,7 +449,7 @@ make_predrs_for_best_mdls <- function(outp_smry_ls,
   }
   return(predrs_for_best_mdls_chr)
 }
-make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls, existing_predrs_chr = NULL)
+make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls, existing_predrs_ls = NULL)
 {
     predr_vars_nms_ls <- covars_ls %>% purrr::map(~{
         covars_chr <- .x
@@ -458,10 +458,10 @@ make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls, existing_predrs_
     }) %>% purrr::flatten() %>% unique()
     predr_vars_nms_ls <- predr_vars_nms_ls[order(sapply(predr_vars_nms_ls,
                                                         length))]
-    if(!is.null(existing_predrs_chr)){
+    if(!is.null(existing_predrs_ls)){
       predr_vars_nms_ls <- predr_vars_nms_ls[predr_vars_nms_ls %>% purrr::map_lgl(~{
         test_chr <- .x
-        !any(existing_predrs_chr %>% purrr::map_lgl(~identical(.x,test_chr))
+        !any(existing_predrs_ls %>% purrr::map_lgl(~identical(.x,test_chr))
         )})]
     }
 

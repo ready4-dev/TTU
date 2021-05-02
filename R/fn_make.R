@@ -578,13 +578,13 @@ make_predr_vals <- function (predr_var_nm_1L_chr, candidate_predrs_lup = NULL)
 #' @description make_predr_vars_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictor variables names list. The function returns Predictor variables names (a list).
 #' @param main_predrs_chr Main predictors (a character vector)
 #' @param covars_ls Covariates (a list)
-#' @param existing_predrs_chr Existing predictors (a character vector), Default: NULL
+#' @param existing_predrs_ls Existing predictors (a list), Default: NULL
 #' @return Predictor variables names (a list)
 #' @rdname make_predr_vars_nms_ls
 #' @export 
 #' @importFrom purrr map flatten map_lgl
 #' @keywords internal
-make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls, existing_predrs_chr = NULL) 
+make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls, existing_predrs_ls = NULL) 
 {
     predr_vars_nms_ls <- covars_ls %>% purrr::map(~{
         covars_chr <- .x
@@ -593,11 +593,11 @@ make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls, existing_predrs_
     }) %>% purrr::flatten() %>% unique()
     predr_vars_nms_ls <- predr_vars_nms_ls[order(sapply(predr_vars_nms_ls, 
         length))]
-    if (!is.null(existing_predrs_chr)) {
+    if (!is.null(existing_predrs_ls)) {
         predr_vars_nms_ls <- predr_vars_nms_ls[predr_vars_nms_ls %>% 
             purrr::map_lgl(~{
                 test_chr <- .x
-                !any(existing_predrs_chr %>% purrr::map_lgl(~identical(.x, 
+                !any(existing_predrs_ls %>% purrr::map_lgl(~identical(.x, 
                   test_chr)))
             })]
     }

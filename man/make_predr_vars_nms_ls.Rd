@@ -4,14 +4,14 @@
 \alias{make_predr_vars_nms_ls}
 \title{Make predictor variables names}
 \usage{
-make_predr_vars_nms_ls(main_predrs_chr, covars_ls, existing_predrs_chr = NULL)
+make_predr_vars_nms_ls(main_predrs_chr, covars_ls, existing_predrs_ls = NULL)
 }
 \arguments{
 \item{main_predrs_chr}{Main predictors (a character vector)}
 
 \item{covars_ls}{Covariates (a list)}
 
-\item{existing_predrs_chr}{Existing predictors (a character vector), Default: NULL}
+\item{existing_predrs_ls}{Existing predictors (a list), Default: NULL}
 }
 \value{
 Predictor variables names (a list)
