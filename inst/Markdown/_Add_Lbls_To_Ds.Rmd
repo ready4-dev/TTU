@@ -1,0 +1,15 @@
+---
+title: "_Add_Lbls_To_Ds"
+author: "Matthew Hamilton & Caroline Gao"
+date: "31/03/2021"
+output: html_document
+---
+
+Label dataset variables using descriptions from the data dictionary.
+
+```{r}
+data_tb <- data_tb %>%
+  ready4use::add_labels_from_dictionary(dictionary_tb = ds_descvs_ls$dictionary_tb,
+                                        remove_old_lbls_1L_lgl = T) 
+```
+

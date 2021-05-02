@@ -1,0 +1,12 @@
+---
+title: "_Make_Mdl_Smry"
+author: "Matthew Hamilton & Caroline Gao"
+date: "23/03/2021"
+output: html_document
+---
+
+Make a list object to store a summary of configuration of the models to be assessed.
+
+```{r }
+mdl_smry_ls <- params_ls$mdl_smry_ls
+```

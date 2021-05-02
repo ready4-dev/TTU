@@ -1,0 +1,93 @@
+---
+output: 
+  bookdown::pdf_document2: 
+    includes:
+      in_header: preamble.tex
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua'
+    toc: no
+  bookdown::pdf_book: 
+    includes:
+      in_header: preamble.tex
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua'
+  bookdown::html_document2:
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua' 
+    toc: yes
+  bookdown::markdown_document2:
+    base_format: "officedown::rdocx_document"
+    number_sections: yes
+    toc: yes
+    tables:
+      style: Table
+      layout: autofit
+      width: 1.0
+      caption:
+        style: Table Caption
+        pre: 'Table '
+        sep: ': '
+      conditional:
+        first_row: true
+        first_column: false
+        last_row: false
+        last_column: false
+        no_hband: false
+        no_vband: true
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua'
+      - '--lua-filter=Filters/pagebreaks.lua'
+params:
+  candidate_covar_nms_chr: !r NA_character_
+  candidate_predrs_chr: !r NA_character_
+  ds_descvs_ls: !r NULL
+  iters_1L_int: !r 4000L
+  mdl_smry_ls: !r NULL
+  migrated_1L_lgl: !r TRUE
+  nbr_of_digits_1L_int: !r 2L
+  output_type_1L_chr: "PDF"
+  path_from_top_level_1L_chr: !r NULL
+  path_to_data_from_top_level_chr: !r NULL
+  predictors_lup: !r NULL
+  prefd_covars_chr: !r NULL
+  prefd_mdl_types_chr: !r c("GLM_GSN_LOG","OLS_CLL")
+  rprt_type_1L_chr: "Supplement"
+  seed_1L_int: 12345
+  subtitle_1L_chr: "Secondary analysis algorithm for Transfer to Utility study"
+  transform_paths_ls: !r NULL
+  use_fake_data_1L_lgl: TRUE
+subtitle: "`r params$subtitle_1L_chr`"
+date: "`r format.Date(Sys.Date(),'%B %d, %Y')`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Set up workspace
+```{r, child=c('_Set_Up_WS.Rmd')}
+```
+
+# Get data
+```{r, child=c('_Get_Outp_Smry.Rmd')}
+```
+
+# Analyse data
+```{r, child=c('_Specify_Scdry_Params.Rmd')}
+```
+
+```{r, child=c('_Write_Suplry_Analysis.Rmd')}
+```
+
+# Save record of analysis
+```{r, child=c('_Write_Analysis_Mthd_Smry.Rmd')}
+```
+

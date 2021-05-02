@@ -1,0 +1,23 @@
+---
+title: "_Specify_Scdry_Params"
+author: "Matthew Hamilton & Caroline Gao"
+date: "30/04/2021"
+output: html_document
+---
+
+## Modify parameters from primary analysis
+```{r}
+ds_smry_ls <- params_ls$ds_descvs_ls %>%
+  TTU::make_analysis_ds_smry_ls(candidate_covar_nms_chr = params_ls$candidate_covar_nms_chr,
+                                predictors_lup = params_ls$predictors_lup)
+ds_smry_ls$candidate_predrs_chr <- params_ls$candidate_predrs_chr
+```
+
+```{r}
+data_tb <- outp_smry_ls$scored_data_tb
+```
+
+```{r}
+existing_mdls_chr <- outp_smry_ls[["mdl_nms_ls"]] %>% purrr::flatten_chr()
+```
+

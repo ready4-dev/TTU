@@ -101,11 +101,14 @@ transform_mdl_vars_with_clss <- function(ds_tb,
   return(tfd_ds_tb)
 }
 transform_paths_ls_for_scndry <- function(paths_ls,
-                                          reference_1L_int = 1){
+                                          reference_1L_int = 1,
+                                          remove_prmry_1L_lgl = F){
   paths_ls$prmry_analysis_dir_nm_1L_chr <- paths_ls$write_to_dir_nm_1L_chr
   paths_ls$write_to_dir_nm_1L_chr <- paste0(paths_ls$write_to_dir_nm_1L_chr,
                                             "/secondary_",
                                             reference_1L_int)
+  if(remove_prmry_1L_lgl)
+    paths_ls <- paths_ls[names(paths_ls) != "prmry_analysis_dir_nm_1L_chr"]
   return(paths_ls)
 }
 transform_predr_nm_part_of_phrases <- function(phrases_chr,
@@ -139,7 +142,9 @@ transform_rprt_lup <- function(rprt_lup,
     rprt_lup <- rprt_lup  %>%
       tibble::add_case(rprt_nms_chr = "Suplry_Analysis_Rprt",
                        title_chr = "Report outlining the algorithm to run the supplemenatary analysis.",
-                       paths_to_rmd_dir_1L_chr = "../aqol6d_ttu_analysis/Markdown",
+                       paths_to_rmd_dir_1L_chr = NA_character_,
+                       pkg_dirs_chr = "Markdown",
+                       packages_chr = "TTU",
                        nms_of_rmd_chr = "Supplement.Rmd") %>%
       dplyr::filter(rprt_nms_chr != "Main_Analysis_Rprt")
   }
@@ -147,7 +152,9 @@ transform_rprt_lup <- function(rprt_lup,
     rprt_lup <- rprt_lup  %>%
       tibble::add_case(rprt_nms_chr = "Share_Outp_Rprt",
                        title_chr = "Supplementary report outlining the algorithm to create and disseminate shareable study output.",
-                       paths_to_rmd_dir_1L_chr = "../aqol6d_ttu_analysis/Markdown",
+                       paths_to_rmd_dir_1L_chr = NA_character_,
+                       pkg_dirs_chr = "Markdown",
+                       packages_chr = "TTU",
                        nms_of_rmd_chr = "Share.Rmd")
   }
   return(rprt_lup)

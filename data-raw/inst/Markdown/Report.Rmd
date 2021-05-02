@@ -1,0 +1,78 @@
+---
+output: 
+  bookdown::pdf_document2: 
+    includes:
+      in_header: preamble.tex
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua'
+    toc: no
+  bookdown::pdf_book: 
+    includes:
+      in_header: preamble.tex
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua'
+  bookdown::html_document2:
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua' 
+    toc: yes
+  bookdown::markdown_document2:
+    base_format: "officedown::rdocx_document"
+    number_sections: yes
+    toc: yes
+    tables:
+      style: Table
+      layout: autofit
+      width: 1.0
+      caption:
+        style: Table Caption
+        pre: 'Table '
+        sep: ': '
+      conditional:
+        first_row: true
+        first_column: false
+        last_row: false
+        last_column: false
+        no_hband: false
+        no_vband: true
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua'
+      - '--lua-filter=Filters/pagebreaks.lua'
+params:
+  abstract_args_ls: !r NULL
+  append_params_ls: !r NULL
+  eval_1L_lgl: !r FALSE
+  header_yaml_args_ls: !r NULL
+  migrated_1L_lgl: !r TRUE
+  output_type_1L_chr: "PDF"
+  nbr_of_digits_1L_int: !r 2L
+  path_from_top_level_1L_chr: !r NULL
+  path_to_data_from_top_level_chr: !r NULL
+  rprt_lup: !r NULL
+  rprt_nm_1L_chr: !r NA_character_
+  rprt_output_type_1L_chr: "PDF"
+  rprt_subtitle_1L_chr: !r NA_character_
+  rprt_type_1L_chr: "Report"
+  subtitle_1L_chr: !r NA_character_
+  use_fake_data_1L_lgl: TRUE
+date: "`r format.Date(Sys.Date(),'%B %d, %Y')`"
+subtitle: "`r params$subtitle_1L_chr`"
+---
+
+# Set up workspace
+```{r, child=c('_Set_Up_WS.Rmd')}
+```
+
+```{r, child=c('_Get_Outp_Smry.Rmd')}
+```
+
+# Create report
+```{r, child=c('_Write_Report.Rmd')}
+```

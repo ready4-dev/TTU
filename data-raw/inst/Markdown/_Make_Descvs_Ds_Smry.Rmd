@@ -1,0 +1,24 @@
+---
+title: "_Make_Descvs_Ds_Smry"
+author: "Matthew Hamilton & Caroline Gao"
+date: "21/04/2021"
+output: html_document
+---
+
+Make a list object with meta-data about the input dataset.
+
+```{r }
+ds_descvs_ls <- params_ls$ds_descvs_ls
+```
+
+Update that metadata with details about the number of observations and study participants.
+
+```{r}
+ds_descvs_ls$nbr_obs_in_raw_ds_1L_dbl <- nrow(data_tb)
+ds_descvs_ls$nbr_participants_1L_int <- length(data_tb %>% 
+                                                 dplyr::pull(ds_descvs_ls$id_var_nm_1L_chr) %>%
+                                                 unique())
+```
+
+
+

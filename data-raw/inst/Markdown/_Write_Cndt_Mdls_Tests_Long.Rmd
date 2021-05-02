@@ -1,0 +1,203 @@
+---
+title: "_Test_Cndt_Mdls_Predrs_And_Covars"
+author: "Matthew Hamilton & Caroline Gao"
+date: "23/03/2021"
+output: html_document
+---
+
+Our first main analytic task is to test which models, predictors and covariates perform best. This tasks can be broken down into the following steps.
+
+#### Create cross-sectional dataset
+The initial set of tests on candidate models are cross-sectional not longitudinal so we just need data from one time-point. We also only need data on the candidate predictors and total utility score for these tests, so can slim down our dataset to these parameters.
+
+```{r}
+bl_tb <- TTU::transform_ds_for_tstng(data_tb, 
+                                depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,
+                                candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
+                                depnt_var_max_val_1L_dbl = 0.999,
+                                round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr, 
+                                round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
+ 
+```
+
+#### Identify most highly correlated candidate predictor
+By exploring correlations in the slimmed down dataset, we can reorder our vector of candidate predictors to reflect the descending order of correlation with the dependent variable. 
+
+```{r}
+ds_smry_ls$candidate_predrs_chr <- TTU::reorder_cndt_predrs_chr(ds_smry_ls$candidate_predrs_chr,
+        data_tb = bl_tb, depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr)
+```
+
+Based on this reordering, we can specify the the candidate predictor with the highest correlation with our utility variable, adding its description to `mdl_smry_ls`.
+
+```{r}
+mdl_smry_ls$predr_var_nm_1L_chr <- ds_smry_ls$candidate_predrs_chr[1]
+mdl_smry_ls$predr_var_desc_1L_chr <- ds_smry_ls$predictors_lup %>% ready4fun::get_from_lup_obj(match_value_xx = mdl_smry_ls$predr_var_nm_1L_chr, match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = "long_name_chr",
+        evaluate_lgl = F)
+```
+```{r}
+mdl_smry_ls$predr_var_desc_1L_chr
+```
+
+#### Test all candidate models using preferred single predictor
+Using the metadata from the predictors lookup table, we now create a vector of the range of potential integer values of the most highly correlated predictor.
+
+```{r}
+mdl_smry_ls$predr_vals_dbl <- TTU::make_predr_vals(mdl_smry_ls$predr_var_nm_1L_chr, candidate_predrs_lup = ds_smry_ls$predictors_lup)
+```
+
+```{r}
+mdl_smry_ls$predr_vals_dbl
+```
+
+We now compare all candidate model types, each using only the highest correlated candidate predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`). 
+
+```{r warning = FALSE, message=FALSE}
+mdl_smry_ls$folds_1L_int <- 10L
+mdl_smry_ls$smry_of_sngl_predr_mdls_tb <- TTU::write_sngl_predr_multi_mdls_outps(data_tb = bl_tb,
+        folds_1L_int = mdl_smry_ls$folds_1L_int,
+        mdl_types_chr = mdl_smry_ls$mdl_types_chr,
+        depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,
+        predr_var_nm_1L_chr = mdl_smry_ls$predr_var_nm_1L_chr,
+        predr_var_desc_1L_chr = mdl_smry_ls$predr_var_desc_1L_chr, 
+        predr_vals_dbl = mdl_smry_ls$predr_vals_dbl,
+        path_to_write_to_1L_chr = output_data_dir_1L_chr, 
+        new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsns",
+        mdl_types_lup = mdl_smry_ls$mdl_types_lup) 
+
+```
+
+The performance of each of the candidate models is summarised in the following table.
+
+```{r}
+mdl_smry_ls$smry_of_sngl_predr_mdls_tb %>%
+    ready4show::print_table(output_type_1L_chr = "HTML",
+                            caption_1L_chr = "Model performance for highest correlated predictor using baseline data")
+```
+
+We can now identify the highest performing model in each category of candidate model based on the testing R^2^ statistic (RsquaredP in the previous table).
+
+```{r message=FALSE}
+mdl_smry_ls$prefd_mdl_types_chr <- TTU::make_prefd_mdls_vec(mdl_smry_ls$smry_of_sngl_predr_mdls_tb,
+                                           choose_from_pfx_chr = mdl_smry_ls$choose_from_pfx_chr)
+```
+```{r}
+mdl_smry_ls$prefd_mdl_types_chr
+```
+We can override these automated selections and instead incorporate other considerations (possibly based on judgments informed by visual inspection of the density plots). We do this in the following command, specifying new preferred model types, in descending order of preference.
+
+```{r}
+mdl_smry_ls$prefd_mdl_types_chr <- c("GLM_GSN_LOG","OLS_CLL")
+```
+
+#### Compare all candidate predictors using most preferred model
+We can now compare all of our candidate single predictors using the most preferred model type.
+
+```{r message=FALSE, results='hide'}
+mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int = 300L
+mdl_smry_ls$predr_cmprsns_tb <- TTU::write_predr_cmprsn_outps(data_tb = bl_tb,
+                                             path_to_write_to_1L_chr = output_data_dir_1L_chr,
+                                             new_dir_nm_1L_chr = "B_Candidate_Predrs_Cmprsns",
+                                             depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, 
+                                             candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
+                                             max_nbr_of_boruta_mdl_runs_int = mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int)
+```
+
+#### Compare single predictor model performance across all candidate predictors
+Now, we compare the performance of single predictor models of our preferred model type (in our case, a `r mdl_smry_ls$mdl_types_lup %>% ready4fun::get_from_lup_obj(target_var_nm_1L_chr = "long_name_chr",match_value_xx = mdl_smry_ls$prefd_mdl_types_chr[1], match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F)`) for each candidate predictor.
+
+```{r message=FALSE, warning=F}
+    mdl_smry_ls$smry_of_mdl_sngl_predrs_tb <- TTU::write_mdl_type_multi_outps(data_tb = bl_tb,
+        folds_1L_int = mdl_smry_ls$folds_1L_int, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr,
+        mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1], depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,
+        path_to_write_to_1L_chr = output_data_dir_1L_chr, new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsns",
+        fl_nm_pfx_1L_chr = "C_PREDR", mdl_types_lup = mdl_smry_ls$mdl_types_lup) 
+```
+
+#### Compare candidate covariates
+We rerun each of the models from the previous step, but this time add all our candidate covariates to each model. 
+
+```{r}
+bl_tb <- data_tb %>% TTU::transform_ds_for_tstng(candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
+        covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr, remove_all_msng_1L_lgl = T,
+        round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
+mdl_smry_ls$mdls_with_covars_smry_tb <- TTU::write_mdl_type_covars_mdls(bl_tb,
+        depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, predrs_var_nms_chr = ds_smry_ls$candidate_predrs_chr,
+        covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr, mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1],
+        path_to_write_to_1L_chr = output_data_dir_1L_chr, new_dir_nm_1L_chr = "D_Predr_Covars_Cmprsn",
+        fl_nm_pfx_1L_chr = "D_CT",
+        mdl_types_lup = mdl_smry_ls$mdl_types_lup)
+```
+
+We can now identify which covariates are significant predictors in any of the models.
+
+```{r}
+mdl_smry_ls$signt_covars_chr <- TTU::get_signft_covars(mdls_with_covars_smry_tb = mdl_smry_ls$mdls_with_covars_smry_tb,
+                                      covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr) 
+# NOTE: THIS FUNCTION NEEDS UPDATING TO WORK FOR CATEGORICAL VARS
+```
+We can override the covariates to select, potentially because we want to select only covariates that are significant for all or most of the models. However, in the below example we have opted not to do so and continue to use the significant predictor (`r mdl_smry_ls$signt_covars_chr`) selected by the algorithm in the previous step.
+
+```{r}
+mdl_smry_ls$prefd_covars_chr <- NA_character_
+    if (is.na(mdl_smry_ls$prefd_covars_chr))
+        mdl_smry_ls$prefd_covars_chr <- mdl_smry_ls$signt_covars_chr
+```
+
+#### Test preferred model with preferred covariates for each candidate predictor
+We now conclude our model testing by rerunning the previous step, except confining our covariates to those we prefer.
+
+```{r warning = F, message=F}
+    empty_tb <- TTU::write_mdl_type_multi_outps(data_tb = bl_tb, folds_1L_int = NULL,
+        start_1L_chr = NA_character_, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr,
+        covar_var_nms_chr = mdl_smry_ls$prefd_covars_chr, mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1],
+        depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, path_to_write_to_1L_chr = output_data_dir_1L_chr,
+        new_dir_nm_1L_chr = "E_Predrs_W_Covars_Sngl_Mdl_Cmprsns", mdl_types_lup = mdl_smry_ls$mdl_types_lup, fl_nm_pfx_1L_chr = "E_CK_CV")
+
+```
+
+#### Summarise preferred models
+First we summarise the combinations of model types, candidate predictors and covariates that we will be using.
+
+```{r}
+    mdl_smry_ls$predr_vars_nms_ls <- TTU::make_predr_vars_nms_ls(main_predrs_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr,
+        covars_ls = list(mdl_smry_ls$prefd_covars_chr))
+```
+
+```{r}
+mdl_smry_ls$mdl_nms_ls <- TTU::make_mdl_nms_ls(mdl_smry_ls$predr_vars_nms_ls, mdl_types_chr = mdl_smry_ls$prefd_mdl_types_chr)
+```
+```{r}
+# mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr()
+```
+
+#### Save summary
+We now create a composite object `outp_smry_ls` that contains the key input and output data used in testing models, predictors and covariates that we will need for the time series modelling.
+
+```{r}
+outp_smry_ls <- list(scored_data_tb = data_tb, 
+                     smry_of_sngl_predr_mdls_tb = mdl_smry_ls$smry_of_sngl_predr_mdls_tb,
+                     prefd_mdl_types_chr = mdl_smry_ls$prefd_mdl_types_chr, 
+                     predr_cmprsns_tb = mdl_smry_ls$predr_cmprsns_tb,
+                     smry_of_mdl_sngl_predrs_tb = mdl_smry_ls$smry_of_mdl_sngl_predrs_tb,
+                     mdls_with_covars_smry_tb = mdl_smry_ls$mdls_with_covars_smry_tb,
+                     signt_covars_chr = mdl_smry_ls$signt_covars_chr, 
+                     prefd_covars_chr = mdl_smry_ls$prefd_covars_chr,
+                     depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, 
+                     predr_vars_nms_ls = mdl_smry_ls$predr_vars_nms_ls,
+                     mdl_nms_ls = mdl_smry_ls$mdl_nms_ls, 
+                     id_var_nm_1L_chr = ds_smry_ls$id_var_nm_1L_chr,
+                     round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr,
+                     round_bl_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr,
+                     path_to_write_to_1L_chr = output_data_dir_1L_chr, 
+                     seed_1L_int = seed_1L_int,
+                     folds_1L_int = mdl_smry_ls$folds_1L_int, 
+                     max_nbr_of_boruta_mdl_runs_int = mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int,
+                     mdl_types_lup = mdl_smry_ls$mdl_types_lup, 
+                     file_paths_chr = list.files(output_data_dir_1L_chr, recursive = T),
+                     session_data_ls = session_data_ls)
+# NEEDS TO BE A TTU CLASS INSTANCE
+```
+```{r eval=F}
+saveRDS(outp_smry_ls,paste0(outp_smry_ls$path_to_write_to_1L_chr,"/I_ALL_OUTPUT_.RDS"))
+```

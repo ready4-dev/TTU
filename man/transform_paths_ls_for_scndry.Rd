@@ -4,12 +4,18 @@
 \alias{transform_paths_ls_for_scndry}
 \title{Transform paths list for scndry}
 \usage{
-transform_paths_ls_for_scndry(paths_ls, reference_1L_int = 1)
+transform_paths_ls_for_scndry(
+  paths_ls,
+  reference_1L_int = 1,
+  remove_prmry_1L_lgl = F
+)
 }
 \arguments{
 \item{paths_ls}{Paths (a list)}
 
 \item{reference_1L_int}{Reference (an integer vector of length one), Default: 1}
+
+\item{remove_prmry_1L_lgl}{Remove prmry (a logical vector of length one), Default: F}
 }
 \value{
 Paths (a list)
