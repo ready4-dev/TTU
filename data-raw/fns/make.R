@@ -96,6 +96,7 @@ make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, popl_1L_chr, fam_1L
     return(brms_mdl_smry_tb)
 }
 make_cmpst_sctr_and_dnsty_plt <- function(outp_smry_ls,
+                                          output_data_dir_1L_chr,
                                           predr_var_nms_chr,
                                           labels_chr = c("A","B","C","D"),
                                           label_x_1L_dbl = 0.1,
@@ -588,6 +589,7 @@ make_results_ls <- function(outp_smry_ls,
                                  mdls_tb = mdls_smry_tbls_ls$covar_mdls_tb)
   descv_tbls_ls <- paste0(output_data_dir_1L_chr,"/",outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% purrr::map_lgl(~stringr::str_detect(.x,"descv_tbls_ls.RDS"))]) %>% readRDS()
   composite_plt <- make_cmpst_sctr_and_dnsty_plt(outp_smry_ls,
+                                                 output_data_dir_1L_chr = output_data_dir_1L_chr,
                                                  predr_var_nms_chr=outp_smry_ls$predr_vars_nms_ls[[1]])
   cowplot::save_plot("../Data/images/dens_and_sctr.png", composite_plt, base_height = 20)
   ttu_cs_ls = make_ttu_cs_ls(outp_smry_ls,

@@ -134,6 +134,7 @@ make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, popl_1L_chr, fam_1L
 #' Make cmpst scatter and dnsty
 #' @description make_cmpst_sctr_and_dnsty_plt() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make cmpst scatter and dnsty plot. The function is called for its side effects and does not return a value.
 #' @param outp_smry_ls Output summary (a list)
+#' @param output_data_dir_1L_chr Output data directory (a character vector of length one)
 #' @param predr_var_nms_chr Predictor variable names (a character vector)
 #' @param labels_chr Labels (a character vector), Default: c("A", "B", "C", "D")
 #' @param label_x_1L_dbl Label x (a double vector of length one), Default: 0.1
@@ -146,9 +147,9 @@ make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, popl_1L_chr, fam_1L
 #' @importFrom stringr str_detect
 #' @importFrom cowplot ggdraw draw_image plot_grid
 #' @keywords internal
-make_cmpst_sctr_and_dnsty_plt <- function (outp_smry_ls, predr_var_nms_chr, labels_chr = c("A", 
-    "B", "C", "D"), label_x_1L_dbl = 0.1, label_y_1L_dbl = 0.9, 
-    label_size_1L_dbl = 22) 
+make_cmpst_sctr_and_dnsty_plt <- function (outp_smry_ls, output_data_dir_1L_chr, predr_var_nms_chr, 
+    labels_chr = c("A", "B", "C", "D"), label_x_1L_dbl = 0.1, 
+    label_y_1L_dbl = 0.9, label_size_1L_dbl = 22) 
 {
     plot_ls <- paste0(output_data_dir_1L_chr, "/", outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% 
         purrr::map_lgl(~stringr::str_detect(.x, paste0(predr_var_nms_chr, 
@@ -807,7 +808,7 @@ make_results_ls <- function (outp_smry_ls, output_data_dir_1L_chr, cs_ts_ratios_
         purrr::map_lgl(~stringr::str_detect(.x, "descv_tbls_ls.RDS"))]) %>% 
         readRDS()
     composite_plt <- make_cmpst_sctr_and_dnsty_plt(outp_smry_ls, 
-        predr_var_nms_chr = outp_smry_ls$predr_vars_nms_ls[[1]])
+        output_data_dir_1L_chr = output_data_dir_1L_chr, predr_var_nms_chr = outp_smry_ls$predr_vars_nms_ls[[1]])
     cowplot::save_plot("../Data/images/dens_and_sctr.png", composite_plt, 
         base_height = 20)
     ttu_cs_ls = make_ttu_cs_ls(outp_smry_ls, sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb, 

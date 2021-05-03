@@ -6,6 +6,7 @@
 \usage{
 make_cmpst_sctr_and_dnsty_plt(
   outp_smry_ls,
+  output_data_dir_1L_chr,
   predr_var_nms_chr,
   labels_chr = c("A", "B", "C", "D"),
   label_x_1L_dbl = 0.1,
@@ -15,6 +16,8 @@ make_cmpst_sctr_and_dnsty_plt(
 }
 \arguments{
 \item{outp_smry_ls}{Output summary (a list)}
+
+\item{output_data_dir_1L_chr}{Output data directory (a character vector of length one)}
 
 \item{predr_var_nms_chr}{Predictor variable names (a character vector)}
 
