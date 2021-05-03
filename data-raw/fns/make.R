@@ -104,6 +104,71 @@ make_cmpst_sctr_and_dnsty_plt <- function(outp_smry_ls,
   plot_ls <- paste0(output_data_dir_1L_chr,"/",outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% purrr::map_lgl(~stringr::str_detect(.x,paste0(predr_var_nms_chr,"_1")) & (stringr::str_detect(.x,"_dnst.png") | stringr::str_detect(.x,"_sctr_plt.png")))])  %>% purrr::map(~cowplot::ggdraw() + cowplot::draw_image(.x))
   composite_plt <- cowplot::plot_grid(plot_ls[[1]],plot_ls[[2]],plot_ls[[3]],plot_ls[[4]],nrow = 2, labels = labels_chr, label_x = label_x_1L_dbl,label_y = label_y_1L_dbl, label_size = label_size_1L_dbl)
 }
+make_cohort_ls <- function(descv_tbls_ls,
+                           ctgl_vars_regrouping_ls = NULL,
+                           nbr_of_digits_1L_int = 2L){
+  numeric_vars_chr <- descv_tbls_ls$cohort_desc_tb %>% dplyr::filter(label ==
+                                                                       "Median (Q1, Q3)") %>% dplyr::pull(variable)
+  ctgl_vars_chr <- unique(descv_tbls_ls$cohort_desc_tb$variable[!descv_tbls_ls$cohort_desc_tb$variable %in% numeric_vars_chr])
+  nbr_by_round_dbl <- c("Baseline_val_1_dbl","Follow-up_val_1_dbl") %>% purrr::map_dbl(~descv_tbls_ls$cohort_desc_tb %>%
+                                                                                         dplyr::filter(variable == ctgl_vars_chr[1]) %>%
+                                                                                         dplyr::pull(.x) %>%
+                                                                                         as.numeric() %>% purrr::map_dbl(~.x[[1]]) %>% sum())
+  numeric_vars_smry_ls <- numeric_vars_chr %>%
+    purrr::map(~{
+      var_smry_tb <- descv_tbls_ls$cohort_desc_tb %>%
+        dplyr::filter(variable == .x)
+      list(bl_min_1L_dbl = var_smry_tb %>%
+             dplyr::filter(label == "Min - Max") %>%
+             dplyr::pull(Baseline_val_1_dbl) %>%
+             as.numeric(),
+           bl_max_1L_dbl = var_smry_tb %>%
+             dplyr::filter(label == "Min - Max") %>%
+             dplyr::pull(Baseline_val_2_ls) %>%
+             as.numeric(),
+           bl_mean_1L_dbl = round(var_smry_tb %>% dplyr::filter(label == "Mean (SD)") %>%
+                                    dplyr::pull(Baseline_val_1_dbl) %>%
+                                    as.numeric(),
+                                  nbr_of_digits_1L_int),
+           bl_sd_1L_dbl = round(var_smry_tb %>% dplyr::filter(label == "Mean (SD)") %>%
+                                  dplyr::pull(Baseline_val_2_ls) %>%
+                                  stringr::str_remove("\\(") %>%
+                                  stringr::str_remove("\\)") %>%
+                                  as.numeric(),
+                                nbr_of_digits_1L_int))
+
+    }) %>% stats::setNames(numeric_vars_chr)
+  cohort_ls <- list(n_all_1l_dbl = descv_tbls_ls$ds_descvs_ls$nbr_participants_1L_int,
+                    n_inc_1L_dbl = nbr_by_round_dbl[1],
+                    n_fup_1L_dbl = nbr_by_round_dbl[2],
+                    numeric_vars_smry_ls = numeric_vars_smry_ls)
+  if(!is.null(ctgl_vars_regrouping_ls)){
+    append_ls <- ctgl_vars_regrouping_ls %>%
+      purrr::map2(names(ctgl_vars_regrouping_ls),
+                  ~{
+
+                    var_nm_1L_chr <- .y
+                    .x %>%
+                      purrr::map(~{
+                        list(name_1L_chr = .x$name_1L_chr,
+                             n_in_group_1L_dbl =  descv_tbls_ls$cohort_desc_tb %>%
+                               dplyr::filter(variable == var_nm_1L_chr) %>%
+                               dplyr::filter(label %in% .x$ctgs_chr) %>%
+                               dplyr::pull(Baseline_val_1_dbl)  %>%
+                               as.numeric() %>% purrr::map_dbl(~.x) %>% sum(),
+                             n_msng_1L_dbl = descv_tbls_ls$cohort_desc_tb %>%
+                               dplyr::filter(variable == var_nm_1L_chr) %>%
+                               dplyr::filter(label == "Missing") %>%
+                               dplyr::pull(Baseline_val_1_dbl)  %>%
+                               as.numeric())
+                      }
+                      )
+
+                  })
+    cohort_ls <- append(cohort_ls,append_ls)
+  }
+  return(cohort_ls)
+}
 make_fake_ts_data <- function (outp_smry_ls)
 {
     data_tb <- outp_smry_ls$scored_data_tb %>% transform_tb_to_mdl_inp(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
@@ -373,6 +438,15 @@ make_mdl_type_smry_tbl <- function(mdls_tb,
                                           add_mdl_nm_sfx_1L_lgl = add_mdl_nm_sfx_1L_lgl))
   return(mdl_type_smry_tbl_tb)
 }
+make_paths_to_ss_plts_ls <- function(output_data_dir_1L_chr,
+                                     additional_paths_chr = "../Data/images/dens_and_sctr.png"){
+  paths_to_ss_plts_ls = list(combined_utl = paste0(output_data_dir_1L_chr,"/_Descriptives/combined_utl.png"),
+                             composite = additional_paths_chr[1],
+                             items = paste0(output_data_dir_1L_chr,"/_Descriptives/qstn_rspns.png"),
+                             density = paste0(output_data_dir_1L_chr,"/A_TFMN_CMPRSN_DNSTY.png"), #Update
+                             importance = paste0(output_data_dir_1L_chr,"/",outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% purrr::map_lgl(~stringr::str_detect(.x,"B_PRED_CMPRSN_RF_VAR_IMP"))]))
+  return(paths_to_ss_plts_ls)
+}
 make_predn_ds_with_one_predr <- function (model_mdl, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF",
     predr_var_nm_1L_chr, predr_vals_dbl, predn_type_1L_chr = NULL)
 {
@@ -496,6 +570,60 @@ make_ranked_predrs_ls <- function(descv_tbls_ls,
                            ranked_predrs_chr = ranked_predrs_chr)
   return(ranked_predrs_ls)
 
+}
+make_results_ls <- function(outp_smry_ls,
+                            output_data_dir_1L_chr,
+                            cs_ts_ratios_tb,
+                            ctgl_vars_regrouping_ls,
+                            nbr_of_digits_1L_int,
+                            sig_covars_some_predrs_mdls_tb,
+                            sig_thresh_covars_1L_chr,
+                            study_descs_ls,
+                            ttu_cs_ls,
+                            ttu_lngl_ls,
+                            var_nm_change_lup){
+  mdls_smry_tbls_ls <- make_mdls_smry_tbls_ls(outp_smry_ls,
+                                              nbr_of_digits_1L_int = nbr_of_digits_1L_int)
+  covars_mdls_ls <- make_mdls_ls(outp_smry_ls,
+                                 mdls_tb = mdls_smry_tbls_ls$covar_mdls_tb)
+  descv_tbls_ls <- paste0(output_data_dir_1L_chr,"/",outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% purrr::map_lgl(~stringr::str_detect(.x,"descv_tbls_ls.RDS"))]) %>% readRDS()
+  composite_plt <- make_cmpst_sctr_and_dnsty_plt(outp_smry_ls,
+                                                 predr_var_nms_chr=outp_smry_ls$predr_vars_nms_ls[[1]])
+  cowplot::save_plot("../Data/images/dens_and_sctr.png", composite_plt, base_height = 20)
+  ttu_cs_ls = make_ttu_cs_ls(outp_smry_ls,
+                             sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb,
+                             sig_thresh_covars_1L_chr = sig_thresh_covars_1L_chr)
+  ttu_lngl_ls = list(best_mdls_tb = tibble::tibble(model_type = c("LLM","GLMM"),
+                                                   link_and_tfmn_chr = c("c-loglog transformed)","Gaussian distribution with log link"),
+                                                   name_chr = make_predrs_for_best_mdls(outp_smry_ls,
+                                                                                        old_nms_chr = var_nm_change_lup$old_nms_chr,
+                                                                                        new_nms_chr = var_nm_change_lup$new_nms_chr),
+                                                   r2_dbl = mdls_smry_tbls_ls$prefd_predr_mdl_smry_tb %>%
+                                                     dplyr::filter(Parameter == "R2") %>%
+                                                     dplyr::pull(Estimate)),
+                     cs_ts_ratios_tb = cs_ts_ratios_tb,
+                     incld_covars_chr = outp_smry_ls$prefd_covars_chr)
+  results_ls <- list(study_descs_ls = study_descs_ls,
+                     paths_to_figs_ls = make_paths_to_ss_plts_ls(output_data_dir_1L_chr),
+                     tables_ls = make_ss_tbls_ls(outp_smry_ls,
+                                                 mdls_smry_tbls_ls = mdls_smry_tbls_ls,
+                                                 covars_mdls_ls = covars_mdls_ls,
+                                                 descv_tbls_ls = descv_tbls_ls,
+                                                 nbr_of_digits_1L_int = nbr_of_digits_1L_int),
+                     cohort_ls = make_cohort_ls(descv_tbls_ls,
+                                                ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls,
+                                                nbr_of_digits_1L_int = nbr_of_digits_1L_int),
+                     hlth_utl_and_predrs_ls = make_hlth_utl_and_predrs_ls(outp_smry_ls,
+                                                                          descv_tbls_ls = descv_tbls_ls,
+                                                                          nbr_of_digits_1L_int = nbr_of_digits_1L_int,
+                                                                          old_nms_chr = var_nm_change_lup$old_nms_chr,
+                                                                          new_nms_chr = var_nm_change_lup$new_nms_chr),
+                     ttu_cs_ls = ttu_cs_ls,
+                     ttu_lngl_ls = ttu_lngl_ls,
+                     r_version_1L_chr = paste0(outp_smry_ls$session_data_ls$R.version$major,
+                                               ".",
+                                               outp_smry_ls$session_data_ls$R.version$minor))
+  return(results_ls)
 }
 make_shareable_mdl <- function (data_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "utl_total_w",
     id_var_nm_1L_chr = "fkClientID", tfmn_1L_chr = "CLL", mdl_type_1L_chr = "OLS_CLL",
@@ -678,6 +806,65 @@ make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L
     }
     return(smry_of_ts_mdl_ls)
 }
+make_ss_tbls_ls <- function(outp_smry_ls,
+                            mdls_smry_tbls_ls,
+                            covars_mdls_ls,
+                            descv_tbls_ls,
+                            nbr_of_digits_1L_int = 2L){
+  ss_tbls_ls <- list(mdl_type_1_covar_mdls_tb = make_mdl_type_smry_tbl(mdls_tb = mdls_smry_tbls_ls$covar_mdls_tb,
+                                                                       mdl_nms_chr = covars_mdls_ls[[1]],
+                                                                       mdl_type_1L_chr = outp_smry_ls$prefd_mdl_types_chr[1],
+                                                                       add_mdl_nm_sfx_1L_lgl = F),
+                     mdl_type_2_covar_mdls_tb = make_mdl_type_smry_tbl(mdls_tb = mdls_smry_tbls_ls$covar_mdls_tb,
+                                                                       mdl_nms_chr = covars_mdls_ls[[2]],
+                                                                       mdl_type_1L_chr = outp_smry_ls$prefd_mdl_types_chr[2],
+                                                                       add_mdl_nm_sfx_1L_lgl = F),
+                     ind_preds_coefs_tbl = make_two_mdl_types_smry_tbl(outp_smry_ls,
+                                                                       mdls_tb = mdls_smry_tbls_ls$indpt_predrs_mdls_tb),
+                     participant_descs = descv_tbls_ls$cohort_desc_tb,
+                     pred_dist_and_cors = descv_tbls_ls$predr_pars_and_cors_tb,
+                     tenf_glm =  outp_smry_ls[["smry_of_mdl_sngl_predrs_tb"]],
+                     tenf_phq9 = make_tfd_sngl_predr_mdls_tb(outp_smry_ls,
+                                                             nbr_of_digits_1L_int = nbr_of_digits_1L_int))
+  return(ss_tbls_ls)
+}
+make_tfd_sngl_predr_mdls_tb <- function(outp_smry_ls,
+                                        nbr_of_digits_1L_int = 2L,
+                                        mdl_pfx_ls = list(OLS = "Ordinary Least Squares ",
+                                                          GLM = c("Generalised Linear Mixed Model with ",
+                                                                  "Beta Regression Model with Binomial "))){
+  tfd_sngl_predr_mdls_tb <- mdl_pfx_ls %>%
+    purrr::map2(names(mdl_pfx_ls),
+                ~{
+                  pfx_chr <- .x
+                  mdls_tb <- outp_smry_ls$smry_of_sngl_predr_mdls_tb %>%
+                    dplyr::filter(Model %>%
+                                    purrr::map_lgl(~{
+                                      term_1L_chr <- .x
+                                      pfx_chr %>%
+                                        purrr::map_lgl(~startsWith(term_1L_chr,.x)) %>%
+                                        any()
+                                    }))
+                  pfx_chr %>%
+                    purrr::map_dfr(~ {
+                      pfx_1L_chr <- .x
+                      mdls_tb %>%
+                        dplyr::filter(startsWith(Model, pfx_1L_chr)) %>%
+                        dplyr::mutate(Model = dplyr::case_when(Model %>% startsWith(mdl_pfx_ls[[2]][2]) ~ stringr::str_replace_all(Model,pfx_1L_chr,"Beta "),
+                                                               T ~ stringr::str_remove_all(Model,pfx_1L_chr))
+                        ) %>%
+                        dplyr::mutate(Model = Model %>% stringr::str_remove_all("\\(|\\)"))
+                    }) %>%
+                    tibble::add_case(Model = .y, .before = 1)
+                }) %>%
+    purrr::map_dfr(~.x)
+
+  numeric_vars_chr <- tfd_sngl_predr_mdls_tb %>% dplyr::select(where(is.numeric)) %>% names()
+  tfd_sngl_predr_mdls_tb <- tfd_sngl_predr_mdls_tb %>%
+    tibble::as_tibble() %>%
+    dplyr::mutate(dplyr::across(where(is.numeric), ~round(.x,nbr_of_digits_1L_int) %>% format(nsmall = nbr_of_digits_1L_int)))
+  return(tfd_sngl_predr_mdls_tb)
+}
 make_tfmn_cmprsn_plt <-  function(data_tb,
                                   depnt_var_nm_1L_chr,
                                   dictionary_tb){
@@ -707,6 +894,23 @@ make_tfmn_cmprsn_plt <-  function(data_tb,
                                                                                  target_var_nm_1L_chr = "var_desc_chr",
                                                                                  evaluate_lgl = F)))
   return(tfmn_cmprsn_plt)
+}
+make_ttu_cs_ls <-  function(outp_smry_ls,
+                            sig_covars_some_predrs_mdls_tb,
+                            sig_thresh_covars_1L_chr){
+  ttu_cs_ls <- list(best_mdl_types_ls = list(GLM = c("Gaussian distribution and log link"),
+                                             OLS = c("no transformation","log transformation", "clog-log transformation")),
+                    selected_mdls_chr = c("GLM with Gaussian distribution and log link",
+                                          "OLS with clog-log transformation"),
+                    cs_mdls_predrs_seq_dscdng_chr = outp_smry_ls$smry_of_mdl_sngl_predrs_tb$Predictor,
+                    #c("PHQ-9","BADS","OASIS","GAD-7","K6","SCARED"),
+                    sig_covars_all_predrs_mdls_chr = outp_smry_ls$signt_covars_chr,
+                    sig_thresh_covars_1L_chr = sig_thresh_covars_1L_chr, # c("0.001") COMPUTE
+                    sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb,
+                    rf_seq_dscdng_chr = outp_smry_ls$predr_cmprsn_tb$predr_chr,
+                    mdl_predrs_and_rf_seqs_cmprsn_1L_chr = "is consistent" # COMPUTE
+  )
+  return(ttu_cs_ls)
 }
 make_two_mdl_types_smry_tbl <- function(outp_smry_ls,
                                         mdls_tb){
