@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Make predictor variables names — make_predr_vars_nms_ls • TTU</title>
+<title>Make paths to ss plots — make_paths_to_ss_plts_ls • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Make predictor variables names — make_predr_vars_nms_ls" />
-<meta property="og:description" content="make_predr_vars_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictor variables names list. The function returns Predictor variables names (a list)." />
+<meta property="og:title" content="Make paths to ss plots — make_paths_to_ss_plts_ls" />
+<meta property="og:description" content="make_paths_to_ss_plts_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make paths to ss plots list. The function returns Paths to ss plots (a list)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,37 +131,36 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Make predictor variables names</h1>
+    <h1>Make paths to ss plots</h1>
     <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
-    <div class="hidden name"><code>make_predr_vars_nms_ls.Rd</code></div>
+    <div class="hidden name"><code>make_paths_to_ss_plts_ls.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>make_predr_vars_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictor variables names list. The function returns Predictor variables names (a list).</p>
+    <p>make_paths_to_ss_plts_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make paths to ss plots list. The function returns Paths to ss plots (a list).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_predr_vars_nms_ls</span><span class='op'>(</span><span class='va'>main_predrs_chr</span>, <span class='va'>covars_ls</span>, existing_predrs_ls <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>make_paths_to_ss_plts_ls</span><span class='op'>(</span>
+  <span class='va'>output_data_dir_1L_chr</span>,
+  additional_paths_chr <span class='op'>=</span> <span class='st'>"../Data/images/dens_and_sctr.png"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>main_predrs_chr</th>
-      <td><p>Main predictors (a character vector)</p></td>
+      <th>output_data_dir_1L_chr</th>
+      <td><p>Output data directory (a character vector of length one)</p></td>
     </tr>
     <tr>
-      <th>covars_ls</th>
-      <td><p>Covariates (a list)</p></td>
-    </tr>
-    <tr>
-      <th>existing_predrs_ls</th>
-      <td><p>Existing predictors (a list), Default: NULL</p></td>
+      <th>additional_paths_chr</th>
+      <td><p>Additional paths (a character vector), Default: '../Data/images/dens_and_sctr.png'</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Predictor variables names (a list)</p>
+    <p>Paths to ss plots (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

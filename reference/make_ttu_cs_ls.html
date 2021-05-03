@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Make predictor variables names — make_predr_vars_nms_ls • TTU</title>
+<title>Make ttu cs — make_ttu_cs_ls • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Make predictor variables names — make_predr_vars_nms_ls" />
-<meta property="og:description" content="make_predr_vars_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictor variables names list. The function returns Predictor variables names (a list)." />
+<meta property="og:title" content="Make ttu cs — make_ttu_cs_ls" />
+<meta property="og:description" content="make_ttu_cs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ttu cs list. The function returns Ttu cs (a list)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,37 +131,41 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Make predictor variables names</h1>
+    <h1>Make ttu cs</h1>
     <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
-    <div class="hidden name"><code>make_predr_vars_nms_ls.Rd</code></div>
+    <div class="hidden name"><code>make_ttu_cs_ls.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>make_predr_vars_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictor variables names list. The function returns Predictor variables names (a list).</p>
+    <p>make_ttu_cs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ttu cs list. The function returns Ttu cs (a list).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_predr_vars_nms_ls</span><span class='op'>(</span><span class='va'>main_predrs_chr</span>, <span class='va'>covars_ls</span>, existing_predrs_ls <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>make_ttu_cs_ls</span><span class='op'>(</span>
+  <span class='va'>outp_smry_ls</span>,
+  <span class='va'>sig_covars_some_predrs_mdls_tb</span>,
+  <span class='va'>sig_thresh_covars_1L_chr</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>main_predrs_chr</th>
-      <td><p>Main predictors (a character vector)</p></td>
+      <th>outp_smry_ls</th>
+      <td><p>Output summary (a list)</p></td>
     </tr>
     <tr>
-      <th>covars_ls</th>
-      <td><p>Covariates (a list)</p></td>
+      <th>sig_covars_some_predrs_mdls_tb</th>
+      <td><p>Sig covariates some predictors models (a tibble)</p></td>
     </tr>
     <tr>
-      <th>existing_predrs_ls</th>
-      <td><p>Existing predictors (a list), Default: NULL</p></td>
+      <th>sig_thresh_covars_1L_chr</th>
+      <td><p>Sig thresh covariates (a character vector of length one)</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Predictor variables names (a list)</p>
+    <p>Ttu cs (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

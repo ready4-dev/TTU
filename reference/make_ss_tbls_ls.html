@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Make predictor variables names — make_predr_vars_nms_ls • TTU</title>
+<title>Make ss tables list — make_ss_tbls_ls • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Make predictor variables names — make_predr_vars_nms_ls" />
-<meta property="og:description" content="make_predr_vars_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictor variables names list. The function returns Predictor variables names (a list)." />
+<meta property="og:title" content="Make ss tables list — make_ss_tbls_ls" />
+<meta property="og:description" content="make_ss_tbls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ss tables list. The function returns Ss tables (a list)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,37 +131,51 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Make predictor variables names</h1>
+    <h1>Make ss tables list</h1>
     <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
-    <div class="hidden name"><code>make_predr_vars_nms_ls.Rd</code></div>
+    <div class="hidden name"><code>make_ss_tbls_ls.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>make_predr_vars_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictor variables names list. The function returns Predictor variables names (a list).</p>
+    <p>make_ss_tbls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ss tables list. The function returns Ss tables (a list).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_predr_vars_nms_ls</span><span class='op'>(</span><span class='va'>main_predrs_chr</span>, <span class='va'>covars_ls</span>, existing_predrs_ls <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>make_ss_tbls_ls</span><span class='op'>(</span>
+  <span class='va'>outp_smry_ls</span>,
+  <span class='va'>mdls_smry_tbls_ls</span>,
+  <span class='va'>covars_mdls_ls</span>,
+  <span class='va'>descv_tbls_ls</span>,
+  nbr_of_digits_1L_int <span class='op'>=</span> <span class='fl'>2L</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>main_predrs_chr</th>
-      <td><p>Main predictors (a character vector)</p></td>
+      <th>outp_smry_ls</th>
+      <td><p>Output summary (a list)</p></td>
     </tr>
     <tr>
-      <th>covars_ls</th>
-      <td><p>Covariates (a list)</p></td>
+      <th>mdls_smry_tbls_ls</th>
+      <td><p>Models summary tables (a list)</p></td>
     </tr>
     <tr>
-      <th>existing_predrs_ls</th>
-      <td><p>Existing predictors (a list), Default: NULL</p></td>
+      <th>covars_mdls_ls</th>
+      <td><p>Covariates models (a list)</p></td>
+    </tr>
+    <tr>
+      <th>descv_tbls_ls</th>
+      <td><p>Descriptive tables (a list)</p></td>
+    </tr>
+    <tr>
+      <th>nbr_of_digits_1L_int</th>
+      <td><p>Number of digits (an integer vector of length one), Default: 2</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Predictor variables names (a list)</p>
+    <p>Ss tables (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
