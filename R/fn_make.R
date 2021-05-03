@@ -586,6 +586,7 @@ make_mdls_smry_tbls_ls <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L)
 #' Make paths to ss plots
 #' @description make_paths_to_ss_plts_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make paths to ss plots list. The function returns Paths to ss plots (a list).
 #' @param output_data_dir_1L_chr Output data directory (a character vector of length one)
+#' @param outp_smry_ls Output summary (a list)
 #' @param additional_paths_chr Additional paths (a character vector), Default: '../Data/images/dens_and_sctr.png'
 #' @return Paths to ss plots (a list)
 #' @rdname make_paths_to_ss_plts_ls
@@ -593,7 +594,7 @@ make_mdls_smry_tbls_ls <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L)
 #' @importFrom purrr map_lgl
 #' @importFrom stringr str_detect
 #' @keywords internal
-make_paths_to_ss_plts_ls <- function (output_data_dir_1L_chr, additional_paths_chr = "../Data/images/dens_and_sctr.png") 
+make_paths_to_ss_plts_ls <- function (output_data_dir_1L_chr, outp_smry_ls, additional_paths_chr = "../Data/images/dens_and_sctr.png") 
 {
     paths_to_ss_plts_ls = list(combined_utl = paste0(output_data_dir_1L_chr, 
         "/_Descriptives/combined_utl.png"), composite = additional_paths_chr[1], 
@@ -820,11 +821,11 @@ make_results_ls <- function (outp_smry_ls, output_data_dir_1L_chr, cs_ts_ratios_
         r2_dbl = mdls_smry_tbls_ls$prefd_predr_mdl_smry_tb %>% 
             dplyr::filter(Parameter == "R2") %>% dplyr::pull(Estimate)), 
         cs_ts_ratios_tb = cs_ts_ratios_tb, incld_covars_chr = outp_smry_ls$prefd_covars_chr)
-    results_ls <- list(study_descs_ls = study_descs_ls, paths_to_figs_ls = make_paths_to_ss_plts_ls(output_data_dir_1L_chr), 
-        tables_ls = make_ss_tbls_ls(outp_smry_ls, mdls_smry_tbls_ls = mdls_smry_tbls_ls, 
-            covars_mdls_ls = covars_mdls_ls, descv_tbls_ls = descv_tbls_ls, 
-            nbr_of_digits_1L_int = nbr_of_digits_1L_int), cohort_ls = make_cohort_ls(descv_tbls_ls, 
-            ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls, 
+    results_ls <- list(study_descs_ls = study_descs_ls, paths_to_figs_ls = make_paths_to_ss_plts_ls(output_data_dir_1L_chr, 
+        outp_smry_ls = outp_smry_ls), tables_ls = make_ss_tbls_ls(outp_smry_ls, 
+        mdls_smry_tbls_ls = mdls_smry_tbls_ls, covars_mdls_ls = covars_mdls_ls, 
+        descv_tbls_ls = descv_tbls_ls, nbr_of_digits_1L_int = nbr_of_digits_1L_int), 
+        cohort_ls = make_cohort_ls(descv_tbls_ls, ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls, 
             nbr_of_digits_1L_int = nbr_of_digits_1L_int), hlth_utl_and_predrs_ls = make_hlth_utl_and_predrs_ls(outp_smry_ls, 
             descv_tbls_ls = descv_tbls_ls, nbr_of_digits_1L_int = nbr_of_digits_1L_int, 
             old_nms_chr = var_nm_change_lup$old_nms_chr, new_nms_chr = var_nm_change_lup$new_nms_chr), 

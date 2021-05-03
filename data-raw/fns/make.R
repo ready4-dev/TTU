@@ -440,6 +440,7 @@ make_mdl_type_smry_tbl <- function(mdls_tb,
   return(mdl_type_smry_tbl_tb)
 }
 make_paths_to_ss_plts_ls <- function(output_data_dir_1L_chr,
+                                     outp_smry_ls,
                                      additional_paths_chr = "../Data/images/dens_and_sctr.png"){
   paths_to_ss_plts_ls = list(combined_utl = paste0(output_data_dir_1L_chr,"/_Descriptives/combined_utl.png"),
                              composite = additional_paths_chr[1],
@@ -606,7 +607,8 @@ make_results_ls <- function(outp_smry_ls,
                      cs_ts_ratios_tb = cs_ts_ratios_tb,
                      incld_covars_chr = outp_smry_ls$prefd_covars_chr)
   results_ls <- list(study_descs_ls = study_descs_ls,
-                     paths_to_figs_ls = make_paths_to_ss_plts_ls(output_data_dir_1L_chr),
+                     paths_to_figs_ls = make_paths_to_ss_plts_ls(output_data_dir_1L_chr,
+                                                                 outp_smry_ls = outp_smry_ls),
                      tables_ls = make_ss_tbls_ls(outp_smry_ls,
                                                  mdls_smry_tbls_ls = mdls_smry_tbls_ls,
                                                  covars_mdls_ls = covars_mdls_ls,

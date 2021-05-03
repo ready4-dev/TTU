@@ -6,11 +6,14 @@
 \usage{
 make_paths_to_ss_plts_ls(
   output_data_dir_1L_chr,
+  outp_smry_ls,
   additional_paths_chr = "../Data/images/dens_and_sctr.png"
 )
 }
 \arguments{
 \item{output_data_dir_1L_chr}{Output data directory (a character vector of length one)}
+
+\item{outp_smry_ls}{Output summary (a list)}
 
 \item{additional_paths_chr}{Additional paths (a character vector), Default: '../Data/images/dens_and_sctr.png'}
 }
