@@ -446,10 +446,10 @@ make_paths_to_ss_plts_ls <- function(output_data_dir_1L_chr,
                              composite = additional_paths_chr[1],
                              items = paste0(output_data_dir_1L_chr,"/_Descriptives/qstn_rspns.png"),
                              density = paste0(output_data_dir_1L_chr,"/A_TFMN_CMPRSN_DNSTY.png"), #Update
-                             importance = paste0(output_data_dir_1L_chr,"/",outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% purrr::map_lgl(~stringr::str_detect(.x,"B_PRED_CMPRSN_RF_VAR_IMP"))]))
+                             importance = paste0(output_data_dir_1L_chr,"/",outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% purrr::map_lgl(~stringr::str_detect(.x,"B_PRED_CMPRSN_BORUTA_VAR_IMP"))]))
   return(paths_to_ss_plts_ls)
 }
-make_predn_ds_with_one_predr <- function (model_mdl, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF",
+make_predn_ds_with_one_predr <- function(model_mdl, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF",
     predr_var_nm_1L_chr, predr_vals_dbl, predn_type_1L_chr = NULL)
 {
     predn_ds_tb <- tibble::tibble(`:=`(!!rlang::sym(predr_var_nm_1L_chr),
@@ -827,7 +827,13 @@ make_ss_tbls_ls <- function(outp_smry_ls,
                                                                        mdls_tb = mdls_smry_tbls_ls$indpt_predrs_mdls_tb),
                      participant_descs = descv_tbls_ls$cohort_desc_tb,
                      pred_dist_and_cors = descv_tbls_ls$predr_pars_and_cors_tb,
-                     tenf_glm =  outp_smry_ls[["smry_of_mdl_sngl_predrs_tb"]],
+                     tenf_glm =  outp_smry_ls[["smry_of_mdl_sngl_predrs_tb"]] %>%
+                       tibble::as_tibble() %>%
+                       dplyr::mutate(dplyr::across(where(is.numeric), ~ .x %>% purrr::map_dbl(~min(max(.x,-1.1),1.1)))) %>%
+                       transform_tbl_to_rnd_vars(nbr_of_digits_1L_int = nbr_of_digits_1L_int) %>%
+                       dplyr::mutate(dplyr::across(.cols = dplyr::everything(), ~ .x %>%
+                                                     stringr::str_replace_all("-1.10","< -1.00") %>%
+                                                     stringr::str_replace_all("1.10","> 1.00"))),
                      tenf_phq9 = make_tfd_sngl_predr_mdls_tb(outp_smry_ls,
                                                              nbr_of_digits_1L_int = nbr_of_digits_1L_int))
   return(ss_tbls_ls)
@@ -861,12 +867,8 @@ make_tfd_sngl_predr_mdls_tb <- function(outp_smry_ls,
                     }) %>%
                     tibble::add_case(Model = .y, .before = 1)
                 }) %>%
-    purrr::map_dfr(~.x)
-
-  numeric_vars_chr <- tfd_sngl_predr_mdls_tb %>% dplyr::select(where(is.numeric)) %>% names()
-  tfd_sngl_predr_mdls_tb <- tfd_sngl_predr_mdls_tb %>%
-    tibble::as_tibble() %>%
-    dplyr::mutate(dplyr::across(where(is.numeric), ~round(.x,nbr_of_digits_1L_int) %>% format(nsmall = nbr_of_digits_1L_int)))
+    purrr::map_dfr(~.x) %>%
+    transform_tbl_to_rnd_vars(nbr_of_digits_1L_int = nbr_of_digits_1L_int)
   return(tfd_sngl_predr_mdls_tb)
 }
 make_tfmn_cmprsn_plt <-  function(data_tb,

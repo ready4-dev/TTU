@@ -306,6 +306,24 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
     }
     return(tfd_for_mdl_inp_tb)
 }
+#' Transform table to rnd variables
+#' @description transform_tbl_to_rnd_vars() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform table to rnd variables. Function argument ds_tb specifies the object to be updated. Argument nbr_of_digits_1L_int provides the object to be updated. The function returns Transformed dataset (a tibble).
+#' @param ds_tb Dataset (a tibble)
+#' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
+#' @return Transformed dataset (a tibble)
+#' @rdname transform_tbl_to_rnd_vars
+#' @export 
+#' @importFrom dplyr select mutate across
+#' @importFrom tibble as_tibble
+#' @keywords internal
+transform_tbl_to_rnd_vars <- function (ds_tb, nbr_of_digits_1L_int = 2L) 
+{
+    numeric_vars_chr <- ds_tb %>% dplyr::select(where(is.numeric)) %>% 
+        names()
+    tfd_ds_tb <- ds_tb %>% tibble::as_tibble() %>% dplyr::mutate(dplyr::across(where(is.numeric), 
+        ~round(.x, nbr_of_digits_1L_int) %>% format(nsmall = nbr_of_digits_1L_int)))
+    return(tfd_ds_tb)
+}
 #' Transform time series model data
 #' @description transform_ts_mdl_data() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform time series model data. Function argument mdl_ls specifies the object to be updated. Argument data_tb provides the object to be updated. The function returns Cnfdl (a list of models).
 #' @param mdl_ls Model list (a list of models)

@@ -199,6 +199,15 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
     }
     return(tfd_for_mdl_inp_tb)
 }
+transform_tbl_to_rnd_vars <- function(ds_tb,
+                                      nbr_of_digits_1L_int = 2L){
+  numeric_vars_chr <- ds_tb %>% dplyr::select(where(is.numeric)) %>% names()
+  tfd_ds_tb <- ds_tb %>%
+    tibble::as_tibble() %>%
+    dplyr::mutate(dplyr::across(where(is.numeric), ~round(.x,nbr_of_digits_1L_int) %>%
+                                  format(nsmall = nbr_of_digits_1L_int)))
+  return(tfd_ds_tb)
+}
 transform_ts_mdl_data <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "aqol6d_total_w",
                                    predr_vars_nms_chr, id_var_nm_1L_chr = "fkClientID", mdl_nm_1L_chr)
 {
