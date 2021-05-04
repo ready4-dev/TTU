@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Make transformed single predictor models — make_tfd_sngl_predr_mdls_tb • TTU</title>
+<title>Transform table to rnd variables — transform_tbl_to_rnd_vars • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Make transformed single predictor models — make_tfd_sngl_predr_mdls_tb" />
-<meta property="og:description" content="make_tfd_sngl_predr_mdls_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make transformed single predictor models tibble. The function returns Transformed single predictor models (a tibble)." />
+<meta property="og:title" content="Transform table to rnd variables — transform_tbl_to_rnd_vars" />
+<meta property="og:description" content="transform_tbl_to_rnd_vars() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform table to rnd variables. Function argument ds_tb specifies the object to be updated. Argument nbr_of_digits_1L_int provides the object to be updated. The function returns Transformed dataset (a tibble)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,43 +131,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Make transformed single predictor models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
-    <div class="hidden name"><code>make_tfd_sngl_predr_mdls_tb.Rd</code></div>
+    <h1>Transform table to rnd variables</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_transform.R'><code>R/fn_transform.R</code></a></small>
+    <div class="hidden name"><code>transform_tbl_to_rnd_vars.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>make_tfd_sngl_predr_mdls_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make transformed single predictor models tibble. The function returns Transformed single predictor models (a tibble).</p>
+    <p>transform_tbl_to_rnd_vars() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform table to rnd variables. Function argument ds_tb specifies the object to be updated. Argument nbr_of_digits_1L_int provides the object to be updated. The function returns Transformed dataset (a tibble).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_tfd_sngl_predr_mdls_tb</span><span class='op'>(</span>
-  <span class='va'>outp_smry_ls</span>,
-  nbr_of_digits_1L_int <span class='op'>=</span> <span class='fl'>2L</span>,
-  mdl_pfx_ls <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>OLS <span class='op'>=</span> <span class='st'>"Ordinary Least Squares "</span>, GLM <span class='op'>=</span>
-    <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Generalised Linear Mixed Model with "</span>, <span class='st'>"Beta Regression Model with Binomial "</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>transform_tbl_to_rnd_vars</span><span class='op'>(</span><span class='va'>ds_tb</span>, nbr_of_digits_1L_int <span class='op'>=</span> <span class='fl'>2L</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>outp_smry_ls</th>
-      <td><p>Output summary (a list)</p></td>
+      <th>ds_tb</th>
+      <td><p>Dataset (a tibble)</p></td>
     </tr>
     <tr>
       <th>nbr_of_digits_1L_int</th>
       <td><p>Number of digits (an integer vector of length one), Default: 2</p></td>
     </tr>
-    <tr>
-      <th>mdl_pfx_ls</th>
-      <td><p>Model prefix (a list), Default: list(OLS = "Ordinary Least Squares ", GLM = c("Generalised Linear Mixed Model with ",
-"Beta Regression Model with Binomial "))</p></td>
-    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Transformed single predictor models (a tibble)</p>
+    <p>Transformed dataset (a tibble)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
