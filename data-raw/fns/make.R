@@ -632,11 +632,11 @@ make_results_ls_spine <-  function(output_data_dir_1L_chr,
                                    nbr_of_digits_1L_int = 2L){
 
   outp_smry_ls <- readRDS(paste0(params$output_data_dir_1L_chr,"/I_ALL_OUTPUT_.RDS"))
-  mdl_coef_ratios_ls <- TTU::make_mdl_coef_ratio_ls(outp_smry_ls,
+  mdl_coef_ratios_ls <- make_mdl_coef_ratio_ls(outp_smry_ls,
                                                     predr_ctgs_ls = study_descs_ls$predr_ctgs_ls)
-  mdls_smry_tbls_ls <- TTU::make_mdls_smry_tbls_ls(outp_smry_ls,
+  mdls_smry_tbls_ls <- make_mdls_smry_tbls_ls(outp_smry_ls,
                                                    nbr_of_digits_1L_int = nbr_of_digits_1L_int)
-  covars_mdls_ls <- TTU::make_mdls_ls(outp_smry_ls,
+  covars_mdls_ls <- make_mdls_ls(outp_smry_ls,
                                       mdls_tb = mdls_smry_tbls_ls$covar_mdls_tb)
   spine_of_results_ls <- list(outp_smry_ls,
                               output_data_dir_1L_chr = output_data_dir_1L_chr,
