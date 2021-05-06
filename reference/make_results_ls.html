@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9163</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9165</span>
       </span>
     </div>
 
@@ -141,29 +141,21 @@
     </div>
 
     <pre class="usage"><span class='fu'>make_results_ls</span><span class='op'>(</span>
-  <span class='va'>outp_smry_ls</span>,
-  <span class='va'>output_data_dir_1L_chr</span>,
+  <span class='va'>spine_of_results_ls</span>,
   <span class='va'>cs_ts_ratios_tb</span>,
   <span class='va'>ctgl_vars_regrouping_ls</span>,
-  <span class='va'>nbr_of_digits_1L_int</span>,
   <span class='va'>sig_covars_some_predrs_mdls_tb</span>,
   <span class='va'>sig_thresh_covars_1L_chr</span>,
-  <span class='va'>study_descs_ls</span>,
   <span class='va'>ttu_cs_ls</span>,
-  <span class='va'>ttu_lngl_ls</span>,
-  <span class='va'>var_nm_change_lup</span>
+  <span class='va'>ttu_lngl_ls</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>outp_smry_ls</th>
-      <td><p>Output summary (a list)</p></td>
-    </tr>
-    <tr>
-      <th>output_data_dir_1L_chr</th>
-      <td><p>Output data directory (a character vector of length one)</p></td>
+      <th>spine_of_results_ls</th>
+      <td><p>Spine of results (a list)</p></td>
     </tr>
     <tr>
       <th>cs_ts_ratios_tb</th>
@@ -174,10 +166,6 @@
       <td><p>Ctgl variables regrouping (a list)</p></td>
     </tr>
     <tr>
-      <th>nbr_of_digits_1L_int</th>
-      <td><p>Number of digits (an integer vector of length one)</p></td>
-    </tr>
-    <tr>
       <th>sig_covars_some_predrs_mdls_tb</th>
       <td><p>Sig covariates some predictors models (a tibble)</p></td>
     </tr>
@@ -186,20 +174,12 @@
       <td><p>Sig thresh covariates (a character vector of length one)</p></td>
     </tr>
     <tr>
-      <th>study_descs_ls</th>
-      <td><p>Study descriptions (a list)</p></td>
-    </tr>
-    <tr>
       <th>ttu_cs_ls</th>
       <td><p>Ttu cs (a list)</p></td>
     </tr>
     <tr>
       <th>ttu_lngl_ls</th>
       <td><p>Ttu lngl (a list)</p></td>
-    </tr>
-    <tr>
-      <th>var_nm_change_lup</th>
-      <td><p>Variable name change (a lookup table)</p></td>
     </tr>
     </table>
 
