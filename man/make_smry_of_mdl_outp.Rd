@@ -6,7 +6,7 @@
 \usage{
 make_smry_of_mdl_outp(
   data_tb,
-  model_mdl,
+  model_mdl = NULL,
   folds_1L_int = 10,
   depnt_var_nm_1L_chr = "utl_total_w",
   start_1L_chr = NULL,
@@ -21,7 +21,7 @@ make_smry_of_mdl_outp(
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{model_mdl}{Model (a model)}
+\item{model_mdl}{Model (a model), Default: NULL}
 
 \item{folds_1L_int}{Folds (an integer vector of length one), Default: 10}
 

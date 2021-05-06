@@ -587,19 +587,21 @@ make_mdls_smry_tbls_ls <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L)
 #' @description make_paths_to_ss_plts_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make paths to ss plots list. The function returns Paths to ss plots (a list).
 #' @param output_data_dir_1L_chr Output data directory (a character vector of length one)
 #' @param outp_smry_ls Output summary (a list)
-#' @param additional_paths_chr Additional paths (a character vector), Default: '../Data/images/dens_and_sctr.png'
+#' @param additional_paths_chr Additional paths (a character vector), Default: '/dens_and_sctr.png'
 #' @return Paths to ss plots (a list)
 #' @rdname make_paths_to_ss_plts_ls
 #' @export 
 #' @importFrom purrr map_lgl
 #' @importFrom stringr str_detect
 #' @keywords internal
-make_paths_to_ss_plts_ls <- function (output_data_dir_1L_chr, outp_smry_ls, additional_paths_chr = "../Data/images/dens_and_sctr.png") 
+make_paths_to_ss_plts_ls <- function (output_data_dir_1L_chr, outp_smry_ls, additional_paths_chr = "/dens_and_sctr.png") 
 {
     paths_to_ss_plts_ls = list(combined_utl = paste0(output_data_dir_1L_chr, 
-        "/_Descriptives/combined_utl.png"), composite = additional_paths_chr[1], 
-        items = paste0(output_data_dir_1L_chr, "/_Descriptives/qstn_rspns.png"), 
-        density = paste0(output_data_dir_1L_chr, "/A_TFMN_CMPRSN_DNSTY.png"), 
+        "/_Descriptives/combined_utl.png"), composite = paste0(output_data_dir_1L_chr, 
+        additional_paths_chr[1]), items = paste0(output_data_dir_1L_chr, 
+        "/_Descriptives/qstn_rspns.png"), density = paste0(output_data_dir_1L_chr, 
+        "/", outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% 
+            purrr::map_lgl(~stringr::str_detect(.x, "A_TFMN_CMPRSN_DNSTY"))]), 
         importance = paste0(output_data_dir_1L_chr, "/", outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% 
             purrr::map_lgl(~stringr::str_detect(.x, "B_PRED_CMPRSN_BORUTA_VAR_IMP"))]))
     return(paths_to_ss_plts_ls)
@@ -782,8 +784,6 @@ make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_ch
 #' @param ctgl_vars_regrouping_ls Ctgl variables regrouping (a list)
 #' @param sig_covars_some_predrs_mdls_tb Sig covariates some predictors models (a tibble)
 #' @param sig_thresh_covars_1L_chr Sig thresh covariates (a character vector of length one)
-#' @param ttu_cs_ls Ttu cs (a list)
-#' @param ttu_lngl_ls Ttu lngl (a list)
 #' @return Results (a list)
 #' @rdname make_results_ls
 #' @export 
@@ -794,8 +794,7 @@ make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_ch
 #' @importFrom dplyr filter pull
 #' @keywords internal
 make_results_ls <- function (spine_of_results_ls, cs_ts_ratios_tb, ctgl_vars_regrouping_ls, 
-    sig_covars_some_predrs_mdls_tb, sig_thresh_covars_1L_chr, 
-    ttu_cs_ls, ttu_lngl_ls) 
+    sig_covars_some_predrs_mdls_tb, sig_thresh_covars_1L_chr) 
 {
     mdls_smry_tbls_ls <- make_mdls_smry_tbls_ls(spine_of_results_ls$outp_smry_ls, 
         nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int)
@@ -808,8 +807,8 @@ make_results_ls <- function (spine_of_results_ls, cs_ts_ratios_tb, ctgl_vars_reg
     composite_plt <- make_cmpst_sctr_and_dnsty_plt(spine_of_results_ls$outp_smry_ls, 
         output_data_dir_1L_chr = spine_of_results_ls$output_data_dir_1L_chr, 
         predr_var_nms_chr = spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]])
-    cowplot::save_plot("../Data/images/dens_and_sctr.png", composite_plt, 
-        base_height = 20)
+    cowplot::save_plot(paste0(spine_of_results_ls$output_data_dir_1L_chr, 
+        "/dens_and_sctr.png"), composite_plt, base_height = 20)
     ttu_cs_ls = make_ttu_cs_ls(spine_of_results_ls$outp_smry_ls, 
         sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb, 
         sig_thresh_covars_1L_chr = sig_thresh_covars_1L_chr)
@@ -821,20 +820,22 @@ make_results_ls <- function (spine_of_results_ls, cs_ts_ratios_tb, ctgl_vars_reg
         r2_dbl = mdls_smry_tbls_ls$prefd_predr_mdl_smry_tb %>% 
             dplyr::filter(Parameter == "R2") %>% dplyr::pull(Estimate)), 
         cs_ts_ratios_tb = cs_ts_ratios_tb, incld_covars_chr = spine_of_results_ls$outp_smry_ls$prefd_covars_chr)
-    results_ls <- list(study_descs_ls = spine_of_results_ls$study_descs_ls, 
-        paths_to_figs_ls = make_paths_to_ss_plts_ls(spine_of_results_ls$output_data_dir_1L_chr, 
-            outp_smry_ls = spine_of_results_ls$outp_smry_ls), 
-        tables_ls = make_ss_tbls_ls(spine_of_results_ls$outp_smry_ls, 
-            mdls_smry_tbls_ls = mdls_smry_tbls_ls, covars_mdls_ls = covars_mdls_ls, 
-            descv_tbls_ls = descv_tbls_ls, nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int), 
-        cohort_ls = make_cohort_ls(descv_tbls_ls, ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls, 
-            nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int), 
+    results_ls <- list(cohort_ls = make_cohort_ls(descv_tbls_ls, 
+        ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls, nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int), 
         hlth_utl_and_predrs_ls = make_hlth_utl_and_predrs_ls(spine_of_results_ls$outp_smry_ls, 
             descv_tbls_ls = descv_tbls_ls, nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int, 
             old_nms_chr = spine_of_results_ls$var_nm_change_lup$old_nms_chr, 
             new_nms_chr = spine_of_results_ls$var_nm_change_lup$new_nms_chr), 
-        ttu_cs_ls = ttu_cs_ls, ttu_lngl_ls = ttu_lngl_ls, r_version_1L_chr = paste0(spine_of_results_ls$outp_smry_ls$session_data_ls$R.version$major, 
-            ".", spine_of_results_ls$outp_smry_ls$session_data_ls$R.version$minor))
+        mdl_coef_ratios_ls = spine_of_results_ls$mdl_coef_ratios_ls, 
+        paths_to_figs_ls = make_paths_to_ss_plts_ls(spine_of_results_ls$output_data_dir_1L_chr, 
+            outp_smry_ls = spine_of_results_ls$outp_smry_ls), 
+        r_version_1L_chr = paste0(spine_of_results_ls$outp_smry_ls$session_data_ls$R.version$major, 
+            ".", spine_of_results_ls$outp_smry_ls$session_data_ls$R.version$minor), 
+        study_descs_ls = spine_of_results_ls$study_descs_ls, 
+        tables_ls = make_ss_tbls_ls(spine_of_results_ls$outp_smry_ls, 
+            mdls_smry_tbls_ls = mdls_smry_tbls_ls, covars_mdls_ls = covars_mdls_ls, 
+            descv_tbls_ls = descv_tbls_ls, nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int), 
+        ttu_cs_ls = ttu_cs_ls, ttu_lngl_ls = ttu_lngl_ls)
     return(results_ls)
 }
 #' Make results list spine
@@ -851,14 +852,14 @@ make_results_ls <- function (spine_of_results_ls, cs_ts_ratios_tb, ctgl_vars_reg
 make_results_ls_spine <- function (output_data_dir_1L_chr, var_nm_change_lup, study_descs_ls, 
     nbr_of_digits_1L_int = 2L) 
 {
-    outp_smry_ls <- readRDS(paste0(params$output_data_dir_1L_chr, 
-        "/I_ALL_OUTPUT_.RDS"))
+    outp_smry_ls <- readRDS(paste0(output_data_dir_1L_chr, "/I_ALL_OUTPUT_.RDS"))
     mdl_coef_ratios_ls <- make_mdl_coef_ratio_ls(outp_smry_ls, 
         predr_ctgs_ls = study_descs_ls$predr_ctgs_ls)
     mdls_smry_tbls_ls <- make_mdls_smry_tbls_ls(outp_smry_ls, 
         nbr_of_digits_1L_int = nbr_of_digits_1L_int)
     covars_mdls_ls <- make_mdls_ls(outp_smry_ls, mdls_tb = mdls_smry_tbls_ls$covar_mdls_tb)
-    spine_of_results_ls <- list(outp_smry_ls, output_data_dir_1L_chr = output_data_dir_1L_chr, 
+    spine_of_results_ls <- list(outp_smry_ls = outp_smry_ls, 
+        output_data_dir_1L_chr = output_data_dir_1L_chr, mdl_coef_ratios_ls = mdl_coef_ratios_ls, 
         nbr_of_digits_1L_int = nbr_of_digits_1L_int, study_descs_ls = study_descs_ls, 
         var_nm_change_lup = var_nm_change_lup)
     return(spine_of_results_ls)
@@ -969,7 +970,7 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_to
 #' Make summary of model output
 #' @description make_smry_of_mdl_outp() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make summary of model output. The function returns Summary of one predictor model (a tibble).
 #' @param data_tb Data (a tibble)
-#' @param model_mdl Model (a model)
+#' @param model_mdl Model (a model), Default: NULL
 #' @param folds_1L_int Folds (an integer vector of length one), Default: 10
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'utl_total_w'
 #' @param start_1L_chr Start (a character vector of length one), Default: NULL
@@ -991,7 +992,7 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_to
 #' @importFrom tibble tibble
 #' @importFrom caret R2 RMSE MAE
 #' @keywords internal
-make_smry_of_mdl_outp <- function (data_tb, model_mdl, folds_1L_int = 10, depnt_var_nm_1L_chr = "utl_total_w", 
+make_smry_of_mdl_outp <- function (data_tb, model_mdl = NULL, folds_1L_int = 10, depnt_var_nm_1L_chr = "utl_total_w", 
     start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, 
     covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF", 
     mdl_types_lup = NULL, predn_type_1L_chr = NULL) 
@@ -1006,12 +1007,18 @@ make_smry_of_mdl_outp <- function (data_tb, model_mdl, folds_1L_int = 10, depnt_
         target_var_nm_1L_chr = "long_name_chr", evaluate_lgl = F)
     folds_ls <- make_folds_ls(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
         folds_1L_int = folds_1L_int)
+    control_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+        match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
+        target_var_nm_1L_chr = "control_chr", evaluate_lgl = F)
     smry_of_one_predr_mdl_tb <- purrr::map_dfr(folds_ls, ~{
         model_mdl <- make_mdl(data_tb[-.x, ], depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
             start_1L_chr = start_1L_chr, tfmn_1L_chr = tfmn_1L_chr, 
             predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr, 
-            mdl_type_1L_chr = mdl_type_1L_chr, mdl_types_lup = mdl_types_lup)
-        pred_old_dbl <- stats::predict(model_mdl, type = predn_type_1L_chr)
+            mdl_type_1L_chr = mdl_type_1L_chr, mdl_types_lup = mdl_types_lup, 
+            control_1L_chr = control_1L_chr)
+        pred_old_dbl <- stats::predict(model_mdl, type = predn_type_1L_chr) %>% 
+            calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, 
+                tfmn_is_outp_1L_lgl = T)
         pred_new_dbl <- stats::predict(model_mdl, newdata = data_tb[.x, 
             ], type = predn_type_1L_chr) %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, 
             tfmn_is_outp_1L_lgl = T)

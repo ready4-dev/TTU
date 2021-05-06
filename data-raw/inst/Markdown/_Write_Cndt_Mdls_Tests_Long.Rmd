@@ -11,10 +11,10 @@ Our first main analytic task is to test which models, predictors and covariates 
 The initial set of tests on candidate models are cross-sectional not longitudinal so we just need data from one time-point. We also only need data on the candidate predictors and total utility score for these tests, so can slim down our dataset to these parameters.
 
 ```{r}
-bl_tb <- TTU::transform_ds_for_tstng(data_tb, 
+bl_tb <- youthvars::transform_ds_for_tstng(data_tb, 
                                 depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,
                                 candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
-                                depnt_var_max_val_1L_dbl = 0.999,
+                                dep_var_max_val_1L_dbl = 0.999,
                                 round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr, 
                                 round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
  
@@ -53,7 +53,6 @@ mdl_smry_ls$predr_vals_dbl
 We now compare all candidate model types, each using only the highest correlated candidate predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`). 
 
 ```{r warning = FALSE, message=FALSE}
-mdl_smry_ls$folds_1L_int <- 10L
 mdl_smry_ls$smry_of_sngl_predr_mdls_tb <- TTU::write_sngl_predr_multi_mdls_outps(data_tb = bl_tb,
         folds_1L_int = mdl_smry_ls$folds_1L_int,
         mdl_types_chr = mdl_smry_ls$mdl_types_chr,
@@ -62,7 +61,7 @@ mdl_smry_ls$smry_of_sngl_predr_mdls_tb <- TTU::write_sngl_predr_multi_mdls_outps
         predr_var_desc_1L_chr = mdl_smry_ls$predr_var_desc_1L_chr, 
         predr_vals_dbl = mdl_smry_ls$predr_vals_dbl,
         path_to_write_to_1L_chr = output_data_dir_1L_chr, 
-        new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsns",
+        new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsn",
         mdl_types_lup = mdl_smry_ls$mdl_types_lup) 
 
 ```
@@ -97,7 +96,7 @@ We can now compare all of our candidate single predictors using the most preferr
 mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int = 300L
 mdl_smry_ls$predr_cmprsns_tb <- TTU::write_predr_cmprsn_outps(data_tb = bl_tb,
                                              path_to_write_to_1L_chr = output_data_dir_1L_chr,
-                                             new_dir_nm_1L_chr = "B_Candidate_Predrs_Cmprsns",
+                                             new_dir_nm_1L_chr = "B_Candidate_Predrs_Cmprsn",
                                              depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, 
                                              candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
                                              max_nbr_of_boruta_mdl_runs_int = mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int)
@@ -110,7 +109,7 @@ Now, we compare the performance of single predictor models of our preferred mode
     mdl_smry_ls$smry_of_mdl_sngl_predrs_tb <- TTU::write_mdl_type_multi_outps(data_tb = bl_tb,
         folds_1L_int = mdl_smry_ls$folds_1L_int, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr,
         mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1], depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,
-        path_to_write_to_1L_chr = output_data_dir_1L_chr, new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsns",
+        path_to_write_to_1L_chr = output_data_dir_1L_chr, new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsn",
         fl_nm_pfx_1L_chr = "C_PREDR", mdl_types_lup = mdl_smry_ls$mdl_types_lup) 
 ```
 
@@ -118,7 +117,7 @@ Now, we compare the performance of single predictor models of our preferred mode
 We rerun each of the models from the previous step, but this time add all our candidate covariates to each model. 
 
 ```{r}
-bl_tb <- data_tb %>% TTU::transform_ds_for_tstng(candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
+bl_tb <- data_tb %>% youthvars::transform_ds_for_tstng(depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr, dep_var_max_val_1L_dbl = 0.999,
         covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr, remove_all_msng_1L_lgl = T,
         round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
 mdl_smry_ls$mdls_with_covars_smry_tb <- TTU::write_mdl_type_covars_mdls(bl_tb,
@@ -152,7 +151,7 @@ We now conclude our model testing by rerunning the previous step, except confini
         start_1L_chr = NA_character_, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr,
         covar_var_nms_chr = mdl_smry_ls$prefd_covars_chr, mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1],
         depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, path_to_write_to_1L_chr = output_data_dir_1L_chr,
-        new_dir_nm_1L_chr = "E_Predrs_W_Covars_Sngl_Mdl_Cmprsns", mdl_types_lup = mdl_smry_ls$mdl_types_lup, fl_nm_pfx_1L_chr = "E_CK_CV")
+        new_dir_nm_1L_chr = "E_Predrs_W_Covars_Sngl_Mdl_Cmprsn", mdl_types_lup = mdl_smry_ls$mdl_types_lup, fl_nm_pfx_1L_chr = "E_CK_CV")
 
 ```
 

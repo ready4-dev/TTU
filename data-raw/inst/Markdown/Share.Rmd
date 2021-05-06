@@ -49,7 +49,6 @@ params:
   dv_ds_nm_and_url_chr: !r NA_character_
   dv_mdl_desc_1L_chr: !r NA_character_
   inc_fl_types_chr: ".pdf"
-  migrated_1L_lgl: TRUE
   nbr_of_digits_1L_int: !r 2L
   output_type_1L_chr: "PDF"
   path_from_top_level_1L_chr: !r NULL

@@ -7,7 +7,7 @@
 make_paths_to_ss_plts_ls(
   output_data_dir_1L_chr,
   outp_smry_ls,
-  additional_paths_chr = "../Data/images/dens_and_sctr.png"
+  additional_paths_chr = "/dens_and_sctr.png"
 )
 }
 \arguments{
@@ -15,7 +15,7 @@ make_paths_to_ss_plts_ls(
 
 \item{outp_smry_ls}{Output summary (a list)}
 
-\item{additional_paths_chr}{Additional paths (a character vector), Default: '../Data/images/dens_and_sctr.png'}
+\item{additional_paths_chr}{Additional paths (a character vector), Default: '/dens_and_sctr.png'}
 }
 \value{
 Paths to ss plots (a list)

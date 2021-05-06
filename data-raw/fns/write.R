@@ -376,7 +376,7 @@ write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_
         target_var_nm_1L_chr = "tfmn_for_bnml_lgl", evaluate_lgl = F)
     data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr,
         tfmn_1L_chr = tfmn_1L_chr)), !!rlang::sym(depnt_var_nm_1L_chr) %>%
-        calculate_dpnt_var_tfmn()))
+        calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr))) # TEST
     model_mdl <- make_mdl(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         tfmn_1L_chr = tfmn_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr,
         covar_var_nms_chr = covar_var_nms_chr, mdl_type_1L_chr = mdl_type_1L_chr,
@@ -392,7 +392,7 @@ write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_
     if (!is.null(folds_1L_int)) {
         smry_of_one_predr_mdl_tb <- make_smry_of_mdl_outp(data_tb,
             model_mdl = model_mdl, folds_1L_int = folds_1L_int, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
-            tfmn_1L_chr = tfmn_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr,
+            tfmn_1L_chr = tfmn_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr,
             mdl_type_1L_chr = mdl_type_1L_chr, mdl_types_lup = mdl_types_lup,
             predn_type_1L_chr = predn_type_1L_chr)
     }
@@ -757,7 +757,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
                      fn_args_ls = list(data_tb = data_tb,
                                        depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
                                        dictionary_tb = dictionary_tb),
-                     path_to_write_to_1L_chr = path_to_write_to_1L_chr,
+                     path_to_write_to_1L_chr = output_dir_1L_chr,
                      plt_nm_1L_chr = "A_TFMN_CMPRSN_DNSTY",
                      height_1L_dbl = 6,
                      width_1L_dbl = 10)

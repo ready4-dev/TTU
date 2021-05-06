@@ -51,7 +51,6 @@ params:
   ds_descvs_ls: !r NULL
   iters_1L_int: !r 4000L
   mdl_smry_ls: !r NULL
-  migrated_1L_lgl: !r TRUE
   nbr_of_digits_1L_int: !r 2L
   output_type_1L_chr: "PDF"
   path_from_top_level_1L_chr: !r NULL

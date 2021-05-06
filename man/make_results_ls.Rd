@@ -9,9 +9,7 @@ make_results_ls(
   cs_ts_ratios_tb,
   ctgl_vars_regrouping_ls,
   sig_covars_some_predrs_mdls_tb,
-  sig_thresh_covars_1L_chr,
-  ttu_cs_ls,
-  ttu_lngl_ls
+  sig_thresh_covars_1L_chr
 )
 }
 \arguments{
@@ -24,10 +22,6 @@ make_results_ls(
 \item{sig_covars_some_predrs_mdls_tb}{Sig covariates some predictors models (a tibble)}
 
 \item{sig_thresh_covars_1L_chr}{Sig thresh covariates (a character vector of length one)}
-
-\item{ttu_cs_ls}{Ttu cs (a list)}
-
-\item{ttu_lngl_ls}{Ttu lngl (a list)}
 }
 \value{
 Results (a list)

@@ -50,7 +50,6 @@ params:
   append_params_ls: !r NULL
   eval_1L_lgl: !r FALSE
   header_yaml_args_ls: !r NULL
-  migrated_1L_lgl: !r TRUE
   output_type_1L_chr: "PDF"
   nbr_of_digits_1L_int: !r 2L
   path_from_top_level_1L_chr: !r NULL
