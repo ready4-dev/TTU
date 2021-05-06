@@ -573,61 +573,77 @@ make_ranked_predrs_ls <- function(descv_tbls_ls,
   return(ranked_predrs_ls)
 
 }
-make_results_ls <- function(outp_smry_ls,
-                            output_data_dir_1L_chr,
+make_results_ls <- function(spine_of_results_ls,
                             cs_ts_ratios_tb,
                             ctgl_vars_regrouping_ls,
-                            nbr_of_digits_1L_int,
                             sig_covars_some_predrs_mdls_tb,
                             sig_thresh_covars_1L_chr,
-                            study_descs_ls,
                             ttu_cs_ls,
-                            ttu_lngl_ls,
-                            var_nm_change_lup){
-  mdls_smry_tbls_ls <- make_mdls_smry_tbls_ls(outp_smry_ls,
-                                              nbr_of_digits_1L_int = nbr_of_digits_1L_int)
-  covars_mdls_ls <- make_mdls_ls(outp_smry_ls,
+                            ttu_lngl_ls){
+
+  mdls_smry_tbls_ls <- make_mdls_smry_tbls_ls(spine_of_results_ls$outp_smry_ls,
+                                              nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int)
+  covars_mdls_ls <- make_mdls_ls(spine_of_results_ls$outp_smry_ls,
                                  mdls_tb = mdls_smry_tbls_ls$covar_mdls_tb)
-  descv_tbls_ls <- paste0(output_data_dir_1L_chr,"/",outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% purrr::map_lgl(~stringr::str_detect(.x,"descv_tbls_ls.RDS"))]) %>% readRDS()
-  composite_plt <- make_cmpst_sctr_and_dnsty_plt(outp_smry_ls,
-                                                 output_data_dir_1L_chr = output_data_dir_1L_chr,
-                                                 predr_var_nms_chr=outp_smry_ls$predr_vars_nms_ls[[1]])
+  descv_tbls_ls <- paste0(spine_of_results_ls$output_data_dir_1L_chr,"/",spine_of_results_ls$outp_smry_ls$file_paths_chr[spine_of_results_ls$outp_smry_ls$file_paths_chr %>% purrr::map_lgl(~stringr::str_detect(.x,"descv_tbls_ls.RDS"))]) %>% readRDS()
+  composite_plt <- make_cmpst_sctr_and_dnsty_plt(spine_of_results_ls$outp_smry_ls,
+                                                 output_data_dir_1L_chr = spine_of_results_ls$output_data_dir_1L_chr,
+                                                 predr_var_nms_chr=spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]])
   cowplot::save_plot("../Data/images/dens_and_sctr.png", composite_plt, base_height = 20)
-  ttu_cs_ls = make_ttu_cs_ls(outp_smry_ls,
+  ttu_cs_ls = make_ttu_cs_ls(spine_of_results_ls$outp_smry_ls,
                              sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb,
                              sig_thresh_covars_1L_chr = sig_thresh_covars_1L_chr)
-  ttu_lngl_ls = list(best_mdls_tb = tibble::tibble(model_type = c("LLM","GLMM"),
-                                                   link_and_tfmn_chr = c("c-loglog transformed)","Gaussian distribution with log link"),
-                                                   name_chr = make_predrs_for_best_mdls(outp_smry_ls,
-                                                                                        old_nms_chr = var_nm_change_lup$old_nms_chr,
-                                                                                        new_nms_chr = var_nm_change_lup$new_nms_chr),
+  ttu_lngl_ls = list(best_mdls_tb = tibble::tibble(model_type = c("GLMM","LMM"),
+                                                   link_and_tfmn_chr = c("Gaussian distribution with log link","c-loglog transformed)"),
+                                                   name_chr = make_predrs_for_best_mdls(spine_of_results_ls$outp_smry_ls,
+                                                                                        old_nms_chr = spine_of_results_ls$var_nm_change_lup$old_nms_chr,
+                                                                                        new_nms_chr = spine_of_results_ls$var_nm_change_lup$new_nms_chr),
                                                    r2_dbl = mdls_smry_tbls_ls$prefd_predr_mdl_smry_tb %>%
                                                      dplyr::filter(Parameter == "R2") %>%
                                                      dplyr::pull(Estimate)),
                      cs_ts_ratios_tb = cs_ts_ratios_tb,
-                     incld_covars_chr = outp_smry_ls$prefd_covars_chr)
-  results_ls <- list(study_descs_ls = study_descs_ls,
-                     paths_to_figs_ls = make_paths_to_ss_plts_ls(output_data_dir_1L_chr,
-                                                                 outp_smry_ls = outp_smry_ls),
-                     tables_ls = make_ss_tbls_ls(outp_smry_ls,
+                     incld_covars_chr = spine_of_results_ls$outp_smry_ls$prefd_covars_chr)
+  results_ls <- list(study_descs_ls = spine_of_results_ls$study_descs_ls,
+                     paths_to_figs_ls = make_paths_to_ss_plts_ls(spine_of_results_ls$output_data_dir_1L_chr,
+                                                                 outp_smry_ls = spine_of_results_ls$outp_smry_ls),
+                     tables_ls = make_ss_tbls_ls(spine_of_results_ls$outp_smry_ls,
                                                  mdls_smry_tbls_ls = mdls_smry_tbls_ls,
                                                  covars_mdls_ls = covars_mdls_ls,
                                                  descv_tbls_ls = descv_tbls_ls,
-                                                 nbr_of_digits_1L_int = nbr_of_digits_1L_int),
+                                                 nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int),
                      cohort_ls = make_cohort_ls(descv_tbls_ls,
                                                 ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls,
-                                                nbr_of_digits_1L_int = nbr_of_digits_1L_int),
-                     hlth_utl_and_predrs_ls = make_hlth_utl_and_predrs_ls(outp_smry_ls,
+                                                nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int),
+                     hlth_utl_and_predrs_ls = make_hlth_utl_and_predrs_ls(spine_of_results_ls$outp_smry_ls,
                                                                           descv_tbls_ls = descv_tbls_ls,
-                                                                          nbr_of_digits_1L_int = nbr_of_digits_1L_int,
-                                                                          old_nms_chr = var_nm_change_lup$old_nms_chr,
-                                                                          new_nms_chr = var_nm_change_lup$new_nms_chr),
+                                                                          nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int,
+                                                                          old_nms_chr = spine_of_results_ls$var_nm_change_lup$old_nms_chr,
+                                                                          new_nms_chr = spine_of_results_ls$var_nm_change_lup$new_nms_chr),
                      ttu_cs_ls = ttu_cs_ls,
                      ttu_lngl_ls = ttu_lngl_ls,
-                     r_version_1L_chr = paste0(outp_smry_ls$session_data_ls$R.version$major,
+                     r_version_1L_chr = paste0(spine_of_results_ls$outp_smry_ls$session_data_ls$R.version$major,
                                                ".",
-                                               outp_smry_ls$session_data_ls$R.version$minor))
+                                               spine_of_results_ls$outp_smry_ls$session_data_ls$R.version$minor))
   return(results_ls)
+}
+make_results_ls_spine <-  function(output_data_dir_1L_chr,
+                                   var_nm_change_lup,
+                                   study_descs_ls,
+                                   nbr_of_digits_1L_int = 2L){
+
+  outp_smry_ls <- readRDS(paste0(params$output_data_dir_1L_chr,"/I_ALL_OUTPUT_.RDS"))
+  mdl_coef_ratios_ls <- TTU::make_mdl_coef_ratio_ls(outp_smry_ls,
+                                                    predr_ctgs_ls = study_descs_ls$predr_ctgs_ls)
+  mdls_smry_tbls_ls <- TTU::make_mdls_smry_tbls_ls(outp_smry_ls,
+                                                   nbr_of_digits_1L_int = nbr_of_digits_1L_int)
+  covars_mdls_ls <- TTU::make_mdls_ls(outp_smry_ls,
+                                      mdls_tb = mdls_smry_tbls_ls$covar_mdls_tb)
+  spine_of_results_ls <- list(outp_smry_ls,
+                              output_data_dir_1L_chr = output_data_dir_1L_chr,
+                              nbr_of_digits_1L_int = nbr_of_digits_1L_int,
+                              study_descs_ls = study_descs_ls,
+                              var_nm_change_lup = var_nm_change_lup)
+  return(spine_of_results_ls)
 }
 make_shareable_mdl <- function (data_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "utl_total_w",
     id_var_nm_1L_chr = "fkClientID", tfmn_1L_chr = "CLL", mdl_type_1L_chr = "OLS_CLL",
@@ -837,6 +853,14 @@ make_ss_tbls_ls <- function(outp_smry_ls,
                      tenf_phq9 = make_tfd_sngl_predr_mdls_tb(outp_smry_ls,
                                                              nbr_of_digits_1L_int = nbr_of_digits_1L_int))
   return(ss_tbls_ls)
+}
+make_study_descs_ls <- function(health_utl_nm_1L_chr,
+                                time_btwn_bl_and_fup_1L_chr,
+                                predr_ctgs_ls){
+  study_descs_ls <- list(health_utl_nm_1L_chr = health_utl_nm_1L_chr,
+                         time_btwn_bl_and_fup_1L_chr = time_btwn_bl_and_fup_1L_chr,
+                         predr_ctgs_ls = predr_ctgs_ls)
+  return(study_descs_ls)
 }
 make_tfd_sngl_predr_mdls_tb <- function(outp_smry_ls,
                                         nbr_of_digits_1L_int = 2L,

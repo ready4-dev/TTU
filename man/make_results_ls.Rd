@@ -5,41 +5,29 @@
 \title{Make results}
 \usage{
 make_results_ls(
-  outp_smry_ls,
-  output_data_dir_1L_chr,
+  spine_of_results_ls,
   cs_ts_ratios_tb,
   ctgl_vars_regrouping_ls,
-  nbr_of_digits_1L_int,
   sig_covars_some_predrs_mdls_tb,
   sig_thresh_covars_1L_chr,
-  study_descs_ls,
   ttu_cs_ls,
-  ttu_lngl_ls,
-  var_nm_change_lup
+  ttu_lngl_ls
 )
 }
 \arguments{
-\item{outp_smry_ls}{Output summary (a list)}
-
-\item{output_data_dir_1L_chr}{Output data directory (a character vector of length one)}
+\item{spine_of_results_ls}{Spine of results (a list)}
 
 \item{cs_ts_ratios_tb}{Cs time series ratios (a tibble)}
 
 \item{ctgl_vars_regrouping_ls}{Ctgl variables regrouping (a list)}
 
-\item{nbr_of_digits_1L_int}{Number of digits (an integer vector of length one)}
-
 \item{sig_covars_some_predrs_mdls_tb}{Sig covariates some predictors models (a tibble)}
 
 \item{sig_thresh_covars_1L_chr}{Sig thresh covariates (a character vector of length one)}
 
-\item{study_descs_ls}{Study descriptions (a list)}
-
 \item{ttu_cs_ls}{Ttu cs (a list)}
 
 \item{ttu_lngl_ls}{Ttu lngl (a list)}
-
-\item{var_nm_change_lup}{Variable name change (a lookup table)}
 }
 \value{
 Results (a list)

@@ -777,17 +777,13 @@ make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_ch
 }
 #' Make results
 #' @description make_results_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make results list. The function returns Results (a list).
-#' @param outp_smry_ls Output summary (a list)
-#' @param output_data_dir_1L_chr Output data directory (a character vector of length one)
+#' @param spine_of_results_ls Spine of results (a list)
 #' @param cs_ts_ratios_tb Cs time series ratios (a tibble)
 #' @param ctgl_vars_regrouping_ls Ctgl variables regrouping (a list)
-#' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one)
 #' @param sig_covars_some_predrs_mdls_tb Sig covariates some predictors models (a tibble)
 #' @param sig_thresh_covars_1L_chr Sig thresh covariates (a character vector of length one)
-#' @param study_descs_ls Study descriptions (a list)
 #' @param ttu_cs_ls Ttu cs (a list)
 #' @param ttu_lngl_ls Ttu lngl (a list)
-#' @param var_nm_change_lup Variable name change (a lookup table)
 #' @return Results (a list)
 #' @rdname make_results_ls
 #' @export 
@@ -797,41 +793,75 @@ make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_ch
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter pull
 #' @keywords internal
-make_results_ls <- function (outp_smry_ls, output_data_dir_1L_chr, cs_ts_ratios_tb, 
-    ctgl_vars_regrouping_ls, nbr_of_digits_1L_int, sig_covars_some_predrs_mdls_tb, 
-    sig_thresh_covars_1L_chr, study_descs_ls, ttu_cs_ls, ttu_lngl_ls, 
-    var_nm_change_lup) 
+make_results_ls <- function (spine_of_results_ls, cs_ts_ratios_tb, ctgl_vars_regrouping_ls, 
+    sig_covars_some_predrs_mdls_tb, sig_thresh_covars_1L_chr, 
+    ttu_cs_ls, ttu_lngl_ls) 
 {
-    mdls_smry_tbls_ls <- make_mdls_smry_tbls_ls(outp_smry_ls, 
-        nbr_of_digits_1L_int = nbr_of_digits_1L_int)
-    covars_mdls_ls <- make_mdls_ls(outp_smry_ls, mdls_tb = mdls_smry_tbls_ls$covar_mdls_tb)
-    descv_tbls_ls <- paste0(output_data_dir_1L_chr, "/", outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% 
-        purrr::map_lgl(~stringr::str_detect(.x, "descv_tbls_ls.RDS"))]) %>% 
+    mdls_smry_tbls_ls <- make_mdls_smry_tbls_ls(spine_of_results_ls$outp_smry_ls, 
+        nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int)
+    covars_mdls_ls <- make_mdls_ls(spine_of_results_ls$outp_smry_ls, 
+        mdls_tb = mdls_smry_tbls_ls$covar_mdls_tb)
+    descv_tbls_ls <- paste0(spine_of_results_ls$output_data_dir_1L_chr, 
+        "/", spine_of_results_ls$outp_smry_ls$file_paths_chr[spine_of_results_ls$outp_smry_ls$file_paths_chr %>% 
+            purrr::map_lgl(~stringr::str_detect(.x, "descv_tbls_ls.RDS"))]) %>% 
         readRDS()
-    composite_plt <- make_cmpst_sctr_and_dnsty_plt(outp_smry_ls, 
-        output_data_dir_1L_chr = output_data_dir_1L_chr, predr_var_nms_chr = outp_smry_ls$predr_vars_nms_ls[[1]])
+    composite_plt <- make_cmpst_sctr_and_dnsty_plt(spine_of_results_ls$outp_smry_ls, 
+        output_data_dir_1L_chr = spine_of_results_ls$output_data_dir_1L_chr, 
+        predr_var_nms_chr = spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]])
     cowplot::save_plot("../Data/images/dens_and_sctr.png", composite_plt, 
         base_height = 20)
-    ttu_cs_ls = make_ttu_cs_ls(outp_smry_ls, sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb, 
+    ttu_cs_ls = make_ttu_cs_ls(spine_of_results_ls$outp_smry_ls, 
+        sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb, 
         sig_thresh_covars_1L_chr = sig_thresh_covars_1L_chr)
-    ttu_lngl_ls = list(best_mdls_tb = tibble::tibble(model_type = c("LLM", 
-        "GLMM"), link_and_tfmn_chr = c("c-loglog transformed)", 
-        "Gaussian distribution with log link"), name_chr = make_predrs_for_best_mdls(outp_smry_ls, 
-        old_nms_chr = var_nm_change_lup$old_nms_chr, new_nms_chr = var_nm_change_lup$new_nms_chr), 
+    ttu_lngl_ls = list(best_mdls_tb = tibble::tibble(model_type = c("GLMM", 
+        "LMM"), link_and_tfmn_chr = c("Gaussian distribution with log link", 
+        "c-loglog transformed)"), name_chr = make_predrs_for_best_mdls(spine_of_results_ls$outp_smry_ls, 
+        old_nms_chr = spine_of_results_ls$var_nm_change_lup$old_nms_chr, 
+        new_nms_chr = spine_of_results_ls$var_nm_change_lup$new_nms_chr), 
         r2_dbl = mdls_smry_tbls_ls$prefd_predr_mdl_smry_tb %>% 
             dplyr::filter(Parameter == "R2") %>% dplyr::pull(Estimate)), 
-        cs_ts_ratios_tb = cs_ts_ratios_tb, incld_covars_chr = outp_smry_ls$prefd_covars_chr)
-    results_ls <- list(study_descs_ls = study_descs_ls, paths_to_figs_ls = make_paths_to_ss_plts_ls(output_data_dir_1L_chr, 
-        outp_smry_ls = outp_smry_ls), tables_ls = make_ss_tbls_ls(outp_smry_ls, 
-        mdls_smry_tbls_ls = mdls_smry_tbls_ls, covars_mdls_ls = covars_mdls_ls, 
-        descv_tbls_ls = descv_tbls_ls, nbr_of_digits_1L_int = nbr_of_digits_1L_int), 
+        cs_ts_ratios_tb = cs_ts_ratios_tb, incld_covars_chr = spine_of_results_ls$outp_smry_ls$prefd_covars_chr)
+    results_ls <- list(study_descs_ls = spine_of_results_ls$study_descs_ls, 
+        paths_to_figs_ls = make_paths_to_ss_plts_ls(spine_of_results_ls$output_data_dir_1L_chr, 
+            outp_smry_ls = spine_of_results_ls$outp_smry_ls), 
+        tables_ls = make_ss_tbls_ls(spine_of_results_ls$outp_smry_ls, 
+            mdls_smry_tbls_ls = mdls_smry_tbls_ls, covars_mdls_ls = covars_mdls_ls, 
+            descv_tbls_ls = descv_tbls_ls, nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int), 
         cohort_ls = make_cohort_ls(descv_tbls_ls, ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls, 
-            nbr_of_digits_1L_int = nbr_of_digits_1L_int), hlth_utl_and_predrs_ls = make_hlth_utl_and_predrs_ls(outp_smry_ls, 
-            descv_tbls_ls = descv_tbls_ls, nbr_of_digits_1L_int = nbr_of_digits_1L_int, 
-            old_nms_chr = var_nm_change_lup$old_nms_chr, new_nms_chr = var_nm_change_lup$new_nms_chr), 
-        ttu_cs_ls = ttu_cs_ls, ttu_lngl_ls = ttu_lngl_ls, r_version_1L_chr = paste0(outp_smry_ls$session_data_ls$R.version$major, 
-            ".", outp_smry_ls$session_data_ls$R.version$minor))
+            nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int), 
+        hlth_utl_and_predrs_ls = make_hlth_utl_and_predrs_ls(spine_of_results_ls$outp_smry_ls, 
+            descv_tbls_ls = descv_tbls_ls, nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int, 
+            old_nms_chr = spine_of_results_ls$var_nm_change_lup$old_nms_chr, 
+            new_nms_chr = spine_of_results_ls$var_nm_change_lup$new_nms_chr), 
+        ttu_cs_ls = ttu_cs_ls, ttu_lngl_ls = ttu_lngl_ls, r_version_1L_chr = paste0(spine_of_results_ls$outp_smry_ls$session_data_ls$R.version$major, 
+            ".", spine_of_results_ls$outp_smry_ls$session_data_ls$R.version$minor))
     return(results_ls)
+}
+#' Make results list spine
+#' @description make_results_ls_spine() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make results list spine. The function returns Spine of results (a list).
+#' @param output_data_dir_1L_chr Output data directory (a character vector of length one)
+#' @param var_nm_change_lup Variable name change (a lookup table)
+#' @param study_descs_ls Study descriptions (a list)
+#' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
+#' @return Spine of results (a list)
+#' @rdname make_results_ls_spine
+#' @export 
+#' @importFrom TTU make_mdl_coef_ratio_ls make_mdls_smry_tbls_ls make_mdls_ls
+#' @keywords internal
+make_results_ls_spine <- function (output_data_dir_1L_chr, var_nm_change_lup, study_descs_ls, 
+    nbr_of_digits_1L_int = 2L) 
+{
+    outp_smry_ls <- readRDS(paste0(params$output_data_dir_1L_chr, 
+        "/I_ALL_OUTPUT_.RDS"))
+    mdl_coef_ratios_ls <- TTU::make_mdl_coef_ratio_ls(outp_smry_ls, 
+        predr_ctgs_ls = study_descs_ls$predr_ctgs_ls)
+    mdls_smry_tbls_ls <- TTU::make_mdls_smry_tbls_ls(outp_smry_ls, 
+        nbr_of_digits_1L_int = nbr_of_digits_1L_int)
+    covars_mdls_ls <- TTU::make_mdls_ls(outp_smry_ls, mdls_tb = mdls_smry_tbls_ls$covar_mdls_tb)
+    spine_of_results_ls <- list(outp_smry_ls, output_data_dir_1L_chr = output_data_dir_1L_chr, 
+        nbr_of_digits_1L_int = nbr_of_digits_1L_int, study_descs_ls = study_descs_ls, 
+        var_nm_change_lup = var_nm_change_lup)
+    return(spine_of_results_ls)
 }
 #' Make shareable
 #' @description make_shareable_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make shareable model. The function returns Model (a model).
@@ -1145,6 +1175,24 @@ make_ss_tbls_ls <- function (outp_smry_ls, mdls_smry_tbls_ls, covars_mdls_ls, de
         tenf_phq9 = make_tfd_sngl_predr_mdls_tb(outp_smry_ls, 
             nbr_of_digits_1L_int = nbr_of_digits_1L_int))
     return(ss_tbls_ls)
+}
+#' Make study descriptions
+#' @description make_study_descs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make study descriptions list. The function returns Study descriptions (a list).
+#' @param health_utl_nm_1L_chr Health utility name (a character vector of length one)
+#' @param time_btwn_bl_and_fup_1L_chr Time btwn baseline and follow-up (a character vector of length one)
+#' @param predr_ctgs_ls Predictor category categoriess (a list)
+#' @return Study descriptions (a list)
+#' @rdname make_study_descs_ls
+#' @export 
+
+#' @keywords internal
+make_study_descs_ls <- function (health_utl_nm_1L_chr, time_btwn_bl_and_fup_1L_chr, 
+    predr_ctgs_ls) 
+{
+    study_descs_ls <- list(health_utl_nm_1L_chr = health_utl_nm_1L_chr, 
+        time_btwn_bl_and_fup_1L_chr = time_btwn_bl_and_fup_1L_chr, 
+        predr_ctgs_ls = predr_ctgs_ls)
+    return(study_descs_ls)
 }
 #' Make transformed single predictor models
 #' @description make_tfd_sngl_predr_mdls_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make transformed single predictor models tibble. The function returns Transformed single predictor models (a tibble).
