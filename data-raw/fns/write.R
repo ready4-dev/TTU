@@ -393,7 +393,7 @@ write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_
         smry_of_one_predr_mdl_tb <- make_smry_of_mdl_outp(data_tb,
             model_mdl = model_mdl, folds_1L_int = folds_1L_int, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
             tfmn_1L_chr = tfmn_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr,
-            mdl_type_1L_chr = mdl_type_1L_chr, mdl_types_lup = mdl_types_lup,
+            mdl_type_1L_chr = mdl_type_1L_chr, mdl_types_lup = mdl_types_lup, start_1L_chr = start_1L_chr,
             predn_type_1L_chr = predn_type_1L_chr)
     }
     else {

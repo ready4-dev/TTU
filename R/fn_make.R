@@ -741,7 +741,7 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
     "OLS"), mdl_types_lup = NULL) 
 {
     if (is.null(mdl_types_lup)) 
-        utils::data("mdl_types_lup", envir = environment())
+        utils::data("mdl_types_lup", envir = environment(), package = "TTU")
     ordered_mdl_types_chr <- dplyr::inner_join(smry_of_sngl_predr_mdls_tb %>% 
         dplyr::select(Model) %>% dplyr::rename(long_name_chr = Model), 
         mdl_types_lup) %>% dplyr::pull(short_name_chr)

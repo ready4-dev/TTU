@@ -46,10 +46,6 @@ Using the metadata from the predictors lookup table, we now create a vector of t
 mdl_smry_ls$predr_vals_dbl <- TTU::make_predr_vals(mdl_smry_ls$predr_var_nm_1L_chr, candidate_predrs_lup = ds_smry_ls$predictors_lup)
 ```
 
-```{r}
-mdl_smry_ls$predr_vals_dbl
-```
-
 We now compare all candidate model types, each using only the highest correlated candidate predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`). 
 
 ```{r warning = FALSE, message=FALSE}
@@ -62,7 +58,8 @@ mdl_smry_ls$smry_of_sngl_predr_mdls_tb <- TTU::write_sngl_predr_multi_mdls_outps
         predr_vals_dbl = mdl_smry_ls$predr_vals_dbl,
         path_to_write_to_1L_chr = output_data_dir_1L_chr, 
         new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsn",
-        mdl_types_lup = mdl_smry_ls$mdl_types_lup) 
+        mdl_types_lup = mdl_smry_ls$mdl_types_lup,
+        dictionary_tb = ds_smry_ls$dictionary_tb) 
 
 ```
 
@@ -78,10 +75,8 @@ We can now identify the highest performing model in each category of candidate m
 
 ```{r message=FALSE}
 mdl_smry_ls$prefd_mdl_types_chr <- TTU::make_prefd_mdls_vec(mdl_smry_ls$smry_of_sngl_predr_mdls_tb,
-                                           choose_from_pfx_chr = mdl_smry_ls$choose_from_pfx_chr)
-```
-```{r}
-mdl_smry_ls$prefd_mdl_types_chr
+                                           choose_from_pfx_chr = mdl_smry_ls$choose_from_pfx_chr,
+                                           mdl_types_lup = mdl_smry_ls$mdl_types_lup)
 ```
 We can override these automated selections and instead incorporate other considerations (possibly based on judgments informed by visual inspection of the density plots). We do this in the following command, specifying new preferred model types, in descending order of preference.
 
@@ -110,7 +105,7 @@ Now, we compare the performance of single predictor models of our preferred mode
         folds_1L_int = mdl_smry_ls$folds_1L_int, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsns_tb$predr_chr,
         mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1], depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,
         path_to_write_to_1L_chr = output_data_dir_1L_chr, new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsn",
-        fl_nm_pfx_1L_chr = "C_PREDR", mdl_types_lup = mdl_smry_ls$mdl_types_lup) 
+        fl_nm_pfx_1L_chr = "C_PREDR", start_1L_chr = NA_character_, mdl_types_lup = mdl_smry_ls$mdl_types_lup) 
 ```
 
 #### Compare candidate covariates
