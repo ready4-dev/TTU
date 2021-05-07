@@ -430,6 +430,7 @@ write_predr_and_covars_cmprsn <- function(scored_data_tb,
                                                                        path_to_write_to_1L_chr = output_data_dir_1L_chr,
                                                                        new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsn",
                                                                        fl_nm_pfx_1L_chr = "C_PREDR",
+                                                                       start_1L_chr = NA_character_,
                                                                        mdl_types_lup = mdl_smry_ls$mdl_types_lup)
   bl_tb <- scored_data_tb %>%
     youthvars::transform_ds_for_tstng(candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
