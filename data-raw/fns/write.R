@@ -781,6 +781,23 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
             dplyr::arrange(dplyr::desc(RsquaredP))
     return(smry_of_sngl_predr_mdls_tb)
 }
+write_to_delete_ds_copies <- function(paths_ls){
+  paths_to_outp_chr <- c(paste0(paths_ls$output_data_dir_1L_chr,"/I_ALL_OUTPUT_.RDS"))
+  secondary_refs_int <- 1:2
+  if(!is.null(secondary_refs_int)){
+    paths_to_outp_chr <- c(paths_to_outp_chr,secondary_refs_int %>% purrr::map_chr(~here::here(paths_ls$path_from_top_level_1L_chr,
+                                                                                               paths_ls$write_to_dir_nm_1L_chr,
+                                                                                               paste0("secondary_",.x),
+                                                                                               "Output","I_ALL_OUTPUT_.RDS")))
+  }
+  paths_to_outp_chr %>%
+    purrr::walk(~{
+      outp_smry_ls <- readRDS(.x)
+      write_to_delete_mdl_fls(outp_smry_ls)
+      outp_smry_ls$scored_data_tb <- NULL
+      saveRDS(outp_smry_ls, .x)
+    })
+}
 write_to_delete_mdl_fls <- function(outp_smry_ls){
   paths_to_mdls_chr <- outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>%
                                                      purrr::map_lgl(~endsWith(.x,".RDS") &
@@ -790,7 +807,9 @@ write_to_delete_mdl_fls <- function(outp_smry_ls){
                                                                          startsWith(.x,"E_Predrs_W_Covars_Sngl_Mdl_Cmprsn") |
                                                                          startsWith(.x,"F_TS_Mdls") ) &
                                                                       !endsWith(.x,"mdls_smry_tb.RDS"))]
-  paths_to_mdls_chr %>% purrr::walk(~unlink(.x))
+  paths_to_mdls_chr %>% purrr::walk(~unlink(paste0(outp_smry_ls$path_to_write_to_1L_chr,
+                                            "/",
+                                            .x)))
 }
 write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_ls,
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round",

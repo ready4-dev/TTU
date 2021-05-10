@@ -1068,6 +1068,33 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
             dplyr::arrange(dplyr::desc(RsquaredP))
     return(smry_of_sngl_predr_mdls_tb)
 }
+#' Write to delete dataset copies
+#' @description write_to_delete_ds_copies() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write to delete dataset copies. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @param paths_ls Paths (a list)
+#' @return NULL
+#' @rdname write_to_delete_ds_copies
+#' @export 
+#' @importFrom purrr map_chr walk
+#' @importFrom here here
+#' @keywords internal
+write_to_delete_ds_copies <- function (paths_ls) 
+{
+    paths_to_outp_chr <- c(paste0(paths_ls$output_data_dir_1L_chr, 
+        "/I_ALL_OUTPUT_.RDS"))
+    secondary_refs_int <- 1:2
+    if (!is.null(secondary_refs_int)) {
+        paths_to_outp_chr <- c(paths_to_outp_chr, secondary_refs_int %>% 
+            purrr::map_chr(~here::here(paths_ls$path_from_top_level_1L_chr, 
+                paths_ls$write_to_dir_nm_1L_chr, paste0("secondary_", 
+                  .x), "Output", "I_ALL_OUTPUT_.RDS")))
+    }
+    paths_to_outp_chr %>% purrr::walk(~{
+        outp_smry_ls <- readRDS(.x)
+        write_to_delete_mdl_fls(outp_smry_ls)
+        outp_smry_ls$scored_data_tb <- NULL
+        saveRDS(outp_smry_ls, .x)
+    })
+}
 #' Write to delete model files
 #' @description write_to_delete_mdl_fls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write to delete model files. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param outp_smry_ls Output summary (a list)
@@ -1084,7 +1111,8 @@ write_to_delete_mdl_fls <- function (outp_smry_ls)
             startsWith(.x, "D_Predr_Covars_Cmprsn") | startsWith(.x, 
             "E_Predrs_W_Covars_Sngl_Mdl_Cmprsn") | startsWith(.x, 
             "F_TS_Mdls")) & !endsWith(.x, "mdls_smry_tb.RDS"))]
-    paths_to_mdls_chr %>% purrr::walk(~unlink(.x))
+    paths_to_mdls_chr %>% purrr::walk(~unlink(paste0(outp_smry_ls$path_to_write_to_1L_chr, 
+        "/", .x)))
 }
 #' Write time series models
 #' @description write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models. The function returns Models summary (a tibble).
