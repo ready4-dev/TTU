@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Transform paths list for scndry — transform_paths_ls_for_scndry • TTU</title>
+<title>Write to delete dataset copies — write_to_delete_ds_copies • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Transform paths list for scndry — transform_paths_ls_for_scndry" />
-<meta property="og:description" content="transform_paths_ls_for_scndry() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform paths list for scndry. Function argument paths_ls specifies the object to be updated. Argument reference_1L_int provides the object to be updated. The function returns Paths (a list)." />
+<meta property="og:title" content="Write to delete dataset copies — write_to_delete_ds_copies" />
+<meta property="og:description" content="write_to_delete_ds_copies() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write to delete dataset copies. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -131,20 +131,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Transform paths list for scndry</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_transform.R'><code>R/fn_transform.R</code></a></small>
-    <div class="hidden name"><code>transform_paths_ls_for_scndry.Rd</code></div>
+    <h1>Write to delete dataset copies</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_write.R'><code>R/fn_write.R</code></a></small>
+    <div class="hidden name"><code>write_to_delete_ds_copies.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>transform_paths_ls_for_scndry() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform paths list for scndry. Function argument paths_ls specifies the object to be updated. Argument reference_1L_int provides the object to be updated. The function returns Paths (a list).</p>
+    <p>write_to_delete_ds_copies() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write to delete dataset copies. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour</p>
     </div>
 
-    <pre class="usage"><span class='fu'>transform_paths_ls_for_scndry</span><span class='op'>(</span>
-  <span class='va'>paths_ls</span>,
-  reference_1L_int <span class='op'>=</span> <span class='fl'>1</span>,
-  remove_prmry_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>write_to_delete_ds_copies</span><span class='op'>(</span><span class='va'>paths_ls</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,19 +149,8 @@
       <th>paths_ls</th>
       <td><p>Paths (a list)</p></td>
     </tr>
-    <tr>
-      <th>reference_1L_int</th>
-      <td><p>Reference (an integer vector of length one), Default: 1</p></td>
-    </tr>
-    <tr>
-      <th>remove_prmry_1L_lgl</th>
-      <td><p>Remove prmry (a logical vector of length one), Default: F</p></td>
-    </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>Paths (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
