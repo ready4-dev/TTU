@@ -127,7 +127,6 @@ transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w"
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym exec
-#' @keywords internal
 transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototype_lup = NULL, 
     depnt_var_nm_1L_chr = "aqol6d_total_w", class_fn_1L_chr = "youthvars::youthvars_aqol6d_adol") 
 {
@@ -179,7 +178,6 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
 #' @rdname transform_paths_ls_for_scndry
 #' @export 
 
-#' @keywords internal
 transform_paths_ls_for_scndry <- function (paths_ls, reference_1L_int = 1, remove_prmry_1L_lgl = F) 
 {
     paths_ls$prmry_analysis_dir_nm_1L_chr <- paths_ls$write_to_dir_nm_1L_chr
@@ -234,7 +232,6 @@ transform_predr_nm_part_of_phrases <- function (phrases_chr, old_nms_chr = NULL,
 #' @export 
 #' @importFrom tibble add_case
 #' @importFrom dplyr filter
-#' @keywords internal
 transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharing_rprt_1L_lgl = F) 
 {
     if (add_suplry_rprt_1L_lgl) {
@@ -271,7 +268,6 @@ transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharin
 #' @importFrom rlang sym
 #' @importFrom purrr reduce
 #' @importFrom stats na.omit
-#' @keywords internal
 transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, 

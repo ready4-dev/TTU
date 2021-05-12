@@ -7,7 +7,6 @@
 #' @rdname make_analysis_ds_smry_ls
 #' @export 
 
-#' @keywords internal
 make_analysis_ds_smry_ls <- function (ds_descvs_ls, candidate_covar_nms_chr, predictors_lup) 
 {
     analysis_ds_smry_ls <- list(candidate_predrs_chr = ds_descvs_ls$candidate_predrs_chr, 
@@ -495,7 +494,6 @@ make_mdl_coef_ratio_ls <- function (outp_smry_ls, predr_ctgs_ls = NULL)
 #' @rdname make_mdl_nms_ls
 #' @export 
 #' @importFrom purrr map2
-#' @keywords internal
 make_mdl_nms_ls <- function (predr_vars_nms_ls, mdl_types_chr) 
 {
     mdl_nms_ls <- purrr::map2(predr_vars_nms_ls, make_unique_ls_elmt_idx_int(predr_vars_nms_ls), 
@@ -644,7 +642,6 @@ make_predn_ds_with_one_predr <- function (model_mdl, depnt_var_nm_1L_chr = "utl_
 #' @importFrom purrr map_dbl
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom rlang exec
-#' @keywords internal
 make_predr_vals <- function (predr_var_nm_1L_chr, candidate_predrs_lup = NULL) 
 {
     if (is.null(candidate_predrs_lup)) {
@@ -666,7 +663,6 @@ make_predr_vals <- function (predr_var_nm_1L_chr, candidate_predrs_lup = NULL)
 #' @rdname make_predr_vars_nms_ls
 #' @export 
 #' @importFrom purrr map flatten map_lgl
-#' @keywords internal
 make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls, existing_predrs_ls = NULL) 
 {
     predr_vars_nms_ls <- covars_ls %>% purrr::map(~{
@@ -736,7 +732,6 @@ make_predrs_for_best_mdls <- function (outp_smry_ls, old_nms_chr = NULL, new_nms
 #' @importFrom utils data
 #' @importFrom dplyr inner_join select rename pull
 #' @importFrom purrr map_chr
-#' @keywords internal
 make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr = c("GLM", 
     "OLS"), mdl_types_lup = NULL) 
 {
@@ -792,7 +787,6 @@ make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_ch
 #' @importFrom cowplot save_plot
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter pull
-#' @keywords internal
 make_results_ls <- function (spine_of_results_ls, cs_ts_ratios_tb, ctgl_vars_regrouping_ls, 
     sig_covars_some_predrs_mdls_tb, sig_thresh_covars_1L_chr) 
 {
@@ -848,7 +842,6 @@ make_results_ls <- function (spine_of_results_ls, cs_ts_ratios_tb, ctgl_vars_reg
 #' @rdname make_results_ls_spine
 #' @export 
 
-#' @keywords internal
 make_results_ls_spine <- function (output_data_dir_1L_chr, var_nm_change_lup, study_descs_ls, 
     nbr_of_digits_1L_int = 2L) 
 {
@@ -1192,7 +1185,6 @@ make_ss_tbls_ls <- function (outp_smry_ls, mdls_smry_tbls_ls, covars_mdls_ls, de
 #' @rdname make_study_descs_ls
 #' @export 
 
-#' @keywords internal
 make_study_descs_ls <- function (health_utl_nm_1L_chr, time_btwn_bl_and_fup_1L_chr, 
     predr_ctgs_ls) 
 {

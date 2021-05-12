@@ -220,7 +220,6 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
 #' @importFrom ready4show make_paths_ls
 #' @importFrom here i_am here
 #' @importFrom youthvars write_all_outp_dirs
-#' @keywords internal
 write_main_oupt_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F) 
 {
     R_fl_nm_1L_chr <- list.files() %>% purrr::pluck(1)
@@ -363,7 +362,6 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
 #' @importFrom dplyr pull arrange desc
 #' @importFrom rlang sym
 #' @importFrom stats predict AIC BIC
-#' @keywords internal
 write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predrs_var_nms_chr, 
     covar_var_nms_chr, mdl_type_1L_chr, path_to_write_to_1L_chr, 
     new_dir_nm_1L_chr = "D_Covars_Selection", fl_nm_pfx_1L_chr = "D_CT", 
@@ -419,7 +417,6 @@ write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_tota
 #' @importFrom purrr map_dfr
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr select mutate everything arrange desc
-#' @keywords internal
 write_mdl_type_multi_outps <- function (data_tb, folds_1L_int = 10, predrs_var_nms_chr, covar_var_nms_chr = NA_character_, 
     start_1L_chr = NULL, mdl_type_1L_chr, depnt_var_nm_1L_chr = "utl_total_w", 
     path_to_write_to_1L_chr, new_dir_nm_1L_chr, mdl_types_lup = NULL, 
@@ -697,7 +694,6 @@ write_predr_and_mdl_tstng_results <- function (scored_data_tb, ds_smry_ls, mdl_s
 #' @importFrom ready4show write_mdl_plt_fl
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr arrange desc filter
-#' @keywords internal
 write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_nm_1L_chr = "B_Candidate_Predrs_Cmprsn", 
     depnt_var_nm_1L_chr = "utl_total_w", candidate_predrs_chr, 
     max_nbr_of_boruta_mdl_runs_int = 300L) 
@@ -746,7 +742,6 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_
 #' @importFrom ready4show make_rprt_type_ls write_rprt_from_tmpl
 #' @importFrom here i_am here
 #' @importFrom rlang exec
-#' @keywords internal
 write_report <- function (params_ls, paths_ls, R_fl_nm_1L_chr, rprt_nm_1L_chr, 
     abstract_args_ls = NULL, header_yaml_args_ls = NULL, rprt_lup = NULL) 
 {
@@ -833,7 +828,6 @@ write_results_to_csv <- function (synth_data_spine_ls, output_dir_1L_chr = ".")
 #' @rdname write_rprt_with_rcrd
 #' @export 
 
-#' @keywords internal
 write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, R_fl_nm_1L_chr, header_yaml_args_ls = NULL, 
     rprt_lup, use_fake_data_1L_lgl, subtitle_1L_chr = "Results Supplementary Report 1: Catalogue of time series models", 
     rprt_subtitle_1L_chr = "Methods Supplementary Report 2: Record of auto-generation of model catalogue.", 
@@ -875,7 +869,6 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, R_fl_nm_1L_c
 #' @rdname write_scndry_analysis
 #' @export 
 
-#' @keywords internal
 write_scndry_analysis <- function (analysis_params_ls, candidate_covar_nms_chr, candidate_predrs_chr, 
     prefd_covars_chr, header_yaml_args_ls, subtitle_1L_chr, reference_1L_int, 
     paths_ls, R_fl_nm_1L_chr, rprt_lup, abstract_args_ls = NULL) 
@@ -1031,7 +1024,6 @@ write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Sha
 #' @importFrom purrr map_dfr
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr arrange desc
-#' @keywords internal
 write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var_nm_1L_chr, predr_var_desc_1L_chr, 
     predr_vals_dbl, path_to_write_to_1L_chr, new_dir_nm_1L_chr = "A_Candidate_Mdls_Cmprsn", 
     start_1L_chr = NULL, covar_var_nms_chr = NA_character_, depnt_var_nm_1L_chr = "utl_total_w", 
@@ -1076,7 +1068,6 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @export 
 #' @importFrom purrr map_chr walk
 #' @importFrom here here
-#' @keywords internal
 write_to_delete_ds_copies <- function (paths_ls) 
 {
     paths_to_outp_chr <- c(paste0(paths_ls$output_data_dir_1L_chr, 
@@ -1102,7 +1093,6 @@ write_to_delete_ds_copies <- function (paths_ls)
 #' @rdname write_to_delete_mdl_fls
 #' @export 
 #' @importFrom purrr map_lgl walk
-#' @keywords internal
 write_to_delete_mdl_fls <- function (outp_smry_ls) 
 {
     paths_to_mdls_chr <- outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% 

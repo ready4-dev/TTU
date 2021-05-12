@@ -26,4 +26,3 @@ Spine of results (a list)
 \description{
 make_results_ls_spine() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make results list spine. The function returns Spine of results (a list).
 }
-\keyword{internal}

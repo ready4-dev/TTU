@@ -32,4 +32,3 @@ Confirmed predictors (a tibble)
 \description{
 write_predr_cmprsn_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predictor comparison outputs. The function returns Confirmed predictors (a tibble).
 }
-\keyword{internal}

@@ -1,11 +1,3 @@
-home:
-  links:
-  - text: User manual (PDF)
-    href: https://github.com/ready4-dev/TTU/files/6277705/TTU_user_0.0.0.9133.pdf
-  - text: Developer version of usual manual (PDF)
-    href: https://github.com/ready4-dev/TTU/files/6277710/TTU_developer_0.0.0.9133.pdf
-  - text: Project website
-    href: https://www.ready4-dev.com/
 development:
   mode: auto
 reference:
@@ -24,10 +16,35 @@ reference:
 - title: "Functions"
 - contents:
   - add_utility_predn_to_ds
+  - fit_clg_log_tfmn
+  - get_signft_covars
+  - make_analysis_ds_smry_ls
   - make_fake_ts_data
+  - make_mdl_nms_ls
+  - make_predr_vals
+  - make_predr_vars_nms_ls
+  - make_prefd_mdls_vec
+  - make_results_ls
+  - make_results_ls_spine
+  - make_study_descs_ls
+  - reorder_cndt_predrs_chr
+  - transform_mdl_vars_with_clss
+  - transform_paths_ls_for_scndry
+  - transform_rprt_lup
+  - transform_tb_to_mdl_inp
   - write_all_alg_outps
+  - write_main_oupt_dir
   - write_mdl_cmprsn
+  - write_mdl_type_covars_mdls
+  - write_mdl_type_multi_outps
   - write_mdls_with_covars_cmprsn
   - write_predr_and_covars_cmprsn
+  - write_predr_cmprsn_outps
+  - write_report
+  - write_rprt_with_rcrd
+  - write_scndry_analysis
   - write_shareable_mdls
+  - write_sngl_predr_multi_mdls_outps
+  - write_to_delete_ds_copies
+  - write_to_delete_mdl_fls
   - write_ts_mdls_from_alg_outp

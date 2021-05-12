@@ -59,4 +59,3 @@ Summary of single predictor models (a tibble)
 \description{
 write_sngl_predr_multi_mdls_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write single predictor multi models outputs. The function returns Summary of single predictor models (a tibble).
 }
-\keyword{internal}
