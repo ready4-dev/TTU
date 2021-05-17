@@ -77,7 +77,7 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, depnt_
     return(outp_smry_ls)
 }
 write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1L_chr,
-                                depnt_var_nm_1L_chr = "aqol6d_total_w", covar_var_nms_chr = NA_character_,
+                                depnt_var_nm_1L_chr = "utl_total_w", covar_var_nms_chr = NA_character_,
                                 fl_nm_pfx_1L_chr = "A_RT", height_1L_dbl = 6, width_1L_dbl = 6,
                                 start_1L_chr = NULL, mdl_types_lup = NULL)
 {
@@ -119,7 +119,9 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
         else {
             if (.x == 3) {
                 plt_fn <- plot_obsd_predd_dnst
-                fn_args_ls <- list(tfd_data_tb = tfd_data_tb)
+                fn_args_ls <- list(tfd_data_tb = tfd_data_tb,
+                                   depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                                   depnt_var_desc_1L_chr = depnt_var_desc_1L_chr)
             }
             else {
                 plt_fn <- plot_obsd_predd_sctr_cmprsn
@@ -260,17 +262,33 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
     }else{
       predn_ds_tb <- NULL
     }
-    purrr::pwalk(list(plt_fn_ls = list(plot_lnr_cmprsn, plot_auto_lm,
-        plot_obsd_predd_dnst, plot_obsd_predd_dnst, plot_sctr_plt_cmprsn)[plt_idxs_int],
-        fn_args_ls_ls = list(list(data_tb = data_tb, predn_ds_tb = predn_ds_tb,
-            predr_var_nm_1L_chr = predr_var_nm_1L_chr, predr_var_desc_1L_chr = predr_var_desc_1L_chr),
-            list(model_mdl, which_dbl = 1:6, ncol_1L_int = 3L, label_size_1L_int = 3),
-            list(tfd_data_tb = tfd_data_tb), list(tfd_data_tb = transform_data_tb_for_cmprsn(data_tb,
-                model_mdl = model_mdl, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, tf_type_1L_chr = ifelse(!4 %in% plt_idxs_int,
-                  "Predicted", "Simulated"), predn_type_1L_chr = NULL,
-                tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl,
-                family_1L_chr = family_1L_chr), predd_val_var_nm_1L_chr = "Simulated"),
-            list(tfd_data_tb = tfd_data_tb))[plt_idxs_int], plt_nm_sfx_chr = c("_LNR_CMPRSN",
+    purrr::pwalk(list(plt_fn_ls = list(plot_lnr_cmprsn,
+                                       plot_auto_lm,
+                                       plot_obsd_predd_dnst,
+                                       plot_obsd_predd_dnst,
+                                       plot_sctr_plt_cmprsn)[plt_idxs_int],
+        fn_args_ls_ls = list(list(data_tb = data_tb,
+                                  predn_ds_tb = predn_ds_tb,
+                                  predr_var_nm_1L_chr = predr_var_nm_1L_chr,
+                                  depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                                  depnt_var_desc_1L_chr = depnt_var_desc_1L_chr),
+                             list(model_mdl, which_dbl = 1:6, ncol_1L_int = 3L, label_size_1L_int = 3),
+                             list(tfd_data_tb = tfd_data_tb,
+                                  depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                                  depnt_var_desc_1L_chr = depnt_var_desc_1L_chr),
+                             list(tfd_data_tb = transform_data_tb_for_cmprsn(data_tb,
+                                                                             model_mdl = model_mdl,
+                                                                             depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                                                                             tf_type_1L_chr = ifelse(!4 %in% plt_idxs_int,
+                                                                                                     "Predicted", "Simulated"),
+                                                                             predn_type_1L_chr = NULL,
+                                                                             tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl,
+                                                                             family_1L_chr = family_1L_chr),
+                                  depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                                  depnt_var_desc_1L_chr = depnt_var_desc_1L_chr,
+                                  predd_val_var_nm_1L_chr = "Simulated"),
+                             list(tfd_data_tb = tfd_data_tb,
+                                  depnt_var_nm_1L_chr = depnt_var_nm_1L_chr))[plt_idxs_int], plt_nm_sfx_chr = c("_LNR_CMPRSN",
             "_AUTOPLT", "_PRED_DNSTY", "_SIM_DNSTY", "_PRED_SCTR")[plt_idxs_int],
         size_ls = list(c(6, 6), c(4, 7), c(6, 6), c(6, 6), c(6,
             6))[plt_idxs_int]), ~ ready4show::write_mdl_plt_fl(plt_fn = ..1,
@@ -552,43 +570,6 @@ write_report <- function(params_ls,
                   rltv_path_to_data_dir_1L_chr = "../Output",
                   nm_of_mkdn_dir_1L_chr = "Markdown")
   rlang::exec(ready4show::write_rprt_from_tmpl,!!!args_ls)
-}
-write_results_to_csv <- function (synth_data_spine_ls, output_dir_1L_chr = ".")
-{
-  measurements_tb <- tibble::tibble(timepoint_nms_chr = synth_data_spine_ls$timepoint_nms_chr,
-                                    nbr_obs_dbl = synth_data_spine_ls$nbr_obs_dbl)
-  var_summ_res_tb <- suppressMessages(purrr::map_dfr(1:length(synth_data_spine_ls$timepoint_nms_chr),
-                                                     ~{
-                                                       idx_dbl <- .x
-                                                       suppressWarnings({
-                                                         synth_data_spine_ls[c(4:6)] %>% purrr::map_dfc(~.x[idx_dbl])
-                                                       }) %>% stats::setNames(c("Mean", "SD", "N_Missing")) %>%
-                                                         dplyr::mutate(var_names_chr = synth_data_spine_ls$var_names_chr,
-                                                                       timepoint_nms_chr = synth_data_spine_ls$timepoint_nms_chr[idx_dbl]) %>%
-                                                         dplyr::select(timepoint_nms_chr, var_names_chr,
-                                                                       dplyr::everything())
-                                                     }))
-  cor_tb_ls <- synth_data_spine_ls$cor_mat_ls %>% purrr::map(~tibble::as_tibble(.x) %>%
-                                                               stats::setNames(synth_data_spine_ls$var_names_chr) %>%
-                                                               dplyr::mutate(var_names_chr = synth_data_spine_ls$var_names_chr) %>%
-                                                               dplyr::select(var_names_chr, dplyr::everything())) %>%
-    stats::setNames(paste0(synth_data_spine_ls$timepoint_nms_chr,
-                           "_correlations_tb"))
-  var_class_pars_tb <- synth_data_spine_ls[7:9] %>% tibble::as_tibble() %>%
-    dplyr::mutate(min_dbl = purrr::map_dbl(min_max_ls, ~.x[1]),
-                  max_dbl = purrr::map_dbl(min_max_ls, ~.x[2])) %>%
-    dplyr::select(var_names_chr, dplyr::everything(), -min_max_ls)
-  output_ls <- list(measurements_tb = measurements_tb, var_summ_res_tb = var_summ_res_tb,
-                    var_class_pars_tb = var_class_pars_tb) %>% append(cor_tb_ls)
-  dss_tb <- tibble::tibble(ds_obj_nm_chr = names(output_ls),
-                           title_chr = c("Brief summary table of the number of observations for which data was collected at each study timepoint.",
-                                         "Summary statistics (Mean, SD and Number Missing) for AQoL6D health utility and six mental health outcome measures for each study timepoint.",
-                                         "Brief information about the data structure (whether discrete and allowable range) of AQoL6D health utility and six mental health outcome variables.",
-                                         paste0("Correlation matrix for AQoL6D health utility and six mental health outcome measures at the ",
-                                                synth_data_spine_ls$timepoint_nms_chr, " study timepoint.")))
-  purrr::walk2(output_ls, names(output_ls), ~write.csv(.x,
-                                                       file = paste0(output_dir_1L_chr, "/", .y, ".csv"), row.names = F))
-  return(dss_tb)
 }
 write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                                  paths_ls,

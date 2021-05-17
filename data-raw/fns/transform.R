@@ -53,8 +53,8 @@ transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w"
 transform_mdl_vars_with_clss <- function(ds_tb,
                                          predictors_lup = NULL,
                                          prototype_lup = NULL,
-                                         depnt_var_nm_1L_chr = "aqol6d_total_w",
-                                         class_fn_1L_chr = "youthvars::youthvars_aqol6d_adol"){
+                                         depnt_var_nm_1L_chr = "utl_total_w",
+                                         class_fn_1L_chr = "as.numeric"){
   if(is.null(predictors_lup))
     data("predictors_lup", package = "youthvars", envir = environment())
   if(is.null(prototype_lup))
@@ -208,7 +208,7 @@ transform_tbl_to_rnd_vars <- function(ds_tb,
                                   format(nsmall = nbr_of_digits_1L_int)))
   return(tfd_ds_tb)
 }
-transform_ts_mdl_data <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "aqol6d_total_w",
+transform_ts_mdl_data <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_total_w",
                                    predr_vars_nms_chr, id_var_nm_1L_chr = "fkClientID", mdl_nm_1L_chr)
 {
   old_data_tb <- data_tb %>% dplyr::select(c(dplyr::all_of(id_var_nm_1L_chr),

@@ -7,7 +7,7 @@
 reorder_cndt_predrs_chr(
   candidate_predrs_chr,
   data_tb,
-  depnt_var_nm_1L_chr = "aqol6d_total_w",
+  depnt_var_nm_1L_chr = "utl_total_w",
   method_1L_chr = "pearson"
 )
 }
@@ -16,7 +16,7 @@ reorder_cndt_predrs_chr(
 
 \item{data_tb}{Data (a tibble)}
 
-\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{method_1L_chr}{Method (a character vector of length one), Default: 'pearson'}
 }

@@ -8,7 +8,7 @@ write_box_cox_tfmn(
   data_tb,
   predr_var_nm_1L_chr,
   path_to_write_to_1L_chr,
-  depnt_var_nm_1L_chr = "aqol6d_total_w",
+  depnt_var_nm_1L_chr = "utl_total_w",
   covar_var_nms_chr = NA_character_,
   fl_nm_pfx_1L_chr = "A_RT",
   height_1L_dbl = 6,
@@ -24,7 +24,7 @@ write_box_cox_tfmn(
 
 \item{path_to_write_to_1L_chr}{Path to write to (a character vector of length one)}
 
-\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{covar_var_nms_chr}{Covariate variable names (a character vector), Default: 'NA'}
 

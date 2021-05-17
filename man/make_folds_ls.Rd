@@ -4,16 +4,12 @@
 \alias{make_folds_ls}
 \title{Make folds}
 \usage{
-make_folds_ls(
-  data_tb,
-  depnt_var_nm_1L_chr = "aqol6d_total_w",
-  folds_1L_int = 10L
-)
+make_folds_ls(data_tb, depnt_var_nm_1L_chr = "utl_total_w", folds_1L_int = 10L)
 }
 \arguments{
 \item{data_tb}{Data (a tibble)}
 
-\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{folds_1L_int}{Folds (an integer vector of length one), Default: 10}
 }

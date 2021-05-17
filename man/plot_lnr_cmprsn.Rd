@@ -7,9 +7,9 @@
 plot_lnr_cmprsn(
   data_tb,
   predn_ds_tb,
-  depnt_var_nm_1L_chr = "aqol6d_total_w",
   predr_var_nm_1L_chr,
-  depnt_var_desc_1L_chr = "AQoL-6D utility score",
+  depnt_var_nm_1L_chr = "utl_total_w",
+  depnt_var_desc_1L_chr = "Total weighted utility score",
   predr_var_desc_1L_chr
 )
 }
@@ -18,11 +18,11 @@ plot_lnr_cmprsn(
 
 \item{predn_ds_tb}{Prediction dataset (a tibble)}
 
-\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'}
-
 \item{predr_var_nm_1L_chr}{Predictor variable name (a character vector of length one)}
 
-\item{depnt_var_desc_1L_chr}{Dependent variable description (a character vector of length one), Default: 'AQoL-6D utility score'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
+
+\item{depnt_var_desc_1L_chr}{Dependent variable description (a character vector of length one), Default: 'Total weighted utility score'}
 
 \item{predr_var_desc_1L_chr}{Predictor variable description (a character vector of length one)}
 }

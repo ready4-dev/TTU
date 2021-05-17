@@ -184,7 +184,7 @@ make_fake_ts_data <- function (outp_smry_ls)
         ~NA_real_))
     return(fk_data_tb)
 }
-make_folds_ls <- function (data_tb, depnt_var_nm_1L_chr = "aqol6d_total_w", folds_1L_int = 10L)
+make_folds_ls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", folds_1L_int = 10L)
 {
     folds_ls <- caret::createFolds(data_tb %>% dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr)),
                                    k = folds_1L_int, list = TRUE, returnTrain = FALSE)

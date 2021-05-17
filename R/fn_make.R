@@ -244,7 +244,7 @@ make_fake_ts_data <- function (outp_smry_ls)
 #' Make folds
 #' @description make_folds_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make folds list. The function returns Folds (a list).
 #' @param data_tb Data (a tibble)
-#' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'utl_total_w'
 #' @param folds_1L_int Folds (an integer vector of length one), Default: 10
 #' @return Folds (a list)
 #' @rdname make_folds_ls
@@ -253,7 +253,7 @@ make_fake_ts_data <- function (outp_smry_ls)
 #' @importFrom dplyr pull
 #' @importFrom rlang sym
 #' @keywords internal
-make_folds_ls <- function (data_tb, depnt_var_nm_1L_chr = "aqol6d_total_w", folds_1L_int = 10L) 
+make_folds_ls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", folds_1L_int = 10L) 
 {
     folds_ls <- caret::createFolds(data_tb %>% dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr)), 
         k = folds_1L_int, list = TRUE, returnTrain = FALSE)

@@ -6,8 +6,8 @@
 \usage{
 plot_obsd_predd_sctr_cmprsn(
   tfd_data_tb,
-  depnt_var_nm_1L_chr = "aqol6d_total_w",
-  depnt_var_desc_1L_chr = "AQoL-6D utility score",
+  depnt_var_nm_1L_chr = "utl_total_w",
+  depnt_var_desc_1L_chr = "Total weighted utility score",
   round_var_nm_1L_chr = "round",
   args_ls = NULL,
   predd_val_var_nm_1L_chr = "Predicted"
@@ -16,9 +16,9 @@ plot_obsd_predd_sctr_cmprsn(
 \arguments{
 \item{tfd_data_tb}{Transformed data (a tibble)}
 
-\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
-\item{depnt_var_desc_1L_chr}{Dependent variable description (a character vector of length one), Default: 'AQoL-6D utility score'}
+\item{depnt_var_desc_1L_chr}{Dependent variable description (a character vector of length one), Default: 'Total weighted utility score'}
 
 \item{round_var_nm_1L_chr}{Round variable name (a character vector of length one), Default: 'round'}
 

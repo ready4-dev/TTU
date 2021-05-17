@@ -8,8 +8,8 @@ transform_mdl_vars_with_clss(
   ds_tb,
   predictors_lup = NULL,
   prototype_lup = NULL,
-  depnt_var_nm_1L_chr = "aqol6d_total_w",
-  class_fn_1L_chr = "youthvars::youthvars_aqol6d_adol"
+  depnt_var_nm_1L_chr = "utl_total_w",
+  class_fn_1L_chr = "as.numeric"
 )
 }
 \arguments{
@@ -19,9 +19,9 @@ transform_mdl_vars_with_clss(
 
 \item{prototype_lup}{Prototype (a lookup table), Default: NULL}
 
-\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
-\item{class_fn_1L_chr}{Class function (a character vector of length one), Default: 'youthvars::youthvars_aqol6d_adol'}
+\item{class_fn_1L_chr}{Class function (a character vector of length one), Default: 'as.numeric'}
 }
 \value{
 Transformed dataset (a tibble)

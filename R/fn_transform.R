@@ -116,8 +116,8 @@ transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w"
 #' @param ds_tb Dataset (a tibble)
 #' @param predictors_lup Predictors (a lookup table), Default: NULL
 #' @param prototype_lup Prototype (a lookup table), Default: NULL
-#' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'
-#' @param class_fn_1L_chr Class function (a character vector of length one), Default: 'youthvars::youthvars_aqol6d_adol'
+#' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'utl_total_w'
+#' @param class_fn_1L_chr Class function (a character vector of length one), Default: 'as.numeric'
 #' @return Transformed dataset (a tibble)
 #' @rdname transform_mdl_vars_with_clss
 #' @export 
@@ -128,7 +128,7 @@ transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w"
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym exec
 transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototype_lup = NULL, 
-    depnt_var_nm_1L_chr = "aqol6d_total_w", class_fn_1L_chr = "youthvars::youthvars_aqol6d_adol") 
+    depnt_var_nm_1L_chr = "utl_total_w", class_fn_1L_chr = "as.numeric") 
 {
     if (is.null(predictors_lup)) 
         data("predictors_lup", package = "youthvars", envir = environment())
@@ -324,7 +324,7 @@ transform_tbl_to_rnd_vars <- function (ds_tb, nbr_of_digits_1L_int = 2L)
 #' @description transform_ts_mdl_data() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform time series model data. Function argument mdl_ls specifies the object to be updated. Argument data_tb provides the object to be updated. The function returns Cnfdl (a list of models).
 #' @param mdl_ls Model list (a list of models)
 #' @param data_tb Data (a tibble)
-#' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'
+#' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'utl_total_w'
 #' @param predr_vars_nms_chr Predictor variables names (a character vector)
 #' @param id_var_nm_1L_chr Identity variable name (a character vector of length one), Default: 'fkClientID'
 #' @param mdl_nm_1L_chr Model name (a character vector of length one)
@@ -334,7 +334,7 @@ transform_tbl_to_rnd_vars <- function (ds_tb, nbr_of_digits_1L_int = 2L)
 #' @importFrom dplyr select all_of summarise across everything
 #' @importFrom purrr map flatten_chr
 #' @keywords internal
-transform_ts_mdl_data <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "aqol6d_total_w", 
+transform_ts_mdl_data <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_total_w", 
     predr_vars_nms_chr, id_var_nm_1L_chr = "fkClientID", mdl_nm_1L_chr) 
 {
     old_data_tb <- data_tb %>% dplyr::select(c(dplyr::all_of(id_var_nm_1L_chr), 

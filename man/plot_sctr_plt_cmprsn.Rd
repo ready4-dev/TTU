@@ -6,14 +6,14 @@
 \usage{
 plot_sctr_plt_cmprsn(
   tfd_data_tb,
-  depnt_var_nm_1L_chr = "aqol6d_total_w",
+  depnt_var_nm_1L_chr = "utl_total_w",
   predd_val_var_nm_1L_chr = "Predicted"
 )
 }
 \arguments{
 \item{tfd_data_tb}{Transformed data (a tibble)}
 
-\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{predd_val_var_nm_1L_chr}{Predicted value variable name (a character vector of length one), Default: 'Predicted'}
 }

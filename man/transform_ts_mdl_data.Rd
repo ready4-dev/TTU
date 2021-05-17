@@ -7,7 +7,7 @@
 transform_ts_mdl_data(
   mdl_ls,
   data_tb,
-  depnt_var_nm_1L_chr = "aqol6d_total_w",
+  depnt_var_nm_1L_chr = "utl_total_w",
   predr_vars_nms_chr,
   id_var_nm_1L_chr = "fkClientID",
   mdl_nm_1L_chr
@@ -18,7 +18,7 @@ transform_ts_mdl_data(
 
 \item{data_tb}{Data (a tibble)}
 
-\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'aqol6d_total_w'}
+\item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{predr_vars_nms_chr}{Predictor variables names (a character vector)}
 
