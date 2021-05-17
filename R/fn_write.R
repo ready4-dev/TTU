@@ -284,6 +284,7 @@ write_mdl_cmprsn <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, output_da
 #' @param model_mdl Model (a model)
 #' @param mdl_fl_nm_1L_chr Model file name (a character vector of length one), Default: 'OLS_NTF'
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'utl_total_w'
+#' @param depnt_var_desc_1L_chr Dependent variable description (a character vector of length one), Default: 'Utility score'
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param predr_var_nm_1L_chr Predictor variable name (a character vector of length one)
 #' @param predr_var_desc_1L_chr Predictor variable description (a character vector of length one)
@@ -301,8 +302,9 @@ write_mdl_cmprsn <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, output_da
 #' @importFrom ready4show write_mdl_plt_fl
 #' @keywords internal
 write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", depnt_var_nm_1L_chr = "utl_total_w", 
-    tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, predr_var_desc_1L_chr, 
-    predr_vals_dbl, covar_var_nms_chr = NA_character_, path_to_write_to_1L_chr, 
+    depnt_var_desc_1L_chr = "Utility score", tfmn_1L_chr = "NTF", 
+    predr_var_nm_1L_chr, predr_var_desc_1L_chr, predr_vals_dbl, 
+    covar_var_nms_chr = NA_character_, path_to_write_to_1L_chr, 
     predn_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, 
     plt_idxs_int = 1:5) 
 {

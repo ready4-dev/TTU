@@ -9,6 +9,7 @@ write_mdl_plts(
   model_mdl,
   mdl_fl_nm_1L_chr = "OLS_NTF",
   depnt_var_nm_1L_chr = "utl_total_w",
+  depnt_var_desc_1L_chr = "Utility score",
   tfmn_1L_chr = "NTF",
   predr_var_nm_1L_chr,
   predr_var_desc_1L_chr,
@@ -29,6 +30,8 @@ write_mdl_plts(
 \item{mdl_fl_nm_1L_chr}{Model file name (a character vector of length one), Default: 'OLS_NTF'}
 
 \item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
+
+\item{depnt_var_desc_1L_chr}{Dependent variable description (a character vector of length one), Default: 'Utility score'}
 
 \item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
