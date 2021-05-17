@@ -25,9 +25,9 @@ plot_auto_lm <- function (mdl, which_dbl = 1:6, ncol_1L_int = 3L, label_size_1L_
 #' @param data_tb Data (a tibble)
 #' @param predn_ds_tb Prediction dataset (a tibble)
 #' @param predr_var_nm_1L_chr Predictor variable name (a character vector of length one)
+#' @param predr_var_desc_1L_chr Predictor variable description (a character vector of length one)
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'utl_total_w'
 #' @param depnt_var_desc_1L_chr Dependent variable description (a character vector of length one), Default: 'Total weighted utility score'
-#' @param predr_var_desc_1L_chr Predictor variable description (a character vector of length one)
 #' @return NULL
 #' @rdname plot_lnr_cmprsn
 #' @export 
@@ -35,8 +35,8 @@ plot_auto_lm <- function (mdl, which_dbl = 1:6, ncol_1L_int = 3L, label_size_1L_
 #' @importFrom rlang sym
 #' @importFrom ggplot2 ggplot aes geom_point geom_smooth geom_line theme_bw labs
 #' @keywords internal
-plot_lnr_cmprsn <- function (data_tb, predn_ds_tb, predr_var_nm_1L_chr, depnt_var_nm_1L_chr = "utl_total_w", 
-    depnt_var_desc_1L_chr = "Total weighted utility score", predr_var_desc_1L_chr) 
+plot_lnr_cmprsn <- function (data_tb, predn_ds_tb, predr_var_nm_1L_chr, predr_var_desc_1L_chr, 
+    depnt_var_nm_1L_chr = "utl_total_w", depnt_var_desc_1L_chr = "Total weighted utility score") 
 {
     data_tb <- data_tb %>% dplyr::filter(!is.na(!!rlang::sym(predr_var_nm_1L_chr)))
     ggplot2::ggplot(data_tb, ggplot2::aes(x = !!rlang::sym(predr_var_nm_1L_chr), 

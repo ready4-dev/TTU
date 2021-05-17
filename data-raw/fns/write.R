@@ -270,6 +270,7 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
         fn_args_ls_ls = list(list(data_tb = data_tb,
                                   predn_ds_tb = predn_ds_tb,
                                   predr_var_nm_1L_chr = predr_var_nm_1L_chr,
+                                  predr_var_desc_1L_chr = predr_var_desc_1L_chr,
                                   depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
                                   depnt_var_desc_1L_chr = depnt_var_desc_1L_chr),
                              list(model_mdl, which_dbl = 1:6, ncol_1L_int = 3L, label_size_1L_int = 3),

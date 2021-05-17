@@ -11,9 +11,10 @@ plot_auto_lm <- function (mdl, which_dbl = 1:6, ncol_1L_int = 3L, label_size_1L_
 plot_lnr_cmprsn <- function (data_tb,
                              predn_ds_tb,
                              predr_var_nm_1L_chr,
+                             predr_var_desc_1L_chr,
                              depnt_var_nm_1L_chr = "utl_total_w",
-                             depnt_var_desc_1L_chr = "Total weighted utility score",
-    predr_var_desc_1L_chr)
+                             depnt_var_desc_1L_chr = "Total weighted utility score"
+                             )
 {
     data_tb <- data_tb %>% dplyr::filter(!is.na(!!rlang::sym(predr_var_nm_1L_chr)))
     ggplot2::ggplot(data_tb, ggplot2::aes(x = !!rlang::sym(predr_var_nm_1L_chr),
