@@ -599,7 +599,7 @@ make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls, existing_predrs_
 {
     predr_vars_nms_ls <- covars_ls %>% purrr::map(~{
         covars_chr <- .x
-        purrr::map(main_predrs_chr, ~list(c(.x), c(.x, covars_chr))) %>%
+        purrr::map(main_predrs_chr, ~list(c(.x), c(.x, covars_chr) %>% purrr::discard(is.na))) %>%
             purrr::flatten()
     }) %>% purrr::flatten() %>% unique()
     predr_vars_nms_ls <- predr_vars_nms_ls[order(sapply(predr_vars_nms_ls,

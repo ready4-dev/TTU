@@ -320,11 +320,11 @@ mdl_smry_ls$signt_covars_chr <- get_signft_covars(mdls_with_covars_smry_tb = mdl
 ```{r}
 mdl_smry_ls$signt_covars_chr
 ```
-We can override the covariates to select, potentially because we want to select only covariates that are significant for all or most of the models. However, in the below example we have opted not to do so and continue to use `r ifelse(is.na(mdl_smry_ls$signt_covars_chr),"no covariates"," "mdl_smry_ls$signt_covars_chr %>% paste0(, collapse = "and ")"` as selected by the algorithm in the previous step.
+We can override the covariates to select, potentially because we want to select only covariates that are significant for all or most of the models. However, in the below example we have opted not to do so and continue to use `r ifelse(is.na(mdl_smry_ls$signt_covars_chr),"no covariates",paste0(mdl_smry_ls$signt_covars_chr, collapse = "and "))` as selected by the algorithm in the previous step.
 
 ```{r}
 mdl_smry_ls$prefd_covars_chr <- NA_character_
-    if (is.na(mdl_smry_ls$prefd_covars_chr))
+    if (!is.na(mdl_smry_ls$prefd_covars_chr))
         mdl_smry_ls$prefd_covars_chr <- mdl_smry_ls$signt_covars_chr
 ```
 
