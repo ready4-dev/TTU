@@ -303,25 +303,38 @@ write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_tota
     covar_var_nms_chr, mdl_type_1L_chr, path_to_write_to_1L_chr, new_dir_nm_1L_chr = "D_Covars_Selection",
     fl_nm_pfx_1L_chr = "D_CT", mdl_types_lup = NULL, start_1L_chr = NA_character_)
 {
-    if (is.null(mdl_types_lup))
-        utils::data("mdl_types_lup", envir = environment())
+  if (is.null(mdl_types_lup))
+    utils::data("mdl_types_lup", envir = environment())
+  arg_vals_chr <- c("control_chr", "predn_type_chr","tfmn_chr") %>%
+    purrr::map_chr(~ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr,
+                                                target_var_nm_1L_chr = .x, evaluate_lgl = F))
+  control_1L_chr <- arg_vals_chr[1]
+  predn_type_1L_chr <- arg_vals_chr[2]
+  tfmn_1L_chr <- arg_vals_chr[3]
+  if (is.na(predn_type_1L_chr))
+    predn_type_1L_chr <- NULL
   output_dir_1L_chr <- output_dir_1L_chr <- write_new_outp_dir(path_to_write_to_1L_chr,
                                                                new_dir_nm_1L_chr = new_dir_nm_1L_chr)
     smry_of_mdls_with_covars_tb <- purrr::map_dfr(predrs_var_nms_chr,
         ~{
             model_mdl <- make_mdl(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
                 predr_var_nm_1L_chr = .x, covar_var_nms_chr = covar_var_nms_chr,
-                tfmn_1L_chr = "NTF", mdl_type_1L_chr = mdl_type_1L_chr,
-                control_1L_chr = NA_character_, mdl_types_lup = mdl_types_lup,
+                tfmn_1L_chr = tfmn_1L_chr, mdl_type_1L_chr = mdl_type_1L_chr,
+                control_1L_chr = control_1L_chr, mdl_types_lup = mdl_types_lup,
                 start_1L_chr = start_1L_chr)
             mdl_fl_nm_1L_chr <- paste0(fl_nm_pfx_1L_chr, "_",
                 .x, "_", mdl_type_1L_chr)
             saveRDS(model_mdl, paste0(output_dir_1L_chr, "/",
                 mdl_fl_nm_1L_chr, ".RDS"))
-            tibble::tibble(variable = .x, Rsquare = caret::R2(data_tb %>%
-                dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr)),
-                stats::predict(model_mdl), form = "traditional"), AIC = stats::AIC(model_mdl),
-                BIC = stats::BIC(model_mdl), Significant = paste(names(which(summary(model_mdl)$coefficients[,
+            tibble::tibble(variable = .x, Rsquare = caret::R2(stats::predict(model_mdl, type = predn_type_1L_chr) %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
+                                                                                                                    tfmn_is_outp_1L_lgl = T),
+                                                              data_tb %>%
+                                                                dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr)),
+                                                              form = "traditional"),
+                           AIC = stats::AIC(model_mdl),
+                           BIC = stats::BIC(model_mdl),
+                           Significant = paste(names(which(summary(model_mdl)$coefficients[,
                   4] < 0.01)), collapse = " "))
         })
     smry_of_mdls_with_covars_tb <- smry_of_mdls_with_covars_tb %>%
