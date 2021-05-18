@@ -204,7 +204,8 @@ make_fake_eq5d_ds <- function(fl_nm_1L_chr = "eq5d5l_example.xlsx",
                                                T ~ "FUP")) %>%
     dplyr::mutate(dplyr::across(where(is.numeric), ~ as.integer(.x))) %>%
     dplyr::rename(k10_int = k10_dbl)
-  demog_data_tb <- youthvars::replication_popl_tb %>%
+  data("replication_popl_tb", package = "youthvars", envir = environment())
+  demog_data_tb <- replication_popl_tb %>%
     youthvars::transform_raw_ds_for_analysis() %>%
     dplyr::filter(round == "Baseline") %>%
     dplyr::mutate(uid = 1:dplyr::n()) %>%

@@ -234,7 +234,7 @@ make_cohort_ls <- function (descv_tbls_ls, ctgl_vars_regrouping_ls = NULL, nbr_o
 #' @importFrom sn rsn
 #' @importFrom purrr map_dbl map2_dbl map_int
 #' @importFrom faux rnorm_pre
-#' @importFrom youthvars replication_popl_tb transform_raw_ds_for_analysis
+#' @importFrom youthvars transform_raw_ds_for_analysis
 #' @keywords internal
 make_fake_eq5d_ds <- function (fl_nm_1L_chr = "eq5d5l_example.xlsx", country_1L_chr = "UK", 
     version_1L_chr = "5L", type_1L_chr = "CW") 
@@ -266,7 +266,8 @@ make_fake_eq5d_ds <- function (fl_nm_1L_chr = "eq5d5l_example.xlsx", country_1L_
         dplyr::mutate(Timepoint = dplyr::case_when(Timepoint == 
             "Group1" ~ "BL", T ~ "FUP")) %>% dplyr::mutate(dplyr::across(where(is.numeric), 
         ~as.integer(.x))) %>% dplyr::rename(k10_int = k10_dbl)
-    demog_data_tb <- youthvars::replication_popl_tb %>% youthvars::transform_raw_ds_for_analysis() %>% 
+    data("replication_popl_tb", package = "youthvars", envir = environment())
+    demog_data_tb <- replication_popl_tb %>% youthvars::transform_raw_ds_for_analysis() %>% 
         dplyr::filter(round == "Baseline") %>% dplyr::mutate(uid = 1:dplyr::n()) %>% 
         dplyr::select(uid, d_interview_date, d_age, Gender, d_sex_birth_s, 
             d_sexual_ori_s, d_relation_s, d_ATSI, CALD, Region, 
