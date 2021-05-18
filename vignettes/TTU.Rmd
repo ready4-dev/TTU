@@ -19,6 +19,8 @@ library(TTU)
 ```
 This development version of the TTU package has been made available as part of the process of testing and documenting the package. 
 
+Note that, one of the key functions in TTU (`write_ts_mdls_from_alg_outp`{.R}) makes a call to the Stan program. This function requires that you have the `cmdstanr` package installed on your machine (which should occur automatically when you install TTU) and have performed the necessary configuration of that package (refer to [https://mc-stan.org/cmdstanr/](https://mc-stan.org/cmdstanr/) for details).
+
 The following vignette demonstrates some of the tools currently included in the TTU package:
 
 - [Modelling Transfer to Utility](Model_TTU.html)

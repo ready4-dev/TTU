@@ -49,6 +49,7 @@ params:
   candidate_covar_nms_chr: !r NA_character_
   candidate_predrs_chr: !r NA_character_
   ds_descvs_ls: !r NULL
+  fake_ds_tb: !r NULL
   iters_1L_int: !r 4000L
   mdl_smry_ls: !r NULL
   nbr_of_digits_1L_int: !r 2L

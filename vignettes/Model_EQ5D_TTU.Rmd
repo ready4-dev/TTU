@@ -252,21 +252,14 @@ mdl_smry_ls$predr_var_desc_1L_chr <- ds_smry_ls$predictors_lup %>% ready4fun::ge
         evaluate_lgl = F)
 ```
 
-```{r}
-mdl_smry_ls$predr_var_desc_1L_chr
-```
-### Test all candidate models using preferred single predictor
-Using the metadata from the predictors lookup table, we now create a vector of the range of potential integer values of the most highly correlated predictor.
+### Test all candidate models using most correlated predictor
+Using the metadata from the predictors lookup table, we now create a vector of the range of potential integer values of the most highly correlated candidate predictor (in this example, `r mdl_smry_ls$predr_var_desc_1L_chr`).
 
 ```{r}
 mdl_smry_ls$predr_vals_dbl <- make_predr_vals(mdl_smry_ls$predr_var_nm_1L_chr, candidate_predrs_lup = ds_smry_ls$predictors_lup)
 ```
 
-```{r}
-mdl_smry_ls$predr_vals_dbl
-```
-
-We now compare all candidate model types, each using only the highest correlated candidate predictor (`r mdl_smry_ls$predr_var_desc_1L_chr`). 
+We now compare all candidate model types, each using only the highest correlated candidate predictor. 
 
 ```{r warning = FALSE, message=FALSE}
 mdl_smry_ls$folds_1L_int <- 10L
@@ -321,11 +314,6 @@ mdl_smry_ls$predr_cmprsn_tb <- write_predr_cmprsn_outps(data_tb = bl_tb,
 
 The previous call to the `write_predr_cmprsn_outps`{.R} function saved the tested models along with model plots in the "B_Candidate_Predrs_Cmprsn" sub-directory of "Output".
 
-```{r include=F, eval=F, out.width = "400px"}
-paste0(path_to_write_to_1L_chr,"/","B_Candidate_Predrs_Cmprsn") %>% list.files(pattern = "\\.png$", full.names = T) %>%
-knitr::include_graphics()
-```
-
 These results are also viewable as a table.
 
 ```{r}
@@ -378,7 +366,8 @@ mdl_smry_ls$mdls_with_covars_smry_tb %>%
                             caption_1L_chr = "Preferred performance of models with covariate predictors by candidate predictor", 
                           use_lbls_as_col_nms_1L_lgl = T)
 ```
-We can now identify which covariates are significant predictors in any of the models.
+
+We can now identify which, if any, of the candidate covariates we previously specified are significant predictors in any of the models.
 
 ```{r}
 mdl_smry_ls$signt_covars_chr <- get_signft_covars(mdls_with_covars_smry_tb = mdl_smry_ls$mdls_with_covars_smry_tb,
@@ -387,7 +376,7 @@ mdl_smry_ls$signt_covars_chr <- get_signft_covars(mdls_with_covars_smry_tb = mdl
 ```{r}
 mdl_smry_ls$signt_covars_chr
 ```
-We can override the covariates to select, potentially because we want to select only covariates that are significant for all or most of the models. However, in the below example we have opted not to do so and continue to use the significant predictor (`r mdl_smry_ls$signt_covars_chr`) selected by the algorithm in the previous step.
+We can override the covariates to select, potentially because we want to select only covariates that are significant for all or most of the models. However, in the below example we have opted not to do so and continue to use `r ifelse(is.na(mdl_smry_ls$signt_covars_chr),"no covariates"," "mdl_smry_ls$signt_covars_chr %>% paste0(, collapse = "and ")"` as selected by the algorithm in the previous step.
 
 ```{r}
 mdl_smry_ls$prefd_covars_chr <- NA_character_
@@ -454,9 +443,7 @@ outp_smry_ls <- list(scored_data_tb = data_tb,
 ```
 
 ### Time series modelling
-Next we test each of the `r length(mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())` time series models we specified in the previous step. For this goal, we use the `write_ts_mdls_from_alg_outp`{.R} function that makes a call to the Stan program. This function requires that you have the `cmdstanr` package installed on your machine and have performed the necessary configuration of that package - refer to [https://mc-stan.org/cmdstanr/](https://mc-stan.org/cmdstanr/) for details.
-
-Note the current version of the `write_ts_mdls_from_alg_outp` function is only works with two model types that we recommend for TTU modelling: 
+Next we test each of the `r length(mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())` time series models we specified in the previous step. Note the current version of the `write_ts_mdls_from_alg_outp` function only works with the two model types that we recommend for TTU modelling: 
 
 - `r mdl_smry_ls$mdl_types_lup %>% ready4fun::get_from_lup_obj(target_var_nm_1L_chr = "long_name_chr",match_value_xx = mdl_smry_ls$prefd_mdl_types_chr[1], match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F)`
 - `r mdl_smry_ls$mdl_types_lup %>% ready4fun::get_from_lup_obj(target_var_nm_1L_chr = "long_name_chr",match_value_xx = mdl_smry_ls$prefd_mdl_types_chr[2], match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F)`
@@ -482,6 +469,7 @@ As we are not sharing the output of this example in an online data repository, w
 ```{r eval=FALSE}
 outp_smry_ls$dv_ls <- NULL
 ```
+
 This following call to `write_shareable_mdls`{.R} writes shareable models to a new subdirectory (G_Shareable) of "Output". 
 
 ```{r eval=F}
