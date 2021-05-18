@@ -170,6 +170,75 @@ make_cohort_ls <- function(descv_tbls_ls,
   }
   return(cohort_ls)
 }
+make_fake_eq5d_ds <- function(fl_nm_1L_chr = "eq5d5l_example.xlsx",
+                              country_1L_chr = "UK",
+                              version_1L_chr = "5L",
+                              type_1L_chr = "CW"){
+  require(eq5d)
+  data_tb <- readxl::read_excel(system.file("extdata", fl_nm_1L_chr, package="eq5d")) %>%
+    dplyr::mutate(total_eq5d = eq5d::eq5d(., country = country_1L_chr, version = version_1L_chr, type = type_1L_chr))
+  k10_lup_tb <- tibble::tibble(k10_dbl = c(sn::rsn(2500,10.3,omega = 0.1) %>% round(),
+                                           sn::rsn(2500,12,omega = 0.4) %>% round(),
+                                           sn::rsn(2500,14.5,omega = 0.4) %>% round(),
+                                           sn::rsn(2500,21,omega = 6, alpha = 1) %>% round() %>% purrr::map_dbl(~max(.x,10) %>% min(50))) %>% sample(10000),
+                               pred_eq5d_dbl = purrr::map2_dbl(k10_dbl,rnorm(10000,0,0.075), ~ calc_hrqol_from_k10_dbl(.x,
+                                                                                                                       eq5d_error_dbl = .y)[2]),
+                               match_idx_int = purrr::map_dbl(pred_eq5d_dbl, ~which.min(abs(data_tb$total_eq5d-.x))))
+  data_tb <- dplyr::left_join(k10_lup_tb,
+                              data_tb %>% dplyr::mutate(match_idx_int = 1:dplyr::n()))
+  data_tb <- data_tb %>%
+    dplyr::group_by(Group) %>%
+    dplyr::mutate(uid = 1:dplyr::n()) %>%
+    dplyr::ungroup() %>%
+    dplyr::arrange(uid, Group)
+  bl_uids_chr <- data_tb %>% dplyr::filter(Group == "Group1") %>% dplyr::pull(uid)
+  data_tb <- data_tb %>%
+    dplyr::filter(uid %in% bl_uids_chr)
+  data_tb <- data_tb %>%
+    dplyr::mutate(psych_well_int = faux::rnorm_pre(k10_dbl, mu = 69.9, sd = 9.9, r = -0.56) %>%
+                    round(0) %>% purrr::map_int(~min(.x,90) %>% max(18) %>%
+                                                  as.integer()))
+  data_tb <- data_tb %>% dplyr::select(uid,Group,MO,SC,UA,PD,AD,k10_dbl,psych_well_int) %>%
+    dplyr::rename(Timepoint = Group) %>%
+    dplyr::mutate(Timepoint = dplyr::case_when(Timepoint == "Group1" ~ "BL",
+                                               T ~ "FUP")) %>%
+    dplyr::mutate(dplyr::across(where(is.numeric), ~ as.integer(.x))) %>%
+    dplyr::rename(k10_int = k10_dbl)
+  demog_data_tb <- youthvars::replication_popl_tb %>%
+    youthvars::transform_raw_ds_for_analysis() %>%
+    dplyr::filter(round == "Baseline") %>%
+    dplyr::mutate(uid = 1:dplyr::n()) %>%
+    dplyr::select(uid,
+                  d_interview_date,
+                  d_age,
+                  Gender,
+                  d_sex_birth_s,
+                  d_sexual_ori_s,
+                  d_relation_s,
+                  d_ATSI,
+                  CALD,
+                  Region,
+                  d_studying_working) %>%
+    dplyr::rename(bl_data_collection_dtm =
+                    d_interview_date)
+  data_tb <- dplyr::left_join(data_tb %>%
+                                dplyr::filter(uid %in% demog_data_tb$uid),
+                              demog_data_tb) %>%
+    dplyr::select(uid,
+                  Timepoint,
+                  bl_data_collection_dtm,
+                  d_age,
+                  Gender,
+                  d_sex_birth_s,
+                  d_sexual_ori_s,
+                  d_relation_s,
+                  d_ATSI,
+                  CALD,
+                  Region,
+                  d_studying_working,
+                  dplyr::everything())
+  return(data_tb)
+}
 make_fake_ts_data <- function (outp_smry_ls)
 {
     data_tb <- outp_smry_ls$scored_data_tb %>% transform_tb_to_mdl_inp(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
