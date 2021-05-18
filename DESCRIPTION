@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9177
+Version: 0.0.0.9178
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -44,6 +44,8 @@ Imports:
     cowplot,
     dataverse (>= 0.3.8.9000),
     dplyr,
+    eq5d,
+    faux,
     ggalt,
     ggfortify,
     ggplot2,
@@ -60,11 +62,13 @@ Imports:
     purrr,
     randomForest,
     readr,
+    readxl,
     ready4class (>= 0.0.0.9199),
     ready4fun (>= 0.0.0.9298),
     ready4show (>= 0.0.0.9033),
     ready4use (>= 0.0.0.9132),
     rlang,
+    sn,
     stats,
     stringi,
     stringr,
