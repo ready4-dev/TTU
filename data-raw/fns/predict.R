@@ -1,3 +1,19 @@
+predict_utl_from_k10 <- function(k10_1L_dbl,
+                                     b0_aqol_mdl_1L_dbl = 0.204665,
+                                     b1_aqol_mdl_1L_dbl = -3.617134,
+                                     b0_eq5d_mdl_1L_dbl = 0.8644649,
+                                     b1_eq5d_mdl_1L_dbl = -2.926161,
+                                     aqol_error_1L_dbl = 0,
+                                     eq5d_error_1L_dbl = 0){
+  meanaqol8dutility<-exp(b0_aqol_mdl_1L_dbl+b1_aqol_mdl_1L_dbl*k10_1L_dbl*.01) + aqol_error_1L_dbl
+  if(is.na(meanaqol8dutility))
+    stop("Mean utility calculation is returning NAs")
+  meaneq5dutility<-b0_eq5d_mdl_1L_dbl+b1_eq5d_mdl_1L_dbl*(k10_1L_dbl*.01)^2 + eq5d_error_1L_dbl
+  if(is.na(meaneq5dutility))
+    stop("Mean EQ5D utility calculation is returning NAs")
+  return(c(meanaqol8dutility,
+           meaneq5dutility))
+}
 predict_utility <- function (data_tb,
                              tfmn_1L_chr = "NTF",
                              model_mdl,

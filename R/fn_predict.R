@@ -30,3 +30,31 @@ predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", model_mdl, force_min_
     }
     return(predd_utl_dbl)
 }
+#' Predict utility from k10
+#' @description predict_utl_from_k10() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict utility from k10. The function is called for its side effects and does not return a value.
+#' @param k10_1L_dbl K10 (a double vector of length one)
+#' @param b0_aqol_mdl_1L_dbl B0 Assessment of Quality of Life model (a double vector of length one), Default: 0.204665
+#' @param b1_aqol_mdl_1L_dbl B1 Assessment of Quality of Life model (a double vector of length one), Default: -3.617134
+#' @param b0_eq5d_mdl_1L_dbl B0 eq5d model (a double vector of length one), Default: 0.8644649
+#' @param b1_eq5d_mdl_1L_dbl B1 eq5d model (a double vector of length one), Default: -2.926161
+#' @param aqol_error_1L_dbl Assessment of Quality of Life error (a double vector of length one), Default: 0
+#' @param eq5d_error_1L_dbl Eq5d error (a double vector of length one), Default: 0
+#' @return NA ()
+#' @rdname predict_utl_from_k10
+#' @export 
+
+#' @keywords internal
+predict_utl_from_k10 <- function (k10_1L_dbl, b0_aqol_mdl_1L_dbl = 0.204665, b1_aqol_mdl_1L_dbl = -3.617134, 
+    b0_eq5d_mdl_1L_dbl = 0.8644649, b1_eq5d_mdl_1L_dbl = -2.926161, 
+    aqol_error_1L_dbl = 0, eq5d_error_1L_dbl = 0) 
+{
+    meanaqol8dutility <- exp(b0_aqol_mdl_1L_dbl + b1_aqol_mdl_1L_dbl * 
+        k10_1L_dbl * 0.01) + aqol_error_1L_dbl
+    if (is.na(meanaqol8dutility)) 
+        stop("Mean utility calculation is returning NAs")
+    meaneq5dutility <- b0_eq5d_mdl_1L_dbl + b1_eq5d_mdl_1L_dbl * 
+        (k10_1L_dbl * 0.01)^2 + eq5d_error_1L_dbl
+    if (is.na(meaneq5dutility)) 
+        stop("Mean EQ5D utility calculation is returning NAs")
+    return(c(meanaqol8dutility, meaneq5dutility))
+}

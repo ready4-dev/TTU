@@ -23,22 +23,6 @@ calculate_dpnt_var_tfmn <- function (dep_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_
     }
     return(tfd_dep_var_val_dbl)
 }
-calc_hrqol_from_k10_dbl <- function(k10value,
-                                    b0.aqolmodel = 0.204665,
-                                    b1.aqolmodel = -3.617134,
-                                    b0.eq5dmodel = 0.8644649,
-                                    b1.eq5dmodel = -2.926161,
-                                    aqol_error_dbl = 0,
-                                    eq5d_error_dbl = 0){
-  meanaqol8dutility<-exp(b0.aqolmodel+b1.aqolmodel*k10value*.01) + aqol_error_dbl
-  if(is.na(meanaqol8dutility))
-    stop("Mean utility calculation is returning NAs")
-  meaneq5dutility<-b0.eq5dmodel+b1.eq5dmodel*(k10value*.01)^2 + eq5d_error_dbl
-  if(is.na(meaneq5dutility))
-    stop("Mean EQ5D utility calculation is returning NAs")
-  return(c(meanaqol8dutility,
-           meaneq5dutility))
-}
 calculate_rmse <- function (y_dbl, yhat_dbl)
 {
     rmse_dbl <- sqrt(mean((yhat_dbl - y_dbl)^2))

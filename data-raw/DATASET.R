@@ -78,6 +78,7 @@ fns_dmt_tb <- ready4fun::make_dmt_for_all_fns(paths_ls = ready4fun::make_fn_nms(
                                                                                                                       "fit_gsn_log_link",
                                                                                                                       "get_signft_covars",
                                                                                                                       "make_analysis_ds_smry_ls",
+                                                                                                                      "make_fake_eq5d_ds",
                                                                                                                       "make_fake_ts_data",
                                                                                                                       "make_mdl_nms_ls",
                                                                                                                       "make_prefd_mdls_vec",

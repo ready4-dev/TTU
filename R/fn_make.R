@@ -235,7 +235,6 @@ make_cohort_ls <- function (descv_tbls_ls, ctgl_vars_regrouping_ls = NULL, nbr_o
 #' @importFrom purrr map_dbl map2_dbl map_int
 #' @importFrom faux rnorm_pre
 #' @importFrom youthvars transform_raw_ds_for_analysis
-#' @keywords internal
 make_fake_eq5d_ds <- function (fl_nm_1L_chr = "eq5d5l_example.xlsx", country_1L_chr = "UK", 
     version_1L_chr = "5L", type_1L_chr = "CW") 
 {
@@ -249,7 +248,7 @@ make_fake_eq5d_ds <- function (fl_nm_1L_chr = "eq5d5l_example.xlsx", country_1L_
         sn::rsn(2500, 21, omega = 6, alpha = 1) %>% round() %>% 
             purrr::map_dbl(~max(.x, 10) %>% min(50))) %>% sample(10000), 
         pred_eq5d_dbl = purrr::map2_dbl(k10_dbl, rnorm(10000, 
-            0, 0.075), ~calc_hrqol_from_k10_dbl(.x, eq5d_error_dbl = .y)[2]), 
+            0, 0.075), ~predict_utl_from_k10(.x, eq5d_error_dbl = .y)[2]), 
         match_idx_int = purrr::map_dbl(pred_eq5d_dbl, ~which.min(abs(data_tb$total_eq5d - 
             .x))))
     data_tb <- dplyr::left_join(k10_lup_tb, data_tb %>% dplyr::mutate(match_idx_int = 1:dplyr::n()))
