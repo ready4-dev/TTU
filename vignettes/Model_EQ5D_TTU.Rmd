@@ -18,26 +18,26 @@ library(magrittr)
 ## Specify data
 As this is an illustrative example, we first must create a fake dataset (if using real data, skip this step).
 
-```{r}
-fake_ds <- TTU::make_fake_eq5d_ds() 
+```{r message=FALSE}
+fake_ds_tb <- TTU::make_fake_eq5d_ds() 
 ```
 
 ```{r inputds, eval = knitr::is_html_output(), results='asis'}
-data_tb %>%
+fake_ds_tb %>%
     head() %>%
   ready4show::print_table(output_type_1L_chr = "HTML",
                           caption_1L_chr = "Input dataset",
                           mkdn_tbl_ref_1L_chr = "tab:inputds")
 ```
 
-We also our use of synthetic data creating an object `use_fake_data_1L_lgl` and setting it to `TRUE`. For real world application - set this variable to `FALSE`.
+We note our use of synthetic data by creating an object `use_fake_data_1L_lgl` and setting it to `TRUE`. For real world application - set this variable to `FALSE`.
 
 ```{r }
 use_fake_data_1L_lgl <-  TRUE
 ```
 
 ## Reporting details
-We specify details about the authorship team of our study we will be generating.
+We specify details about the authorship team of the study for which we are generating reports.
 
 ```{r }
 authors_tb <- ready4show::authors_tb
@@ -70,7 +70,7 @@ path_params_ls <- list(path_from_top_level_1L_chr = normalizePath("../") %>% str
 ```{r echo = TRUE }
 ds_descvs_ls <- list(candidate_predrs_chr = c("k10_int","psych_well_int"),
                      cohort_descv_var_nms_chr = c("d_age", "d_agegroup", "Gender", "d_relation_s","d_sexual_ori_s", "Region", "CALD", "d_studying_working"),
-                     dictionary_tb = make_eq5d_ds_dict(fake_ds), 
+                     dictionary_tb = TTU::make_eq5d_ds_dict(fake_ds_tb), 
                      id_var_nm_1L_chr = "uid", 
                      round_var_nm_1L_chr = "Timepoint", 
                      round_vals_chr = c("BL", "FUP"),
@@ -81,7 +81,7 @@ ds_descvs_ls <- list(candidate_predrs_chr = c("k10_int","psych_well_int"),
 
 ## Analysis parameters
 ```{r}
-predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = ds_descvs_ls$candidate_predrs_chr,
+predictors_lup <- TTU::TTU_predictors_lup(TTU::make_pt_TTU_predictors_lup(short_name_chr = ds_descvs_ls$candidate_predrs_chr,
                                               long_name_chr = c("Kessler Psychological Distress - 10 Item Total Score",
                                                    "Overall Wellbeing Measure (Winefield et al. 2012)"),
                                               min_val_dbl = c(10,18),
@@ -131,6 +131,7 @@ dv_ls <- list(primary_dv_chr = c("firstbounce","https://doi.org/10.7910/DVN/612H
 
 ```{r echo = TRUE }
 params_ls <- list(candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
+                  fake_ds_tb = fake_ds_tb,
      maui_scoring_fn = function(data_tb,# Function must have these arguments in this order.
                                 maui_item_pfx_1L_chr,
                                 id_var_nm_1L_chr, 
