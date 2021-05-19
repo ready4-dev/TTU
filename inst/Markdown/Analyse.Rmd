@@ -49,6 +49,7 @@ params:
   candidate_covar_nms_chr: !r NA_character_
   ds_descvs_ls: !r NULL
   dv_ds_nm_and_url_chr: !r NULL
+  fake_ds_tb: !r NULL
   iters_1L_int: !r 4000L
   maui_scoring_fn: !r NULL
   mdl_smry_ls: !r NULL
