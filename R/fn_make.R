@@ -218,6 +218,35 @@ make_cohort_ls <- function (descv_tbls_ls, ctgl_vars_regrouping_ls = NULL, nbr_o
     }
     return(cohort_ls)
 }
+#' Make eq5d dataset dictionary
+#' @description make_eq5d_ds_dict() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make eq5d dataset dictionary. The function returns Dictionary (a tibble).
+#' @param data_tb Data (a tibble), Default: make_fake_eq5d_ds()
+#' @param predictors_lup Predictors (a lookup table), Default: make_psych_predrs_lup()
+#' @return Dictionary (a tibble)
+#' @rdname make_eq5d_ds_dict
+#' @export 
+#' @importFrom youthvars make_tfd_repln_ds_dict_r3 make_final_rpln_ds_dict
+#' @importFrom dplyr filter arrange
+#' @importFrom ready4use make_pt_ready4_dictionary
+#' @keywords internal
+make_eq5d_ds_dict <- function (data_tb = make_fake_eq5d_ds(), predictors_lup = make_psych_predrs_lup()) 
+{
+    dictionary_tb <- youthvars::make_tfd_repln_ds_dict_r3() %>% 
+        dplyr::filter(var_nm_chr %in% names(data_tb)) %>% youthvars::make_final_rpln_ds_dict(additions_tb = ready4use::make_pt_ready4_dictionary(var_nm_chr = c("uid", 
+        "Timepoint", "bl_data_collection_dtm", paste0("eq5dq_", 
+            c("MO", "SC", "UA", "PD", "AD")), "EQ5D_total_dbl", 
+        predictors_lup$short_name_chr), var_ctg_chr = c("Identifier", 
+        rep("Temporal", 2), rep("Multi-Attribute Utility Instrument Question", 
+            5), "Multi-Attribute Utility Instrument Score", rep("Clinical", 
+            2)), var_desc_chr = c("Unique identifier", "Data collection round", 
+        "Date of baseline data collection", "EQ5D - Mobility Domain Score", 
+        "EQ5D - Self-Care Domain Score", "EQ5D - Usual Activities Domain Score", 
+        "EQ5D - Pain / Discomfort Domain Score", "EQ5D - Anxiety / Depression Domain Score", 
+        "EQ5D - Total weighted score", predictors_lup$long_name_chr), 
+        var_type_chr = c("integer", "character", "date", rep("integer", 
+            5), "double", predictors_lup$class_chr))) %>% dplyr::arrange(var_ctg_chr)
+    return(dictionary_tb)
+}
 #' Make fake eq5d dataset
 #' @description make_fake_eq5d_ds() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake eq5d dataset. The function returns Data (a tibble).
 #' @param fl_nm_1L_chr File name (a character vector of length one), Default: 'eq5d5l_example.xlsx'
@@ -228,13 +257,14 @@ make_cohort_ls <- function (descv_tbls_ls, ctgl_vars_regrouping_ls = NULL, nbr_o
 #' @rdname make_fake_eq5d_ds
 #' @export 
 #' @importFrom readxl read_excel
-#' @importFrom dplyr mutate left_join n group_by ungroup arrange filter pull select rename case_when across everything
+#' @importFrom dplyr mutate left_join n group_by ungroup arrange filter pull select rename case_when across everything rename_with
 #' @importFrom eq5d eq5d
 #' @importFrom tibble tibble
 #' @importFrom sn rsn
 #' @importFrom purrr map_dbl map2_dbl map_int
 #' @importFrom faux rnorm_pre
 #' @importFrom youthvars transform_raw_ds_for_analysis
+#' @importFrom stringr str_c
 make_fake_eq5d_ds <- function (fl_nm_1L_chr = "eq5d5l_example.xlsx", country_1L_chr = "UK", 
     version_1L_chr = "5L", type_1L_chr = "CW") 
 {
@@ -275,7 +305,8 @@ make_fake_eq5d_ds <- function (fl_nm_1L_chr = "eq5d5l_example.xlsx", country_1L_
         demog_data_tb$uid), demog_data_tb) %>% dplyr::select(uid, 
         Timepoint, bl_data_collection_dtm, d_age, Gender, d_sex_birth_s, 
         d_sexual_ori_s, d_relation_s, d_ATSI, CALD, Region, d_studying_working, 
-        dplyr::everything())
+        dplyr::everything()) %>% dplyr::rename_with(~stringr::str_c("eq5dq_", 
+        .), .cols = c("MO", "SC", "UA", "PD", "AD"))
     return(data_tb)
 }
 #' Make fake time series data
@@ -803,6 +834,24 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
     prefd_mdls_chr <- purrr::map_chr(choose_from_pfx_chr, ~ordered_mdl_types_chr[startsWith(ordered_mdl_types_chr, 
         .x)][1])
     return(prefd_mdls_chr)
+}
+#' Make psych predictors
+#' @description make_psych_predrs_lup() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make psych predictors lookup table. The function returns Predictors (a lookup table).
+
+#' @return Predictors (a lookup table)
+#' @rdname make_psych_predrs_lup
+#' @export 
+
+#' @keywords internal
+make_psych_predrs_lup <- function () 
+{
+    predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = c("k10_int", 
+        "psych_well_int"), long_name_chr = c("Kessler Psychological Distress - 10 Item Total Score", 
+        "Overall Wellbeing Measure (Winefield et al. 2012)"), 
+        min_val_dbl = c(10, 18), max_val_dbl = c(50, 90), class_chr = "integer", 
+        increment_dbl = 1, class_fn_chr = "integer", mdl_scaling_dbl = 0.01, 
+        covariate_lgl = F))
+    return(predictors_lup)
 }
 #' Make ranked predictors
 #' @description make_ranked_predrs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ranked predictors list. The function returns Ranked predictors (a list).

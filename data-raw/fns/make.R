@@ -170,6 +170,39 @@ make_cohort_ls <- function(descv_tbls_ls,
   }
   return(cohort_ls)
 }
+make_eq5d_ds_dict <- function(data_tb = make_fake_eq5d_ds(),
+                              predictors_lup = make_psych_predrs_lup()){
+  dictionary_tb <- youthvars::make_tfd_repln_ds_dict_r3() %>%
+    dplyr::filter(var_nm_chr %in% names(data_tb)) %>%
+    youthvars::make_final_rpln_ds_dict(additions_tb = ready4use::make_pt_ready4_dictionary(var_nm_chr = c("uid",
+                                                                                                          "Timepoint", "bl_data_collection_dtm",
+                                                                                                          paste0("eq5dq_",c("MO", "SC", "UA", "PD", "AD")),
+                                                                                                          "EQ5D_total_dbl",
+                                                                                                          predictors_lup$short_name_chr),
+                                                                                           var_ctg_chr = c("Identifier",
+                                                                                                           rep("Temporal",2),
+                                                                                                           rep("Multi-Attribute Utility Instrument Question",5),
+                                                                                                           "Multi-Attribute Utility Instrument Score",
+                                                                                                           rep("Clinical",2)),
+                                                                                           var_desc_chr = c("Unique identifier",
+                                                                                                            "Data collection round",
+                                                                                                            "Date of baseline data collection",
+                                                                                                            "EQ5D - Mobility Domain Score",
+                                                                                                            "EQ5D - Self-Care Domain Score",
+                                                                                                            "EQ5D - Usual Activities Domain Score",
+                                                                                                            "EQ5D - Pain / Discomfort Domain Score",
+                                                                                                            "EQ5D - Anxiety / Depression Domain Score",
+                                                                                                            "EQ5D - Total weighted score",
+                                                                                                            predictors_lup$long_name_chr),
+                                                                                           var_type_chr = c("integer",
+                                                                                                            "character","date",
+                                                                                                            rep("integer",5),
+                                                                                                            "double",
+                                                                                                            predictors_lup$class_chr
+                                                                                           ))) %>%
+    dplyr::arrange(var_ctg_chr)
+  return(dictionary_tb)
+}
 make_fake_eq5d_ds <- function(fl_nm_1L_chr = "eq5d5l_example.xlsx",
                               country_1L_chr = "UK",
                               version_1L_chr = "5L",
@@ -237,7 +270,8 @@ make_fake_eq5d_ds <- function(fl_nm_1L_chr = "eq5d5l_example.xlsx",
                   CALD,
                   Region,
                   d_studying_working,
-                  dplyr::everything())
+                  dplyr::everything()) %>%
+    dplyr::rename_with(~stringr::str_c("eq5dq_", .), .cols = c("MO", "SC", "UA", "PD", "AD"))
   return(data_tb)
 }
 make_fake_ts_data <- function (outp_smry_ls)
@@ -624,6 +658,19 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
     prefd_mdls_chr <- purrr::map_chr(choose_from_pfx_chr, ~ordered_mdl_types_chr[startsWith(ordered_mdl_types_chr,
                                                                                             .x)][1])
     return(prefd_mdls_chr)
+}
+make_psych_predrs_lup <- function(){
+  predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = c("k10_int","psych_well_int"),
+                                                                  long_name_chr = c("Kessler Psychological Distress - 10 Item Total Score",
+                                                                                    "Overall Wellbeing Measure (Winefield et al. 2012)"),
+                                                                  min_val_dbl = c(10,18),
+                                                                  max_val_dbl = c(50,90),
+                                                                  class_chr = "integer",
+                                                                  increment_dbl = 1,
+                                                                  class_fn_chr = "integer",
+                                                                  mdl_scaling_dbl = 0.01,
+                                                                  covariate_lgl = F))
+  return(predictors_lup)
 }
 make_ranked_predrs_ls <- function(descv_tbls_ls,
                                   old_nms_chr = NULL,
