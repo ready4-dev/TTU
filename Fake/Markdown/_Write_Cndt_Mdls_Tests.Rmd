@@ -1,0 +1,59 @@
+---
+title: "_Test_Cndt_Mdls_Predrs_And_Covars"
+author: "Matthew Hamilton & Caroline Gao"
+date: "23/03/2021"
+output: html_document
+---
+
+The sequence of commands in this step test which models, predictors and covariates perform best. 
+
+Compare model types using most correlated predictor.
+
+```{r message=FALSE, results='hide', warning=FALSE}
+cmprsns_ls <- TTU::write_mdl_cmprsn(scored_data_tb = data_tb,
+                                ds_smry_ls = ds_smry_ls,
+                                mdl_smry_ls = mdl_smry_ls,
+                                output_data_dir_1L_chr = paths_ls$output_data_dir_1L_chr,
+                                seed_1L_int = params_ls$seed_1L_int)
+
+```
+
+Select preferred model types.
+
+```{r echo = !is.null(params_ls$prefd_mdl_types_chr), eval= !is.null(params_ls$prefd_mdl_types_chr), message=FALSE, results='hide', warning=FALSE}
+if(!is.null(params_ls$prefd_mdl_types_chr)){
+  cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr <- params_ls$prefd_mdl_types_chr
+}
+```
+
+Compare candidate predictors and covariates using most preferred model type.
+
+```{r message=FALSE, results='hide', warning=FALSE}
+cmprsns_ls <- TTU::write_predr_and_covars_cmprsn(scored_data_tb = data_tb,
+                                           bl_tb = cmprsns_ls$bl_tb,
+                                           ds_smry_ls = cmprsns_ls$ds_smry_ls,
+                                           mdl_smry_ls  = cmprsns_ls$mdl_smry_ls,
+                                           output_data_dir_1L_chr = paths_ls$output_data_dir_1L_chr,
+                                           seed_1L_int = params_ls$seed_1L_int)
+```
+
+`r ifelse(!is.null(params_ls$prefd_covars_chr),"Specify the covariates to include.","")`
+
+```{r echo = !is.null(params_ls$prefd_covars_chr), eval = !is.null(params_ls$prefd_covars_chr), message=FALSE, results='hide', warning=FALSE}
+if(!is.null(params_ls$prefd_covars_chr)){
+  cmprsns_ls$mdl_smry_ls$prefd_covars_chr <- params_ls$prefd_covars_chr
+}
+```
+
+Compare selected models with selected predictors and selected covariates.
+
+```{r message=FALSE, results='hide', warning=FALSE, fig.show ='hide'}
+outp_smry_ls <- TTU::write_mdls_with_covars_cmprsn(scored_data_tb = data_tb,
+                                           bl_tb = cmprsns_ls$bl_tb,
+                                           ds_smry_ls = cmprsns_ls$ds_smry_ls,
+                                           mdl_smry_ls = cmprsns_ls$mdl_smry_ls,
+                                           output_data_dir_1L_chr = paths_ls$output_data_dir_1L_chr,
+                                           seed_1L_int = params_ls$seed_1L_int,
+                                           session_data_ls = session_data_ls)
+```
+

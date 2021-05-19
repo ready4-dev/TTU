@@ -46,55 +46,49 @@ output:
       - '--lua-filter=Filters/author-info-blocks.lua'
       - '--lua-filter=Filters/pagebreaks.lua'
 params:
-  candidate_covar_nms_chr: !r NA_character_
-  ds_descvs_ls: !r NULL
-  dv_ds_nm_and_url_chr: !r NULL
+  dv_ds_nm_and_url_chr: !r NA_character_
+  dv_mdl_desc_1L_chr: !r NA_character_
   fake_ds_tb: !r NULL
-  iters_1L_int: !r 4000L
-  maui_scoring_fn: !r NULL
-  mdl_smry_ls: !r NULL
+  inc_fl_types_chr: ".pdf"
   nbr_of_digits_1L_int: !r 2L
   output_type_1L_chr: "PDF"
   path_from_top_level_1L_chr: !r NULL
   path_to_data_from_top_level_chr: !r NULL
-  prefd_covars_chr: !r NA_character_
-  prefd_mdl_types_chr: !r c("GLM_GSN_LOG","OLS_CLL")
-  predictors_lup: !r youthvars::predictors_lup
-  prototype_lup: !r TTU::prototype_lup
-  raw_ds_tfmn_fn: !r NULL
-  rprt_type_1L_chr: "Analysis"
-  seed_1L_int: 12345
-  subtitle_1L_chr: "Main analysis algorithm for Transfer to Utility study"
+  purge_data_1L_lgl: FALSE
+  rprt_lup: !r NULL
+  rprt_type_1L_chr: "Share"
+  share_mdls_1L_lgl: TRUE
+  subtitle_1L_chr: "Record of creation and dissemination of shareable outputs"
+  transform_paths_ls: !r NULL
   use_fake_data_1L_lgl: TRUE
-  utl_class_fn_1L_chr: !r NULL
 subtitle: "`r params$subtitle_1L_chr`"
 date: "`r format.Date(Sys.Date(),'%B %d, %Y')`"
 ---
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 # Set up workspace
 ```{r, child=c('_Set_Up_WS.Rmd')}
 ```
 
-# Ingest and pre-process dataset
-```{r, child=c('_Import_And_Tf_Ds.Rmd')}
+```{r, child=c('_Get_Outp_Smry.Rmd')}
+```
+```{r echo=FALSE}
+if(params_ls$share_mdls_1L_lgl){
+  child_chr <- c('_Write_Shareable_Data.Rmd','_Share_Mdls.Rmd')
+}else{
+  child_chr <- NULL
+}
+```
+# Create shareable data
+```{r, child = child_chr[1]}
 ```
 
-# Verify data integrity
-```{r, child=c('_Test_Data_Integrity.Rmd')}
+# Specify destination data repository
+```{r, child=c('_Add_DV_Details.Rmd')}
 ```
 
-# Describe data
-```{r, child=c('_Write_Descriptives.Rmd')}
+# Share outputs
+```{r, child=c('_Share_Report.Rmd')}
 ```
 
-# Analyse data
-```{r, child=c('_Write_Main_Analysis.Rmd')}
+```{r, child=child_chr[2]}
 ```
-
-# Save record of analysis
-```{r, child=c('_Write_Analysis_Mthd_Smry.Rmd')}
-```
-

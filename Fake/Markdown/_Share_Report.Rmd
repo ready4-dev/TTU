@@ -1,0 +1,21 @@
+---
+title: "_Share_Report"
+author: "Matthew Hamilton & Caroline Gao"
+date: "16/04/2021"
+output: html_document
+---
+
+## Share reports
+Upload analysis reports to an online data repository.
+
+```{r message=FALSE, results='hide', warning=FALSE}
+reports_tb <- tibble::tibble(ds_obj_nm_chr = params_ls$rprt_lup$rprt_nms_chr, 
+                            title_chr = params_ls$rprt_lup$title_chr) 
+ready4use::write_fls_to_dv_ds(reports_tb, 
+                              dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
+                              ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr,
+                              parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr, 
+                              paths_to_dirs_chr = paths_ls$reports_dir_1L_chr, 
+                              inc_fl_types_chr = params_ls$inc_fl_types_chr, 
+                              paths_are_rltv_1L_lgl = F)
+```

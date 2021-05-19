@@ -1,0 +1,16 @@
+---
+title: "_Share_Mdls"
+author: "Matthew Hamilton & Caroline Gao"
+date: "18/03/2021"
+output: html_document
+---
+
+## Share models
+Upload the shareable models created earlier to the online data repository.
+
+```{r message=FALSE, results='hide', warning=FALSE}
+if(!is.null(outp_smry_ls$dv_ls)){
+  outp_smry_ls$shareable_mdls_tb <- outp_smry_ls %>%
+    TTU::write_shareable_mdls_to_dv(shareable_title_detail_1L_chr = params_ls$dv_mdl_desc_1L_chr)
+}
+```
