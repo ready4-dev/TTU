@@ -9,7 +9,8 @@ Add variables for the interval between and number of data collection rounds.
 
 ```{r }
 data_tb <- data_tb %>% 
-  youthvars::add_interval_var(id_var_nm_1L_chr = ds_descvs_ls$id_var_nm_1L_chr) %>%
+  youthvars::add_interval_var(id_var_nm_1L_chr = ds_descvs_ls$id_var_nm_1L_chr,
+                              msrmnt_date_var_nm_1L_chr = ifelse(!is.null(ds_descvs_ls$data_collection_dtm),ds_descvs_ls$data_collection_dtm,"d_interview_date")) %>%
   youthvars::add_participation_var(id_var_nm_1L_chr = ds_descvs_ls$id_var_nm_1L_chr,
                         fup_round_nmbr_1L_int = length(ds_descvs_ls$round_vals_chr))
 

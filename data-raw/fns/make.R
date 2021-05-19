@@ -175,7 +175,7 @@ make_eq5d_ds_dict <- function(data_tb = make_fake_eq5d_ds(),
   dictionary_tb <- youthvars::make_tfd_repln_ds_dict_r3() %>%
     dplyr::filter(var_nm_chr %in% names(data_tb)) %>%
     youthvars::make_final_rpln_ds_dict(additions_tb = ready4use::make_pt_ready4_dictionary(var_nm_chr = c("uid",
-                                                                                                          "Timepoint", "bl_data_collection_dtm",
+                                                                                                          "Timepoint", "data_collection_dtm",
                                                                                                           paste0("eq5dq_",c("MO", "SC", "UA", "PD", "AD")),
                                                                                                           "EQ5D_total_dbl",
                                                                                                           predictors_lup$short_name_chr),
@@ -186,7 +186,7 @@ make_eq5d_ds_dict <- function(data_tb = make_fake_eq5d_ds(),
                                                                                                            rep("Clinical",2)),
                                                                                            var_desc_chr = c("Unique identifier",
                                                                                                             "Data collection round",
-                                                                                                            "Date of baseline data collection",
+                                                                                                            "Date of data collection",
                                                                                                             "EQ5D - Mobility Domain Score",
                                                                                                             "EQ5D - Self-Care Domain Score",
                                                                                                             "EQ5D - Usual Activities Domain Score",
@@ -253,14 +253,14 @@ make_fake_eq5d_ds <- function(fl_nm_1L_chr = "eq5d5l_example.xlsx",
                   CALD,
                   Region,
                   d_studying_working) %>%
-    dplyr::rename(bl_data_collection_dtm =
+    dplyr::rename(data_collection_dtm =
                     d_interview_date)
   data_tb <- dplyr::left_join(data_tb %>%
                                 dplyr::filter(uid %in% demog_data_tb$uid),
                               demog_data_tb) %>%
     dplyr::select(uid,
                   Timepoint,
-                  bl_data_collection_dtm,
+                  data_collection_dtm,
                   d_age,
                   Gender,
                   d_sex_birth_s,
@@ -271,7 +271,12 @@ make_fake_eq5d_ds <- function(fl_nm_1L_chr = "eq5d5l_example.xlsx",
                   Region,
                   d_studying_working,
                   dplyr::everything()) %>%
-    dplyr::rename_with(~stringr::str_c("eq5dq_", .), .cols = c("MO", "SC", "UA", "PD", "AD"))
+    dplyr::rename_with(~stringr::str_c("eq5dq_", .), .cols = c("MO", "SC", "UA", "PD", "AD")) %>%
+    dplyr::mutate(data_collection_dtm = dplyr::case_when(Timepoint == "FUP" ~ data_collection_dtm + lubridate::days(120),
+                                                         T ~ data_collection_dtm))
+  data_tb <- data_tb %>%
+    dplyr::mutate(d_age = dplyr::case_when(Timepoint == "FUP" ~ d_age %>% purrr::map2_int(runif(nrow(data_tb)), ~ ifelse((.y + 120/365.25)>=1,.x+1L,.x)),
+                                           T ~ d_age))
   return(data_tb)
 }
 make_fake_ts_data <- function (outp_smry_ls)
