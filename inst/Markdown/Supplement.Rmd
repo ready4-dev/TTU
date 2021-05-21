@@ -51,7 +51,9 @@ params:
   ds_descvs_ls: !r NULL
   fake_ds_tb: !r NULL
   iters_1L_int: !r 4000L
+  maui_domains_pfcs_1L_chr: "vD"
   maui_itm_short_nms_chr: !r c("Household tasks", "Getting around","Morbility","Self care","Enjoy close rels","Family rels", "Community involvement","Despair","Worry", "Sad", "Agitated","Energy level","Control", "Coping","Frequency of pain", "Degree of pain","Pain interference","Vision", "Hearing","Communication")
+  maui_scoring_fn: !r NULL
   mdl_smry_ls: !r NULL
   nbr_of_digits_1L_int: !r 2L
   output_type_1L_chr: "PDF"
