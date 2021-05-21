@@ -1,0 +1,26 @@
+---
+title: "_Write_Input_Data"
+author: "Matthew Hamilton & Caroline Gao"
+date: "25/04/2021"
+output: html_document
+---
+
+Write a copy of the input parameters.
+
+```{r }
+saveRDS(params_ls, here::here(paste0(paths_ls$output_data_dir_1L_chr,
+                                     "/I_INPUTS",
+                                     params_ls$rprt_type_1L_chr,
+                                     ".rds")))
+```
+
+`r ifelse((paths_ls$write_to_dir_nm_1L_chr == "Fake" & params_ls$rprt_type_1L_chr == "Analysis"),"Write a local copy of the fake dataset used in this analysis.","")`
+
+```{r echo = (is.null(params_ls$fake_ds_tb) & paths_ls$write_to_dir_nm_1L_chr == "Fake" & params_ls$rprt_type_1L_chr == "Analysis"), eval = (is.null(params_ls$fake_ds_tb) & paths_ls$write_to_dir_nm_1L_chr == "Fake" & params_ls$rprt_type_1L_chr == "Analysis")}
+saveRDS(youthvars::replication_popl_tb, here::here(paths_ls$path_to_fake_data_1L_chr))
+```
+
+```{r echo = (!is.null(params_ls$fake_ds_tb) & paths_ls$write_to_dir_nm_1L_chr == "Fake" & params_ls$rprt_type_1L_chr == "Analysis"), eval = (!is.null(params_ls$fake_ds_tb) & paths_ls$write_to_dir_nm_1L_chr == "Fake" & params_ls$rprt_type_1L_chr == "Analysis")}
+saveRDS(params_ls$fake_ds_tb, here::here(paths_ls$path_to_fake_data_1L_chr))
+```
+

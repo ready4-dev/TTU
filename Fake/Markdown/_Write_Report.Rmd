@@ -1,0 +1,22 @@
+---
+title: "_Write_Report"
+author: "Matthew Hamilton & Caroline Gao"
+date: "16/04/2021"
+output: html_document
+---
+
+Write document summarising all time series models created in this analysis.
+
+```{r eval = params_ls$eval_1L_lgl, message=FALSE, results='hide', warning=FALSE}
+outp_smry_ls <-  append(outp_smry_ls, 
+                        list(rprt_lup = params_ls$rprt_lup))
+list(outp_smry_ls = outp_smry_ls,
+     output_type_1L_chr = params_ls$rprt_output_type_1L_chr,
+     subtitle_1L_chr = params_ls$rprt_subtitle_1L_chr) %>%
+  TTU::write_report(paths_ls = paths_ls,
+              R_fl_nm_1L_chr = list.files() %>% purrr::pluck(1),
+              rprt_nm_1L_chr = params_ls$rprt_nm_1L_chr,
+              abstract_args_ls = params_ls$abstract_args_ls,
+              header_yaml_args_ls = params_ls$header_yaml_args_ls,
+              rprt_lup = params_ls$rprt_lup)
+```

@@ -1,0 +1,16 @@
+---
+title: "_Purge"
+author: "Matthew Hamilton & Caroline Gao"
+date: "29/04/2021"
+output: html_document
+---
+
+`r ifelse(params_ls$purge_data_1L_lgl,"## Remove dataset copies","")`
+`r ifelse(params_ls$purge_data_1L_lgl,"Remove any copies of the source dataset that were made during the analysis from the files written by the analysis script.","")`
+
+```{r eval=params_ls$purge_data_1L_lgl}
+outp_smry_ls$scored_data_tb <- NULL
+saveRDS(outp_smry_ls, 
+        paste0(outp_smry_ls$path_to_write_to_1L_chr, "/I_ALL_OUTPUT_.RDS"))
+TTU::write_to_delete_mdl_fls(outp_smry_ls)
+```

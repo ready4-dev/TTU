@@ -1,0 +1,13 @@
+---
+title: "_Write_Analysis_Mthd_Smry"
+author: "Matthew Hamilton & Caroline Gao"
+date: "23/04/2021"
+output: html_document
+---
+
+Save an updated record of our analysis.
+
+```{r results='hide', message=FALSE, warning=FALSE}
+saveRDS(outp_smry_ls, 
+        paste0(outp_smry_ls$path_to_write_to_1L_chr, "/I_ALL_OUTPUT_.RDS"))
+```

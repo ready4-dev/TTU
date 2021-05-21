@@ -1,0 +1,15 @@
+---
+title: "Write_Shareable_Mdls"
+author: "Matthew Hamilton & Caroline Gao"
+date: "15/04/2021"
+output: html_document
+---
+
+## Create shareable models
+Create model objects that mirror the time series transfer to utility models in all aspects, except having their dataset objects replaced by synthetic data (to reduce the risk of accidently sharing confidential data).
+
+```{r message=FALSE, results='hide', warning=FALSE}
+outp_smry_ls <- outp_smry_ls %>% 
+  TTU::write_shareable_mdls(new_dir_nm_1L_chr = "G_Shareable",
+                            shareable_title_detail_1L_chr = params_ls$dv_mdl_desc_1L_chr)
+```
