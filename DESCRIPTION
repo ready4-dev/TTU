@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9187
+Version: 0.0.0.9188
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -80,7 +80,7 @@ Imports:
     tidyselect,
     utils,
     viridis,
-    youthvars (>= 0.0.0.9046)
+    youthvars (>= 0.0.0.9047)
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
