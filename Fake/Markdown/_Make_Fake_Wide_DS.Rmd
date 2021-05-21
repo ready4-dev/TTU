@@ -1,0 +1,15 @@
+---
+title: "_Make_Fake_Wide_DS"
+author: "Matthew Hamilton & Caroline Gao"
+date: "23/03/2021"
+output: html_document
+---
+
+## Create shareable population data
+Create a purely synthetic dataset, representative of the source data (transformed to a wide format and slimmed down to just the variables used in modelling), but containing no real data on any individual. 
+
+```{r message=FALSE, results='hide', warning=FALSE}
+outp_smry_ls$fk_data_tb <- TTU::make_fake_ts_data(outp_smry_ls)
+```
+
+

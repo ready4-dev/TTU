@@ -1,0 +1,38 @@
+---
+title: "_Make_Ws"
+author: "Matthew Hamilton & Caroline Gao"
+date: "17/03/2021"
+output: html_document
+---
+
+Make list object storing paths to local data. 
+<!-- Turn evaluation on once updating fn with depth arg -->
+
+```{r message=FALSE, results='hide', warning=FALSE}
+paths_ls <- params_ls %>%
+  ready4show::make_paths_ls(depth_1L_int = ifelse(is.null(params_ls$transform_paths_ls),
+                                                  1,
+                                                  2))
+```
+
+```{r eval =!is.null(params_ls$transform_paths_ls), echo=!is.null(params_ls$transform_paths_ls) ,message=FALSE, results='hide', warning=FALSE}
+paths_ls <- rlang::exec(params_ls$transform_paths_ls$fn,
+                        paths_ls,
+                        !!!params_ls$transform_paths_ls$args_ls)
+```
+
+Enable relative references to local files and directories. 
+
+```{r message=FALSE, results='hide', warning=FALSE}
+here::i_am(paste0(paths_ls$path_from_top_level_1L_chr, 
+                  "/",
+                  paths_ls$write_to_dir_nm_1L_chr,
+                  "/Markdown/_Make_Ws.Rmd"))
+```
+
+Write directories to which all output will be saved and add details to paths list. 
+
+```{r message=FALSE, results='hide', warning=FALSE}
+paths_ls <- youthvars::write_all_outp_dirs(paths_ls = paths_ls)
+```
+
