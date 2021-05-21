@@ -235,16 +235,18 @@ make_eq5d_ds_dict <- function (data_tb = make_fake_eq5d_ds(), predictors_lup = m
         dplyr::filter(var_nm_chr %in% names(data_tb)) %>% youthvars::make_final_rpln_ds_dict(additions_tb = ready4use::make_pt_ready4_dictionary(var_nm_chr = c("uid", 
         "Timepoint", "data_collection_dtm", paste0("eq5dq_", 
             c("MO", "SC", "UA", "PD", "AD")), "EQ5D_total_dbl", 
-        predictors_lup$short_name_chr), var_ctg_chr = c("Identifier", 
-        rep("Temporal", 2), rep("Multi-Attribute Utility Instrument Question", 
-            5), "Multi-Attribute Utility Instrument Score", rep("Clinical", 
-            2)), var_desc_chr = c("Unique identifier", "Data collection round", 
-        "Date of data collection", "EQ5D - Mobility Domain Score", 
-        "EQ5D - Self-Care Domain Score", "EQ5D - Usual Activities Domain Score", 
-        "EQ5D - Pain / Discomfort Domain Score", "EQ5D - Anxiety / Depression Domain Score", 
-        "EQ5D - Total weighted score", predictors_lup$long_name_chr), 
+        "EQ5d_cumulative_dbl", predictors_lup$short_name_chr), 
+        var_ctg_chr = c("Identifier", rep("Temporal", 2), rep("Multi-Attribute Utility Instrument Question", 
+            5), rep("Multi-Attribute Utility Instrument Score", 
+            2), rep("Clinical", 2)), var_desc_chr = c("Unique identifier", 
+            "Data collection round", "Date of data collection", 
+            "EQ5D - Mobility Domain Score", "EQ5D - Self-Care Domain Score", 
+            "EQ5D - Usual Activities Domain Score", "EQ5D - Pain / Discomfort Domain Score", 
+            "EQ5D - Anxiety / Depression Domain Score", "EQ5D - Total weighted score", 
+            "EQ5D - Total unweighted score", predictors_lup$long_name_chr), 
         var_type_chr = c("integer", "character", "date", rep("integer", 
-            5), "double", predictors_lup$class_chr))) %>% dplyr::arrange(var_ctg_chr)
+            5), "double", "integer", predictors_lup$class_chr))) %>% 
+        dplyr::arrange(var_ctg_chr)
     return(dictionary_tb)
 }
 #' Make fake eq5d dataset

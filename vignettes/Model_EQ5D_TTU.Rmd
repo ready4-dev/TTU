@@ -69,13 +69,13 @@ path_params_ls <- list(path_from_top_level_1L_chr = normalizePath("../") %>% str
 
 ```{r echo = TRUE }
 ds_descvs_ls <- list(candidate_predrs_chr = c("k10_int","psych_well_int"),
-                     cohort_descv_var_nms_chr = c("d_age", "d_agegroup", "Gender", "d_relation_s","d_sexual_ori_s", "Region", "CALD", "d_studying_working"),
+                     cohort_descv_var_nms_chr = c("d_age", "Gender", "d_relation_s","d_sexual_ori_s", "Region", "CALD", "d_studying_working"),
                      dictionary_tb = TTU::make_eq5d_ds_dict(fake_ds_tb), 
                      id_var_nm_1L_chr = "uid", 
                      msrmnt_date_var_nm_1L_chr = "data_collection_dtm",
                      round_var_nm_1L_chr = "Timepoint", 
                      round_vals_chr = c("BL", "FUP"),
-                     maui_item_pfx_1L_chr = NA_character_, 
+                     maui_item_pfx_1L_chr = "eq5dq_", 
                      utl_wtd_var_nm_1L_chr = "EQ5D_total_dbl", 
                      utl_unwtd_var_nm_1L_chr = "EQ5d_cumulative_dbl")
 ```
@@ -89,7 +89,7 @@ predictors_lup <- TTU::TTU_predictors_lup(TTU::make_pt_TTU_predictors_lup(short_
                                               max_val_dbl = c(50,90),
                                               class_chr = "integer",
                                               increment_dbl = 1,
-                                              class_fn_chr = "integer",
+                                              class_fn_chr = "as.integer",
                                               mdl_scaling_dbl = 0.01,
                                               covariate_lgl = F))
 ```
@@ -138,9 +138,13 @@ params_ls <- list(candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexu
                                 id_var_nm_1L_chr, 
                                 utl_wtd_var_nm_1L_chr,
                                 utl_unwtd_var_nm_1L_chr){
+       require(eq5d)
       data_tb %>% 
+        dplyr::rename_with(~stringr::str_replace(.x,maui_item_pfx_1L_chr,""),dplyr::starts_with(maui_item_pfx_1L_chr)) %>%
   dplyr::mutate(`:=`(!!rlang::sym(utl_wtd_var_nm_1L_chr), 
-                     eq5d::eq5d(., country="UK", version = "5L", type = "CW"))) %>% dplyr::mutate(`:=`(!!rlang::sym(utl_unwtd_var_nm_1L_chr), 
+                     eq5d::eq5d(., country="UK", version = "5L", type = "CW"))) %>%
+    dplyr::rename_with(~paste0(maui_item_pfx_1L_chr,.x),c("MO","SC","UA","PD","AD")) %>%
+    dplyr::mutate(`:=`(!!rlang::sym(utl_unwtd_var_nm_1L_chr), 
         rowSums(dplyr::across(dplyr::starts_with(maui_item_pfx_1L_chr))))) %>% dplyr::filter(!is.na(!!rlang::sym(utl_unwtd_var_nm_1L_chr)))
      },
      prefd_covars_chr = NA_character_, 
