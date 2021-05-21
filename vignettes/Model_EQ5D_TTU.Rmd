@@ -133,6 +133,8 @@ dv_ls <- list(primary_dv_chr = c("firstbounce","https://doi.org/10.7910/DVN/612H
 ```{r echo = TRUE }
 params_ls <- list(candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
                   fake_ds_tb = fake_ds_tb,
+                  maui_domains_pfcs_1L_chr = NULL,
+                  maui_itm_short_nms_chr = c("Mobility", "Self-care", "Activities","Pain","Anxiety"),
      maui_scoring_fn = function(data_tb,# Function must have these arguments in this order.
                                 maui_item_pfx_1L_chr,
                                 id_var_nm_1L_chr, 
