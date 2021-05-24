@@ -43,7 +43,7 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, depnt_
         path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsn",
         fl_nm_pfx_1L_chr = "C_PREDR", mdl_types_lup = mdl_types_lup)
     bl_tb <- scored_data_tb %>% youthvars::transform_ds_for_tstng(candidate_predrs_chr = candidate_predrs_chr,
-        covar_var_nms_chr = candidate_covar_nms_chr, remove_all_msng_1L_lgl = T,
+        covar_var_nms_chr = candidate_covar_nms_chr, remove_all_msng_1L_lgl = T, round_var_nm_1L_chr = round_var_nm_1L_chr,
         round_val_1L_chr = round_bl_val_1L_chr)
     mdls_with_covars_smry_tb <- write_mdl_type_covars_mdls(bl_tb,
         depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, predrs_var_nms_chr = candidate_predrs_chr,
@@ -468,6 +468,7 @@ write_predr_and_covars_cmprsn <- function(scored_data_tb,
     youthvars::transform_ds_for_tstng(candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
                            covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr,
                            remove_all_msng_1L_lgl = T,
+                           round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr,
                            round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
   mdl_smry_ls$mdls_with_covars_smry_tb <- write_mdl_type_covars_mdls(bl_tb,
                                                                      depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,
