@@ -262,8 +262,7 @@ make_eq5d_ds_dict <- function (data_tb = make_fake_eq5d_ds(), predictors_lup = m
 #' @importFrom dplyr mutate left_join n group_by ungroup arrange filter pull select rename case_when across everything rename_with
 #' @importFrom eq5d eq5d
 #' @importFrom tibble tibble
-#' @importFrom sn rsn
-#' @importFrom purrr map_dbl map2_dbl map_int map2_int
+#' @importFrom purrr map_int map2_dbl map_dbl map2_int
 #' @importFrom faux rnorm_pre
 #' @importFrom youthvars transform_raw_ds_for_analysis
 #' @importFrom stringr str_c
@@ -275,13 +274,10 @@ make_fake_eq5d_ds <- function (fl_nm_1L_chr = "eq5d5l_example.xlsx", country_1L_
     data_tb <- readxl::read_excel(system.file("extdata", fl_nm_1L_chr, 
         package = "eq5d")) %>% dplyr::mutate(total_eq5d = eq5d::eq5d(., 
         country = country_1L_chr, version = version_1L_chr, type = type_1L_chr))
-    k10_lup_tb <- tibble::tibble(k10_dbl = c(sn::rsn(2500, 10.3, 
-        omega = 0.1) %>% round(), sn::rsn(2500, 12, omega = 0.4) %>% 
-        round(), sn::rsn(2500, 14.5, omega = 0.4) %>% round(), 
-        sn::rsn(2500, 21, omega = 6, alpha = 1) %>% round() %>% 
-            purrr::map_dbl(~max(.x, 10) %>% min(50))) %>% sample(10000), 
-        pred_eq5d_dbl = purrr::map2_dbl(k10_dbl, rnorm(10000, 
-            0, 0.075), ~predict_utl_from_k10(.x, eq5d_error_1L_dbl = .y)[2]), 
+    k10_lup_tb <- tibble::tibble(k10_dbl = (9.5 + rexp(1e+05, 
+        rate = 0.18)) %>% purrr::map_int(~as.integer(min(max(.x, 
+        10), 50))), pred_eq5d_dbl = purrr::map2_dbl(k10_dbl, 
+        rnorm(1e+05, 0, 0.075), ~predict_utl_from_k10(.x, eq5d_error_1L_dbl = .y)[2]), 
         match_idx_int = purrr::map_dbl(pred_eq5d_dbl, ~which.min(abs(data_tb$total_eq5d - 
             .x))))
     data_tb <- dplyr::left_join(k10_lup_tb, data_tb %>% dplyr::mutate(match_idx_int = 1:dplyr::n()))
