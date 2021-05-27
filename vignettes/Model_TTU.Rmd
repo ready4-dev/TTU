@@ -31,7 +31,7 @@ dir.create(path_to_write_to_1L_chr)
 As this is an illustrative example, our input data does not actually exist. So we are going to have to create a fake dataset.
 
 ```{r message=FALSE}
-data_tb <- make_fake_eq5d_ds()
+data_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4749888"))
 ```
 
 The dataset we are using has `r nrow(data_tb)` records on `r length(data_tb$uid %>% unique())` study participants. The first six records are reproduced below.
@@ -367,13 +367,17 @@ Next we test each of the `r length(mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr
 
 However, as there is some potential utility in allowing users to explore less suitable model types, we may address this limitation in future releases of TTU.
 
+Note, that in many cases both the `prior_ls` and `control_ls` arguments can be set to `NULL` (which may speed up execution). However, in this example doing so would result in warning messages suggesting a change to the adapt_delta control value (default = 0.8). We have therefore passed a value to the `control_ls` argument that addresses this issue.
+
 ```{r eval = F}
 outp_smry_ls <- write_ts_mdls_from_alg_outp(outp_smry_ls,
                                             fn_ls = list(fit_gsn_log_lnk,fit_clg_log_tfmn),
                                             predictors_lup = predictors_lup ,
                                             backend_1L_chr = "cmdstanr",
                                             new_dir_nm_1L_chr = "F_TS_Mdls",
-                                            iters_1L_int = 4000L)
+                                            iters_1L_int = 4000L,
+                                            prior_ls = NULL, 
+                                            control_ls = list(adapt_delta = 0.99))
 ```
 
 The `write_ts_mdls_from_alg_outp`{.R} function writes the models it tests to the "F_TS_Mdls" sub-directory of "Output" along with three plots for each model. 

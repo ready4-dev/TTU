@@ -815,7 +815,7 @@ write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_v
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round",
     round_bl_val_1L_chr = "Baseline", backend_1L_chr = getOption("brms.backend",
         "rstan"), fn_ls, mdl_nms_ls, mdl_smry_dir_1L_chr, predictors_lup,iters_1L_int = 4000L,
-    seed_1L_int = 1000L)
+    seed_1L_int = 1000L, prior_ls = NULL, control_ls = NULL)
 {
     if (!dir.exists(mdl_smry_dir_1L_chr))
         dir.create(mdl_smry_dir_1L_chr)
@@ -828,7 +828,7 @@ write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_v
                 depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, id_var_nm_1L_chr = id_var_nm_1L_chr,
                 round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr,
                 predictors_lup = predictors_lup, backend_1L_chr = backend_1L_chr, iters_1L_int = iters_1L_int,
-                seed_1L_int = seed_1L_int)
+                seed_1L_int = seed_1L_int, prior_ls = prior_ls, control_ls = control_ls)
             Sys.sleep(5)
             smry_ls$smry_of_ts_mdl_tb
         })
@@ -837,7 +837,7 @@ write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_v
     return(mdls_smry_tb)
 }
 write_ts_mdls_from_alg_outp <- function (outp_smry_ls, fn_ls, new_dir_nm_1L_chr = "F_TS_Mdls", predictors_lup,
-                                         backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L)
+                                         backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L, prior_ls = NULL, control_ls = NULL)
 {
   output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr,
                                                                new_dir_nm_1L_chr = new_dir_nm_1L_chr)
@@ -850,7 +850,7 @@ write_ts_mdls_from_alg_outp <- function (outp_smry_ls, fn_ls, new_dir_nm_1L_chr 
         mdl_smry_dir_1L_chr = output_dir_1L_chr,
         predictors_lup = predictors_lup,
         backend_1L_chr = backend_1L_chr, iters_1L_int = iters_1L_int,
-        seed_1L_int = outp_smry_ls$seed_1L_int)
+        seed_1L_int = outp_smry_ls$seed_1L_int, prior_ls = prior_ls, control_ls = control_ls)
     outp_smry_ls$mdls_smry_tb <- mdls_smry_tb
     outp_smry_ls$file_paths_chr <- list.files(outp_smry_ls$path_to_write_to_1L_chr, recursive = T)
     return(outp_smry_ls)

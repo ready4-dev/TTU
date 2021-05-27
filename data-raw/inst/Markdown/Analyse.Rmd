@@ -47,6 +47,7 @@ output:
       - '--lua-filter=Filters/pagebreaks.lua'
 params:
   candidate_covar_nms_chr: !r NA_character_
+  control_ls: !r NULL
   ds_descvs_ls: !r NULL
   dv_ds_nm_and_url_chr: !r NULL
   fake_ds_tb: !r NULL
@@ -62,6 +63,7 @@ params:
   prefd_covars_chr: !r NA_character_
   prefd_mdl_types_chr: !r c("GLM_GSN_LOG","OLS_CLL")
   predictors_lup: !r youthvars::predictors_lup
+  prior_ls: !r NULL
   prototype_lup: !r TTU::prototype_lup
   raw_ds_tfmn_fn: !r NULL
   rprt_type_1L_chr: "Analysis"

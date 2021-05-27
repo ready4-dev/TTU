@@ -48,6 +48,7 @@ output:
 params:
   candidate_covar_nms_chr: !r NA_character_
   candidate_predrs_chr: !r NA_character_
+  control_ls: !r NULL
   ds_descvs_ls: !r NULL
   fake_ds_tb: !r NULL
   iters_1L_int: !r 4000L
@@ -62,6 +63,7 @@ params:
   predictors_lup: !r NULL
   prefd_covars_chr: !r NULL
   prefd_mdl_types_chr: !r c("GLM_GSN_LOG","OLS_CLL")
+  prior_ls: !r NULL
   rprt_type_1L_chr: "Supplement"
   seed_1L_int: 12345
   subtitle_1L_chr: "Secondary analysis algorithm for Transfer to Utility study"

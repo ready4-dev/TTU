@@ -17,7 +17,9 @@ make_smry_of_ts_mdl_outp(
   predictors_lup,
   backend_1L_chr = getOption("brms.backend", "rstan"),
   iters_1L_int = 4000L,
-  seed_1L_int = 1000L
+  seed_1L_int = 1000L,
+  prior_ls = NULL,
+  control_ls = NULL
 )
 }
 \arguments{
@@ -46,6 +48,10 @@ make_smry_of_ts_mdl_outp(
 \item{iters_1L_int}{Iterations (an integer vector of length one), Default: 4000}
 
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 1000}
+
+\item{prior_ls}{Prior (a list), Default: NULL}
+
+\item{control_ls}{Control (a list), Default: NULL}
 }
 \value{
 Summary of time series (a list of models)

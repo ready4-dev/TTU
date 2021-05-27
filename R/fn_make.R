@@ -1167,6 +1167,8 @@ make_smry_of_mdl_outp <- function (data_tb, model_mdl = NULL, folds_1L_int = 10,
 #' @param backend_1L_chr Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")
 #' @param iters_1L_int Iterations (an integer vector of length one), Default: 4000
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 1000
+#' @param prior_ls Prior (a list), Default: NULL
+#' @param control_ls Control (a list), Default: NULL
 #' @return Summary of time series (a list of models)
 #' @rdname make_smry_of_ts_mdl_outp
 #' @export 
@@ -1178,7 +1180,8 @@ make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L
     depnt_var_nm_1L_chr = "utl_total_w", id_var_nm_1L_chr = "fkClientID", 
     round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", 
     predictors_lup, backend_1L_chr = getOption("brms.backend", 
-        "rstan"), iters_1L_int = 4000L, seed_1L_int = 1000L) 
+        "rstan"), iters_1L_int = 4000L, seed_1L_int = 1000L, 
+    prior_ls = NULL, control_ls = NULL) 
 {
     scaling_fctr_dbl <- predr_vars_nms_chr %>% purrr::map_dbl(~ifelse(.x %in% 
         predictors_lup$short_name_chr, ready4fun::get_from_lup_obj(predictors_lup, 
@@ -1195,7 +1198,7 @@ make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L
     args_ls <- list(data_tb = tfd_data_tb, depnt_var_nm_1L_chr = tfd_depnt_var_nm_1L_chr, 
         predr_vars_nms_chr = predr_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr, 
         iters_1L_int = iters_1L_int, backend_1L_chr = backend_1L_chr, 
-        seed_1L_int = seed_1L_int)
+        seed_1L_int = seed_1L_int, prior_ls = prior_ls, control_ls = control_ls)
     mdl_ls <- rlang::exec(fn, !!!args_ls)
     smry_of_ts_mdl_ls <- list(smry_of_ts_mdl_tb = make_smry_of_brm_mdl(mdl_ls, 
         data_tb = tfd_data_tb, depnt_var_nm_1L_chr = tfd_depnt_var_nm_1L_chr, 

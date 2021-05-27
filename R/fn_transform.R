@@ -287,7 +287,8 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
             .x %>% dplyr::mutate(dplyr::across(dplyr::all_of(predr_vars_nms_chr[idx_1L_int]), 
                 .fns = list(baseline = ~dplyr::first(.) * scaling_fctr_dbl[idx_1L_int], 
                   change = ~ifelse(!!rlang::sym(round_var_nm_1L_chr) == 
-                    "Baseline", 0, (. - dplyr::lag(.)) * scaling_fctr_dbl[idx_1L_int]))))
+                    round_bl_val_1L_chr, 0, (. - dplyr::lag(.)) * 
+                    scaling_fctr_dbl[idx_1L_int]))))
         })
     if (add_cll_tfmn_1L_lgl) {
         tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm_for_cll(depnt_var_nm_1L_chr)), 

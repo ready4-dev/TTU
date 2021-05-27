@@ -930,7 +930,7 @@ make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L
     depnt_var_nm_1L_chr = "utl_total_w", id_var_nm_1L_chr = "fkClientID",
     round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", predictors_lup,
     backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L,
-    seed_1L_int = 1000L)
+    seed_1L_int = 1000L, prior_ls = NULL, control_ls = NULL)
 {
   scaling_fctr_dbl <- predr_vars_nms_chr %>% purrr::map_dbl(~
       ifelse(.x %in% predictors_lup$short_name_chr,
@@ -949,7 +949,7 @@ make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L
         transform_depnt_var_nm_for_cll(depnt_var_nm_1L_chr), depnt_var_nm_1L_chr)
     args_ls <- list(data_tb = tfd_data_tb, depnt_var_nm_1L_chr = tfd_depnt_var_nm_1L_chr,
         predr_vars_nms_chr = predr_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr, iters_1L_int = iters_1L_int,
-        backend_1L_chr = backend_1L_chr, seed_1L_int = seed_1L_int)
+        backend_1L_chr = backend_1L_chr, seed_1L_int = seed_1L_int, prior_ls = prior_ls, control_ls = control_ls)
     mdl_ls <- rlang::exec(fn, !!!args_ls)
     smry_of_ts_mdl_ls <- list(smry_of_ts_mdl_tb = make_smry_of_brm_mdl(mdl_ls,
         data_tb = tfd_data_tb, depnt_var_nm_1L_chr = tfd_depnt_var_nm_1L_chr,

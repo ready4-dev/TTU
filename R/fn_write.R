@@ -1092,6 +1092,8 @@ write_to_delete_mdl_fls <- function (outp_smry_ls)
 #' @param predictors_lup Predictors (a lookup table)
 #' @param iters_1L_int Iterations (an integer vector of length one), Default: 4000
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 1000
+#' @param prior_ls Prior (a list), Default: NULL
+#' @param control_ls Control (a list), Default: NULL
 #' @return Models summary (a tibble)
 #' @rdname write_ts_mdls
 #' @export 
@@ -1101,7 +1103,8 @@ write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_v
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", backend_1L_chr = getOption("brms.backend", 
         "rstan"), fn_ls, mdl_nms_ls, mdl_smry_dir_1L_chr, predictors_lup, 
-    iters_1L_int = 4000L, seed_1L_int = 1000L) 
+    iters_1L_int = 4000L, seed_1L_int = 1000L, prior_ls = NULL, 
+    control_ls = NULL) 
 {
     if (!dir.exists(mdl_smry_dir_1L_chr)) 
         dir.create(mdl_smry_dir_1L_chr)
@@ -1114,7 +1117,8 @@ write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_v
                 depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, id_var_nm_1L_chr = id_var_nm_1L_chr, 
                 round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr, 
                 predictors_lup = predictors_lup, backend_1L_chr = backend_1L_chr, 
-                iters_1L_int = iters_1L_int, seed_1L_int = seed_1L_int)
+                iters_1L_int = iters_1L_int, seed_1L_int = seed_1L_int, 
+                prior_ls = prior_ls, control_ls = control_ls)
             Sys.sleep(5)
             smry_ls$smry_of_ts_mdl_tb
         })
@@ -1130,13 +1134,15 @@ write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_v
 #' @param predictors_lup Predictors (a lookup table)
 #' @param backend_1L_chr Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")
 #' @param iters_1L_int Iterations (an integer vector of length one), Default: 4000
+#' @param prior_ls Prior (a list), Default: NULL
+#' @param control_ls Control (a list), Default: NULL
 #' @return Output summary (a list)
 #' @rdname write_ts_mdls_from_alg_outp
 #' @export 
 
 write_ts_mdls_from_alg_outp <- function (outp_smry_ls, fn_ls, new_dir_nm_1L_chr = "F_TS_Mdls", 
     predictors_lup, backend_1L_chr = getOption("brms.backend", 
-        "rstan"), iters_1L_int = 4000L) 
+        "rstan"), iters_1L_int = 4000L, prior_ls = NULL, control_ls = NULL) 
 {
     output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr, 
         new_dir_nm_1L_chr = new_dir_nm_1L_chr)
@@ -1148,7 +1154,8 @@ write_ts_mdls_from_alg_outp <- function (outp_smry_ls, fn_ls, new_dir_nm_1L_chr 
         fn_ls = fn_ls, mdl_nms_ls = outp_smry_ls$mdl_nms_ls, 
         mdl_smry_dir_1L_chr = output_dir_1L_chr, predictors_lup = predictors_lup, 
         backend_1L_chr = backend_1L_chr, iters_1L_int = iters_1L_int, 
-        seed_1L_int = outp_smry_ls$seed_1L_int)
+        seed_1L_int = outp_smry_ls$seed_1L_int, prior_ls = prior_ls, 
+        control_ls = control_ls)
     outp_smry_ls$mdls_smry_tb <- mdls_smry_tb
     outp_smry_ls$file_paths_chr <- list.files(outp_smry_ls$path_to_write_to_1L_chr, 
         recursive = T)

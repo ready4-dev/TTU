@@ -17,7 +17,9 @@ write_ts_mdls(
   mdl_smry_dir_1L_chr,
   predictors_lup,
   iters_1L_int = 4000L,
-  seed_1L_int = 1000L
+  seed_1L_int = 1000L,
+  prior_ls = NULL,
+  control_ls = NULL
 )
 }
 \arguments{
@@ -46,6 +48,10 @@ write_ts_mdls(
 \item{iters_1L_int}{Iterations (an integer vector of length one), Default: 4000}
 
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 1000}
+
+\item{prior_ls}{Prior (a list), Default: NULL}
+
+\item{control_ls}{Control (a list), Default: NULL}
 }
 \value{
 Models summary (a tibble)

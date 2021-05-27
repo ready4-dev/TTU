@@ -19,7 +19,7 @@ library(magrittr)
 As this is an illustrative example, we first must create a fake dataset (if using real data, skip this step).
 
 ```{r message=FALSE}
-fake_ds_tb <- TTU::make_fake_eq5d_ds() 
+fake_ds_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4749888")) 
 ```
 
 ```{r inputds, eval = knitr::is_html_output(), results='asis'}
@@ -106,7 +106,9 @@ analysis_params_ls <- list(ds_descvs_ls = ds_descvs_ls,
                            output_type_1L_chr = output_types_ls$supplementary_1L_chr,
                            predictors_lup = predictors_lup,
                            seed_1L_int = 12345,
-                           use_fake_data_1L_lgl =  use_fake_data_1L_lgl)
+                           use_fake_data_1L_lgl =  use_fake_data_1L_lgl,
+                           prior_ls = NULL, 
+                           control_ls = list(adapt_delta = 0.99))
 ```
 
 ## Reporting details

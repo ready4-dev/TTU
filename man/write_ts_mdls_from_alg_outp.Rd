@@ -10,7 +10,9 @@ write_ts_mdls_from_alg_outp(
   new_dir_nm_1L_chr = "F_TS_Mdls",
   predictors_lup,
   backend_1L_chr = getOption("brms.backend", "rstan"),
-  iters_1L_int = 4000L
+  iters_1L_int = 4000L,
+  prior_ls = NULL,
+  control_ls = NULL
 )
 }
 \arguments{
@@ -25,6 +27,10 @@ write_ts_mdls_from_alg_outp(
 \item{backend_1L_chr}{Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")}
 
 \item{iters_1L_int}{Iterations (an integer vector of length one), Default: 4000}
+
+\item{prior_ls}{Prior (a list), Default: NULL}
+
+\item{control_ls}{Control (a list), Default: NULL}
 }
 \value{
 Output summary (a list)
