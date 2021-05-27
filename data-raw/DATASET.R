@@ -239,6 +239,18 @@ ready4fun::write_links_for_website(user_manual_url_1L_chr = "https://github.com/
                                    project_website_url_1L_chr = "https://www.ready4-dev.com/")
 ##
 ##
+# dv_ls <- list(primary_dv_chr = c("fakes","https://doi.org/10.7910/DVN/612HDC"))
+# fake_eq5d_ds_tb <- make_fake_eq5d_ds()
+# saveRDS(fake_eq5d_ds_tb,"data-raw/dataverse/fake_eq5d_ds_tb.Rds")
+# ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "fake_eq5d_ds_tb",
+#                                                       title_chr = "A synthetic (entirely fake) dataset with psychological distress, psychological wellbeing and EQ5D questionaire response variables."),
+#                               dv_nm_1L_chr = dv_ls$primary_dv_chr[1],
+#                               ds_url_1L_chr = dv_ls$primary_dv_chr[2],
+#                               parent_dv_dir_1L_chr = "data-raw/dataverse",
+#                               paths_to_dirs_chr = "data-raw/dataverse",
+#                               inc_fl_types_chr = ".Rds",
+#                               paths_are_rltv_1L_lgl = T)
+##
 ## Add, Commit and Push
 # system("git add .")
 # system("git commit -m \"message\"")

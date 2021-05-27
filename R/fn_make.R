@@ -251,29 +251,31 @@ make_eq5d_ds_dict <- function (data_tb = make_fake_eq5d_ds(), predictors_lup = m
 }
 #' Make fake eq5d dataset
 #' @description make_fake_eq5d_ds() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake eq5d dataset. The function returns Data (a tibble).
-#' @param fl_nm_1L_chr File name (a character vector of length one), Default: 'eq5d5l_example.xlsx'
 #' @param country_1L_chr Country (a character vector of length one), Default: 'UK'
 #' @param version_1L_chr Version (a character vector of length one), Default: '5L'
 #' @param type_1L_chr Type (a character vector of length one), Default: 'CW'
+#' @param prop_with_fup_data_1L_dbl Prop with follow-up data (a double vector of length one), Default: 0.65
+#' @param seed_1L_int Seed (an integer vector of length one), Default: 1234
 #' @return Data (a tibble)
 #' @rdname make_fake_eq5d_ds
 #' @export 
-#' @importFrom readxl read_excel
-#' @importFrom dplyr mutate left_join n group_by ungroup arrange filter pull select rename case_when across everything rename_with
+#' @importFrom tidyr expand
+#' @importFrom dplyr mutate left_join n group_by ungroup arrange filter pull select across rename everything rename_with case_when
 #' @importFrom eq5d eq5d
 #' @importFrom tibble tibble
-#' @importFrom purrr map_int map2_dbl map_dbl map2_int
+#' @importFrom purrr map_int map2_dbl map_dbl map2_chr map2_int
 #' @importFrom faux rnorm_pre
 #' @importFrom youthvars transform_raw_ds_for_analysis
 #' @importFrom stringr str_c
 #' @importFrom lubridate days
-make_fake_eq5d_ds <- function (fl_nm_1L_chr = "eq5d5l_example.xlsx", country_1L_chr = "UK", 
-    version_1L_chr = "5L", type_1L_chr = "CW") 
+make_fake_eq5d_ds <- function (country_1L_chr = "UK", version_1L_chr = "5L", type_1L_chr = "CW", 
+    prop_with_fup_data_1L_dbl = 0.65, seed_1L_int = 1234) 
 {
+    set.seed(seed_1L_int)
     require(eq5d)
-    data_tb <- readxl::read_excel(system.file("extdata", fl_nm_1L_chr, 
-        package = "eq5d")) %>% dplyr::mutate(total_eq5d = eq5d::eq5d(., 
-        country = country_1L_chr, version = version_1L_chr, type = type_1L_chr))
+    data_tb <- eq5d_combos_tb %>% tidyr::expand(MO, SC, UA, PD, 
+        AD) %>% dplyr::mutate(total_eq5d = eq5d::eq5d(., country = country_1L_chr, 
+        version = version_1L_chr, type = type_1L_chr))
     k10_lup_tb <- tibble::tibble(k10_dbl = (9.5 + rexp(1e+05, 
         rate = 0.18)) %>% purrr::map_int(~as.integer(min(max(.x, 
         10), 50))), pred_eq5d_dbl = purrr::map2_dbl(k10_dbl, 
@@ -281,18 +283,24 @@ make_fake_eq5d_ds <- function (fl_nm_1L_chr = "eq5d5l_example.xlsx", country_1L_
         match_idx_int = purrr::map_dbl(pred_eq5d_dbl, ~which.min(abs(data_tb$total_eq5d - 
             .x))))
     data_tb <- dplyr::left_join(k10_lup_tb, data_tb %>% dplyr::mutate(match_idx_int = 1:dplyr::n()))
-    data_tb <- data_tb %>% dplyr::group_by(Group) %>% dplyr::mutate(uid = 1:dplyr::n()) %>% 
-        dplyr::ungroup() %>% dplyr::arrange(uid, Group)
-    bl_uids_chr <- data_tb %>% dplyr::filter(Group == "Group1") %>% 
+    data_tb <- data_tb %>% dplyr::mutate(Timepoint = total_eq5d %>% 
+        purrr::map2_chr(runif(1e+05), ~{
+            p_1L_dbl <- ifelse(.x > median(data_tb$total_eq5d), 
+                0.55, 0.45)
+            ifelse(.y > p_1L_dbl, "FUP", "BL")
+        })) %>% dplyr::group_by(Timepoint) %>% dplyr::mutate(uid = 1:dplyr::n()) %>% 
+        dplyr::ungroup() %>% dplyr::arrange(uid, Timepoint)
+    bl_uids_chr <- data_tb %>% dplyr::filter(Timepoint == "BL") %>% 
         dplyr::pull(uid)
-    data_tb <- data_tb %>% dplyr::filter(uid %in% bl_uids_chr)
+    fup_uids_chr <- sample(bl_uids_chr, round((prop_with_fup_data_1L_dbl * 
+        length(bl_uids_chr)), 0))
+    data_tb <- data_tb %>% dplyr::filter(uid %in% bl_uids_chr) %>% 
+        dplyr::filter(Timepoint == "BL" | uid %in% fup_uids_chr)
     data_tb <- data_tb %>% dplyr::mutate(psych_well_int = faux::rnorm_pre(k10_dbl, 
         mu = 69.9, sd = 9.9, r = -0.56) %>% round(0) %>% purrr::map_int(~min(.x, 
         90) %>% max(18) %>% as.integer()))
-    data_tb <- data_tb %>% dplyr::select(uid, Group, MO, SC, 
-        UA, PD, AD, k10_dbl, psych_well_int) %>% dplyr::rename(Timepoint = Group) %>% 
-        dplyr::mutate(Timepoint = dplyr::case_when(Timepoint == 
-            "Group1" ~ "BL", T ~ "FUP")) %>% dplyr::mutate(dplyr::across(where(is.numeric), 
+    data_tb <- data_tb %>% dplyr::select(uid, Timepoint, MO, 
+        SC, UA, PD, AD, k10_dbl, psych_well_int) %>% dplyr::mutate(dplyr::across(where(is.numeric), 
         ~as.integer(.x))) %>% dplyr::rename(k10_int = k10_dbl)
     data("replication_popl_tb", package = "youthvars", envir = environment())
     demog_data_tb <- replication_popl_tb %>% youthvars::transform_raw_ds_for_analysis() %>% 

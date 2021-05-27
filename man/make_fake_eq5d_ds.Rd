@@ -5,20 +5,23 @@
 \title{Make fake eq5d dataset}
 \usage{
 make_fake_eq5d_ds(
-  fl_nm_1L_chr = "eq5d5l_example.xlsx",
   country_1L_chr = "UK",
   version_1L_chr = "5L",
-  type_1L_chr = "CW"
+  type_1L_chr = "CW",
+  prop_with_fup_data_1L_dbl = 0.65,
+  seed_1L_int = 1234
 )
 }
 \arguments{
-\item{fl_nm_1L_chr}{File name (a character vector of length one), Default: 'eq5d5l_example.xlsx'}
-
 \item{country_1L_chr}{Country (a character vector of length one), Default: 'UK'}
 
 \item{version_1L_chr}{Version (a character vector of length one), Default: '5L'}
 
 \item{type_1L_chr}{Type (a character vector of length one), Default: 'CW'}
+
+\item{prop_with_fup_data_1L_dbl}{Prop with follow-up data (a double vector of length one), Default: 0.65}
+
+\item{seed_1L_int}{Seed (an integer vector of length one), Default: 1234}
 }
 \value{
 Data (a tibble)

@@ -120,3 +120,4 @@
 ^data-raw/inst/Markdown/Report\.Rmd$
 ^data-raw/inst/Markdown/Share\.Rmd$
 ^data-raw/inst/Markdown/Supplement\.Rmd$
+^data-raw/dataverse/fake_eq5d_ds_tb\.Rds$
