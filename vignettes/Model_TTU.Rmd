@@ -31,7 +31,7 @@ dir.create(path_to_write_to_1L_chr)
 As this is an illustrative example, our input data does not actually exist. So we are going to have to create a fake dataset.
 
 ```{r message=FALSE}
-data_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4749888"))
+data_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4750597"))
 ```
 
 The dataset we are using has `r nrow(data_tb)` records on `r length(data_tb$uid %>% unique())` study participants. The first six records are reproduced below.
@@ -71,7 +71,10 @@ We now convert study participant responses to the EQ-5D questionnaire to health 
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 data_tb <- data_tb %>% 
-  dplyr::mutate(EQ5D_total_dbl = eq5d::eq5d(., country="UK", version = "5L", type = "CW")) 
+        dplyr::rename_with(~stringr::str_replace(.x,"eq5dq_",""),dplyr::starts_with("eq5dq_")) %>%
+  dplyr::mutate(`:=`(EQ5D_total_dbl, 
+                     eq5d::eq5d(., country="UK", version = "5L", type = "CW"))) %>%
+    dplyr::rename_with(~paste0("eq5dq_",.x),c("MO","SC","UA","PD","AD"))
 ```
 
 We can label dataset variables using descriptions from the data dictionary.

@@ -9,7 +9,8 @@ make_fake_eq5d_ds(
   version_1L_chr = "5L",
   type_1L_chr = "CW",
   prop_with_fup_data_1L_dbl = 0.65,
-  seed_1L_int = 1234
+  seed_1L_int = 1234,
+  sample_from_1L_int = 10000
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ make_fake_eq5d_ds(
 \item{prop_with_fup_data_1L_dbl}{Prop with follow-up data (a double vector of length one), Default: 0.65}
 
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 1234}
+
+\item{sample_from_1L_int}{Sample from (an integer vector of length one), Default: 10000}
 }
 \value{
 Data (a tibble)

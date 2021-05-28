@@ -206,29 +206,28 @@ make_eq5d_ds_dict <- function(data_tb = make_fake_eq5d_ds(),
     dplyr::arrange(var_ctg_chr)
   return(dictionary_tb)
 }
-make_fake_eq5d_ds <- function(#fl_nm_1L_chr = "eq5d5l_example.xlsx",
-                              country_1L_chr = "UK",
+make_fake_eq5d_ds <- function(country_1L_chr = "UK",
                               version_1L_chr = "5L",
                               type_1L_chr = "CW",
                               prop_with_fup_data_1L_dbl = 0.65,
-                              seed_1L_int = 1234){
+                              seed_1L_int = 1234,
+                              sample_from_1L_int = 10000){
   set.seed(seed_1L_int)
   require(eq5d)
-  data_tb <- eq5d_combos_tb %>% tidyr::expand(MO,SC,UA,PD,AD) %>%#readxl::read_excel(system.file("extdata", fl_nm_1L_chr, package="eq5d")) %>%
+  data_tb <- purrr::map(c("MO","SC","UA","PD","AD"),
+                        ~list(1:5) %>% stats::setNames(.x)) %>%
+    purrr::flatten_dfr() %>%
+    tidyr::expand(MO,SC,UA,PD,AD) %>%
     dplyr::mutate(total_eq5d = eq5d::eq5d(., country = country_1L_chr, version = version_1L_chr, type = type_1L_chr))
-  k10_lup_tb <- tibble::tibble(k10_dbl = (9.5 + rexp(100000,rate=0.18)) %>% purrr::map_int(~as.integer(min(max(.x,10),50))),
-                                 # c(sn::rsn(2500,10.3,omega = 0.1) %>% round(),
-                                 #           sn::rsn(2500,12,omega = 0.4) %>% round(),
-                                 #           sn::rsn(2500,14.5,omega = 0.4) %>% round(),
-                                 #           sn::rsn(2500,21,omega = 6, alpha = 1) %>% round() %>% purrr::map_dbl(~max(.x,10) %>% min(50))) %>% sample(10000),
-                               pred_eq5d_dbl = purrr::map2_dbl(k10_dbl,rnorm(100000,0,0.075), ~ predict_utl_from_k10(.x,
+  k10_lup_tb <- tibble::tibble(k10_int = (9.5 + rexp(sample_from_1L_int,rate=0.18)) %>% purrr::map_int(~as.integer(min(max(.x,10),50))),
+                               pred_eq5d_dbl = purrr::map2_dbl(k10_int,rnorm(sample_from_1L_int,0,0.075), ~ predict_utl_from_k10(.x,
                                                                                                                        eq5d_error_1L_dbl = .y)[2]),
-                               match_idx_int = purrr::map_dbl(pred_eq5d_dbl, ~which.min(abs(data_tb$total_eq5d-.x))))
+                               match_idx_int = purrr::map_int(pred_eq5d_dbl, ~which.min(abs(data_tb$total_eq5d-.x))))
   data_tb <- dplyr::left_join(k10_lup_tb,
                               data_tb %>% dplyr::mutate(match_idx_int = 1:dplyr::n()))
   data_tb <- data_tb %>%
     dplyr::mutate(Timepoint = total_eq5d %>%
-                    purrr::map2_chr(runif(100000),
+                    purrr::map2_chr(runif(sample_from_1L_int),
                                     ~{
                       p_1L_dbl <- ifelse(.x>median(data_tb$total_eq5d),0.55,0.45)
                       ifelse(.y>p_1L_dbl,"FUP","BL")
@@ -243,12 +242,10 @@ make_fake_eq5d_ds <- function(#fl_nm_1L_chr = "eq5d5l_example.xlsx",
     dplyr::filter(uid %in% bl_uids_chr) %>%
     dplyr::filter(Timepoint == "BL" | uid %in% fup_uids_chr)
   data_tb <- data_tb %>%
-    dplyr::mutate(psych_well_int = faux::rnorm_pre(k10_dbl, mu = 69.9, sd = 9.9, r = -0.56) %>%
+    dplyr::mutate(psych_well_int = faux::rnorm_pre(k10_int, mu = 69.9, sd = 9.9, r = -0.56) %>%
                     round(0) %>% purrr::map_int(~min(.x,90) %>% max(18) %>%
                                                   as.integer()))
-  data_tb <- data_tb %>% dplyr::select(uid,Timepoint,MO,SC,UA,PD,AD,k10_dbl,psych_well_int) %>%
-    dplyr::mutate(dplyr::across(where(is.numeric), ~ as.integer(.x))) %>%
-    dplyr::rename(k10_int = k10_dbl)
+  data_tb <- data_tb %>% dplyr::select(uid,Timepoint,MO,SC,UA,PD,AD,k10_int,psych_well_int)
   data("replication_popl_tb", package = "youthvars", envir = environment())
   demog_data_tb <- replication_popl_tb %>%
     youthvars::transform_raw_ds_for_analysis() %>%
