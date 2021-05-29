@@ -193,7 +193,7 @@ write_mdl_cmprsn <- function(scored_data_tb,
                                                                               predr_vals_dbl = mdl_smry_ls$predr_vals_dbl,
                                                                               path_to_write_to_1L_chr = output_data_dir_1L_chr,
                                                                               new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsn",
-                                                                              start_1L_chr = NA_character_,
+                                                                              #start_1L_chr = NA_character_,
                                                                               mdl_types_lup = mdl_smry_ls$mdl_types_lup,
                                                                               dictionary_tb = ds_smry_ls$dictionary_tb)
   mdl_cmprsn_ls <- list(bl_tb = bl_tb,
@@ -258,7 +258,7 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
     tfd_data_tb <- transform_data_tb_for_cmprsn(data_tb, model_mdl = model_mdl, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         predn_type_1L_chr = predn_type_1L_chr, tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl,
-        family_1L_chr = family_1L_chr)
+        family_1L_chr = family_1L_chr, tfmn_1L_chr = tfmn_1L_chr)
     if (1 %in% plt_idxs_int) {
         predn_ds_tb <- make_predn_ds_with_one_predr(model_mdl, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
             tfmn_1L_chr = tfmn_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr,
@@ -288,7 +288,8 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
                                                                                                      "Predicted", "Simulated"),
                                                                              predn_type_1L_chr = NULL,
                                                                              tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl,
-                                                                             family_1L_chr = family_1L_chr),
+                                                                             family_1L_chr = family_1L_chr,
+                                                                             tfmn_1L_chr = tfmn_1L_chr),
                                   depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
                                   depnt_var_desc_1L_chr = depnt_var_desc_1L_chr,
                                   predd_val_var_nm_1L_chr = "Simulated"),

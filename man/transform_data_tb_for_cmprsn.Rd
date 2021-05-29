@@ -12,7 +12,8 @@ transform_data_tb_for_cmprsn(
   tf_type_1L_chr = "Predicted",
   predn_type_1L_chr = NULL,
   tfmn_for_bnml_1L_lgl = F,
-  family_1L_chr = NA_character_
+  family_1L_chr = NA_character_,
+  tfmn_1L_chr = "NTF"
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ transform_data_tb_for_cmprsn(
 \item{tfmn_for_bnml_1L_lgl}{Transformation for binomial (a logical vector of length one), Default: F}
 
 \item{family_1L_chr}{Family (a character vector of length one), Default: 'NA'}
+
+\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 }
 \value{
 Transformed data (a tibble)
