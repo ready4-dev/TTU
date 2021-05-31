@@ -405,7 +405,7 @@ write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_
         plt_idxs_int <- 1:5
         if (!is.na(control_1L_chr)) {
             if (control_1L_chr %>% startsWith("betareg"))
-                plt_idxs_int <- c(1, 3, 5)
+                plt_idxs_int <- c(1, 3, 4, 5)
         }
     }
     tfmn_for_bnml_1L_lgl <- ready4fun::get_from_lup_obj(mdl_types_lup,

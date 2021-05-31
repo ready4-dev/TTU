@@ -39,8 +39,9 @@ transform_chr_digit_pairs <- function (digit_pairs_chr, nbr_of_digits_1L_int = 2
 #' @rdname transform_data_tb_for_cmprsn
 #' @export 
 #' @importFrom stats predict simulate rnorm sigma
+#' @importFrom rlang exec sym
+#' @importFrom enrichwith get_simulate_function enrich
 #' @importFrom dplyr mutate
-#' @importFrom rlang sym
 #' @keywords internal
 transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_chr = "utl_total_w", 
     source_data_nm_1L_chr = "Original", tf_type_1L_chr = "Predicted", 
@@ -49,16 +50,27 @@ transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_ch
 {
     if (tf_type_1L_chr == "Predicted") 
         new_data_dbl <- stats::predict(model_mdl, type = predn_type_1L_chr)
-    if (tf_type_1L_chr == "Simulated" & !tfmn_for_bnml_1L_lgl) 
-        new_data_dbl <- stats::simulate(model_mdl)$sim_1
-    if (tf_type_1L_chr == "Simulated" & tfmn_for_bnml_1L_lgl) 
-        new_data_dbl <- (stats::predict(model_mdl) + stats::rnorm(nrow(data_tb), 
-            0, stats::sigma(model_mdl)))
-    new_data_dbl <- new_data_dbl %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = ifelse(tfmn_for_bnml_1L_lgl, 
-        ifelse(family_1L_chr == "quasibinomial(log)", "LOG", 
-            ifelse(family_1L_chr == "quasibinomial(logit)", "LOGIT", 
-                ifelse(family_1L_chr == "quasibinomial(cloglog)", 
-                  "CLL", "NTF"))), tfmn_1L_chr), tfmn_is_outp_1L_lgl = T)
+    if (tf_type_1L_chr == "Simulated") {
+        if ("betareg" %in% class(model_mdl)) {
+            new_data_dbl <- rlang::exec(enrichwith::get_simulate_function(model_mdl), 
+                coef(enrichwith::enrich(model_mdl, with = "auxiliary functions")))
+        }
+        else {
+            if (!tfmn_for_bnml_1L_lgl) {
+                new_data_dbl <- stats::simulate(model_mdl)$sim_1
+            }
+            else {
+                new_data_dbl <- (stats::predict(model_mdl) + 
+                  stats::rnorm(nrow(data_tb), 0, stats::sigma(model_mdl)))
+            }
+        }
+    }
+    new_data_dbl <- new_data_dbl %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = ifelse(tfmn_for_bnml_1L_lgl & 
+        tf_type_1L_chr == "Simulated", ifelse(family_1L_chr == 
+        "quasibinomial(log)", "LOG", ifelse(family_1L_chr == 
+        "quasibinomial(logit)", "LOGIT", ifelse(family_1L_chr == 
+        "quasibinomial(cloglog)", "CLL", "NTF"))), tfmn_1L_chr), 
+        tfmn_is_outp_1L_lgl = T)
     tfd_data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(tf_type_1L_chr), 
         new_data_dbl), `:=`(!!rlang::sym(source_data_nm_1L_chr), 
         !!rlang::sym(depnt_var_nm_1L_chr)))

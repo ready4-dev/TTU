@@ -15,16 +15,23 @@ transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_ch
     source_data_nm_1L_chr = "Original", tf_type_1L_chr = "Predicted",
     predn_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, tfmn_1L_chr = "NTF")
 {
-    if (tf_type_1L_chr == "Predicted")
+    if(tf_type_1L_chr == "Predicted")
         new_data_dbl <- stats::predict(model_mdl, type = predn_type_1L_chr)
-    if (tf_type_1L_chr == "Simulated" & !tfmn_for_bnml_1L_lgl)
-        new_data_dbl <- stats::simulate(model_mdl)$sim_1
-    if (tf_type_1L_chr == "Simulated" & tfmn_for_bnml_1L_lgl)
-        new_data_dbl <- (stats::predict(model_mdl) + stats::rnorm(nrow(data_tb),
-            0, stats::sigma(model_mdl)))
-    ## CHECK IF NEXT LINE APPLIES TO ALL tf_type_1L_chr / tfmn_for_bnml_1L_lgl combos
+    if(tf_type_1L_chr == "Simulated"){
+      if("betareg" %in% class(model_mdl)){
+        new_data_dbl <- rlang::exec(enrichwith::get_simulate_function(model_mdl),
+                                    coef(enrichwith::enrich(model_mdl, with = "auxiliary functions")))
+      }else{
+        if (!tfmn_for_bnml_1L_lgl){
+          new_data_dbl <- stats::simulate(model_mdl)$sim_1
+        }else{
+          new_data_dbl <- (stats::predict(model_mdl) + stats::rnorm(nrow(data_tb),
+                                                                    0, stats::sigma(model_mdl)))
+        }
+      }
+    }
         new_data_dbl <- new_data_dbl %>%
-          calculate_dpnt_var_tfmn(tfmn_1L_chr = ifelse(tfmn_for_bnml_1L_lgl,
+          calculate_dpnt_var_tfmn(tfmn_1L_chr = ifelse(tfmn_for_bnml_1L_lgl & tf_type_1L_chr == "Simulated",
                                                        ifelse(family_1L_chr == "quasibinomial(log)",
                                                               "LOG",
                                                               ifelse(family_1L_chr == "quasibinomial(logit)",
