@@ -13,60 +13,13 @@ vignette: >
 library(magrittr)
 ```
 
-# Input parameters
+# Specify parameters
 
-## Bibliograhic data
-We begin by specifying the authorship data we wish to attach to all reports that we generate.
-
-```{r }
-authors_tb <- ready4show::authors_tb
-```
-```{r authorsds, eval = knitr::is_html_output(), results='asis'}
-authors_tb %>%
-  ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Authors table",
-                          mkdn_tbl_ref_1L_chr = "tab:authorsds")
-```
-```{r}
-institutes_tb <- ready4show::institutes_tb
-```
-```{r institutesds, eval = knitr::is_html_output(), results='asis'}
-institutes_tb %>%
-  ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Author institutions table",
-                          mkdn_tbl_ref_1L_chr = "tab:institutesds")
-```
-
-We combine the data about authors with other bibliographic information.
-
-```{r}
-header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = authors_tb,
-                                                institutes_tb = institutes_tb,
-                                                title_1L_chr = "A hypothetical study using fake data for instructional purposes only",
-                                                keywords_chr = c("this","is","a","replication","using","fake","data","do", "not","cite"))
-```
-
-## Report formatting
-We add parameters relating to the desired output format of the reports we will be producing.
-
-```{r }
-nbr_of_digits_1L_int = 2L
-output_types_ls = list(manuscript_1L_chr = "Word",
-                       supplementary_1L_chr = "PDF")
-```
-
-## Relative paths
-We next create an object that specifies the relative locations of the input data and the intended destination for analysis outputs and reports. The default settings of the `make_path_params_ls` function will write all output into a new directory, created one level up from the current working directory.
-
-```{r}
-path_params_ls <- TTU::make_path_params_ls("fake_data.rds")
-```
-
-## Dataset
+## Specify data
 As this is an illustrative example, we first must create a fake dataset (if using real data, skip this step).
 
 ```{r message=FALSE}
-fake_ds_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4749888"))
+fake_ds_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4750597")) 
 ```
 
 ```{r inputds, eval = knitr::is_html_output(), results='asis'}
@@ -83,10 +36,39 @@ We note our use of synthetic data by creating an object `use_fake_data_1L_lgl` a
 use_fake_data_1L_lgl <-  TRUE
 ```
 
-We describe the features of our dataset that are most relevant to the analyses we are planning to undertake.
+## Reporting details
+We specify details about the authorship team of the study for which we are generating reports.
 
-```{r echo = TRUE}
-ds_descvs_ls <- TTU::make_ds_descvs_ls(candidate_predrs_chr = c("k10_int","psych_well_int"),
+```{r }
+authors_tb <- ready4show::authors_tb
+institutes_tb <- ready4show::institutes_tb
+```
+
+And add details about the main project report we are authoring.
+
+```{r }
+header_yaml_args_ls = list(authors_tb = authors_tb,
+                           institutes_tb = institutes_tb,
+                           fl_nm_1L_chr = "header_common.yaml",
+                           title_1L_chr = "A hypothetical study using fake data for instructional purposes only",
+                           keywords_chr = c("this","is","a","replication","using","fake","data","do", "not","cite"))
+nbr_of_digits_1L_int = 2L
+output_types_ls = list(manuscript_1L_chr = "Word",
+                       supplementary_1L_chr = "PDF")
+```
+
+## Path parameters
+
+```{r }
+path_params_ls <- list(path_from_top_level_1L_chr = normalizePath("../") %>% strsplit("\\\\") %>% purrr::pluck(1) %>% tail(1),
+                  path_to_data_from_top_level_chr = "fake_data.rds", 
+                  path_to_current_1L_chr = normalizePath(".") %>% strsplit("\\\\") %>% purrr::pluck(1) %>% tail(1))
+```
+
+## Input dataset metadata
+
+```{r echo = TRUE }
+ds_descvs_ls <- list(candidate_predrs_chr = c("k10_int","psych_well_int"),
                      cohort_descv_var_nms_chr = c("d_age", "Gender", "d_relation_s","d_sexual_ori_s", "Region", "CALD", "d_studying_working"),
                      dictionary_tb = TTU::make_eq5d_ds_dict(fake_ds_tb), 
                      id_var_nm_1L_chr = "uid", 
@@ -98,9 +80,7 @@ ds_descvs_ls <- TTU::make_ds_descvs_ls(candidate_predrs_chr = c("k10_int","psych
                      utl_unwtd_var_nm_1L_chr = "EQ5d_cumulative_dbl")
 ```
 
-## Candidate predictors
-We create a lookup table with metadata on the dataset variables that we will be exploring as candidate predictors.
-
+## Analysis parameters
 ```{r}
 predictors_lup <- TTU::TTU_predictors_lup(TTU::make_pt_TTU_predictors_lup(short_name_chr = ds_descvs_ls$candidate_predrs_chr,
                                               long_name_chr = c("Kessler Psychological Distress - 10 Item Total Score",
@@ -114,61 +94,19 @@ predictors_lup <- TTU::TTU_predictors_lup(TTU::make_pt_TTU_predictors_lup(short_
                                               covariate_lgl = F))
 ```
 
-## MAUI parameters
-We also need to provide information specific to the Multi-Attribute Utility Instrument (MAUI) used to collect the data from which health utility will be derived. If our source dataset does not include a pre-calculated weighted utility variable, we must supply one using the `maui_scoring_fn` argument. Note if specifying such a function, it must:
- - include all of the arguments in the below example, even if they are not required; and
- - calculate an unweighted total of maui items (last three lines of the example `maui_scoring_fn`).
-
-```{r}
-maui_params_ls <- TTU::make_maui_params_ls(maui_itm_short_nms_chr = c("Mobility", "Self-care", "Activities","Pain","Anxiety"),
-                                      maui_scoring_fn = function(data_tb,# Function must have these arguments in this order.
-                                             maui_item_pfx_1L_chr,
-                                             id_var_nm_1L_chr, 
-                                             utl_wtd_var_nm_1L_chr,
-                                             utl_unwtd_var_nm_1L_chr){
-                    require(eq5d)
-                    data_tb %>% 
-                      dplyr::rename_with(~stringr::str_replace(.x,maui_item_pfx_1L_chr,""),
-                                         dplyr::starts_with(maui_item_pfx_1L_chr)) %>%
-                      dplyr::mutate(`:=`(!!rlang::sym(utl_wtd_var_nm_1L_chr), 
-                                         eq5d::eq5d(., country="UK", version = "5L", type = "CW"))) %>%
-                      dplyr::rename_with(~paste0(maui_item_pfx_1L_chr,.x),c("MO","SC","UA","PD","AD")) %>%
-                      dplyr::mutate(`:=`(!!rlang::sym(utl_unwtd_var_nm_1L_chr),                                          rowSums(dplyr::across(dplyr::starts_with(maui_item_pfx_1L_chr))))) %>%
-                      dplyr::filter(!is.na(!!rlang::sym(utl_unwtd_var_nm_1L_chr)))
-                    })
-```
-
-## Candidate model types
-We next create a lookup table of the candidate model types we wish to explore. A template look-up table is available as part of the `TTU` package, but this may need need to be adapted (e.g. in the below example, we alter the start values of some models) for optimal use with your input data.
-
-```{r}
-mdl_types_lup <- TTU::mdl_types_lup %>%
-  dplyr::mutate(start_chr = dplyr::case_when(short_name_chr %in% c("GLM_BNL_LGT","GLM_BNL_CLL") ~ c("0.5, -0.05"),
-                                             T ~ start_chr))
-  
-```
-
-```{r mdltypeslup, eval = knitr::is_html_output(), results='asis'}
-mdl_types_lup %>%
-  ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Candidate model types lookup table",
-                          mkdn_tbl_ref_1L_chr = "tab:mdltypeslup")
-```
-
-## Analysis parameters
-```{r}
-mdl_smry_ls <- TTU::make_mdl_smry_ls(mdl_types_lup = mdl_types_lup)
-```
-
 ```{r echo = TRUE }
 analysis_params_ls <- list(ds_descvs_ls = ds_descvs_ls,
                            iters_1L_int = 4000L,
-                           mdl_smry_ls = mdl_smry_ls,
+                           mdl_smry_ls = list(mdl_types_lup = TTU::mdl_types_lup,
+                                              mdl_types_chr = TTU::mdl_types_lup$short_name_chr,
+                                              choose_from_pfx_chr = c("GLM","OLS","BET"),
+                                              folds_1L_int = 10L,
+                                              max_nbr_of_boruta_mdl_runs_int = 300L),
                            nbr_of_digits_1L_int = nbr_of_digits_1L_int,
                            output_type_1L_chr = output_types_ls$supplementary_1L_chr,
                            predictors_lup = predictors_lup,
                            seed_1L_int = 12345,
-                           use_fake_data_1L_lgl = use_fake_data_1L_lgl,
+                           use_fake_data_1L_lgl =  use_fake_data_1L_lgl,
                            prior_ls = NULL, 
                            control_ls = list(adapt_delta = 0.99))
 ```
@@ -192,24 +130,35 @@ dv_ls <- list(primary_dv_chr = c("fakes","https://doi.org/10.7910/DVN/612HDC"))
 
 # Primary Analysis
 
-## Consolidate required parameters
-```{r}
-params_ls <- list(candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
-                  fake_ds_tb = fake_ds_tb,
-                  prefd_covars_chr = NA_character_, 
-                  prefd_mdl_types_chr = c("GLM_GSN_LOG","OLS_CLL"),
-                  raw_ds_tfmn_fn = NULL,
-                  subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)",
-                  utl_class_fn_1L_chr = "as.numeric") %>%
-  append(analysis_params_ls) %>%
-  append(path_params_ls[1:2]) %>%
-  append(maui_params_ls)
-```
-
 ## Run analysis
 
 ```{r echo = TRUE }
-TTU::write_report(params_ls = params_ls,
+params_ls <- list(candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
+                  fake_ds_tb = fake_ds_tb,
+                  maui_domains_pfcs_1L_chr = NULL,
+                  maui_itm_short_nms_chr = c("Mobility", "Self-care", "Activities","Pain","Anxiety"),
+     maui_scoring_fn = function(data_tb,# Function must have these arguments in this order.
+                                maui_item_pfx_1L_chr,
+                                id_var_nm_1L_chr, 
+                                utl_wtd_var_nm_1L_chr,
+                                utl_unwtd_var_nm_1L_chr){
+       require(eq5d)
+      data_tb %>% 
+        dplyr::rename_with(~stringr::str_replace(.x,maui_item_pfx_1L_chr,""),dplyr::starts_with(maui_item_pfx_1L_chr)) %>%
+  dplyr::mutate(`:=`(!!rlang::sym(utl_wtd_var_nm_1L_chr), 
+                     eq5d::eq5d(., country="UK", version = "5L", type = "CW"))) %>%
+    dplyr::rename_with(~paste0(maui_item_pfx_1L_chr,.x),c("MO","SC","UA","PD","AD")) %>%
+    dplyr::mutate(`:=`(!!rlang::sym(utl_unwtd_var_nm_1L_chr), 
+        rowSums(dplyr::across(dplyr::starts_with(maui_item_pfx_1L_chr))))) %>% dplyr::filter(!is.na(!!rlang::sym(utl_unwtd_var_nm_1L_chr)))
+     },
+     prefd_covars_chr = NA_character_, 
+     prefd_mdl_types_chr = c("GLM_GSN_LOG","OLS_CLL"),
+     raw_ds_tfmn_fn = NULL,
+     subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)",
+     utl_class_fn_1L_chr = "as.numeric") %>%
+  append(analysis_params_ls) %>%
+  append(path_params_ls[1:2])
+  TTU::write_report(params_ls = params_ls,
                     paths_ls = paths_ls,
                     R_fl_nm_1L_chr = paths_ls$R_fl_nm_1L_chr,
                     rprt_nm_1L_chr = "Main_Analysis_Rprt",

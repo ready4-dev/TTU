@@ -170,6 +170,28 @@ make_cohort_ls <- function(descv_tbls_ls,
   }
   return(cohort_ls)
 }
+make_ds_descvs_ls <- function(candidate_predrs_chr,
+                              cohort_descv_var_nms_chr,
+                              dictionary_tb,
+                              id_var_nm_1L_chr,
+                              msrmnt_date_var_nm_1L_chr,
+                              round_var_nm_1L_chr,
+                              round_vals_chr,
+                              maui_item_pfx_1L_chr,
+                              utl_wtd_var_nm_1L_chr,
+                              utl_unwtd_var_nm_1L_chr){
+  ds_descvs_ls <- list(candidate_predrs_chr = candidate_predrs_chr,
+                       cohort_descv_var_nms_chr = cohort_descv_var_nms_chr,
+                       dictionary_tb = dictionary_tb,
+                       id_var_nm_1L_chr = id_var_nm_1L_chr,
+                       msrmnt_date_var_nm_1L_chr = msrmnt_date_var_nm_1L_chr,
+                       round_var_nm_1L_chr = round_var_nm_1L_chr,
+                       round_vals_chr = round_vals_chr,
+                       maui_item_pfx_1L_chr = maui_item_pfx_1L_chr,
+                       utl_wtd_var_nm_1L_chr = utl_wtd_var_nm_1L_chr,
+                       utl_unwtd_var_nm_1L_chr = utl_unwtd_var_nm_1L_chr)
+  return(ds_descvs_ls)
+}
 make_eq5d_ds_dict <- function(data_tb = make_fake_eq5d_ds(),
                               predictors_lup = make_psych_predrs_lup()){
   dictionary_tb <- youthvars::make_tfd_repln_ds_dict_r3() %>%
@@ -308,6 +330,19 @@ make_folds_ls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", folds_1
                                    k = folds_1L_int, list = TRUE, returnTrain = FALSE)
     return(folds_ls)
 }
+make_header_yaml_args_ls <- function(authors_tb,
+                                     institutes_tb,
+                                     title_1L_chr,
+                                     keywords_chr,
+                                     fl_nm_1L_chr = "header_common.yaml"){
+
+  header_yaml_args_ls <- list(authors_tb = authors_tb,
+                              institutes_tb = institutes_tb,
+                              fl_nm_1L_chr = "header_common.yaml",
+                              title_1L_chr = title_1L_chr,
+                              keywords_chr = keywords_chr)
+  return(header_yaml_args_ls)
+}
 make_hlth_utl_and_predrs_ls <- function(outp_smry_ls,
                                         descv_tbls_ls,
                                         nbr_of_digits_1L_int = 2L,
@@ -440,6 +475,25 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
       stats::setNames(predr_vars_nms_ls %>% purrr::map_chr(~paste(.x,collapse="_")))
     return(knit_pars_ls)
 }
+make_maui_params_ls <- function(maui_itm_short_nms_chr,
+                                maui_domains_pfcs_1L_chr = NULL,
+                                maui_scoring_fn = NULL){
+  if(is.null(maui_scoring_fn)){
+    maui_scoring_fn <- function(data_tb,
+                                maui_item_pfx_1L_chr,
+                                id_var_nm_1L_chr,
+                                utl_wtd_var_nm_1L_chr,
+                                utl_unwtd_var_nm_1L_chr){
+      data_tb %>%
+        dplyr::mutate(`:=`(!!rlang::sym(utl_unwtd_var_nm_1L_chr),                                          rowSums(dplyr::across(dplyr::starts_with(maui_item_pfx_1L_chr))))) %>%
+        dplyr::filter(!is.na(!!rlang::sym(utl_unwtd_var_nm_1L_chr)))
+    }
+  }
+  maui_params_ls <- list(maui_domains_pfcs_1L_chr = maui_domains_pfcs_1L_chr,
+                         maui_itm_short_nms_chr = maui_itm_short_nms_chr,
+                         maui_scoring_fn = maui_scoring_fn)
+  return(maui_params_ls)
+}
 make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF",
     predr_var_nm_1L_chr, covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF",
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NULL)
@@ -521,6 +575,24 @@ make_mdl_smry_elmt_tbl <- function (mat, ctg_chr)
         dplyr::bind_rows(tb)
     return(mdl_elmt_sum_tb)
 }
+make_mdl_smry_ls <- function(mdl_types_lup = NULL,
+                             mdl_types_chr = NULL,
+                             choose_from_pfx_chr = NULL,
+                             folds_1L_int = 10L,
+                             max_nbr_of_boruta_mdl_runs_int = 300L){
+  if(is.null(mdl_types_lup))
+    data("mdl_types_lup",package = "TTU", envir = environment())
+  if(is.null(mdl_types_chr))
+    mdl_types_chr <- mdl_types_lup$short_name_chr
+  if(is.null(choose_from_pfx_chr))
+    choose_from_pfx_chr <- stringr::word(mdl_types_lup$short_name_chr,1,sep="\\_") %>% unique()
+  mdl_smry_ls <- list(mdl_types_lup = mdl_types_lup,
+                      mdl_types_chr = mdl_types_chr,
+                      choose_from_pfx_chr = choose_from_pfx_chr,
+                      folds_1L_int = folds_1L_int,
+                      max_nbr_of_boruta_mdl_runs_int = max_nbr_of_boruta_mdl_runs_int)
+  return(mdl_smry_ls)
+}
 make_mdls_ls <- function(outp_smry_ls,
                          mdls_tb){
   mdls_chr <- mdls_tb$Model %>% unique()
@@ -556,6 +628,20 @@ make_mdl_type_smry_tbl <- function(mdls_tb,
                                           mdl_type_1L_chr = mdl_type_1L_chr,
                                           add_mdl_nm_sfx_1L_lgl = add_mdl_nm_sfx_1L_lgl))
   return(mdl_type_smry_tbl_tb)
+}
+make_path_params_ls <- function(path_to_data_from_top_level_chr,
+                                path_from_top_level_1L_chr = NULL,
+                                path_to_current_1L_chr = NULL){
+  if(is.null(path_from_top_level_1L_chr)){
+    path_from_top_level_1L_chr <- normalizePath("../") %>% strsplit("\\\\") %>% purrr::pluck(1) %>% tail(1)
+  }
+  if(is.null(path_to_current_1L_chr)){
+    path_to_current_1L_chr <- normalizePath(".") %>% strsplit("\\\\") %>% purrr::pluck(1) %>% tail(1)
+  }
+  path_params_ls <- list(path_from_top_level_1L_chr = path_from_top_level_1L_chr,
+                         path_to_data_from_top_level_chr = path_to_data_from_top_level_chr,
+                         path_to_current_1L_chr = path_to_current_1L_chr)
+  return(path_params_ls)
 }
 make_paths_to_ss_plts_ls <- function(output_data_dir_1L_chr,
                                      outp_smry_ls,

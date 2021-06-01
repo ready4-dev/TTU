@@ -218,6 +218,37 @@ make_cohort_ls <- function (descv_tbls_ls, ctgl_vars_regrouping_ls = NULL, nbr_o
     }
     return(cohort_ls)
 }
+#' Make dataset descriptives
+#' @description make_ds_descvs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make dataset descriptives list. The function returns Dataset descriptives (a list).
+#' @param candidate_predrs_chr Candidate predictors (a character vector)
+#' @param cohort_descv_var_nms_chr Cohort descriptive variable names (a character vector)
+#' @param dictionary_tb Dictionary (a tibble)
+#' @param id_var_nm_1L_chr Identity variable name (a character vector of length one)
+#' @param msrmnt_date_var_nm_1L_chr Measurement date variable name (a character vector of length one)
+#' @param round_var_nm_1L_chr Round variable name (a character vector of length one)
+#' @param round_vals_chr Round values (a character vector)
+#' @param maui_item_pfx_1L_chr Maui item prefix (a character vector of length one)
+#' @param utl_wtd_var_nm_1L_chr Utility weighted variable name (a character vector of length one)
+#' @param utl_unwtd_var_nm_1L_chr Utility unwtd variable name (a character vector of length one)
+#' @return Dataset descriptives (a list)
+#' @rdname make_ds_descvs_ls
+#' @export 
+
+#' @keywords internal
+make_ds_descvs_ls <- function (candidate_predrs_chr, cohort_descv_var_nms_chr, dictionary_tb, 
+    id_var_nm_1L_chr, msrmnt_date_var_nm_1L_chr, round_var_nm_1L_chr, 
+    round_vals_chr, maui_item_pfx_1L_chr, utl_wtd_var_nm_1L_chr, 
+    utl_unwtd_var_nm_1L_chr) 
+{
+    ds_descvs_ls <- list(candidate_predrs_chr = candidate_predrs_chr, 
+        cohort_descv_var_nms_chr = cohort_descv_var_nms_chr, 
+        dictionary_tb = dictionary_tb, id_var_nm_1L_chr = id_var_nm_1L_chr, 
+        msrmnt_date_var_nm_1L_chr = msrmnt_date_var_nm_1L_chr, 
+        round_var_nm_1L_chr = round_var_nm_1L_chr, round_vals_chr = round_vals_chr, 
+        maui_item_pfx_1L_chr = maui_item_pfx_1L_chr, utl_wtd_var_nm_1L_chr = utl_wtd_var_nm_1L_chr, 
+        utl_unwtd_var_nm_1L_chr = utl_unwtd_var_nm_1L_chr)
+    return(ds_descvs_ls)
+}
 #' Make eq5d dataset dictionary
 #' @description make_eq5d_ds_dict() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make eq5d dataset dictionary. The function returns Dictionary (a tibble).
 #' @param data_tb Data (a tibble), Default: make_fake_eq5d_ds()
@@ -364,6 +395,26 @@ make_folds_ls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", folds_1
         k = folds_1L_int, list = TRUE, returnTrain = FALSE)
     return(folds_ls)
 }
+#' Make header yaml arguments
+#' @description make_header_yaml_args_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make header yaml arguments list. The function returns Header yaml arguments (a list).
+#' @param authors_tb Authors (a tibble)
+#' @param institutes_tb Institutes (a tibble)
+#' @param title_1L_chr Title (a character vector of length one)
+#' @param keywords_chr Keywords (a character vector)
+#' @param fl_nm_1L_chr File name (a character vector of length one), Default: 'header_common.yaml'
+#' @return Header yaml arguments (a list)
+#' @rdname make_header_yaml_args_ls
+#' @export 
+
+#' @keywords internal
+make_header_yaml_args_ls <- function (authors_tb, institutes_tb, title_1L_chr, keywords_chr, 
+    fl_nm_1L_chr = "header_common.yaml") 
+{
+    header_yaml_args_ls <- list(authors_tb = authors_tb, institutes_tb = institutes_tb, 
+        fl_nm_1L_chr = "header_common.yaml", title_1L_chr = title_1L_chr, 
+        keywords_chr = keywords_chr)
+    return(header_yaml_args_ls)
+}
 #' Make health utility and predictors
 #' @description make_hlth_utl_and_predrs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make health utility and predictors list. The function returns Health utility and predictors (a list).
 #' @param outp_smry_ls Output summary (a list)
@@ -496,6 +547,32 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
         collapse = "_")))
     return(knit_pars_ls)
 }
+#' Make maui params
+#' @description make_maui_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make maui params list. The function returns Maui params (a list).
+#' @param maui_itm_short_nms_chr Maui item short names (a character vector)
+#' @param maui_domains_pfcs_1L_chr Maui domains pfcs (a character vector of length one), Default: NULL
+#' @param maui_scoring_fn Maui scoring (a function), Default: NULL
+#' @return Maui params (a list)
+#' @rdname make_maui_params_ls
+#' @export 
+#' @importFrom dplyr mutate across starts_with filter
+#' @importFrom rlang sym
+#' @keywords internal
+make_maui_params_ls <- function (maui_itm_short_nms_chr, maui_domains_pfcs_1L_chr = NULL, 
+    maui_scoring_fn = NULL) 
+{
+    if (is.null(maui_scoring_fn)) {
+        maui_scoring_fn <- function(data_tb, maui_item_pfx_1L_chr, 
+            id_var_nm_1L_chr, utl_wtd_var_nm_1L_chr, utl_unwtd_var_nm_1L_chr) {
+            data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(utl_unwtd_var_nm_1L_chr), 
+                rowSums(dplyr::across(dplyr::starts_with(maui_item_pfx_1L_chr))))) %>% 
+                dplyr::filter(!is.na(!!rlang::sym(utl_unwtd_var_nm_1L_chr)))
+        }
+    }
+    maui_params_ls <- list(maui_domains_pfcs_1L_chr = maui_domains_pfcs_1L_chr, 
+        maui_itm_short_nms_chr = maui_itm_short_nms_chr, maui_scoring_fn = maui_scoring_fn)
+    return(maui_params_ls)
+}
 #' Make
 #' @description make_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model. The function returns Model (a model).
 #' @param data_tb Data (a tibble)
@@ -624,6 +701,33 @@ make_mdl_smry_elmt_tbl <- function (mat, ctg_chr)
         dplyr::bind_rows(tb)
     return(mdl_elmt_sum_tb)
 }
+#' Make model summary
+#' @description make_mdl_smry_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model summary list. The function returns Model summary (a list).
+#' @param mdl_types_lup Model types (a lookup table), Default: NULL
+#' @param mdl_types_chr Model types (a character vector), Default: NULL
+#' @param choose_from_pfx_chr Choose from prefix (a character vector), Default: NULL
+#' @param folds_1L_int Folds (an integer vector of length one), Default: 10
+#' @param max_nbr_of_boruta_mdl_runs_int Maximum number of boruta model runs (an integer vector), Default: 300
+#' @return Model summary (a list)
+#' @rdname make_mdl_smry_ls
+#' @export 
+#' @importFrom stringr word
+#' @keywords internal
+make_mdl_smry_ls <- function (mdl_types_lup = NULL, mdl_types_chr = NULL, choose_from_pfx_chr = NULL, 
+    folds_1L_int = 10L, max_nbr_of_boruta_mdl_runs_int = 300L) 
+{
+    if (is.null(mdl_types_lup)) 
+        data("mdl_types_lup", package = "TTU", envir = environment())
+    if (is.null(mdl_types_chr)) 
+        mdl_types_chr <- mdl_types_lup$short_name_chr
+    if (is.null(choose_from_pfx_chr)) 
+        choose_from_pfx_chr <- stringr::word(mdl_types_lup$short_name_chr, 
+            1, sep = "\\_") %>% unique()
+    mdl_smry_ls <- list(mdl_types_lup = mdl_types_lup, mdl_types_chr = mdl_types_chr, 
+        choose_from_pfx_chr = choose_from_pfx_chr, folds_1L_int = folds_1L_int, 
+        max_nbr_of_boruta_mdl_runs_int = max_nbr_of_boruta_mdl_runs_int)
+    return(mdl_smry_ls)
+}
 #' Make model type summary table
 #' @description make_mdl_type_smry_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model type summary table. The function returns Model type summary table (a tibble).
 #' @param mdls_tb Models (a tibble)
@@ -685,6 +789,32 @@ make_mdls_smry_tbls_ls <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L)
     mdls_smry_tbls_ls <- list(indpt_predrs_mdls_tb = indpt_predrs_mdls_tb, 
         covar_mdls_tb = covar_mdls_tb, prefd_predr_mdl_smry_tb = prefd_predr_mdl_smry_tb)
     return(mdls_smry_tbls_ls)
+}
+#' Make path params
+#' @description make_path_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make path params list. The function returns Path params (a list).
+#' @param path_to_data_from_top_level_chr Path to data from top level (a character vector)
+#' @param path_from_top_level_1L_chr Path from top level (a character vector of length one), Default: NULL
+#' @param path_to_current_1L_chr Path to current (a character vector of length one), Default: NULL
+#' @return Path params (a list)
+#' @rdname make_path_params_ls
+#' @export 
+#' @importFrom purrr pluck
+#' @keywords internal
+make_path_params_ls <- function (path_to_data_from_top_level_chr, path_from_top_level_1L_chr = NULL, 
+    path_to_current_1L_chr = NULL) 
+{
+    if (is.null(path_from_top_level_1L_chr)) {
+        path_from_top_level_1L_chr <- normalizePath("../") %>% 
+            strsplit("\\\\") %>% purrr::pluck(1) %>% tail(1)
+    }
+    if (is.null(path_to_current_1L_chr)) {
+        path_to_current_1L_chr <- normalizePath(".") %>% strsplit("\\\\") %>% 
+            purrr::pluck(1) %>% tail(1)
+    }
+    path_params_ls <- list(path_from_top_level_1L_chr = path_from_top_level_1L_chr, 
+        path_to_data_from_top_level_chr = path_to_data_from_top_level_chr, 
+        path_to_current_1L_chr = path_to_current_1L_chr)
+    return(path_params_ls)
 }
 #' Make paths to ss plots
 #' @description make_paths_to_ss_plts_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make paths to ss plots list. The function returns Paths to ss plots (a list).
