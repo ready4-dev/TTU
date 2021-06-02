@@ -1127,7 +1127,6 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @return NULL
 #' @rdname write_study_outp_ds
 #' @export 
-#' @importFrom TTU transform_rprt_lup rprt_lup transform_paths_ls_for_scndry write_report
 #' @importFrom purrr pluck
 #' @importFrom ready4use write_fls_to_dv_ds
 #' @importFrom tibble tibble
@@ -1139,7 +1138,7 @@ write_study_outp_ds <- function (dv_ls, output_format_ls, path_params_ls, paths_
 {
     if (is.null(rprt_lup)) {
         data("rprt_lup", package = "TTU", envir = environment())
-        rprt_lup <- TTU::transform_rprt_lup(TTU::rprt_lup, add_suplry_rprt_1L_lgl = F, 
+        rprt_lup <- transform_rprt_lup(rprt_lup, add_suplry_rprt_1L_lgl = F, 
             add_sharing_rprt_1L_lgl = T)
     }
     if (is.null(reference_1L_int)) {
@@ -1160,7 +1159,7 @@ write_study_outp_ds <- function (dv_ls, output_format_ls, path_params_ls, paths_
         transform_paths_ls = list(fn = transform_paths_ls_for_scndry, 
             args_ls = list(reference_1L_int = reference_1L_int, 
                 remove_prmry_1L_lgl = T))
-        paths_ls <- paths_ls %>% TTU::transform_paths_ls_for_scndry()
+        paths_ls <- paths_ls %>% transform_paths_ls_for_scndry()
     }
     params_ls <- list(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr, 
         dv_mdl_desc_1L_chr = dv_mdl_desc_1L_chr, inc_fl_types_chr = inc_fl_types_chr, 
@@ -1169,7 +1168,7 @@ write_study_outp_ds <- function (dv_ls, output_format_ls, path_params_ls, paths_
         purge_data_1L_lgl = purge_data_1L_lgl, rprt_lup = rprt_lup, 
         subtitle_1L_chr = subtitle_1L_chr, transform_paths_ls = transform_paths_ls, 
         use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>% append(path_params_ls[1:2])
-    params_ls %>% TTU::write_report(paths_ls = paths_ls, rprt_nm_1L_chr = "Share_Outp_Rprt", 
+    params_ls %>% write_report(paths_ls = paths_ls, rprt_nm_1L_chr = "Share_Outp_Rprt", 
         abstract_args_ls = abstract_args_ls, header_yaml_args_ls = header_yaml_args_ls, 
         rprt_lup = rprt_lup)
     ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "Share_Outp_Rprt", 

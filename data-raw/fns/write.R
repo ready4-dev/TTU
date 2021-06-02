@@ -871,7 +871,7 @@ write_study_outp_ds <- function(dv_ls,
                                 use_fake_data_1L_lgl = F){
   if(is.null(rprt_lup)){
     data("rprt_lup", package = "TTU", envir = environment())
-    rprt_lup <- TTU::transform_rprt_lup(TTU::rprt_lup,
+    rprt_lup <- transform_rprt_lup(rprt_lup,
                                        add_suplry_rprt_1L_lgl = F,
                                        add_sharing_rprt_1L_lgl = T)
   }
@@ -893,7 +893,7 @@ write_study_outp_ds <- function(dv_ls,
     transform_paths_ls = list(fn = transform_paths_ls_for_scndry,
                               args_ls = list(reference_1L_int = reference_1L_int,
                                              remove_prmry_1L_lgl = T))
-    paths_ls <- paths_ls %>% TTU::transform_paths_ls_for_scndry()
+    paths_ls <- paths_ls %>% transform_paths_ls_for_scndry()
   }
   params_ls <- list(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
                     dv_mdl_desc_1L_chr = dv_mdl_desc_1L_chr,
@@ -907,7 +907,7 @@ write_study_outp_ds <- function(dv_ls,
                     use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>%
     append(path_params_ls[1:2])
   params_ls %>%
-    TTU::write_report(paths_ls = paths_ls,
+    write_report(paths_ls = paths_ls,
                       rprt_nm_1L_chr = "Share_Outp_Rprt",
                       abstract_args_ls = abstract_args_ls,
                       header_yaml_args_ls = header_yaml_args_ls,
