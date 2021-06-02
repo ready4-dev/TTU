@@ -1,3 +1,32 @@
+#' Make analysis core params
+#' @description make_analysis_core_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make analysis core params list. The function returns Analysis core params (a list).
+#' @param ds_descvs_ls Dataset descriptives (a list)
+#' @param mdl_smry_ls Model summary (a list)
+#' @param output_format_ls Output format (a list), Default: make_output_format_ls()
+#' @param predictors_lup Predictors (a lookup table)
+#' @param control_ls Control (a list), Default: NULL
+#' @param iters_1L_int Iterations (an integer vector of length one), Default: 4000
+#' @param prior_ls Prior (a list), Default: NULL
+#' @param seed_1L_int Seed (an integer vector of length one), Default: 12345
+#' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: F
+#' @return Analysis core params (a list)
+#' @rdname make_analysis_core_params_ls
+#' @export 
+
+#' @keywords internal
+make_analysis_core_params_ls <- function (ds_descvs_ls, mdl_smry_ls, output_format_ls = make_output_format_ls(), 
+    predictors_lup, control_ls = NULL, iters_1L_int = 4000L, 
+    prior_ls = NULL, seed_1L_int = 12345, use_fake_data_1L_lgl = F) 
+{
+    analysis_core_params_ls <- list(ds_descvs_ls = ds_descvs_ls, 
+        iters_1L_int = iters_1L_int, mdl_smry_ls = mdl_smry_ls, 
+        nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int, 
+        output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr, 
+        predictors_lup = predictors_lup, seed_1L_int = seed_1L_int, 
+        use_fake_data_1L_lgl = use_fake_data_1L_lgl, prior_ls = prior_ls, 
+        control_ls = control_ls)
+    return(analysis_core_params_ls)
+}
 #' Make analysis dataset summary
 #' @description make_analysis_ds_smry_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make analysis dataset summary list. The function returns Analysis dataset summary (a list).
 #' @param ds_descvs_ls Dataset descriptives (a list)
@@ -228,8 +257,8 @@ make_cohort_ls <- function (descv_tbls_ls, ctgl_vars_regrouping_ls = NULL, nbr_o
 #' @param round_var_nm_1L_chr Round variable name (a character vector of length one)
 #' @param round_vals_chr Round values (a character vector)
 #' @param maui_item_pfx_1L_chr Maui item prefix (a character vector of length one)
-#' @param utl_wtd_var_nm_1L_chr Utility weighted variable name (a character vector of length one)
-#' @param utl_unwtd_var_nm_1L_chr Utility unwtd variable name (a character vector of length one)
+#' @param utl_wtd_var_nm_1L_chr Utility weighted variable name (a character vector of length one), Default: 'wtd_utl_dbl'
+#' @param utl_unwtd_var_nm_1L_chr Utility unwtd variable name (a character vector of length one), Default: 'unwtd_utl_dbl'
 #' @return Dataset descriptives (a list)
 #' @rdname make_ds_descvs_ls
 #' @export 
@@ -237,8 +266,8 @@ make_cohort_ls <- function (descv_tbls_ls, ctgl_vars_regrouping_ls = NULL, nbr_o
 #' @keywords internal
 make_ds_descvs_ls <- function (candidate_predrs_chr, cohort_descv_var_nms_chr, dictionary_tb, 
     id_var_nm_1L_chr, msrmnt_date_var_nm_1L_chr, round_var_nm_1L_chr, 
-    round_vals_chr, maui_item_pfx_1L_chr, utl_wtd_var_nm_1L_chr, 
-    utl_unwtd_var_nm_1L_chr) 
+    round_vals_chr, maui_item_pfx_1L_chr, utl_wtd_var_nm_1L_chr = "wtd_utl_dbl", 
+    utl_unwtd_var_nm_1L_chr = "unwtd_utl_dbl") 
 {
     ds_descvs_ls <- list(candidate_predrs_chr = candidate_predrs_chr, 
         cohort_descv_var_nms_chr = cohort_descv_var_nms_chr, 
@@ -790,6 +819,26 @@ make_mdls_smry_tbls_ls <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L)
         covar_mdls_tb = covar_mdls_tb, prefd_predr_mdl_smry_tb = prefd_predr_mdl_smry_tb)
     return(mdls_smry_tbls_ls)
 }
+#' Make output format list
+#' @description make_output_format_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make output format list. The function returns Output format (a list).
+#' @param manuscript_outp_1L_chr Manuscript output (a character vector of length one), Default: 'Word'
+#' @param manuscript_digits_1L_int Manuscript digits (an integer vector of length one), Default: 2
+#' @param supplementary_outp_1L_chr Supplementary output (a character vector of length one), Default: 'PDF'
+#' @param supplementary_digits_1L_int Supplementary digits (an integer vector of length one), Default: 2
+#' @return Output format (a list)
+#' @rdname make_output_format_ls
+#' @export 
+
+#' @keywords internal
+make_output_format_ls <- function (manuscript_outp_1L_chr = "Word", manuscript_digits_1L_int = 2L, 
+    supplementary_outp_1L_chr = "PDF", supplementary_digits_1L_int = 2L) 
+{
+    output_format_ls <- list(manuscript_outp_1L_chr = manuscript_outp_1L_chr, 
+        manuscript_digits_1L_int = manuscript_digits_1L_int, 
+        supplementary_outp_1L_chr = supplementary_outp_1L_chr, 
+        supplementary_digits_1L_int = supplementary_digits_1L_int)
+    return(output_format_ls)
+}
 #' Make path params
 #' @description make_path_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make path params list. The function returns Path params (a list).
 #' @param path_to_data_from_top_level_chr Path to data from top level (a character vector)
@@ -978,6 +1027,36 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
     prefd_mdls_chr <- purrr::map_chr(choose_from_pfx_chr, ~ordered_mdl_types_chr[startsWith(ordered_mdl_types_chr, 
         .x)][1])
     return(prefd_mdls_chr)
+}
+#' Make prmry analysis params
+#' @description make_prmry_analysis_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make prmry analysis params list. The function returns Prmry analysis params (a list).
+#' @param analysis_core_params_ls Analysis core params (a list)
+#' @param candidate_covar_nms_chr Candidate covariate names (a character vector)
+#' @param ds_tb Dataset (a tibble)
+#' @param path_params_ls Path params (a list)
+#' @param maui_params_ls Maui params (a list)
+#' @param prefd_covars_chr Preferred covariates (a character vector), Default: 'NA'
+#' @param prefd_mdl_types_chr Preferred model types (a character vector), Default: c("GLM_GSN_LOG", "OLS_CLL")
+#' @param raw_ds_tfmn_fn Raw dataset transformation (a function), Default: NULL
+#' @param subtitle_1L_chr Subtitle (a character vector of length one), Default: 'Methods Report 1: Analysis Program (Primary Analysis)'
+#' @param utl_class_fn_1L_chr Utility class function (a character vector of length one), Default: 'as.numeric'
+#' @return Prmry analysis params (a list)
+#' @rdname make_prmry_analysis_params_ls
+#' @export 
+
+#' @keywords internal
+make_prmry_analysis_params_ls <- function (analysis_core_params_ls, candidate_covar_nms_chr, ds_tb, 
+    path_params_ls, maui_params_ls, prefd_covars_chr = NA_character_, 
+    prefd_mdl_types_chr = c("GLM_GSN_LOG", "OLS_CLL"), raw_ds_tfmn_fn = NULL, 
+    subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)", 
+    utl_class_fn_1L_chr = "as.numeric") 
+{
+    prmry_analysis_params_ls <- list(candidate_covar_nms_chr = candidate_covar_nms_chr, 
+        ds_tb = ds_tb, prefd_covars_chr = prefd_covars_chr, prefd_mdl_types_chr = prefd_mdl_types_chr, 
+        raw_ds_tfmn_fn = raw_ds_tfmn_fn, subtitle_1L_chr = subtitle_1L_chr, 
+        utl_class_fn_1L_chr = utl_class_fn_1L_chr) %>% append(analysis_core_params_ls) %>% 
+        append(path_params_ls[1:2]) %>% append(maui_params_ls)
+    return(prmry_analysis_params_ls)
 }
 #' Make psych predictors
 #' @description make_psych_predrs_lup() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make psych predictors lookup table. The function returns Predictors (a lookup table).

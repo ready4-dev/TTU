@@ -7,7 +7,6 @@
 write_report(
   params_ls,
   paths_ls,
-  R_fl_nm_1L_chr,
   rprt_nm_1L_chr,
   abstract_args_ls = NULL,
   header_yaml_args_ls = NULL,
@@ -18,8 +17,6 @@ write_report(
 \item{params_ls}{Params (a list)}
 
 \item{paths_ls}{Paths (a list)}
-
-\item{R_fl_nm_1L_chr}{R file name (a character vector of length one)}
 
 \item{rprt_nm_1L_chr}{Report name (a character vector of length one)}
 

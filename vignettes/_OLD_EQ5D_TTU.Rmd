@@ -19,11 +19,11 @@ library(magrittr)
 As this is an illustrative example, we first must create a fake dataset (if using real data, skip this step).
 
 ```{r message=FALSE}
-fake_ds_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4750597")) 
+ds_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4750597")) 
 ```
 
 ```{r inputds, eval = knitr::is_html_output(), results='asis'}
-fake_ds_tb %>%
+ds_tb %>%
     head() %>%
   ready4show::print_table(output_type_1L_chr = "HTML",
                           caption_1L_chr = "Input dataset",
@@ -70,7 +70,7 @@ path_params_ls <- list(path_from_top_level_1L_chr = normalizePath("../") %>% str
 ```{r echo = TRUE }
 ds_descvs_ls <- list(candidate_predrs_chr = c("k10_int","psych_well_int"),
                      cohort_descv_var_nms_chr = c("d_age", "Gender", "d_relation_s","d_sexual_ori_s", "Region", "CALD", "d_studying_working"),
-                     dictionary_tb = TTU::make_eq5d_ds_dict(fake_ds_tb), 
+                     dictionary_tb = TTU::make_eq5d_ds_dict(ds_tb), 
                      id_var_nm_1L_chr = "uid", 
                      msrmnt_date_var_nm_1L_chr = "data_collection_dtm",
                      round_var_nm_1L_chr = "Timepoint", 
@@ -134,7 +134,7 @@ dv_ls <- list(primary_dv_chr = c("fakes","https://doi.org/10.7910/DVN/612HDC"))
 
 ```{r echo = TRUE }
 params_ls <- list(candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
-                  fake_ds_tb = fake_ds_tb,
+                  ds_tb = ds_tb,
                   maui_domains_pfcs_1L_chr = NULL,
                   maui_itm_short_nms_chr = c("Mobility", "Self-care", "Activities","Pain","Anxiety"),
      maui_scoring_fn = function(data_tb,# Function must have these arguments in this order.

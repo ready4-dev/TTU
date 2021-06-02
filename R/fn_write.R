@@ -218,6 +218,7 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
 #' @description write_main_oupt_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write main oupt directory. The function returns Paths (a list).
 #' @param params_ls Params (a list), Default: NULL
 #' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: F
+#' @param R_fl_nm_1L_chr R file name (a character vector of length one), Default: 'aaaaaaaaaa.txt'
 #' @return Paths (a list)
 #' @rdname write_main_oupt_dir
 #' @export 
@@ -225,8 +226,9 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
 #' @importFrom ready4show make_paths_ls
 #' @importFrom here i_am here
 #' @importFrom youthvars write_all_outp_dirs
-write_main_oupt_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F) 
+write_main_oupt_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_fl_nm_1L_chr = "aaaaaaaaaa.txt") 
 {
+    file.create(R_fl_nm_1L_chr)
     R_fl_nm_1L_chr <- list.files() %>% purrr::pluck(1)
     paths_ls <- ready4show::make_paths_ls(append(params_ls, list(use_fake_data_1L_lgl = use_fake_data_1L_lgl)), 
         depth_1L_int = 0)
@@ -352,6 +354,71 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
                 paste("_", paste0(covar_var_nms_chr[1:min(length(covar_var_nms_chr), 
                   3)], collapse = "")), ""), ..3), height_1L_dbl = ..4[1], 
             width_1L_dbl = ..4[2]))
+}
+#' Write model summary report
+#' @description write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @param header_yaml_args_ls Header yaml arguments (a list)
+#' @param paths_ls Paths (a list)
+#' @param path_params_ls Path params (a list)
+#' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: FALSE
+#' @param output_format_ls Output format (a list)
+#' @param abstract_args_ls Abstract arguments (a list), Default: NULL
+#' @param reference_1L_int Reference (an integer vector of length one), Default: NULL
+#' @param rprt_lup Report (a lookup table), Default: NULL
+#' @param rcrd_nm_1L_chr Rcrd name (a character vector of length one), Default: 'Write_Rprt_Rcrd'
+#' @param rprt_nm_1L_chr Report name (a character vector of length one), Default: 'TS_TTU_Mdls_Smry'
+#' @param rprt_subtitle_1L_chr Report subtitle (a character vector of length one), Default: NULL
+#' @param subtitle_1L_chr Subtitle (a character vector of length one), Default: NULL
+#' @return NULL
+#' @rdname write_mdl_smry_rprt
+#' @export 
+#' @importFrom here here
+#' @importFrom purrr pluck
+#' @keywords internal
+write_mdl_smry_rprt <- function (header_yaml_args_ls, paths_ls, path_params_ls, use_fake_data_1L_lgl = FALSE, 
+    output_format_ls, abstract_args_ls = NULL, reference_1L_int = NULL, 
+    rprt_lup = NULL, rcrd_nm_1L_chr = "Write_Rprt_Rcrd", rprt_nm_1L_chr = "TS_TTU_Mdls_Smry", 
+    rprt_subtitle_1L_chr = NULL, subtitle_1L_chr = NULL) 
+{
+    if (is.null(rprt_lup)) 
+        data("rprt_lup", package = "TTU", envir = environment())
+    if (is.null(reference_1L_int)) {
+        path_to_outp_fl_1L_chr <- paste0(paths_ls$output_data_dir_1L_chr, 
+            "/I_ALL_OUTPUT_.RDS")
+        if (is.null(subtitle_1L_chr)) 
+            subtitle_1L_chr <- "Results Report 1: TTU Models (Primary Analysis)"
+        if (is.null(rprt_subtitle_1L_chr)) 
+            rprt_subtitle_1L_chr <- "Methods Report 2: Reporting Program (Primary Analysis)."
+        rcrd_rprt_append_ls <- NULL
+        main_rprt_append_ls <- NULL
+    }
+    else {
+        path_to_outp_fl_1L_chr <- here::here(paths_ls$path_from_top_level_1L_chr, 
+            paths_ls$write_to_dir_nm_1L_chr, paste0("secondary_", 
+                reference_1L_int), "Output", "I_ALL_OUTPUT_.RDS")
+        if (is.null(subtitle_1L_chr)) 
+            subtitle_1L_chr <- paste0("Results Report ", reference_1L_int + 
+                1, ": TTU Models (Secondary Analysis ", LETTERS[reference_1L_int], 
+                ")")
+        if (is.null(rprt_subtitle_1L_chr)) 
+            rprt_subtitle_1L_chr <- paste0("Methods Report ", 
+                2 + reference_1L_int * 3, ": Reporting Program (Secondary Analysis ", 
+                LETTERS[reference_1L_int], ").")
+        rcrd_rprt_append_ls <- path_params_ls[1:2]
+        main_rprt_append_ls <- list(existing_predrs_ls = readRDS(paste0(paths_ls$output_data_dir_1L_chr, 
+            "/I_ALL_OUTPUT_.RDS")) %>% purrr::pluck("predr_vars_nms_ls"))
+        paths_ls <- transform_paths_ls_for_scndry(paths_ls, reference_1L_int = reference_1L_int)
+    }
+    write_rprt_with_rcrd(path_to_outp_fl_1L_chr = path_to_outp_fl_1L_chr, 
+        paths_ls = paths_ls, header_yaml_args_ls = header_yaml_args_ls, 
+        use_fake_data_1L_lgl = use_fake_data_1L_lgl, subtitle_1L_chr = subtitle_1L_chr, 
+        rprt_subtitle_1L_chr = rprt_subtitle_1L_chr, rprt_nm_1L_chr = rprt_nm_1L_chr, 
+        rcrd_nm_1L_chr = rcrd_nm_1L_chr, output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr, 
+        rprt_output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr, 
+        nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int, 
+        abstract_args_ls = abstract_args_ls, rcrd_rprt_append_ls = path_params_ls[1:2], 
+        rprt_lup = rprt_lup, rcrd_rprt_append_ls = rcrd_rprt_append_ls, 
+        main_rprt_append_ls = main_rprt_append_ls)
 }
 #' Write model type covariates models
 #' @description write_mdl_type_covars_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type covariates models. The function returns Summary of models with covariates (a tibble).
@@ -756,7 +823,6 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_
 #' @description write_report() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write report. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param params_ls Params (a list)
 #' @param paths_ls Paths (a list)
-#' @param R_fl_nm_1L_chr R file name (a character vector of length one)
 #' @param rprt_nm_1L_chr Report name (a character vector of length one)
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
 #' @param header_yaml_args_ls Header yaml arguments (a list), Default: NULL
@@ -767,14 +833,14 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_
 #' @importFrom ready4show make_rprt_type_ls write_rprt_from_tmpl
 #' @importFrom here i_am here
 #' @importFrom rlang exec
-write_report <- function (params_ls, paths_ls, R_fl_nm_1L_chr, rprt_nm_1L_chr, 
-    abstract_args_ls = NULL, header_yaml_args_ls = NULL, rprt_lup = NULL) 
+write_report <- function (params_ls, paths_ls, rprt_nm_1L_chr, abstract_args_ls = NULL, 
+    header_yaml_args_ls = NULL, rprt_lup = NULL) 
 {
     if (is.null(rprt_lup)) 
         data("rprt_lup", package = "TTU", envir = environment())
     rprt_type_ls <- rprt_lup %>% ready4show::make_rprt_type_ls(rprt_nm_1L_chr = rprt_nm_1L_chr)
     here::i_am(paste0(paths_ls$path_from_top_level_1L_chr, "/", 
-        paths_ls$path_to_current_1L_chr, "/", R_fl_nm_1L_chr))
+        paths_ls$path_to_current_1L_chr, "/", paths_ls$R_fl_nm_1L_chr))
     args_ls <- list(rprt_type_ls = rprt_type_ls, params_ls = params_ls, 
         output_type_1L_chr = params_ls$output_type_1L_chr, path_to_prjs_dir_1L_chr = here::here(paths_ls$path_from_top_level_1L_chr), 
         prj_dir_1L_chr = paths_ls$write_to_dir_nm_1L_chr, header_yaml_args_ls = header_yaml_args_ls, 
@@ -786,9 +852,8 @@ write_report <- function (params_ls, paths_ls, R_fl_nm_1L_chr, rprt_nm_1L_chr,
 #' @description write_rprt_with_rcrd() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write report with rcrd. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param path_to_outp_fl_1L_chr Path to output file (a character vector of length one)
 #' @param paths_ls Paths (a list)
-#' @param R_fl_nm_1L_chr R file name (a character vector of length one)
 #' @param header_yaml_args_ls Header yaml arguments (a list), Default: NULL
-#' @param rprt_lup Report (a lookup table)
+#' @param rprt_lup Report (a lookup table), Default: NULL
 #' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one)
 #' @param subtitle_1L_chr Subtitle (a character vector of length one), Default: 'Results Supplementary Report 1: Catalogue of time series models'
 #' @param rprt_subtitle_1L_chr Report subtitle (a character vector of length one), Default: 'Methods Supplementary Report 2: Record of auto-generation of model catalogue.'
@@ -804,60 +869,69 @@ write_report <- function (params_ls, paths_ls, R_fl_nm_1L_chr, rprt_nm_1L_chr,
 #' @rdname write_rprt_with_rcrd
 #' @export 
 
-write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, R_fl_nm_1L_chr, header_yaml_args_ls = NULL, 
-    rprt_lup, use_fake_data_1L_lgl, subtitle_1L_chr = "Results Supplementary Report 1: Catalogue of time series models", 
+write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_args_ls = NULL, 
+    rprt_lup = NULL, use_fake_data_1L_lgl, subtitle_1L_chr = "Results Supplementary Report 1: Catalogue of time series models", 
     rprt_subtitle_1L_chr = "Methods Supplementary Report 2: Record of auto-generation of model catalogue.", 
     rprt_nm_1L_chr = "TS_TTU_Mdls_Smry", rcrd_nm_1L_chr = "Write_Rprt_Rcrd", 
     output_type_1L_chr = "PDF", rprt_output_type_1L_chr = "PDF", 
     nbr_of_digits_1L_int = 2L, abstract_args_ls = NULL, main_rprt_append_ls = NULL, 
     rcrd_rprt_append_ls = NULL) 
 {
+    if (is.null(rprt_lup)) 
+        data("rprt_lup", package = "TTU", envir = environment())
     list(outp_smry_ls = append(readRDS(path_to_outp_fl_1L_chr), 
         list(rprt_lup = rprt_lup)), output_type_1L_chr = output_type_1L_chr, 
         subtitle_1L_chr = subtitle_1L_chr) %>% append(main_rprt_append_ls) %>% 
-        write_report(paths_ls = paths_ls, R_fl_nm_1L_chr = R_fl_nm_1L_chr, 
-            rprt_nm_1L_chr = rprt_nm_1L_chr, abstract_args_ls = abstract_args_ls, 
-            header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
+        write_report(paths_ls = paths_ls, rprt_nm_1L_chr = rprt_nm_1L_chr, 
+            abstract_args_ls = abstract_args_ls, header_yaml_args_ls = header_yaml_args_ls, 
+            rprt_lup = rprt_lup)
     list(abstract_args_ls = NULL, eval_1L_lgl = F, header_yaml_args_ls = header_yaml_args_ls, 
         output_type_1L_chr = rprt_output_type_1L_chr, nbr_of_digits_1L_int = nbr_of_digits_1L_int, 
         rprt_lup = rprt_lup, rprt_nm_1L_chr = rprt_nm_1L_chr, 
         rprt_output_type_1L_chr = output_type_1L_chr, rprt_subtitle_1L_chr = subtitle_1L_chr, 
         subtitle_1L_chr = rprt_subtitle_1L_chr, use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>% 
         append(rcrd_rprt_append_ls) %>% write_report(paths_ls = paths_ls, 
-        R_fl_nm_1L_chr = R_fl_nm_1L_chr, rprt_nm_1L_chr = rcrd_nm_1L_chr, 
-        abstract_args_ls = NULL, header_yaml_args_ls = header_yaml_args_ls, 
-        rprt_lup = rprt_lup)
+        rprt_nm_1L_chr = rcrd_nm_1L_chr, abstract_args_ls = NULL, 
+        header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
 }
 #' Write scndry analysis
 #' @description write_scndry_analysis() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scndry analysis. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
-#' @param analysis_params_ls Analysis params (a list)
+#' @param analysis_core_params_ls Analysis core params (a list)
 #' @param candidate_covar_nms_chr Candidate covariate names (a character vector)
 #' @param candidate_predrs_chr Candidate predictors (a character vector)
-#' @param prefd_covars_chr Preferred covariates (a character vector)
 #' @param header_yaml_args_ls Header yaml arguments (a list)
-#' @param subtitle_1L_chr Subtitle (a character vector of length one)
-#' @param reference_1L_int Reference (an integer vector of length one)
+#' @param path_params_ls Path params (a list)
 #' @param paths_ls Paths (a list)
-#' @param R_fl_nm_1L_chr R file name (a character vector of length one)
-#' @param rprt_lup Report (a lookup table)
+#' @param prefd_covars_chr Preferred covariates (a character vector)
+#' @param reference_1L_int Reference (an integer vector of length one)
+#' @param subtitle_1L_chr Subtitle (a character vector of length one), Default: NULL
+#' @param rprt_lup Report (a lookup table), Default: NULL
+#' @param rprt_nm_1L_chr Report name (a character vector of length one), Default: 'Suplry_Analysis_Rprt'
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
 #' @return NULL
 #' @rdname write_scndry_analysis
 #' @export 
 
-write_scndry_analysis <- function (analysis_params_ls, candidate_covar_nms_chr, candidate_predrs_chr, 
-    prefd_covars_chr, header_yaml_args_ls, subtitle_1L_chr, reference_1L_int, 
-    paths_ls, R_fl_nm_1L_chr, rprt_lup, abstract_args_ls = NULL) 
+write_scndry_analysis <- function (analysis_core_params_ls, candidate_covar_nms_chr, candidate_predrs_chr, 
+    header_yaml_args_ls, path_params_ls, paths_ls, prefd_covars_chr, 
+    reference_1L_int, subtitle_1L_chr = NULL, rprt_lup = NULL, 
+    rprt_nm_1L_chr = "Suplry_Analysis_Rprt", abstract_args_ls = NULL) 
 {
+    analysis_params_ls <- analysis_core_params_ls %>% append(path_params_ls[1:2])
+    if (is.null(rprt_lup)) 
+        data("rprt_lup", package = "TTU", envir = environment())
+    if (is.null(subtitle_1L_chr)) 
+        subtitle_1L_chr <- paste0("Methods Report ", 1 + 3 * 
+            reference_1L_int, ": Analysis Program (Secondary Analysis (", 
+            LETTERS[reference_1L_int], "))")
     paths_ls <- write_scndry_analysis_dir(paths_ls, reference_1L_int = reference_1L_int)
     list(candidate_covar_nms_chr = candidate_covar_nms_chr, candidate_predrs_chr = candidate_predrs_chr, 
         prefd_covars_chr = prefd_covars_chr, subtitle_1L_chr = subtitle_1L_chr, 
         transform_paths_ls = list(fn = transform_paths_ls_for_scndry, 
             args_ls = list(reference_1L_int = reference_1L_int))) %>% 
         append(analysis_params_ls) %>% write_report(paths_ls = paths_ls, 
-        R_fl_nm_1L_chr = R_fl_nm_1L_chr, rprt_nm_1L_chr = "Suplry_Analysis_Rprt", 
-        abstract_args_ls = NULL, header_yaml_args_ls = header_yaml_args_ls, 
-        rprt_lup = transform_rprt_lup(rprt_lup))
+        rprt_nm_1L_chr = rprt_nm_1L_chr, abstract_args_ls = NULL, 
+        header_yaml_args_ls = header_yaml_args_ls, rprt_lup = transform_rprt_lup(rprt_lup))
 }
 #' Write scndry analysis directory
 #' @description write_scndry_analysis_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scndry analysis directory. The function returns Paths (a list).
@@ -1035,6 +1109,74 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
         smry_of_sngl_predr_mdls_tb <- smry_of_sngl_predr_mdls_tb %>% 
             dplyr::arrange(dplyr::desc(RsquaredP))
     return(smry_of_sngl_predr_mdls_tb)
+}
+#' Write study output dataset
+#' @description write_study_outp_ds() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write study output dataset. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @param dv_ls Dataverse (a list)
+#' @param output_format_ls Output format (a list)
+#' @param path_params_ls Path params (a list)
+#' @param paths_ls Paths (a list)
+#' @param abstract_args_ls Abstract arguments (a list), Default: NULL
+#' @param dv_mdl_desc_1L_chr Dataverse model description (a character vector of length one), Default: 'This is a time series transfer to utility model designed for use with the youthu R package.'
+#' @param inc_fl_types_chr Include file types (a character vector), Default: '.pdf'
+#' @param purge_data_1L_lgl Purge data (a logical vector of length one), Default: FALSE
+#' @param reference_1L_int Reference (an integer vector of length one), Default: NULL
+#' @param rprt_lup Report (a lookup table), Default: NULL
+#' @param subtitle_1L_chr Subtitle (a character vector of length one), Default: NULL
+#' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: F
+#' @return NULL
+#' @rdname write_study_outp_ds
+#' @export 
+#' @importFrom TTU transform_rprt_lup rprt_lup transform_paths_ls_for_scndry write_report
+#' @importFrom purrr pluck
+#' @importFrom ready4use write_fls_to_dv_ds
+#' @importFrom tibble tibble
+#' @keywords internal
+write_study_outp_ds <- function (dv_ls, output_format_ls, path_params_ls, paths_ls, 
+    abstract_args_ls = NULL, dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.", 
+    inc_fl_types_chr = ".pdf", purge_data_1L_lgl = FALSE, reference_1L_int = NULL, 
+    rprt_lup = NULL, subtitle_1L_chr = NULL, use_fake_data_1L_lgl = F) 
+{
+    if (is.null(rprt_lup)) {
+        data("rprt_lup", package = "TTU", envir = environment())
+        rprt_lup <- TTU::transform_rprt_lup(TTU::rprt_lup, add_suplry_rprt_1L_lgl = F, 
+            add_sharing_rprt_1L_lgl = T)
+    }
+    if (is.null(reference_1L_int)) {
+        dv_ds_nm_and_url_chr <- dv_ls$primary_dv_chr
+        if (is.null(subtitle_1L_chr)) {
+            subtitle_1L_chr <- "Methods Report 3: Sharing Program (Primary Analysis)"
+        }
+        transform_paths_ls <- NULL
+    }
+    else {
+        dv_ds_nm_and_url_chr <- dv_ls %>% purrr::pluck(paste0("secondary_", 
+            reference_1L_int, "_dv_chr"))
+        if (is.null(subtitle_1L_chr)) {
+            subtitle_1L_chr <- paste0("Methods Report ", 3 + 
+                3 * reference_1L_int, ": Sharing Program (Secondary Analysis ", 
+                LETTERS[reference_1L_int], ")")
+        }
+        transform_paths_ls = list(fn = transform_paths_ls_for_scndry, 
+            args_ls = list(reference_1L_int = reference_1L_int, 
+                remove_prmry_1L_lgl = T))
+        paths_ls <- paths_ls %>% TTU::transform_paths_ls_for_scndry()
+    }
+    params_ls <- list(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr, 
+        dv_mdl_desc_1L_chr = dv_mdl_desc_1L_chr, inc_fl_types_chr = inc_fl_types_chr, 
+        nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int, 
+        output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr, 
+        purge_data_1L_lgl = purge_data_1L_lgl, rprt_lup = rprt_lup, 
+        subtitle_1L_chr = subtitle_1L_chr, transform_paths_ls = transform_paths_ls, 
+        use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>% append(path_params_ls[1:2])
+    params_ls %>% TTU::write_report(paths_ls = paths_ls, rprt_nm_1L_chr = "Share_Outp_Rprt", 
+        abstract_args_ls = abstract_args_ls, header_yaml_args_ls = header_yaml_args_ls, 
+        rprt_lup = rprt_lup)
+    ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "Share_Outp_Rprt", 
+        title_chr = params_ls$subtitle_1L_chr), dv_nm_1L_chr = dv_ds_nm_and_url_chr[1], 
+        ds_url_1L_chr = dv_ds_nm_and_url_chr[2], parent_dv_dir_1L_chr = paths_ls$dv_dir_1L_chr, 
+        paths_to_dirs_chr = paths_ls$reports_dir_1L_chr, inc_fl_types_chr = params_ls$inc_fl_types_chr, 
+        paths_are_rltv_1L_lgl = F)
 }
 #' Write to delete dataset copies
 #' @description write_to_delete_ds_copies() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write to delete dataset copies. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour

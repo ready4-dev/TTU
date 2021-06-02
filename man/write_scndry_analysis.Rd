@@ -5,39 +5,42 @@
 \title{Write scndry analysis}
 \usage{
 write_scndry_analysis(
-  analysis_params_ls,
+  analysis_core_params_ls,
   candidate_covar_nms_chr,
   candidate_predrs_chr,
-  prefd_covars_chr,
   header_yaml_args_ls,
-  subtitle_1L_chr,
-  reference_1L_int,
+  path_params_ls,
   paths_ls,
-  R_fl_nm_1L_chr,
-  rprt_lup,
+  prefd_covars_chr,
+  reference_1L_int,
+  subtitle_1L_chr = NULL,
+  rprt_lup = NULL,
+  rprt_nm_1L_chr = "Suplry_Analysis_Rprt",
   abstract_args_ls = NULL
 )
 }
 \arguments{
-\item{analysis_params_ls}{Analysis params (a list)}
+\item{analysis_core_params_ls}{Analysis core params (a list)}
 
 \item{candidate_covar_nms_chr}{Candidate covariate names (a character vector)}
 
 \item{candidate_predrs_chr}{Candidate predictors (a character vector)}
 
-\item{prefd_covars_chr}{Preferred covariates (a character vector)}
-
 \item{header_yaml_args_ls}{Header yaml arguments (a list)}
 
-\item{subtitle_1L_chr}{Subtitle (a character vector of length one)}
-
-\item{reference_1L_int}{Reference (an integer vector of length one)}
+\item{path_params_ls}{Path params (a list)}
 
 \item{paths_ls}{Paths (a list)}
 
-\item{R_fl_nm_1L_chr}{R file name (a character vector of length one)}
+\item{prefd_covars_chr}{Preferred covariates (a character vector)}
 
-\item{rprt_lup}{Report (a lookup table)}
+\item{reference_1L_int}{Reference (an integer vector of length one)}
+
+\item{subtitle_1L_chr}{Subtitle (a character vector of length one), Default: NULL}
+
+\item{rprt_lup}{Report (a lookup table), Default: NULL}
+
+\item{rprt_nm_1L_chr}{Report name (a character vector of length one), Default: 'Suplry_Analysis_Rprt'}
 
 \item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
 }

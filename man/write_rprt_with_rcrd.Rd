@@ -7,9 +7,8 @@
 write_rprt_with_rcrd(
   path_to_outp_fl_1L_chr,
   paths_ls,
-  R_fl_nm_1L_chr,
   header_yaml_args_ls = NULL,
-  rprt_lup,
+  rprt_lup = NULL,
   use_fake_data_1L_lgl,
   subtitle_1L_chr = "Results Supplementary Report 1: Catalogue of time series models",
  
@@ -29,11 +28,9 @@ write_rprt_with_rcrd(
 
 \item{paths_ls}{Paths (a list)}
 
-\item{R_fl_nm_1L_chr}{R file name (a character vector of length one)}
-
 \item{header_yaml_args_ls}{Header yaml arguments (a list), Default: NULL}
 
-\item{rprt_lup}{Report (a lookup table)}
+\item{rprt_lup}{Report (a lookup table), Default: NULL}
 
 \item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one)}
 

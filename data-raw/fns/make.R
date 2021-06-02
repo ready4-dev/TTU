@@ -1,3 +1,24 @@
+make_analysis_core_params_ls <- function(ds_descvs_ls,
+                                         mdl_smry_ls,
+                                         output_format_ls = make_output_format_ls(),
+                                         predictors_lup,
+                                         control_ls = NULL,
+                                         iters_1L_int = 4000L,
+                                         prior_ls = NULL,
+                                         seed_1L_int = 12345,
+                                         use_fake_data_1L_lgl = F){
+  analysis_core_params_ls <- list(ds_descvs_ls = ds_descvs_ls,
+                                  iters_1L_int = iters_1L_int,
+                                  mdl_smry_ls = mdl_smry_ls,
+                                  nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int,
+                                  output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr,
+                                  predictors_lup = predictors_lup,
+                                  seed_1L_int = seed_1L_int,
+                                  use_fake_data_1L_lgl = use_fake_data_1L_lgl,
+                                  prior_ls = prior_ls,
+                                  control_ls = control_ls)
+  return(analysis_core_params_ls)
+}
 make_analysis_ds_smry_ls <- function(ds_descvs_ls,
                                      candidate_covar_nms_chr,
                                      predictors_lup){
@@ -178,8 +199,8 @@ make_ds_descvs_ls <- function(candidate_predrs_chr,
                               round_var_nm_1L_chr,
                               round_vals_chr,
                               maui_item_pfx_1L_chr,
-                              utl_wtd_var_nm_1L_chr,
-                              utl_unwtd_var_nm_1L_chr){
+                              utl_wtd_var_nm_1L_chr = "wtd_utl_dbl",
+                              utl_unwtd_var_nm_1L_chr = "unwtd_utl_dbl"){
   ds_descvs_ls <- list(candidate_predrs_chr = candidate_predrs_chr,
                        cohort_descv_var_nms_chr = cohort_descv_var_nms_chr,
                        dictionary_tb = dictionary_tb,
@@ -629,6 +650,16 @@ make_mdl_type_smry_tbl <- function(mdls_tb,
                                           add_mdl_nm_sfx_1L_lgl = add_mdl_nm_sfx_1L_lgl))
   return(mdl_type_smry_tbl_tb)
 }
+make_output_format_ls <- function(manuscript_outp_1L_chr = "Word",
+                                  manuscript_digits_1L_int = 2L,
+                                  supplementary_outp_1L_chr = "PDF",
+                                  supplementary_digits_1L_int = 2L){
+  output_format_ls <- list(manuscript_outp_1L_chr = manuscript_outp_1L_chr,
+                           manuscript_digits_1L_int = manuscript_digits_1L_int,
+                           supplementary_outp_1L_chr = supplementary_outp_1L_chr,
+                           supplementary_digits_1L_int = supplementary_digits_1L_int)
+  return(output_format_ls)
+}
 make_path_params_ls <- function(path_to_data_from_top_level_chr,
                                 path_from_top_level_1L_chr = NULL,
                                 path_to_current_1L_chr = NULL){
@@ -758,6 +789,28 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
     prefd_mdls_chr <- purrr::map_chr(choose_from_pfx_chr, ~ordered_mdl_types_chr[startsWith(ordered_mdl_types_chr,
                                                                                             .x)][1])
     return(prefd_mdls_chr)
+}
+make_prmry_analysis_params_ls <- function(analysis_core_params_ls,
+                                          candidate_covar_nms_chr,
+                                          ds_tb,
+                                          path_params_ls,
+                                          maui_params_ls,
+                                          prefd_covars_chr = NA_character_,
+                                          prefd_mdl_types_chr = c("GLM_GSN_LOG","OLS_CLL"),
+                                          raw_ds_tfmn_fn = NULL,
+                                          subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)",
+                                          utl_class_fn_1L_chr = "as.numeric"){
+  prmry_analysis_params_ls <- list(candidate_covar_nms_chr = candidate_covar_nms_chr,
+                    ds_tb = ds_tb,
+                    prefd_covars_chr = prefd_covars_chr,
+                    prefd_mdl_types_chr = prefd_mdl_types_chr,
+                    raw_ds_tfmn_fn = raw_ds_tfmn_fn,
+                    subtitle_1L_chr = subtitle_1L_chr,
+                    utl_class_fn_1L_chr = utl_class_fn_1L_chr) %>%
+    append(analysis_core_params_ls) %>%
+    append(path_params_ls[1:2]) %>%
+    append(maui_params_ls)
+  return(prmry_analysis_params_ls)
 }
 make_psych_predrs_lup <- function(){
   predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = c("k10_int","psych_well_int"),

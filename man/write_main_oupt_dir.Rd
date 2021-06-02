@@ -4,12 +4,18 @@
 \alias{write_main_oupt_dir}
 \title{Write main oupt directory}
 \usage{
-write_main_oupt_dir(params_ls = NULL, use_fake_data_1L_lgl = F)
+write_main_oupt_dir(
+  params_ls = NULL,
+  use_fake_data_1L_lgl = F,
+  R_fl_nm_1L_chr = "aaaaaaaaaa.txt"
+)
 }
 \arguments{
 \item{params_ls}{Params (a list), Default: NULL}
 
 \item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one), Default: F}
+
+\item{R_fl_nm_1L_chr}{R file name (a character vector of length one), Default: 'aaaaaaaaaa.txt'}
 }
 \value{
 Paths (a list)

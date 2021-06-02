@@ -13,8 +13,8 @@ make_ds_descvs_ls(
   round_var_nm_1L_chr,
   round_vals_chr,
   maui_item_pfx_1L_chr,
-  utl_wtd_var_nm_1L_chr,
-  utl_unwtd_var_nm_1L_chr
+  utl_wtd_var_nm_1L_chr = "wtd_utl_dbl",
+  utl_unwtd_var_nm_1L_chr = "unwtd_utl_dbl"
 )
 }
 \arguments{
@@ -34,9 +34,9 @@ make_ds_descvs_ls(
 
 \item{maui_item_pfx_1L_chr}{Maui item prefix (a character vector of length one)}
 
-\item{utl_wtd_var_nm_1L_chr}{Utility weighted variable name (a character vector of length one)}
+\item{utl_wtd_var_nm_1L_chr}{Utility weighted variable name (a character vector of length one), Default: 'wtd_utl_dbl'}
 
-\item{utl_unwtd_var_nm_1L_chr}{Utility unwtd variable name (a character vector of length one)}
+\item{utl_unwtd_var_nm_1L_chr}{Utility unwtd variable name (a character vector of length one), Default: 'unwtd_utl_dbl'}
 }
 \value{
 Dataset descriptives (a list)

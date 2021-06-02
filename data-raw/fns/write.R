@@ -143,7 +143,9 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
     return(mdl_plts_paths_ls)
 }
 write_main_oupt_dir <- function(params_ls = NULL,
-                                use_fake_data_1L_lgl = F){
+                                use_fake_data_1L_lgl = F,
+                                R_fl_nm_1L_chr = "aaaaaaaaaa.txt"){
+  file.create(R_fl_nm_1L_chr)
   R_fl_nm_1L_chr <- list.files() %>% purrr::pluck(1)
   paths_ls <- ready4show::make_paths_ls(append(params_ls,list(use_fake_data_1L_lgl = use_fake_data_1L_lgl)),
                                         depth_1L_int = 0) #
@@ -303,6 +305,70 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
             paste("_", paste0(covar_var_nms_chr[1:min(length(covar_var_nms_chr),
                 3)], collapse = "")), ""), ..3), height_1L_dbl = ..4[1],
         width_1L_dbl = ..4[2]))
+}
+write_mdl_smry_rprt <- function(header_yaml_args_ls,
+                                paths_ls,
+                                path_params_ls,
+                                use_fake_data_1L_lgl = FALSE,
+                                output_format_ls,
+                                abstract_args_ls = NULL,
+                                reference_1L_int = NULL,
+                                rprt_lup = NULL,
+                                rcrd_nm_1L_chr = "Write_Rprt_Rcrd",
+                                rprt_nm_1L_chr = "TS_TTU_Mdls_Smry",
+                                rprt_subtitle_1L_chr = NULL,
+                                subtitle_1L_chr = NULL){
+  if(is.null(rprt_lup))
+    data("rprt_lup", package = "TTU", envir = environment())
+  if(is.null(reference_1L_int)){
+    path_to_outp_fl_1L_chr <- paste0(paths_ls$output_data_dir_1L_chr,"/I_ALL_OUTPUT_.RDS")
+    if(is.null(subtitle_1L_chr))
+      subtitle_1L_chr <- "Results Report 1: TTU Models (Primary Analysis)"
+    if(is.null(rprt_subtitle_1L_chr))
+      rprt_subtitle_1L_chr <- "Methods Report 2: Reporting Program (Primary Analysis)."
+    rcrd_rprt_append_ls <- NULL
+    main_rprt_append_ls <- NULL
+  }else{
+    path_to_outp_fl_1L_chr <- here::here(paths_ls$path_from_top_level_1L_chr,
+                                        paths_ls$write_to_dir_nm_1L_chr,
+                                        paste0("secondary_",reference_1L_int),
+                                        "Output","I_ALL_OUTPUT_.RDS")
+    if(is.null(subtitle_1L_chr))
+    subtitle_1L_chr <- paste0("Results Report ",
+                              reference_1L_int+1,
+                              ": TTU Models (Secondary Analysis ",
+                              LETTERS[reference_1L_int],
+                              ")")
+
+    if(is.null(rprt_subtitle_1L_chr))
+      rprt_subtitle_1L_chr <- paste0("Methods Report ",
+                                     2+reference_1L_int*3,
+                                     ": Reporting Program (Secondary Analysis ",
+                                     LETTERS[reference_1L_int],
+                                     ").")
+    rcrd_rprt_append_ls <- path_params_ls[1:2]
+    main_rprt_append_ls <- list(existing_predrs_ls = readRDS(paste0(paths_ls$output_data_dir_1L_chr,
+                                                                   "/I_ALL_OUTPUT_.RDS")) %>%
+                                 purrr::pluck("predr_vars_nms_ls"))
+    paths_ls <- transform_paths_ls_for_scndry(paths_ls,
+                                              reference_1L_int = reference_1L_int)
+  }
+  write_rprt_with_rcrd(path_to_outp_fl_1L_chr = path_to_outp_fl_1L_chr,
+                       paths_ls = paths_ls,
+                       header_yaml_args_ls = header_yaml_args_ls,
+                       use_fake_data_1L_lgl = use_fake_data_1L_lgl,
+                       subtitle_1L_chr = subtitle_1L_chr,
+                       rprt_subtitle_1L_chr = rprt_subtitle_1L_chr,
+                       rprt_nm_1L_chr = rprt_nm_1L_chr,
+                       rcrd_nm_1L_chr = rcrd_nm_1L_chr,
+                       output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr,
+                       rprt_output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr,
+                       nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int,
+                       abstract_args_ls = abstract_args_ls,
+                       rcrd_rprt_append_ls = path_params_ls[1:2],
+                       rprt_lup = rprt_lup,
+                       rcrd_rprt_append_ls = rcrd_rprt_append_ls,
+                       main_rprt_append_ls = main_rprt_append_ls)
 }
 write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predrs_var_nms_chr,
     covar_var_nms_chr, mdl_type_1L_chr, path_to_write_to_1L_chr, new_dir_nm_1L_chr = "D_Covars_Selection",
@@ -565,7 +631,6 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_
 }
 write_report <- function(params_ls,
                          paths_ls,
-                         R_fl_nm_1L_chr,
                          rprt_nm_1L_chr,
                          abstract_args_ls = NULL,
                          header_yaml_args_ls = NULL,
@@ -578,7 +643,7 @@ write_report <- function(params_ls,
                     "/",
                     paths_ls$path_to_current_1L_chr,
                     "/",
-                    R_fl_nm_1L_chr
+                    paths_ls$R_fl_nm_1L_chr
   ))
   args_ls <- list(rprt_type_ls = rprt_type_ls,
                   params_ls = params_ls,
@@ -594,9 +659,8 @@ write_report <- function(params_ls,
 }
 write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                                  paths_ls,
-                                 R_fl_nm_1L_chr,
                                  header_yaml_args_ls = NULL,
-                                 rprt_lup,
+                                 rprt_lup = NULL,
                                  use_fake_data_1L_lgl,
                                  subtitle_1L_chr = "Results Supplementary Report 1: Catalogue of time series models",
                                  rprt_subtitle_1L_chr = "Methods Supplementary Report 2: Record of auto-generation of model catalogue.",
@@ -608,17 +672,18 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                                  abstract_args_ls = NULL,
                                  main_rprt_append_ls = NULL,
                                  rcrd_rprt_append_ls = NULL){
+  if(is.null(rprt_lup))
+    data("rprt_lup", package = "TTU", envir = environment())
   list(outp_smry_ls =  append(readRDS(path_to_outp_fl_1L_chr),
                               list(rprt_lup = rprt_lup)),
        output_type_1L_chr = output_type_1L_chr,
        subtitle_1L_chr = subtitle_1L_chr) %>%
     append(main_rprt_append_ls) %>%
     write_report(paths_ls = paths_ls,
-                      R_fl_nm_1L_chr = R_fl_nm_1L_chr,
-                      rprt_nm_1L_chr = rprt_nm_1L_chr,
-                      abstract_args_ls = abstract_args_ls,
-                      header_yaml_args_ls = header_yaml_args_ls,
-                      rprt_lup = rprt_lup)
+                 rprt_nm_1L_chr = rprt_nm_1L_chr,
+                 abstract_args_ls = abstract_args_ls,
+                 header_yaml_args_ls = header_yaml_args_ls,
+                 rprt_lup = rprt_lup)
   list(abstract_args_ls = NULL,
        eval_1L_lgl = F,
        header_yaml_args_ls = header_yaml_args_ls,
@@ -632,23 +697,33 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
        use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>%
     append(rcrd_rprt_append_ls) %>%
     write_report(paths_ls = paths_ls,
-                      R_fl_nm_1L_chr = R_fl_nm_1L_chr,
-                      rprt_nm_1L_chr = rcrd_nm_1L_chr,
-                      abstract_args_ls = NULL,
-                      header_yaml_args_ls = header_yaml_args_ls,
-                      rprt_lup = rprt_lup)
+                 rprt_nm_1L_chr = rcrd_nm_1L_chr,
+                 abstract_args_ls = NULL,
+                 header_yaml_args_ls = header_yaml_args_ls,
+                 rprt_lup = rprt_lup)
 }
-write_scndry_analysis <- function(analysis_params_ls,
+write_scndry_analysis <- function(analysis_core_params_ls,
                                   candidate_covar_nms_chr,
                                   candidate_predrs_chr,
-                                  prefd_covars_chr,
                                   header_yaml_args_ls,
-                                  subtitle_1L_chr,
-                                  reference_1L_int,
+                                  path_params_ls,
                                   paths_ls,
-                                  R_fl_nm_1L_chr,
-                                  rprt_lup,
+                                  prefd_covars_chr,
+                                  reference_1L_int,
+                                  subtitle_1L_chr = NULL,
+                                  rprt_lup = NULL,
+                                  rprt_nm_1L_chr = "Suplry_Analysis_Rprt",
                                   abstract_args_ls = NULL) {
+  analysis_params_ls <- analysis_core_params_ls %>%
+    append(path_params_ls[1:2])
+  if(is.null(rprt_lup))
+    data("rprt_lup", package = "TTU", envir = environment())
+  if(is.null(subtitle_1L_chr))
+    subtitle_1L_chr <- paste0("Methods Report ",
+                              1+3*reference_1L_int,
+                              ": Analysis Program (Secondary Analysis (",
+                              LETTERS[reference_1L_int],
+                              "))")
   paths_ls <- write_scndry_analysis_dir(paths_ls,
                                         reference_1L_int = reference_1L_int)
   list(candidate_covar_nms_chr = candidate_covar_nms_chr,
@@ -659,8 +734,7 @@ write_scndry_analysis <- function(analysis_params_ls,
                                  args_ls = list(reference_1L_int = reference_1L_int))) %>%
     append(analysis_params_ls) %>%
     write_report(paths_ls = paths_ls,
-                 R_fl_nm_1L_chr = R_fl_nm_1L_chr,
-                 rprt_nm_1L_chr = "Suplry_Analysis_Rprt",
+                 rprt_nm_1L_chr = rprt_nm_1L_chr,
                  abstract_args_ls = NULL,
                  header_yaml_args_ls = header_yaml_args_ls,
                  rprt_lup = transform_rprt_lup(rprt_lup))
@@ -782,6 +856,70 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
         smry_of_sngl_predr_mdls_tb <- smry_of_sngl_predr_mdls_tb %>%
             dplyr::arrange(dplyr::desc(RsquaredP))
     return(smry_of_sngl_predr_mdls_tb)
+}
+write_study_outp_ds <- function(dv_ls,
+                                output_format_ls,
+                                path_params_ls,
+                                paths_ls,
+                                abstract_args_ls = NULL,
+                                dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.",
+                                inc_fl_types_chr = ".pdf",
+                                purge_data_1L_lgl = FALSE,
+                                reference_1L_int = NULL,
+                                rprt_lup = NULL,
+                                subtitle_1L_chr = NULL,
+                                use_fake_data_1L_lgl = F){
+  if(is.null(rprt_lup)){
+    data("rprt_lup", package = "TTU", envir = environment())
+    rprt_lup <- TTU::transform_rprt_lup(TTU::rprt_lup,
+                                       add_suplry_rprt_1L_lgl = F,
+                                       add_sharing_rprt_1L_lgl = T)
+  }
+  if(is.null(reference_1L_int)){
+    dv_ds_nm_and_url_chr <- dv_ls$primary_dv_chr
+    if(is.null(subtitle_1L_chr)){
+      subtitle_1L_chr <- "Methods Report 3: Sharing Program (Primary Analysis)"
+    }
+    transform_paths_ls <- NULL
+  }else{
+    dv_ds_nm_and_url_chr <- dv_ls %>% purrr::pluck(paste0("secondary_",reference_1L_int,"_dv_chr"))
+    if(is.null(subtitle_1L_chr)){
+    subtitle_1L_chr <- paste0("Methods Report ",
+                              3+3*reference_1L_int,
+                              ": Sharing Program (Secondary Analysis ",
+                              LETTERS[reference_1L_int],
+                              ")")
+    }
+    transform_paths_ls = list(fn = transform_paths_ls_for_scndry,
+                              args_ls = list(reference_1L_int = reference_1L_int,
+                                             remove_prmry_1L_lgl = T))
+    paths_ls <- paths_ls %>% TTU::transform_paths_ls_for_scndry()
+  }
+  params_ls <- list(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
+                    dv_mdl_desc_1L_chr = dv_mdl_desc_1L_chr,
+                    inc_fl_types_chr = inc_fl_types_chr,
+                    nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int,
+                    output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr,
+                    purge_data_1L_lgl = purge_data_1L_lgl,
+                    rprt_lup = rprt_lup,
+                    subtitle_1L_chr = subtitle_1L_chr,
+                    transform_paths_ls = transform_paths_ls,
+                    use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>%
+    append(path_params_ls[1:2])
+  params_ls %>%
+    TTU::write_report(paths_ls = paths_ls,
+                      rprt_nm_1L_chr = "Share_Outp_Rprt",
+                      abstract_args_ls = abstract_args_ls,
+                      header_yaml_args_ls = header_yaml_args_ls,
+                      rprt_lup = rprt_lup)
+  ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "Share_Outp_Rprt",
+                                                        title_chr = params_ls$subtitle_1L_chr),
+                                dv_nm_1L_chr = dv_ds_nm_and_url_chr[1],
+                                ds_url_1L_chr = dv_ds_nm_and_url_chr[2],
+                                parent_dv_dir_1L_chr = paths_ls$dv_dir_1L_chr,
+                                paths_to_dirs_chr = paths_ls$reports_dir_1L_chr,
+                                inc_fl_types_chr = params_ls$inc_fl_types_chr,
+                                paths_are_rltv_1L_lgl = F)
 }
 write_to_delete_ds_copies <- function(paths_ls){
   paths_to_outp_chr <- c(paste0(paths_ls$output_data_dir_1L_chr,"/I_ALL_OUTPUT_.RDS"))
