@@ -637,8 +637,8 @@ write_report <- function(params_ls,
                          rprt_lup = NULL){
   if(is.null(rprt_lup))
     data("rprt_lup", package = "TTU", envir = environment())
-  rprt_type_ls <- ready4show::rprt_lup %>%
-    make_rprt_type_ls(rprt_nm_1L_chr = rprt_nm_1L_chr)
+  rprt_type_ls <- rprt_lup %>%
+    ready4show::make_rprt_type_ls(rprt_nm_1L_chr = rprt_nm_1L_chr)
   here::i_am(paste0(paths_ls$path_from_top_level_1L_chr,
                     "/",
                     paths_ls$path_to_current_1L_chr,

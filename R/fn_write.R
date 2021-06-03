@@ -827,7 +827,7 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_
 #' @return NULL
 #' @rdname write_report
 #' @export 
-#' @importFrom ready4show rprt_lup write_rprt_from_tmpl
+#' @importFrom ready4show make_rprt_type_ls write_rprt_from_tmpl
 #' @importFrom here i_am here
 #' @importFrom rlang exec
 write_report <- function (params_ls, paths_ls, rprt_nm_1L_chr, abstract_args_ls = NULL, 
@@ -835,7 +835,7 @@ write_report <- function (params_ls, paths_ls, rprt_nm_1L_chr, abstract_args_ls 
 {
     if (is.null(rprt_lup)) 
         data("rprt_lup", package = "TTU", envir = environment())
-    rprt_type_ls <- ready4show::rprt_lup %>% make_rprt_type_ls(rprt_nm_1L_chr = rprt_nm_1L_chr)
+    rprt_type_ls <- rprt_lup %>% ready4show::make_rprt_type_ls(rprt_nm_1L_chr = rprt_nm_1L_chr)
     here::i_am(paste0(paths_ls$path_from_top_level_1L_chr, "/", 
         paths_ls$path_to_current_1L_chr, "/", paths_ls$R_fl_nm_1L_chr))
     args_ls <- list(rprt_type_ls = rprt_type_ls, params_ls = params_ls, 
