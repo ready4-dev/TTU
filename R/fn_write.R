@@ -927,7 +927,7 @@ write_scndry_analysis <- function (analysis_core_params_ls, candidate_covar_nms_
         transform_paths_ls = list(fn = transform_paths_ls_for_scndry, 
             args_ls = list(reference_1L_int = reference_1L_int))) %>% 
         append(analysis_params_ls) %>% write_report(paths_ls = paths_ls, 
-        rprt_nm_1L_chr = rprt_nm_1L_chr, abstract_args_ls = NULL, 
+        rprt_nm_1L_chr = rprt_nm_1L_chr, abstract_args_ls = abstract_args_ls, 
         header_yaml_args_ls = header_yaml_args_ls, rprt_lup = transform_rprt_lup(rprt_lup))
 }
 #' Write scndry analysis directory
@@ -1125,6 +1125,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @rdname write_study_outp_ds
 #' @export 
 #' @importFrom purrr pluck
+#' @importFrom rlang exec
 #' @importFrom ready4use write_fls_to_dv_ds
 #' @importFrom tibble tibble
 #' @keywords internal
@@ -1156,7 +1157,8 @@ write_study_outp_ds <- function (dv_ls, output_format_ls, path_params_ls, paths_
         transform_paths_ls = list(fn = transform_paths_ls_for_scndry, 
             args_ls = list(reference_1L_int = reference_1L_int, 
                 remove_prmry_1L_lgl = T))
-        paths_ls <- paths_ls %>% transform_paths_ls_for_scndry()
+        paths_ls <- rlang::exec(transform_paths_ls$fn, paths_ls, 
+            !!!transform_paths_ls$args_ls)
     }
     params_ls <- list(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr, 
         dv_mdl_desc_1L_chr = dv_mdl_desc_1L_chr, inc_fl_types_chr = inc_fl_types_chr, 

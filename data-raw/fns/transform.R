@@ -122,6 +122,11 @@ transform_paths_ls_for_scndry <- function(paths_ls,
   paths_ls$write_to_dir_nm_1L_chr <- paste0(paths_ls$write_to_dir_nm_1L_chr,
                                             "/secondary_",
                                             reference_1L_int)
+  paths_ls$reports_dir_1L_chr <- paste0(paths_ls$reports_dir_1L_chr %>%
+    stringr::str_sub(end = -(nchar(paths_ls$prmry_analysis_dir_nm_1L_chr)+10)),
+    "/",
+    paths_ls$write_to_dir_nm_1L_chr,
+    "/Reports")
   if(remove_prmry_1L_lgl)
     paths_ls <- paths_ls[names(paths_ls) != "prmry_analysis_dir_nm_1L_chr"]
   return(paths_ls)

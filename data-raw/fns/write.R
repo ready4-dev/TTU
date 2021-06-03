@@ -735,7 +735,7 @@ write_scndry_analysis <- function(analysis_core_params_ls,
     append(analysis_params_ls) %>%
     write_report(paths_ls = paths_ls,
                  rprt_nm_1L_chr = rprt_nm_1L_chr,
-                 abstract_args_ls = NULL,
+                 abstract_args_ls = abstract_args_ls,
                  header_yaml_args_ls = header_yaml_args_ls,
                  rprt_lup = transform_rprt_lup(rprt_lup))
 }
@@ -893,7 +893,7 @@ write_study_outp_ds <- function(dv_ls,
     transform_paths_ls = list(fn = transform_paths_ls_for_scndry,
                               args_ls = list(reference_1L_int = reference_1L_int,
                                              remove_prmry_1L_lgl = T))
-    paths_ls <- paths_ls %>% transform_paths_ls_for_scndry()
+    paths_ls <- rlang::exec(transform_paths_ls$fn, paths_ls, !!!transform_paths_ls$args_ls)
   }
   params_ls <- list(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
                     dv_mdl_desc_1L_chr = dv_mdl_desc_1L_chr,

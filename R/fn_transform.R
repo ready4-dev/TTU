@@ -193,12 +193,15 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
 #' @return Paths (a list)
 #' @rdname transform_paths_ls_for_scndry
 #' @export 
-
+#' @importFrom stringr str_sub
 transform_paths_ls_for_scndry <- function (paths_ls, reference_1L_int = 1, remove_prmry_1L_lgl = F) 
 {
     paths_ls$prmry_analysis_dir_nm_1L_chr <- paths_ls$write_to_dir_nm_1L_chr
     paths_ls$write_to_dir_nm_1L_chr <- paste0(paths_ls$write_to_dir_nm_1L_chr, 
         "/secondary_", reference_1L_int)
+    paths_ls$reports_dir_1L_chr <- paste0(paths_ls$reports_dir_1L_chr %>% 
+        stringr::str_sub(end = -(nchar(paths_ls$prmry_analysis_dir_nm_1L_chr) + 
+            10)), "/", paths_ls$write_to_dir_nm_1L_chr, "/Reports")
     if (remove_prmry_1L_lgl) 
         paths_ls <- paths_ls[names(paths_ls) != "prmry_analysis_dir_nm_1L_chr"]
     return(paths_ls)

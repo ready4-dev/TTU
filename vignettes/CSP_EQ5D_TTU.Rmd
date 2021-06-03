@@ -228,71 +228,17 @@ TTU::write_mdl_smry_rprt(header_yaml_args_ls,
                     path_params_ls = path_params_ls,
                     use_fake_data_1L_lgl = use_fake_data_1L_lgl,
                     output_format_ls = output_format_ls)
-# TTU::write_rprt_with_rcrd(path_to_outp_fl_1L_chr = paste0(paths_ls$output_data_dir_1L_chr,"/I_ALL_OUTPUT_.RDS"), 
-#                      paths_ls = paths_ls,
-#                      header_yaml_args_ls = header_yaml_args_ls,
-#                      use_fake_data_1L_lgl = use_fake_data_1L_lgl,
-#                      subtitle_1L_chr = "Results Report 1: TTU Models (Primary Analysis)",
-#                      rprt_subtitle_1L_chr = "Methods Report 2: Reporting Program (Primary Analysis).",
-#                      rprt_nm_1L_chr = "TS_TTU_Mdls_Smry",
-#                      rcrd_nm_1L_chr = "Write_Rprt_Rcrd",
-#                      output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr,
-#                      rprt_output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr,
-#                      nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int,
-#                      abstract_args_ls = NULL,
-#                      rcrd_rprt_append_ls = path_params_ls[1:2])
 ```
 
 ## Share (de-confidentialised) results
 
 ```{r echo = TRUE }
-  here::i_am(paste0(paths_ls$path_from_top_level_1L_chr,
-                    "/",
-                    paths_ls$path_to_current_1L_chr,
-                    "/",
-                    paths_ls$R_fl_nm_1L_chr
-  ))
-  args_ls <- list(rprt_type_ls = rprt_type_ls,
-                  params_ls = params_ls,
-                  output_type_1L_chr = params_ls$output_type_1L_chr,
-                  path_to_prjs_dir_1L_chr = here::here(paths_ls$path_from_top_level_1L_chr),
-                  prj_dir_1L_chr = paths_ls$write_to_dir_nm_1L_chr,
-                  header_yaml_args_ls = header_yaml_args_ls,
-                  abstract_args_ls = abstract_args_ls,
-                  reports_dir_1L_chr = "Reports",
-                  rltv_path_to_data_dir_1L_chr = "../Output",
-                  nm_of_mkdn_dir_1L_chr = "Markdown")
 if(!is.null(dv_ls)){
   TTU::write_study_outp_ds(dv_ls,
                            output_format_ls = output_format_ls,
                            path_params_ls = path_params_ls,
                            paths_ls = paths_ls,
                            use_fake_data_1L_lgl = use_fake_data_1L_lgl)
-  # params_ls <- list(dv_ds_nm_and_url_chr = dv_ls$primary_dv_chr,
-  #                   dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.",
-  #                   inc_fl_types_chr = ".pdf",
-  #                   nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int,
-  #                   output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr,
-  #                   purge_data_1L_lgl = FALSE,
-  #                   subtitle_1L_chr = "Methods Report 3: Sharing Program (Primary Analysis)",
-  #                   use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>%
-  #   append(path_params_ls[1:2])
-  # params_ls %>%
-  #   TTU::write_report(paths_ls = paths_ls,
-  #                     rprt_nm_1L_chr = "Share_Outp_Rprt",
-  #                     abstract_args_ls = NULL,
-  #                     header_yaml_args_ls = header_yaml_args_ls,
-  #                     rprt_lup = TTU::transform_rprt_lup(TTU::rprt_lup, 
-  #                                                        add_suplry_rprt_1L_lgl = F,
-  #                                                        add_sharing_rprt_1L_lgl = T))
-  # ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "Share_Outp_Rprt",
-  #                                                       title_chr = params_ls$subtitle_1L_chr),
-  #                               dv_nm_1L_chr = dv_ls$primary_dv_chr[1],
-  #                               ds_url_1L_chr = dv_ls$primary_dv_chr[2],
-  #                               parent_dv_dir_1L_chr = paths_ls$dv_dir_1L_chr,
-  #                               paths_to_dirs_chr = paths_ls$reports_dir_1L_chr,
-  #                               inc_fl_types_chr = params_ls$inc_fl_types_chr,
-  #                               paths_are_rltv_1L_lgl = F)
 }
 ```
 
@@ -300,49 +246,49 @@ if(!is.null(dv_ls)){
 # Render Scientific Summary
 
 ```{r echo = TRUE }
-if(!use_fake_data_1L_lgl){
-  var_nm_change_lup <- tibble::tibble(old_nms_chr = c("PHQ9","GAD7"),
-                                      new_nms_chr = c("PHQ-9", "GAD-7"))
-study_descs_ls <- TTU::make_study_descs_ls(health_utl_nm_1L_chr = "AQol-6D",
-                                           time_btwn_bl_and_fup_1L_chr = "three months",
-                                           predr_ctgs_ls = list(`psychological distress` = c("K6"),
-                                                                depression =  c("BADS","PHQ9"),
-                                                                anxiety =  c("GAD7","OASIS","SCARED")))
-spine_of_results_ls <- TTU::make_results_ls_spine(output_data_dir_1L_chr = paths_ls$output_data_dir_1L_chr,
-                                                  var_nm_change_lup = var_nm_change_lup,
-                                                  study_descs_ls = study_descs_ls,
-                                                  nbr_of_digits_1L_int = output_format_ls$manuscript_digits_1L_int)
-cs_ts_ratios_tb = tibble::tibble(predr_nm_chr = c("K6","depression measurements", "anxiety measurements"),
-                                 ratios_chr = c(paste0("about ",
-                                                       round(spine_of_results_ls$mdl_coef_ratios_ls$`psychological distress`,2)),
-                                                paste0(round(mean(spine_of_results_ls$mdl_coef_ratios_ls$depression),2)),
-                                                paste0(round(min(spine_of_results_ls$mdl_coef_ratios_ls$anxiety),2)," or over")
-                                 ))
-ctgl_vars_regrouping_ls = list('Primary Diagnosis' = list(anxdpr = list(name_1L_chr = "anxiety/depression",
-                                                                          ctgs_chr = c("Anxiety", "Depression", "Depression and Anxiety"))),
-                                 'Clinical Stage' = list(early = list(name_1L_chr = "early (prior to first episode of a serious mental disorder) clinical stages",
-                                                                      ctgs_chr = c("0-1a","1b"))))
-sig_covars_some_predrs_mdls_tb = tibble::tibble(covars_ls = list(c("No other confounding factor"),
-                                                                                  c("sex at birth"),
-                                                                                                     c("primary diagnosis", "clinical staging","age")),
-                                                                 predrs_mdls_ls = list(c("PHQ-9"), c("K6"),c("anxiety and depression measurements other than PHQ-9")),
-                                                                 sig_thresh_dbl = c(NA_real_,0.01,NA_real_),
-                                                                 assn_strgth_chr = c(NA_character_,NA_character_,"weakly"))
-results_ls <- TTU::make_results_ls(spine_of_results_ls,
-                                   cs_ts_ratios_tb = cs_ts_ratios_tb,
-                                   ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls,
-                                   sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb,
-                                   sig_thresh_covars_1L_chr = "0.005")
-saveRDS(results_ls,paste0(paths_ls$output_data_dir_1L_chr,"/results_ls.RDS"))
-  rmarkdown::render("AQoL_VIH/AQoL_VIH.Rmd",
-                    output_format = NULL,
-                    params = list(figures_in_body_lgl = F,
-                                  output_type_1L_chr = "Word",
-                                  results_ls = results_ls,
-                                  tables_in_body_lgl = F),
-                    output_file = paste0("AQoL_VIH", ".docx"),
-                    output_dir = paths_ls$reports_dir_1L_chr)
-}
+# if(!use_fake_data_1L_lgl){
+#   var_nm_change_lup <- tibble::tibble(old_nms_chr = c("PHQ9","GAD7"),
+#                                       new_nms_chr = c("PHQ-9", "GAD-7"))
+# study_descs_ls <- TTU::make_study_descs_ls(health_utl_nm_1L_chr = "AQol-6D",
+#                                            time_btwn_bl_and_fup_1L_chr = "three months",
+#                                            predr_ctgs_ls = list(`psychological distress` = c("K6"),
+#                                                                 depression =  c("BADS","PHQ9"),
+#                                                                 anxiety =  c("GAD7","OASIS","SCARED")))
+# spine_of_results_ls <- TTU::make_results_ls_spine(output_data_dir_1L_chr = paths_ls$output_data_dir_1L_chr,
+#                                                   var_nm_change_lup = var_nm_change_lup,
+#                                                   study_descs_ls = study_descs_ls,
+#                                                   nbr_of_digits_1L_int = output_format_ls$manuscript_digits_1L_int)
+# cs_ts_ratios_tb = tibble::tibble(predr_nm_chr = c("K6","depression measurements", "anxiety measurements"),
+#                                  ratios_chr = c(paste0("about ",
+#                                                        round(spine_of_results_ls$mdl_coef_ratios_ls$`psychological distress`,2)),
+#                                                 paste0(round(mean(spine_of_results_ls$mdl_coef_ratios_ls$depression),2)),
+#                                                 paste0(round(min(spine_of_results_ls$mdl_coef_ratios_ls$anxiety),2)," or over")
+#                                  ))
+# ctgl_vars_regrouping_ls = list('Primary Diagnosis' = list(anxdpr = list(name_1L_chr = "anxiety/depression",
+#                                                                           ctgs_chr = c("Anxiety", "Depression", "Depression and Anxiety"))),
+#                                  'Clinical Stage' = list(early = list(name_1L_chr = "early (prior to first episode of a serious mental disorder) clinical stages",
+#                                                                       ctgs_chr = c("0-1a","1b"))))
+# sig_covars_some_predrs_mdls_tb = tibble::tibble(covars_ls = list(c("No other confounding factor"),
+#                                                                                   c("sex at birth"),
+#                                                                                                      c("primary diagnosis", "clinical staging","age")),
+#                                                                  predrs_mdls_ls = list(c("PHQ-9"), c("K6"),c("anxiety and depression measurements other than PHQ-9")),
+#                                                                  sig_thresh_dbl = c(NA_real_,0.01,NA_real_),
+#                                                                  assn_strgth_chr = c(NA_character_,NA_character_,"weakly"))
+# results_ls <- TTU::make_results_ls(spine_of_results_ls,
+#                                    cs_ts_ratios_tb = cs_ts_ratios_tb,
+#                                    ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls,
+#                                    sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb,
+#                                    sig_thresh_covars_1L_chr = "0.005")
+# saveRDS(results_ls,paste0(paths_ls$output_data_dir_1L_chr,"/results_ls.RDS"))
+#   rmarkdown::render("AQoL_VIH/AQoL_VIH.Rmd",
+#                     output_format = NULL,
+#                     params = list(figures_in_body_lgl = F,
+#                                   output_type_1L_chr = "Word",
+#                                   results_ls = results_ls,
+#                                   tables_in_body_lgl = F),
+#                     output_file = paste0("AQoL_VIH", ".docx"),
+#                     output_dir = paths_ls$reports_dir_1L_chr)
+# }
 ```
 
 # Purge dataset copies
