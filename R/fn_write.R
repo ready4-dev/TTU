@@ -389,7 +389,6 @@ write_mdl_smry_rprt <- function (header_yaml_args_ls, paths_ls, path_params_ls, 
             subtitle_1L_chr <- "Results Report 1: TTU Models (Primary Analysis)"
         if (is.null(rprt_subtitle_1L_chr)) 
             rprt_subtitle_1L_chr <- "Methods Report 2: Reporting Program (Primary Analysis)."
-        rcrd_rprt_append_ls <- NULL
         main_rprt_append_ls <- NULL
     }
     else {
@@ -404,7 +403,6 @@ write_mdl_smry_rprt <- function (header_yaml_args_ls, paths_ls, path_params_ls, 
             rprt_subtitle_1L_chr <- paste0("Methods Report ", 
                 2 + reference_1L_int * 3, ": Reporting Program (Secondary Analysis ", 
                 LETTERS[reference_1L_int], ").")
-        rcrd_rprt_append_ls <- path_params_ls[1:2]
         main_rprt_append_ls <- list(existing_predrs_ls = readRDS(paste0(paths_ls$output_data_dir_1L_chr, 
             "/I_ALL_OUTPUT_.RDS")) %>% purrr::pluck("predr_vars_nms_ls"))
         paths_ls <- transform_paths_ls_for_scndry(paths_ls, reference_1L_int = reference_1L_int)
@@ -417,8 +415,7 @@ write_mdl_smry_rprt <- function (header_yaml_args_ls, paths_ls, path_params_ls, 
         rprt_output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr, 
         nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int, 
         abstract_args_ls = abstract_args_ls, rcrd_rprt_append_ls = path_params_ls[1:2], 
-        rprt_lup = rprt_lup, rcrd_rprt_append_ls = rcrd_rprt_append_ls, 
-        main_rprt_append_ls = main_rprt_append_ls)
+        rprt_lup = rprt_lup, main_rprt_append_ls = main_rprt_append_ls)
 }
 #' Write model type covariates models
 #' @description write_mdl_type_covars_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type covariates models. The function returns Summary of models with covariates (a tibble).
@@ -830,7 +827,7 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_
 #' @return NULL
 #' @rdname write_report
 #' @export 
-#' @importFrom ready4show make_rprt_type_ls write_rprt_from_tmpl
+#' @importFrom ready4show rprt_lup write_rprt_from_tmpl
 #' @importFrom here i_am here
 #' @importFrom rlang exec
 write_report <- function (params_ls, paths_ls, rprt_nm_1L_chr, abstract_args_ls = NULL, 
@@ -838,7 +835,7 @@ write_report <- function (params_ls, paths_ls, rprt_nm_1L_chr, abstract_args_ls 
 {
     if (is.null(rprt_lup)) 
         data("rprt_lup", package = "TTU", envir = environment())
-    rprt_type_ls <- rprt_lup %>% ready4show::make_rprt_type_ls(rprt_nm_1L_chr = rprt_nm_1L_chr)
+    rprt_type_ls <- ready4show::rprt_lup %>% make_rprt_type_ls(rprt_nm_1L_chr = rprt_nm_1L_chr)
     here::i_am(paste0(paths_ls$path_from_top_level_1L_chr, "/", 
         paths_ls$path_to_current_1L_chr, "/", paths_ls$R_fl_nm_1L_chr))
     args_ls <- list(rprt_type_ls = rprt_type_ls, params_ls = params_ls, 

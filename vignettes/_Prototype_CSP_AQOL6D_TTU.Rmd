@@ -203,7 +203,7 @@ dv_ls <- list(primary_dv_chr = c("fakes","https://doi.org/10.7910/DVN/612HDC"))
 
 ## Consolidate required parameters
 ```{r}
-prmry_analysis_params_ls <- make_prmry_analysis_params_ls(analysis_core_params_ls,
+prmry_analysis_params_ls <- TTU::make_prmry_analysis_params_ls(analysis_core_params_ls,
                                                           candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
                                                           ds_tb = ds_tb, 
                                                           path_params_ls = path_params_ls,
@@ -248,9 +248,9 @@ TTU::write_mdl_smry_rprt(header_yaml_args_ls,
 ```{r echo = TRUE }
 if(!is.null(dv_ls)){
   TTU::write_study_outp_ds(dv_ls,
-                      output_format_ls = output_format_ls,
-                      path_params_ls = path_params_ls,
-                      paths_ls = paths_ls)
+                           output_format_ls = output_format_ls,
+                           path_params_ls = path_params_ls,
+                           paths_ls = paths_ls)
   # params_ls <- list(dv_ds_nm_and_url_chr = dv_ls$primary_dv_chr,
   #                   dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.",
   #                   inc_fl_types_chr = ".pdf",

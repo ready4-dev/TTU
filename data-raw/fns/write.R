@@ -326,7 +326,7 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
       subtitle_1L_chr <- "Results Report 1: TTU Models (Primary Analysis)"
     if(is.null(rprt_subtitle_1L_chr))
       rprt_subtitle_1L_chr <- "Methods Report 2: Reporting Program (Primary Analysis)."
-    rcrd_rprt_append_ls <- NULL
+    #rcrd_rprt_append_ls <- NULL
     main_rprt_append_ls <- NULL
   }else{
     path_to_outp_fl_1L_chr <- here::here(paths_ls$path_from_top_level_1L_chr,
@@ -346,7 +346,7 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                                      ": Reporting Program (Secondary Analysis ",
                                      LETTERS[reference_1L_int],
                                      ").")
-    rcrd_rprt_append_ls <- path_params_ls[1:2]
+    #rcrd_rprt_append_ls <- path_params_ls[1:2]
     main_rprt_append_ls <- list(existing_predrs_ls = readRDS(paste0(paths_ls$output_data_dir_1L_chr,
                                                                    "/I_ALL_OUTPUT_.RDS")) %>%
                                  purrr::pluck("predr_vars_nms_ls"))
@@ -367,7 +367,7 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                        abstract_args_ls = abstract_args_ls,
                        rcrd_rprt_append_ls = path_params_ls[1:2],
                        rprt_lup = rprt_lup,
-                       rcrd_rprt_append_ls = rcrd_rprt_append_ls,
+                       #rcrd_rprt_append_ls = rcrd_rprt_append_ls,
                        main_rprt_append_ls = main_rprt_append_ls)
 }
 write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predrs_var_nms_chr,
@@ -637,8 +637,8 @@ write_report <- function(params_ls,
                          rprt_lup = NULL){
   if(is.null(rprt_lup))
     data("rprt_lup", package = "TTU", envir = environment())
-  rprt_type_ls <- rprt_lup %>%
-    ready4show::make_rprt_type_ls(rprt_nm_1L_chr = rprt_nm_1L_chr)
+  rprt_type_ls <- ready4show::rprt_lup %>%
+    make_rprt_type_ls(rprt_nm_1L_chr = rprt_nm_1L_chr)
   here::i_am(paste0(paths_ls$path_from_top_level_1L_chr,
                     "/",
                     paths_ls$path_to_current_1L_chr,
@@ -908,10 +908,10 @@ write_study_outp_ds <- function(dv_ls,
     append(path_params_ls[1:2])
   params_ls %>%
     write_report(paths_ls = paths_ls,
-                      rprt_nm_1L_chr = "Share_Outp_Rprt",
-                      abstract_args_ls = abstract_args_ls,
-                      header_yaml_args_ls = header_yaml_args_ls,
-                      rprt_lup = rprt_lup)
+                 rprt_nm_1L_chr = "Share_Outp_Rprt",
+                 abstract_args_ls = abstract_args_ls,
+                 header_yaml_args_ls = header_yaml_args_ls,
+                 rprt_lup = rprt_lup)
   ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "Share_Outp_Rprt",
                                                         title_chr = params_ls$subtitle_1L_chr),
                                 dv_nm_1L_chr = dv_ds_nm_and_url_chr[1],
