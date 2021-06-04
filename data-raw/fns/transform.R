@@ -115,6 +115,88 @@ transform_mdl_vars_with_clss <- function(ds_tb,
                              })
   return(tfd_ds_tb)
 }
+transform_params_ls_to_valid <- function(params_ls,
+                                         scndry_analysis_extra_vars_chr = NA_character_){
+  target_var_nms_chr <- c(params_ls$ds_descvs_ls$candidate_predrs_chr,
+                          params_ls$candidate_covar_nms_chr,
+                          scndry_analysis_extra_vars_chr) %>%
+    purrr::discard(is.na) %>%
+    unique()
+  valid_var_nms_chr <- target_var_nms_chr %>%
+    stringi::stri_replace_last_fixed("_dbl","") %>%
+    stringi::stri_replace_last_fixed("_int","") %>%
+    stringi::stri_replace_all_fixed("_","")
+  unchanged_var_nms_chr <- setdiff(params_ls$ds_descvs_ls$dictionary_tb$var_nm_chr,
+                                   target_var_nms_chr)
+  rename_lup <- tibble::tibble(old_nms_chr = c(unchanged_var_nms_chr,target_var_nms_chr),
+                               new_nms_chr = make.unique(c(unchanged_var_nms_chr,
+                                                           valid_var_nms_chr), sep="V")) %>%
+    dplyr::filter(!old_nms_chr %in% unchanged_var_nms_chr)
+  params_ls$ds_tb <- dplyr::rename_with(params_ls$ds_tb,
+                                        .cols = target_var_nms_chr,
+                                        ~ ready4fun::get_from_lup_obj(rename_lup,
+                                                                      match_value_xx = .x,
+                                                                      match_var_nm_1L_chr = "old_nms_chr",
+                                                                      target_var_nm_1L_chr = "new_nms_chr",
+                                                                      evaluate_lgl = F))
+  var_lbl_1L_chr <- Hmisc::label(params_ls$ds_descvs_ls$dictionary_tb$var_nm_chr)
+  params_ls$ds_descvs_ls$dictionary_tb <- params_ls$ds_descvs_ls$dictionary_tb %>%
+    dplyr::mutate(var_nm_chr = var_nm_chr %>%
+                    purrr::map_chr(~ifelse(.x %in% rename_lup$old_nms_chr,
+                                           ready4fun::get_from_lup_obj(rename_lup,
+                                                                       match_value_xx = .x,
+                                                                       match_var_nm_1L_chr = "old_nms_chr",
+                                                                       target_var_nm_1L_chr = "new_nms_chr",
+                                                                       evaluate_lgl = F),
+                                           .x)))
+  Hmisc::label(params_ls$ds_descvs_ls$dictionary_tb[["var_nm_chr"]]) <- var_lbl_1L_chr#
+  valid_params_ls_ls <- list(params_ls = params_ls %>%
+                               transform_params_ls_from_lup(rename_lup = rename_lup),
+                             rename_lup = rename_lup)
+  return(valid_params_ls_ls)
+}
+transform_params_ls_from_lup <- function(params_ls,
+                                         rename_lup){
+  if(!is.null(params_ls$ds_descvs_ls)){
+    params_ls$ds_descvs_ls$candidate_predrs_chr <- params_ls$ds_descvs_ls$candidate_predrs_chr %>%
+      purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup,
+                                                  match_value_xx = .x,
+                                                  match_var_nm_1L_chr = "old_nms_chr",
+                                                  target_var_nm_1L_chr = "new_nms_chr",
+                                                  evaluate_lgl = F))
+  }
+  if(!is.null(params_ls$predictors_lup)){
+    params_ls$predictors_lup$short_name_chr <-  params_ls$predictors_lup$short_name_chr %>%
+      purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup,
+                                                  match_value_xx = .x,
+                                                  match_var_nm_1L_chr = "old_nms_chr",
+                                                  target_var_nm_1L_chr = "new_nms_chr",
+                                                  evaluate_lgl = F))
+  }
+  params_ls$candidate_covar_nms_chr <- params_ls$candidate_covar_nms_chr %>%
+    purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup,
+                                                match_value_xx = .x,
+                                                match_var_nm_1L_chr = "old_nms_chr",
+                                                target_var_nm_1L_chr = "new_nms_chr",
+                                                evaluate_lgl = F))
+  if(!is.na(params_ls$prefd_covars_chr)){
+    params_ls$prefd_covars_chr <- params_ls$prefd_covars_chr %>%
+      purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup,
+                                                  match_value_xx = .x,
+                                                  match_var_nm_1L_chr = "old_nms_chr",
+                                                  target_var_nm_1L_chr = "new_nms_chr",
+                                                  evaluate_lgl = F))
+  }
+  if(!is.null(params_ls$candidate_predrs_chr)){
+    params_ls$candidate_predrs_chr <- params_ls$candidate_predrs_chr %>%
+      purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup,
+                                                  match_value_xx = .x,
+                                                  match_var_nm_1L_chr = "old_nms_chr",
+                                                  target_var_nm_1L_chr = "new_nms_chr",
+                                                  evaluate_lgl = F))
+  }
+  return(params_ls)
+}
 transform_paths_ls_for_scndry <- function(paths_ls,
                                           reference_1L_int = 1,
                                           remove_prmry_1L_lgl = F){

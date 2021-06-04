@@ -307,7 +307,6 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
         width_1L_dbl = ..4[2]))
 }
 write_mdl_smry_rprt <- function(header_yaml_args_ls,
-                                paths_ls,
                                 path_params_ls,
                                 use_fake_data_1L_lgl = FALSE,
                                 output_format_ls,
@@ -318,6 +317,7 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                                 rprt_nm_1L_chr = "TS_TTU_Mdls_Smry",
                                 rprt_subtitle_1L_chr = NULL,
                                 subtitle_1L_chr = NULL){
+  paths_ls <- path_params_ls$paths_ls
   if(is.null(rprt_lup))
     data("rprt_lup", package = "TTU", envir = environment())
   if(is.null(reference_1L_int)){
@@ -661,7 +661,7 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                                  paths_ls,
                                  header_yaml_args_ls = NULL,
                                  rprt_lup = NULL,
-                                 use_fake_data_1L_lgl,
+                                 use_fake_data_1L_lgl = F,
                                  subtitle_1L_chr = "Results Supplementary Report 1: Catalogue of time series models",
                                  rprt_subtitle_1L_chr = "Methods Supplementary Report 2: Record of auto-generation of model catalogue.",
                                  rprt_nm_1L_chr = "TS_TTU_Mdls_Smry",
@@ -713,7 +713,8 @@ write_scndry_analysis <- function(analysis_core_params_ls,
                                   subtitle_1L_chr = NULL,
                                   rprt_lup = NULL,
                                   rprt_nm_1L_chr = "Suplry_Analysis_Rprt",
-                                  abstract_args_ls = NULL) {
+                                  abstract_args_ls = NULL,
+                                  rename_lup = NULL) {
   analysis_params_ls <- analysis_core_params_ls %>%
     append(path_params_ls[1:2])
   if(is.null(rprt_lup))
@@ -726,13 +727,18 @@ write_scndry_analysis <- function(analysis_core_params_ls,
                               "))")
   paths_ls <- write_scndry_analysis_dir(paths_ls,
                                         reference_1L_int = reference_1L_int)
-  list(candidate_covar_nms_chr = candidate_covar_nms_chr,
+  params_ls <- list(candidate_covar_nms_chr = candidate_covar_nms_chr,
        candidate_predrs_chr = candidate_predrs_chr,
        prefd_covars_chr = prefd_covars_chr,
        subtitle_1L_chr = subtitle_1L_chr,
        transform_paths_ls = list(fn = transform_paths_ls_for_scndry,
                                  args_ls = list(reference_1L_int = reference_1L_int))) %>%
-    append(analysis_params_ls) %>%
+    append(analysis_params_ls)
+  if(!is.null(rename_lup)){
+    params_ls <- params_ls %>%
+      transform_params_ls_from_lup(rename_lup = rename_lup)
+  }
+  params_ls %>%
     write_report(paths_ls = paths_ls,
                  rprt_nm_1L_chr = rprt_nm_1L_chr,
                  abstract_args_ls = abstract_args_ls,
@@ -860,7 +866,6 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 write_study_outp_ds <- function(dv_ls,
                                 output_format_ls,
                                 path_params_ls,
-                                paths_ls,
                                 abstract_args_ls = NULL,
                                 dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.",
                                 inc_fl_types_chr = ".pdf",
@@ -869,6 +874,7 @@ write_study_outp_ds <- function(dv_ls,
                                 rprt_lup = NULL,
                                 subtitle_1L_chr = NULL,
                                 use_fake_data_1L_lgl = F){
+  paths_ls <- path_params_ls$paths_ls
   if(is.null(rprt_lup)){
     data("rprt_lup", package = "TTU", envir = environment())
     rprt_lup <- transform_rprt_lup(rprt_lup,

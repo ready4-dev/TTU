@@ -15,52 +15,7 @@ library(magrittr)
 
 # Input parameters
 
-## Bibliograhic data
-We begin by specifying the authorship data we wish to attach to all reports that we generate.
-
-```{r }
-authors_tb <- ready4show::authors_tb
-```
-```{r authorsds, eval = knitr::is_html_output(), results='asis'}
-authors_tb %>%
-  ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Authors table",
-                          mkdn_tbl_ref_1L_chr = "tab:authorsds")
-```
-```{r}
-institutes_tb <- ready4show::institutes_tb
-```
-```{r institutesds, eval = knitr::is_html_output(), results='asis'}
-institutes_tb %>%
-  ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Author institutions table",
-                          mkdn_tbl_ref_1L_chr = "tab:institutesds")
-```
-
-We combine the data about authors with other bibliographic information.
-
-```{r}
-header_yaml_args_ls <- TTU::make_header_yaml_args_ls(authors_tb = authors_tb,
-                                                     institutes_tb = institutes_tb,
-                                                     title_1L_chr = "A hypothetical study using fake data for instructional purposes only",
-                                                     keywords_chr = c("this","is","a","replication","using","fake","data","do", "not","cite"))
-```
-
-## Report formatting
-We add parameters relating to the desired output format of the reports we will be producing.
-
-```{r }
-output_format_ls <- TTU::make_output_format_ls(manuscript_outp_1L_chr = "Word",
-                                               manuscript_digits_1L_int = 2L,
-                                               supplementary_outp_1L_chr = "PDF",
-                                               supplementary_digits_1L_int = 2L)
-```
-
-## Relative paths
-We next create an object that specifies the relative locations of the input data and the intended destination for analysis outputs and reports. The default settings of the `make_path_params_ls` function will write all output into a new directory, created one level up from the current working directory.
-
-```{r}
-path_params_ls <- TTU::make_path_params_ls("fake_data.rds")
+```{, child=c('_Reporting_Params.Rmd')}
 ```
 
 ## Dataset
@@ -68,8 +23,7 @@ As this is an illustrative example, we first must create a fake dataset (if usin
 
 ```{r message=FALSE}
 ds_tb <- youthvars::replication_popl_tb %>% 
-            youthvars::transform_raw_ds_for_analysis() %>%
-            dplyr::select(-BADS,-GAD7, -OASIS,-SCARED)
+            youthvars::transform_raw_ds_for_analysis() 
 ```
 ```{r inputds, eval = knitr::is_html_output(), results='asis'}
 ds_tb %>%
@@ -77,6 +31,12 @@ ds_tb %>%
   ready4show::print_table(output_type_1L_chr = "HTML",
                           caption_1L_chr = "Input dataset",
                           mkdn_tbl_ref_1L_chr = "tab:inputds")
+```
+
+We note our use of synthetic data by creating an object `use_fake_data_1L_lgl` and setting it to `TRUE`. For real world application - set this variable to `FALSE`.
+
+```{r }
+use_fake_data_1L_lgl <-  TRUE
 ```
 
 A data dictionary must also be supplied for the dataset. The dictionary must be of class `ready4_dictionary` from the `ready4use` package.
@@ -89,12 +49,6 @@ dictionary_tb %>%
   ready4show::print_table(output_type_1L_chr = "HTML",
                           caption_1L_chr = "Data dictionary",
                           mkdn_tbl_ref_1L_chr = "tab:dictionary")
-```
-
-We note our use of synthetic data by creating an object `use_fake_data_1L_lgl` and setting it to `TRUE`. For real world application - set this variable to `FALSE`.
-
-```{r }
-use_fake_data_1L_lgl <-  TRUE
 ```
 
 We describe the features of our dataset that are most relevant to the analyses we are planning to undertake. Note all, Multi-Attribute Utility Instrument (MAUI) question variables must start with a common prefix, which needs to be passed to the `maui_item_pfx_1L_chr` argument. The dataset does not need to include variables for total health utility scores (weighted and unweighted), as these variables will be computed during the analysis. However, you can supply the names you wish assigned to these variables once they are computed using the `utl_wtd_var_nm_1L_chr` and `utl_unwtd_var_nm_1L_chr` arguments.
@@ -168,7 +122,12 @@ analysis_core_params_ls <- TTU::make_analysis_core_params_ls(ds_descvs_ls = ds_d
                                                              use_fake_data_1L_lgl = use_fake_data_1L_lgl)
 ```
 
-## Reporting details
+## Path parameters
+We next create an object that specifies the relative locations of the input data and the intended destination for analysis outputs and reports. The default settings of the `make_path_params_ls` function will write all output into a new directory, created one level up from the current working directory.
+
+```{r}
+path_params_ls <- TTU::make_path_params_ls("fake_data.rds")
+```
 
 ```{r echo = TRUE }
 paths_ls <- TTU::write_main_oupt_dir(path_params_ls, 
@@ -188,7 +147,7 @@ dv_ls <- list(primary_dv_chr = c("firstbounce","https://doi.org/10.7910/DVN/JC6P
 
 ## Consolidate required parameters
 ```{r}
-prmry_analysis_params_ls <- TTU::make_prmry_analysis_params_ls(analysis_core_params_ls,
+valid_params_ls_ls <- TTU::make_valid_params_ls_ls(analysis_core_params_ls,
                                                           candidate_covar_nms_chr = c("d_age", "SOFAS", "c_p_diag_s", "c_clinical_staging_s", "d_relation_s", "d_studying_working"),
                                                           ds_tb = ds_tb, 
                                                           path_params_ls = path_params_ls,
@@ -199,7 +158,7 @@ prmry_analysis_params_ls <- TTU::make_prmry_analysis_params_ls(analysis_core_par
 ## Run analysis
 
 ```{r echo = TRUE }
-TTU::write_report(params_ls = prmry_analysis_params_ls,
+TTU::write_report(params_ls = valid_params_ls_ls$params_ls,
                   paths_ls = paths_ls,
                   rprt_nm_1L_chr = "Main_Analysis_Rprt",
                   abstract_args_ls = NULL,
@@ -210,7 +169,6 @@ TTU::write_report(params_ls = prmry_analysis_params_ls,
 
 ```{r echo = TRUE }
 TTU::write_mdl_smry_rprt(header_yaml_args_ls,
-                    paths_ls = paths_ls,
                     path_params_ls = path_params_ls,
                     use_fake_data_1L_lgl = use_fake_data_1L_lgl,
                     output_format_ls = output_format_ls)
@@ -222,8 +180,7 @@ TTU::write_mdl_smry_rprt(header_yaml_args_ls,
 if(!is.null(dv_ls)){
   TTU::write_study_outp_ds(dv_ls,
                            output_format_ls = output_format_ls,
-                           path_params_ls = path_params_ls,
-                           paths_ls = paths_ls)
+                           path_params_ls = path_params_ls)
 }
 ```
 
@@ -253,14 +210,14 @@ TTU::write_scndry_analysis(analysis_core_params_ls = analysis_core_params_ls,
                            path_params_ls = path_params_ls,
                            paths_ls = paths_ls,
                            prefd_covars_chr = NULL,
-                           reference_1L_int = 1)
+                           reference_1L_int = 1,
+                           rename_lup = valid_params_ls_ls$rename_lup)
 ```
 
 ## Report results
 
 ```{r echo = TRUE }
 TTU::write_mdl_smry_rprt(header_yaml_args_ls,
-                         paths_ls = paths_ls,
                          path_params_ls = path_params_ls,
                          use_fake_data_1L_lgl = use_fake_data_1L_lgl,
                          output_format_ls = output_format_ls,
@@ -275,7 +232,6 @@ if(!is.null(dv_ls$secondary_2_dv_chr)){
       TTU::write_study_outp_ds(dv_ls,
                                output_format_ls = output_format_ls,
                                path_params_ls = path_params_ls,
-                               paths_ls = paths_ls,
                                reference_1L_int = 1)
 }
 ```

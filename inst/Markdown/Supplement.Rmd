@@ -68,7 +68,7 @@ params:
   seed_1L_int: 12345
   subtitle_1L_chr: "Secondary analysis algorithm for Transfer to Utility study"
   transform_paths_ls: !r NULL
-  use_fake_data_1L_lgl: TRUE
+  use_fake_data_1L_lgl: FALSE
 subtitle: "`r params$subtitle_1L_chr`"
 date: "`r format.Date(Sys.Date(),'%B %d, %Y')`"
 ---

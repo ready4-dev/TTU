@@ -16,7 +16,8 @@ write_scndry_analysis(
   subtitle_1L_chr = NULL,
   rprt_lup = NULL,
   rprt_nm_1L_chr = "Suplry_Analysis_Rprt",
-  abstract_args_ls = NULL
+  abstract_args_ls = NULL,
+  rename_lup = NULL
 )
 }
 \arguments{
@@ -43,6 +44,8 @@ write_scndry_analysis(
 \item{rprt_nm_1L_chr}{Report name (a character vector of length one), Default: 'Suplry_Analysis_Rprt'}
 
 \item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
+
+\item{rename_lup}{Rename (a lookup table), Default: NULL}
 }
 \description{
 write_scndry_analysis() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scndry analysis. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour

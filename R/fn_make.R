@@ -1689,3 +1689,35 @@ make_unique_ls_elmt_idx_int <- function (data_ls)
     }
     return(unique_ls_elmt_idx_int)
 }
+#' Make valid params
+#' @description make_valid_params_ls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make valid params list list. The function returns Valid params (a list of lists).
+#' @param analysis_core_params_ls Analysis core params (a list)
+#' @param candidate_covar_nms_chr Candidate covariate names (a character vector)
+#' @param ds_tb Dataset (a tibble)
+#' @param path_params_ls Path params (a list)
+#' @param maui_params_ls Maui params (a list)
+#' @param prefd_covars_chr Preferred covariates (a character vector), Default: 'NA'
+#' @param prefd_mdl_types_chr Preferred model types (a character vector), Default: c("GLM_GSN_LOG", "OLS_CLL")
+#' @param raw_ds_tfmn_fn Raw dataset transformation (a function), Default: NULL
+#' @param scndry_analysis_extra_vars_chr Scndry analysis extra variables (a character vector), Default: 'NA'
+#' @param subtitle_1L_chr Subtitle (a character vector of length one), Default: 'Methods Report 1: Analysis Program (Primary Analysis)'
+#' @param utl_class_fn_1L_chr Utility class function (a character vector of length one), Default: 'as.numeric'
+#' @return Valid params (a list of lists)
+#' @rdname make_valid_params_ls_ls
+#' @export 
+
+#' @keywords internal
+make_valid_params_ls_ls <- function (analysis_core_params_ls, candidate_covar_nms_chr, ds_tb, 
+    path_params_ls, maui_params_ls, prefd_covars_chr = NA_character_, 
+    prefd_mdl_types_chr = c("GLM_GSN_LOG", "OLS_CLL"), raw_ds_tfmn_fn = NULL, 
+    scndry_analysis_extra_vars_chr = NA_character_, subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)", 
+    utl_class_fn_1L_chr = "as.numeric") 
+{
+    valid_params_ls_ls <- make_prmry_analysis_params_ls(analysis_core_params_ls = analysis_core_params_ls, 
+        candidate_covar_nms_chr = candidate_covar_nms_chr, ds_tb = ds_tb, 
+        path_params_ls = path_params_ls, maui_params_ls = maui_params_ls, 
+        prefd_covars_chr = prefd_covars_chr, prefd_mdl_types_chr = prefd_mdl_types_chr, 
+        raw_ds_tfmn_fn = raw_ds_tfmn_fn, subtitle_1L_chr = subtitle_1L_chr, 
+        utl_class_fn_1L_chr = utl_class_fn_1L_chr) %>% transform_params_ls_to_valid(scndry_analysis_extra_vars_chr = scndry_analysis_extra_vars_chr)
+    return(valid_params_ls_ls)
+}

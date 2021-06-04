@@ -9,7 +9,7 @@ write_rprt_with_rcrd(
   paths_ls,
   header_yaml_args_ls = NULL,
   rprt_lup = NULL,
-  use_fake_data_1L_lgl,
+  use_fake_data_1L_lgl = F,
   subtitle_1L_chr = "Results Supplementary Report 1: Catalogue of time series models",
  
     rprt_subtitle_1L_chr = "Methods Supplementary Report 2: Record of auto-generation of model catalogue.",
@@ -32,7 +32,7 @@ write_rprt_with_rcrd(
 
 \item{rprt_lup}{Report (a lookup table), Default: NULL}
 
-\item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one)}
+\item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one), Default: F}
 
 \item{subtitle_1L_chr}{Subtitle (a character vector of length one), Default: 'Results Supplementary Report 1: Catalogue of time series models'}
 

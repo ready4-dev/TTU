@@ -185,6 +185,92 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
         })
     return(tfd_ds_tb)
 }
+#' Transform params list from
+#' @description transform_params_ls_from_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform params list from lookup table. Function argument params_ls specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns Params (a list).
+#' @param params_ls Params (a list)
+#' @param rename_lup Rename (a lookup table)
+#' @return Params (a list)
+#' @rdname transform_params_ls_from_lup
+#' @export 
+#' @importFrom purrr map_chr
+#' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
+transform_params_ls_from_lup <- function (params_ls, rename_lup) 
+{
+    if (!is.null(params_ls$ds_descvs_ls)) {
+        params_ls$ds_descvs_ls$candidate_predrs_chr <- params_ls$ds_descvs_ls$candidate_predrs_chr %>% 
+            purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup, 
+                match_value_xx = .x, match_var_nm_1L_chr = "old_nms_chr", 
+                target_var_nm_1L_chr = "new_nms_chr", evaluate_lgl = F))
+    }
+    if (!is.null(params_ls$predictors_lup)) {
+        params_ls$predictors_lup$short_name_chr <- params_ls$predictors_lup$short_name_chr %>% 
+            purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup, 
+                match_value_xx = .x, match_var_nm_1L_chr = "old_nms_chr", 
+                target_var_nm_1L_chr = "new_nms_chr", evaluate_lgl = F))
+    }
+    params_ls$candidate_covar_nms_chr <- params_ls$candidate_covar_nms_chr %>% 
+        purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup, 
+            match_value_xx = .x, match_var_nm_1L_chr = "old_nms_chr", 
+            target_var_nm_1L_chr = "new_nms_chr", evaluate_lgl = F))
+    if (!is.na(params_ls$prefd_covars_chr)) {
+        params_ls$prefd_covars_chr <- params_ls$prefd_covars_chr %>% 
+            purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup, 
+                match_value_xx = .x, match_var_nm_1L_chr = "old_nms_chr", 
+                target_var_nm_1L_chr = "new_nms_chr", evaluate_lgl = F))
+    }
+    if (!is.null(params_ls$candidate_predrs_chr)) {
+        params_ls$candidate_predrs_chr <- params_ls$candidate_predrs_chr %>% 
+            purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup, 
+                match_value_xx = .x, match_var_nm_1L_chr = "old_nms_chr", 
+                target_var_nm_1L_chr = "new_nms_chr", evaluate_lgl = F))
+    }
+    return(params_ls)
+}
+#' Transform params list to valid
+#' @description transform_params_ls_to_valid() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform params list to valid. Function argument params_ls specifies the object to be updated. Argument scndry_analysis_extra_vars_chr provides the object to be updated. The function returns Valid params (a list of lists).
+#' @param params_ls Params (a list)
+#' @param scndry_analysis_extra_vars_chr Scndry analysis extra variables (a character vector), Default: 'NA'
+#' @return Valid params (a list of lists)
+#' @rdname transform_params_ls_to_valid
+#' @export 
+#' @importFrom purrr discard map_chr
+#' @importFrom stringi stri_replace_last_fixed stri_replace_all_fixed
+#' @importFrom tibble tibble
+#' @importFrom dplyr filter rename_with mutate
+#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom Hmisc label
+#' @keywords internal
+transform_params_ls_to_valid <- function (params_ls, scndry_analysis_extra_vars_chr = NA_character_) 
+{
+    target_var_nms_chr <- c(params_ls$ds_descvs_ls$candidate_predrs_chr, 
+        params_ls$candidate_covar_nms_chr, scndry_analysis_extra_vars_chr) %>% 
+        purrr::discard(is.na) %>% unique()
+    valid_var_nms_chr <- target_var_nms_chr %>% stringi::stri_replace_last_fixed("_dbl", 
+        "") %>% stringi::stri_replace_last_fixed("_int", "") %>% 
+        stringi::stri_replace_all_fixed("_", "")
+    unchanged_var_nms_chr <- setdiff(params_ls$ds_descvs_ls$dictionary_tb$var_nm_chr, 
+        target_var_nms_chr)
+    rename_lup <- tibble::tibble(old_nms_chr = c(unchanged_var_nms_chr, 
+        target_var_nms_chr), new_nms_chr = make.unique(c(unchanged_var_nms_chr, 
+        valid_var_nms_chr), sep = "V")) %>% dplyr::filter(!old_nms_chr %in% 
+        unchanged_var_nms_chr)
+    params_ls$ds_tb <- dplyr::rename_with(params_ls$ds_tb, .cols = target_var_nms_chr, 
+        ~ready4fun::get_from_lup_obj(rename_lup, match_value_xx = .x, 
+            match_var_nm_1L_chr = "old_nms_chr", target_var_nm_1L_chr = "new_nms_chr", 
+            evaluate_lgl = F))
+    var_lbl_1L_chr <- Hmisc::label(params_ls$ds_descvs_ls$dictionary_tb$var_nm_chr)
+    params_ls$ds_descvs_ls$dictionary_tb <- params_ls$ds_descvs_ls$dictionary_tb %>% 
+        dplyr::mutate(var_nm_chr = var_nm_chr %>% purrr::map_chr(~ifelse(.x %in% 
+            rename_lup$old_nms_chr, ready4fun::get_from_lup_obj(rename_lup, 
+            match_value_xx = .x, match_var_nm_1L_chr = "old_nms_chr", 
+            target_var_nm_1L_chr = "new_nms_chr", evaluate_lgl = F), 
+            .x)))
+    Hmisc::label(params_ls$ds_descvs_ls$dictionary_tb[["var_nm_chr"]]) <- var_lbl_1L_chr
+    valid_params_ls_ls <- list(params_ls = params_ls %>% transform_params_ls_from_lup(rename_lup = rename_lup), 
+        rename_lup = rename_lup)
+    return(valid_params_ls_ls)
+}
 #' Transform paths list for scndry
 #' @description transform_paths_ls_for_scndry() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform paths list for scndry. Function argument paths_ls specifies the object to be updated. Argument reference_1L_int provides the object to be updated. The function returns Paths (a list).
 #' @param paths_ls Paths (a list)

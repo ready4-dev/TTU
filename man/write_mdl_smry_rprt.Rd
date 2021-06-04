@@ -6,7 +6,6 @@
 \usage{
 write_mdl_smry_rprt(
   header_yaml_args_ls,
-  paths_ls,
   path_params_ls,
   use_fake_data_1L_lgl = FALSE,
   output_format_ls,
@@ -21,8 +20,6 @@ write_mdl_smry_rprt(
 }
 \arguments{
 \item{header_yaml_args_ls}{Header yaml arguments (a list)}
-
-\item{paths_ls}{Paths (a list)}
 
 \item{path_params_ls}{Path params (a list)}
 

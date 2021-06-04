@@ -60,7 +60,7 @@ params:
   share_mdls_1L_lgl: TRUE
   subtitle_1L_chr: "Record of creation and dissemination of shareable outputs"
   transform_paths_ls: !r NULL
-  use_fake_data_1L_lgl: TRUE
+  use_fake_data_1L_lgl: FALSE
 subtitle: "`r params$subtitle_1L_chr`"
 date: "`r format.Date(Sys.Date(),'%B %d, %Y')`"
 ---

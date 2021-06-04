@@ -61,7 +61,7 @@ params:
   rprt_subtitle_1L_chr: !r NA_character_
   rprt_type_1L_chr: "Report"
   subtitle_1L_chr: !r NA_character_
-  use_fake_data_1L_lgl: TRUE
+  use_fake_data_1L_lgl: FALSE
 date: "`r format.Date(Sys.Date(),'%B %d, %Y')`"
 subtitle: "`r params$subtitle_1L_chr`"
 ---

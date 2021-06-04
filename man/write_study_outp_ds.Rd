@@ -8,7 +8,6 @@ write_study_outp_ds(
   dv_ls,
   output_format_ls,
   path_params_ls,
-  paths_ls,
   abstract_args_ls = NULL,
  
     dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.",
@@ -26,8 +25,6 @@ write_study_outp_ds(
 \item{output_format_ls}{Output format (a list)}
 
 \item{path_params_ls}{Path params (a list)}
-
-\item{paths_ls}{Paths (a list)}
 
 \item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
 
