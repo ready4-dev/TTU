@@ -40,7 +40,6 @@ fit_clg_log_tfmn <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w_cloglo
 #' @rdname fit_gsn_log_lnk
 #' @export 
 
-#' @keywords internal
 fit_gsn_log_lnk <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr, 
     id_var_nm_1L_chr = "fkClientID", backend_1L_chr = getOption("brms.backend", 
         "rstan"), iters_1L_int = 4000L, seed_1L_int = 1000L, 
@@ -71,7 +70,6 @@ fit_gsn_log_lnk <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr
 #' @importFrom brms brm
 #' @importFrom stats as.formula gaussian
 #' @importFrom purrr map_chr
-#' @keywords internal
 fit_ts_model_with_brm <- function (data_tb, depnt_var_nm_1L_chr, predr_vars_nms_chr, id_var_nm_1L_chr, 
     backend_1L_chr = getOption("brms.backend", "rstan"), link_1L_chr = "identity", 
     iters_1L_int = 4000L, seed_1L_int = 1000L, prior_ls = NULL, 

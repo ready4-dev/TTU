@@ -159,47 +159,59 @@ transform_params_ls_from_lup <- function(params_ls,
                                          rename_lup){
   if(!is.null(params_ls$ds_descvs_ls)){
     params_ls$ds_descvs_ls$candidate_predrs_chr <- params_ls$ds_descvs_ls$candidate_predrs_chr %>%
-      purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup,
+      purrr::map_chr(~ifelse(!.x %in% rename_lup$old_nms_chr,
+                             .x,
+                             ready4fun::get_from_lup_obj(rename_lup,
                                                   match_value_xx = .x,
                                                   match_var_nm_1L_chr = "old_nms_chr",
                                                   target_var_nm_1L_chr = "new_nms_chr",
-                                                  evaluate_lgl = F))
+                                                  evaluate_lgl = F)))
     params_ls$ds_descvs_ls$cohort_descv_var_nms_chr <- params_ls$ds_descvs_ls$cohort_descv_var_nms_chr %>%
-      purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup,
+      purrr::map_chr(~ifelse(!.x %in% rename_lup$old_nms_chr,
+                             .x,
+                             ready4fun::get_from_lup_obj(rename_lup,
                                                   match_value_xx = .x,
                                                   match_var_nm_1L_chr = "old_nms_chr",
                                                   target_var_nm_1L_chr = "new_nms_chr",
-                                                  evaluate_lgl = F))
+                                                  evaluate_lgl = F)))
   }
   if(!is.null(params_ls$predictors_lup)){
     params_ls$predictors_lup$short_name_chr <-  params_ls$predictors_lup$short_name_chr %>%
-      purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup,
+      purrr::map_chr(~ifelse(!.x %in% rename_lup$old_nms_chr,
+                             .x,
+                             ready4fun::get_from_lup_obj(rename_lup,
                                                   match_value_xx = .x,
                                                   match_var_nm_1L_chr = "old_nms_chr",
                                                   target_var_nm_1L_chr = "new_nms_chr",
-                                                  evaluate_lgl = F))
+                                                  evaluate_lgl = F)))
   }
   params_ls$candidate_covar_nms_chr <- params_ls$candidate_covar_nms_chr %>%
-    purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup,
+    purrr::map_chr(~ifelse(!.x %in% rename_lup$old_nms_chr,
+                           .x,
+                           ready4fun::get_from_lup_obj(rename_lup,
                                                 match_value_xx = .x,
                                                 match_var_nm_1L_chr = "old_nms_chr",
                                                 target_var_nm_1L_chr = "new_nms_chr",
-                                                evaluate_lgl = F))
+                                                evaluate_lgl = F)))
   if(!is.na(params_ls$prefd_covars_chr)){
     params_ls$prefd_covars_chr <- params_ls$prefd_covars_chr %>%
-      purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup,
+      purrr::map_chr(~ifelse(!.x %in% rename_lup$old_nms_chr,
+                             .x,
+                             ready4fun::get_from_lup_obj(rename_lup,
                                                   match_value_xx = .x,
                                                   match_var_nm_1L_chr = "old_nms_chr",
                                                   target_var_nm_1L_chr = "new_nms_chr",
-                                                  evaluate_lgl = F))
+                                                  evaluate_lgl = F)))
   }
   if(!is.null(params_ls$candidate_predrs_chr)){
     params_ls$candidate_predrs_chr <- params_ls$candidate_predrs_chr %>%
-      purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup,
+      purrr::map_chr(~ifelse(!.x %in% rename_lup$old_nms_chr,
+                             .x,
+                             ready4fun::get_from_lup_obj(rename_lup,
                                                   match_value_xx = .x,
                                                   match_var_nm_1L_chr = "old_nms_chr",
                                                   target_var_nm_1L_chr = "new_nms_chr",
-                                                  evaluate_lgl = F))
+                                                  evaluate_lgl = F)))
   }
   return(params_ls)
 }

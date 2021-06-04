@@ -38,7 +38,7 @@ ds_tb %>%
 We note our use of synthetic data by creating an object `use_fake_data_1L_lgl` and setting it to `TRUE`. For real world application - set this variable to `FALSE`.
 
 ```{r }
-use_fake_data_1L_lgl <-  FALSE
+use_fake_data_1L_lgl <-  TRUE
 ```
 
 ### Data dictionary

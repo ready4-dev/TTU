@@ -20,4 +20,3 @@ Valid params (a list of lists)
 \description{
 transform_params_ls_to_valid() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform params list to valid. Function argument params_ls specifies the object to be updated. Argument scndry_analysis_extra_vars_chr provides the object to be updated. The function returns Valid params (a list of lists).
 }
-\keyword{internal}

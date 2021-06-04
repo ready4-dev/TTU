@@ -26,4 +26,3 @@ Output format (a list)
 \description{
 make_output_format_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make output format list. The function returns Output format (a list).
 }
-\keyword{internal}

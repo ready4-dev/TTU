@@ -23,4 +23,3 @@ Shareable models (a tibble)
 \description{
 write_shareable_mdls_to_dv() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models to dataverse. The function returns Shareable models (a tibble).
 }
-\keyword{internal}

@@ -29,4 +29,3 @@ Health utility and predictors (a list)
 \description{
 make_hlth_utl_and_predrs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make health utility and predictors list. The function returns Health utility and predictors (a list).
 }
-\keyword{internal}

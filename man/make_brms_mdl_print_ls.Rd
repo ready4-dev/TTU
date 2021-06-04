@@ -32,4 +32,3 @@ Bayesian regression models model print (a list)
 \description{
 make_brms_mdl_print_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make bayesian regression models model print list. The function returns Bayesian regression models model print (a list).
 }
-\keyword{internal}

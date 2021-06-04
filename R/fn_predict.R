@@ -11,7 +11,6 @@
 #' @rdname predict_utility
 #' @export 
 #' @importFrom rlang exec
-#' @keywords internal
 predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", model_mdl, force_min_max_1L_lgl = T, 
     utl_min_val_1L_dbl = 0.03, impute_1L_lgl = T, utl_cls_fn = NULL) 
 {
@@ -43,7 +42,6 @@ predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", model_mdl, force_min_
 #' @rdname predict_utl_from_k10
 #' @export 
 
-#' @keywords internal
 predict_utl_from_k10 <- function (k10_1L_dbl, b0_aqol_mdl_1L_dbl = 0.204665, b1_aqol_mdl_1L_dbl = -3.617134, 
     b0_eq5d_mdl_1L_dbl = 0.8644649, b1_eq5d_mdl_1L_dbl = -2.926161, 
     aqol_error_1L_dbl = 0, eq5d_error_1L_dbl = 0) 

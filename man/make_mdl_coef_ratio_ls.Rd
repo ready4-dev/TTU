@@ -17,4 +17,3 @@ Model coefficient ratios (a list)
 \description{
 make_mdl_coef_ratio_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model coefficient ratio list. The function returns Model coefficient ratios (a list).
 }
-\keyword{internal}

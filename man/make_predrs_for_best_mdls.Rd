@@ -19,4 +19,3 @@ Predictors for best models (a character vector)
 \description{
 make_predrs_for_best_mdls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictors for best models. The function returns Predictors for best models (a character vector).
 }
-\keyword{internal}

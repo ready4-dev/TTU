@@ -29,4 +29,3 @@ plot_obsd_predd_sctr_cmprsn(
 \description{
 plot_obsd_predd_sctr_cmprsn() is a Plot function that plots data Specifically, this function implements an algorithm to plot observed predicted scatter comparison. The function is called for its side effects and does not return a value.
 }
-\keyword{internal}
