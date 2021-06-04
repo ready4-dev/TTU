@@ -5,7 +5,7 @@ date: "23/03/2021"
 output: html_document
 ---
 
-```{r echo = !is.null(params_ls$ds_tb), eval = !is.null(params_ls$raw_ds_tfmn_fn), message = F}
+```{r echo = !is.null(params_ls$ds_tb), eval = !is.null(params_ls$ds_tb), message = F}
 data_tb <- params_ls$ds_tb
 ```
 ```{r echo = is.null(params_ls$ds_tb), eval = is.null(params_ls$ds_tb), message = F}
