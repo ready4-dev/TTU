@@ -164,6 +164,12 @@ transform_params_ls_from_lup <- function(params_ls,
                                                   match_var_nm_1L_chr = "old_nms_chr",
                                                   target_var_nm_1L_chr = "new_nms_chr",
                                                   evaluate_lgl = F))
+    valid_params_ls_ls$params_ls$ds_descvs_ls$cohort_descv_var_nms_chr <- valid_params_ls_ls$params_ls$ds_descvs_ls$cohort_descv_var_nms_chr %>%
+      purrr::map_chr(~ready4fun::get_from_lup_obj(rename_lup,
+                                                  match_value_xx = .x,
+                                                  match_var_nm_1L_chr = "old_nms_chr",
+                                                  target_var_nm_1L_chr = "new_nms_chr",
+                                                  evaluate_lgl = F))
   }
   if(!is.null(params_ls$predictors_lup)){
     params_ls$predictors_lup$short_name_chr <-  params_ls$predictors_lup$short_name_chr %>%
