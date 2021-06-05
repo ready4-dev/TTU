@@ -213,6 +213,22 @@ make_ds_descvs_ls <- function(candidate_predrs_chr,
                        utl_unwtd_var_nm_1L_chr = utl_unwtd_var_nm_1L_chr)
   return(ds_descvs_ls)
 }
+make_ds_smry_ls <- function(candidate_predrs_chr,
+                            candidate_covar_nms_chr,
+                            depnt_var_nm_1L_chr,
+                            id_var_nm_1L_chr,
+                            round_var_nm_1L_chr,
+                            round_bl_val_1L_chr,
+                            predictors_lup){
+  ds_smry_ls <- list(candidate_predrs_chr = candidate_predrs_chr,
+                     candidate_covar_nms_chr = candidate_covar_nms_chr,
+                     depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                     id_var_nm_1L_chr = id_var_nm_1L_chr,
+                     round_var_nm_1L_chr = round_var_nm_1L_chr,
+                     round_bl_val_1L_chr = round_bl_val_1L_chr,
+                     predictors_lup = predictors_lup)
+  return(ds_smry_ls)
+}
 make_eq5d_ds_dict <- function(data_tb = make_fake_eq5d_ds(),
                               predictors_lup = make_psych_predrs_lup()){
   dictionary_tb <- youthvars::make_tfd_repln_ds_dict_r3() %>%
@@ -548,7 +564,7 @@ make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr 
             paste0(", family = ", ready4fun::get_from_lup_obj(mdl_types_lup,
                 match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr,
                 target_var_nm_1L_chr = "family_chr", evaluate_lgl = F)),
-            ""), ifelse(!is.na(start_1L_chr), ", ", ""), ifelse(!is.na(control_1L_chr),
+            ""), ifelse((!is.na(start_1L_chr)|(is.na(start_1L_chr) & !is.na(control_1L_chr))), ", ", ""), ifelse(!is.na(control_1L_chr),
             paste0("link=\"", link_1L_chr, "\",control=", control_1L_chr,
                 "("), ""), ifelse(!is.na(start_1L_chr), paste0("start=c(",
             start_1L_chr, ")"), ""), ifelse(!is.na(control_1L_chr),

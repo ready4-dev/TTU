@@ -54,7 +54,7 @@ predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr =
                                               max_val_dbl = c(50,90),
                                               class_chr = "integer",
                                               increment_dbl = 1,
-                                              class_fn_chr = "integer",
+                                              class_fn_chr = "as.integer",
                                               mdl_scaling_dbl = 0.01,
                                               covariate_lgl = F))
 ```
@@ -70,6 +70,7 @@ dictionary_tb <- make_eq5d_ds_dict(data_tb,
 We now convert study participant responses to the EQ-5D questionnaire to health utility scores. We do this using the `eq5d` package.
 
 ```{r message=FALSE, results='hide', warning=FALSE}
+library(eq5d)
 data_tb <- data_tb %>% 
         dplyr::rename_with(~stringr::str_replace(.x,"eq5dq_",""),dplyr::starts_with("eq5dq_")) %>%
   dplyr::mutate(`:=`(EQ5D_total_dbl, 
@@ -105,20 +106,20 @@ We next create an object `ds_smry_ls` to store a description of some structural 
  - the value of the data collection round variable for the baseline timepoint.
 
 ```{r}
-ds_smry_ls <- list(candidate_predrs_chr = predictors_lup$short_name_chr,
-                   candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
-                   depnt_var_nm_1L_chr = "EQ5D_total_dbl",
-                   id_var_nm_1L_chr = "uid",
-                   round_var_nm_1L_chr = "Timepoint",
-                   round_bl_val_1L_chr = "BL",
-                   predictors_lup = predictors_lup)
+ds_smry_ls <- make_ds_smry_ls(candidate_predrs_chr = predictors_lup$short_name_chr,
+                              candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
+                              depnt_var_nm_1L_chr = "EQ5D_total_dbl",
+                              id_var_nm_1L_chr = "uid",
+                              round_var_nm_1L_chr = "Timepoint",
+                              round_bl_val_1L_chr = "BL",
+                              predictors_lup = predictors_lup)
 ```
 
 ## Test candidate models, predictors and covariates
 Our first analytic task is to test which models, predictors and covariates perform best. This tasks can be broken down into the following steps.
 
 ### Preliminary tasks
-We begin by creating another lookup table (or as in the below example, use an existing lookup table) with summary information about the types of models we might test.
+We begin by reviewing the `TTU` packages lookup table of types of models we can test.
 
 ```{r}
 data("mdl_types_lup",package = "TTU") 
@@ -126,23 +127,25 @@ mdl_types_lup %>%
     ready4show::print_table(output_type_1L_chr = "HTML",
                           caption_1L_chr = "Model types lookup table")
 ```
-We add this lookup table to a new object, `mdl_smry_ls` which stores information about the candidate models we will be using. We can use this step to select a subset of the models from the lookup table to compare. In the below example, we have selected all of the available GLM and OLS models.
+
+We modify this table as appropriate (in the below example, we adjust the start values for two of the models, as the default values are not appropriate for our data). We then add the lookup table to a new object, `mdl_smry_ls` which stores information about the candidate models we will be using. 
 
 ```{r}
-mdl_smry_ls <- list(mdl_types_lup = mdl_types_lup,
-                    mdl_types_chr = mdl_types_lup$short_name_chr[!startsWith(mdl_types_lup$short_name_chr,"BET")],
-                    choose_from_pfx_chr = c("GLM","OLS"))
+mdl_smry_ls <- TTU::mdl_types_lup %>%
+  dplyr::mutate(start_chr = dplyr::case_when(short_name_chr %in% c("GLM_BNL_LGT","GLM_BNL_CLL") ~ c("0.5, -0.05"),
+                                             T ~ start_chr)) %>%
+  make_mdl_smry_ls()
 ```
 
 For the initial set of tests on candidate models, we just need data from one timepoint as we are not exploring longitudinal change at this stage. We also only need data on the candidate predictors and total utility score. so can slim down our dataset to these parameters.
 
 ```{r}
 bl_tb <- youthvars::transform_ds_for_tstng(data_tb, 
-                                depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,
-                                candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
-                                dep_var_max_val_1L_dbl = 0.999,
-                                round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr, 
-                                round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
+                                           depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,
+                                           candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
+                                           dep_var_max_val_1L_dbl = 0.999,
+                                           round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr, 
+                                           round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
  
 ```
 
@@ -164,31 +167,24 @@ ds_smry_ls$candidate_predrs_chr <- reorder_cndt_predrs_chr(ds_smry_ls$candidate_
         data_tb = bl_tb, depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr)
 ```
 
-Based on this reordering, we can specify the the candidate predictor with the highest correlation with our utility variable, adding its description to `mdl_smry_ls`.
+Based on this reordering, we can specify the the candidate predictor with the highest correlation with our utility variable, adding its description and allowed potential values to `mdl_smry_ls`.
 
 ```{r}
-mdl_smry_ls$predr_var_nm_1L_chr <- ds_smry_ls$candidate_predrs_chr[1]
-mdl_smry_ls$predr_var_desc_1L_chr <- ds_smry_ls$predictors_lup %>% ready4fun::get_from_lup_obj(match_value_xx = mdl_smry_ls$predr_var_nm_1L_chr, match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = "long_name_chr",
-        evaluate_lgl = F)
+mdl_smry_ls <- add_prefd_predr_var_to_mdl_smry_ls(mdl_smry_ls,
+                                                  ds_smry_ls = ds_smry_ls)
 ```
 
 ### Test all candidate models using most correlated predictor
-Using the metadata from the predictors lookup table, we now create a vector of the range of potential integer values of the most highly correlated candidate predictor (in this example, `r mdl_smry_ls$predr_var_desc_1L_chr`).
-
-```{r}
-mdl_smry_ls$predr_vals_dbl <- make_predr_vals(mdl_smry_ls$predr_var_nm_1L_chr, candidate_predrs_lup = ds_smry_ls$predictors_lup)
-```
-
 We now compare all candidate model types, each using only the highest correlated candidate predictor. 
 
 ```{r warning = FALSE, message=FALSE}
-mdl_smry_ls$folds_1L_int <- 10L
 mdl_smry_ls$smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data_tb = bl_tb,
         folds_1L_int = mdl_smry_ls$folds_1L_int, mdl_types_chr = mdl_smry_ls$mdl_types_chr,
         depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, predr_var_nm_1L_chr = mdl_smry_ls$predr_var_nm_1L_chr,
         predr_var_desc_1L_chr = mdl_smry_ls$predr_var_desc_1L_chr, 
         predr_vals_dbl = mdl_smry_ls$predr_vals_dbl,
-        path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsn", start_1L_chr = NA_character_,
+        path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsn",
+        start_1L_chr = NA_character_,
         mdl_types_lup = mdl_smry_ls$mdl_types_lup,
         dictionary_tb = dictionary_tb) 
 ```
@@ -197,10 +193,11 @@ The `write_sngl_predr_multi_mdls_outps` function will write each model to be tes
 
 The `write_sngl_predr_multi_mdls_outps` function also outputs a table summarising the performance of each of the candidate models.
 
-```{r}
+```{r mdl_cmprsn, eval = knitr::is_html_output(), results='asis'}
 mdl_smry_ls$smry_of_sngl_predr_mdls_tb %>%
-    ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Model performance for highest correlated predictor using baseline data")
+  ready4show::print_table(output_type_1L_chr = "HTML",
+                          caption_1L_chr = "Comparison of model types for highest correlated predictor using baseline data",
+                          mkdn_tbl_ref_1L_chr = "tab:mdl_cmprsn")
 ```
 
 We can now identify the highest performing model in each category of candidate model based on the testing R^2^ statistic (RsquaredP in the previous table).
@@ -213,10 +210,10 @@ mdl_smry_ls$prefd_mdl_types_chr <- make_prefd_mdls_vec(mdl_smry_ls$smry_of_sngl_
 ```{r}
 mdl_smry_ls$prefd_mdl_types_chr
 ```
-We can override these automated selections and instead incorporate other considerations (possibly based on judgments informed by visual inspection of the density plots). We do this in the following command, specifying new preferred model types, in descending order of preference.
+We can override these automated selections and instead incorporate other considerations (possibly based on judgments informed by visual inspection of the plots and the desirability of constraining predictions to a maximum value of one). We do this in the following command, specifying new preferred model types, in descending order of preference.
 
 ```{r}
-mdl_smry_ls$prefd_mdl_types_chr <- c("GLM_GSN_LOG","OLS_CLL")
+mdl_smry_ls$prefd_mdl_types_chr <- c("OLS_NTF", "GLM_BNL_CLL", "BET_LGT")
 ```
 
 ### Compare all candidate predictors using most preferred model

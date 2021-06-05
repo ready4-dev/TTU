@@ -1,3 +1,12 @@
+add_prefd_predr_var_to_mdl_smry_ls <- function(mdl_smry_ls,
+                                               ds_smry_ls){
+  mdl_smry_ls$predr_var_nm_1L_chr <- ds_smry_ls$candidate_predrs_chr[1]
+  mdl_smry_ls$predr_var_desc_1L_chr <- ds_smry_ls$predictors_lup %>% ready4fun::get_from_lup_obj(match_value_xx = mdl_smry_ls$predr_var_nm_1L_chr, match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = "long_name_chr",
+                                                                                                 evaluate_lgl = F)
+  mdl_smry_ls$predr_vals_dbl <- make_predr_vals(mdl_smry_ls$predr_var_nm_1L_chr,
+                                                candidate_predrs_lup = ds_smry_ls$predictors_lup)
+  return(mdl_smry_ls)
+}
 add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkClientID")
 {
   participant_ids <- paste0(prefix_1L_chr, 1:nrow(tbs_ls[[1]])) %>%
@@ -11,7 +20,6 @@ add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkCli
   }) %>% stats::setNames(names(tbs_ls))
   return(tbs_ls)
 }
-
 add_utility_predn_to_ds <- function (data_tb, model_mdl, tfmn_1L_chr, depnt_var_nm_1L_chr, predr_vars_nms_chr = NULL,
                                      force_min_max_1L_lgl = T, utl_min_val_1L_dbl = 0.03, impute_1L_lgl = T, utl_cls_fn = NULL,
                                      rmv_tfd_depnt_var_1L_lgl = F)
