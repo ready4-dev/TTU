@@ -216,6 +216,7 @@ make_ds_descvs_ls <- function(candidate_predrs_chr,
 make_ds_smry_ls <- function(candidate_predrs_chr,
                             candidate_covar_nms_chr,
                             depnt_var_nm_1L_chr,
+                            dictionary_tb,
                             id_var_nm_1L_chr,
                             round_var_nm_1L_chr,
                             round_bl_val_1L_chr,
@@ -223,6 +224,7 @@ make_ds_smry_ls <- function(candidate_predrs_chr,
   ds_smry_ls <- list(candidate_predrs_chr = candidate_predrs_chr,
                      candidate_covar_nms_chr = candidate_covar_nms_chr,
                      depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                     dictionary_tb = dictionary_tb,
                      id_var_nm_1L_chr = id_var_nm_1L_chr,
                      round_var_nm_1L_chr = round_var_nm_1L_chr,
                      round_bl_val_1L_chr = round_bl_val_1L_chr,
@@ -547,10 +549,11 @@ make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr 
     if (!is.na(control_1L_chr)) {
         idx_1L_int <- 1 + stringi::stri_locate_last_fixed(mdl_type_1L_chr,
             "_")[1, 1] %>% as.vector()
-        link_1L_chr <- stringr::str_sub(mdl_type_1L_chr, start = idx_1L_int)
-        link_1L_chr <- ifelse(link_1L_chr == "LOG", "log", ifelse(link_1L_chr ==
-            "LGT", "logit", ifelse(link_1L_chr == "CLL", "cloglog",
-            "ERROR")))
+        #link_1L_chr <- stringr::str_sub(mdl_type_1L_chr, start = idx_1L_int)
+        link_1L_chr <- get_link_from_tfmn(stringr::str_sub(mdl_type_1L_chr, start = idx_1L_int))
+          # ifelse(link_1L_chr == "LOG", "log", ifelse(link_1L_chr ==
+          #   "LGT", "logit", ifelse(link_1L_chr == "CLL", "cloglog",
+          #   "ERROR")))
     }
     mdl_1L_chr <- paste0(ready4fun::get_from_lup_obj(mdl_types_lup,
         match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr,
@@ -1023,17 +1026,20 @@ make_sngl_mdl_smry_tb <- function(mdls_tb,
   return(new_tb)
 }
 make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_total_w",
-    predr_vars_nms_chr, fn = calculate_rmse, mdl_nm_1L_chr = NA_character_,
+    predr_vars_nms_chr, #fn = calculate_rmse,
+    mdl_nm_1L_chr = NA_character_,
     seed_1L_dbl = 23456)
 {
     if (is.na(mdl_nm_1L_chr))
         mdl_nm_1L_chr <- predr_vars_nms_chr[1]
     set.seed(seed_1L_dbl)
-    predictions <- stats::predict(mdl_ls, summary = F)
+    predictions <- stats::predict(mdl_ls, summary = F) %>%
+      calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
+                              tfmn_is_outp_1L_lgl = T)
     coef <- summary(mdl_ls, digits = 4)$fixed
     coef <- coef[1:nrow(coef), 1:4]
     R2 <- brms::bayes_R2(mdl_ls)
-    RMSE <- psych::describe(apply(predictions, 1, fn, y_dbl = data_tb %>%
+    RMSE <- psych::describe(apply(predictions, 1, calculate_rmse, y_dbl = data_tb %>%
         dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr))), quant = c(0.25,
         0.75), skew = F, ranges = F)
     RMSE <- cbind(RMSE$mean, RMSE$sd, RMSE$Q0.25, RMSE$Q0.75) %>%
@@ -1102,11 +1108,12 @@ make_smry_of_mdl_outp <- function (data_tb,
         dplyr::select(Model, dplyr::everything())
     return(smry_of_one_predr_mdl_tb)
 }
-make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_,
-    depnt_var_nm_1L_chr = "utl_total_w", id_var_nm_1L_chr = "fkClientID",
-    round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", predictors_lup,
-    backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L,
-    seed_1L_int = 1000L, prior_ls = NULL, control_ls = NULL)
+make_smry_of_ts_mdl_outp <- function (data_tb, #fn,
+                                      predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_,
+                                      depnt_var_nm_1L_chr = "utl_total_w", id_var_nm_1L_chr = "fkClientID",
+                                      round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", predictors_lup,
+                                      backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L, mdl_types_lup,
+                                      seed_1L_int = 1000L, prior_ls = NULL, control_ls = NULL)
 {
   scaling_fctr_dbl <- predr_vars_nms_chr %>% purrr::map_dbl(~
       ifelse(.x %in% predictors_lup$short_name_chr,
@@ -1115,22 +1122,46 @@ make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L
                                          match_value_xx = .x,
                                          match_var_nm_1L_chr = "short_name_chr",
                                          evaluate_lgl = F),
-             1)
-    )
-    tfd_data_tb <- transform_tb_to_mdl_inp(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+             1))
+  mdl_type_1L_chr <- mdl_nm_1L_chr %>%
+    stringr::str_remove(paste0(predr_vars_nms_chr[1], "_", ifelse(is.na(predr_vars_nms_chr[2]), "", paste0(predr_vars_nms_chr[2],
+                                                                                                    "_"))))
+  mdl_type_1L_chr <- stringr::str_sub(mdl_type_1L_chr, start = 1 + (mdl_type_1L_chr %>% stringi::stri_locate_first_fixed("_"))[1,2] %>% as.vector())
+  tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
+                                             target_var_nm_1L_chr = "tfmn_chr",
+                                             match_value_xx = mdl_type_1L_chr,
+                                             match_var_nm_1L_chr = "short_name_chr",
+                                             evaluate_lgl = F)#stringr::str_sub(mdl_type_1L_chr, start = 1 + (mdl_type_1L_chr %>% stringi::stri_locate_last_fixed("_"))[1,2] %>% as.vector())
+  tfd_data_tb <- transform_tb_to_mdl_inp(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         predr_vars_nms_chr = predr_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr,
         round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr,
-        scaling_fctr_dbl = scaling_fctr_dbl)
-    tfd_depnt_var_nm_1L_chr <- ifelse(identical(fn, fit_clg_log_tfmn),
-        transform_depnt_var_nm_for_cll(depnt_var_nm_1L_chr), depnt_var_nm_1L_chr)
+        scaling_fctr_dbl = scaling_fctr_dbl,
+        tfmn_1L_chr = tfmn_1L_chr)
+    tfd_depnt_var_nm_1L_chr <- transform_depnt_var_nm(depnt_var_nm_1L_chr,
+                                                      tfmn_1L_chr = tfmn_1L_chr)
+    family_fn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                   match_var_nm_1L_chr = "short_name_chr",
+                                                   match_value_xx = mdl_type_1L_chr,
+                                                   target_var_nm_1L_chr = "family_chr",
+                                                   evaluate_lgl = F)
+    family_fn_1L_chr <- ifelse(is.na(family_fn_1L_chr),
+                               "gaussian(identity)",
+                               family_fn_1L_chr)
     args_ls <- list(data_tb = tfd_data_tb, depnt_var_nm_1L_chr = tfd_depnt_var_nm_1L_chr,
         predr_vars_nms_chr = predr_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr, iters_1L_int = iters_1L_int,
-        backend_1L_chr = backend_1L_chr, seed_1L_int = seed_1L_int, prior_ls = prior_ls, control_ls = control_ls)
-    mdl_ls <- rlang::exec(fn, !!!args_ls)
+        backend_1L_chr = backend_1L_chr,
+        family_fn_1L_chr = family_fn_1L_chr,
+       # link_1L_chr = get_link_from_tfmn(tfmn_1L_chr, is_OLS_1L_lgl = mdl_type_1L_chr %>% startsWith("OLS")),
+        seed_1L_int = seed_1L_int,
+        prior_ls = prior_ls, control_ls = control_ls)
+    # if(startsWith(mdl_type_1L_chr, "GLM_BNL")){
+    # WRITE FN
+    # }else{
+      mdl_ls <- rlang::exec(fit_ts_model_with_brm, !!!args_ls)
+    # }
     smry_of_ts_mdl_ls <- list(smry_of_ts_mdl_tb = make_smry_of_brm_mdl(mdl_ls,
         data_tb = tfd_data_tb, depnt_var_nm_1L_chr = tfd_depnt_var_nm_1L_chr,
-        predr_vars_nms_chr = predr_vars_nms_chr, fn = ifelse(identical(fn,
-            fit_gsn_log_lnk), calculate_rmse, calculate_rmse_tfmn),
+        predr_vars_nms_chr = predr_vars_nms_chr,
         mdl_nm_1L_chr = mdl_nm_1L_chr))
     if (!is.na(path_to_write_to_1L_chr)) {
         smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr <- paste0(path_to_write_to_1L_chr,
@@ -1139,14 +1170,19 @@ make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L
             file.remove(smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)
         saveRDS(mdl_ls, smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)
         smry_of_ts_mdl_ls$paths_to_mdl_plts_chr <- write_brm_model_plts(mdl_ls,
-            tfd_data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
-            mdl_nm_1L_chr = mdl_nm_1L_chr, path_to_write_to_1L_chr = path_to_write_to_1L_chr,
-            round_var_nm_1L_chr = round_var_nm_1L_chr, tfmn_fn = ifelse(identical(fn,
-                fit_gsn_log_lnk), function(x) {
-                x
-            }, function(x) {
-                1 - exp(-exp(x))
-            }))
+                                                                        tfd_data_tb = tfd_data_tb,
+                                                                        depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                                                                        mdl_nm_1L_chr = mdl_nm_1L_chr,
+                                                                        path_to_write_to_1L_chr = path_to_write_to_1L_chr,
+                                                                        round_var_nm_1L_chr = round_var_nm_1L_chr,
+                                                                        tfmn_1L_chr = tfmn_1L_chr
+            # tfmn_fn = ifelse(identical(fn,
+            #     fit_gsn_log_lnk), function(x) {
+            #     x
+            # }, function(x) {
+            #     1 - exp(-exp(x))
+            # })
+            )
     }
     return(smry_of_ts_mdl_ls)
 }
@@ -1226,7 +1262,9 @@ make_tfmn_cmprsn_plt <-  function(data_tb,
                                      dplyr::mutate(!!rlang::sym(paste0(depnt_var_nm_1L_chr,"_log")) := log(!!rlang::sym(depnt_var_nm_1L_chr)),
                                                    !!rlang::sym(paste0(depnt_var_nm_1L_chr,"_logit")) := psych::logit(!!rlang::sym(depnt_var_nm_1L_chr)),
                                                    !!rlang::sym(paste0(depnt_var_nm_1L_chr,"_loglog")) := -log(-log(!!rlang::sym(depnt_var_nm_1L_chr))),
-                                                   !!rlang::sym(paste0(depnt_var_nm_1L_chr,"_cloglog")) := log(-log(1-!!rlang::sym(depnt_var_nm_1L_chr)))), variable, value,
+                                                   !!rlang::sym(paste0(depnt_var_nm_1L_chr,"_cloglog")) := log(-log(1-!!rlang::sym(depnt_var_nm_1L_chr)))),
+                                   variable,
+                                   value,
                                    !!rlang::sym(depnt_var_nm_1L_chr),
                                    !!rlang::sym(paste0(depnt_var_nm_1L_chr,"_log")),
                                    !!rlang::sym(paste0(depnt_var_nm_1L_chr,"_logit")),

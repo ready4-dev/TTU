@@ -109,6 +109,7 @@ We next create an object `ds_smry_ls` to store a description of some structural 
 ds_smry_ls <- make_ds_smry_ls(candidate_predrs_chr = predictors_lup$short_name_chr,
                               candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
                               depnt_var_nm_1L_chr = "EQ5D_total_dbl",
+                              dictionary_tb = dictionary_tb,
                               id_var_nm_1L_chr = "uid",
                               round_var_nm_1L_chr = "Timepoint",
                               round_bl_val_1L_chr = "BL",
@@ -137,64 +138,18 @@ mdl_smry_ls <- TTU::mdl_types_lup %>%
   make_mdl_smry_ls()
 ```
 
-For the initial set of tests on candidate models, we just need data from one timepoint as we are not exploring longitudinal change at this stage. We also only need data on the candidate predictors and total utility score. so can slim down our dataset to these parameters.
-
 ```{r}
-bl_tb <- youthvars::transform_ds_for_tstng(data_tb, 
-                                           depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,
-                                           candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
-                                           dep_var_max_val_1L_dbl = 0.999,
-                                           round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr, 
-                                           round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
- 
+cmprsns_ls <- write_mdl_cmprsn(scored_data_tb = data_tb,
+                                ds_smry_ls = ds_smry_ls,
+                                mdl_smry_ls = mdl_smry_ls,
+                                output_data_dir_1L_chr = path_to_write_to_1L_chr,
+                                seed_1L_int = seed_1L_int)
 ```
 
-The first six records of the slimmed down dataset are as follows.
-
-```{r}
-bl_tb %>%
-  head() %>%
-    ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Slimmed down prediction dataset")
-  
-```
-
-### Identify most highly correlated candidate predictor
-By exploring correlations in the slimmed down dataset, we can reorder our vector of candidate predictors to reflect the descending order of correlation with the dependent variable. 
-
-```{r}
-ds_smry_ls$candidate_predrs_chr <- reorder_cndt_predrs_chr(ds_smry_ls$candidate_predrs_chr,
-        data_tb = bl_tb, depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr)
-```
-
-Based on this reordering, we can specify the the candidate predictor with the highest correlation with our utility variable, adding its description and allowed potential values to `mdl_smry_ls`.
-
-```{r}
-mdl_smry_ls <- add_prefd_predr_var_to_mdl_smry_ls(mdl_smry_ls,
-                                                  ds_smry_ls = ds_smry_ls)
-```
-
-### Test all candidate models using most correlated predictor
-We now compare all candidate model types, each using only the highest correlated candidate predictor. 
-
-```{r warning = FALSE, message=FALSE}
-mdl_smry_ls$smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data_tb = bl_tb,
-        folds_1L_int = mdl_smry_ls$folds_1L_int, mdl_types_chr = mdl_smry_ls$mdl_types_chr,
-        depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, predr_var_nm_1L_chr = mdl_smry_ls$predr_var_nm_1L_chr,
-        predr_var_desc_1L_chr = mdl_smry_ls$predr_var_desc_1L_chr, 
-        predr_vals_dbl = mdl_smry_ls$predr_vals_dbl,
-        path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsn",
-        start_1L_chr = NA_character_,
-        mdl_types_lup = mdl_smry_ls$mdl_types_lup,
-        dictionary_tb = dictionary_tb) 
-```
-
-The `write_sngl_predr_multi_mdls_outps` function will write each model to be tested to a new sub-directory of "`r path_to_write_to_1L_chr`" called "A_Candidate_Mdls_Cmprsn". Also written to that sub-directory are a number of plots for each model. 
-
-The `write_sngl_predr_multi_mdls_outps` function also outputs a table summarising the performance of each of the candidate models.
+The `write_mdl_cmprsn` function will write each model to be tested to a new sub-directory of "`r path_to_write_to_1L_chr`" called "A_Candidate_Mdls_Cmprsn". Also written to that sub-directory are a number of plots for each model. The `write_mdl_cmprsn` function also outputs a table summarising the performance of each of the candidate models.
 
 ```{r mdl_cmprsn, eval = knitr::is_html_output(), results='asis'}
-mdl_smry_ls$smry_of_sngl_predr_mdls_tb %>%
+cmprsns_ls$mdl_smry_ls$smry_of_sngl_predr_mdls_tb %>%
   ready4show::print_table(output_type_1L_chr = "HTML",
                           caption_1L_chr = "Comparison of model types for highest correlated predictor using baseline data",
                           mkdn_tbl_ref_1L_chr = "tab:mdl_cmprsn")
@@ -202,162 +157,76 @@ mdl_smry_ls$smry_of_sngl_predr_mdls_tb %>%
 
 We can now identify the highest performing model in each category of candidate model based on the testing R^2^ statistic (RsquaredP in the previous table).
 
-```{r message=FALSE}
-mdl_smry_ls$prefd_mdl_types_chr <- make_prefd_mdls_vec(mdl_smry_ls$smry_of_sngl_predr_mdls_tb,
-                                           choose_from_pfx_chr = mdl_smry_ls$choose_from_pfx_chr)
-```
-
 ```{r}
-mdl_smry_ls$prefd_mdl_types_chr
+cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr
 ```
 We can override these automated selections and instead incorporate other considerations (possibly based on judgments informed by visual inspection of the plots and the desirability of constraining predictions to a maximum value of one). We do this in the following command, specifying new preferred model types, in descending order of preference.
 
 ```{r}
-mdl_smry_ls$prefd_mdl_types_chr <- c("OLS_NTF", "GLM_BNL_CLL", "BET_LGT")
+cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr <- c("OLS_NTF", "GLM_BNL_CLL", "BET_LGT")
 ```
 
-### Compare all candidate predictors using most preferred model
-We can now compare all of our candidate single predictors using the most preferred model type.
+### Use most preferred model to compare all candidate predictors
+We can now compare all of our candidate predictors (with and without candidate covariates) using the most preferred model type.
 
-```{r message=FALSE, results='hide'}
-mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int = 300L
-mdl_smry_ls$predr_cmprsn_tb <- write_predr_cmprsn_outps(data_tb = bl_tb,
-                                             path_to_write_to_1L_chr = path_to_write_to_1L_chr,
-                                             new_dir_nm_1L_chr = "B_Candidate_Predrs_Cmprsn",
-                                             depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, 
-                                             candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
-                                             max_nbr_of_boruta_mdl_runs_int = mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int)
+```{r message=FALSE, results='hide', warning=FALSE}
+cmprsns_ls <- write_predr_and_covars_cmprsn(scored_data_tb = data_tb,
+                                           bl_tb = cmprsns_ls$bl_tb,
+                                           ds_smry_ls = cmprsns_ls$ds_smry_ls,
+                                           mdl_smry_ls = cmprsns_ls$mdl_smry_ls,
+                                           output_data_dir_1L_chr = output_data_dir_1L_chr,
+                                           seed_1L_int = seed_1L_int)
 ```
 
-The previous call to the `write_predr_cmprsn_outps`{.R} function saved the tested models along with model plots in the "B_Candidate_Predrs_Cmprsn" sub-directory of "Output".
-
-These results are also viewable as a table.
+Now, we compare the performance of single predictor models of our preferred model type (in our case, a `r mdl_smry_ls$mdl_types_lup %>% ready4fun::get_from_lup_obj(target_var_nm_1L_chr = "long_name_chr",match_value_xx = mdl_smry_ls$prefd_mdl_types_chr[1], match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F)`) for each candidate predictor. The call to the `write_predr_and_covars_cmprsn`{.R} function saved the tested models along with model plots in the "B_Candidate_Predrs_Cmprsn" sub-directory of "Output". These results are also viewable as a table.
 
 ```{r}
-mdl_smry_ls$predr_cmprsn_tb %>%
+cmprsns_ls$mdl_smry_ls$predr_cmprsn_tb %>%
     ready4show::print_table(output_type_1L_chr = "HTML",
                           caption_1L_chr = "Comparison of all candidate predictors using preferred model")
 ```
-
-### Compare single predictor model performance across all candidate predictors
-Now, we compare the performance of single predictor models of our preferred model type (in our case, a `r mdl_smry_ls$mdl_types_lup %>% ready4fun::get_from_lup_obj(target_var_nm_1L_chr = "long_name_chr",match_value_xx = mdl_smry_ls$prefd_mdl_types_chr[1], match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F)`) for each candidate predictor.
-
-```{r message=FALSE, warning=F}
-    mdl_smry_ls$smry_of_mdl_sngl_predrs_tb <- write_mdl_type_multi_outps(data_tb = bl_tb,
-        folds_1L_int = mdl_smry_ls$folds_1L_int, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsn_tb$predr_chr, start_1L_chr = NA_character_,
-        mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1], depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,
-        path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr = "C_Predrs_Sngl_Mdl_Cmprsn",
-        fl_nm_pfx_1L_chr = "C_PREDR", mdl_types_lup = mdl_smry_ls$mdl_types_lup) 
-```
-
-The previous call to the `write_mdl_type_multi_outps`{.R} function saves the tested models along with the two plots for each model in the "C_Predrs_Sngl_Mdl_Cmprsn" sub-directory of "Output". 
-
-The performance of each single predictor model can also be summarised in a table.
+The call to the `write_predr_and_covars_cmprsn`{.R} function also saved single predictor R model objects (one for each candidate predictors) along with the two plots for each model in the "C_Predrs_Sngl_Mdl_Cmprsn" sub-directory of "Output". The performance of each single predictor model can also be summarised in a table.
 
 ```{r}
-mdl_smry_ls$smry_of_mdl_sngl_predrs_tb %>%
+cmprsns_ls$mdl_smry_ls$smry_of_mdl_sngl_predrs_tb %>%
     ready4show::print_table(output_type_1L_chr = "HTML",
                           caption_1L_chr = "Preferred single predictor model performance by candidate predictor")
 ```
-
-### Compare candidate covariates
-We rerun each of the models from the previous step, but this time add all our candidate covariates to each model. 
+Updated versions of each of the models in the previous step (this time with covariates added) are saved to the "D_Predr_Covars_Cmprsn" subdirectory of "Output" and we can summarise the performance of each of the updated models, along with all signficant model terms, in a table.
 
 ```{r}
-bl_tb <- data_tb %>% youthvars::transform_ds_for_tstng(depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
-        covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr, remove_all_msng_1L_lgl = T, round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr,
-        round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
-mdl_smry_ls$mdls_with_covars_smry_tb <- write_mdl_type_covars_mdls(bl_tb,
-        depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, predrs_var_nms_chr = ds_smry_ls$candidate_predrs_chr,
-        covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr, mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1],
-        path_to_write_to_1L_chr = path_to_write_to_1L_chr, new_dir_nm_1L_chr = "D_Predr_Covars_Cmprsn",
-        fl_nm_pfx_1L_chr = "D_CT",
-        mdl_types_lup = mdl_smry_ls$mdl_types_lup, start_1L_chr = NA_character_)
-```
-
-The updated models are saved to the "D_Predr_Covars_Cmprsn" subdirectory of "Output" and we can summarise the performance of each of the updated models, along with all model terms, in a table.
-
-```{r}
-mdl_smry_ls$mdls_with_covars_smry_tb %>%
+cmprsns_ls$mdl_smry_ls$mdls_with_covars_smry_tb %>%
     ready4show::print_table(output_type_1L_chr = "HTML",
                             caption_1L_chr = "Preferred performance of models with covariate predictors by candidate predictor", 
                           use_lbls_as_col_nms_1L_lgl = T)
 ```
-
 We can now identify which, if any, of the candidate covariates we previously specified are significant predictors in any of the models.
 
 ```{r}
-mdl_smry_ls$signt_covars_chr <- get_signft_covars(mdls_with_covars_smry_tb = mdl_smry_ls$mdls_with_covars_smry_tb,
-                                      covar_var_nms_chr = ds_smry_ls$candidate_covar_nms_chr) 
-```
-```{r}
-mdl_smry_ls$signt_covars_chr
+cmprsns_ls$mdl_smry_ls$signt_covars_chr
 ```
 We can override the covariates to select, potentially because we want to select only covariates that are significant for all or most of the models. However, in the below example we have opted not to do so and continue to use `r ifelse(is.na(mdl_smry_ls$signt_covars_chr),"no covariates",paste0(mdl_smry_ls$signt_covars_chr, collapse = "and "))` as selected by the algorithm in the previous step.
 
 ```{r}
-mdl_smry_ls$prefd_covars_chr <- NA_character_
-    if (!is.na(mdl_smry_ls$prefd_covars_chr))
-        mdl_smry_ls$prefd_covars_chr <- mdl_smry_ls$signt_covars_chr
+# cmprsns_ls$mdl_smry_ls$prefd_covars_chr <- c("COVARIATE WE WANT TO USE", "ANOTHER COVARIATE")
 ```
 
 ### Test preferred model with preferred covariates for each candidate predictor
 We now conclude our model testing by rerunning the previous step, except confining our covariates to those we prefer.
 
-```{r warning = F, message=F}
-    empty_tb <- write_mdl_type_multi_outps(data_tb = bl_tb, folds_1L_int = NULL,
-        start_1L_chr = NA_character_, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsn_tb$predr_chr,
-        covar_var_nms_chr = mdl_smry_ls$prefd_covars_chr, mdl_type_1L_chr = mdl_smry_ls$prefd_mdl_types_chr[1],
-        depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, path_to_write_to_1L_chr = path_to_write_to_1L_chr,
-        new_dir_nm_1L_chr = "E_Predrs_W_Covars_Sngl_Mdl_Cmprsn", mdl_types_lup = mdl_smry_ls$mdl_types_lup, fl_nm_pfx_1L_chr = "E_CK_CV")
+```{r message=FALSE, results='hide', warning=FALSE, fig.show ='hide'}
+outp_smry_ls <- write_mdls_with_covars_cmprsn(scored_data_tb = data_tb,
+                                           bl_tb = cmprsns_ls$bl_tb,
+                                           ds_smry_ls = cmprsns_ls$ds_smry_ls,
+                                           mdl_smry_ls = cmprsns_ls$mdl_smry_ls,
+                                           output_data_dir_1L_chr = output_data_dir_1L_chr,
+                                           seed_1L_int = seed_1L_int)
 ```
 
-The previous call to the `write_mdl_type_multi_outps`{.R} function saves the tested models along with the two plots for each model in the "E_Predrs_W_Covars_Sngl_Mdl_Cmprsn" sub-directory of "Output". 
-
+The previous call to the `write_mdls_with_covars_cmprsn`{.R} function saves the tested models along with the two plots for each model in the "E_Predrs_W_Covars_Sngl_Mdl_Cmprsn" sub-directory of "Output". 
 
 ## Apply preferred model types and predictors to time series data
 The next main step is to use the preferred model types and covariates identified from the preceding analysis of cross-sectional data in time series analysis. 
-
-### Preliminary steps
-First we summarise the combinations of model types, candidate predictors and covariates that we will be using.
-
-```{r}
-    mdl_smry_ls$predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = mdl_smry_ls$predr_cmprsn_tb$predr_chr,
-        covars_ls = list(mdl_smry_ls$prefd_covars_chr))
-```
-
-```{r}
-mdl_smry_ls$mdl_nms_ls <- make_mdl_nms_ls(mdl_smry_ls$predr_vars_nms_ls, mdl_types_chr = mdl_smry_ls$prefd_mdl_types_chr)
-```
-
-```{r}
-mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr()
-```
-
-We now create a composite object `outp_smry_ls` that contains the key input and output data used in testing models, predictors and covariates that we will need for the time series modelling.
-
-```{r}
-outp_smry_ls <- list(scored_data_tb = data_tb, 
-                     smry_of_sngl_predr_mdls_tb = mdl_smry_ls$smry_of_sngl_predr_mdls_tb,
-                     prefd_mdl_types_chr = mdl_smry_ls$prefd_mdl_types_chr, 
-                     predr_cmprsn_tb = mdl_smry_ls$predr_cmprsn_tb,
-                     smry_of_mdl_sngl_predrs_tb = mdl_smry_ls$smry_of_mdl_sngl_predrs_tb,
-                     mdls_with_covars_smry_tb = mdl_smry_ls$mdls_with_covars_smry_tb,
-                     signt_covars_chr = mdl_smry_ls$signt_covars_chr, 
-                     prefd_covars_chr = mdl_smry_ls$prefd_covars_chr,
-                     depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, 
-                     predr_vars_nms_ls = mdl_smry_ls$predr_vars_nms_ls,
-                     mdl_nms_ls = mdl_smry_ls$mdl_nms_ls, 
-                     id_var_nm_1L_chr = ds_smry_ls$id_var_nm_1L_chr,
-                     round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr,
-                     round_bl_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr,
-                     path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
-                     seed_1L_int = seed_1L_int,
-                     folds_1L_int = mdl_smry_ls$folds_1L_int, 
-                     max_nbr_of_boruta_mdl_runs_int = mdl_smry_ls$max_nbr_of_boruta_mdl_runs_int,
-                     mdl_types_lup = mdl_smry_ls$mdl_types_lup, 
-                     file_paths_chr = list.files(path_to_write_to_1L_chr, recursive = T))
-```
 
 ### Time series modelling
 Next we test each of the `r length(mdl_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())` time series models we specified in the previous step. Note the current version of the `write_ts_mdls_from_alg_outp` function only works with the two model types that we recommend for TTU modelling: 
@@ -371,13 +240,13 @@ Note, that in many cases both the `prior_ls` and `control_ls` arguments can be s
 
 ```{r eval = F}
 outp_smry_ls <- write_ts_mdls_from_alg_outp(outp_smry_ls,
-                                            fn_ls = list(fit_gsn_log_lnk,fit_clg_log_tfmn),
+                                            #fn_ls = list(fit_gsn_log_lnk,fit_clg_log_tfmn),
                                             predictors_lup = predictors_lup ,
                                             backend_1L_chr = "cmdstanr",
                                             new_dir_nm_1L_chr = "F_TS_Mdls",
                                             iters_1L_int = 4000L,
                                             prior_ls = NULL, 
-                                            control_ls = list(adapt_delta = 0.99))
+                                            control_ls = list(adapt_delta = 0.95))
 ```
 
 The `write_ts_mdls_from_alg_outp`{.R} function writes the models it tests to the "F_TS_Mdls" sub-directory of "Output" along with three plots for each model. 

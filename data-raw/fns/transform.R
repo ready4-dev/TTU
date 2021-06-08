@@ -13,24 +13,33 @@ transform_chr_digit_pairs <- function(digit_pairs_chr,
 }
 transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_chr = "utl_total_w",
     source_data_nm_1L_chr = "Original", tf_type_1L_chr = "Predicted",
-    predn_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, tfmn_1L_chr = "NTF")
+    predn_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, tfmn_1L_chr = "NTF", is_brms_mdl_1L_lgl = F)
 {
     if(tf_type_1L_chr == "Predicted")
         new_data_dbl <- stats::predict(model_mdl, type = predn_type_1L_chr)
     if(tf_type_1L_chr == "Simulated"){
-      if("betareg" %in% class(model_mdl)){
-        new_data_dbl <- rlang::exec(enrichwith::get_simulate_function(model_mdl),
-                                    coef(enrichwith::enrich(model_mdl, with = "auxiliary functions")))
+      if(is_brms_mdl_1L_lgl){
+        new_data_dbl <- brms::posterior_predict(mdl_ls,
+                                newdata = data_tb,
+                                nsamples=1) %>% as.vector()
+
       }else{
-        if (!tfmn_for_bnml_1L_lgl){
-          new_data_dbl <- stats::simulate(model_mdl)$sim_1
+        if("betareg" %in% class(model_mdl)){
+          new_data_dbl <- rlang::exec(enrichwith::get_simulate_function(model_mdl),
+                                      coef(enrichwith::enrich(model_mdl, with = "auxiliary functions")))
         }else{
-          new_data_dbl <- (stats::predict(model_mdl) + stats::rnorm(nrow(data_tb),
-                                                                    0, stats::sigma(model_mdl)))
+          if (!tfmn_for_bnml_1L_lgl){
+            new_data_dbl <- stats::simulate(model_mdl)$sim_1
+          }else{
+            new_data_dbl <- (stats::predict(model_mdl) + stats::rnorm(nrow(data_tb),
+                                                                      0, stats::sigma(model_mdl)))
+          }
         }
       }
     }
-        new_data_dbl <- new_data_dbl %>%
+    if(is.matrix(new_data_dbl))
+      new_data_dbl <- new_data_dbl[, 1]
+    new_data_dbl <- new_data_dbl %>% # Make CNDL ON BRMS???
           calculate_dpnt_var_tfmn(tfmn_1L_chr = ifelse(tfmn_for_bnml_1L_lgl & tf_type_1L_chr == "Simulated",
                                                        ifelse(family_1L_chr == "quasibinomial(log)",
                                                               "LOG",
@@ -47,8 +56,10 @@ transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_ch
 }
 transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF")
 {
-    tfd_depnt_var_nm_1L_chr <- paste0(depnt_var_nm_1L_chr, ifelse(tfmn_1L_chr ==
-        "NTF", "", paste0("_", tfmn_1L_chr)))
+    tfd_depnt_var_nm_1L_chr <- paste0(depnt_var_nm_1L_chr,
+                                      ifelse(tfmn_1L_chr == "NTF",
+                                             "",
+                                             paste0("_", tfmn_1L_chr)))
     return(tfd_depnt_var_nm_1L_chr)
 }
 transform_depnt_var_nm_for_cll <- function (depnt_var_nm_1L_chr)
@@ -281,8 +292,10 @@ transform_rprt_lup <- function(rprt_lup,
 }
 transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr,
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round",
-    round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, scaling_fctr_dbl = 0.01, ungroup_1L_lgl = F,
-    add_cll_tfmn_1L_lgl = T)
+    round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, scaling_fctr_dbl = 0.01,
+    tfmn_1L_chr = "NTF",
+    ungroup_1L_lgl = F#, add_cll_tfmn_1L_lgl = T
+    )
 {
     if(length(scaling_fctr_dbl)!=length(predr_vars_nms_chr)){
       scaling_fctr_dbl <- rep(scaling_fctr_dbl[1],length(predr_vars_nms_chr))
@@ -303,12 +316,18 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
                                                                                                           0,
                                                                                                           (. - dplyr::lag(.))*scaling_fctr_dbl[idx_1L_int]))))
                                           })
-    if(add_cll_tfmn_1L_lgl){
+    #if(add_cll_tfmn_1L_lgl){
       tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>%
-      dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm_for_cll(depnt_var_nm_1L_chr)),
-        log(-log(1 - ifelse(!!rlang::sym(depnt_var_nm_1L_chr) ==
-            1, 0.999, !!rlang::sym(depnt_var_nm_1L_chr))))))
-    }
+      dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr,
+                                                             tfmn_1L_chr = tfmn_1L_chr)#transform_depnt_var_nm_for_cll(depnt_var_nm_1L_chr)
+                                      ),
+                         !!rlang::sym(depnt_var_nm_1L_chr) %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
+                                                                                       tfmn_is_outp_1L_lgl = F,
+                                                                                       dep_var_max_val_1L_dbl = 0.999)
+        # log(-log(1 - ifelse(!!rlang::sym(depnt_var_nm_1L_chr) ==
+        #     1, 0.999, !!rlang::sym(depnt_var_nm_1L_chr))))
+        ))
+    #}
     if(drop_all_msng_1L_lgl){
       tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>%
         stats::na.omit()
