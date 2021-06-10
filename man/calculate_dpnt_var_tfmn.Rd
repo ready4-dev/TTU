@@ -7,7 +7,8 @@
 calculate_dpnt_var_tfmn(
   dep_var_val_dbl,
   tfmn_1L_chr = "NTF",
-  tfmn_is_outp_1L_lgl = F
+  tfmn_is_outp_1L_lgl = F,
+  dep_var_max_val_1L_dbl = NULL
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ calculate_dpnt_var_tfmn(
 \item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
 \item{tfmn_is_outp_1L_lgl}{Transformation is output (a logical vector of length one), Default: F}
+
+\item{dep_var_max_val_1L_dbl}{Dep variable maximum value (a double vector of length one), Default: NULL}
 }
 \value{
 Transformed dep variable value (a double vector)
@@ -23,3 +26,4 @@ Transformed dep variable value (a double vector)
 \description{
 calculate_dpnt_var_tfmn() is a Calculate function that performs a numeric calculation. Specifically, this function implements an algorithm to calculate dpnt variable transformation. The function returns Transformed dep variable value (a double vector).
 }
+\keyword{internal}

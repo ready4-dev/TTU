@@ -123,6 +123,7 @@ write_all_alg_outps <- function (scored_data_tb, path_to_write_to_1L_chr, depnt_
 #' @importFrom utils data
 #' @importFrom ready4show write_mdl_plt_fl
 #' @importFrom MASS boxcox
+#' @keywords internal
 write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1L_chr, 
     depnt_var_nm_1L_chr = "utl_total_w", covar_var_nms_chr = NA_character_, 
     fl_nm_pfx_1L_chr = "A_RT", height_1L_dbl = 6, width_1L_dbl = 6, 
@@ -149,35 +150,38 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'utl_total_w'
 #' @param depnt_var_desc_1L_chr Dependent variable description (a character vector of length one), Default: 'Utility score'
 #' @param round_var_nm_1L_chr Round variable name (a character vector of length one), Default: 'round'
-#' @param tfmn_fn Transformation (a function), Default: function(x) {
-#'    x
-#'}
+#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param units_1L_chr Units (a character vector of length one), Default: 'in'
-#' @param height_dbl Height (a double vector), Default: c(rep(6, 2), rep(5, 2))
-#' @param width_dbl Width (a double vector), Default: c(rep(6, 2), rep(6, 2))
-#' @param rsl_dbl Resolution (a double vector), Default: rep(300, 4)
+#' @param height_dbl Height (a double vector), Default: c(rep(6, 2), rep(5, 3))
+#' @param width_dbl Width (a double vector), Default: c(rep(6, 2), rep(6, 3))
+#' @param rsl_dbl Resolution (a double vector), Default: rep(300, 5)
 #' @param args_ls Arguments (a list), Default: NULL
 #' @param seed_1L_dbl Seed (a double vector of length one), Default: 23456
 #' @return Model plots paths (a list)
 #' @rdname write_brm_model_plts
 #' @export 
-#' @importFrom stats predict setNames
+#' @importFrom dplyr ungroup
 #' @importFrom purrr map discard
 #' @importFrom ready4show write_mdl_plt_fl
+#' @importFrom stats setNames
+#' @keywords internal
 write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_write_to_1L_chr, 
     depnt_var_nm_1L_chr = "utl_total_w", depnt_var_desc_1L_chr = "Utility score", 
-    round_var_nm_1L_chr = "round", tfmn_fn = function(x) {
-        x
-    }, units_1L_chr = "in", height_dbl = c(rep(6, 2), rep(5, 
-        2)), width_dbl = c(rep(6, 2), rep(6, 2)), rsl_dbl = rep(300, 
-        4), args_ls = NULL, seed_1L_dbl = 23456) 
+    round_var_nm_1L_chr = "round", tfmn_1L_chr = "NTF", units_1L_chr = "in", 
+    height_dbl = c(rep(6, 2), rep(5, 3)), width_dbl = c(rep(6, 
+        2), rep(6, 3)), rsl_dbl = rep(300, 5), args_ls = NULL, 
+    seed_1L_dbl = 23456) 
 {
     set.seed(seed_1L_dbl)
-    tfd_data_tb$Predicted <- stats::predict(mdl_ls)[, 1] %>% 
-        tfmn_fn()
+    tfd_data_tb <- transform_data_tb_for_cmprsn(tfd_data_tb %>% 
+        dplyr::ungroup(), model_mdl = mdl_ls, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr) %>% 
+        transform_data_tb_for_cmprsn(model_mdl = mdl_ls, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+            tf_type_1L_chr = "Simulated", predn_type_1L_chr = NULL, 
+            tfmn_for_bnml_1L_lgl = FALSE, family_1L_chr = NA_character_, 
+            tfmn_1L_chr = tfmn_1L_chr, is_brms_mdl_1L_lgl = T)
     plt_nms_chr <- paste0(mdl_nm_1L_chr, "_", c("coefs", "hetg", 
-        "dnst", "sctr_plt"))
-    mdl_plts_paths_ls <- purrr::map(1:4, ~{
+        "dnst", "sctr_plt", "sim_dnst"))
+    mdl_plts_paths_ls <- purrr::map(1:5, ~{
         plt_fn <- fn_args_ls <- NULL
         if (.x %in% c(1, 2)) {
             plt <- plot(mdl_ls, ask = F, plot = F)
@@ -189,11 +193,13 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
             }
         }
         else {
-            if (.x == 3) {
+            if (.x %in% c(3, 5)) {
                 plt_fn <- plot_obsd_predd_dnst
                 fn_args_ls <- list(tfd_data_tb = tfd_data_tb, 
                   depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
-                  depnt_var_desc_1L_chr = depnt_var_desc_1L_chr)
+                  depnt_var_desc_1L_chr = depnt_var_desc_1L_chr, 
+                  predd_val_var_nm_1L_chr = ifelse(.x == 3, "Predicted", 
+                    "Simulated"))
             }
             else {
                 plt_fn <- plot_obsd_predd_sctr_cmprsn
@@ -251,7 +257,6 @@ write_main_oupt_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_f
 #' @rdname write_mdl_cmprsn
 #' @export 
 #' @importFrom youthvars transform_ds_for_tstng
-#' @importFrom ready4fun get_from_lup_obj
 write_mdl_cmprsn <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, output_data_dir_1L_chr, 
     seed_1L_int = 1234) 
 {
@@ -262,13 +267,8 @@ write_mdl_cmprsn <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, output_da
         round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
     ds_smry_ls$candidate_predrs_chr <- reorder_cndt_predrs_chr(ds_smry_ls$candidate_predrs_chr, 
         data_tb = bl_tb, depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr)
-    mdl_smry_ls$predr_var_nm_1L_chr <- ds_smry_ls$candidate_predrs_chr[1]
-    mdl_smry_ls$predr_var_desc_1L_chr <- ds_smry_ls$predictors_lup %>% 
-        ready4fun::get_from_lup_obj(match_value_xx = mdl_smry_ls$predr_var_nm_1L_chr, 
-            match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = "long_name_chr", 
-            evaluate_lgl = F)
-    mdl_smry_ls$predr_vals_dbl <- make_predr_vals(mdl_smry_ls$predr_var_nm_1L_chr, 
-        candidate_predrs_lup = ds_smry_ls$predictors_lup)
+    mdl_smry_ls <- add_prefd_predr_var_to_mdl_smry_ls(mdl_smry_ls, 
+        ds_smry_ls = ds_smry_ls)
     mdl_smry_ls$smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data_tb = bl_tb, 
         folds_1L_int = mdl_smry_ls$folds_1L_int, mdl_types_chr = mdl_smry_ls$mdl_types_chr, 
         depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, 
@@ -277,6 +277,8 @@ write_mdl_cmprsn <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, output_da
         predr_vals_dbl = mdl_smry_ls$predr_vals_dbl, path_to_write_to_1L_chr = output_data_dir_1L_chr, 
         new_dir_nm_1L_chr = "A_Candidate_Mdls_Cmprsn", mdl_types_lup = mdl_smry_ls$mdl_types_lup, 
         dictionary_tb = ds_smry_ls$dictionary_tb)
+    mdl_smry_ls$prefd_mdl_types_chr <- make_prefd_mdls_vec(mdl_smry_ls$smry_of_sngl_predr_mdls_tb, 
+        choose_from_pfx_chr = mdl_smry_ls$choose_from_pfx_chr)
     mdl_cmprsn_ls <- list(bl_tb = bl_tb, ds_smry_ls = ds_smry_ls, 
         mdl_smry_ls = mdl_smry_ls)
     return(mdl_cmprsn_ls)
@@ -303,6 +305,7 @@ write_mdl_cmprsn <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, output_da
 #' @export 
 #' @importFrom purrr pwalk
 #' @importFrom ready4show write_mdl_plt_fl
+#' @keywords internal
 write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", depnt_var_nm_1L_chr = "utl_total_w", 
     depnt_var_desc_1L_chr = "Utility score", tfmn_1L_chr = "NTF", 
     predr_var_nm_1L_chr, predr_var_desc_1L_chr, predr_vals_dbl, 
@@ -370,6 +373,7 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
 #' @export 
 #' @importFrom here here
 #' @importFrom purrr pluck
+#' @keywords internal
 write_mdl_smry_rprt <- function (header_yaml_args_ls, path_params_ls, use_fake_data_1L_lgl = FALSE, 
     output_format_ls, abstract_args_ls = NULL, reference_1L_int = NULL, 
     rprt_lup = NULL, rcrd_nm_1L_chr = "Write_Rprt_Rcrd", rprt_nm_1L_chr = "TS_TTU_Mdls_Smry", 
@@ -560,6 +564,7 @@ write_mdl_type_multi_outps <- function (data_tb, folds_1L_int = 10, predrs_var_n
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
 #' @importFrom tibble tibble
+#' @keywords internal
 write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_1L_chr = "utl_total_w", 
     start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, 
     predr_var_desc_1L_chr, predr_vals_dbl, covar_var_nms_chr = NA_character_, 
@@ -625,13 +630,13 @@ write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_
 #' @param mdl_smry_ls Model summary (a list)
 #' @param output_data_dir_1L_chr Output data directory (a character vector of length one)
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 1234
-#' @param session_data_ls Session data (a list)
+#' @param session_data_ls Session data (a list), Default: NULL
 #' @return Output summary (a list)
 #' @rdname write_mdls_with_covars_cmprsn
 #' @export 
 
 write_mdls_with_covars_cmprsn <- function (scored_data_tb, bl_tb, ds_smry_ls, mdl_smry_ls, output_data_dir_1L_chr, 
-    seed_1L_int = 1234, session_data_ls) 
+    seed_1L_int = 1234, session_data_ls = NULL) 
 {
     empty_tb <- write_mdl_type_multi_outps(data_tb = bl_tb, folds_1L_int = NULL, 
         start_1L_chr = NA_character_, predrs_var_nms_chr = mdl_smry_ls$predr_cmprsn_tb$predr_chr, 
@@ -668,6 +673,7 @@ write_mdls_with_covars_cmprsn <- function (scored_data_tb, bl_tb, ds_smry_ls, md
 #' @rdname write_new_outp_dir
 #' @export 
 
+#' @keywords internal
 write_new_outp_dir <- function (path_to_write_to_1L_chr, new_dir_nm_1L_chr) 
 {
     output_dir_1L_chr <- paste0(path_to_write_to_1L_chr, "/", 
@@ -733,17 +739,13 @@ write_predr_and_covars_cmprsn <- function (scored_data_tb, bl_tb, ds_smry_ls, md
 #' @rdname write_predr_and_mdl_tstng_results
 #' @export 
 
+#' @keywords internal
 write_predr_and_mdl_tstng_results <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, session_data_ls, 
     output_data_dir_1L_chr, seed_1L_int = 1234) 
 {
     cmprsn_ls <- write_mdl_cmprsn(scored_data_tb = scored_data_tb, 
         ds_smry_ls = ds_smry_ls, mdl_smry_ls = mdl_smry_ls, output_data_dir_1L_chr = output_data_dir_1L_chr, 
         seed_1L_int = seed_1L_int)
-    if (ifelse(is.null(cmprsn_ls$mdl_smry_ls$prefd_mdl_types_chr), 
-        T, is.na(cmprsn_ls$mdl_smry_ls$prefd_mdl_types_chr[1]))) {
-        cmprsn_ls$mdl_smry_ls$prefd_mdl_types_chr <- make_prefd_mdls_vec(cmprsn_ls$mdl_smry_ls$smry_of_sngl_predr_mdls_tb, 
-            choose_from_pfx_chr = cmprsn_ls$mdl_smry_ls$choose_from_pfx_chr)
-    }
     cmprsn_ls <- write_predr_and_covars_cmprsn(scored_data_tb = scored_data_tb, 
         bl_tb = cmprsn_ls$bl_tb, ds_smry_ls = cmprsn_ls$ds_smry_ls, 
         mdl_smry_ls = cmprsn_ls$mdl_smry_ls, output_data_dir_1L_chr = output_data_dir_1L_chr, 
@@ -937,6 +939,7 @@ write_scndry_analysis <- function (analysis_core_params_ls, candidate_covar_nms_
 #' @rdname write_scndry_analysis_dir
 #' @export 
 #' @importFrom here here
+#' @keywords internal
 write_scndry_analysis_dir <- function (paths_ls, reference_1L_int = 1) 
 {
     paths_ls <- transform_paths_ls_for_scndry(paths_ls, reference_1L_int = reference_1L_int)
@@ -1026,6 +1029,7 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
 #' @importFrom dataverse get_dataset
 #' @importFrom dplyr mutate
 #' @importFrom purrr map_int
+#' @keywords internal
 write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "") 
 {
     output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr, 
@@ -1124,6 +1128,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @importFrom rlang exec
 #' @importFrom ready4use write_fls_to_dv_ds
 #' @importFrom tibble tibble
+#' @keywords internal
 write_study_outp_ds <- function (dv_ls, output_format_ls, path_params_ls, abstract_args_ls = NULL, 
     dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.", 
     inc_fl_types_chr = ".pdf", purge_data_1L_lgl = FALSE, reference_1L_int = NULL, 
@@ -1225,38 +1230,40 @@ write_to_delete_mdl_fls <- function (outp_smry_ls)
 #' @param round_var_nm_1L_chr Round variable name (a character vector of length one), Default: 'round'
 #' @param round_bl_val_1L_chr Round baseline value (a character vector of length one), Default: 'Baseline'
 #' @param backend_1L_chr Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")
-#' @param fn_ls Function list (a list of functions)
 #' @param mdl_nms_ls Model names (a list)
 #' @param mdl_smry_dir_1L_chr Model summary directory (a character vector of length one)
 #' @param predictors_lup Predictors (a lookup table)
 #' @param iters_1L_int Iterations (an integer vector of length one), Default: 4000
+#' @param mdl_types_lup Model types (a lookup table)
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 1000
 #' @param prior_ls Prior (a list), Default: NULL
 #' @param control_ls Control (a list), Default: NULL
 #' @return Models summary (a tibble)
 #' @rdname write_ts_mdls
 #' @export 
-#' @importFrom purrr map_dfr map2_dfr
+#' @importFrom purrr map_dfr
+#' @keywords internal
 write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_ls, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", backend_1L_chr = getOption("brms.backend", 
-        "rstan"), fn_ls, mdl_nms_ls, mdl_smry_dir_1L_chr, predictors_lup, 
-    iters_1L_int = 4000L, seed_1L_int = 1000L, prior_ls = NULL, 
-    control_ls = NULL) 
+        "rstan"), mdl_nms_ls, mdl_smry_dir_1L_chr, predictors_lup, 
+    iters_1L_int = 4000L, mdl_types_lup, seed_1L_int = 1000L, 
+    prior_ls = NULL, control_ls = NULL) 
 {
     if (!dir.exists(mdl_smry_dir_1L_chr)) 
         dir.create(mdl_smry_dir_1L_chr)
     mdls_smry_tb <- purrr::map_dfr(1:length(mdl_nms_ls), ~{
         idx_1L_int <- .x
-        purrr::map2_dfr(fn_ls, mdl_nms_ls[[idx_1L_int]], ~{
+        purrr::map_dfr(mdl_nms_ls[[idx_1L_int]], ~{
             smry_ls <- make_smry_of_ts_mdl_outp(data_tb = data_tb, 
-                fn = .x, predr_vars_nms_chr = predr_vars_nms_ls[[idx_1L_int]], 
-                mdl_nm_1L_chr = .y, path_to_write_to_1L_chr = mdl_smry_dir_1L_chr, 
+                predr_vars_nms_chr = predr_vars_nms_ls[[idx_1L_int]], 
+                mdl_nm_1L_chr = .x, path_to_write_to_1L_chr = mdl_smry_dir_1L_chr, 
                 depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, id_var_nm_1L_chr = id_var_nm_1L_chr, 
                 round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr, 
                 predictors_lup = predictors_lup, backend_1L_chr = backend_1L_chr, 
-                iters_1L_int = iters_1L_int, seed_1L_int = seed_1L_int, 
-                prior_ls = prior_ls, control_ls = control_ls)
+                iters_1L_int = iters_1L_int, mdl_types_lup = mdl_types_lup, 
+                seed_1L_int = seed_1L_int, prior_ls = prior_ls, 
+                control_ls = control_ls)
             Sys.sleep(5)
             smry_ls$smry_of_ts_mdl_tb
         })
@@ -1267,7 +1274,6 @@ write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_v
 #' Write time series models from algorithm output
 #' @description write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models from algorithm output. The function returns Output summary (a list).
 #' @param outp_smry_ls Output summary (a list)
-#' @param fn_ls Function list (a list of functions)
 #' @param new_dir_nm_1L_chr New directory name (a character vector of length one), Default: 'F_TS_Mdls'
 #' @param predictors_lup Predictors (a lookup table)
 #' @param backend_1L_chr Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")
@@ -1278,9 +1284,9 @@ write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_v
 #' @rdname write_ts_mdls_from_alg_outp
 #' @export 
 
-write_ts_mdls_from_alg_outp <- function (outp_smry_ls, fn_ls, new_dir_nm_1L_chr = "F_TS_Mdls", 
-    predictors_lup, backend_1L_chr = getOption("brms.backend", 
-        "rstan"), iters_1L_int = 4000L, prior_ls = NULL, control_ls = NULL) 
+write_ts_mdls_from_alg_outp <- function (outp_smry_ls, new_dir_nm_1L_chr = "F_TS_Mdls", predictors_lup, 
+    backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L, 
+    prior_ls = NULL, control_ls = NULL) 
 {
     output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr, 
         new_dir_nm_1L_chr = new_dir_nm_1L_chr)
@@ -1289,9 +1295,9 @@ write_ts_mdls_from_alg_outp <- function (outp_smry_ls, fn_ls, new_dir_nm_1L_chr 
         predr_vars_nms_ls = outp_smry_ls$predr_vars_nms_ls, id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, 
         round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr, 
         round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr, 
-        fn_ls = fn_ls, mdl_nms_ls = outp_smry_ls$mdl_nms_ls, 
-        mdl_smry_dir_1L_chr = output_dir_1L_chr, predictors_lup = predictors_lup, 
-        backend_1L_chr = backend_1L_chr, iters_1L_int = iters_1L_int, 
+        mdl_nms_ls = outp_smry_ls$mdl_nms_ls, mdl_smry_dir_1L_chr = output_dir_1L_chr, 
+        predictors_lup = predictors_lup, backend_1L_chr = backend_1L_chr, 
+        iters_1L_int = iters_1L_int, mdl_types_lup = outp_smry_ls$mdl_types_lup, 
         seed_1L_int = outp_smry_ls$seed_1L_int, prior_ls = prior_ls, 
         control_ls = control_ls)
     outp_smry_ls$mdls_smry_tb <- mdls_smry_tb

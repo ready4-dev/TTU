@@ -24,7 +24,6 @@ reference:
 - title: "Functions"
 - contents:
   - add_utility_predn_to_ds
-  - fit_clg_log_tfmn
   - get_signft_covars
   - make_analysis_ds_smry_ls
   - make_fake_eq5d_ds

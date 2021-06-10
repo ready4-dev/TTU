@@ -6,7 +6,6 @@
 \usage{
 write_ts_mdls_from_alg_outp(
   outp_smry_ls,
-  fn_ls,
   new_dir_nm_1L_chr = "F_TS_Mdls",
   predictors_lup,
   backend_1L_chr = getOption("brms.backend", "rstan"),
@@ -17,8 +16,6 @@ write_ts_mdls_from_alg_outp(
 }
 \arguments{
 \item{outp_smry_ls}{Output summary (a list)}
-
-\item{fn_ls}{Function list (a list of functions)}
 
 \item{new_dir_nm_1L_chr}{New directory name (a character vector of length one), Default: 'F_TS_Mdls'}
 

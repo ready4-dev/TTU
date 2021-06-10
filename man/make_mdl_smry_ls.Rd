@@ -29,3 +29,4 @@ Model summary (a list)
 \description{
 make_mdl_smry_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model summary list. The function returns Model summary (a list).
 }
+\keyword{internal}

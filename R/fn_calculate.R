@@ -3,13 +3,21 @@
 #' @param dep_var_val_dbl Dep variable value (a double vector)
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param tfmn_is_outp_1L_lgl Transformation is output (a logical vector of length one), Default: F
+#' @param dep_var_max_val_1L_dbl Dep variable maximum value (a double vector of length one), Default: NULL
 #' @return Transformed dep variable value (a double vector)
 #' @rdname calculate_dpnt_var_tfmn
 #' @export 
+#' @importFrom purrr map_dbl
 #' @importFrom boot inv.logit
 #' @importFrom psych logit
-calculate_dpnt_var_tfmn <- function (dep_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_is_outp_1L_lgl = F) 
+#' @keywords internal
+calculate_dpnt_var_tfmn <- function (dep_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_is_outp_1L_lgl = F, 
+    dep_var_max_val_1L_dbl = NULL) 
 {
+    if (!is.null(dep_var_max_val_1L_dbl)) {
+        dep_var_val_dbl <- dep_var_val_dbl %>% purrr::map_dbl(~min(.x, 
+            dep_var_max_val_1L_dbl))
+    }
     tfd_dep_var_val_dbl <- dep_var_val_dbl
     if (tfmn_1L_chr == "LOG") {
         if (tfmn_is_outp_1L_lgl) 
@@ -41,21 +49,9 @@ calculate_dpnt_var_tfmn <- function (dep_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_
 #' @rdname calculate_rmse
 #' @export 
 
+#' @keywords internal
 calculate_rmse <- function (y_dbl, yhat_dbl) 
 {
     rmse_dbl <- sqrt(mean((yhat_dbl - y_dbl)^2))
     return(rmse_dbl)
-}
-#' Calculate root mean square error transformation
-#' @description calculate_rmse_tfmn() is a Calculate function that performs a numeric calculation. Specifically, this function implements an algorithm to calculate root mean square error transformation. The function returns Root mean square error transformation (a double vector).
-#' @param y_dbl Y (a double vector)
-#' @param yhat_dbl Yhat (a double vector)
-#' @return Root mean square error transformation (a double vector)
-#' @rdname calculate_rmse_tfmn
-#' @export 
-
-calculate_rmse_tfmn <- function (y_dbl, yhat_dbl) 
-{
-    rmse_tfmn_dbl <- sqrt(mean((1 - exp(-exp(yhat_dbl)) - y_dbl)^2))
-    return(rmse_tfmn_dbl)
 }

@@ -29,3 +29,4 @@ plot_lnr_cmprsn(
 \description{
 plot_lnr_cmprsn() is a Plot function that plots data Specifically, this function implements an algorithm to plot linear comparison. The function is called for its side effects and does not return a value.
 }
+\keyword{internal}

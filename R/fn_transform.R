@@ -6,6 +6,7 @@
 #' @rdname transform_chr_digit_pairs
 #' @export 
 #' @importFrom purrr map_chr pluck
+#' @keywords internal
 transform_chr_digit_pairs <- function (digit_pairs_chr, nbr_of_digits_1L_int = 2L) 
 {
     tfd_digit_pairs_chr <- digit_pairs_chr %>% purrr::map_chr(~{
@@ -34,35 +35,46 @@ transform_chr_digit_pairs <- function (digit_pairs_chr, nbr_of_digits_1L_int = 2
 #' @param tfmn_for_bnml_1L_lgl Transformation for binomial (a logical vector of length one), Default: F
 #' @param family_1L_chr Family (a character vector of length one), Default: 'NA'
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
+#' @param is_brms_mdl_1L_lgl Is bayesian regression models model (a logical vector of length one), Default: F
 #' @return Transformed data (a tibble)
 #' @rdname transform_data_tb_for_cmprsn
 #' @export 
 #' @importFrom stats predict simulate rnorm sigma
+#' @importFrom brms posterior_predict
 #' @importFrom rlang exec sym
 #' @importFrom enrichwith get_simulate_function enrich
 #' @importFrom dplyr mutate
+#' @keywords internal
 transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_chr = "utl_total_w", 
     source_data_nm_1L_chr = "Original", tf_type_1L_chr = "Predicted", 
     predn_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, 
-    tfmn_1L_chr = "NTF") 
+    tfmn_1L_chr = "NTF", is_brms_mdl_1L_lgl = F) 
 {
     if (tf_type_1L_chr == "Predicted") 
         new_data_dbl <- stats::predict(model_mdl, type = predn_type_1L_chr)
     if (tf_type_1L_chr == "Simulated") {
-        if ("betareg" %in% class(model_mdl)) {
-            new_data_dbl <- rlang::exec(enrichwith::get_simulate_function(model_mdl), 
-                coef(enrichwith::enrich(model_mdl, with = "auxiliary functions")))
+        if (is_brms_mdl_1L_lgl) {
+            new_data_dbl <- brms::posterior_predict(mdl_ls, newdata = data_tb, 
+                nsamples = 1) %>% as.vector()
         }
         else {
-            if (!tfmn_for_bnml_1L_lgl) {
-                new_data_dbl <- stats::simulate(model_mdl)$sim_1
+            if ("betareg" %in% class(model_mdl)) {
+                new_data_dbl <- rlang::exec(enrichwith::get_simulate_function(model_mdl), 
+                  coef(enrichwith::enrich(model_mdl, with = "auxiliary functions")))
             }
             else {
-                new_data_dbl <- (stats::predict(model_mdl) + 
-                  stats::rnorm(nrow(data_tb), 0, stats::sigma(model_mdl)))
+                if (!tfmn_for_bnml_1L_lgl) {
+                  new_data_dbl <- stats::simulate(model_mdl)$sim_1
+                }
+                else {
+                  new_data_dbl <- (stats::predict(model_mdl) + 
+                    stats::rnorm(nrow(data_tb), 0, stats::sigma(model_mdl)))
+                }
             }
         }
     }
+    if (is.matrix(new_data_dbl)) 
+        new_data_dbl <- new_data_dbl[, 1]
     new_data_dbl <- new_data_dbl %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = ifelse(tfmn_for_bnml_1L_lgl & 
         tf_type_1L_chr == "Simulated", ifelse(family_1L_chr == 
         "quasibinomial(log)", "LOG", ifelse(family_1L_chr == 
@@ -82,6 +94,7 @@ transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_ch
 #' @rdname transform_depnt_var_nm
 #' @export 
 
+#' @keywords internal
 transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF") 
 {
     tfd_depnt_var_nm_1L_chr <- paste0(depnt_var_nm_1L_chr, ifelse(tfmn_1L_chr == 
@@ -95,6 +108,7 @@ transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF")
 #' @rdname transform_depnt_var_nm_for_cll
 #' @export 
 
+#' @keywords internal
 transform_depnt_var_nm_for_cll <- function (depnt_var_nm_1L_chr) 
 {
     tfd_depnt_var_nm_1L_chr <- paste0(depnt_var_nm_1L_chr, "_cloglog")
@@ -113,6 +127,7 @@ transform_depnt_var_nm_for_cll <- function (depnt_var_nm_1L_chr)
 #' @importFrom tidyr drop_na
 #' @importFrom rlang syms
 #' @importFrom dplyr select
+#' @keywords internal
 transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_var_nm_1L_chr, 
     covar_var_nms_chr = NA_character_) 
 {
@@ -189,6 +204,7 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
 #' @export 
 #' @importFrom purrr map_chr
 #' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
 transform_params_ls_from_lup <- function (params_ls, rename_lup) 
 {
     if (!is.null(params_ls$ds_descvs_ls)) {
@@ -244,6 +260,7 @@ transform_params_ls_from_lup <- function (params_ls, rename_lup)
 #' @importFrom dplyr filter rename_with mutate
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom Hmisc label
+#' @keywords internal
 transform_params_ls_to_valid <- function (params_ls, scndry_analysis_extra_vars_chr = NA_character_) 
 {
     target_var_nms_chr <- c(params_ls$ds_descvs_ls$candidate_predrs_chr, 
@@ -306,6 +323,7 @@ transform_paths_ls_for_scndry <- function (paths_ls, reference_1L_int = 1, remov
 #' @importFrom tibble tibble
 #' @importFrom purrr map_chr map_lgl
 #' @importFrom stringr str_detect str_replace
+#' @keywords internal
 transform_predr_nm_part_of_phrases <- function (phrases_chr, old_nms_chr = NULL, new_nms_chr = NULL) 
 {
     if (is.null(old_nms_chr)) {
@@ -366,8 +384,8 @@ transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharin
 #' @param round_bl_val_1L_chr Round baseline value (a character vector of length one), Default: 'Baseline'
 #' @param drop_all_msng_1L_lgl Drop all missing (a logical vector of length one), Default: T
 #' @param scaling_fctr_dbl Scaling factor (a double vector), Default: 0.01
+#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param ungroup_1L_lgl Ungroup (a logical vector of length one), Default: F
-#' @param add_cll_tfmn_1L_lgl Add complementary log log transformation (a logical vector of length one), Default: T
 #' @return Transformed for model input (a tibble)
 #' @rdname transform_tb_to_mdl_inp
 #' @export 
@@ -378,7 +396,7 @@ transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharin
 transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, 
-    scaling_fctr_dbl = 0.01, ungroup_1L_lgl = F, add_cll_tfmn_1L_lgl = T) 
+    scaling_fctr_dbl = 0.01, tfmn_1L_chr = "NTF", ungroup_1L_lgl = F) 
 {
     if (length(scaling_fctr_dbl) != length(predr_vars_nms_chr)) {
         scaling_fctr_dbl <- rep(scaling_fctr_dbl[1], length(predr_vars_nms_chr))
@@ -397,11 +415,10 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
                     round_bl_val_1L_chr, 0, (. - dplyr::lag(.)) * 
                     scaling_fctr_dbl[idx_1L_int]))))
         })
-    if (add_cll_tfmn_1L_lgl) {
-        tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm_for_cll(depnt_var_nm_1L_chr)), 
-            log(-log(1 - ifelse(!!rlang::sym(depnt_var_nm_1L_chr) == 
-                1, 0.999, !!rlang::sym(depnt_var_nm_1L_chr))))))
-    }
+    tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr, 
+        tfmn_1L_chr = tfmn_1L_chr)), !!rlang::sym(depnt_var_nm_1L_chr) %>% 
+        calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, tfmn_is_outp_1L_lgl = F, 
+            dep_var_max_val_1L_dbl = 0.999)))
     if (drop_all_msng_1L_lgl) {
         tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% stats::na.omit()
     }
@@ -419,6 +436,7 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
 #' @export 
 #' @importFrom dplyr select mutate across
 #' @importFrom tibble as_tibble
+#' @keywords internal
 transform_tbl_to_rnd_vars <- function (ds_tb, nbr_of_digits_1L_int = 2L) 
 {
     numeric_vars_chr <- ds_tb %>% dplyr::select(where(is.numeric)) %>% 
@@ -440,6 +458,7 @@ transform_tbl_to_rnd_vars <- function (ds_tb, nbr_of_digits_1L_int = 2L)
 #' @export 
 #' @importFrom dplyr select all_of summarise across everything
 #' @importFrom purrr map flatten_chr
+#' @keywords internal
 transform_ts_mdl_data <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_total_w", 
     predr_vars_nms_chr, id_var_nm_1L_chr = "fkClientID", mdl_nm_1L_chr) 
 {

@@ -23,3 +23,4 @@ Paths to ss plots (a list)
 \description{
 make_paths_to_ss_plts_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make paths to ss plots list. The function returns Paths to ss plots (a list).
 }
+\keyword{internal}

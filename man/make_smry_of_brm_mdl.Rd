@@ -9,7 +9,6 @@ make_smry_of_brm_mdl(
   data_tb,
   depnt_var_nm_1L_chr = "utl_total_w",
   predr_vars_nms_chr,
-  fn = calculate_rmse,
   mdl_nm_1L_chr = NA_character_,
   seed_1L_dbl = 23456
 )
@@ -23,8 +22,6 @@ make_smry_of_brm_mdl(
 
 \item{predr_vars_nms_chr}{Predictor variables names (a character vector)}
 
-\item{fn}{Function (a function), Default: calculate_rmse}
-
 \item{mdl_nm_1L_chr}{Model name (a character vector of length one), Default: 'NA'}
 
 \item{seed_1L_dbl}{Seed (a double vector of length one), Default: 23456}
@@ -35,3 +32,4 @@ Summary of bayesian regression model model (a tibble)
 \description{
 make_smry_of_brm_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make summary of bayesian regression model model. The function returns Summary of bayesian regression model model (a tibble).
 }
+\keyword{internal}

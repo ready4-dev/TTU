@@ -35,3 +35,4 @@ NA ()
 \description{
 predict_utl_from_k10() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict utility from k10. The function is called for its side effects and does not return a value.
 }
+\keyword{internal}

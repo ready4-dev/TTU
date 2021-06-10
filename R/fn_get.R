@@ -1,3 +1,22 @@
+#' Get link from transformation
+#' @description get_link_from_tfmn() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get link from transformation. Function argument tfmn_1L_chr specifies the where to look for the required object. The function returns Link (a character vector of length one).
+#' @param tfmn_1L_chr Transformation (a character vector of length one)
+#' @param is_OLS_1L_lgl Is OLS (a logical vector of length one), Default: F
+#' @return Link (a character vector of length one)
+#' @rdname get_link_from_tfmn
+#' @export 
+
+#' @keywords internal
+get_link_from_tfmn <- function (tfmn_1L_chr, is_OLS_1L_lgl = F) 
+{
+    link_1L_chr <- ifelse(is_OLS_1L_lgl, "identity", ifelse(tfmn_1L_chr == 
+        "LOG", "log", ifelse(tfmn_1L_chr == "LGT", "logit", ifelse(tfmn_1L_chr == 
+        "CLL", "cloglog", ifelse(tfmn_1L_chr == "LOGLOG", "loglog", 
+        ifelse(tfmn_1L_chr == "NTF", "identity", "ERROR"))))))
+    if (link_1L_chr == "ERROR") 
+        stop("Link cannot be identified - incorrect transformation argument tfmn_1L_chr")
+    return(link_1L_chr)
+}
 #' Get significant covariates
 #' @description get_signft_covars() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get significant covariates. Function argument mdls_with_covars_smry_tb specifies the where to look for the required object. The function returns Signt covariates (a character vector).
 #' @param mdls_with_covars_smry_tb Models with covariates summary (a tibble)

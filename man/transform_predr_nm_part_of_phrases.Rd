@@ -23,3 +23,4 @@ Transformed phrases (a character vector)
 \description{
 transform_predr_nm_part_of_phrases() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform predictor name part of phrases. Function argument phrases_chr specifies the object to be updated. Argument old_nms_chr provides the object to be updated. The function returns Transformed phrases (a character vector).
 }
+\keyword{internal}

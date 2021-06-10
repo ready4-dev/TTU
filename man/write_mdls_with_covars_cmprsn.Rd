@@ -11,7 +11,7 @@ write_mdls_with_covars_cmprsn(
   mdl_smry_ls,
   output_data_dir_1L_chr,
   seed_1L_int = 1234,
-  session_data_ls
+  session_data_ls = NULL
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ write_mdls_with_covars_cmprsn(
 
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 1234}
 
-\item{session_data_ls}{Session data (a list)}
+\item{session_data_ls}{Session data (a list), Default: NULL}
 }
 \value{
 Output summary (a list)

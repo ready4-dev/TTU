@@ -13,8 +13,8 @@ transform_tb_to_mdl_inp(
   round_bl_val_1L_chr = "Baseline",
   drop_all_msng_1L_lgl = T,
   scaling_fctr_dbl = 0.01,
-  ungroup_1L_lgl = F,
-  add_cll_tfmn_1L_lgl = T
+  tfmn_1L_chr = "NTF",
+  ungroup_1L_lgl = F
 )
 }
 \arguments{
@@ -34,9 +34,9 @@ transform_tb_to_mdl_inp(
 
 \item{scaling_fctr_dbl}{Scaling factor (a double vector), Default: 0.01}
 
-\item{ungroup_1L_lgl}{Ungroup (a logical vector of length one), Default: F}
+\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
-\item{add_cll_tfmn_1L_lgl}{Add complementary log log transformation (a logical vector of length one), Default: T}
+\item{ungroup_1L_lgl}{Ungroup (a logical vector of length one), Default: F}
 }
 \value{
 Transformed for model input (a tibble)

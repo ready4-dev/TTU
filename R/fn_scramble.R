@@ -5,6 +5,7 @@
 #' @rdname scramble_xx
 #' @export 
 
+#' @keywords internal
 scramble_xx <- function (vector_xx) 
 {
     scrambled_vec_xx <- vector_xx[sample(1:length(vector_xx))]

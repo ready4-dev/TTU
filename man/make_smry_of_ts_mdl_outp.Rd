@@ -6,7 +6,6 @@
 \usage{
 make_smry_of_ts_mdl_outp(
   data_tb,
-  fn,
   predr_vars_nms_chr,
   mdl_nm_1L_chr,
   path_to_write_to_1L_chr = NA_character_,
@@ -17,6 +16,7 @@ make_smry_of_ts_mdl_outp(
   predictors_lup,
   backend_1L_chr = getOption("brms.backend", "rstan"),
   iters_1L_int = 4000L,
+  mdl_types_lup,
   seed_1L_int = 1000L,
   prior_ls = NULL,
   control_ls = NULL
@@ -24,8 +24,6 @@ make_smry_of_ts_mdl_outp(
 }
 \arguments{
 \item{data_tb}{Data (a tibble)}
-
-\item{fn}{Function (a function)}
 
 \item{predr_vars_nms_chr}{Predictor variables names (a character vector)}
 
@@ -47,6 +45,8 @@ make_smry_of_ts_mdl_outp(
 
 \item{iters_1L_int}{Iterations (an integer vector of length one), Default: 4000}
 
+\item{mdl_types_lup}{Model types (a lookup table)}
+
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 1000}
 
 \item{prior_ls}{Prior (a list), Default: NULL}
@@ -59,3 +59,4 @@ Summary of time series (a list of models)
 \description{
 make_smry_of_ts_mdl_outp() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make summary of time series model output. The function returns Summary of time series (a list of models).
 }
+\keyword{internal}

@@ -12,11 +12,11 @@ write_ts_mdls(
   round_var_nm_1L_chr = "round",
   round_bl_val_1L_chr = "Baseline",
   backend_1L_chr = getOption("brms.backend", "rstan"),
-  fn_ls,
   mdl_nms_ls,
   mdl_smry_dir_1L_chr,
   predictors_lup,
   iters_1L_int = 4000L,
+  mdl_types_lup,
   seed_1L_int = 1000L,
   prior_ls = NULL,
   control_ls = NULL
@@ -37,8 +37,6 @@ write_ts_mdls(
 
 \item{backend_1L_chr}{Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")}
 
-\item{fn_ls}{Function list (a list of functions)}
-
 \item{mdl_nms_ls}{Model names (a list)}
 
 \item{mdl_smry_dir_1L_chr}{Model summary directory (a character vector of length one)}
@@ -46,6 +44,8 @@ write_ts_mdls(
 \item{predictors_lup}{Predictors (a lookup table)}
 
 \item{iters_1L_int}{Iterations (an integer vector of length one), Default: 4000}
+
+\item{mdl_types_lup}{Model types (a lookup table)}
 
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 1000}
 
@@ -59,3 +59,4 @@ Models summary (a tibble)
 \description{
 write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models. The function returns Models summary (a tibble).
 }
+\keyword{internal}

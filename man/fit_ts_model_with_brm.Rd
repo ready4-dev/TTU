@@ -10,7 +10,7 @@ fit_ts_model_with_brm(
   predr_vars_nms_chr,
   id_var_nm_1L_chr,
   backend_1L_chr = getOption("brms.backend", "rstan"),
-  link_1L_chr = "identity",
+  family_fn_1L_chr,
   iters_1L_int = 4000L,
   seed_1L_int = 1000L,
   prior_ls = NULL,
@@ -28,7 +28,7 @@ fit_ts_model_with_brm(
 
 \item{backend_1L_chr}{Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")}
 
-\item{link_1L_chr}{Link (a character vector of length one), Default: 'identity'}
+\item{family_fn_1L_chr}{Family function (a character vector of length one)}
 
 \item{iters_1L_int}{Iterations (an integer vector of length one), Default: 4000}
 
@@ -44,3 +44,4 @@ Model list (a list of models)
 \description{
 fit_ts_model_with_brm() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit time series model with bayesian regression model. The function returns Model list (a list of models).
 }
+\keyword{internal}

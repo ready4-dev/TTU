@@ -17,3 +17,4 @@ Root mean square error (a double vector)
 \description{
 calculate_rmse() is a Calculate function that performs a numeric calculation. Specifically, this function implements an algorithm to calculate root mean square error. The function returns Root mean square error (a double vector).
 }
+\keyword{internal}

@@ -12,11 +12,11 @@ write_brm_model_plts(
   depnt_var_nm_1L_chr = "utl_total_w",
   depnt_var_desc_1L_chr = "Utility score",
   round_var_nm_1L_chr = "round",
-  tfmn_fn = function(x) {     x },
+  tfmn_1L_chr = "NTF",
   units_1L_chr = "in",
-  height_dbl = c(rep(6, 2), rep(5, 2)),
-  width_dbl = c(rep(6, 2), rep(6, 2)),
-  rsl_dbl = rep(300, 4),
+  height_dbl = c(rep(6, 2), rep(5, 3)),
+  width_dbl = c(rep(6, 2), rep(6, 3)),
+  rsl_dbl = rep(300, 5),
   args_ls = NULL,
   seed_1L_dbl = 23456
 )
@@ -36,17 +36,15 @@ write_brm_model_plts(
 
 \item{round_var_nm_1L_chr}{Round variable name (a character vector of length one), Default: 'round'}
 
-\item{tfmn_fn}{Transformation (a function), Default: function(x) {
-x
-}}
+\item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
 \item{units_1L_chr}{Units (a character vector of length one), Default: 'in'}
 
-\item{height_dbl}{Height (a double vector), Default: c(rep(6, 2), rep(5, 2))}
+\item{height_dbl}{Height (a double vector), Default: c(rep(6, 2), rep(5, 3))}
 
-\item{width_dbl}{Width (a double vector), Default: c(rep(6, 2), rep(6, 2))}
+\item{width_dbl}{Width (a double vector), Default: c(rep(6, 2), rep(6, 3))}
 
-\item{rsl_dbl}{Resolution (a double vector), Default: rep(300, 4)}
+\item{rsl_dbl}{Resolution (a double vector), Default: rep(300, 5)}
 
 \item{args_ls}{Arguments (a list), Default: NULL}
 
@@ -58,3 +56,4 @@ Model plots paths (a list)
 \description{
 write_brm_model_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write bayesian regression model model plots. The function returns Model plots paths (a list).
 }
+\keyword{internal}

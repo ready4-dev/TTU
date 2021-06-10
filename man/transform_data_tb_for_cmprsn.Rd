@@ -13,7 +13,8 @@ transform_data_tb_for_cmprsn(
   predn_type_1L_chr = NULL,
   tfmn_for_bnml_1L_lgl = F,
   family_1L_chr = NA_character_,
-  tfmn_1L_chr = "NTF"
+  tfmn_1L_chr = "NTF",
+  is_brms_mdl_1L_lgl = F
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ transform_data_tb_for_cmprsn(
 \item{family_1L_chr}{Family (a character vector of length one), Default: 'NA'}
 
 \item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
+
+\item{is_brms_mdl_1L_lgl}{Is bayesian regression models model (a logical vector of length one), Default: F}
 }
 \value{
 Transformed data (a tibble)
@@ -41,3 +44,4 @@ Transformed data (a tibble)
 \description{
 transform_data_tb_for_cmprsn() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform data tibble for comparison. Function argument data_tb specifies the object to be updated. Argument model_mdl provides the object to be updated. The function returns Transformed data (a tibble).
 }
+\keyword{internal}

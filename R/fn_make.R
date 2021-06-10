@@ -13,6 +13,7 @@
 #' @rdname make_analysis_core_params_ls
 #' @export 
 
+#' @keywords internal
 make_analysis_core_params_ls <- function (ds_descvs_ls, mdl_smry_ls, output_format_ls = make_output_format_ls(), 
     predictors_lup, control_ls = NULL, iters_1L_int = 4000L, 
     prior_ls = NULL, seed_1L_int = 12345, use_fake_data_1L_lgl = F) 
@@ -61,6 +62,7 @@ make_analysis_ds_smry_ls <- function (ds_descvs_ls, candidate_covar_nms_chr, pre
 #' @importFrom dplyr mutate all_of across case_when
 #' @importFrom Hmisc latexTranslate
 #' @importFrom stringr str_replace
+#' @keywords internal
 make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, output_type_1L_chr = "PDF", 
     digits_1L_dbl = 2, big_mark_1L_chr = " ") 
 {
@@ -145,6 +147,7 @@ make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, o
 #' @export 
 #' @importFrom purrr map
 #' @importFrom dplyr bind_rows
+#' @keywords internal
 make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, popl_1L_chr, fam_1L_chr) 
 {
     brms_mdl_smry_tb <- purrr::map(1:length(smry_mdl_ls$random), 
@@ -171,6 +174,7 @@ make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, popl_1L_chr, fam_1L
 #' @importFrom purrr map_lgl map
 #' @importFrom stringr str_detect
 #' @importFrom cowplot ggdraw draw_image plot_grid
+#' @keywords internal
 make_cmpst_sctr_and_dnsty_plt <- function (outp_smry_ls, output_data_dir_1L_chr, predr_var_nms_chr, 
     labels_chr = c("A", "B", "C", "D"), label_x_1L_dbl = 0.1, 
     label_y_1L_dbl = 0.9, label_size_1L_dbl = 22) 
@@ -196,6 +200,7 @@ make_cmpst_sctr_and_dnsty_plt <- function (outp_smry_ls, output_data_dir_1L_chr,
 #' @importFrom purrr map_dbl map map2
 #' @importFrom stringr str_remove
 #' @importFrom stats setNames
+#' @keywords internal
 make_cohort_ls <- function (descv_tbls_ls, ctgl_vars_regrouping_ls = NULL, nbr_of_digits_1L_int = 2L) 
 {
     numeric_vars_chr <- descv_tbls_ls$cohort_desc_tb %>% dplyr::filter(label == 
@@ -258,6 +263,7 @@ make_cohort_ls <- function (descv_tbls_ls, ctgl_vars_regrouping_ls = NULL, nbr_o
 #' @rdname make_ds_descvs_ls
 #' @export 
 
+#' @keywords internal
 make_ds_descvs_ls <- function (candidate_predrs_chr, cohort_descv_var_nms_chr, dictionary_tb, 
     id_var_nm_1L_chr, msrmnt_date_var_nm_1L_chr, round_var_nm_1L_chr, 
     round_vals_chr, maui_item_pfx_1L_chr, utl_wtd_var_nm_1L_chr = "wtd_utl_dbl", 
@@ -272,6 +278,32 @@ make_ds_descvs_ls <- function (candidate_predrs_chr, cohort_descv_var_nms_chr, d
         utl_unwtd_var_nm_1L_chr = utl_unwtd_var_nm_1L_chr)
     return(ds_descvs_ls)
 }
+#' Make dataset summary
+#' @description make_ds_smry_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make dataset summary list. The function returns Dataset summary (a list).
+#' @param candidate_predrs_chr Candidate predictors (a character vector)
+#' @param candidate_covar_nms_chr Candidate covariate names (a character vector)
+#' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one)
+#' @param dictionary_tb Dictionary (a tibble)
+#' @param id_var_nm_1L_chr Identity variable name (a character vector of length one)
+#' @param round_var_nm_1L_chr Round variable name (a character vector of length one)
+#' @param round_bl_val_1L_chr Round baseline value (a character vector of length one)
+#' @param predictors_lup Predictors (a lookup table)
+#' @return Dataset summary (a list)
+#' @rdname make_ds_smry_ls
+#' @export 
+
+#' @keywords internal
+make_ds_smry_ls <- function (candidate_predrs_chr, candidate_covar_nms_chr, depnt_var_nm_1L_chr, 
+    dictionary_tb, id_var_nm_1L_chr, round_var_nm_1L_chr, round_bl_val_1L_chr, 
+    predictors_lup) 
+{
+    ds_smry_ls <- list(candidate_predrs_chr = candidate_predrs_chr, 
+        candidate_covar_nms_chr = candidate_covar_nms_chr, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+        dictionary_tb = dictionary_tb, id_var_nm_1L_chr = id_var_nm_1L_chr, 
+        round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr, 
+        predictors_lup = predictors_lup)
+    return(ds_smry_ls)
+}
 #' Make eq5d dataset dictionary
 #' @description make_eq5d_ds_dict() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make eq5d dataset dictionary. The function returns Dictionary (a tibble).
 #' @param data_tb Data (a tibble), Default: make_fake_eq5d_ds()
@@ -282,6 +314,7 @@ make_ds_descvs_ls <- function (candidate_predrs_chr, cohort_descv_var_nms_chr, d
 #' @importFrom youthvars make_tfd_repln_ds_dict_r3 make_final_rpln_ds_dict
 #' @importFrom dplyr filter arrange
 #' @importFrom ready4use make_pt_ready4_dictionary
+#' @keywords internal
 make_eq5d_ds_dict <- function (data_tb = make_fake_eq5d_ds(), predictors_lup = make_psych_predrs_lup()) 
 {
     dictionary_tb <- youthvars::make_tfd_repln_ds_dict_r3() %>% 
@@ -410,6 +443,7 @@ make_fake_ts_data <- function (outp_smry_ls)
 #' @importFrom caret createFolds
 #' @importFrom dplyr pull
 #' @importFrom rlang sym
+#' @keywords internal
 make_folds_ls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", folds_1L_int = 10L) 
 {
     folds_ls <- caret::createFolds(data_tb %>% dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr)), 
@@ -427,6 +461,7 @@ make_folds_ls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", folds_1
 #' @rdname make_header_yaml_args_ls
 #' @export 
 
+#' @keywords internal
 make_header_yaml_args_ls <- function (authors_tb, institutes_tb, title_1L_chr, keywords_chr, 
     fl_nm_1L_chr = "header_common.yaml") 
 {
@@ -448,6 +483,7 @@ make_header_yaml_args_ls <- function (authors_tb, institutes_tb, title_1L_chr, k
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr filter
 #' @importFrom stringr str_remove
+#' @keywords internal
 make_hlth_utl_and_predrs_ls <- function (outp_smry_ls, descv_tbls_ls, nbr_of_digits_1L_int = 2L, 
     old_nms_chr = NULL, new_nms_chr = NULL) 
 {
@@ -498,6 +534,7 @@ make_hlth_utl_and_predrs_ls <- function (outp_smry_ls, descv_tbls_ls, nbr_of_dig
 #' @importFrom stringr str_detect
 #' @importFrom stats setNames
 #' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
 make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, predr_vars_nms_ls, 
     output_type_1L_chr = "HTML", mdl_types_lup = NULL, plt_types_lup = NULL, 
     plt_types_chr = NA_character_, section_type_1L_chr = "#") 
@@ -575,6 +612,7 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
 #' @export 
 #' @importFrom dplyr mutate across starts_with filter
 #' @importFrom rlang sym
+#' @keywords internal
 make_maui_params_ls <- function (maui_itm_short_nms_chr, maui_domains_pfcs_1L_chr = NULL, 
     maui_scoring_fn = NULL) 
 {
@@ -608,6 +646,7 @@ make_maui_params_ls <- function (maui_itm_short_nms_chr, maui_domains_pfcs_1L_ch
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom stringi stri_locate_last_fixed
 #' @importFrom stringr str_sub
+#' @keywords internal
 make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF", 
     predr_var_nm_1L_chr, covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF", 
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NULL) 
@@ -624,10 +663,8 @@ make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr 
     if (!is.na(control_1L_chr)) {
         idx_1L_int <- 1 + stringi::stri_locate_last_fixed(mdl_type_1L_chr, 
             "_")[1, 1] %>% as.vector()
-        link_1L_chr <- stringr::str_sub(mdl_type_1L_chr, start = idx_1L_int)
-        link_1L_chr <- ifelse(link_1L_chr == "LOG", "log", ifelse(link_1L_chr == 
-            "LGT", "logit", ifelse(link_1L_chr == "CLL", "cloglog", 
-            "ERROR")))
+        link_1L_chr <- get_link_from_tfmn(stringr::str_sub(mdl_type_1L_chr, 
+            start = idx_1L_int))
     }
     mdl_1L_chr <- paste0(ready4fun::get_from_lup_obj(mdl_types_lup, 
         match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
@@ -641,7 +678,8 @@ make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr 
             paste0(", family = ", ready4fun::get_from_lup_obj(mdl_types_lup, 
                 match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
                 target_var_nm_1L_chr = "family_chr", evaluate_lgl = F)), 
-            ""), ifelse(!is.na(start_1L_chr), ", ", ""), ifelse(!is.na(control_1L_chr), 
+            ""), ifelse((!is.na(start_1L_chr) | (is.na(start_1L_chr) & 
+            !is.na(control_1L_chr))), ", ", ""), ifelse(!is.na(control_1L_chr), 
             paste0("link=\"", link_1L_chr, "\",control=", control_1L_chr, 
                 "("), ""), ifelse(!is.na(start_1L_chr), paste0("start=c(", 
             start_1L_chr, ")"), ""), ifelse(!is.na(control_1L_chr), 
@@ -659,6 +697,7 @@ make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr 
 #' @importFrom purrr map map2 map_dbl
 #' @importFrom dplyr filter pull
 #' @importFrom stats setNames
+#' @keywords internal
 make_mdl_coef_ratio_ls <- function (outp_smry_ls, predr_ctgs_ls = NULL) 
 {
     main_mdls_ls <- outp_smry_ls$predr_cmprsn_tb$predr_chr %>% 
@@ -707,6 +746,7 @@ make_mdl_nms_ls <- function (predr_vars_nms_ls, mdl_types_chr)
 #' @export 
 #' @importFrom tibble as_tibble add_case
 #' @importFrom dplyr mutate select everything filter bind_rows
+#' @keywords internal
 make_mdl_smry_elmt_tbl <- function (mat, ctg_chr) 
 {
     tb <- mat %>% tibble::as_tibble() %>% dplyr::mutate(Parameter = rownames(mat)) %>% 
@@ -726,6 +766,7 @@ make_mdl_smry_elmt_tbl <- function (mat, ctg_chr)
 #' @rdname make_mdl_smry_ls
 #' @export 
 #' @importFrom stringr word
+#' @keywords internal
 make_mdl_smry_ls <- function (mdl_types_lup = NULL, mdl_types_chr = NULL, choose_from_pfx_chr = NULL, 
     folds_1L_int = 10L, max_nbr_of_boruta_mdl_runs_int = 300L) 
 {
@@ -751,6 +792,7 @@ make_mdl_smry_ls <- function (mdl_types_lup = NULL, mdl_types_chr = NULL, choose
 #' @rdname make_mdl_type_smry_tbl
 #' @export 
 #' @importFrom purrr map_dfr
+#' @keywords internal
 make_mdl_type_smry_tbl <- function (mdls_tb, mdl_nms_chr, mdl_type_1L_chr, add_mdl_nm_sfx_1L_lgl = T) 
 {
     mdl_type_smry_tbl_tb <- mdl_nms_chr %>% purrr::map_dfr(~make_sngl_mdl_smry_tb(mdls_tb, 
@@ -766,6 +808,7 @@ make_mdl_type_smry_tbl <- function (mdls_tb, mdl_nms_chr, mdl_type_1L_chr, add_m
 #' @rdname make_mdls_ls
 #' @export 
 #' @importFrom purrr map
+#' @keywords internal
 make_mdls_ls <- function (outp_smry_ls, mdls_tb) 
 {
     mdls_chr <- mdls_tb$Model %>% unique()
@@ -782,6 +825,7 @@ make_mdls_ls <- function (outp_smry_ls, mdls_tb)
 #' @export 
 #' @importFrom dplyr mutate across filter
 #' @importFrom purrr map flatten_chr map_lgl
+#' @keywords internal
 make_mdls_smry_tbls_ls <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L) 
 {
     mdls_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::mutate(dplyr::across(c("Estimate", 
@@ -810,6 +854,7 @@ make_mdls_smry_tbls_ls <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L)
 #' @rdname make_output_format_ls
 #' @export 
 
+#' @keywords internal
 make_output_format_ls <- function (manuscript_outp_1L_chr = "Word", manuscript_digits_1L_int = 2L, 
     supplementary_outp_1L_chr = "PDF", supplementary_digits_1L_int = 2L) 
 {
@@ -828,6 +873,7 @@ make_output_format_ls <- function (manuscript_outp_1L_chr = "Word", manuscript_d
 #' @rdname make_path_params_ls
 #' @export 
 #' @importFrom purrr pluck
+#' @keywords internal
 make_path_params_ls <- function (path_to_data_from_top_level_chr, path_from_top_level_1L_chr = NULL, 
     path_to_current_1L_chr = NULL) 
 {
@@ -854,6 +900,7 @@ make_path_params_ls <- function (path_to_data_from_top_level_chr, path_from_top_
 #' @export 
 #' @importFrom purrr map_lgl
 #' @importFrom stringr str_detect
+#' @keywords internal
 make_paths_to_ss_plts_ls <- function (output_data_dir_1L_chr, outp_smry_ls, additional_paths_chr = "/dens_and_sctr.png") 
 {
     paths_to_ss_plts_ls = list(combined_utl = paste0(output_data_dir_1L_chr, 
@@ -881,6 +928,7 @@ make_paths_to_ss_plts_ls <- function (output_data_dir_1L_chr, outp_smry_ls, addi
 #' @importFrom rlang sym
 #' @importFrom dplyr mutate
 #' @importFrom stats predict
+#' @keywords internal
 make_predn_ds_with_one_predr <- function (model_mdl, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF", 
     predr_var_nm_1L_chr, predr_vals_dbl, predn_type_1L_chr = NULL) 
 {
@@ -954,6 +1002,7 @@ make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls, existing_predrs_
 #' @importFrom dplyr filter arrange desc pull
 #' @importFrom purrr map flatten_chr map_lgl map2_chr
 #' @importFrom stringr str_remove
+#' @keywords internal
 make_predrs_for_best_mdls <- function (outp_smry_ls, old_nms_chr = NULL, new_nms_chr) 
 {
     ordered_mdl_nms_chr <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Parameter == 
@@ -1020,6 +1069,7 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
 #' @rdname make_prmry_analysis_params_ls
 #' @export 
 
+#' @keywords internal
 make_prmry_analysis_params_ls <- function (analysis_core_params_ls, candidate_covar_nms_chr, ds_tb, 
     path_params_ls, maui_params_ls, prefd_covars_chr = NA_character_, 
     prefd_mdl_types_chr = c("GLM_GSN_LOG", "OLS_CLL"), raw_ds_tfmn_fn = NULL, 
@@ -1040,6 +1090,7 @@ make_prmry_analysis_params_ls <- function (analysis_core_params_ls, candidate_co
 #' @rdname make_psych_predrs_lup
 #' @export 
 
+#' @keywords internal
 make_psych_predrs_lup <- function () 
 {
     predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = c("k10_int", 
@@ -1059,6 +1110,7 @@ make_psych_predrs_lup <- function ()
 #' @rdname make_ranked_predrs_ls
 #' @export 
 #' @importFrom purrr map_dbl map flatten_chr
+#' @keywords internal
 make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_chr = NULL) 
 {
     unranked_predrs_chr <- rownames(descv_tbls_ls[["bl_cors_tb"]])[-1] %>% 
@@ -1183,6 +1235,7 @@ make_results_ls_spine <- function (output_data_dir_1L_chr, var_nm_change_lup, st
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_replace_all
 #' @importFrom assertthat assert_that
+#' @keywords internal
 make_shareable_mdl <- function (data_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "utl_total_w", 
     id_var_nm_1L_chr = "fkClientID", tfmn_1L_chr = "CLL", mdl_type_1L_chr = "OLS_CLL", 
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NA_character_, 
@@ -1225,7 +1278,6 @@ make_shareable_mdl <- function (data_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "utl
 #' @param data_tb Data (a tibble)
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'utl_total_w'
 #' @param predr_vars_nms_chr Predictor variables names (a character vector)
-#' @param fn Function (a function), Default: calculate_rmse
 #' @param mdl_nm_1L_chr Model name (a character vector of length one), Default: 'NA'
 #' @param seed_1L_dbl Seed (a double vector of length one), Default: 23456
 #' @return Summary of bayesian regression model model (a tibble)
@@ -1237,20 +1289,21 @@ make_shareable_mdl <- function (data_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "utl
 #' @importFrom dplyr pull mutate rename select
 #' @importFrom rlang sym
 #' @importFrom purrr map flatten_chr
+#' @keywords internal
 make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_total_w", 
-    predr_vars_nms_chr, fn = calculate_rmse, mdl_nm_1L_chr = NA_character_, 
-    seed_1L_dbl = 23456) 
+    predr_vars_nms_chr, mdl_nm_1L_chr = NA_character_, seed_1L_dbl = 23456) 
 {
     if (is.na(mdl_nm_1L_chr)) 
         mdl_nm_1L_chr <- predr_vars_nms_chr[1]
     set.seed(seed_1L_dbl)
-    predictions <- stats::predict(mdl_ls, summary = F)
+    predictions <- stats::predict(mdl_ls, summary = F) %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, 
+        tfmn_is_outp_1L_lgl = T)
     coef <- summary(mdl_ls, digits = 4)$fixed
     coef <- coef[1:nrow(coef), 1:4]
     R2 <- brms::bayes_R2(mdl_ls)
-    RMSE <- psych::describe(apply(predictions, 1, fn, y_dbl = data_tb %>% 
-        dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr))), quant = c(0.25, 
-        0.75), skew = F, ranges = F)
+    RMSE <- psych::describe(apply(predictions, 1, calculate_rmse, 
+        y_dbl = data_tb %>% dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr))), 
+        quant = c(0.25, 0.75), skew = F, ranges = F)
     RMSE <- cbind(RMSE$mean, RMSE$sd, RMSE$Q0.25, RMSE$Q0.75) %>% 
         as.vector()
     Sigma <- summary(mdl_ls, digits = 4)$spec_par[1:4]
@@ -1287,6 +1340,7 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_to
 #' @importFrom stats predict
 #' @importFrom tibble tibble
 #' @importFrom caret R2 RMSE MAE
+#' @keywords internal
 make_smry_of_mdl_outp <- function (data_tb, model_mdl = NULL, folds_1L_int = 10, depnt_var_nm_1L_chr = "utl_total_w", 
     start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, 
     covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF", 
@@ -1336,7 +1390,6 @@ make_smry_of_mdl_outp <- function (data_tb, model_mdl = NULL, folds_1L_int = 10,
 #' Make summary of time series model output
 #' @description make_smry_of_ts_mdl_outp() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make summary of time series model output. The function returns Summary of time series (a list of models).
 #' @param data_tb Data (a tibble)
-#' @param fn Function (a function)
 #' @param predr_vars_nms_chr Predictor variables names (a character vector)
 #' @param mdl_nm_1L_chr Model name (a character vector of length one)
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one), Default: 'NA'
@@ -1347,6 +1400,7 @@ make_smry_of_mdl_outp <- function (data_tb, model_mdl = NULL, folds_1L_int = 10,
 #' @param predictors_lup Predictors (a lookup table)
 #' @param backend_1L_chr Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")
 #' @param iters_1L_int Iterations (an integer vector of length one), Default: 4000
+#' @param mdl_types_lup Model types (a lookup table)
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 1000
 #' @param prior_ls Prior (a list), Default: NULL
 #' @param control_ls Control (a list), Default: NULL
@@ -1355,12 +1409,15 @@ make_smry_of_mdl_outp <- function (data_tb, model_mdl = NULL, folds_1L_int = 10,
 #' @export 
 #' @importFrom purrr map_dbl
 #' @importFrom ready4fun get_from_lup_obj
+#' @importFrom stringr str_remove str_sub
+#' @importFrom stringi stri_locate_first_fixed
 #' @importFrom rlang exec
-make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_, 
+#' @keywords internal
+make_smry_of_ts_mdl_outp <- function (data_tb, predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_, 
     depnt_var_nm_1L_chr = "utl_total_w", id_var_nm_1L_chr = "fkClientID", 
     round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", 
     predictors_lup, backend_1L_chr = getOption("brms.backend", 
-        "rstan"), iters_1L_int = 4000L, seed_1L_int = 1000L, 
+        "rstan"), iters_1L_int = 4000L, mdl_types_lup, seed_1L_int = 1000L, 
     prior_ls = NULL, control_ls = NULL) 
 {
     scaling_fctr_dbl <- predr_vars_nms_chr %>% purrr::map_dbl(~ifelse(.x %in% 
@@ -1368,23 +1425,35 @@ make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L
         target_var_nm_1L_chr = "mdl_scaling_dbl", match_value_xx = .x, 
         match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F), 
         1))
+    mdl_type_1L_chr <- mdl_nm_1L_chr %>% stringr::str_remove(paste0(predr_vars_nms_chr[1], 
+        "_", ifelse(is.na(predr_vars_nms_chr[2]), "", paste0(predr_vars_nms_chr[2], 
+            "_"))))
+    mdl_type_1L_chr <- stringr::str_sub(mdl_type_1L_chr, start = 1 + 
+        (mdl_type_1L_chr %>% stringi::stri_locate_first_fixed("_"))[1, 
+            2] %>% as.vector())
+    tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+        target_var_nm_1L_chr = "tfmn_chr", match_value_xx = mdl_type_1L_chr, 
+        match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F)
     tfd_data_tb <- transform_tb_to_mdl_inp(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
         predr_vars_nms_chr = predr_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr, 
         round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr, 
-        scaling_fctr_dbl = scaling_fctr_dbl)
-    tfd_depnt_var_nm_1L_chr <- ifelse(identical(fn, fit_clg_log_tfmn), 
-        transform_depnt_var_nm_for_cll(depnt_var_nm_1L_chr), 
-        depnt_var_nm_1L_chr)
+        scaling_fctr_dbl = scaling_fctr_dbl, tfmn_1L_chr = tfmn_1L_chr)
+    tfd_depnt_var_nm_1L_chr <- transform_depnt_var_nm(depnt_var_nm_1L_chr, 
+        tfmn_1L_chr = tfmn_1L_chr)
+    family_fn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+        match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
+        target_var_nm_1L_chr = "family_chr", evaluate_lgl = F)
+    family_fn_1L_chr <- ifelse(is.na(family_fn_1L_chr), "gaussian(identity)", 
+        family_fn_1L_chr)
     args_ls <- list(data_tb = tfd_data_tb, depnt_var_nm_1L_chr = tfd_depnt_var_nm_1L_chr, 
         predr_vars_nms_chr = predr_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr, 
         iters_1L_int = iters_1L_int, backend_1L_chr = backend_1L_chr, 
-        seed_1L_int = seed_1L_int, prior_ls = prior_ls, control_ls = control_ls)
-    mdl_ls <- rlang::exec(fn, !!!args_ls)
+        family_fn_1L_chr = family_fn_1L_chr, seed_1L_int = seed_1L_int, 
+        prior_ls = prior_ls, control_ls = control_ls)
+    mdl_ls <- rlang::exec(fit_ts_model_with_brm, !!!args_ls)
     smry_of_ts_mdl_ls <- list(smry_of_ts_mdl_tb = make_smry_of_brm_mdl(mdl_ls, 
         data_tb = tfd_data_tb, depnt_var_nm_1L_chr = tfd_depnt_var_nm_1L_chr, 
-        predr_vars_nms_chr = predr_vars_nms_chr, fn = ifelse(identical(fn, 
-            fit_gsn_log_lnk), calculate_rmse, calculate_rmse_tfmn), 
-        mdl_nm_1L_chr = mdl_nm_1L_chr))
+        predr_vars_nms_chr = predr_vars_nms_chr, mdl_nm_1L_chr = mdl_nm_1L_chr))
     if (!is.na(path_to_write_to_1L_chr)) {
         smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr <- paste0(path_to_write_to_1L_chr, 
             "/", mdl_nm_1L_chr, ".RDS")
@@ -1392,14 +1461,9 @@ make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L
             file.remove(smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)
         saveRDS(mdl_ls, smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)
         smry_of_ts_mdl_ls$paths_to_mdl_plts_chr <- write_brm_model_plts(mdl_ls, 
-            tfd_data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+            tfd_data_tb = tfd_data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
             mdl_nm_1L_chr = mdl_nm_1L_chr, path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
-            round_var_nm_1L_chr = round_var_nm_1L_chr, tfmn_fn = ifelse(identical(fn, 
-                fit_gsn_log_lnk), function(x) {
-                x
-            }, function(x) {
-                1 - exp(-exp(x))
-            }))
+            round_var_nm_1L_chr = round_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr)
     }
     return(smry_of_ts_mdl_ls)
 }
@@ -1418,6 +1482,7 @@ make_smry_of_ts_mdl_outp <- function (data_tb, fn, predr_vars_nms_chr, mdl_nm_1L
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_replace
+#' @keywords internal
 make_sngl_mdl_smry_tb <- function (mdls_tb, mdl_nm_1L_chr, mdl_type_1L_chr, add_mdl_nm_sfx_1L_lgl = T) 
 {
     new_tb <- mdls_tb %>% dplyr::filter(Model == mdl_nm_1L_chr) %>% 
@@ -1458,6 +1523,7 @@ make_sngl_mdl_smry_tb <- function (mdls_tb, mdl_nm_1L_chr, mdl_type_1L_chr, add_
 #' @importFrom dplyr mutate across everything
 #' @importFrom purrr map_dbl
 #' @importFrom stringr str_replace_all
+#' @keywords internal
 make_ss_tbls_ls <- function (outp_smry_ls, mdls_smry_tbls_ls, covars_mdls_ls, descv_tbls_ls, 
     nbr_of_digits_1L_int = 2L) 
 {
@@ -1509,6 +1575,7 @@ make_study_descs_ls <- function (health_utl_nm_1L_chr, time_btwn_bl_and_fup_1L_c
 #' @importFrom dplyr filter mutate case_when
 #' @importFrom stringr str_replace_all str_remove_all
 #' @importFrom tibble add_case
+#' @keywords internal
 make_tfd_sngl_predr_mdls_tb <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L, mdl_pfx_ls = list(OLS = "Ordinary Least Squares ", 
     GLM = c("Generalised Linear Mixed Model with ", "Beta Regression Model with Binomial "))) 
 {
@@ -1549,6 +1616,7 @@ make_tfd_sngl_predr_mdls_tb <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L
 #' @importFrom ggalt geom_bkde
 #' @importFrom viridis scale_fill_viridis
 #' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
 make_tfmn_cmprsn_plt <- function (data_tb, depnt_var_nm_1L_chr, dictionary_tb) 
 {
     tfmn_cmprsn_plt <- tidyr::gather(data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(paste0(depnt_var_nm_1L_chr, 
@@ -1583,6 +1651,7 @@ make_tfmn_cmprsn_plt <- function (data_tb, depnt_var_nm_1L_chr, dictionary_tb)
 #' @rdname make_ttu_cs_ls
 #' @export 
 
+#' @keywords internal
 make_ttu_cs_ls <- function (outp_smry_ls, sig_covars_some_predrs_mdls_tb, sig_thresh_covars_1L_chr) 
 {
     ttu_cs_ls <- list(best_mdl_types_ls = list(GLM = c("Gaussian distribution and log link"), 
@@ -1605,6 +1674,7 @@ make_ttu_cs_ls <- function (outp_smry_ls, sig_covars_some_predrs_mdls_tb, sig_th
 #' @export 
 #' @importFrom purrr map_dfc
 #' @importFrom dplyr select rename_with
+#' @keywords internal
 make_two_mdl_types_smry_tbl <- function (outp_smry_ls, mdls_tb) 
 {
     mdls_ls <- make_mdls_ls(outp_smry_ls, mdls_tb = mdls_tb)
@@ -1627,6 +1697,7 @@ make_two_mdl_types_smry_tbl <- function (outp_smry_ls, mdls_tb)
 #' @importFrom dplyr mutate case_when group_by row_number ungroup
 #' @importFrom purrr map2_chr map flatten_int
 #' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
 make_unique_ls_elmt_idx_int <- function (data_ls) 
 {
     combos_tb <- tibble::as_tibble(data_ls, .name_repair = ~paste0("r_", 
@@ -1668,6 +1739,7 @@ make_unique_ls_elmt_idx_int <- function (data_ls)
 #' @rdname make_valid_params_ls_ls
 #' @export 
 
+#' @keywords internal
 make_valid_params_ls_ls <- function (analysis_core_params_ls, candidate_covar_nms_chr, ds_tb, 
     path_params_ls, maui_params_ls, prefd_covars_chr = NA_character_, 
     prefd_mdl_types_chr = c("GLM_GSN_LOG", "OLS_CLL"), raw_ds_tfmn_fn = NULL, 
