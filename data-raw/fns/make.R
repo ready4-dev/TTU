@@ -1145,7 +1145,12 @@ make_smry_of_ts_mdl_outp <- function (data_tb, #fn,
                                                    target_var_nm_1L_chr = "family_chr",
                                                    evaluate_lgl = F)
     family_fn_1L_chr <- ifelse(is.na(family_fn_1L_chr),
-                               "gaussian(identity)",
+                               ifelse(startsWith(mdl_type_1L_chr,"BET"),
+                                      paste0("brms::Beta(link = \"",
+                                             get_link_from_tfmn(stringr::str_sub(mdl_type_1L_chr,
+                                                                          start = -3)),
+                                             "\")"),
+                                      "gaussian(identity)"),
                                family_fn_1L_chr)
     args_ls <- list(data_tb = tfd_data_tb, depnt_var_nm_1L_chr = tfd_depnt_var_nm_1L_chr,
         predr_vars_nms_chr = predr_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr, iters_1L_int = iters_1L_int,

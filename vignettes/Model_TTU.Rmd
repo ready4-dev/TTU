@@ -163,7 +163,7 @@ cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr
 We can override these automated selections and instead incorporate other considerations (possibly based on judgments informed by visual inspection of the plots and the desirability of constraining predictions to a maximum value of one). We do this in the following command, specifying new preferred model types, in descending order of preference.
 
 ```{r}
-cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr <- c("OLS_NTF", "GLM_BNL_CLL", "BET_LGT")
+cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr <- c("OLS_CLL", "GLM_GSN_LOG", "BET_LGT")
 ```
 
 ### Use most preferred model to compare all candidate predictors
@@ -171,11 +171,11 @@ We can now compare all of our candidate predictors (with and without candidate c
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 cmprsns_ls <- write_predr_and_covars_cmprsn(scored_data_tb = data_tb,
-                                           bl_tb = cmprsns_ls$bl_tb,
-                                           ds_smry_ls = cmprsns_ls$ds_smry_ls,
-                                           mdl_smry_ls = cmprsns_ls$mdl_smry_ls,
-                                           output_data_dir_1L_chr = output_data_dir_1L_chr,
-                                           seed_1L_int = seed_1L_int)
+                                            bl_tb = cmprsns_ls$bl_tb,
+                                            ds_smry_ls = cmprsns_ls$ds_smry_ls,
+                                            mdl_smry_ls = cmprsns_ls$mdl_smry_ls,
+                                            output_data_dir_1L_chr = path_to_write_to_1L_chr,
+                                            seed_1L_int = seed_1L_int)
 ```
 
 Now, we compare the performance of single predictor models of our preferred model type (in our case, a `r mdl_smry_ls$mdl_types_lup %>% ready4fun::get_from_lup_obj(target_var_nm_1L_chr = "long_name_chr",match_value_xx = mdl_smry_ls$prefd_mdl_types_chr[1], match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F)`) for each candidate predictor. The call to the `write_predr_and_covars_cmprsn`{.R} function saved the tested models along with model plots in the "B_Candidate_Predrs_Cmprsn" sub-directory of "Output". These results are also viewable as a table.
@@ -240,13 +240,12 @@ Note, that in many cases both the `prior_ls` and `control_ls` arguments can be s
 
 ```{r eval = F}
 outp_smry_ls <- write_ts_mdls_from_alg_outp(outp_smry_ls,
-                                            #fn_ls = list(fit_gsn_log_lnk,fit_clg_log_tfmn),
                                             predictors_lup = predictors_lup ,
                                             backend_1L_chr = "cmdstanr",
                                             new_dir_nm_1L_chr = "F_TS_Mdls",
                                             iters_1L_int = 4000L,
                                             prior_ls = NULL, 
-                                            control_ls = list(adapt_delta = 0.95))
+                                            control_ls = list(adapt_delta = 0.99))
 ```
 
 The `write_ts_mdls_from_alg_outp`{.R} function writes the models it tests to the "F_TS_Mdls" sub-directory of "Output" along with three plots for each model. 

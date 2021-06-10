@@ -404,6 +404,9 @@ write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_tota
   tfmn_1L_chr <- arg_vals_chr[3]
   if (is.na(predn_type_1L_chr))
     predn_type_1L_chr <- NULL
+  data_tb <- data_tb %>%
+    add_tfmd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                       tfmn_1L_chr = tfmn_1L_chr)
   output_dir_1L_chr <- output_dir_1L_chr <- write_new_outp_dir(path_to_write_to_1L_chr,
                                                                new_dir_nm_1L_chr = new_dir_nm_1L_chr)
     smry_of_mdls_with_covars_tb <- purrr::map_dfr(predrs_var_nms_chr,
@@ -496,9 +499,12 @@ write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_
     tfmn_for_bnml_1L_lgl <- ready4fun::get_from_lup_obj(mdl_types_lup,
         match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr,
         target_var_nm_1L_chr = "tfmn_for_bnml_lgl", evaluate_lgl = F)
-    data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr,
-        tfmn_1L_chr = tfmn_1L_chr)), !!rlang::sym(depnt_var_nm_1L_chr) %>%
-        calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr))) # TEST
+    data_tb <- data_tb %>%
+      add_tfmd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                         tfmn_1L_chr = tfmn_1L_chr)
+      # dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr,
+      #   tfmn_1L_chr = tfmn_1L_chr)), !!rlang::sym(depnt_var_nm_1L_chr) %>%
+      #   calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr))) # TEST
     model_mdl <- make_mdl(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         tfmn_1L_chr = tfmn_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr,
         covar_var_nms_chr = covar_var_nms_chr, mdl_type_1L_chr = mdl_type_1L_chr,
