@@ -163,7 +163,7 @@ cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr
 We can override these automated selections and instead incorporate other considerations (possibly based on judgments informed by visual inspection of the plots and the desirability of constraining predictions to a maximum value of one). We do this in the following command, specifying new preferred model types, in descending order of preference.
 
 ```{r}
-cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr <- c("OLS_CLL", "GLM_GSN_LOG", "BET_LGT")
+cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr <- c("OLS_LOG", "GLM_GSN_LOG", "BET_CLL")
 ```
 
 ### Use most preferred model to compare all candidate predictors

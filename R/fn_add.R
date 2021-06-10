@@ -18,6 +18,24 @@ add_prefd_predr_var_to_mdl_smry_ls <- function (mdl_smry_ls, ds_smry_ls)
         candidate_predrs_lup = ds_smry_ls$predictors_lup)
     return(mdl_smry_ls)
 }
+#' Add tfmd variable to dataset
+#' @description add_tfmd_var_to_ds() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add tfmd variable to dataset. Function argument data_tb specifies the object to be updated. The function returns Data (a tibble).
+#' @param data_tb Data (a tibble)
+#' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one)
+#' @param tfmn_1L_chr Transformation (a character vector of length one)
+#' @return Data (a tibble)
+#' @rdname add_tfmd_var_to_ds
+#' @export 
+#' @importFrom dplyr mutate
+#' @importFrom rlang sym
+#' @keywords internal
+add_tfmd_var_to_ds <- function (data_tb, depnt_var_nm_1L_chr, tfmn_1L_chr) 
+{
+    data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr, 
+        tfmn_1L_chr = tfmn_1L_chr)), !!rlang::sym(depnt_var_nm_1L_chr) %>% 
+        calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr)))
+    return(data_tb)
+}
 #' Add unique identifiers to tibbles
 #' @description add_uids_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add unique identifiers to tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 #' @param tbs_ls Tibbles (a list)

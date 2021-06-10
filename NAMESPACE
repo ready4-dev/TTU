@@ -3,6 +3,7 @@
 export("%>%")
 export(TTU_predictors_lup)
 export(add_prefd_predr_var_to_mdl_smry_ls)
+export(add_tfmd_var_to_ds)
 export(add_uids_to_tbs_ls)
 export(add_utility_predn_to_ds)
 export(calculate_dpnt_var_tfmn)
