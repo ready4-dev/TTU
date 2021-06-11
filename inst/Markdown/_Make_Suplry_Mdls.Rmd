@@ -20,6 +20,9 @@ output: html_document
 #                                ds_url_1L_chr = "https://doi.org/10.7910/DVN/BAMRIP", 
 #                                parent_dv_dir_1L_chr = "../../../../Data/Dataverse")
 ```
+```{r}
+mdl_types_lup <- TTU::get_cndts_for_mxd_mdls()
+```
 
 ## SOFAS Additions
 ```{r}
@@ -36,7 +39,6 @@ output: html_document
 # ds_smry_ls$predictors_lup <- predictors_lup
 ```
 ```{r}
-data("mdl_types_lup",package = "TTU")
 mdl_smry_ls <- list(mdl_types_lup = mdl_types_lup,
                     mdl_types_chr = mdl_types_lup$short_name_chr,
                     folds_1L_int = 10L,
@@ -67,7 +69,6 @@ ds_smry_ls$predictors_lup <- predictors_lup
 ```
 
 ```{r}
-data("mdl_types_lup",package = "TTU")
 mdl_smry_ls <- list(mdl_types_lup = mdl_types_lup,
                     mdl_types_chr = mdl_types_lup$short_name_chr,
                     folds_1L_int = 10L,

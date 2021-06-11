@@ -1400,6 +1400,7 @@ make_smry_of_mdl_outp <- function (data_tb, model_mdl = NULL, folds_1L_int = 10,
 #' @param round_var_nm_1L_chr Round variable name (a character vector of length one), Default: 'round'
 #' @param round_bl_val_1L_chr Round baseline value (a character vector of length one), Default: 'Baseline'
 #' @param predictors_lup Predictors (a lookup table)
+#' @param utl_min_val_1L_dbl Utility minimum value (a double vector of length one), Default: -1
 #' @param backend_1L_chr Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")
 #' @param iters_1L_int Iterations (an integer vector of length one), Default: 4000
 #' @param mdl_types_lup Model types (a lookup table)
@@ -1418,7 +1419,7 @@ make_smry_of_mdl_outp <- function (data_tb, model_mdl = NULL, folds_1L_int = 10,
 make_smry_of_ts_mdl_outp <- function (data_tb, predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_, 
     depnt_var_nm_1L_chr = "utl_total_w", id_var_nm_1L_chr = "fkClientID", 
     round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", 
-    predictors_lup, backend_1L_chr = getOption("brms.backend", 
+    predictors_lup, utl_min_val_1L_dbl = -1, backend_1L_chr = getOption("brms.backend", 
         "rstan"), iters_1L_int = 4000L, mdl_types_lup, seed_1L_int = 1000L, 
     prior_ls = NULL, control_ls = NULL) 
 {
@@ -1467,7 +1468,8 @@ make_smry_of_ts_mdl_outp <- function (data_tb, predr_vars_nms_chr, mdl_nm_1L_chr
         smry_of_ts_mdl_ls$paths_to_mdl_plts_chr <- write_brm_model_plts(mdl_ls, 
             tfd_data_tb = tfd_data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
             mdl_nm_1L_chr = mdl_nm_1L_chr, path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
-            round_var_nm_1L_chr = round_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr)
+            round_var_nm_1L_chr = round_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr, 
+            utl_min_val_1L_dbl = utl_min_val_1L_dbl)
     }
     return(smry_of_ts_mdl_ls)
 }

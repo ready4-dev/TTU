@@ -9,12 +9,15 @@ transform_data_tb_for_cmprsn(
   model_mdl,
   depnt_var_nm_1L_chr = "utl_total_w",
   source_data_nm_1L_chr = "Original",
-  tf_type_1L_chr = "Predicted",
+  new_data_is_1L_chr = "Predicted",
   predn_type_1L_chr = NULL,
-  tfmn_for_bnml_1L_lgl = F,
   family_1L_chr = NA_character_,
+  impute_1L_lgl = F,
+  is_brms_mdl_1L_lgl = F,
+  tfmn_for_bnml_1L_lgl = F,
   tfmn_1L_chr = "NTF",
-  is_brms_mdl_1L_lgl = F
+  utl_cls_fn = NULL,
+  utl_min_val_1L_dbl = NA_real_
 )
 }
 \arguments{
@@ -26,17 +29,23 @@ transform_data_tb_for_cmprsn(
 
 \item{source_data_nm_1L_chr}{Source data name (a character vector of length one), Default: 'Original'}
 
-\item{tf_type_1L_chr}{Transform type (a character vector of length one), Default: 'Predicted'}
+\item{new_data_is_1L_chr}{New data is (a character vector of length one), Default: 'Predicted'}
 
 \item{predn_type_1L_chr}{Prediction type (a character vector of length one), Default: NULL}
 
-\item{tfmn_for_bnml_1L_lgl}{Transformation for binomial (a logical vector of length one), Default: F}
-
 \item{family_1L_chr}{Family (a character vector of length one), Default: 'NA'}
+
+\item{impute_1L_lgl}{Impute (a logical vector of length one), Default: F}
+
+\item{is_brms_mdl_1L_lgl}{Is bayesian regression models model (a logical vector of length one), Default: F}
+
+\item{tfmn_for_bnml_1L_lgl}{Transformation for binomial (a logical vector of length one), Default: F}
 
 \item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
-\item{is_brms_mdl_1L_lgl}{Is bayesian regression models model (a logical vector of length one), Default: F}
+\item{utl_cls_fn}{Utility class (a function), Default: NULL}
+
+\item{utl_min_val_1L_dbl}{Utility minimum value (a double vector of length one), Default: NA}
 }
 \value{
 Transformed data (a tibble)

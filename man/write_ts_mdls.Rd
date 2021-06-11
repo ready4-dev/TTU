@@ -11,6 +11,7 @@ write_ts_mdls(
   id_var_nm_1L_chr = "fkClientID",
   round_var_nm_1L_chr = "round",
   round_bl_val_1L_chr = "Baseline",
+  utl_min_val_1L_dbl = -1,
   backend_1L_chr = getOption("brms.backend", "rstan"),
   mdl_nms_ls,
   mdl_smry_dir_1L_chr,
@@ -34,6 +35,8 @@ write_ts_mdls(
 \item{round_var_nm_1L_chr}{Round variable name (a character vector of length one), Default: 'round'}
 
 \item{round_bl_val_1L_chr}{Round baseline value (a character vector of length one), Default: 'Baseline'}
+
+\item{utl_min_val_1L_dbl}{Utility minimum value (a double vector of length one), Default: -1}
 
 \item{backend_1L_chr}{Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")}
 

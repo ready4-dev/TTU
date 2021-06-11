@@ -12,48 +12,29 @@ transform_chr_digit_pairs <- function(digit_pairs_chr,
   return(tfd_digit_pairs_chr)
 }
 transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_chr = "utl_total_w",
-    source_data_nm_1L_chr = "Original", tf_type_1L_chr = "Predicted",
-    predn_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, tfmn_1L_chr = "NTF", is_brms_mdl_1L_lgl = F)
+    source_data_nm_1L_chr = "Original", new_data_is_1L_chr = "Predicted",
+    predn_type_1L_chr = NULL, family_1L_chr = NA_character_, impute_1L_lgl = F, is_brms_mdl_1L_lgl = F,
+    tfmn_for_bnml_1L_lgl = F, tfmn_1L_chr = "NTF", utl_cls_fn = NULL, utl_min_val_1L_dbl = NA_real_)
 {
-    if(tf_type_1L_chr == "Predicted")
-        new_data_dbl <- stats::predict(model_mdl, type = predn_type_1L_chr)
-    if(tf_type_1L_chr == "Simulated"){
-      if(is_brms_mdl_1L_lgl){
-        new_data_dbl <- brms::posterior_predict(model_mdl,
-                                newdata = data_tb,
-                                nsamples=1) %>% as.vector()
-
-      }else{
-        if("betareg" %in% class(model_mdl)){
-          new_data_dbl <- rlang::exec(enrichwith::get_simulate_function(model_mdl),
-                                      coef(enrichwith::enrich(model_mdl, with = "auxiliary functions")))
-        }else{
-          if (!tfmn_for_bnml_1L_lgl){
-            new_data_dbl <- stats::simulate(model_mdl)$sim_1
-          }else{
-            new_data_dbl <- (stats::predict(model_mdl) + stats::rnorm(nrow(data_tb),
-                                                                      0, stats::sigma(model_mdl)))
-          }
-        }
-      }
-    }
-    if(is.matrix(new_data_dbl))
-      new_data_dbl <- new_data_dbl[, 1]
-    new_data_dbl <- new_data_dbl %>% # Make CNDL ON BRMS???
-          calculate_dpnt_var_tfmn(tfmn_1L_chr = ifelse(tfmn_for_bnml_1L_lgl & tf_type_1L_chr == "Simulated",
-                                                       ifelse(family_1L_chr == "quasibinomial(log)",
-                                                              "LOG",
-                                                              ifelse(family_1L_chr == "quasibinomial(logit)",
-                                                                     "LOGIT",
-                                                                     ifelse(family_1L_chr == "quasibinomial(cloglog)",
-                                                                            "CLL", "NTF"))),
-                                                       tfmn_1L_chr),
-                                  tfmn_is_outp_1L_lgl = T)
-    tfd_data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(tf_type_1L_chr),
+  new_data_dbl <- predict_utility(data_tb = data_tb,
+                                  tfmn_1L_chr = tfmn_1L_chr,
+                                  model_mdl = model_mdl,
+                                  force_min_max_1L_lgl = !is.na(utl_min_val_1L_dbl),
+                                  utl_min_val_1L_dbl = utl_min_val_1L_dbl,
+                                  impute_1L_lgl = impute_1L_lgl,
+                                  utl_cls_fn = utl_cls_fn,
+                                  new_data_is_1L_chr = new_data_is_1L_chr,
+                                  predn_type_1L_chr = predn_type_1L_chr,
+                                  tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl,
+                                  family_1L_chr = family_1L_chr,
+                                  is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl)
+    tfd_data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_predd_var_nm(mew_data_is_1L_chr,
+                                                                                      utl_min_val_1L_dbl = utl_min_val_1L_dbl)),
         new_data_dbl), `:=`(!!rlang::sym(source_data_nm_1L_chr),
         !!rlang::sym(depnt_var_nm_1L_chr)))
     return(tfd_data_tb)
 }
+
 transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF")
 {
     tfd_depnt_var_nm_1L_chr <- paste0(depnt_var_nm_1L_chr,
@@ -62,11 +43,11 @@ transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF")
                                              paste0("_", tfmn_1L_chr)))
     return(tfd_depnt_var_nm_1L_chr)
 }
-transform_depnt_var_nm_for_cll <- function (depnt_var_nm_1L_chr)
-{
-    tfd_depnt_var_nm_1L_chr <- paste0(depnt_var_nm_1L_chr, "_cloglog")
-    return(tfd_depnt_var_nm_1L_chr)
-}
+# transform_depnt_var_nm_for_cll <- function (depnt_var_nm_1L_chr)
+# {
+#     tfd_depnt_var_nm_1L_chr <- paste0(depnt_var_nm_1L_chr, "_cloglog")
+#     return(tfd_depnt_var_nm_1L_chr)
+# }
 transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_var_nm_1L_chr,
     covar_var_nms_chr = NA_character_)
 {
@@ -76,6 +57,7 @@ transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w"
         dplyr::select(!!!rlang::syms(mdl_vars_chr))
     return(tfd_data_tb)
 }
+
 transform_mdl_vars_with_clss <- function(ds_tb,
                                          predictors_lup = NULL,
                                          prototype_lup = NULL,
@@ -241,6 +223,15 @@ transform_paths_ls_for_scndry <- function(paths_ls,
   if(remove_prmry_1L_lgl)
     paths_ls <- paths_ls[names(paths_ls) != "prmry_analysis_dir_nm_1L_chr"]
   return(paths_ls)
+}
+transform_predd_var_nm <- function (new_data_is_1L_chr,
+                                    utl_min_val_1L_dbl = NA_real_)
+{
+  tfmd_predd_var_nm_1L_chr <- paste0(new_data_is_1L_chr,
+                                     ifelse(!is.na(utl_min_val_1L_dbl),
+                                            " (constrained)",
+                                            ""))
+  return(tfmd_predd_var_nm_1L_chr)
 }
 transform_predr_nm_part_of_phrases <- function(phrases_chr,
                                                old_nms_chr = NULL,

@@ -113,13 +113,10 @@ maui_params_ls <- TTU::make_maui_params_ls(maui_itm_short_nms_chr = c("Mobility"
 ```
 
 ## Candidate model types
-We next create a lookup table of the candidate model types we wish to explore. A template look-up table is available as part of the `TTU` package, but this may need need to be adapted (e.g. in the below example, we alter the start values of some models) for optimal use with your input data.
+We next create a lookup table of the candidate model types we wish to explore. A template look-up table is available as part of the `TTU` package, but this may need need to be adapted for optimal use with your input data.
 
 ```{r}
-mdl_types_lup <- TTU::mdl_types_lup %>%
-  dplyr::mutate(start_chr = dplyr::case_when(short_name_chr %in% c("GLM_BNL_LGT","GLM_BNL_CLL") ~ c("0.5, -0.05"),
-                                             T ~ start_chr))
-  
+mdl_types_lup <- TTU::get_cndts_for_mxd_mdls() 
 ```
 
 ```{r mdltypeslup, eval = knitr::is_html_output(), results='asis'}

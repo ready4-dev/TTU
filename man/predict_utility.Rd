@@ -11,7 +11,12 @@ predict_utility(
   force_min_max_1L_lgl = T,
   utl_min_val_1L_dbl = 0.03,
   impute_1L_lgl = T,
-  utl_cls_fn = NULL
+  utl_cls_fn = NULL,
+  new_data_is_1L_chr = "Predicted",
+  predn_type_1L_chr = NULL,
+  tfmn_for_bnml_1L_lgl = F,
+  family_1L_chr = NA_character_,
+  is_brms_mdl_1L_lgl = T
 )
 }
 \arguments{
@@ -28,6 +33,16 @@ predict_utility(
 \item{impute_1L_lgl}{Impute (a logical vector of length one), Default: T}
 
 \item{utl_cls_fn}{Utility class (a function), Default: NULL}
+
+\item{new_data_is_1L_chr}{New data is (a character vector of length one), Default: 'Predicted'}
+
+\item{predn_type_1L_chr}{Prediction type (a character vector of length one), Default: NULL}
+
+\item{tfmn_for_bnml_1L_lgl}{Transformation for binomial (a logical vector of length one), Default: F}
+
+\item{family_1L_chr}{Family (a character vector of length one), Default: 'NA'}
+
+\item{is_brms_mdl_1L_lgl}{Is bayesian regression models model (a logical vector of length one), Default: T}
 }
 \value{
 Predicted utility (a double vector)

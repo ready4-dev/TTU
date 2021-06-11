@@ -95,7 +95,7 @@ maui_params_ls <- TTU::make_maui_params_ls(maui_itm_short_nms_chr = c("Household
 We next create a lookup table of the candidate model types we wish to explore. A template look-up table is available as part of the `TTU` package, but this may need need to be adapted for optimal use with your input data.
 
 ```{r}
-mdl_types_lup <- TTU::mdl_types_lup 
+mdl_types_lup <- TTU::get_cndts_for_mxd_mdls()
 ```
 
 ```{r mdltypeslup, eval = knitr::is_html_output(), results='asis'}

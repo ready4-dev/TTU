@@ -1,3 +1,58 @@
+#' Predict uncnstrd utility
+#' @description predict_uncnstrd_utl() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict uncnstrd utility. The function is called for its side effects and does not return a value.
+#' @param data_tb Data (a tibble)
+#' @param model_mdl Model (a model)
+#' @param new_data_is_1L_chr New data is (a character vector of length one), Default: 'Predicted'
+#' @param predn_type_1L_chr Prediction type (a character vector of length one), Default: NULL
+#' @param tfmn_for_bnml_1L_lgl Transformation for binomial (a logical vector of length one), Default: F
+#' @param family_1L_chr Family (a character vector of length one), Default: 'NA'
+#' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
+#' @param is_brms_mdl_1L_lgl Is bayesian regression models model (a logical vector of length one), Default: F
+#' @return NULL
+#' @rdname predict_uncnstrd_utl
+#' @export 
+#' @importFrom stats predict simulate rnorm sigma
+#' @importFrom brms posterior_predict
+#' @importFrom rlang exec
+#' @importFrom enrichwith get_simulate_function enrich
+#' @keywords internal
+predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Predicted", 
+    predn_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, 
+    tfmn_1L_chr = "NTF", is_brms_mdl_1L_lgl = F) 
+{
+    if (new_data_is_1L_chr == "Predicted") 
+        new_data_dbl <- stats::predict(model_mdl, type = predn_type_1L_chr)
+    if (new_data_is_1L_chr == "Simulated") {
+        if (is_brms_mdl_1L_lgl) {
+            new_data_dbl <- brms::posterior_predict(model_mdl, 
+                newdata = data_tb, nsamples = 1) %>% as.vector()
+        }
+        else {
+            if ("betareg" %in% class(model_mdl)) {
+                new_data_dbl <- rlang::exec(enrichwith::get_simulate_function(model_mdl), 
+                  coef(enrichwith::enrich(model_mdl, with = "auxiliary functions")))
+            }
+            else {
+                if (!tfmn_for_bnml_1L_lgl) {
+                  new_data_dbl <- stats::simulate(model_mdl)$sim_1
+                }
+                else {
+                  new_data_dbl <- (stats::predict(model_mdl) + 
+                    stats::rnorm(nrow(data_tb), 0, stats::sigma(model_mdl)))
+                }
+            }
+        }
+    }
+    if (is.matrix(new_data_dbl)) 
+        new_data_dbl <- new_data_dbl[, 1]
+    new_data_dbl <- new_data_dbl %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = ifelse(tfmn_for_bnml_1L_lgl & 
+        new_data_is_1L_chr == "Simulated", ifelse(family_1L_chr == 
+        "quasibinomial(log)", "LOG", ifelse(family_1L_chr == 
+        "quasibinomial(logit)", "LOGIT", ifelse(family_1L_chr == 
+        "quasibinomial(cloglog)", "CLL", "NTF"))), tfmn_1L_chr), 
+        tfmn_is_outp_1L_lgl = T)
+    return_new_data_dbl
+}
 #' Predict utility
 #' @description predict_utility() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict utility. The function returns Predicted utility (a double vector).
 #' @param data_tb Data (a tibble)
@@ -7,17 +62,27 @@
 #' @param utl_min_val_1L_dbl Utility minimum value (a double vector of length one), Default: 0.03
 #' @param impute_1L_lgl Impute (a logical vector of length one), Default: T
 #' @param utl_cls_fn Utility class (a function), Default: NULL
+#' @param new_data_is_1L_chr New data is (a character vector of length one), Default: 'Predicted'
+#' @param predn_type_1L_chr Prediction type (a character vector of length one), Default: NULL
+#' @param tfmn_for_bnml_1L_lgl Transformation for binomial (a logical vector of length one), Default: F
+#' @param family_1L_chr Family (a character vector of length one), Default: 'NA'
+#' @param is_brms_mdl_1L_lgl Is bayesian regression models model (a logical vector of length one), Default: T
 #' @return Predicted utility (a double vector)
 #' @rdname predict_utility
 #' @export 
 #' @importFrom rlang exec
 #' @keywords internal
 predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", model_mdl, force_min_max_1L_lgl = T, 
-    utl_min_val_1L_dbl = 0.03, impute_1L_lgl = T, utl_cls_fn = NULL) 
+    utl_min_val_1L_dbl = 0.03, impute_1L_lgl = T, utl_cls_fn = NULL, 
+    new_data_is_1L_chr = "Predicted", predn_type_1L_chr = NULL, 
+    tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, 
+    is_brms_mdl_1L_lgl = T) 
 {
-    predd_utl_dbl <- predict(model_mdl, newdata = data_tb) %>% 
-        calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, tfmn_is_outp_1L_lgl = T) %>% 
-        as.vector()
+    predd_utl_dbl <- predict_uncnstrd_utl(data_tb = data_tb, 
+        model_mdl = model_mdl, new_data_is_1L_chr = new_data_is_1L_chr, 
+        predn_type_1L_chr = predn_type_1L_chr, tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl, 
+        family_1L_chr = family_1L_chr, tfmn_1L_chr = tfmn_1L_chr, 
+        is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl)
     if (impute_1L_lgl) 
         predd_utl_dbl[which(is.na(predd_utl_dbl))] <- predd_utl_dbl %>% 
             na.omit() %>% mean()

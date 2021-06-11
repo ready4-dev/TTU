@@ -1111,7 +1111,7 @@ make_smry_of_mdl_outp <- function (data_tb,
 make_smry_of_ts_mdl_outp <- function (data_tb, #fn,
                                       predr_vars_nms_chr, mdl_nm_1L_chr, path_to_write_to_1L_chr = NA_character_,
                                       depnt_var_nm_1L_chr = "utl_total_w", id_var_nm_1L_chr = "fkClientID",
-                                      round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", predictors_lup,
+                                      round_var_nm_1L_chr = "round", round_bl_val_1L_chr = "Baseline", predictors_lup, utl_min_val_1L_dbl = -1,
                                       backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L, mdl_types_lup,
                                       seed_1L_int = 1000L, prior_ls = NULL, control_ls = NULL)
 {
@@ -1179,7 +1179,8 @@ make_smry_of_ts_mdl_outp <- function (data_tb, #fn,
                                                                         mdl_nm_1L_chr = mdl_nm_1L_chr,
                                                                         path_to_write_to_1L_chr = path_to_write_to_1L_chr,
                                                                         round_var_nm_1L_chr = round_var_nm_1L_chr,
-                                                                        tfmn_1L_chr = tfmn_1L_chr)
+                                                                        tfmn_1L_chr = tfmn_1L_chr,
+                                                                        utl_min_val_1L_dbl = utl_min_val_1L_dbl)
     }
     return(smry_of_ts_mdl_ls)
 }

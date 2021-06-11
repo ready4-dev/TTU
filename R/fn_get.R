@@ -1,3 +1,20 @@
+#' Get candidates for mxd models
+#' @description get_cndts_for_mxd_mdls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get candidates for mxd models. Function argument mdl_types_lup specifies the where to look for the required object. The function returns Candidates for mxd models (a lookup table).
+#' @param mdl_types_lup Model types (a lookup table), Default: NULL
+#' @return Candidates for mxd models (a lookup table)
+#' @rdname get_cndts_for_mxd_mdls
+#' @export 
+#' @importFrom utils data
+#' @importFrom dplyr filter
+#' @keywords internal
+get_cndts_for_mxd_mdls <- function (mdl_types_lup = NULL) 
+{
+    if (is.null(mdl_types_lup)) 
+        utils::data("mdl_types_lup", envir = environment())
+    cndts_for_mxd_mdls_lup <- mdl_types_lup %>% dplyr::filter(!tfmn_for_bnml_lgl, 
+        short_name_chr != "BET_LOG")
+    return(cndts_for_mxd_mdls_lup)
+}
 #' Get link from transformation
 #' @description get_link_from_tfmn() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get link from transformation. Function argument tfmn_1L_chr specifies the where to look for the required object. The function returns Link (a character vector of length one).
 #' @param tfmn_1L_chr Transformation (a character vector of length one)

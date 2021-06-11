@@ -14,6 +14,7 @@ make_smry_of_ts_mdl_outp(
   round_var_nm_1L_chr = "round",
   round_bl_val_1L_chr = "Baseline",
   predictors_lup,
+  utl_min_val_1L_dbl = -1,
   backend_1L_chr = getOption("brms.backend", "rstan"),
   iters_1L_int = 4000L,
   mdl_types_lup,
@@ -40,6 +41,8 @@ make_smry_of_ts_mdl_outp(
 \item{round_bl_val_1L_chr}{Round baseline value (a character vector of length one), Default: 'Baseline'}
 
 \item{predictors_lup}{Predictors (a lookup table)}
+
+\item{utl_min_val_1L_dbl}{Utility minimum value (a double vector of length one), Default: -1}
 
 \item{backend_1L_chr}{Backend (a character vector of length one), Default: getOption("brms.backend", "rstan")}
 
