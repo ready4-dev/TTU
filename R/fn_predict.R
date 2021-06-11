@@ -1,5 +1,5 @@
 #' Predict uncnstrd utility
-#' @description predict_uncnstrd_utl() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict uncnstrd utility. The function is called for its side effects and does not return a value.
+#' @description predict_uncnstrd_utl() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict uncnstrd utility. The function returns New data (a double vector).
 #' @param data_tb Data (a tibble)
 #' @param model_mdl Model (a model)
 #' @param new_data_is_1L_chr New data is (a character vector of length one), Default: 'Predicted'
@@ -8,7 +8,7 @@
 #' @param family_1L_chr Family (a character vector of length one), Default: 'NA'
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param is_brms_mdl_1L_lgl Is bayesian regression models model (a logical vector of length one), Default: F
-#' @return NULL
+#' @return New data (a double vector)
 #' @rdname predict_uncnstrd_utl
 #' @export 
 #' @importFrom stats predict simulate rnorm sigma
@@ -51,7 +51,7 @@ predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Pred
         "quasibinomial(logit)", "LOGIT", ifelse(family_1L_chr == 
         "quasibinomial(cloglog)", "CLL", "NTF"))), tfmn_1L_chr), 
         tfmn_is_outp_1L_lgl = T)
-    return_new_data_dbl
+    return(new_data_dbl)
 }
 #' Predict utility
 #' @description predict_utility() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict utility. The function returns Predicted utility (a double vector).

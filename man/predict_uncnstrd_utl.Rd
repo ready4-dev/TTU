@@ -32,7 +32,10 @@ predict_uncnstrd_utl(
 
 \item{is_brms_mdl_1L_lgl}{Is bayesian regression models model (a logical vector of length one), Default: F}
 }
+\value{
+New data (a double vector)
+}
 \description{
-predict_uncnstrd_utl() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict uncnstrd utility. The function is called for its side effects and does not return a value.
+predict_uncnstrd_utl() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict uncnstrd utility. The function returns New data (a double vector).
 }
 \keyword{internal}

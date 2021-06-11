@@ -51,7 +51,7 @@ predict_uncnstrd_utl <- function(data_tb, model_mdl,
                                                                       "CLL", "NTF"))),
                                                  tfmn_1L_chr),
                             tfmn_is_outp_1L_lgl = T)
-  return_new_data_dbl
+  return(new_data_dbl)
 }
 predict_utility <- function (data_tb,
                              tfmn_1L_chr = "NTF",
@@ -74,8 +74,6 @@ predict_utility <- function (data_tb,
                                         family_1L_chr = family_1L_chr,
                                         tfmn_1L_chr = tfmn_1L_chr,
                                         is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl)
-    # predd_utl_dbl <- predict(model_mdl, newdata = data_tb) %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
-    #     tfmn_is_outp_1L_lgl = T) %>% as.vector()
     if(impute_1L_lgl)
       predd_utl_dbl[which(is.na(predd_utl_dbl))] <- predd_utl_dbl %>% na.omit() %>% mean()
     if(force_min_max_1L_lgl){
