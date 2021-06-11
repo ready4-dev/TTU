@@ -189,8 +189,7 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
         is_brms_mdl_1L_lgl = T, utl_min_val_1L_dbl = utl_min_val_1L_dbl)
     plt_nms_chr <- paste0(mdl_nm_1L_chr, "_", c("coefs", "hetg", 
         "dnst", "sctr_plt", "sim_dnst", "sim_sctr", "cnstrd_dnst", 
-        "cnstrd_sctr_plt", "cnstrd_sim_dnst", "cnstrd_sim_sctr", 
-        ))
+        "cnstrd_sctr_plt", "cnstrd_sim_dnst", "cnstrd_sim_sctr"))
     mdl_plts_paths_ls <- purrr::map(1:10, ~{
         plt_fn <- fn_args_ls <- NULL
         if (.x %in% c(1, 2)) {
@@ -203,7 +202,7 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
             }
         }
         else {
-            if (.x %in% c(3, 5)) {
+            if (.x %in% c(3, 5, 7, 9)) {
                 plt_fn <- plot_obsd_predd_dnst
                 fn_args_ls <- list(tfd_data_tb = tfd_data_tb, 
                   depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 

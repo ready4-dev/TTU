@@ -134,7 +134,7 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
                             "dnst", "sctr_plt",
                             "sim_dnst", "sim_sctr",
                             "cnstrd_dnst","cnstrd_sctr_plt",
-                            "cnstrd_sim_dnst", "cnstrd_sim_sctr",))
+                            "cnstrd_sim_dnst", "cnstrd_sim_sctr"))
     mdl_plts_paths_ls <- purrr::map(1:10, ~{
         plt_fn <- fn_args_ls <- NULL
         if (.x %in% c(1, 2)) {
@@ -147,7 +147,7 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
             }
         }
         else {
-            if (.x %in% c(3,5)) {
+            if (.x %in% c(3,5,7,9)) {
                 plt_fn <- plot_obsd_predd_dnst
                 fn_args_ls <- list(tfd_data_tb = tfd_data_tb,
                                    depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
@@ -840,12 +840,12 @@ write_shareable_mdls <- function (outp_smry_ls,
             mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model ==
                 .x)
             data_tb <- model_mdl$data
-            if (endsWith(.x, "OLS_CLL"))
+            if (endsWith(.x, "OLS_CLL")) # EDIT
                 data_tb <- data_tb %>% dplyr::rename(!!rlang::sym(paste0(outp_smry_ls$depnt_var_nm_1L_chr,"_CLL")) := !!rlang::sym(paste0(outp_smry_ls$depnt_var_nm_1L_chr,"_cloglog"))) # REMOVE THIS ON UPDATE
             shareable_mdl <- make_shareable_mdl(data_tb = data_tb,
                 mdl_smry_tb = mdl_smry_tb, depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
                 id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr,
-                tfmn_1L_chr = ifelse(endsWith(.x, "OLS_CLL"),
+                tfmn_1L_chr = ifelse(endsWith(.x, "OLS_CLL"), ## EDIT
                   "CLL", "NTF"), mdl_type_1L_chr = ifelse(endsWith(.x,
                   "OLS_CLL"), "OLS_CLL", "GLM_GSN_LOG"), mdl_types_lup = outp_smry_ls$mdl_types_lup,
                 control_1L_chr = NA_character_, start_1L_chr = NA_character_,

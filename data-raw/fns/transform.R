@@ -28,7 +28,7 @@ transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_ch
                                   tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl,
                                   family_1L_chr = family_1L_chr,
                                   is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl)
-    tfd_data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_predd_var_nm(mew_data_is_1L_chr,
+    tfd_data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_predd_var_nm(new_data_is_1L_chr,
                                                                                       utl_min_val_1L_dbl = utl_min_val_1L_dbl)),
         new_data_dbl), `:=`(!!rlang::sym(source_data_nm_1L_chr),
         !!rlang::sym(depnt_var_nm_1L_chr)))
