@@ -54,8 +54,8 @@ transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_ch
         new_data_dbl <- stats::predict(model_mdl, type = predn_type_1L_chr)
     if (tf_type_1L_chr == "Simulated") {
         if (is_brms_mdl_1L_lgl) {
-            new_data_dbl <- brms::posterior_predict(mdl_ls, newdata = data_tb, 
-                nsamples = 1) %>% as.vector()
+            new_data_dbl <- brms::posterior_predict(model_mdl, 
+                newdata = data_tb, nsamples = 1) %>% as.vector()
         }
         else {
             if ("betareg" %in% class(model_mdl)) {

@@ -1028,7 +1028,7 @@ make_sngl_mdl_smry_tb <- function(mdls_tb,
 make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_total_w",
     predr_vars_nms_chr, #fn = calculate_rmse,
     mdl_nm_1L_chr = NA_character_,
-    seed_1L_dbl = 23456)
+    seed_1L_dbl = 23456, tfmn_1L_chr)
 {
     if (is.na(mdl_nm_1L_chr))
         mdl_nm_1L_chr <- predr_vars_nms_chr[1]
@@ -1156,7 +1156,6 @@ make_smry_of_ts_mdl_outp <- function (data_tb, #fn,
         predr_vars_nms_chr = predr_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr, iters_1L_int = iters_1L_int,
         backend_1L_chr = backend_1L_chr,
         family_fn_1L_chr = family_fn_1L_chr,
-       # link_1L_chr = get_link_from_tfmn(tfmn_1L_chr, is_OLS_1L_lgl = mdl_type_1L_chr %>% startsWith("OLS")),
         seed_1L_int = seed_1L_int,
         prior_ls = prior_ls, control_ls = control_ls)
     # if(startsWith(mdl_type_1L_chr, "GLM_BNL")){
@@ -1167,7 +1166,7 @@ make_smry_of_ts_mdl_outp <- function (data_tb, #fn,
     smry_of_ts_mdl_ls <- list(smry_of_ts_mdl_tb = make_smry_of_brm_mdl(mdl_ls,
         data_tb = tfd_data_tb, depnt_var_nm_1L_chr = tfd_depnt_var_nm_1L_chr,
         predr_vars_nms_chr = predr_vars_nms_chr,
-        mdl_nm_1L_chr = mdl_nm_1L_chr))
+        mdl_nm_1L_chr = mdl_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr))
     if (!is.na(path_to_write_to_1L_chr)) {
         smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr <- paste0(path_to_write_to_1L_chr,
             "/", mdl_nm_1L_chr, ".RDS")
@@ -1180,14 +1179,7 @@ make_smry_of_ts_mdl_outp <- function (data_tb, #fn,
                                                                         mdl_nm_1L_chr = mdl_nm_1L_chr,
                                                                         path_to_write_to_1L_chr = path_to_write_to_1L_chr,
                                                                         round_var_nm_1L_chr = round_var_nm_1L_chr,
-                                                                        tfmn_1L_chr = tfmn_1L_chr
-            # tfmn_fn = ifelse(identical(fn,
-            #     fit_gsn_log_lnk), function(x) {
-            #     x
-            # }, function(x) {
-            #     1 - exp(-exp(x))
-            # })
-            )
+                                                                        tfmn_1L_chr = tfmn_1L_chr)
     }
     return(smry_of_ts_mdl_ls)
 }

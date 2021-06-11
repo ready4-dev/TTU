@@ -1280,6 +1280,7 @@ make_shareable_mdl <- function (data_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "utl
 #' @param predr_vars_nms_chr Predictor variables names (a character vector)
 #' @param mdl_nm_1L_chr Model name (a character vector of length one), Default: 'NA'
 #' @param seed_1L_dbl Seed (a double vector of length one), Default: 23456
+#' @param tfmn_1L_chr Transformation (a character vector of length one)
 #' @return Summary of bayesian regression model model (a tibble)
 #' @rdname make_smry_of_brm_mdl
 #' @export 
@@ -1291,7 +1292,8 @@ make_shareable_mdl <- function (data_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "utl
 #' @importFrom purrr map flatten_chr
 #' @keywords internal
 make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_total_w", 
-    predr_vars_nms_chr, mdl_nm_1L_chr = NA_character_, seed_1L_dbl = 23456) 
+    predr_vars_nms_chr, mdl_nm_1L_chr = NA_character_, seed_1L_dbl = 23456, 
+    tfmn_1L_chr) 
 {
     if (is.na(mdl_nm_1L_chr)) 
         mdl_nm_1L_chr <- predr_vars_nms_chr[1]
@@ -1454,7 +1456,8 @@ make_smry_of_ts_mdl_outp <- function (data_tb, predr_vars_nms_chr, mdl_nm_1L_chr
     mdl_ls <- rlang::exec(fit_ts_model_with_brm, !!!args_ls)
     smry_of_ts_mdl_ls <- list(smry_of_ts_mdl_tb = make_smry_of_brm_mdl(mdl_ls, 
         data_tb = tfd_data_tb, depnt_var_nm_1L_chr = tfd_depnt_var_nm_1L_chr, 
-        predr_vars_nms_chr = predr_vars_nms_chr, mdl_nm_1L_chr = mdl_nm_1L_chr))
+        predr_vars_nms_chr = predr_vars_nms_chr, mdl_nm_1L_chr = mdl_nm_1L_chr, 
+        tfmn_1L_chr = tfmn_1L_chr))
     if (!is.na(path_to_write_to_1L_chr)) {
         smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr <- paste0(path_to_write_to_1L_chr, 
             "/", mdl_nm_1L_chr, ".RDS")

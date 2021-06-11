@@ -152,9 +152,9 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
 #' @param round_var_nm_1L_chr Round variable name (a character vector of length one), Default: 'round'
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param units_1L_chr Units (a character vector of length one), Default: 'in'
-#' @param height_dbl Height (a double vector), Default: c(rep(6, 2), rep(5, 3))
-#' @param width_dbl Width (a double vector), Default: c(rep(6, 2), rep(6, 3))
-#' @param rsl_dbl Resolution (a double vector), Default: rep(300, 5)
+#' @param height_dbl Height (a double vector), Default: c(rep(6, 2), rep(5, 4))
+#' @param width_dbl Width (a double vector), Default: c(rep(6, 2), rep(6, 4))
+#' @param rsl_dbl Resolution (a double vector), Default: rep(300, 6)
 #' @param args_ls Arguments (a list), Default: NULL
 #' @param seed_1L_dbl Seed (a double vector of length one), Default: 23456
 #' @return Model plots paths (a list)
@@ -168,20 +168,21 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
 write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_write_to_1L_chr, 
     depnt_var_nm_1L_chr = "utl_total_w", depnt_var_desc_1L_chr = "Utility score", 
     round_var_nm_1L_chr = "round", tfmn_1L_chr = "NTF", units_1L_chr = "in", 
-    height_dbl = c(rep(6, 2), rep(5, 3)), width_dbl = c(rep(6, 
-        2), rep(6, 3)), rsl_dbl = rep(300, 5), args_ls = NULL, 
+    height_dbl = c(rep(6, 2), rep(5, 4)), width_dbl = c(rep(6, 
+        2), rep(6, 4)), rsl_dbl = rep(300, 6), args_ls = NULL, 
     seed_1L_dbl = 23456) 
 {
     set.seed(seed_1L_dbl)
     tfd_data_tb <- transform_data_tb_for_cmprsn(tfd_data_tb %>% 
-        dplyr::ungroup(), model_mdl = mdl_ls, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr) %>% 
-        transform_data_tb_for_cmprsn(model_mdl = mdl_ls, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
-            tf_type_1L_chr = "Simulated", predn_type_1L_chr = NULL, 
-            tfmn_for_bnml_1L_lgl = FALSE, family_1L_chr = NA_character_, 
-            tfmn_1L_chr = tfmn_1L_chr, is_brms_mdl_1L_lgl = T)
+        dplyr::ungroup(), model_mdl = mdl_ls, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+        tfmn_1L_chr = tfmn_1L_chr) %>% transform_data_tb_for_cmprsn(model_mdl = mdl_ls, 
+        depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, tf_type_1L_chr = "Simulated", 
+        predn_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = FALSE, 
+        family_1L_chr = NA_character_, tfmn_1L_chr = tfmn_1L_chr, 
+        is_brms_mdl_1L_lgl = T)
     plt_nms_chr <- paste0(mdl_nm_1L_chr, "_", c("coefs", "hetg", 
-        "dnst", "sctr_plt", "sim_dnst"))
-    mdl_plts_paths_ls <- purrr::map(1:5, ~{
+        "dnst", "sctr_plt", "sim_dnst", "sim_sctr"))
+    mdl_plts_paths_ls <- purrr::map(1:6, ~{
         plt_fn <- fn_args_ls <- NULL
         if (.x %in% c(1, 2)) {
             plt <- plot(mdl_ls, ask = F, plot = F)
@@ -207,7 +208,8 @@ write_brm_model_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_wr
                   depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
                   depnt_var_desc_1L_chr = depnt_var_desc_1L_chr, 
                   round_var_nm_1L_chr = round_var_nm_1L_chr, 
-                  args_ls = args_ls)
+                  predd_val_var_nm_1L_chr = ifelse(.x == 4, "Predicted", 
+                    "Simulated"), args_ls = args_ls)
             }
         }
         ready4show::write_mdl_plt_fl(plt_fn, fn_args_ls = fn_args_ls, 

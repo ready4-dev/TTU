@@ -219,7 +219,7 @@ outp_smry_ls <- write_mdls_with_covars_cmprsn(scored_data_tb = data_tb,
                                            bl_tb = cmprsns_ls$bl_tb,
                                            ds_smry_ls = cmprsns_ls$ds_smry_ls,
                                            mdl_smry_ls = cmprsns_ls$mdl_smry_ls,
-                                           output_data_dir_1L_chr = output_data_dir_1L_chr,
+                                           output_data_dir_1L_chr = path_to_write_to_1L_chr,
                                            seed_1L_int = seed_1L_int)
 ```
 

@@ -14,9 +14,9 @@ write_brm_model_plts(
   round_var_nm_1L_chr = "round",
   tfmn_1L_chr = "NTF",
   units_1L_chr = "in",
-  height_dbl = c(rep(6, 2), rep(5, 3)),
-  width_dbl = c(rep(6, 2), rep(6, 3)),
-  rsl_dbl = rep(300, 5),
+  height_dbl = c(rep(6, 2), rep(5, 4)),
+  width_dbl = c(rep(6, 2), rep(6, 4)),
+  rsl_dbl = rep(300, 6),
   args_ls = NULL,
   seed_1L_dbl = 23456
 )
@@ -40,11 +40,11 @@ write_brm_model_plts(
 
 \item{units_1L_chr}{Units (a character vector of length one), Default: 'in'}
 
-\item{height_dbl}{Height (a double vector), Default: c(rep(6, 2), rep(5, 3))}
+\item{height_dbl}{Height (a double vector), Default: c(rep(6, 2), rep(5, 4))}
 
-\item{width_dbl}{Width (a double vector), Default: c(rep(6, 2), rep(6, 3))}
+\item{width_dbl}{Width (a double vector), Default: c(rep(6, 2), rep(6, 4))}
 
-\item{rsl_dbl}{Resolution (a double vector), Default: rep(300, 5)}
+\item{rsl_dbl}{Resolution (a double vector), Default: rep(300, 6)}
 
 \item{args_ls}{Arguments (a list), Default: NULL}
 
