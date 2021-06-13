@@ -972,8 +972,9 @@ write_scndry_analysis_dir <- function (paths_ls, reference_1L_int = 1)
 #' @export 
 #' @importFrom purrr map_chr flatten_chr map map_lgl map_int map2
 #' @importFrom stringr str_locate
-#' @importFrom dplyr filter rename
-#' @importFrom rlang sym
+#' @importFrom dplyr filter pull
+#' @importFrom TTU get_cndts_for_mxd_mdls
+#' @importFrom ready4fun get_from_lup_obj
 #' @importFrom stats setNames
 write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "") 
 {
@@ -1000,6 +1001,7 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
     rank_idcs_int <- purrr::map_int(sorted_mdl_nms_chr, ~which(ranked_mdl_nms_chr == 
         .x))
     incld_mdl_paths_chr <- incld_mdl_paths_chr[order(rank_idcs_int)]
+    mdl_types_lup <- outp_smry_ls$mdl_types_lup
     shareable_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>% 
         purrr::map2(incld_mdl_paths_chr, ~{
             model_mdl <- readRDS(paste0(outp_smry_ls$path_to_write_to_1L_chr, 
@@ -1007,18 +1009,20 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
             mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model == 
                 .x)
             data_tb <- model_mdl$data
-            if (endsWith(.x, "OLS_CLL")) 
-                data_tb <- data_tb %>% dplyr::rename(`:=`(!!rlang::sym(paste0(outp_smry_ls$depnt_var_nm_1L_chr, 
-                  "_CLL")), !!rlang::sym(paste0(outp_smry_ls$depnt_var_nm_1L_chr, 
-                  "_cloglog"))))
+            mdl_nm_1L_chr <- .x
+            mdl_type_1L_chr <- (TTU::get_cndts_for_mxd_mdls() %>% 
+                dplyr::pull(short_name_chr))[mdl_types_lup %>% 
+                dplyr::pull(short_name_chr) %>% purrr::map_lgl(~endsWith(mdl_nm_1L_chr, 
+                .x))]
+            tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+                match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
+                target_var_nm_1L_chr = "tfmn_chr", evaluate_lgl = F)
             shareable_mdl <- make_shareable_mdl(data_tb = data_tb, 
                 mdl_smry_tb = mdl_smry_tb, depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
                 id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, 
-                tfmn_1L_chr = ifelse(endsWith(.x, "OLS_CLL"), 
-                  "CLL", "NTF"), mdl_type_1L_chr = ifelse(endsWith(.x, 
-                  "OLS_CLL"), "OLS_CLL", "GLM_GSN_LOG"), mdl_types_lup = outp_smry_ls$mdl_types_lup, 
-                control_1L_chr = NA_character_, start_1L_chr = NA_character_, 
-                seed_1L_int = outp_smry_ls$seed_1L_int)
+                tfmn_1L_chr = tfmn_1L_chr, mdl_type_1L_chr = mdl_type_1L_chr, 
+                mdl_types_lup = mdl_types_lup, control_1L_chr = NA_character_, 
+                start_1L_chr = NA_character_, seed_1L_int = outp_smry_ls$seed_1L_int)
             saveRDS(shareable_mdl, paste0(output_dir_1L_chr, 
                 "/", .x, ".RDS"))
             shareable_mdl
