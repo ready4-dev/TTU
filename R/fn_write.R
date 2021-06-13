@@ -973,7 +973,6 @@ write_scndry_analysis_dir <- function (paths_ls, reference_1L_int = 1)
 #' @importFrom purrr map_chr flatten_chr map map_lgl map_int map2
 #' @importFrom stringr str_locate
 #' @importFrom dplyr filter pull
-#' @importFrom TTU get_cndts_for_mxd_mdls
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom stats setNames
 write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "") 
@@ -1010,8 +1009,7 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
                 .x)
             data_tb <- model_mdl$data
             mdl_nm_1L_chr <- .x
-            mdl_type_1L_chr <- (TTU::get_cndts_for_mxd_mdls() %>% 
-                dplyr::pull(short_name_chr))[mdl_types_lup %>% 
+            mdl_type_1L_chr <- (mdl_types_lup %>% dplyr::pull(short_name_chr))[mdl_types_lup %>% 
                 dplyr::pull(short_name_chr) %>% purrr::map_lgl(~endsWith(mdl_nm_1L_chr, 
                 .x))]
             tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 

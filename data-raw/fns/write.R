@@ -842,7 +842,7 @@ write_shareable_mdls <- function (outp_smry_ls,
                 .x)
             data_tb <- model_mdl$data
             mdl_nm_1L_chr <- .x
-            mdl_type_1L_chr <- (TTU::get_cndts_for_mxd_mdls() %>%
+            mdl_type_1L_chr <- (mdl_types_lup %>%
                                   dplyr::pull(short_name_chr))[mdl_types_lup %>%
                                                                  dplyr::pull(short_name_chr) %>%
                                                                  purrr::map_lgl(~endsWith(mdl_nm_1L_chr,.x))]
