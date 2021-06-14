@@ -516,7 +516,8 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
 }
 make_maui_params_ls <- function(maui_itm_short_nms_chr,
                                 maui_domains_pfcs_1L_chr = NULL,
-                                maui_scoring_fn = NULL){
+                                maui_scoring_fn = NULL,
+                                utl_min_val_1L_dbl = -1){
   if(is.null(maui_scoring_fn)){
     maui_scoring_fn <- function(data_tb,
                                 maui_item_pfx_1L_chr,
@@ -530,7 +531,8 @@ make_maui_params_ls <- function(maui_itm_short_nms_chr,
   }
   maui_params_ls <- list(maui_domains_pfcs_1L_chr = maui_domains_pfcs_1L_chr,
                          maui_itm_short_nms_chr = maui_itm_short_nms_chr,
-                         maui_scoring_fn = maui_scoring_fn)
+                         maui_scoring_fn = maui_scoring_fn,
+                         utl_min_val_1L_dbl = utl_min_val_1L_dbl)
   return(maui_params_ls)
 }
 make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF",

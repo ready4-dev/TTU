@@ -6,11 +6,10 @@
 #' @export 
 #' @importFrom utils data
 #' @importFrom dplyr filter
-#' @keywords internal
 get_cndts_for_mxd_mdls <- function (mdl_types_lup = NULL) 
 {
     if (is.null(mdl_types_lup)) 
-        utils::data("mdl_types_lup", envir = environment())
+        utils::data("mdl_types_lup", package = "TTU", envir = environment())
     cndts_for_mxd_mdls_lup <- mdl_types_lup %>% dplyr::filter(!tfmn_for_bnml_lgl, 
         short_name_chr != "BET_LOG")
     return(cndts_for_mxd_mdls_lup)

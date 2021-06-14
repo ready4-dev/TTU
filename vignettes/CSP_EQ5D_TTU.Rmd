@@ -155,7 +155,6 @@ path_params_ls <- TTU::make_path_params_ls("fake_data.rds")
 path_params_ls$paths_ls <- TTU::write_main_oupt_dir(path_params_ls, 
                                      use_fake_data_1L_lgl = use_fake_data_1L_lgl)
 ```
-
 ## Output repositories
 We provide details of dataverse dataset(s) to which results will be posted. If you do not permissions for a dataverse dataset to write to, use `dv_ls <- NULL`.
 

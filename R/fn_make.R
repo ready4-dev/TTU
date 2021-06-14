@@ -607,6 +607,7 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
 #' @param maui_itm_short_nms_chr Maui item short names (a character vector)
 #' @param maui_domains_pfcs_1L_chr Maui domains pfcs (a character vector of length one), Default: NULL
 #' @param maui_scoring_fn Maui scoring (a function), Default: NULL
+#' @param utl_min_val_1L_dbl Utility minimum value (a double vector of length one), Default: -1
 #' @return Maui params (a list)
 #' @rdname make_maui_params_ls
 #' @export 
@@ -614,7 +615,7 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
 #' @importFrom rlang sym
 #' @keywords internal
 make_maui_params_ls <- function (maui_itm_short_nms_chr, maui_domains_pfcs_1L_chr = NULL, 
-    maui_scoring_fn = NULL) 
+    maui_scoring_fn = NULL, utl_min_val_1L_dbl = -1) 
 {
     if (is.null(maui_scoring_fn)) {
         maui_scoring_fn <- function(data_tb, maui_item_pfx_1L_chr, 
@@ -625,7 +626,8 @@ make_maui_params_ls <- function (maui_itm_short_nms_chr, maui_domains_pfcs_1L_ch
         }
     }
     maui_params_ls <- list(maui_domains_pfcs_1L_chr = maui_domains_pfcs_1L_chr, 
-        maui_itm_short_nms_chr = maui_itm_short_nms_chr, maui_scoring_fn = maui_scoring_fn)
+        maui_itm_short_nms_chr = maui_itm_short_nms_chr, maui_scoring_fn = maui_scoring_fn, 
+        utl_min_val_1L_dbl = utl_min_val_1L_dbl)
     return(maui_params_ls)
 }
 #' Make

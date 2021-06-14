@@ -1,3 +1,11 @@
+get_cndts_for_mxd_mdls <- function(mdl_types_lup = NULL){
+  if(is.null(mdl_types_lup))
+    utils::data("mdl_types_lup", package = "TTU", envir = environment())
+  cndts_for_mxd_mdls_lup <- mdl_types_lup %>%
+    dplyr::filter(!tfmn_for_bnml_lgl,
+                  short_name_chr != "BET_LOG" )
+  return(cndts_for_mxd_mdls_lup)
+}
 get_link_from_tfmn <- function(tfmn_1L_chr,
                                is_OLS_1L_lgl = F){
   link_1L_chr <- ifelse(is_OLS_1L_lgl,
@@ -16,14 +24,6 @@ get_link_from_tfmn <- function(tfmn_1L_chr,
   if(link_1L_chr=="ERROR")
     stop("Link cannot be identified - incorrect transformation argument tfmn_1L_chr")
   return(link_1L_chr)
-}
-get_cndts_for_mxd_mdls <- function(mdl_types_lup = NULL){
-  if (is.null(mdl_types_lup))
-    utils::data("mdl_types_lup", envir = environment())
-  cndts_for_mxd_mdls_lup <- mdl_types_lup %>%
-    dplyr::filter(!tfmn_for_bnml_lgl,
-                  short_name_chr != "BET_LOG" )
-  return(cndts_for_mxd_mdls_lup)
 }
 get_signft_covars <- function (mdls_with_covars_smry_tb, covar_var_nms_chr)
 {
