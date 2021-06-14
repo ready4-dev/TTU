@@ -530,7 +530,7 @@ make_hlth_utl_and_predrs_ls <- function (outp_smry_ls, descv_tbls_ls, nbr_of_dig
 #' @rdname make_knit_pars_ls
 #' @export 
 #' @importFrom utils data
-#' @importFrom purrr pmap map map_chr flatten_chr map2
+#' @importFrom purrr pmap map map_chr map_lgl flatten_chr map2
 #' @importFrom stringr str_detect
 #' @importFrom stats setNames
 #' @importFrom ready4fun get_from_lup_obj
@@ -556,12 +556,18 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
             mdl_nms_chr <- ..3
             mdl_data_paths_ls <- mdl_nms_chr %>% purrr::map(~paths_to_all_data_fls_chr[stringr::str_detect(paths_to_all_data_fls_chr, 
                 .x)]) %>% stats::setNames(mdl_nms_chr)
-            paths_to_mdls_chr <- mdl_data_paths_ls %>% purrr::map_chr(~.x[endsWith(.x, 
-                ".RDS")]) %>% unname()
+            paths_to_mdls_chr <- mdl_data_paths_ls %>% purrr::map_chr(~ifelse(identical(.x[endsWith(.x, 
+                ".RDS")], character(0)), NA_character_, )) %>% 
+                unname()
             paths_to_mdl_plts_ls <- mdl_data_paths_ls %>% purrr::map(~{
                 paths_to_all_plots_chr <- .x[endsWith(.x, ".png")]
-                plt_types_chr %>% purrr::map(~paths_to_all_plots_chr[paths_to_all_plots_chr %>% 
-                  stringr::str_detect(.x)]) %>% purrr::flatten_chr()
+                plt_types_chr %>% purrr::map(~{
+                  sfx_1L_chr <- paste0(.x, ".png")
+                  paths_to_all_plots_chr[paths_to_all_plots_chr %>% 
+                    purrr::map_lgl(~endsWith(.x, sfx_1L_chr))][paths_to_all_plots_chr[paths_to_all_plots_chr %>% 
+                    purrr::map_lgl(~endsWith(.x, sfx_1L_chr))] %>% 
+                    nchar() %>% which.min()]
+                }) %>% purrr::flatten_chr() %>% unique()
             })
             mdl_ttls_chr <- paste0(..1[1], ifelse(is.na(..1[2]), 
                 "", paste(" with ", ..1[2])), " ", mdl_types_chr %>% 
