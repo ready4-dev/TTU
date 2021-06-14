@@ -9,7 +9,7 @@ Test time series models for each of the `r length(outp_smry_ls$mdl_nms_ls %>% pu
 
 ```{r results='hide', message=FALSE, warning=FALSE}
 outp_smry_ls <- TTU::write_ts_mdls_from_alg_outp(outp_smry_ls,
-                                                 utl_min_val_1L_dbl = params_ls$maui_params_ls$utl_min_val_1L_dbl,
+                                                 utl_min_val_1L_dbl = params_ls$utl_min_val_1L_dbl,
                                                  predictors_lup = params_ls$predictors_lup,
                                                  backend_1L_chr = "cmdstanr",
                                                  new_dir_nm_1L_chr = "F_TS_Mdls",
