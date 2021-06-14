@@ -71,7 +71,6 @@ predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Pred
 #' @rdname predict_utility
 #' @export 
 #' @importFrom rlang exec
-#' @keywords internal
 predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", model_mdl, force_min_max_1L_lgl = T, 
     utl_min_val_1L_dbl = 0.03, impute_1L_lgl = T, utl_cls_fn = NULL, 
     new_data_is_1L_chr = "Predicted", predn_type_1L_chr = NULL, 

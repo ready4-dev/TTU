@@ -35,12 +35,12 @@ reference:
   - make_results_ls
   - make_results_ls_spine
   - make_study_descs_ls
+  - predict_utility
   - reorder_cndt_predrs_chr
   - transform_mdl_vars_with_clss
   - transform_paths_ls_for_scndry
   - transform_rprt_lup
   - transform_tb_to_mdl_inp
-  - write_all_alg_outps
   - write_main_oupt_dir
   - write_mdl_cmprsn
   - write_mdl_type_covars_mdls

@@ -5,7 +5,7 @@
 \alias{plt_types_lup}
 \title{Model plot types lookup table}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 4 rows and 2 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 10 rows and 2 columns.
 }
 \usage{
 plt_types_lup
