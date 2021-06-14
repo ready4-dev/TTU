@@ -109,7 +109,8 @@ maui_params_ls <- TTU::make_maui_params_ls(maui_itm_short_nms_chr = c("Mobility"
                       dplyr::rename_with(~paste0(maui_item_pfx_1L_chr,.x),c("MO","SC","UA","PD","AD")) %>%
                       dplyr::mutate(`:=`(!!rlang::sym(utl_unwtd_var_nm_1L_chr),                                          rowSums(dplyr::across(dplyr::starts_with(maui_item_pfx_1L_chr))))) %>%
                       dplyr::filter(!is.na(!!rlang::sym(utl_unwtd_var_nm_1L_chr)))
-                    })
+                    },
+                    utl_min_val_1L_dbl = 0.03)
 ```
 
 ## Candidate model types
