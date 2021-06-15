@@ -326,10 +326,10 @@ make_eq5d_ds_dict <- function (data_tb = make_fake_eq5d_ds(), predictors_lup = m
             5), rep("Multi-Attribute Utility Instrument Score", 
             2), rep("Clinical", 2)), var_desc_chr = c("Unique identifier", 
             "Data collection round", "Date of data collection", 
-            "EQ5D - Mobility Domain Score", "EQ5D - Self-Care Domain Score", 
-            "EQ5D - Usual Activities Domain Score", "EQ5D - Pain / Discomfort Domain Score", 
-            "EQ5D - Anxiety / Depression Domain Score", "EQ5D - Total weighted score", 
-            "EQ5D - Total unweighted score", predictors_lup$long_name_chr), 
+            "EQ5D - Mobility domain score", "EQ5D - Self-Care domain score", 
+            "EQ5D - Usual Activities domain score", "EQ5D - Pain / Discomfort domain score", 
+            "EQ5D - Anxiety / Depression domain score", "EQ5D - total weighted score", 
+            "EQ5D - total unweighted score", predictors_lup$long_name_chr), 
         var_type_chr = c("integer", "character", "date", rep("integer", 
             5), "double", "integer", predictors_lup$class_chr))) %>% 
         dplyr::arrange(var_ctg_chr)
@@ -729,6 +729,49 @@ make_mdl_coef_ratio_ls <- function (outp_smry_ls, predr_ctgs_ls = NULL)
         mdl_coef_ratios_ls <- append(mdl_coef_ratios_ls, append_ls)
     }
     return(mdl_coef_ratios_ls)
+}
+#' Make model description lines
+#' @description make_mdl_desc_lines() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model description lines. The function returns Model description lines (a character vector).
+#' @param outp_smry_ls Output summary (a list)
+#' @param mdl_nm_1L_chr Model name (a character vector of length one)
+#' @return Model description lines (a character vector)
+#' @rdname make_mdl_desc_lines
+#' @export 
+#' @importFrom dplyr filter
+#' @importFrom purrr map_chr
+#' @importFrom stringr str_remove
+#' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
+make_mdl_desc_lines <- function (outp_smry_ls, mdl_nm_1L_chr) 
+{
+    mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model == 
+        mdl_nm_1L_chr)
+    predictors_chr <- mdl_smry_tb$Parameter[!mdl_smry_tb$Parameter %in% 
+        c("Intercept", "R2", "RMSE", "Sigma")] %>% purrr::map_chr(~stringr::str_remove(.x, 
+        " baseline") %>% stringr::str_remove(" change")) %>% 
+        unique()
+    predictors_desc_chr <- predictors_chr %>% purrr::map_chr(~{
+        scaling_1L_dbl <- ready4fun::get_from_lup_obj(outp_smry_ls$predictors_lup, 
+            match_value_xx = .x, match_var_nm_1L_chr = "short_name_chr", 
+            target_var_nm_1L_chr = "mdl_scaling_dbl", evaluate_lgl = F)
+        paste0(.x, " (", ready4fun::get_from_lup_obj(outp_smry_ls$dictionary_tb, 
+            match_value_xx = .x, match_var_nm_1L_chr = "var_nm_chr", 
+            target_var_nm_1L_chr = "var_desc_chr", evaluate_lgl = F), 
+            ifelse(scaling_1L_dbl == 1, "", paste0(" (multiplied by ", 
+                scaling_1L_dbl, ")")), ")")
+    })
+    if (length(predictors_desc_chr) > 1) 
+        predictors_desc_chr <- paste0(c(paste0("\n - ", predictors_desc_chr[-length(predictors_desc_chr)], 
+            collapse = ";"), paste0("\n - ", predictors_desc_chr[length(predictors_desc_chr)])), 
+            collapse = "; and")
+    mdl_desc_lines_chr <- paste0(paste0("This model predicts values at two timepoints for ", 
+        ready4fun::get_from_lup_obj(outp_smry_ls$dictionary_tb, 
+            match_value_xx = outp_smry_ls$depnt_var_nm_1L_chr, 
+            match_var_nm_1L_chr = "var_nm_chr", target_var_nm_1L_chr = "var_desc_chr", 
+            evaluate_lgl = F), ". The predictor variables are ", 
+        "baseline values and subsequent changes in ", collapse = ""), 
+        predictors_desc_chr, ".")
+    return(mdl_desc_lines_chr)
 }
 #' Make model names
 #' @description make_mdl_nms_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model names list. The function returns Model names (a list).

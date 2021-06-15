@@ -76,7 +76,7 @@ We create a lookup table with metadata on the dataset variables that we will be 
 ```{r}
 predictors_lup <- TTU::TTU_predictors_lup(TTU::make_pt_TTU_predictors_lup(short_name_chr = ds_descvs_ls$candidate_predrs_chr,
                                               long_name_chr = c("Kessler Psychological Distress - 10 Item Total Score",
-                                                   "Overall Wellbeing Measure (Winefield et al. 2012)"),
+                                                   "Overall Psychological Wellbeing (Winefield et al. 2012)"),
                                               min_val_dbl = c(10,18),
                                               max_val_dbl = c(50,90),
                                               class_chr = "integer",

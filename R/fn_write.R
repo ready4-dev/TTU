@@ -557,7 +557,7 @@ write_mdls_with_covars_cmprsn <- function (scored_data_tb, bl_tb, ds_smry_ls, md
     mdl_smry_ls$mdl_nms_ls <- make_mdl_nms_ls(mdl_smry_ls$predr_vars_nms_ls, 
         mdl_types_chr = mdl_smry_ls$prefd_mdl_types_chr)
     outp_smry_ls <- list(scored_data_tb = scored_data_tb, dictionary_tb = ds_smry_ls$dictionary_tb, 
-        smry_of_sngl_predr_mdls_tb = mdl_smry_ls$smry_of_sngl_predr_mdls_tb, 
+        predictors_lup = ds_smry_ls$predictors_lup, smry_of_sngl_predr_mdls_tb = mdl_smry_ls$smry_of_sngl_predr_mdls_tb, 
         prefd_mdl_types_chr = mdl_smry_ls$prefd_mdl_types_chr, 
         predr_cmprsn_tb = mdl_smry_ls$predr_cmprsn_tb, smry_of_mdl_sngl_predrs_tb = mdl_smry_ls$smry_of_mdl_sngl_predrs_tb, 
         mdls_with_covars_smry_tb = mdl_smry_ls$mdls_with_covars_smry_tb, 

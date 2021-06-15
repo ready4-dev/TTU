@@ -249,13 +249,13 @@ make_eq5d_ds_dict <- function(data_tb = make_fake_eq5d_ds(),
                                                                                            var_desc_chr = c("Unique identifier",
                                                                                                             "Data collection round",
                                                                                                             "Date of data collection",
-                                                                                                            "EQ5D - Mobility Domain Score",
-                                                                                                            "EQ5D - Self-Care Domain Score",
-                                                                                                            "EQ5D - Usual Activities Domain Score",
-                                                                                                            "EQ5D - Pain / Discomfort Domain Score",
-                                                                                                            "EQ5D - Anxiety / Depression Domain Score",
-                                                                                                            "EQ5D - Total weighted score",
-                                                                                                            "EQ5D - Total unweighted score",
+                                                                                                            "EQ5D - Mobility domain score",
+                                                                                                            "EQ5D - Self-Care domain score",
+                                                                                                            "EQ5D - Usual Activities domain score",
+                                                                                                            "EQ5D - Pain / Discomfort domain score",
+                                                                                                            "EQ5D - Anxiety / Depression domain score",
+                                                                                                            "EQ5D - total weighted score",
+                                                                                                            "EQ5D - total unweighted score",
                                                                                                             predictors_lup$long_name_chr),
                                                                                            var_type_chr = c("integer",
                                                                                                             "character","date",
@@ -684,6 +684,50 @@ make_mdl_type_smry_tbl <- function(mdls_tb,
                                           add_mdl_nm_sfx_1L_lgl = add_mdl_nm_sfx_1L_lgl))
   return(mdl_type_smry_tbl_tb)
 }
+make_mdl_desc_lines <- function(outp_smry_ls,
+                                mdl_nm_1L_chr){
+  mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>%
+    dplyr::filter(Model == mdl_nm_1L_chr)
+  predictors_chr <- mdl_smry_tb$Parameter[!mdl_smry_tb$Parameter %in% c("Intercept","R2","RMSE","Sigma")] %>%
+    purrr::map_chr(~stringr::str_remove(.x," baseline") %>% stringr::str_remove(" change")) %>% unique()
+  predictors_desc_chr <- predictors_chr %>%
+    purrr::map_chr(~{
+      scaling_1L_dbl <- ready4fun::get_from_lup_obj(outp_smry_ls$predictors_lup,
+                                                    match_value_xx = .x,
+                                                    match_var_nm_1L_chr = "short_name_chr",
+                                                    target_var_nm_1L_chr = "mdl_scaling_dbl",
+                                                    evaluate_lgl = F)
+      paste0(.x,
+             " (",
+             ready4fun::get_from_lup_obj(outp_smry_ls$dictionary_tb,
+                                         match_value_xx = .x,
+                                         match_var_nm_1L_chr = "var_nm_chr",
+                                         target_var_nm_1L_chr = "var_desc_chr",
+                                         evaluate_lgl = F),
+             ifelse(scaling_1L_dbl == 1,
+                    "",
+                    paste0(" (multiplied by ", scaling_1L_dbl,")")),
+             ")")
+    })
+  if(length(predictors_desc_chr) > 1)
+    predictors_desc_chr <- paste0(c(paste0("\n - ",
+                                           predictors_desc_chr[-length(predictors_desc_chr)],
+                                           collapse = ";"),
+                                    paste0("\n - ",predictors_desc_chr[length(predictors_desc_chr)])),
+                                  collapse = "; and")
+
+
+  mdl_desc_lines_chr <- paste0(paste0("This model predicts values at two timepoints for ",
+                                      ready4fun::get_from_lup_obj(outp_smry_ls$dictionary_tb,
+                                                                  match_value_xx = outp_smry_ls$depnt_var_nm_1L_chr,
+                                                                  match_var_nm_1L_chr = "var_nm_chr",
+                                                                  target_var_nm_1L_chr = "var_desc_chr",
+                                                                  evaluate_lgl = F),
+                                      ". The predictor variables are ",
+                                      "baseline values and subsequent changes in ",
+                                      collapse = ""), predictors_desc_chr,".")
+  return(mdl_desc_lines_chr)
+}
 make_output_format_ls <- function(manuscript_outp_1L_chr = "Word",
                                   manuscript_digits_1L_int = 2L,
                                   supplementary_outp_1L_chr = "PDF",
@@ -845,30 +889,6 @@ make_prmry_analysis_params_ls <- function(analysis_core_params_ls,
     append(path_params_ls[1:2]) %>%
     append(maui_params_ls)
   return(prmry_analysis_params_ls)
-}
-make_valid_params_ls_ls <- function(analysis_core_params_ls,
-                                    candidate_covar_nms_chr,
-                                    ds_tb,
-                                    path_params_ls,
-                                    maui_params_ls,
-                                    prefd_covars_chr = NA_character_,
-                                    prefd_mdl_types_chr = c("GLM_GSN_LOG","OLS_CLL"),
-                                    raw_ds_tfmn_fn = NULL,
-                                    scndry_analysis_extra_vars_chr = NA_character_,
-                                    subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)",
-                                    utl_class_fn_1L_chr = "as.numeric"){
-  valid_params_ls_ls <- make_prmry_analysis_params_ls(analysis_core_params_ls = analysis_core_params_ls,
-                                                      candidate_covar_nms_chr = candidate_covar_nms_chr,
-                                                      ds_tb = ds_tb,
-                                                      path_params_ls = path_params_ls,
-                                                      maui_params_ls = maui_params_ls,
-                                                      prefd_covars_chr = prefd_covars_chr,
-                                                      prefd_mdl_types_chr = prefd_mdl_types_chr,
-                                                      raw_ds_tfmn_fn = raw_ds_tfmn_fn,
-                                                      subtitle_1L_chr = subtitle_1L_chr,
-                                                      utl_class_fn_1L_chr = utl_class_fn_1L_chr) %>%
-    transform_params_ls_to_valid(scndry_analysis_extra_vars_chr = scndry_analysis_extra_vars_chr)
-  return(valid_params_ls_ls)
 }
 make_psych_predrs_lup <- function(){
   predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = c("k10_int","psych_well_int"),
@@ -1357,4 +1377,28 @@ make_unique_ls_elmt_idx_int <- function (data_ls)
     unique_ls_elmt_idx_int <- 1
   }
   return(unique_ls_elmt_idx_int)
+}
+make_valid_params_ls_ls <- function(analysis_core_params_ls,
+                                    candidate_covar_nms_chr,
+                                    ds_tb,
+                                    path_params_ls,
+                                    maui_params_ls,
+                                    prefd_covars_chr = NA_character_,
+                                    prefd_mdl_types_chr = c("GLM_GSN_LOG","OLS_CLL"),
+                                    raw_ds_tfmn_fn = NULL,
+                                    scndry_analysis_extra_vars_chr = NA_character_,
+                                    subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)",
+                                    utl_class_fn_1L_chr = "as.numeric"){
+  valid_params_ls_ls <- make_prmry_analysis_params_ls(analysis_core_params_ls = analysis_core_params_ls,
+                                                      candidate_covar_nms_chr = candidate_covar_nms_chr,
+                                                      ds_tb = ds_tb,
+                                                      path_params_ls = path_params_ls,
+                                                      maui_params_ls = maui_params_ls,
+                                                      prefd_covars_chr = prefd_covars_chr,
+                                                      prefd_mdl_types_chr = prefd_mdl_types_chr,
+                                                      raw_ds_tfmn_fn = raw_ds_tfmn_fn,
+                                                      subtitle_1L_chr = subtitle_1L_chr,
+                                                      utl_class_fn_1L_chr = utl_class_fn_1L_chr) %>%
+    transform_params_ls_to_valid(scndry_analysis_extra_vars_chr = scndry_analysis_extra_vars_chr)
+  return(valid_params_ls_ls)
 }
