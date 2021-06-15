@@ -557,8 +557,8 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
             mdl_data_paths_ls <- mdl_nms_chr %>% purrr::map(~paths_to_all_data_fls_chr[stringr::str_detect(paths_to_all_data_fls_chr, 
                 .x)]) %>% stats::setNames(mdl_nms_chr)
             paths_to_mdls_chr <- mdl_data_paths_ls %>% purrr::map_chr(~ifelse(identical(.x[endsWith(.x, 
-                ".RDS")], character(0)), NA_character_, )) %>% 
-                unname()
+                ".RDS")], character(0)), NA_character_, .x[endsWith(.x, 
+                ".RDS")])) %>% unname()
             paths_to_mdl_plts_ls <- mdl_data_paths_ls %>% purrr::map(~{
                 paths_to_all_plots_chr <- .x[endsWith(.x, ".png")]
                 plt_types_chr %>% purrr::map(~{

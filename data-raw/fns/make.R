@@ -465,6 +465,7 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
                                   paths_to_mdls_chr <- mdl_data_paths_ls %>%
                                     purrr::map_chr(~ifelse(identical(.x[endsWith(.x,".RDS")],character(0)),
                                                            NA_character_,
+                                                           .x[endsWith(.x,".RDS")]
                                                            )) %>% unname()
                                   paths_to_mdl_plts_ls <- mdl_data_paths_ls %>%
                                     purrr::map(~{
