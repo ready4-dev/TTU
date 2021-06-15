@@ -6,7 +6,7 @@ knit_mdl_rprt <- function (knit_pars_ls, path_to_mdl_rprt_tmpl_1L_chr)
             deparse(), output_type_1L_chr = ..5 %>% deparse(),
         section_ttl_1L_chr = ..6,
         paths_to_mdl_plts_chr = ..7 %>% deparse(),
-        mdl_nms_chr = names(..1) %>% deparse()))
+        mdl_nms_chr = names(knit_pars_ls$plt_nms_ls) %>% deparse()))
     res <- knitr::knit_child(text = unlist(src), quiet = TRUE)
     cat(res, sep = "\n")
 }
