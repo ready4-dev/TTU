@@ -1,28 +1,30 @@
 ---
-title: "Complete Study Program - Transfer To EQ5D Health Utility For A Community Sample"
+title: "Analysis, Reporting and Dissemination Workflow"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Analyse, report and share}
+  %\VignetteIndexEntry{Analysis, Reporting and Dissemination Workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 \blandscape
 <!---BLOCK_LANDSCAPE_START--->
 
-```{r echo = TRUE }
+The steps in this analysis, reporting and dissemination workflow should only be undertaken once an optimal set of input values have been identified by an [initial exploratory analysis](Model_TTU.html).
+```{r echo = TRUE, message=FALSE}
 library(magrittr)
+library(TTU)
 ```
 
 # Input parameters
 
 ## Reporting parameters
-```{, child=c('_Reporting_Params.Rmd')}
+```{r child=c('_Reporting_Params.Rmd')}
 ```
 
 ## Data parameters
 
 ### Dataset
-As this is an illustrative example, we first must create a fake dataset (if using real data, skip this step).
+We read in our study dataset (in this case we are using fake data).
 
 ```{r message=FALSE}
 ds_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4750597")) 
@@ -96,8 +98,9 @@ predictors_lup <- TTU::TTU_predictors_lup(TTU::make_pt_TTU_predictors_lup(short_
 
 ### Multi-Attribute Utility Instrument (MAUI) parameters
 We also need to provide information specific to the MAUI used to collect the data from which health utility will be derived. The minimum allowable health utility weight for this instrument can be declared using the `utl_min_val_1L_dbl` argument. If our source dataset does not include a pre-calculated weighted utility variable, we must supply a function to calculate this variable using the `maui_scoring_fn` argument. Note if specifying such a function, it must:
+
  - include identical arguments as in the below example (including names and order), even if all arguments are not required; and
- - also calculate an unweighted score that is a simple sum of all maui item question responses (e.g. the last three lines of the example `maui_scoring_fn`).
+ - also calculate an unweighted score that is a simple sum of all MAUI item question responses (e.g. the last three lines of the example `maui_scoring_fn`).
 
 ```{r}
 maui_params_ls <- TTU::make_maui_params_ls(maui_itm_short_nms_chr = c("Mobility", "Self-care", "Activities","Pain","Anxiety"),
@@ -142,21 +145,25 @@ analysis_core_params_ls <- TTU::make_analysis_core_params_ls(ds_descvs_ls = ds_d
 ## Path parameters
 We next create an object that specifies the relative locations of the input data and the intended destination for analysis outputs and reports. The default settings of the `make_path_params_ls` function will write all output into a new directory, created one level up from the current working directory.
 
-```{r}
+```{r, warning=F, message=F}
 path_params_ls <- TTU::make_path_params_ls(use_fake_data_1L_lgl = use_fake_data_1L_lgl,
                                       write_new_dir_1L_lgl = T)
 ```
 
 ## Output repositories
-We provide details of dataverse dataset(s) to which results will be posted. If you do not permissions for a dataverse dataset to write to, use `dv_ls <- NULL`.
+We provide details of dataverse dataset(s) to which results will be posted. You will need to supply details for repositories to which you have write permissions - the values supplied in the below call will not work for you. If you do not have write permissions for a dataverse dataset, use `dv_ls <- NULL`. 
 
 ```{r echo = TRUE }
-dv_ls <- list(primary_dv_chr = c("fakes","https://doi.org/10.7910/DVN/612HDC"))
+dv_ls <- list(primary_dv_chr = c("fakes", # REPLACE WITH DATAVERSE IN WHICH YOUR DATASET IS LOCATED
+                                 "https://doi.org/10.7910/DVN/612HDC" # REPLACE WITH YOUR DATASET'S DOI
+                                 ))
 ```
 
 # Primary Analysis
 
-## Consolidate required parameters
+## Specify analysis parameters
+A list of valid input values for our primary analysis is now constructed, principally using the objects created in the preceding steps. The `make_valid_params_ls_ls` checks the naming conventions used in some variables of interest and where necessary modifies the names of these variables.
+
 ```{r}
 valid_params_ls_ls <- TTU::make_valid_params_ls_ls(analysis_core_params_ls,
                                                    candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
@@ -166,8 +173,9 @@ valid_params_ls_ls <- TTU::make_valid_params_ls_ls(analysis_core_params_ls,
 ```
 
 ## Run analysis
+All analytic steps are executed with the following function call, which also creates [a report detailing the program that performs these tasks](https://dataverse.harvard.edu/api/access/datafile/4806541).
 
-```{r echo = TRUE}
+```{r echo = TRUE, eval=FALSE}
 TTU::write_report(params_ls = valid_params_ls_ls$params_ls,
                   paths_ls = path_params_ls$paths_ls,
                   rprt_nm_1L_chr = "Main_Analysis_Rprt",
@@ -176,8 +184,8 @@ TTU::write_report(params_ls = valid_params_ls_ls$params_ls,
 ```
 
 ## Report results
-
-```{r echo = TRUE }
+[A report, summarising all the transfer to utility models](https://dataverse.harvard.edu/api/access/datafile/4806542) created in the preceding step is authored with the following function call. 
+```{r echo = TRUE, eval=FALSE }
 TTU::write_mdl_smry_rprt(header_yaml_args_ls,
                          path_params_ls = path_params_ls,
                          use_fake_data_1L_lgl = use_fake_data_1L_lgl,
@@ -185,8 +193,8 @@ TTU::write_mdl_smry_rprt(header_yaml_args_ls,
 ```
 
 ## Share (de-confidentialised) results
-
-```{r echo = TRUE }
+If details to a valid online data repository have been supplied, the following function call uploads shareable versions (ie source dataset copies have been replaced with synthetic data) to that dataset. The resulting dataset is available at: https://doi.org/10.7910/DVN/612HDC
+```{r echo = TRUE, eval=FALSE }
 if(!is.null(dv_ls)){
   TTU::write_study_outp_ds(dv_ls,
                            output_format_ls = output_format_ls,
@@ -196,10 +204,9 @@ if(!is.null(dv_ls)){
 ```
 
 
+```{r echo = FALSE, eval=FALSE }
 # Render Scientific Summary
-
-```{r echo = TRUE }
-if(!use_fake_data_1L_lgl){
+# if(!use_fake_data_1L_lgl){
   # var_nm_change_lup <- tibble::tibble(old_nms_chr = c("k10","psychwell"),
   #                                     new_nms_chr = c("K10", "Winefield wellbeing"))
 study_descs_ls <- make_study_descs_ls(health_utl_nm_1L_chr = "EQ-5D",
@@ -233,7 +240,7 @@ results_ls <- make_results_ls(spine_of_results_ls,
                               ctgl_vars_regrouping_ls = NULL,
                               sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb,
                               sig_thresh_covars_1L_chr = "0.005")
-saveRDS(results_ls,paste0(paths_ls$output_data_dir_1L_chr,"/results_ls.RDS"))
+saveRDS(results_ls,paste0(path_params_ls$paths_ls$output_data_dir_1L_chr,"/results_ls.RDS"))
   rmarkdown::render("AQoL_VIH/AQoL_VIH.Rmd",
                     output_format = NULL,
                     params = list(figures_in_body_lgl = F,
@@ -242,12 +249,14 @@ saveRDS(results_ls,paste0(paths_ls$output_data_dir_1L_chr,"/results_ls.RDS"))
                                   tables_in_body_lgl = F),
                     output_file = paste0("AQoL_VIH", ".docx"),
                     output_dir = path_params_ls$paths_ls$reports_dir_1L_chr)
-}
+# }
 ```
 
 # Purge dataset copies
-```{r echo = TRUE }
-TTU::write_to_delete_ds_copies(paths_ls)
+All remaining local copies (but not the original version) of the study dataset are deleted from the workspace.
+
+```{r echo = TRUE, eval=FALSE }
+TTU::write_to_delete_ds_copies(path_params_ls$paths_ls)
 ```
 
 \elandscape
