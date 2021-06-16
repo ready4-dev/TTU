@@ -184,7 +184,7 @@ analysis_core_params_ls <- TTU::make_analysis_core_params_ls(ds_descvs_ls = ds_d
 ## Path parameters
 We next create an object that specifies the relative locations of the input data and the intended destination for analysis outputs and reports. The default settings of the `make_path_params_ls` function will write all output into a new directory, created one level up from the current working directory.
 
-```{r, warning=F, message=F}
+```{r, warning=F, message=F, eval=F}
 path_params_ls <- TTU::make_path_params_ls(use_fake_data_1L_lgl = use_fake_data_1L_lgl,
                                       write_new_dir_1L_lgl = T)
 ```
@@ -203,7 +203,7 @@ dv_ls <- list(primary_dv_chr = c("fakes", # REPLACE WITH DATAVERSE IN WHICH YOUR
 ## Specify analysis parameters
 A list of valid input values for our primary analysis is now constructed, principally using the objects created in the preceding steps. The `make_valid_params_ls_ls` checks the naming conventions used in some variables of interest and where necessary modifies the names of these variables.
 
-```{r}
+```{r eval = F}
 valid_params_ls_ls <- TTU::make_valid_params_ls_ls(analysis_core_params_ls,
                                                    candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
                                                    ds_tb = ds_tb, 
