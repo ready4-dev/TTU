@@ -121,3 +121,9 @@
 ^data-raw/inst/Markdown/Share\.Rmd$
 ^data-raw/inst/Markdown/Supplement\.Rmd$
 ^data-raw/dataverse/fake_eq5d_ds_tb\.Rds$
+^data-raw/vignettes/_CSP_AQOL6D_TTU\.R$
+^data-raw/vignettes/_CSP_AQOL6D_TTU\.Rmd$
+^data-raw/vignettes/_OLD_EQ5D_TTU\.R$
+^data-raw/vignettes/_OLD_EQ5D_TTU\.Rmd$
+^data-raw/vignettes/_Reporting_Params\.R$
+^data-raw/vignettes/_Reporting_Params\.Rmd$
