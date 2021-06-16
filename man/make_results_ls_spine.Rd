@@ -6,7 +6,7 @@
 \usage{
 make_results_ls_spine(
   output_data_dir_1L_chr,
-  var_nm_change_lup,
+  var_nm_change_lup = NULL,
   study_descs_ls,
   nbr_of_digits_1L_int = 2L
 )
@@ -14,7 +14,7 @@ make_results_ls_spine(
 \arguments{
 \item{output_data_dir_1L_chr}{Output data directory (a character vector of length one)}
 
-\item{var_nm_change_lup}{Variable name change (a lookup table)}
+\item{var_nm_change_lup}{Variable name change (a lookup table), Default: NULL}
 
 \item{study_descs_ls}{Study descriptions (a list)}
 

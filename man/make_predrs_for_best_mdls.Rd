@@ -4,14 +4,14 @@
 \alias{make_predrs_for_best_mdls}
 \title{Make predictors for best models}
 \usage{
-make_predrs_for_best_mdls(outp_smry_ls, old_nms_chr = NULL, new_nms_chr)
+make_predrs_for_best_mdls(outp_smry_ls, old_nms_chr = NULL, new_nms_chr = NULL)
 }
 \arguments{
 \item{outp_smry_ls}{Output summary (a list)}
 
 \item{old_nms_chr}{Old names (a character vector), Default: NULL}
 
-\item{new_nms_chr}{New names (a character vector)}
+\item{new_nms_chr}{New names (a character vector), Default: NULL}
 }
 \value{
 Predictors for best models (a character vector)

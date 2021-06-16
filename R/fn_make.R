@@ -198,6 +198,7 @@ make_cmpst_sctr_and_dnsty_plt <- function (outp_smry_ls, output_data_dir_1L_chr,
 #' @export 
 #' @importFrom dplyr filter pull
 #' @importFrom purrr map_dbl map map2
+#' @importFrom rlang sym
 #' @importFrom stringr str_remove
 #' @importFrom stats setNames
 #' @keywords internal
@@ -207,7 +208,7 @@ make_cohort_ls <- function (descv_tbls_ls, ctgl_vars_regrouping_ls = NULL, nbr_o
         "Median (Q1, Q3)") %>% dplyr::pull(variable)
     ctgl_vars_chr <- unique(descv_tbls_ls$cohort_desc_tb$variable[!descv_tbls_ls$cohort_desc_tb$variable %in% 
         numeric_vars_chr])
-    nbr_by_round_dbl <- c("Baseline_val_1_dbl", "Follow-up_val_1_dbl") %>% 
+    nbr_by_round_dbl <- paste0(ds_descvs_ls$round_vals_chr, "_val_1_dbl") %>% 
         purrr::map_dbl(~descv_tbls_ls$cohort_desc_tb %>% dplyr::filter(variable == 
             ctgl_vars_chr[1]) %>% dplyr::pull(.x) %>% as.numeric() %>% 
             purrr::map_dbl(~.x[[1]]) %>% sum())
@@ -215,15 +216,17 @@ make_cohort_ls <- function (descv_tbls_ls, ctgl_vars_regrouping_ls = NULL, nbr_o
         var_smry_tb <- descv_tbls_ls$cohort_desc_tb %>% dplyr::filter(variable == 
             .x)
         list(bl_min_1L_dbl = var_smry_tb %>% dplyr::filter(label == 
-            "Min - Max") %>% dplyr::pull(Baseline_val_1_dbl) %>% 
-            as.numeric(), bl_max_1L_dbl = var_smry_tb %>% dplyr::filter(label == 
-            "Min - Max") %>% dplyr::pull(Baseline_val_2_ls) %>% 
-            as.numeric(), bl_mean_1L_dbl = round(var_smry_tb %>% 
-            dplyr::filter(label == "Mean (SD)") %>% dplyr::pull(Baseline_val_1_dbl) %>% 
-            as.numeric(), nbr_of_digits_1L_int), bl_sd_1L_dbl = round(var_smry_tb %>% 
-            dplyr::filter(label == "Mean (SD)") %>% dplyr::pull(Baseline_val_2_ls) %>% 
-            stringr::str_remove("\\(") %>% stringr::str_remove("\\)") %>% 
-            as.numeric(), nbr_of_digits_1L_int))
+            "Min - Max") %>% dplyr::pull(!!rlang::sym(paste0(ds_descvs_ls$round_vals_chr[1], 
+            "_val_1_dbl"))) %>% as.numeric(), bl_max_1L_dbl = var_smry_tb %>% 
+            dplyr::filter(label == "Min - Max") %>% dplyr::pull(!!rlang::sym(paste0(ds_descvs_ls$round_vals_chr[1], 
+            "_val_2_ls"))) %>% as.numeric(), bl_mean_1L_dbl = round(var_smry_tb %>% 
+            dplyr::filter(label == "Mean (SD)") %>% dplyr::pull(!!rlang::sym(paste0(ds_descvs_ls$round_vals_chr[1], 
+            "_val_1_dbl"))) %>% as.numeric(), nbr_of_digits_1L_int), 
+            bl_sd_1L_dbl = round(var_smry_tb %>% dplyr::filter(label == 
+                "Mean (SD)") %>% dplyr::pull(!!rlang::sym(paste0(ds_descvs_ls$round_vals_chr[1], 
+                "_val_2_ls"))) %>% stringr::str_remove("\\(") %>% 
+                stringr::str_remove("\\)") %>% as.numeric(), 
+                nbr_of_digits_1L_int))
     }) %>% stats::setNames(numeric_vars_chr)
     cohort_ls <- list(n_all_1l_dbl = descv_tbls_ls$ds_descvs_ls$nbr_participants_1L_int, 
         n_inc_1L_dbl = nbr_by_round_dbl[1], n_fup_1L_dbl = nbr_by_round_dbl[2], 
@@ -496,21 +499,21 @@ make_hlth_utl_and_predrs_ls <- function (outp_smry_ls, descv_tbls_ls, nbr_of_dig
         as.vector()
     hlth_utl_and_predrs_ls = list(bl_hu_mean_1L_dbl = descv_tbls_ls$main_outc_tbl_tb %>% 
         dplyr::filter(label == "Mean (SD)") %>% ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable", 
-        match_value_xx = var_nm_1L_chr, target_var_nm_1L_chr = "Baseline_val_1_dbl", 
-        evaluate_lgl = F) %>% as.numeric() %>% round(nbr_of_digits_1L_int), 
-        bl_hu_sd_1L_dbl = descv_tbls_ls$main_outc_tbl_tb %>% 
-            dplyr::filter(label == "Mean (SD)") %>% ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable", 
-            match_value_xx = var_nm_1L_chr, target_var_nm_1L_chr = "Baseline_val_2_ls", 
-            evaluate_lgl = F) %>% stringr::str_remove("\\(") %>% 
-            stringr::str_remove("\\)") %>% as.numeric() %>% round(nbr_of_digits_1L_int), 
+        match_value_xx = var_nm_1L_chr, target_var_nm_1L_chr = paste0(ds_descvs_ls$round_vals_chr[1], 
+            "_val_1_dbl"), evaluate_lgl = F) %>% as.numeric() %>% 
+        round(nbr_of_digits_1L_int), bl_hu_sd_1L_dbl = descv_tbls_ls$main_outc_tbl_tb %>% 
+        dplyr::filter(label == "Mean (SD)") %>% ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable", 
+        match_value_xx = var_nm_1L_chr, target_var_nm_1L_chr = paste0(ds_descvs_ls$round_vals_chr[1], 
+            "_val_2_ls"), evaluate_lgl = F) %>% stringr::str_remove("\\(") %>% 
+        stringr::str_remove("\\)") %>% as.numeric() %>% round(nbr_of_digits_1L_int), 
         fup_hu_mean_1L_dbl = descv_tbls_ls$main_outc_tbl_tb %>% 
             dplyr::filter(label == "Mean (SD)") %>% ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable", 
-            match_value_xx = var_nm_1L_chr, target_var_nm_1L_chr = "Follow-up_val_1_dbl", 
-            evaluate_lgl = F) %>% as.numeric() %>% round(nbr_of_digits_1L_int), 
-        fup_hu_sd_1L_dbl = descv_tbls_ls$main_outc_tbl_tb %>% 
+            match_value_xx = var_nm_1L_chr, target_var_nm_1L_chr = paste0(ds_descvs_ls$round_vals_chr[2], 
+                "_val_1_dbl"), evaluate_lgl = F) %>% as.numeric() %>% 
+            round(nbr_of_digits_1L_int), fup_hu_sd_1L_dbl = descv_tbls_ls$main_outc_tbl_tb %>% 
             dplyr::filter(label == "Mean (SD)") %>% ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable", 
-            match_value_xx = var_nm_1L_chr, target_var_nm_1L_chr = "Follow-up_val_2_ls", 
-            evaluate_lgl = F) %>% stringr::str_remove("\\(") %>% 
+            match_value_xx = var_nm_1L_chr, target_var_nm_1L_chr = paste0(ds_descvs_ls$round_vals_chr[2], 
+                "_val_2_ls"), evaluate_lgl = F) %>% stringr::str_remove("\\(") %>% 
             stringr::str_remove("\\)") %>% as.numeric() %>% round(nbr_of_digits_1L_int), 
         predrs_nartv_seq_chr = ranked_predrs_ls$unranked_predrs_chr, 
         cor_seq_dscdng_chr = ranked_predrs_ls$ranked_predrs_chr)
@@ -917,17 +920,24 @@ make_output_format_ls <- function (manuscript_outp_1L_chr = "Word", manuscript_d
 }
 #' Make path params
 #' @description make_path_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make path params list. The function returns Path params (a list).
-#' @param path_to_data_from_top_level_chr Path to data from top level (a character vector)
+#' @param path_to_data_from_top_level_chr Path to data from top level (a character vector), Default: NULL
 #' @param path_from_top_level_1L_chr Path from top level (a character vector of length one), Default: NULL
 #' @param path_to_current_1L_chr Path to current (a character vector of length one), Default: NULL
+#' @param write_new_dir_1L_lgl Write new directory (a logical vector of length one), Default: F
+#' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: F
+#' @param R_fl_nm_1L_chr R file name (a character vector of length one), Default: 'aaaaaaaaaa.txt'
 #' @return Path params (a list)
 #' @rdname make_path_params_ls
 #' @export 
 #' @importFrom purrr pluck
 #' @keywords internal
-make_path_params_ls <- function (path_to_data_from_top_level_chr, path_from_top_level_1L_chr = NULL, 
-    path_to_current_1L_chr = NULL) 
+make_path_params_ls <- function (path_to_data_from_top_level_chr = NULL, path_from_top_level_1L_chr = NULL, 
+    path_to_current_1L_chr = NULL, write_new_dir_1L_lgl = F, 
+    use_fake_data_1L_lgl = F, R_fl_nm_1L_chr = "aaaaaaaaaa.txt") 
 {
+    if (is.null(path_to_data_from_top_level_chr)) 
+        path_to_data_from_top_level_chr <- ifelse(use_fake_data_1L_lgl, 
+            "fake_data.rds", "data.rds")
     if (is.null(path_from_top_level_1L_chr)) {
         path_from_top_level_1L_chr <- normalizePath("../") %>% 
             strsplit("\\\\") %>% purrr::pluck(1) %>% tail(1)
@@ -939,6 +949,9 @@ make_path_params_ls <- function (path_to_data_from_top_level_chr, path_from_top_
     path_params_ls <- list(path_from_top_level_1L_chr = path_from_top_level_1L_chr, 
         path_to_data_from_top_level_chr = path_to_data_from_top_level_chr, 
         path_to_current_1L_chr = path_to_current_1L_chr)
+    if (write_new_dir_1L_lgl) 
+        path_params_ls$paths_ls <- write_main_oupt_dir(path_params_ls, 
+            use_fake_data_1L_lgl = use_fake_data_1L_lgl, R_fl_nm_1L_chr = R_fl_nm_1L_chr)
     return(path_params_ls)
 }
 #' Make paths to ss plots
@@ -1046,7 +1059,7 @@ make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls, existing_predrs_
 #' @description make_predrs_for_best_mdls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictors for best models. The function returns Predictors for best models (a character vector).
 #' @param outp_smry_ls Output summary (a list)
 #' @param old_nms_chr Old names (a character vector), Default: NULL
-#' @param new_nms_chr New names (a character vector)
+#' @param new_nms_chr New names (a character vector), Default: NULL
 #' @return Predictors for best models (a character vector)
 #' @rdname make_predrs_for_best_mdls
 #' @export 
@@ -1054,7 +1067,7 @@ make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls, existing_predrs_
 #' @importFrom purrr map flatten_chr map_lgl map2_chr
 #' @importFrom stringr str_remove
 #' @keywords internal
-make_predrs_for_best_mdls <- function (outp_smry_ls, old_nms_chr = NULL, new_nms_chr) 
+make_predrs_for_best_mdls <- function (outp_smry_ls, old_nms_chr = NULL, new_nms_chr = NULL) 
 {
     ordered_mdl_nms_chr <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Parameter == 
         "R2") %>% dplyr::arrange(dplyr::desc(Estimate)) %>% dplyr::pull(Model)
@@ -1164,8 +1177,9 @@ make_psych_predrs_lup <- function ()
 #' @keywords internal
 make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_chr = NULL) 
 {
-    unranked_predrs_chr <- rownames(descv_tbls_ls[["bl_cors_tb"]])[-1] %>% 
-        transform_predr_nm_part_of_phrases(old_nms_chr = old_nms_chr, 
+    unranked_predrs_chr <- rownames(descv_tbls_ls[["bl_cors_tb"]])[-1]
+    if (!is.null(old_nms_chr)) 
+        unranked_predrs_chr <- unranked_predrs_chr %>% transform_predr_nm_part_of_phrases(old_nms_chr = old_nms_chr, 
             new_nms_chr = new_nms_chr)
     ranks_dbl <- descv_tbls_ls[["bl_cors_tb"]][2:nrow(descv_tbls_ls[["bl_cors_tb"]]), 
         1] %>% purrr::map_dbl(~{
@@ -1184,7 +1198,7 @@ make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_ch
 #' @description make_results_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make results list. The function returns Results (a list).
 #' @param spine_of_results_ls Spine of results (a list)
 #' @param cs_ts_ratios_tb Cs time series ratios (a tibble)
-#' @param ctgl_vars_regrouping_ls Ctgl variables regrouping (a list)
+#' @param ctgl_vars_regrouping_ls Ctgl variables regrouping (a list), Default: NULL
 #' @param sig_covars_some_predrs_mdls_tb Sig covariates some predictors models (a tibble)
 #' @param sig_thresh_covars_1L_chr Sig thresh covariates (a character vector of length one)
 #' @return Results (a list)
@@ -1195,7 +1209,7 @@ make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_ch
 #' @importFrom cowplot save_plot
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter pull
-make_results_ls <- function (spine_of_results_ls, cs_ts_ratios_tb, ctgl_vars_regrouping_ls, 
+make_results_ls <- function (spine_of_results_ls, cs_ts_ratios_tb, ctgl_vars_regrouping_ls = NULL, 
     sig_covars_some_predrs_mdls_tb, sig_thresh_covars_1L_chr) 
 {
     mdls_smry_tbls_ls <- make_mdls_smry_tbls_ls(spine_of_results_ls$outp_smry_ls, 
@@ -1243,16 +1257,19 @@ make_results_ls <- function (spine_of_results_ls, cs_ts_ratios_tb, ctgl_vars_reg
 #' Make results list spine
 #' @description make_results_ls_spine() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make results list spine. The function returns Spine of results (a list).
 #' @param output_data_dir_1L_chr Output data directory (a character vector of length one)
-#' @param var_nm_change_lup Variable name change (a lookup table)
+#' @param var_nm_change_lup Variable name change (a lookup table), Default: NULL
 #' @param study_descs_ls Study descriptions (a list)
 #' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
 #' @return Spine of results (a list)
 #' @rdname make_results_ls_spine
 #' @export 
 
-make_results_ls_spine <- function (output_data_dir_1L_chr, var_nm_change_lup, study_descs_ls, 
+make_results_ls_spine <- function (output_data_dir_1L_chr, var_nm_change_lup = NULL, study_descs_ls, 
     nbr_of_digits_1L_int = 2L) 
 {
+    if (is.null(var_nm_change_lup)) {
+        var_nm_change_lup <- list(old_nms_chr = NULL, new_nms_chr = NULL)
+    }
     outp_smry_ls <- readRDS(paste0(output_data_dir_1L_chr, "/I_ALL_OUTPUT_.RDS"))
     mdl_coef_ratios_ls <- make_mdl_coef_ratio_ls(outp_smry_ls, 
         predr_ctgs_ls = study_descs_ls$predr_ctgs_ls)

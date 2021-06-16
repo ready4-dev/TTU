@@ -187,6 +187,16 @@ pkg_dss_tb <- tibble::tibble(short_name_chr = c("coefs","hetg",
                               abbreviations_lup = abbreviations_lup,
                               object_type_lup = object_type_lup,
                               pkg_dss_tb = pkg_dss_tb)
+##
+# ADD TO PLOTS TABLE:
+# AUTOPLT
+# LNR_CMPRSN
+# PRED_DNSTY
+# PRED_SCTR
+# SIM_DNSTY
+# BORUTA_VAR_IMP
+# RF_VAR_IMP
+##
 pkg_dss_tb <- tibble::tibble(rprt_nms_chr = "TS_TTU_Mdls_Smry",
                            title_chr = "Results supplement: time series transfer to utility models.",
                            paths_to_rmd_dir_1L_chr = NA_character_,

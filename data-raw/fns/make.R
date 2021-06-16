@@ -132,7 +132,7 @@ make_cohort_ls <- function(descv_tbls_ls,
   numeric_vars_chr <- descv_tbls_ls$cohort_desc_tb %>% dplyr::filter(label ==
                                                                        "Median (Q1, Q3)") %>% dplyr::pull(variable)
   ctgl_vars_chr <- unique(descv_tbls_ls$cohort_desc_tb$variable[!descv_tbls_ls$cohort_desc_tb$variable %in% numeric_vars_chr])
-  nbr_by_round_dbl <- c("Baseline_val_1_dbl","Follow-up_val_1_dbl") %>% purrr::map_dbl(~descv_tbls_ls$cohort_desc_tb %>%
+  nbr_by_round_dbl <- paste0(ds_descvs_ls$round_vals_chr,"_val_1_dbl") %>% purrr::map_dbl(~descv_tbls_ls$cohort_desc_tb %>%
                                                                                          dplyr::filter(variable == ctgl_vars_chr[1]) %>%
                                                                                          dplyr::pull(.x) %>%
                                                                                          as.numeric() %>% purrr::map_dbl(~.x[[1]]) %>% sum())
@@ -142,18 +142,18 @@ make_cohort_ls <- function(descv_tbls_ls,
         dplyr::filter(variable == .x)
       list(bl_min_1L_dbl = var_smry_tb %>%
              dplyr::filter(label == "Min - Max") %>%
-             dplyr::pull(Baseline_val_1_dbl) %>%
+             dplyr::pull(!!rlang::sym(paste0(ds_descvs_ls$round_vals_chr[1],"_val_1_dbl"))) %>%
              as.numeric(),
            bl_max_1L_dbl = var_smry_tb %>%
              dplyr::filter(label == "Min - Max") %>%
-             dplyr::pull(Baseline_val_2_ls) %>%
+             dplyr::pull(!!rlang::sym(paste0(ds_descvs_ls$round_vals_chr[1],"_val_2_ls"))) %>% #Baseline_val_2_ls
              as.numeric(),
            bl_mean_1L_dbl = round(var_smry_tb %>% dplyr::filter(label == "Mean (SD)") %>%
-                                    dplyr::pull(Baseline_val_1_dbl) %>%
+                                    dplyr::pull(!!rlang::sym(paste0(ds_descvs_ls$round_vals_chr[1],"_val_1_dbl"))) %>%
                                     as.numeric(),
                                   nbr_of_digits_1L_int),
            bl_sd_1L_dbl = round(var_smry_tb %>% dplyr::filter(label == "Mean (SD)") %>%
-                                  dplyr::pull(Baseline_val_2_ls) %>%
+                                  dplyr::pull(!!rlang::sym(paste0(ds_descvs_ls$round_vals_chr[1],"_val_2_ls"))) %>%
                                   stringr::str_remove("\\(") %>%
                                   stringr::str_remove("\\)") %>%
                                   as.numeric(),
@@ -401,7 +401,8 @@ make_hlth_utl_and_predrs_ls <- function(outp_smry_ls,
                                   dplyr::filter(label == "Mean (SD)") %>%
                                   ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable",
                                                               match_value_xx = var_nm_1L_chr,
-                                                              target_var_nm_1L_chr = "Baseline_val_1_dbl",
+                                                              target_var_nm_1L_chr = paste0(ds_descvs_ls$round_vals_chr[1],
+                                                                                            "_val_1_dbl"),
                                                               evaluate_lgl = F) %>%
                                   as.numeric() %>%
                                   round(nbr_of_digits_1L_int),
@@ -409,7 +410,8 @@ make_hlth_utl_and_predrs_ls <- function(outp_smry_ls,
                                   dplyr::filter(label == "Mean (SD)") %>%
                                   ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable",
                                                               match_value_xx = var_nm_1L_chr,
-                                                              target_var_nm_1L_chr = "Baseline_val_2_ls",
+                                                              target_var_nm_1L_chr = paste0(ds_descvs_ls$round_vals_chr[1],
+                                                                                            "_val_2_ls"),
                                                               evaluate_lgl = F) %>%
                                   stringr::str_remove("\\(") %>%
                                   stringr::str_remove("\\)") %>%
@@ -419,7 +421,8 @@ make_hlth_utl_and_predrs_ls <- function(outp_smry_ls,
                                   dplyr::filter(label == "Mean (SD)") %>%
                                   ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable",
                                                               match_value_xx = var_nm_1L_chr,
-                                                              target_var_nm_1L_chr = "Follow-up_val_1_dbl",
+                                                              target_var_nm_1L_chr = paste0(ds_descvs_ls$round_vals_chr[2],
+                                                                                            "_val_1_dbl"),
                                                               evaluate_lgl = F) %>%
                                   as.numeric() %>%
                                   round(nbr_of_digits_1L_int),
@@ -427,7 +430,8 @@ make_hlth_utl_and_predrs_ls <- function(outp_smry_ls,
                                   dplyr::filter(label == "Mean (SD)") %>%
                                   ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable",
                                                               match_value_xx = var_nm_1L_chr,
-                                                              target_var_nm_1L_chr = "Follow-up_val_2_ls",
+                                                              target_var_nm_1L_chr = paste0(ds_descvs_ls$round_vals_chr[2],
+                                                                                            "_val_2_ls"),
                                                               evaluate_lgl = F) %>%
                                   stringr::str_remove("\\(") %>%
                                   stringr::str_remove("\\)") %>%
@@ -738,9 +742,16 @@ make_output_format_ls <- function(manuscript_outp_1L_chr = "Word",
                            supplementary_digits_1L_int = supplementary_digits_1L_int)
   return(output_format_ls)
 }
-make_path_params_ls <- function(path_to_data_from_top_level_chr,
+make_path_params_ls <- function(path_to_data_from_top_level_chr = NULL,
                                 path_from_top_level_1L_chr = NULL,
-                                path_to_current_1L_chr = NULL){
+                                path_to_current_1L_chr = NULL,
+                                write_new_dir_1L_lgl = F,
+                                use_fake_data_1L_lgl = F,
+                                R_fl_nm_1L_chr = 'aaaaaaaaaa.txt'){
+  if(is.null(path_to_data_from_top_level_chr))
+    path_to_data_from_top_level_chr <- ifelse(use_fake_data_1L_lgl,
+                                              "fake_data.rds",
+                                              "data.rds")
   if(is.null(path_from_top_level_1L_chr)){
     path_from_top_level_1L_chr <- normalizePath("../") %>% strsplit("\\\\") %>% purrr::pluck(1) %>% tail(1)
   }
@@ -750,6 +761,11 @@ make_path_params_ls <- function(path_to_data_from_top_level_chr,
   path_params_ls <- list(path_from_top_level_1L_chr = path_from_top_level_1L_chr,
                          path_to_data_from_top_level_chr = path_to_data_from_top_level_chr,
                          path_to_current_1L_chr = path_to_current_1L_chr)
+  if(write_new_dir_1L_lgl)
+  path_params_ls$paths_ls <- write_main_oupt_dir(path_params_ls,
+                                                 use_fake_data_1L_lgl = use_fake_data_1L_lgl,
+                                                 R_fl_nm_1L_chr = R_fl_nm_1L_chr)
+
   return(path_params_ls)
 }
 make_paths_to_ss_plts_ls <- function(output_data_dir_1L_chr,
@@ -775,7 +791,7 @@ make_predn_ds_with_one_predr <- function(model_mdl, depnt_var_nm_1L_chr = "utl_t
 }
 make_predrs_for_best_mdls <- function(outp_smry_ls,
                                       old_nms_chr = NULL,
-                                      new_nms_chr){
+                                      new_nms_chr = NULL){
   ordered_mdl_nms_chr <- outp_smry_ls$mdls_smry_tb %>%
     dplyr::filter(Parameter=="R2") %>%
     dplyr::arrange(dplyr::desc(Estimate)) %>% dplyr::pull(Model)
@@ -815,7 +831,7 @@ make_predr_vals <- function (predr_var_nm_1L_chr, candidate_predrs_lup = NULL)
 }
 make_predrs_for_best_mdls <- function(outp_smry_ls,
                                       old_nms_chr = NULL,
-                                      new_nms_chr){
+                                      new_nms_chr = NULL){
   ordered_mdl_nms_chr <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Parameter=="R2") %>% dplyr::arrange(dplyr::desc(Estimate)) %>% dplyr::pull(Model)
   ind_predr_mdls_by_mdl_type_ls <- outp_smry_ls$prefd_mdl_types_chr %>% purrr::map(~{
     mdl_type_1L_chr <- .x
@@ -906,7 +922,9 @@ make_psych_predrs_lup <- function(){
 make_ranked_predrs_ls <- function(descv_tbls_ls,
                                   old_nms_chr = NULL,
                                   new_nms_chr = NULL){
-  unranked_predrs_chr <- rownames(descv_tbls_ls[["bl_cors_tb"]])[-1] %>%
+  unranked_predrs_chr <- rownames(descv_tbls_ls[["bl_cors_tb"]])[-1]
+  if(!is.null(old_nms_chr))
+    unranked_predrs_chr <- unranked_predrs_chr %>%
     transform_predr_nm_part_of_phrases(old_nms_chr = old_nms_chr,
                                        new_nms_chr = new_nms_chr)
   ranks_dbl <- descv_tbls_ls[["bl_cors_tb"]][2:nrow(descv_tbls_ls[["bl_cors_tb"]]),1] %>%
@@ -923,7 +941,7 @@ make_ranked_predrs_ls <- function(descv_tbls_ls,
 }
 make_results_ls <- function(spine_of_results_ls,
                             cs_ts_ratios_tb,
-                            ctgl_vars_regrouping_ls,
+                            ctgl_vars_regrouping_ls = NULL,
                             sig_covars_some_predrs_mdls_tb,
                             sig_thresh_covars_1L_chr){
 
@@ -974,9 +992,13 @@ make_results_ls <- function(spine_of_results_ls,
   return(results_ls)
 }
 make_results_ls_spine <-  function(output_data_dir_1L_chr,
-                                   var_nm_change_lup,
+                                   var_nm_change_lup = NULL,
                                    study_descs_ls,
                                    nbr_of_digits_1L_int = 2L){
+  if(is.null(var_nm_change_lup)){
+    var_nm_change_lup <- list(old_nms_chr = NULL,
+                                        new_nms_chr = NULL)
+  }
 
   outp_smry_ls <- readRDS(paste0(output_data_dir_1L_chr,"/I_ALL_OUTPUT_.RDS"))
   mdl_coef_ratios_ls <- make_mdl_coef_ratio_ls(outp_smry_ls,
