@@ -11,10 +11,13 @@ add_utility_predn_to_ds(
   depnt_var_nm_1L_chr,
   predr_vars_nms_chr = NULL,
   force_min_max_1L_lgl = T,
-  utl_min_val_1L_dbl = 0.03,
   impute_1L_lgl = T,
+  new_data_is_1L_chr = "Predicted",
+  rmv_tfd_depnt_var_1L_lgl = F,
   utl_cls_fn = NULL,
-  rmv_tfd_depnt_var_1L_lgl = F
+  utl_min_val_1L_dbl = 0.03,
+  force_new_data_1L_lgl = F,
+  is_brms_mdl_1L_lgl = T
 )
 }
 \arguments{
@@ -30,13 +33,19 @@ add_utility_predn_to_ds(
 
 \item{force_min_max_1L_lgl}{Force minimum maximum (a logical vector of length one), Default: T}
 
-\item{utl_min_val_1L_dbl}{Utility minimum value (a double vector of length one), Default: 0.03}
-
 \item{impute_1L_lgl}{Impute (a logical vector of length one), Default: T}
+
+\item{new_data_is_1L_chr}{New data is (a character vector of length one), Default: 'Predicted'}
+
+\item{rmv_tfd_depnt_var_1L_lgl}{Remove transformed dependent variable (a logical vector of length one), Default: F}
 
 \item{utl_cls_fn}{Utility class (a function), Default: NULL}
 
-\item{rmv_tfd_depnt_var_1L_lgl}{Remove transformed dependent variable (a logical vector of length one), Default: F}
+\item{utl_min_val_1L_dbl}{Utility minimum value (a double vector of length one), Default: 0.03}
+
+\item{force_new_data_1L_lgl}{Force new data (a logical vector of length one), Default: F}
+
+\item{is_brms_mdl_1L_lgl}{Is bayesian regression models model (a logical vector of length one), Default: T}
 }
 \value{
 Data (a tibble)

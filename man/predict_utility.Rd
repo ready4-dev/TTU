@@ -9,6 +9,7 @@ predict_utility(
   tfmn_1L_chr = "NTF",
   model_mdl,
   force_min_max_1L_lgl = T,
+  force_new_data_1L_lgl = F,
   utl_min_val_1L_dbl = 0.03,
   impute_1L_lgl = T,
   utl_cls_fn = NULL,
@@ -27,6 +28,8 @@ predict_utility(
 \item{model_mdl}{Model (a model)}
 
 \item{force_min_max_1L_lgl}{Force minimum maximum (a logical vector of length one), Default: T}
+
+\item{force_new_data_1L_lgl}{Force new data (a logical vector of length one), Default: F}
 
 \item{utl_min_val_1L_dbl}{Utility minimum value (a double vector of length one), Default: 0.03}
 

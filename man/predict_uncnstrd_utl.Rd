@@ -12,7 +12,8 @@ predict_uncnstrd_utl(
   tfmn_for_bnml_1L_lgl = F,
   family_1L_chr = NA_character_,
   tfmn_1L_chr = "NTF",
-  is_brms_mdl_1L_lgl = F
+  is_brms_mdl_1L_lgl = F,
+  force_new_data_1L_lgl = F
 )
 }
 \arguments{
@@ -31,6 +32,8 @@ predict_uncnstrd_utl(
 \item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
 \item{is_brms_mdl_1L_lgl}{Is bayesian regression models model (a logical vector of length one), Default: F}
+
+\item{force_new_data_1L_lgl}{Force new data (a logical vector of length one), Default: F}
 }
 \value{
 New data (a double vector)

@@ -8,6 +8,7 @@
 #' @param family_1L_chr Family (a character vector of length one), Default: 'NA'
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param is_brms_mdl_1L_lgl Is bayesian regression models model (a logical vector of length one), Default: F
+#' @param force_new_data_1L_lgl Force new data (a logical vector of length one), Default: F
 #' @return New data (a double vector)
 #' @rdname predict_uncnstrd_utl
 #' @export 
@@ -18,10 +19,11 @@
 #' @keywords internal
 predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Predicted", 
     predn_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, 
-    tfmn_1L_chr = "NTF", is_brms_mdl_1L_lgl = F) 
+    tfmn_1L_chr = "NTF", is_brms_mdl_1L_lgl = F, force_new_data_1L_lgl = F) 
 {
     if (new_data_is_1L_chr == "Predicted") 
-        new_data_dbl <- stats::predict(model_mdl, type = predn_type_1L_chr)
+        new_data_dbl <- stats::predict(model_mdl, newdata = data_tb, 
+            type = predn_type_1L_chr)
     if (new_data_is_1L_chr == "Simulated") {
         if (is_brms_mdl_1L_lgl) {
             new_data_dbl <- brms::posterior_predict(model_mdl, 
@@ -30,15 +32,17 @@ predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Pred
         else {
             if ("betareg" %in% class(model_mdl)) {
                 new_data_dbl <- rlang::exec(enrichwith::get_simulate_function(model_mdl), 
-                  coef(enrichwith::enrich(model_mdl, with = "auxiliary functions")))
+                  newdata = data_tb, coef(enrichwith::enrich(model_mdl, 
+                    with = "auxiliary functions")))
             }
             else {
-                if (!tfmn_for_bnml_1L_lgl) {
+                if (!tfmn_for_bnml_1L_lgl & !force_new_data_1L_lgl) {
                   new_data_dbl <- stats::simulate(model_mdl)$sim_1
                 }
                 else {
-                  new_data_dbl <- (stats::predict(model_mdl) + 
-                    stats::rnorm(nrow(data_tb), 0, stats::sigma(model_mdl)))
+                  new_data_dbl <- (stats::predict(model_mdl, 
+                    newdata = data_tb) + stats::rnorm(nrow(data_tb), 
+                    0, stats::sigma(model_mdl)))
                 }
             }
         }
@@ -59,6 +63,7 @@ predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Pred
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param model_mdl Model (a model)
 #' @param force_min_max_1L_lgl Force minimum maximum (a logical vector of length one), Default: T
+#' @param force_new_data_1L_lgl Force new data (a logical vector of length one), Default: F
 #' @param utl_min_val_1L_dbl Utility minimum value (a double vector of length one), Default: 0.03
 #' @param impute_1L_lgl Impute (a logical vector of length one), Default: T
 #' @param utl_cls_fn Utility class (a function), Default: NULL
@@ -72,8 +77,8 @@ predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Pred
 #' @export 
 #' @importFrom rlang exec
 predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", model_mdl, force_min_max_1L_lgl = T, 
-    utl_min_val_1L_dbl = 0.03, impute_1L_lgl = T, utl_cls_fn = NULL, 
-    new_data_is_1L_chr = "Predicted", predn_type_1L_chr = NULL, 
+    force_new_data_1L_lgl = F, utl_min_val_1L_dbl = 0.03, impute_1L_lgl = T, 
+    utl_cls_fn = NULL, new_data_is_1L_chr = "Predicted", predn_type_1L_chr = NULL, 
     tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, 
     is_brms_mdl_1L_lgl = T) 
 {
@@ -81,7 +86,7 @@ predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", model_mdl, force_min_
         model_mdl = model_mdl, new_data_is_1L_chr = new_data_is_1L_chr, 
         predn_type_1L_chr = predn_type_1L_chr, tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl, 
         family_1L_chr = family_1L_chr, tfmn_1L_chr = tfmn_1L_chr, 
-        is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl)
+        force_new_data_1L_lgl = force_new_data_1L_lgl, is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl)
     if (impute_1L_lgl) 
         predd_utl_dbl[which(is.na(predd_utl_dbl))] <- predd_utl_dbl %>% 
             na.omit() %>% mean()
