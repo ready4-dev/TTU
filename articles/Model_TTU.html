@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Model Transfer to Utility • TTU</title>
+<title>Transfer to Utility Exploratory Analysis Workflow • TTU</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Model Transfer to Utility">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Transfer to Utility Exploratory Analysis Workflow">
 <meta property="og:description" content="TTU">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9172</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9237</span>
       </span>
     </div>
 
@@ -64,7 +64,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Model_TTU.html">Model Transfer to Utility</a>
+      <a href="../articles/CSP_EQ5D_TTU.html">Analysis, Reporting and Dissemination Workflow</a>
+    </li>
+    <li>
+      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -90,7 +93,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Model Transfer to Utility</h1>
+      <h1 data-toc-skip>Transfer to Utility Exploratory Analysis Workflow</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/ready4-dev/TTU/blob/master/vignettes/Model_TTU.Rmd"><code>vignettes/Model_TTU.Rmd</code></a></small>
@@ -100,11 +103,12 @@
 
     
     
+<p>The steps in this exploratory analysis workflow may need to be performed iteratively, both in order to identify the optimal model types, predictors and covariates to use and modify default values to ensure model convergence. Once you are satisfied that you have identified the optimal set of input values, you can implement the <a href="CSP_EQ5D_TTU.html">analysis, reporting and dissemination workflow</a> described in another vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/TTU/">TTU</a></span><span class="op">)</span></code></pre></div>
-<div id="set-up-workspace-and-import-data" class="section level2">
+<div id="set-up-workspace" class="section level2">
 <h2 class="hasAnchor">
-<a href="#set-up-workspace-and-import-data" class="anchor"></a>Set-up workspace and import data</h2>
+<a href="#set-up-workspace" class="anchor"></a>Set-up workspace</h2>
 <p>To facilitate reproducibility, we begin by setting a seed.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">seed_1L_int</span> <span class="op">=</span> <span class="fl">12345</span>
@@ -113,64 +117,42 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">path_to_write_to_1L_chr</span> <span class="op">&lt;-</span> <span class="st">"Output"</span> 
 <span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="va">path_to_write_to_1L_chr</span><span class="op">)</span></code></pre></div>
-<p>We now specify the paths to the input data and its data dictionary.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">path_to_inp_data_1L_chr</span> <span class="op">&lt;-</span> <span class="st">"Data"</span> </code></pre></div>
-<p>As this is an illustrative example, neither the data directory nor the data files actually exist. So we are going to have to create both. To create our fake data files, we slightly trim down the replication dataset from the related <a href="https://ready4-dev.github.io/youthvars/">youthvars</a> package and save it along with its dictionary to the “Data” directory.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span><span class="op">(</span><span class="va">path_to_inp_data_1L_chr</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="fu">youthvars</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/youthvars/reference/replication_popl_tb.html">replication_popl_tb</a></span> <span class="op">%&gt;%</span> 
-            <span class="fu">youthvars</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/youthvars/reference/transform_raw_ds_for_analysis.html">transform_raw_ds_for_analysis</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-            <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">BADS</span>,<span class="op">-</span><span class="va">GAD7</span>, <span class="op">-</span><span class="va">OASIS</span>,<span class="op">-</span><span class="va">SCARED</span><span class="op">)</span>,<span class="st">"Data/data.csv"</span>, row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="fu">youthvars</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/youthvars/reference/make_tfd_repln_ds_dict_r3.html">make_tfd_repln_ds_dict_r3</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"Data/dictionary.csv"</span>, row.names<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<p>We read our data files into local memory.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data_tb</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"Data/data.csv"</span><span class="op">)</span> 
-<span class="va">dictionary_r3</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html">read_csv</a></span><span class="op">(</span><span class="st">"Data/dictionary.csv"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">ready4use</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4use/reference/ready4_dictionary.html">ready4_dictionary</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="score-utility-and-summarise-meta-data" class="section level2">
+<div id="import-and-describe-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#score-utility-and-summarise-meta-data" class="anchor"></a>Score utility and summarise meta-data</h2>
-<p>We now convert study participant responses to the AQoL-6D questionnaire to health utility scores.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">scored_data_tb</span> <span class="op">&lt;-</span> <span class="va">data_tb</span> <span class="op">%&gt;%</span> <span class="fu">youthvars</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/youthvars/reference/add_adol6d_scores.html">add_adol6d_scores</a></span><span class="op">(</span><span class="op">)</span> </code></pre></div>
-<p>The dataset we are using has 1711 records on 1068 study participants. The first six records are reproduced below.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">scored_data_tb</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
-                          caption_1L_chr <span class="op">=</span> <span class="st">"Input dataset"</span><span class="op">)</span></code></pre></div>
+<a href="#import-and-describe-data" class="anchor"></a>Import and describe data</h2>
+<p>We import our data - in this example we are using fake data.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">data_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span><span class="op">(</span><span class="st">"https://dataverse.harvard.edu/api/access/datafile/4750597"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>The dataset we are using has 1786 records on 1068 study participants. The first six records are reproduced below.</p>
 <table class="table  lightable-paper lightable-hover">
 <caption>
 Input dataset
 </caption>
 <thead><tr>
 <th style="text-align:left;">
-fkClientID
+uid
 </th>
 <th style="text-align:right;">
-round
+Timepoint
 </th>
 <th style="text-align:right;">
-d_interview_date
+data_collection_dtm
 </th>
 <th style="text-align:right;">
 d_age
 </th>
 <th style="text-align:right;">
-d_agegroup
-</th>
-<th style="text-align:right;">
 Gender
-</th>
-<th style="text-align:left;">
-d_gender
 </th>
 <th style="text-align:right;">
 d_sex_birth_s
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 d_sexual_ori_s
+</th>
+<th style="text-align:right;">
+d_relation_s
 </th>
 <th style="text-align:right;">
 d_ATSI
@@ -179,265 +161,64 @@ d_ATSI
 CALD
 </th>
 <th style="text-align:right;">
-d_country_bir_s
-</th>
-<th style="text-align:left;">
-d_english_home
-</th>
-<th style="text-align:right;">
-d_english_native
-</th>
-<th style="text-align:right;">
 Region
 </th>
 <th style="text-align:right;">
 d_studying_working
 </th>
-<th style="text-align:right;">
-d_relation_s
+<th style="text-align:left;">
+eq5dq_MO
 </th>
 <th style="text-align:right;">
-s_centre
+eq5dq_SC
+</th>
+<th style="text-align:right;">
+eq5dq_UA
+</th>
+<th style="text-align:right;">
+eq5dq_PD
+</th>
+<th style="text-align:right;">
+eq5dq_AD
+</th>
+<th style="text-align:right;">
+k10_int
 </th>
 <th style="text-align:left;">
-c_p_diag_s
-</th>
-<th style="text-align:right;">
-c_clinical_staging_s
-</th>
-<th style="text-align:right;">
-K6
-</th>
-<th style="text-align:right;">
-PHQ9
-</th>
-<th style="text-align:right;">
-SOFAS
-</th>
-<th style="text-align:right;">
-aqol6d_q1
-</th>
-<th style="text-align:left;">
-aqol6d_q2
-</th>
-<th style="text-align:right;">
-aqol6d_q3
-</th>
-<th style="text-align:right;">
-aqol6d_q4
-</th>
-<th style="text-align:right;">
-aqol6d_q5
-</th>
-<th style="text-align:right;">
-aqol6d_q6
-</th>
-<th style="text-align:right;">
-aqol6d_q7
-</th>
-<th style="text-align:left;">
-aqol6d_q8
-</th>
-<th style="text-align:right;">
-aqol6d_q9
-</th>
-<th style="text-align:right;">
-aqol6d_q10
-</th>
-<th style="text-align:right;">
-aqol6d_q11
-</th>
-<th style="text-align:right;">
-aqol6d_q12
-</th>
-<th style="text-align:right;">
-aqol6d_q13
-</th>
-<th style="text-align:left;">
-aqol6d_q14
-</th>
-<th style="text-align:right;">
-aqol6d_q15
-</th>
-<th style="text-align:right;">
-aqol6d_q16
-</th>
-<th style="text-align:right;">
-aqol6d_q17
-</th>
-<th style="text-align:right;">
-aqol6d_q18
-</th>
-<th style="text-align:right;">
-aqol6d_q19
-</th>
-<th style="text-align:left;">
-aqol6d_q20
-</th>
-<th style="text-align:right;">
-dvQ1
-</th>
-<th style="text-align:right;">
-dvQ2
-</th>
-<th style="text-align:right;">
-dvQ3
-</th>
-<th style="text-align:right;">
-dvQ4
-</th>
-<th style="text-align:right;">
-dvQ5
-</th>
-<th style="text-align:left;">
-dvQ6
-</th>
-<th style="text-align:right;">
-dvQ7
-</th>
-<th style="text-align:right;">
-dvQ8
-</th>
-<th style="text-align:right;">
-dvQ9
-</th>
-<th style="text-align:right;">
-dvQ10
-</th>
-<th style="text-align:right;">
-dvQ11
-</th>
-<th style="text-align:left;">
-dvQ12
-</th>
-<th style="text-align:right;">
-dvQ13
-</th>
-<th style="text-align:right;">
-dvQ14
-</th>
-<th style="text-align:right;">
-dvQ15
-</th>
-<th style="text-align:right;">
-dvQ16
-</th>
-<th style="text-align:right;">
-dvQ17
-</th>
-<th style="text-align:left;">
-dvQ18
-</th>
-<th style="text-align:right;">
-dvQ19
-</th>
-<th style="text-align:right;">
-dvQ20
-</th>
-<th style="text-align:right;">
-dvD1
-</th>
-<th style="text-align:right;">
-dvD2
-</th>
-<th style="text-align:right;">
-dvD3
-</th>
-<th style="text-align:left;">
-dvD4
-</th>
-<th style="text-align:right;">
-dvD5
-</th>
-<th style="text-align:right;">
-dvD6
-</th>
-<th style="text-align:right;">
-vD1
-</th>
-<th style="text-align:right;">
-vD2
-</th>
-<th style="text-align:right;">
-vD3
-</th>
-<th style="text-align:left;">
-vD4
-</th>
-<th style="text-align:right;">
-vD5
-</th>
-<th style="text-align:right;">
-vD6
-</th>
-<th style="text-align:right;">
-duaqol
-</th>
-<th style="text-align:right;">
-duaqolld
-</th>
-<th style="text-align:right;">
-duAQoL6D_t
-</th>
-<th style="text-align:left;">
-duAQoL6D
-</th>
-<th style="text-align:right;">
-uAQoL6D
-</th>
-<th style="text-align:right;">
-uAQoL6DRotated
-</th>
-<th style="text-align:right;">
-aqol6d_total_w
-</th>
-<th style="text-align:right;">
-aqol6d_total_c
+psych_well_int
 </th>
 </tr></thead>
 <tbody>
 <tr>
 <td style="text-align:left;">
-Participant_1
+1
 </td>
 <td style="text-align:right;">
-Baseline
+BL
 </td>
 <td style="text-align:right;">
-2019-12-19
+2019-10-22
 </td>
 <td style="text-align:right;">
 14
 </td>
 <td style="text-align:right;">
-Age 12-17
+Male
 </td>
 <td style="text-align:right;">
 Male
 </td>
 <td style="text-align:left;">
-Male
-</td>
-<td style="text-align:right;">
-Male
-</td>
-<td style="text-align:right;">
 Heterosexual
 </td>
 <td style="text-align:right;">
-No
+In a relationship
 </td>
 <td style="text-align:right;">
 No
 </td>
 <td style="text-align:right;">
-Australia
-</td>
-<td style="text-align:left;">
-Yes
-</td>
-<td style="text-align:right;">
-Yes
+No
 </td>
 <td style="text-align:right;">
 Metro
@@ -445,41 +226,8 @@ Metro
 <td style="text-align:right;">
 Not studying or working
 </td>
-<td style="text-align:right;">
-In a relationship
-</td>
-<td style="text-align:right;">
-Southport
-</td>
 <td style="text-align:left;">
-Other
-</td>
-<td style="text-align:right;">
-0-1a
-</td>
-<td style="text-align:right;">
-8
-</td>
-<td style="text-align:right;">
-7
-</td>
-<td style="text-align:right;">
-69
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
 1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 1
@@ -487,492 +235,58 @@ Other
 <td style="text-align:right;">
 1
 </td>
-<td style="text-align:left;">
-2
-</td>
 <td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-4
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
 1
 </td>
 <td style="text-align:right;">
-0.073
-</td>
-<td style="text-align:right;">
-0.240
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.040
-</td>
-<td style="text-align:right;">
-0.461
-</td>
-<td style="text-align:left;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.133
-</td>
-<td style="text-align:right;">
-0.824
-</td>
-<td style="text-align:right;">
-0.330
-</td>
-<td style="text-align:right;">
-0.368
-</td>
-<td style="text-align:left;">
-0.722
-</td>
-<td style="text-align:right;">
-0.055
-</td>
-<td style="text-align:right;">
-0.826
-</td>
-<td style="text-align:right;">
-0.133
-</td>
-<td style="text-align:right;">
-0.2
-</td>
-<td style="text-align:right;">
-0.072
-</td>
-<td style="text-align:left;">
-0.033
-</td>
-<td style="text-align:right;">
-0.024
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.19334101
-</td>
-<td style="text-align:right;">
-0.2964368
-</td>
-<td style="text-align:right;">
-0.7312060
-</td>
-<td style="text-align:left;">
-0.7708396
-</td>
-<td style="text-align:right;">
-0.2619285
-</td>
-<td style="text-align:right;">
-0.03009428
-</td>
-<td style="text-align:right;">
-0.8066590
-</td>
-<td style="text-align:right;">
-0.7035632
-</td>
-<td style="text-align:right;">
-0.2687940
-</td>
-<td style="text-align:left;">
-0.2291604
-</td>
-<td style="text-align:right;">
-0.7380715
-</td>
-<td style="text-align:right;">
-0.9699057
-</td>
-<td style="text-align:right;">
-0.6436897
-</td>
-<td style="text-align:right;">
-0.7286568
-</td>
-<td style="text-align:right;">
-0.55838936
-</td>
-<td style="text-align:left;">
-0.55838936
-</td>
-<td style="text-align:right;">
-0.4416106
-</td>
-<td style="text-align:right;">
-0.5078265
-</td>
-<td style="text-align:right;">
-0.5698492
-</td>
-<td style="text-align:right;">
-46
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Participant_10
-</td>
-<td style="text-align:right;">
-Baseline
-</td>
-<td style="text-align:right;">
-2019-09-20
-</td>
-<td style="text-align:right;">
-15
-</td>
-<td style="text-align:right;">
-Age 12-17
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:left;">
-Female
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Other
-</td>
-<td style="text-align:right;">
-Yes
-</td>
-<td style="text-align:right;">
-Yes
-</td>
-<td style="text-align:right;">
-Other
-</td>
-<td style="text-align:left;">
-No
-</td>
-<td style="text-align:right;">
-No
-</td>
-<td style="text-align:right;">
-Metro
-</td>
-<td style="text-align:right;">
-Studying and working
-</td>
-<td style="text-align:right;">
-Not in a relationship
-</td>
-<td style="text-align:right;">
-Canberra
-</td>
-<td style="text-align:left;">
-Other
-</td>
-<td style="text-align:right;">
-0-1a
+2
 </td>
 <td style="text-align:right;">
 11
 </td>
-<td style="text-align:right;">
-17
-</td>
-<td style="text-align:right;">
-60
-</td>
-<td style="text-align:right;">
-1
-</td>
 <td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:left;">
-3
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.033
-</td>
-<td style="text-align:right;">
-0.041
-</td>
-<td style="text-align:right;">
-0.297
-</td>
-<td style="text-align:right;">
-1.000
-</td>
-<td style="text-align:left;">
-0.000
-</td>
-<td style="text-align:right;">
-0.648
-</td>
-<td style="text-align:right;">
-0.392
-</td>
-<td style="text-align:right;">
-0.824
-</td>
-<td style="text-align:right;">
-0.784
-</td>
-<td style="text-align:right;">
-0.368
-</td>
-<td style="text-align:left;">
-0.722
-</td>
-<td style="text-align:right;">
-0.382
-</td>
-<td style="text-align:right;">
-0.423
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.2
-</td>
-<td style="text-align:right;">
-0.072
-</td>
-<td style="text-align:left;">
-0.223
-</td>
-<td style="text-align:right;">
-0.024
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.27064870
-</td>
-<td style="text-align:right;">
-0.7770111
-</td>
-<td style="text-align:right;">
-0.8683514
-</td>
-<td style="text-align:left;">
-0.6579841
-</td>
-<td style="text-align:right;">
-0.1935407
-</td>
-<td style="text-align:right;">
-0.13938313
-</td>
-<td style="text-align:right;">
-0.7293513
-</td>
-<td style="text-align:right;">
-0.2229889
-</td>
-<td style="text-align:right;">
-0.1316486
-</td>
-<td style="text-align:left;">
-0.3420159
-</td>
-<td style="text-align:right;">
-0.8064593
-</td>
-<td style="text-align:right;">
-0.8606169
-</td>
-<td style="text-align:right;">
-0.7541542
-</td>
-<td style="text-align:right;">
-0.8537026
-</td>
-<td style="text-align:right;">
-0.74739738
-</td>
-<td style="text-align:left;">
-0.74739738
-</td>
-<td style="text-align:right;">
-0.2526026
-</td>
-<td style="text-align:right;">
-0.3413671
-</td>
-<td style="text-align:right;">
-0.3916050
-</td>
-<td style="text-align:right;">
-52
+87
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Participant_10
+2
 </td>
 <td style="text-align:right;">
-Follow-up
+BL
 </td>
 <td style="text-align:right;">
-2019-12-25
+2019-10-17
 </td>
 <td style="text-align:right;">
-15
+19
 </td>
 <td style="text-align:right;">
-Age 12-17
+Female
 </td>
 <td style="text-align:right;">
 Female
 </td>
 <td style="text-align:left;">
-Female
+Heterosexual
 </td>
 <td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Other
+In a relationship
 </td>
 <td style="text-align:right;">
 Yes
 </td>
 <td style="text-align:right;">
 Yes
-</td>
-<td style="text-align:right;">
-Other
-</td>
-<td style="text-align:left;">
-No
-</td>
-<td style="text-align:right;">
-No
 </td>
 <td style="text-align:right;">
 Regional
 </td>
 <td style="text-align:right;">
-Not studying or working
-</td>
-<td style="text-align:right;">
-Not in a relationship
-</td>
-<td style="text-align:right;">
-Regional Centre
+Studying only
 </td>
 <td style="text-align:left;">
-Depression
-</td>
-<td style="text-align:right;">
-1b
-</td>
-<td style="text-align:right;">
-7
-</td>
-<td style="text-align:right;">
-17
-</td>
-<td style="text-align:right;">
-64
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-3
+1
 </td>
 <td style="text-align:right;">
 2
@@ -981,294 +295,60 @@ Depression
 1
 </td>
 <td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-3
+1
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-3
+14
 </td>
 <td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-0.073
-</td>
-<td style="text-align:right;">
-0.240
-</td>
-<td style="text-align:right;">
-0.041
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.074
-</td>
-<td style="text-align:left;">
-0.193
-</td>
-<td style="text-align:right;">
-0.197
-</td>
-<td style="text-align:right;">
-0.133
-</td>
-<td style="text-align:right;">
-0.142
-</td>
-<td style="text-align:right;">
-0.330
-</td>
-<td style="text-align:right;">
-0.368
-</td>
-<td style="text-align:left;">
-1.000
-</td>
-<td style="text-align:right;">
-0.382
-</td>
-<td style="text-align:right;">
-0.057
-</td>
-<td style="text-align:right;">
-0.642
-</td>
-<td style="text-align:right;">
-0.0
-</td>
-<td style="text-align:right;">
-0.072
-</td>
-<td style="text-align:left;">
-0.033
-</td>
-<td style="text-align:right;">
-0.205
-</td>
-<td style="text-align:right;">
-0.187
-</td>
-<td style="text-align:right;">
-0.18835933
-</td>
-<td style="text-align:right;">
-0.2602305
-</td>
-<td style="text-align:right;">
-0.5155772
-</td>
-<td style="text-align:left;">
-0.5858738
-</td>
-<td style="text-align:right;">
-0.4342728
-</td>
-<td style="text-align:right;">
-0.21476953
-</td>
-<td style="text-align:right;">
-0.8116407
-</td>
-<td style="text-align:right;">
-0.7397695
-</td>
-<td style="text-align:right;">
-0.4844228
-</td>
-<td style="text-align:left;">
-0.4141262
-</td>
-<td style="text-align:right;">
-0.5657272
-</td>
-<td style="text-align:right;">
-0.7852305
-</td>
-<td style="text-align:right;">
-0.6473112
-</td>
-<td style="text-align:right;">
-0.7327563
-</td>
-<td style="text-align:right;">
-0.56418597
-</td>
-<td style="text-align:left;">
-0.56418597
-</td>
-<td style="text-align:right;">
-0.4358140
-</td>
-<td style="text-align:right;">
-0.5027214
-</td>
-<td style="text-align:right;">
-0.5645345
-</td>
-<td style="text-align:right;">
-47
+65
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Participant_100
+2
 </td>
 <td style="text-align:right;">
-Baseline
+FUP
 </td>
 <td style="text-align:right;">
-2020-02-21
+2020-02-14
 </td>
 <td style="text-align:right;">
-25
+19
 </td>
 <td style="text-align:right;">
-Age 18-26
+Female
 </td>
 <td style="text-align:right;">
 Female
 </td>
 <td style="text-align:left;">
-Female
-</td>
-<td style="text-align:right;">
-Female
-</td>
-<td style="text-align:right;">
-Other
-</td>
-<td style="text-align:right;">
-Yes
-</td>
-<td style="text-align:right;">
-Yes
-</td>
-<td style="text-align:right;">
-Other
-</td>
-<td style="text-align:left;">
-No
-</td>
-<td style="text-align:right;">
-No
-</td>
-<td style="text-align:right;">
-Metro
-</td>
-<td style="text-align:right;">
-Working only
+Heterosexual
 </td>
 <td style="text-align:right;">
 In a relationship
 </td>
 <td style="text-align:right;">
-Canberra
-</td>
-<td style="text-align:left;">
-Depression and Anxiety
+Yes
 </td>
 <td style="text-align:right;">
-0-1a
+Yes
 </td>
 <td style="text-align:right;">
-7
+Regional
 </td>
 <td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-76
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-5
+Studying only
 </td>
 <td style="text-align:left;">
 3
 </td>
 <td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
 1
-</td>
-<td style="text-align:right;">
-3
 </td>
 <td style="text-align:right;">
 1
@@ -1276,168 +356,327 @@ Depression and Anxiety
 <td style="text-align:right;">
 1
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.074
+10
 </td>
 <td style="text-align:left;">
-0.000
-</td>
-<td style="text-align:right;">
-0.197
-</td>
-<td style="text-align:right;">
-0.133
-</td>
-<td style="text-align:right;">
-0.142
-</td>
-<td style="text-align:right;">
-0.097
-</td>
-<td style="text-align:right;">
-0.064
-</td>
-<td style="text-align:left;">
-0.056
-</td>
-<td style="text-align:right;">
-1.000
-</td>
-<td style="text-align:right;">
-0.423
-</td>
-<td style="text-align:right;">
-0.133
-</td>
-<td style="text-align:right;">
-0.0
-</td>
-<td style="text-align:right;">
-0.338
-</td>
-<td style="text-align:left;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.00000000
-</td>
-<td style="text-align:right;">
-0.1433888
-</td>
-<td style="text-align:right;">
-0.2505682
-</td>
-<td style="text-align:left;">
-0.7769222
-</td>
-<td style="text-align:right;">
-0.2866694
-</td>
-<td style="text-align:right;">
-0.00000000
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:right;">
-0.8566112
-</td>
-<td style="text-align:right;">
-0.7494318
-</td>
-<td style="text-align:left;">
-0.2230778
-</td>
-<td style="text-align:right;">
-0.7133306
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:right;">
-0.4558633
-</td>
-<td style="text-align:right;">
-0.5160373
-</td>
-<td style="text-align:right;">
-0.29587849
-</td>
-<td style="text-align:left;">
-0.29587849
-</td>
-<td style="text-align:right;">
-0.7041215
-</td>
-<td style="text-align:right;">
-0.7390198
-</td>
-<td style="text-align:right;">
-0.7978085
-</td>
-<td style="text-align:right;">
-36
+71
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Participant_1000
+3
 </td>
 <td style="text-align:right;">
-Baseline
+BL
 </td>
 <td style="text-align:right;">
-2020-01-23
+2020-02-15
 </td>
 <td style="text-align:right;">
-16
+21
 </td>
 <td style="text-align:right;">
-Age 12-17
+Female
 </td>
 <td style="text-align:right;">
-Male
+Female
 </td>
 <td style="text-align:left;">
-Male
+Other
 </td>
 <td style="text-align:right;">
-Male
+Not in a relationship
 </td>
 <td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+Metro
+</td>
+<td style="text-align:right;">
+Studying only
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:left;">
+74
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+FUP
+</td>
+<td style="text-align:right;">
+2020-06-14
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:left;">
+Other
+</td>
+<td style="text-align:right;">
+Not in a relationship
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+Metro
+</td>
+<td style="text-align:right;">
+Studying only
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+64
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:right;">
+BL
+</td>
+<td style="text-align:right;">
+2019-12-14
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:left;">
 Heterosexual
 </td>
 <td style="text-align:right;">
-Yes
+In a relationship
 </td>
 <td style="text-align:right;">
 Yes
 </td>
 <td style="text-align:right;">
-Other
+Yes
+</td>
+<td style="text-align:right;">
+Metro
+</td>
+<td style="text-align:right;">
+Not studying or working
 </td>
 <td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+40
+</td>
+</tr>
+</tbody>
+<tfoot><tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup>
+</td>
+</tr></tfoot>
+</table>
+<p>We next create a lookup table summarising key information about the variables from our dataset that we will explore as candidate predictors in our models. The predictors lookup table must be of the <code>TTU_predictors_lup</code> class.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">predictors_lup</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TTU_predictors_lup.html">TTU_predictors_lup</a></span><span class="op">(</span><span class="fu"><a href="../reference/make_pt_TTU_predictors_lup.html">make_pt_TTU_predictors_lup</a></span><span class="op">(</span>short_name_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"k10_int"</span>,<span class="st">"psych_well_int"</span><span class="op">)</span>,
+                                              long_name_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Kessler Psychological Distress - 10 Item Total Score"</span>,
+                                                   <span class="st">"Overall Wellbeing Measure (Winefield et al. 2012)"</span><span class="op">)</span>,
+                                              min_val_dbl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">18</span><span class="op">)</span>,
+                                              max_val_dbl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">50</span>,<span class="fl">90</span><span class="op">)</span>,
+                                              class_chr <span class="op">=</span> <span class="st">"integer"</span>,
+                                              increment_dbl <span class="op">=</span> <span class="fl">1</span>,
+                                              class_fn_chr <span class="op">=</span> <span class="st">"as.integer"</span>,
+                                              mdl_scaling_dbl <span class="op">=</span> <span class="fl">0.01</span>,
+                                              covariate_lgl <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>We also require a data dictionary for our input dataset. The dictionary must be of the <code><a href="https://ready4-dev.github.io/ready4use/reference/ready4_dictionary.html">ready4use::ready4_dictionary</a></code> class. In the example below we are using an existing dictionary.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dictionary_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_eq5d_ds_dict.html">make_eq5d_ds_dict</a></span><span class="op">(</span><span class="va">data_tb</span>,
+                                   predictors_lup <span class="op">=</span> <span class="va">predictors_lup</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="score-utility-and-summarise-meta-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#score-utility-and-summarise-meta-data" class="anchor"></a>Score utility and summarise meta-data</h2>
+<p>We now convert study participant responses to the EQ-5D questionnaire to health utility scores. We do this using the <code>eq5d</code> package.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/fragla/eq5d">eq5d</a></span><span class="op">)</span>
+<span class="va">data_tb</span> <span class="op">&lt;-</span> <span class="va">data_tb</span> <span class="op">%&gt;%</span> 
+        <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename_with</a></span><span class="op">(</span><span class="op">~</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span><span class="op">(</span><span class="va">.x</span>,<span class="st">"eq5dq_"</span>,<span class="st">""</span><span class="op">)</span>,<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"eq5dq_"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu">`:=`</span><span class="op">(</span><span class="va">EQ5D_total_dbl</span>, 
+                     <span class="fu">eq5d</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/eq5d/man/eq5d.html">eq5d</a></span><span class="op">(</span><span class="va">.</span>, country<span class="op">=</span><span class="st">"UK"</span>, version <span class="op">=</span> <span class="st">"5L"</span>, type <span class="op">=</span> <span class="st">"CW"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename_with</a></span><span class="op">(</span><span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"eq5dq_"</span>,<span class="va">.x</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"MO"</span>,<span class="st">"SC"</span>,<span class="st">"UA"</span>,<span class="st">"PD"</span>,<span class="st">"AD"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>We can label dataset variables using descriptions from the data dictionary.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">data_tb</span> <span class="op">&lt;-</span> <span class="va">data_tb</span> <span class="op">%&gt;%</span>
+  <span class="fu">ready4use</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4use/reference/add_labels_from_dictionary.html">add_labels_from_dictionary</a></span><span class="op">(</span>dictionary_tb <span class="op">=</span> <span class="va">dictionary_tb</span>,
+                                        remove_old_lbls_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> </code></pre></div>
+<p>The first six records of the scored and labelled dataset are reproduced below.</p>
+<table class="table  lightable-paper lightable-hover">
+<caption>
+Scored and labelled dataset
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+Unique identifier
+</th>
+<th style="text-align:right;">
+Data collection round
+</th>
+<th style="text-align:right;">
+Date of data collection
+</th>
+<th style="text-align:right;">
+Age
+</th>
+<th style="text-align:right;">
+Gender (Grouped)
+</th>
+<th style="text-align:right;">
+Sex at Birth
+</th>
+<th style="text-align:left;">
+Sexual Orientation
+</th>
+<th style="text-align:right;">
+Relationship Status
+</th>
+<th style="text-align:right;">
+Aboriginal or Torres Strait Islander
+</th>
+<th style="text-align:right;">
+Culturally And Linguistically Diverse
+</th>
+<th style="text-align:right;">
+Region of Residence (Metropolitan or Regional)
+</th>
+<th style="text-align:right;">
+Education and Employment Status
+</th>
+<th style="text-align:left;">
+EQ5D - Mobility domain score
+</th>
+<th style="text-align:right;">
+EQ5D - Self-Care domain score
+</th>
+<th style="text-align:right;">
+EQ5D - Usual Activities domain score
+</th>
+<th style="text-align:right;">
+EQ5D - Pain / Discomfort domain score
+</th>
+<th style="text-align:right;">
+EQ5D - Anxiety / Depression domain score
+</th>
+<th style="text-align:right;">
+Kessler Psychological Distress - 10 Item Total Score
+</th>
+<th style="text-align:left;">
+Overall Wellbeing Measure (Winefield et al. 2012)
+</th>
+<th style="text-align:right;">
+EQ5D - total weighted score
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+BL
+</td>
+<td style="text-align:right;">
+2019-10-22
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+Male
+</td>
+<td style="text-align:right;">
+Male
+</td>
+<td style="text-align:left;">
+Heterosexual
+</td>
+<td style="text-align:right;">
+In a relationship
+</td>
+<td style="text-align:right;">
 No
 </td>
 <td style="text-align:right;">
@@ -1449,30 +688,6 @@ Metro
 <td style="text-align:right;">
 Not studying or working
 </td>
-<td style="text-align:right;">
-Not in a relationship
-</td>
-<td style="text-align:right;">
-Canberra
-</td>
-<td style="text-align:left;">
-Anxiety
-</td>
-<td style="text-align:right;">
-0-1a
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-71
-</td>
-<td style="text-align:right;">
-2
-</td>
 <td style="text-align:left;">
 1
 </td>
@@ -1489,25 +704,113 @@ Anxiety
 2
 </td>
 <td style="text-align:right;">
-1
+11
 </td>
+<td style="text-align:left;">
+87
+</td>
+<td style="text-align:right;">
+0.879
+</td>
+</tr>
+<tr>
 <td style="text-align:left;">
 2
 </td>
 <td style="text-align:right;">
+BL
+</td>
+<td style="text-align:right;">
+2019-10-17
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:left;">
+Heterosexual
+</td>
+<td style="text-align:right;">
+In a relationship
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+Regional
+</td>
+<td style="text-align:right;">
+Studying only
+</td>
+<td style="text-align:left;">
 1
 </td>
 <td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+65
+</td>
+<td style="text-align:right;">
+0.846
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 2
+</td>
+<td style="text-align:right;">
+FUP
+</td>
+<td style="text-align:right;">
+2020-02-14
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:left;">
+Heterosexual
+</td>
+<td style="text-align:right;">
+In a relationship
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+Regional
+</td>
+<td style="text-align:right;">
+Studying only
 </td>
 <td style="text-align:left;">
 3
@@ -1522,177 +825,172 @@ Anxiety
 1
 </td>
 <td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+71
+</td>
+<td style="text-align:right;">
+0.850
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+BL
+</td>
+<td style="text-align:right;">
+2020-02-15
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:left;">
+Other
+</td>
+<td style="text-align:right;">
+Not in a relationship
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+Metro
+</td>
+<td style="text-align:right;">
+Studying only
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:left;">
+74
+</td>
+<td style="text-align:right;">
+0.883
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+FUP
+</td>
+<td style="text-align:right;">
+2020-06-14
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:left;">
+Other
+</td>
+<td style="text-align:right;">
+Not in a relationship
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+Metro
+</td>
+<td style="text-align:right;">
+Studying only
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
 2
 </td>
 <td style="text-align:right;">
 1
 </td>
-<td style="text-align:left;">
+<td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-0.073
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
+10
 </td>
 <td style="text-align:left;">
-0.193
+64
 </td>
 <td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.133
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.097
-</td>
-<td style="text-align:right;">
-0.064
-</td>
-<td style="text-align:left;">
-0.000
-</td>
-<td style="text-align:right;">
-0.055
-</td>
-<td style="text-align:right;">
-0.423
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.0
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:left;">
-0.033
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.02813508
-</td>
-<td style="text-align:right;">
-0.1346642
-</td>
-<td style="text-align:right;">
-0.1819574
-</td>
-<td style="text-align:left;">
-0.3514811
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.01916297
-</td>
-<td style="text-align:right;">
-0.9718649
-</td>
-<td style="text-align:right;">
-0.8653358
-</td>
-<td style="text-align:right;">
-0.8180426
-</td>
-<td style="text-align:left;">
-0.6485189
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:right;">
-0.9808370
-</td>
-<td style="text-align:right;">
-0.2379252
-</td>
-<td style="text-align:right;">
-0.2693314
-</td>
-<td style="text-align:right;">
-0.08939064
-</td>
-<td style="text-align:left;">
-0.08939064
-</td>
-<td style="text-align:right;">
-0.9106094
-</td>
-<td style="text-align:right;">
-0.9208737
-</td>
-<td style="text-align:right;">
-0.9511345
-</td>
-<td style="text-align:right;">
-29
+0.906
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Participant_1000
+4
 </td>
 <td style="text-align:right;">
-Follow-up
+BL
 </td>
 <td style="text-align:right;">
-2020-04-23
+2019-12-14
 </td>
 <td style="text-align:right;">
-16
+12
 </td>
 <td style="text-align:right;">
-Age 12-17
+Female
 </td>
 <td style="text-align:right;">
-Male
+Female
 </td>
 <td style="text-align:left;">
-Male
-</td>
-<td style="text-align:right;">
-Male
-</td>
-<td style="text-align:right;">
 Heterosexual
 </td>
 <td style="text-align:right;">
-Yes
+In a relationship
 </td>
 <td style="text-align:right;">
 Yes
 </td>
 <td style="text-align:right;">
-Other
-</td>
-<td style="text-align:left;">
-No
-</td>
-<td style="text-align:right;">
-No
+Yes
 </td>
 <td style="text-align:right;">
 Metro
@@ -1700,49 +998,13 @@ Metro
 <td style="text-align:right;">
 Not studying or working
 </td>
-<td style="text-align:right;">
-Not in a relationship
-</td>
-<td style="text-align:right;">
-Southport
-</td>
 <td style="text-align:left;">
-Anxiety
-</td>
-<td style="text-align:right;">
-1b
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-71
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-2
-</td>
-<td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
 1
 </td>
 <td style="text-align:right;">
@@ -1752,154 +1014,13 @@ Anxiety
 1
 </td>
 <td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-2
+18
 </td>
 <td style="text-align:left;">
-2
+40
 </td>
 <td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-1
-</td>
-<td style="text-align:right;">
-0.073
-</td>
-<td style="text-align:right;">
-0.033
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:left;">
-0.000
-</td>
-<td style="text-align:right;">
-0.197
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.392
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.064
-</td>
-<td style="text-align:left;">
-0.338
-</td>
-<td style="text-align:right;">
-0.055
-</td>
-<td style="text-align:right;">
-0.057
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.0
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:left;">
-0.000
-</td>
-<td style="text-align:right;">
-0.024
-</td>
-<td style="text-align:right;">
-0.000
-</td>
-<td style="text-align:right;">
-0.04719190
-</td>
-<td style="text-align:right;">
-0.1002056
-</td>
-<td style="text-align:right;">
-0.2658587
-</td>
-<td style="text-align:left;">
-0.2080310
-</td>
-<td style="text-align:right;">
-0.0000000
-</td>
-<td style="text-align:right;">
-0.01111253
-</td>
-<td style="text-align:right;">
-0.9528081
-</td>
-<td style="text-align:right;">
-0.8997944
-</td>
-<td style="text-align:right;">
-0.7341413
-</td>
-<td style="text-align:left;">
-0.7919690
-</td>
-<td style="text-align:right;">
-1.0000000
-</td>
-<td style="text-align:right;">
-0.9888875
-</td>
-<td style="text-align:right;">
-0.2228889
-</td>
-<td style="text-align:right;">
-0.2523102
-</td>
-<td style="text-align:right;">
-0.07926885
-</td>
-<td style="text-align:left;">
-0.07926885
-</td>
-<td style="text-align:right;">
-0.9207312
-</td>
-<td style="text-align:right;">
-0.9297879
-</td>
-<td style="text-align:right;">
-0.9576133
-</td>
-<td style="text-align:right;">
-31
+0.796
 </td>
 </tr>
 </tbody>
@@ -1913,38 +1034,30 @@ Anxiety
 <ul>
 <li>the name of the dependent variable (ie total health utility score);</li>
 <li>the names of the variables we will be exploring as candidate predictors and as candidate covariates in our modelling;</li>
+<li>the candidate predictors look-up table that we previously created;</li>
 <li>the names of the variables for unique participant identifier and data collection round; and</li>
 <li>the value of the data collection round variable for the baseline timepoint.</li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ds_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>candidate_predrs_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"K6"</span>,<span class="st">"PHQ9"</span><span class="op">)</span>,
-                   candidate_covar_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d_sex_birth_s"</span>, <span class="st">"SOFAS"</span>, <span class="st">"c_p_diag_s"</span>, <span class="st">"c_clinical_staging_s"</span>, <span class="st">"d_age"</span>,  <span class="st">"d_sexual_ori_s"</span>, <span class="st">"d_country_bir_s"</span>, <span class="st">"d_relation_s"</span>, <span class="st">"d_studying_working"</span><span class="op">)</span>,
-                   depnt_var_nm_1L_chr <span class="op">=</span> <span class="st">"aqol6d_total_w"</span>,
-                   id_var_nm_1L_chr <span class="op">=</span> <span class="st">"fkClientID"</span>,
-                   round_var_nm_1L_chr <span class="op">=</span> <span class="st">"round"</span>,
-                   round_bl_val_1L_chr <span class="op">=</span> <span class="st">"Baseline"</span><span class="op">)</span></code></pre></div>
-<p>We now create a lookup table with summary information (brief description, class, range of allowable values, factor by which it should be scaled in modelling) on candidate predictors and add this table to the <code>ds_smry_ls</code> object.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">predictors_lup</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TTU_predictors_lup.html">TTU_predictors_lup</a></span><span class="op">(</span><span class="fu"><a href="../reference/make_pt_TTU_predictors_lup.html">make_pt_TTU_predictors_lup</a></span><span class="op">(</span>short_name_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
-                                              long_name_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"K6 total score"</span>, <span class="st">"PHQ9 total score"</span><span class="op">)</span>,
-                                              min_val_dbl <span class="op">=</span> <span class="fl">0</span>,
-                                              max_val_dbl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span>,<span class="fl">27</span><span class="op">)</span>,
-                                              class_chr <span class="op">=</span> <span class="st">"integer"</span>,
-                                              increment_dbl <span class="op">=</span> <span class="fl">1</span>,
-                                              class_fn_chr <span class="op">=</span> <span class="st">"integer"</span>,
-                                              mdl_scaling_dbl <span class="op">=</span> <span class="fl">0.01</span>,
-                                              covariate_lgl <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">ds_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_ds_smry_ls.html">make_ds_smry_ls</a></span><span class="op">(</span>candidate_predrs_chr <span class="op">=</span> <span class="va">predictors_lup</span><span class="op">$</span><span class="va">short_name_chr</span>,
+                              candidate_covar_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d_sex_birth_s"</span>, <span class="st">"d_age"</span>,  <span class="st">"d_sexual_ori_s"</span>, <span class="st">"d_relation_s"</span>, <span class="st">"d_studying_working"</span><span class="op">)</span>,
+                              depnt_var_nm_1L_chr <span class="op">=</span> <span class="st">"EQ5D_total_dbl"</span>,
+                              dictionary_tb <span class="op">=</span> <span class="va">dictionary_tb</span>,
+                              id_var_nm_1L_chr <span class="op">=</span> <span class="st">"uid"</span>,
+                              round_var_nm_1L_chr <span class="op">=</span> <span class="st">"Timepoint"</span>,
+                              round_bl_val_1L_chr <span class="op">=</span> <span class="st">"BL"</span>,
+                              predictors_lup <span class="op">=</span> <span class="va">predictors_lup</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="test-candidate-models-predictors-and-covariates" class="section level2">
 <h2 class="hasAnchor">
 <a href="#test-candidate-models-predictors-and-covariates" class="anchor"></a>Test candidate models, predictors and covariates</h2>
-<p>Our first main task is to test which models, predictors and covariates perform best. This tasks can be broken down into the following steps.</p>
+<p>Our first analytic task is to test which models, predictors and covariates perform best. This tasks can be broken down into the following steps.</p>
 <div id="preliminary-tasks" class="section level3">
 <h3 class="hasAnchor">
 <a href="#preliminary-tasks" class="anchor"></a>Preliminary tasks</h3>
-<p>We begin by creating another lookup table (or as in the below example, use an existing lookup table) with summary information about the types of models we might test.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"mdl_types_lup"</span>,package <span class="op">=</span> <span class="st">"TTU"</span><span class="op">)</span> 
+<p>We begin by reviewing the <code>TTU</code> packages lookup table of types of models we can test.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mdl_types_lup</span> <span class="op">&lt;-</span> <span class="fu">TTU</span><span class="fu">::</span><span class="fu"><a href="../reference/get_cndts_for_mxd_mdls.html">get_cndts_for_mxd_mdls</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">mdl_types_lup</span> <span class="op">%&gt;%</span>
     <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
                           caption_1L_chr <span class="op">=</span> <span class="st">"Model types lookup table"</span><span class="op">)</span></code></pre></div>
@@ -1977,7 +1090,7 @@ predn_type_chr
 <th style="text-align:right;">
 tfmn_chr
 </th>
-<th style="text-align:right;">
+<th style="text-align:left;">
 tfmn_for_bnml_lgl
 </th>
 </tr></thead>
@@ -2007,7 +1120,7 @@ NA
 <td style="text-align:right;">
 NTF
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 FALSE
 </td>
 </tr>
@@ -2036,7 +1149,7 @@ NA
 <td style="text-align:right;">
 LOG
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 FALSE
 </td>
 </tr>
@@ -2065,7 +1178,7 @@ NA
 <td style="text-align:right;">
 LOGIT
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 FALSE
 </td>
 </tr>
@@ -2094,7 +1207,7 @@ NA
 <td style="text-align:right;">
 LOGLOG
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 FALSE
 </td>
 </tr>
@@ -2123,7 +1236,7 @@ NA
 <td style="text-align:right;">
 CLL
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 FALSE
 </td>
 </tr>
@@ -2152,123 +1265,7 @@ response
 <td style="text-align:right;">
 NTF
 </td>
-<td style="text-align:right;">
-FALSE
-</td>
-</tr>
-<tr>
 <td style="text-align:left;">
-GLM_BNL_LOG
-</td>
-<td style="text-align:right;">
-Generalised Linear Mixed Model with Binomial distribution and log link
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-quasibinomial(log)
-</td>
-<td style="text-align:right;">
-glm
-</td>
-<td style="text-align:right;">
--0.1,-0.1
-</td>
-<td style="text-align:right;">
-response
-</td>
-<td style="text-align:right;">
-NTF
-</td>
-<td style="text-align:right;">
-TRUE
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-GLM_BNL_LGT
-</td>
-<td style="text-align:right;">
-Generalised Linear Mixed Model with Binomial distribution and logit link
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-quasibinomial(logit)
-</td>
-<td style="text-align:right;">
-glm
-</td>
-<td style="text-align:right;">
--0.1,-0.1
-</td>
-<td style="text-align:right;">
-response
-</td>
-<td style="text-align:right;">
-NTF
-</td>
-<td style="text-align:right;">
-TRUE
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-GLM_BNL_CLL
-</td>
-<td style="text-align:right;">
-Generalised Linear Mixed Model with Binomial distribution and complementary log log link
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-quasibinomial(cloglog)
-</td>
-<td style="text-align:right;">
-glm
-</td>
-<td style="text-align:right;">
--0.1,-0.1
-</td>
-<td style="text-align:right;">
-response
-</td>
-<td style="text-align:right;">
-NTF
-</td>
-<td style="text-align:right;">
-TRUE
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-BET_LOG
-</td>
-<td style="text-align:right;">
-Beta Regression Model with Binomial distribution and log link
-</td>
-<td style="text-align:right;">
-betareg::betareg.control
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-betareg::betareg
-</td>
-<td style="text-align:right;">
--0.5,-0.1,3
-</td>
-<td style="text-align:right;">
-response
-</td>
-<td style="text-align:right;">
-NTF
-</td>
-<td style="text-align:right;">
 FALSE
 </td>
 </tr>
@@ -2297,7 +1294,7 @@ response
 <td style="text-align:right;">
 NTF
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 FALSE
 </td>
 </tr>
@@ -2326,7 +1323,7 @@ response
 <td style="text-align:right;">
 NTF
 </td>
-<td style="text-align:right;">
+<td style="text-align:left;">
 FALSE
 </td>
 </tr>
@@ -2337,161 +1334,25 @@ FALSE
 </td>
 </tr></tfoot>
 </table>
-<p>We add this lookup table to a new object, <code>mdl_smry_ls</code> which stores information about the candidate models we will be using. We can use this step to select a subset of the models from the lookup table to compare. In the below example, we have selected all of the available GLM and OLS models.</p>
+<p>We modify this table as appropriate (in the below example, we leave it unchanged). We then add the lookup table to a new object, <code>mdl_smry_ls</code> which stores information about the candidate models we will be using.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">mdl_smry_ls</span> <span class="op">&lt;-</span> <span class="va">mdl_types_lup</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="../reference/make_mdl_smry_ls.html">make_mdl_smry_ls</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>mdl_types_lup <span class="op">=</span> <span class="va">mdl_types_lup</span>,
-                    mdl_types_chr <span class="op">=</span> <span class="va">mdl_types_lup</span><span class="op">$</span><span class="va">short_name_chr</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/startsWith.html">startsWith</a></span><span class="op">(</span><span class="va">mdl_types_lup</span><span class="op">$</span><span class="va">short_name_chr</span>,<span class="st">"BET"</span><span class="op">)</span><span class="op">]</span>,
-                    choose_from_pfx_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GLM"</span>,<span class="st">"OLS"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p>For the initial set of tests on candidate models, we just need data from one timepoint as we are not exploring longitudinal change at this stage. We also only need data on the candidate predictors and total utility score. so can slim down our dataset to these parameters.</p>
+<code class="sourceCode R"><span class="va">cmprsns_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_cmprsn.html">write_mdl_cmprsn</a></span><span class="op">(</span>scored_data_tb <span class="op">=</span> <span class="va">data_tb</span>,
+                                ds_smry_ls <span class="op">=</span> <span class="va">ds_smry_ls</span>,
+                                mdl_smry_ls <span class="op">=</span> <span class="va">mdl_smry_ls</span>,
+                                output_data_dir_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>,
+                                seed_1L_int <span class="op">=</span> <span class="va">seed_1L_int</span><span class="op">)</span></code></pre></div>
+<p>The <code>write_mdl_cmprsn</code> function will write each model to be tested to a new sub-directory of “Output” called “A_Candidate_Mdls_Cmprsn”. Also written to that sub-directory are a number of plots for each model. The <code>write_mdl_cmprsn</code> function also outputs a table summarising the performance of each of the candidate models.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">bl_tb</span> <span class="op">&lt;-</span> <span class="fu">youthvars</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/youthvars/reference/transform_ds_for_tstng.html">transform_ds_for_tstng</a></span><span class="op">(</span><span class="va">scored_data_tb</span>, 
-                                depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span>,
-                                candidate_predrs_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
-                                dep_var_max_val_1L_dbl <span class="op">=</span> <span class="fl">0.999</span>,
-                                round_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">round_var_nm_1L_chr</span>, 
-                                round_val_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">round_bl_val_1L_chr</span><span class="op">)</span></code></pre></div>
-<p>The first six records of the slimmed down dataset are as follows.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">bl_tb</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
-                          caption_1L_chr <span class="op">=</span> <span class="st">"Slimmed down prediction dataset"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_sngl_predr_mdls_tb</span> <span class="op">%&gt;%</span>
+  <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
+                          caption_1L_chr <span class="op">=</span> <span class="st">"Comparison of model types for highest correlated predictor using baseline data"</span>,
+                          mkdn_tbl_ref_1L_chr <span class="op">=</span> <span class="st">"tab:mdl_cmprsn"</span><span class="op">)</span></code></pre></div>
 <table class="table  lightable-paper lightable-hover">
 <caption>
-Slimmed down prediction dataset
-</caption>
-<thead><tr>
-<th style="text-align:left;">
-aqol6d_total_w
-</th>
-<th style="text-align:right;">
-K6
-</th>
-<th style="text-align:right;">
-PHQ9
-</th>
-</tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-0.5698492
-</td>
-<td style="text-align:right;">
-8
-</td>
-<td style="text-align:right;">
-7
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-0.3916050
-</td>
-<td style="text-align:right;">
-11
-</td>
-<td style="text-align:right;">
-17
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-0.7978085
-</td>
-<td style="text-align:right;">
-7
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-0.9511345
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-0.6706877
-</td>
-<td style="text-align:right;">
-7
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-0.3855072
-</td>
-<td style="text-align:right;">
-9
-</td>
-<td style="text-align:right;">
-22
-</td>
-</tr>
-</tbody>
-<tfoot><tr>
-<td style="padding: 0; " colspan="100%">
-<sup></sup>
-</td>
-</tr></tfoot>
-</table>
-</div>
-<div id="identify-most-highly-correlated-candidate-predictor" class="section level3">
-<h3 class="hasAnchor">
-<a href="#identify-most-highly-correlated-candidate-predictor" class="anchor"></a>Identify most highly correlated candidate predictor</h3>
-<p>By exploring correlations in the slimmed down dataset, we can reorder our vector of candidate predictors to reflect the descending order of correlation with the dependent variable.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/reorder_cndt_predrs_chr.html">reorder_cndt_predrs_chr</a></span><span class="op">(</span><span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
-        data_tb <span class="op">=</span> <span class="va">bl_tb</span>, depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span><span class="op">)</span></code></pre></div>
-<p>Based on this reordering, we can specify the the candidate predictor with the highest correlation with our utility variable, adding its description to <code>mdl_smry_ls</code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_var_nm_1L_chr</span> <span class="op">&lt;-</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>
-<span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_var_desc_1L_chr</span> <span class="op">&lt;-</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">predictors_lup</span> <span class="op">%&gt;%</span> <span class="fu">ready4fun</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4fun/reference/get_from_lup_obj.html">get_from_lup_obj</a></span><span class="op">(</span>match_value_xx <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_var_nm_1L_chr</span>, match_var_nm_1L_chr <span class="op">=</span> <span class="st">"short_name_chr"</span>, target_var_nm_1L_chr <span class="op">=</span> <span class="st">"long_name_chr"</span>,
-        evaluate_lgl <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_var_desc_1L_chr</span></code></pre></div>
-<pre><code>## [1] "PHQ9 total score"</code></pre>
-</div>
-<div id="test-all-candidate-models-using-preferred-single-predictor" class="section level3">
-<h3 class="hasAnchor">
-<a href="#test-all-candidate-models-using-preferred-single-predictor" class="anchor"></a>Test all candidate models using preferred single predictor</h3>
-<p>Using the metadata from the predictors lookup table, we now create a vector of the range of potential integer values of the most highly correlated predictor.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_vals_dbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_predr_vals.html">make_predr_vals</a></span><span class="op">(</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_var_nm_1L_chr</span>, candidate_predrs_lup <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">predictors_lup</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_vals_dbl</span></code></pre></div>
-<pre><code>##  [1]  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
-## [26] 25 26 27</code></pre>
-<p>We now compare all candidate model types, each using only the highest correlated candidate predictor (PHQ9 total score).</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">folds_1L_int</span> <span class="op">&lt;-</span> <span class="fl">10L</span>
-<span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_sngl_predr_mdls_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_sngl_predr_multi_mdls_outps.html">write_sngl_predr_multi_mdls_outps</a></span><span class="op">(</span>data_tb <span class="op">=</span> <span class="va">bl_tb</span>,
-        folds_1L_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">folds_1L_int</span>, mdl_types_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_chr</span>,
-        depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span>, predr_var_nm_1L_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_var_nm_1L_chr</span>,
-        predr_var_desc_1L_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_var_desc_1L_chr</span>, 
-        predr_vals_dbl <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_vals_dbl</span>,
-        path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>, new_dir_nm_1L_chr <span class="op">=</span>  <span class="st">"A_Candidate_Mdls_Cmprsn"</span>,
-        mdl_types_lup <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_lup</span>,
-        dictionary_tb <span class="op">=</span> <span class="fu">youthvars</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/youthvars/reference/make_final_rpln_ds_dict.html">make_final_rpln_ds_dict</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </code></pre></div>
-<p>The <code>write_sngl_predr_multi_mdls_outps</code> function will write each model to be tested to a new sub-directory of “Output” called “A_Candidate_Mdls_Cmprsn”. Also written to that sub-directory are a number of plots for each model.</p>
-<p>The <code>write_sngl_predr_multi_mdls_outps</code> function also outputs a table summarising the performance of each of the candidate models.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_sngl_predr_mdls_tb</span> <span class="op">%&gt;%</span>
-    <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
-                          caption_1L_chr <span class="op">=</span> <span class="st">"Model performance for highest correlated predictor using baseline data"</span><span class="op">)</span></code></pre></div>
-<table class="table  lightable-paper lightable-hover">
-<caption>
-Model performance for highest correlated predictor using baseline data
+Comparison of model types for highest correlated predictor using baseline data
 </caption>
 <thead><tr>
 <th style="text-align:left;">
@@ -2519,25 +1380,48 @@ MAEP
 <tbody>
 <tr>
 <td style="text-align:left;">
-Generalised Linear Mixed Model with Binomial distribution and complementary log log link
+Beta Regression Model with Binomial distribution and logit link
 </td>
 <td style="text-align:right;">
-0.6035402
+0.4256336
 </td>
 <td style="text-align:right;">
-0.1183108
+0.0750881
 </td>
 <td style="text-align:right;">
-0.0949060
+0.0592085
 </td>
 <td style="text-align:right;">
-0.6016450
+0.4065157
 </td>
 <td style="text-align:right;">
-0.1182607
+0.0749468
 </td>
 <td style="text-align:right;">
-0.0950811
+0.0592747
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Beta Regression Model with Binomial distribution and complementary log log link
+</td>
+<td style="text-align:right;">
+0.4119537
+</td>
+<td style="text-align:right;">
+0.0759786
+</td>
+<td style="text-align:right;">
+0.0598996
+</td>
+<td style="text-align:right;">
+0.3938732
+</td>
+<td style="text-align:right;">
+0.0758661
+</td>
+<td style="text-align:right;">
+0.0599625
 </td>
 </tr>
 <tr>
@@ -2545,45 +1429,22 @@ Generalised Linear Mixed Model with Binomial distribution and complementary log 
 Ordinary Least Squares (No transformation)
 </td>
 <td style="text-align:right;">
-0.6026076
+0.4079463
 </td>
 <td style="text-align:right;">
-0.1184499
+0.0762376
 </td>
 <td style="text-align:right;">
-0.0947254
+0.0599796
 </td>
 <td style="text-align:right;">
-0.6007192
+0.3911325
 </td>
 <td style="text-align:right;">
-0.1183955
+0.0761514
 </td>
 <td style="text-align:right;">
-0.0949161
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Generalised Linear Mixed Model with Binomial distribution and logit link
-</td>
-<td style="text-align:right;">
-0.6019968
-</td>
-<td style="text-align:right;">
-0.1185406
-</td>
-<td style="text-align:right;">
-0.0952673
-</td>
-<td style="text-align:right;">
-0.5998989
-</td>
-<td style="text-align:right;">
-0.1184930
-</td>
-<td style="text-align:right;">
-0.0954410
+0.0600527
 </td>
 </tr>
 <tr>
@@ -2591,45 +1452,22 @@ Generalised Linear Mixed Model with Binomial distribution and logit link
 Ordinary Least Squares (Complementary Log Log transformation)
 </td>
 <td style="text-align:right;">
-0.6007809
+0.3995892
 </td>
 <td style="text-align:right;">
-0.1187218
+0.0767730
 </td>
 <td style="text-align:right;">
-0.0948396
+0.0605442
 </td>
 <td style="text-align:right;">
-0.5984056
+0.3803300
 </td>
 <td style="text-align:right;">
-0.1186999
+0.0766537
 </td>
 <td style="text-align:right;">
-0.0950598
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Ordinary Least Squares (Logit transformation)
-</td>
-<td style="text-align:right;">
-0.5906463
-</td>
-<td style="text-align:right;">
-0.1202191
-</td>
-<td style="text-align:right;">
-0.0961081
-</td>
-<td style="text-align:right;">
-0.5881454
-</td>
-<td style="text-align:right;">
-0.1201452
-</td>
-<td style="text-align:right;">
-0.0963183
+0.0605794
 </td>
 </tr>
 <tr>
@@ -2637,68 +1475,22 @@ Ordinary Least Squares (Logit transformation)
 Generalised Linear Mixed Model with Gaussian distribution and log link
 </td>
 <td style="text-align:right;">
-0.5878838
+0.3887797
 </td>
 <td style="text-align:right;">
-0.1206251
+0.0774636
 </td>
 <td style="text-align:right;">
-0.0958918
+0.0605710
 </td>
 <td style="text-align:right;">
-0.5863181
+0.3739220
 </td>
 <td style="text-align:right;">
-0.1205674
+0.0773766
 </td>
 <td style="text-align:right;">
-0.0960623
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Generalised Linear Mixed Model with Binomial distribution and log link
-</td>
-<td style="text-align:right;">
-0.5860850
-</td>
-<td style="text-align:right;">
-0.1208882
-</td>
-<td style="text-align:right;">
-0.0966233
-</td>
-<td style="text-align:right;">
-0.5848772
-</td>
-<td style="text-align:right;">
-0.1208025
-</td>
-<td style="text-align:right;">
-0.0967738
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Ordinary Least Squares (Log Log transformation)
-</td>
-<td style="text-align:right;">
-0.5697186
-</td>
-<td style="text-align:right;">
-0.1232538
-</td>
-<td style="text-align:right;">
-0.0982278
-</td>
-<td style="text-align:right;">
-0.5672049
-</td>
-<td style="text-align:right;">
-0.1231227
-</td>
-<td style="text-align:right;">
-0.0984155
+0.0606410
 </td>
 </tr>
 <tr>
@@ -2706,22 +1498,68 @@ Ordinary Least Squares (Log Log transformation)
 Ordinary Least Squares (Log transformation)
 </td>
 <td style="text-align:right;">
-0.5688230
+0.3667240
 </td>
 <td style="text-align:right;">
-0.1233832
+0.0788503
 </td>
 <td style="text-align:right;">
-0.0985688
+0.0625689
 </td>
 <td style="text-align:right;">
-0.5658489
+0.3476110
 </td>
 <td style="text-align:right;">
-0.1234507
+0.0788115
 </td>
 <td style="text-align:right;">
-0.0988729
+0.0626548
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ordinary Least Squares (Logit transformation)
+</td>
+<td style="text-align:right;">
+0.3604047
+</td>
+<td style="text-align:right;">
+0.0792355
+</td>
+<td style="text-align:right;">
+0.0623562
+</td>
+<td style="text-align:right;">
+0.3381371
+</td>
+<td style="text-align:right;">
+0.0790669
+</td>
+<td style="text-align:right;">
+0.0623585
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ordinary Least Squares (Log Log transformation)
+</td>
+<td style="text-align:right;">
+0.3473261
+</td>
+<td style="text-align:right;">
+0.0800406
+</td>
+<td style="text-align:right;">
+0.0629494
+</td>
+<td style="text-align:right;">
+0.3240517
+</td>
+<td style="text-align:right;">
+0.0798784
+</td>
+<td style="text-align:right;">
+0.0629428
 </td>
 </tr>
 </tbody>
@@ -2732,32 +1570,27 @@ Ordinary Least Squares (Log transformation)
 </tr></tfoot>
 </table>
 <p>We can now identify the highest performing model in each category of candidate model based on the testing R<sup>2</sup> statistic (RsquaredP in the previous table).</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_prefd_mdls_vec.html">make_prefd_mdls_vec</a></span><span class="op">(</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_sngl_predr_mdls_tb</span>,
-                                           choose_from_pfx_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">choose_from_pfx_chr</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span></code></pre></div>
-<pre><code>## [1] "GLM_BNL_CLL" "OLS_NTF"</code></pre>
-<p>We can override these automated selections and instead incorporate other considerations (possibly based on judgments informed by visual inspection of the density plots). We do this in the following command, specifying new preferred model types, in descending order of preference.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GLM_GSN_LOG"</span>,<span class="st">"OLS_CLL"</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span></code></pre></div>
+<pre><code>## [1] "OLS_NTF"     "GLM_GSN_LOG" "BET_LGT"</code></pre>
+<p>We can override these automated selections and instead incorporate other considerations (possibly based on judgments informed by visual inspection of the plots and the desirability of constraining predictions to a maximum value of one). We do this in the following command, specifying new preferred model types, in descending order of preference.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"OLS_NTF"</span>, <span class="st">"GLM_GSN_LOG"</span>, <span class="st">"BET_CLL"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="compare-all-candidate-predictors-using-most-preferred-model" class="section level3">
+<div id="use-most-preferred-model-to-compare-all-candidate-predictors" class="section level3">
 <h3 class="hasAnchor">
-<a href="#compare-all-candidate-predictors-using-most-preferred-model" class="anchor"></a>Compare all candidate predictors using most preferred model</h3>
-<p>We can now compare all of our candidate single predictors using the most preferred model type.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">max_nbr_of_boruta_mdl_runs_int</span> <span class="op">=</span> <span class="fl">300L</span>
-<span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsn_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_predr_cmprsn_outps.html">write_predr_cmprsn_outps</a></span><span class="op">(</span>data_tb <span class="op">=</span> <span class="va">bl_tb</span>,
-                                             path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>,
-                                             new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"B_Candidate_Predrs_Cmprsn"</span>,
-                                             depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span>, 
-                                             candidate_predrs_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
-                                             max_nbr_of_boruta_mdl_runs_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">max_nbr_of_boruta_mdl_runs_int</span><span class="op">)</span></code></pre></div>
-<p>The previous call to the <code class="sourceCode r">write_predr_cmprsn_outps</code> function saved the tested models along with model plots in the “B_Candidate_Predrs_Cmprsn” sub-directory of “Output”.</p>
-<p>These results are also viewable as a table.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsn_tb</span> <span class="op">%&gt;%</span>
+<a href="#use-most-preferred-model-to-compare-all-candidate-predictors" class="anchor"></a>Use most preferred model to compare all candidate predictors</h3>
+<p>We can now compare all of our candidate predictors (with and without candidate covariates) using the most preferred model type.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cmprsns_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_predr_and_covars_cmprsn.html">write_predr_and_covars_cmprsn</a></span><span class="op">(</span>scored_data_tb <span class="op">=</span> <span class="va">data_tb</span>,
+                                            bl_tb <span class="op">=</span> <span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">bl_tb</span>,
+                                            ds_smry_ls <span class="op">=</span> <span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">ds_smry_ls</span>,
+                                            mdl_smry_ls <span class="op">=</span> <span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span>,
+                                            output_data_dir_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>,
+                                            seed_1L_int <span class="op">=</span> <span class="va">seed_1L_int</span><span class="op">)</span></code></pre></div>
+<p>Now, we compare the performance of single predictor models of our preferred model type (in our case, a Ordinary Least Squares (No transformation)) for each candidate predictor. The call to the <code class="sourceCode r">write_predr_and_covars_cmprsn</code> function saved the tested models along with model plots in the “B_Candidate_Predrs_Cmprsn” sub-directory of “Output”. These results are also viewable as a table.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsn_tb</span> <span class="op">%&gt;%</span>
     <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
                           caption_1L_chr <span class="op">=</span> <span class="st">"Comparison of all candidate predictors using preferred model"</span><span class="op">)</span></code></pre></div>
 <table class="table  lightable-paper lightable-hover">
@@ -2778,24 +1611,24 @@ IncNodePurity
 <tbody>
 <tr>
 <td style="text-align:left;">
-PHQ9
+k10_int
 </td>
 <td style="text-align:right;">
-0.0245514
+0.0065171
 </td>
 <td style="text-align:left;">
-16.91970
+3.955179
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-K6
+psych_well_int
 </td>
 <td style="text-align:right;">
-0.0082271
+0.0010166
 </td>
 <td style="text-align:left;">
-10.60568
+2.365518
 </td>
 </tr>
 </tbody>
@@ -2805,21 +1638,9 @@ K6
 </td>
 </tr></tfoot>
 </table>
-</div>
-<div id="compare-single-predictor-model-performance-across-all-candidate-predictors" class="section level3">
-<h3 class="hasAnchor">
-<a href="#compare-single-predictor-model-performance-across-all-candidate-predictors" class="anchor"></a>Compare single predictor model performance across all candidate predictors</h3>
-<p>Now, we compare the performance of single predictor models of our preferred model type (in our case, a Generalised Linear Mixed Model with Gaussian distribution and log link) for each candidate predictor.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R">    <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_mdl_sngl_predrs_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_type_multi_outps.html">write_mdl_type_multi_outps</a></span><span class="op">(</span>data_tb <span class="op">=</span> <span class="va">bl_tb</span>,
-        folds_1L_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">folds_1L_int</span>, predrs_var_nms_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsn_tb</span><span class="op">$</span><span class="va">predr_chr</span>,
-        mdl_type_1L_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span>,
-        path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>, new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"C_Predrs_Sngl_Mdl_Cmprsn"</span>,
-        fl_nm_pfx_1L_chr <span class="op">=</span> <span class="st">"C_PREDR"</span>, mdl_types_lup <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_lup</span><span class="op">)</span> </code></pre></div>
-<p>The previous call to the <code class="sourceCode r">write_mdl_type_multi_outps</code> function saves the tested models along with the two plots for each model in the “C_Predrs_Sngl_Mdl_Cmprsn” sub-directory of “Output”.</p>
-<p>The performance of each single predictor model can also be summarised in a table.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_mdl_sngl_predrs_tb</span> <span class="op">%&gt;%</span>
+<p>The call to the <code class="sourceCode r">write_predr_and_covars_cmprsn</code> function also saved single predictor R model objects (one for each candidate predictors) along with the two plots for each model in the “C_Predrs_Sngl_Mdl_Cmprsn” sub-directory of “Output”. The performance of each single predictor model can also be summarised in a table.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_mdl_sngl_predrs_tb</span> <span class="op">%&gt;%</span>
     <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
                           caption_1L_chr <span class="op">=</span> <span class="st">"Preferred single predictor model performance by candidate predictor"</span><span class="op">)</span></code></pre></div>
 <table class="table  lightable-paper lightable-hover">
@@ -2852,48 +1673,48 @@ MAEP
 <tbody>
 <tr>
 <td style="text-align:left;">
-PHQ9
+k10_int
 </td>
 <td style="text-align:right;">
-0.5878838
+0.4079463
 </td>
 <td style="text-align:left;">
-0.1206251
+0.0762376
 </td>
 <td style="text-align:right;">
-0.0958918
+0.0599796
 </td>
 <td style="text-align:left;">
-0.5863181
+0.3911325
 </td>
 <td style="text-align:right;">
-0.1205674
+0.0761514
 </td>
 <td style="text-align:left;">
-0.0960623
+0.0600527
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-K6
+psych_well_int
 </td>
 <td style="text-align:right;">
-0.4439600
+0.1322580
 </td>
 <td style="text-align:left;">
-0.1400563
+0.0923036
 </td>
 <td style="text-align:right;">
-0.1123590
+0.0707349
 </td>
 <td style="text-align:left;">
-0.4409934
+0.1167066
 </td>
 <td style="text-align:right;">
-0.1399688
+0.0923999
 </td>
 <td style="text-align:left;">
-0.1124051
+0.0708471
 </td>
 </tr>
 </tbody>
@@ -2903,26 +1724,11 @@ K6
 </td>
 </tr></tfoot>
 </table>
-</div>
-<div id="compare-candidate-covariates" class="section level3">
-<h3 class="hasAnchor">
-<a href="#compare-candidate-covariates" class="anchor"></a>Compare candidate covariates</h3>
-<p>We rerun each of the models from the previous step, but this time add all our candidate covariates to each model.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">bl_tb</span> <span class="op">&lt;-</span> <span class="va">scored_data_tb</span> <span class="op">%&gt;%</span> <span class="fu">youthvars</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/youthvars/reference/transform_ds_for_tstng.html">transform_ds_for_tstng</a></span><span class="op">(</span>candidate_predrs_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
-        covar_var_nms_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_covar_nms_chr</span>, remove_all_msng_1L_lgl <span class="op">=</span> <span class="cn">T</span>,
-        round_val_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">round_bl_val_1L_chr</span><span class="op">)</span>
-<span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdls_with_covars_smry_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_type_covars_mdls.html">write_mdl_type_covars_mdls</a></span><span class="op">(</span><span class="va">bl_tb</span>,
-        depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span>, predrs_var_nms_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
-        covar_var_nms_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_covar_nms_chr</span>, mdl_type_1L_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
-        path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>, new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"D_Predr_Covars_Cmprsn"</span>,
-        fl_nm_pfx_1L_chr <span class="op">=</span> <span class="st">"D_CT"</span>,
-        mdl_types_lup <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_lup</span><span class="op">)</span></code></pre></div>
-<p>The updated models are saved to the “D_Predr_Covars_Cmprsn” subdirectory of “Output” and we can summarise the performance of each of the updated models, along with all model terms, in a table.</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdls_with_covars_smry_tb</span> <span class="op">%&gt;%</span>
+<p>Updated versions of each of the models in the previous step (this time with covariates added) are saved to the “D_Predr_Covars_Cmprsn” subdirectory of “Output” and we can summarise the performance of each of the updated models, along with all signficant model terms, in a table.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdls_with_covars_smry_tb</span> <span class="op">%&gt;%</span>
     <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
-                          caption_1L_chr <span class="op">=</span> <span class="st">"Preferred performance of models with covariate predictors by candidate predictor"</span>, 
+                            caption_1L_chr <span class="op">=</span> <span class="st">"Preferred performance of models with covariate predictors by candidate predictor"</span>, 
                           use_lbls_as_col_nms_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
 <table class="table  lightable-paper lightable-hover">
 <caption>
@@ -2948,36 +1754,36 @@ Significant
 <tbody>
 <tr>
 <td style="text-align:left;">
-K6
+psych_well_int
 </td>
 <td style="text-align:right;">
--24.43622
+0.1533129
 </td>
 <td style="text-align:left;">
--969.2429
+-1892.712
 </td>
 <td style="text-align:right;">
--890.0349
+-1843.836
 </td>
 <td style="text-align:left;">
-(Intercept) K6 SOFAS
+(Intercept) psych_well_int
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-PHQ9
+k10_int
 </td>
 <td style="text-align:right;">
--20.65298
+0.4189650
 </td>
 <td style="text-align:left;">
--1150.9173
+-2261.702
 </td>
 <td style="text-align:right;">
--1071.7093
+-2212.826
 </td>
 <td style="text-align:left;">
-(Intercept) PHQ9 SOFAS
+(Intercept) k10_int
 </td>
 </tr>
 </tbody>
@@ -2987,376 +1793,61 @@ PHQ9
 </td>
 </tr></tfoot>
 </table>
-<p>We can now identify which covariates are significant predictors in any of the models.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">signt_covars_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_signft_covars.html">get_signft_covars</a></span><span class="op">(</span>mdls_with_covars_smry_tb <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdls_with_covars_smry_tb</span>,
-                                      covar_var_nms_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">candidate_covar_nms_chr</span><span class="op">)</span> 
-<span class="co"># NOTE: THIS FUNCTION NEEDS UPDATING TO WORK FOR CATEGORICAL VARS</span></code></pre></div>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">signt_covars_chr</span></code></pre></div>
-<pre><code>## [1] "SOFAS"</code></pre>
-<p>We can override the covariates to select, potentially because we want to select only covariates that are significant for all or most of the models. However, in the below example we have opted not to do so and continue to use the significant predictor (SOFAS) selected by the algorithm in the previous step.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_covars_chr</span> <span class="op">&lt;-</span> <span class="cn">NA_character_</span>
-    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_covars_chr</span><span class="op">)</span><span class="op">)</span>
-        <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_covars_chr</span> <span class="op">&lt;-</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">signt_covars_chr</span></code></pre></div>
+<p>We can now identify which, if any, of the candidate covariates we previously specified are significant predictors in any of the models.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">signt_covars_chr</span></code></pre></div>
+<pre><code>## [1] NA</code></pre>
+<p>We can override the covariates to select, potentially because we want to select only covariates that are significant for all or most of the models. However, in the below example we have opted not to do so and continue to use as selected by the algorithm in the previous step.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># cmprsns_ls$mdl_smry_ls$prefd_covars_chr &lt;- c("COVARIATE WE WANT TO USE", "ANOTHER COVARIATE")</span></code></pre></div>
 </div>
 <div id="test-preferred-model-with-preferred-covariates-for-each-candidate-predictor" class="section level3">
 <h3 class="hasAnchor">
 <a href="#test-preferred-model-with-preferred-covariates-for-each-candidate-predictor" class="anchor"></a>Test preferred model with preferred covariates for each candidate predictor</h3>
 <p>We now conclude our model testing by rerunning the previous step, except confining our covariates to those we prefer.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R">    <span class="va">empty_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_type_multi_outps.html">write_mdl_type_multi_outps</a></span><span class="op">(</span>data_tb <span class="op">=</span> <span class="va">bl_tb</span>, folds_1L_int <span class="op">=</span> <span class="cn">NULL</span>,
-        start_1L_chr <span class="op">=</span> <span class="cn">NA_character_</span>, predrs_var_nms_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsn_tb</span><span class="op">$</span><span class="va">predr_chr</span>,
-        covar_var_nms_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_covars_chr</span>, mdl_type_1L_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
-        depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span>, path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>,
-        new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"E_Predrs_W_Covars_Sngl_Mdl_Cmprsn"</span>, mdl_types_lup <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_lup</span>, fl_nm_pfx_1L_chr <span class="op">=</span> <span class="st">"E_CK_CV"</span><span class="op">)</span></code></pre></div>
-<p>The previous call to the <code class="sourceCode r">write_mdl_type_multi_outps</code> function saves the tested models along with the two plots for each model in the “E_Predrs_W_Covars_Sngl_Mdl_Cmprsn” sub-directory of “Output”.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">outp_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdls_with_covars_cmprsn.html">write_mdls_with_covars_cmprsn</a></span><span class="op">(</span>scored_data_tb <span class="op">=</span> <span class="va">data_tb</span>,
+                                           bl_tb <span class="op">=</span> <span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">bl_tb</span>,
+                                           ds_smry_ls <span class="op">=</span> <span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">ds_smry_ls</span>,
+                                           mdl_smry_ls <span class="op">=</span> <span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span>,
+                                           output_data_dir_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>,
+                                           seed_1L_int <span class="op">=</span> <span class="va">seed_1L_int</span><span class="op">)</span></code></pre></div>
+<p>The previous call to the <code class="sourceCode r">write_mdls_with_covars_cmprsn</code> function saves the tested models along with the two plots for each model in the “E_Predrs_W_Covars_Sngl_Mdl_Cmprsn” sub-directory of “Output”.</p>
 </div>
 </div>
 <div id="apply-preferred-model-types-and-predictors-to-time-series-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#apply-preferred-model-types-and-predictors-to-time-series-data" class="anchor"></a>Apply preferred model types and predictors to time series data</h2>
 <p>The next main step is to use the preferred model types and covariates identified from the preceding analysis of cross-sectional data in time series analysis.</p>
-<div id="preliminary-steps" class="section level3">
-<h3 class="hasAnchor">
-<a href="#preliminary-steps" class="anchor"></a>Preliminary steps</h3>
-<p>First we summarise the combinations of model types, candidate predictors and covariates that we will be using.</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R">    <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_vars_nms_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_predr_vars_nms_ls.html">make_predr_vars_nms_ls</a></span><span class="op">(</span>main_predrs_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsn_tb</span><span class="op">$</span><span class="va">predr_chr</span>,
-        covars_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_covars_chr</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_nms_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mdl_nms_ls.html">make_mdl_nms_ls</a></span><span class="op">(</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_vars_nms_ls</span>, mdl_types_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_nms_ls</span> <span class="op">%&gt;%</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/flatten.html">flatten_chr</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "PHQ9_1_GLM_GSN_LOG"       "PHQ9_1_OLS_CLL"          
-## [3] "K6_1_GLM_GSN_LOG"         "K6_1_OLS_CLL"            
-## [5] "PHQ9_SOFAS_1_GLM_GSN_LOG" "PHQ9_SOFAS_1_OLS_CLL"    
-## [7] "K6_SOFAS_1_GLM_GSN_LOG"   "K6_SOFAS_1_OLS_CLL"</code></pre>
-<p>We now create a composite object <code>outp_smry_ls</code> that contains the key input and output data used in testing models, predictors and covariates that we will need for the time series modelling.</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">outp_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>scored_data_tb <span class="op">=</span> <span class="va">scored_data_tb</span>, 
-                     smry_of_sngl_predr_mdls_tb <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_sngl_predr_mdls_tb</span>,
-                     prefd_mdl_types_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span>, 
-                     predr_cmprsn_tb <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsn_tb</span>,
-                     smry_of_mdl_sngl_predrs_tb <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">smry_of_mdl_sngl_predrs_tb</span>,
-                     mdls_with_covars_smry_tb <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdls_with_covars_smry_tb</span>,
-                     signt_covars_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">signt_covars_chr</span>, 
-                     prefd_covars_chr <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_covars_chr</span>,
-                     depnt_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">depnt_var_nm_1L_chr</span>, 
-                     predr_vars_nms_ls <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_vars_nms_ls</span>,
-                     mdl_nms_ls <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_nms_ls</span>, 
-                     id_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">id_var_nm_1L_chr</span>,
-                     round_var_nm_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">round_var_nm_1L_chr</span>,
-                     round_bl_val_1L_chr <span class="op">=</span> <span class="va">ds_smry_ls</span><span class="op">$</span><span class="va">round_bl_val_1L_chr</span>,
-                     path_to_write_to_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>, 
-                     seed_1L_int <span class="op">=</span> <span class="va">seed_1L_int</span>,
-                     folds_1L_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">folds_1L_int</span>, 
-                     max_nbr_of_boruta_mdl_runs_int <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">max_nbr_of_boruta_mdl_runs_int</span>,
-                     mdl_types_lup <span class="op">=</span> <span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdl_types_lup</span>, 
-                     file_paths_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="va">path_to_write_to_1L_chr</span>, recursive <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-</div>
 <div id="time-series-modelling" class="section level3">
 <h3 class="hasAnchor">
 <a href="#time-series-modelling" class="anchor"></a>Time series modelling</h3>
-<p>Next we test each of the 8 time series models we specified in the previous step. For this goal, we use the <code class="sourceCode r">write_ts_mdls_from_alg_outp</code> function that makes a call to the Stan program. This function requires that you have the <code>cmdstanr</code> package installed on your machine and have performed the necessary configuration of that package - refer to <a href="https://mc-stan.org/cmdstanr/">https://mc-stan.org/cmdstanr/</a> for details.</p>
-<p>Note that for this example we have run only 500 iterations - in practice this number would likely be several times higher. A limitation of the current version of the <code>write_ts_mdls_from_alg_outp</code> function is that it only works with the following two model types:</p>
-<ul>
-<li>Generalised Linear Mixed Model with Gaussian distribution and log link</li>
-<li>Ordinary Least Squares (Complementary Log Log transformation)</li>
-</ul>
-<p>We aim to address this limitation in future releases of TTU.</p>
-<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<p>Next we test each of the time series models we specified in the previous step. Note, that in many cases both the <code>prior_ls</code> and <code>control_ls</code> arguments can be set to <code>NULL</code> (which may speed up execution). However, in this example doing so would result in warning messages suggesting a change to the adapt_delta control value (default = 0.8). We have therefore passed a value to the <code>control_ls</code> argument that addresses this issue.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">outp_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_ts_mdls_from_alg_outp.html">write_ts_mdls_from_alg_outp</a></span><span class="op">(</span><span class="va">outp_smry_ls</span>,
-                                            fn_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">fit_gsn_log_lnk</span>,<span class="va">fit_clg_log_tfmn</span><span class="op">)</span>,
+                                            predictors_lup <span class="op">=</span> <span class="va">predictors_lup</span> ,
+                                            utl_min_val_1L_dbl <span class="op">=</span> <span class="fl">0.03</span>,
                                             backend_1L_chr <span class="op">=</span> <span class="st">"cmdstanr"</span>,
                                             new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"F_TS_Mdls"</span>,
-                                            iters_1L_int <span class="op">=</span> <span class="fl">500L</span><span class="op">)</span></code></pre></div>
+                                            iters_1L_int <span class="op">=</span> <span class="fl">4000L</span>,
+                                            prior_ls <span class="op">=</span> <span class="cn">NULL</span>, 
+                                            control_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>The <code class="sourceCode r">write_ts_mdls_from_alg_outp</code> function writes the models it tests to the “F_TS_Mdls” sub-directory of “Output” along with three plots for each model.</p>
 </div>
-<div id="sharing-models" class="section level3">
-<h3 class="hasAnchor">
-<a href="#sharing-models" class="anchor"></a>Sharing models</h3>
-<p>It may not be appropriate to share the raw models outputted by <code class="sourceCode r">write_ts_mdls_from_alg_outp</code> as they both may contain confidential data and are very large in file size. We therefore create shareable versions that are relatively small in file size and do not contain the source dataset, but that have the coefficients from the original models.</p>
-<p>If you have a Dataverse account you can add details for your account (which will differ from the ones we use for ours below) to the <code>outp_smry_ls</code> object. If you do not have a Dataverse account, do not add a dv_ls list element (or set it to its default value of NULL).</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">outp_smry_ls</span><span class="op">$</span><span class="va">dv_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>dv_nm_1L_chr <span class="op">=</span> <span class="st">"firstbounce"</span>,
-                               ds_url_1L_chr <span class="op">=</span> <span class="st">"https://doi.org/10.7910/DVN/JC6PTV"</span>, 
-                               parent_dv_dir_1L_chr <span class="op">=</span> <span class="st">"../../../../Data/Dataverse"</span><span class="op">)</span></code></pre></div>
-<p>This following call to <code class="sourceCode r">write_shareable_mdls</code> writes shareable models to a new subdirectory (G_Shareable) of “Output”. If you added details of a Dataverse account in the previous step the function will also push these shareable models to your Dataverse online data repository.</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">outp_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_shareable_mdls.html">write_shareable_mdls</a></span><span class="op">(</span><span class="va">outp_smry_ls</span>,
-                                     new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"G_Shareable"</span>,
-                                     shareable_title_detail_1L_chr <span class="op">=</span> <span class="st">"The model that can be used to predict adolescent AQoL6D. Note this model is a placeholder as it has been estimated from synthetic data."</span><span class="op">)</span></code></pre></div>
-<p>The files created in the following step are available here: <a href="https://doi.org/10.7910/DVN/JC6PTV" class="uri">https://doi.org/10.7910/DVN/JC6PTV</a></p>
 </div>
-</div>
-<div id="create-shareable-population-data" class="section level2">
+<div id="purge-dataset-copies" class="section level2">
 <h2 class="hasAnchor">
-<a href="#create-shareable-population-data" class="anchor"></a>Create shareable population data</h2>
-<p>To aid replication, we can create a purely synthetic dataset, representative of the source data, but containing no real data on any individual. The <code class="sourceCode r">make_fake_ts_data</code> function uses the <code class="sourceCode r">syn</code> function from the <code>synthpop</code> package to perform this task.</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">outp_smry_ls</span><span class="op">$</span><span class="va">fk_data_tb</span> <span class="op">&lt;-</span> <span class="fu">TTU</span><span class="fu">::</span><span class="fu"><a href="../reference/make_fake_ts_data.html">make_fake_ts_data</a></span><span class="op">(</span><span class="va">outp_smry_ls</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-## Variable(s): round have been changed from character to factor.
-## 
-## Variable(s): fkClientID not synthesised or used in prediction.
-## CAUTION: The synthesised data will contain the variable(s) unchanged.
-## 
-## Synthesis
-## -----------
-##  round PHQ9 K6 aqol6d_total_w PHQ9_baseline PHQ9_change K6_baseline K6_change aqol6d_total_w_cloglog</code></pre>
-<p>The first six records from the replication dataset are reproduced below. Note that the “change” variables are scaled by the factor we specified in the <code>ds_smry_ls$predictors_lup</code> predictors lookup table.</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">outp_smry_ls</span><span class="op">$</span><span class="va">fk_data_tb</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
-                          caption_1L_chr <span class="op">=</span> <span class="st">"Synthetic dataset"</span>,
-                          scroll_box_args_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>width <span class="op">=</span> <span class="st">"100%"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<div style="border: 1px solid #ddd; padding: 5px; overflow-x: scroll; width:100%; ">
-<table class="table  lightable-paper lightable-hover lightable-paper">
-<caption>
-Synthetic dataset
-</caption>
-<thead><tr>
-<th style="text-align:left;">
-fkClientID
-</th>
-<th style="text-align:right;">
-round
-</th>
-<th style="text-align:right;">
-PHQ9
-</th>
-<th style="text-align:right;">
-K6
-</th>
-<th style="text-align:right;">
-aqol6d_total_w
-</th>
-<th style="text-align:right;">
-PHQ9_baseline
-</th>
-<th style="text-align:left;">
-PHQ9_change
-</th>
-<th style="text-align:right;">
-K6_baseline
-</th>
-<th style="text-align:right;">
-K6_change
-</th>
-<th style="text-align:right;">
-aqol6d_total_w_cloglog
-</th>
-</tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Participant_1
-</td>
-<td style="text-align:right;">
-Baseline
-</td>
-<td style="text-align:right;">
-10
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0.10
-</td>
-<td style="text-align:left;">
-0.00
-</td>
-<td style="text-align:right;">
-0.12
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Participant_10
-</td>
-<td style="text-align:right;">
-Baseline
-</td>
-<td style="text-align:right;">
-6
-</td>
-<td style="text-align:right;">
-5
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0.06
-</td>
-<td style="text-align:left;">
-0.00
-</td>
-<td style="text-align:right;">
-0.05
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Participant_10
-</td>
-<td style="text-align:right;">
-Follow-up
-</td>
-<td style="text-align:right;">
-6
-</td>
-<td style="text-align:right;">
-11
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0.20
-</td>
-<td style="text-align:left;">
--0.10
-</td>
-<td style="text-align:right;">
-0.15
-</td>
-<td style="text-align:right;">
--0.03
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Participant_100
-</td>
-<td style="text-align:right;">
-Follow-up
-</td>
-<td style="text-align:right;">
-6
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:left;">
-0.03
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-0.00
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Participant_1000
-</td>
-<td style="text-align:right;">
-Follow-up
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0.08
-</td>
-<td style="text-align:left;">
--0.07
-</td>
-<td style="text-align:right;">
-0.15
-</td>
-<td style="text-align:right;">
--0.14
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Participant_1000
-</td>
-<td style="text-align:right;">
-Follow-up
-</td>
-<td style="text-align:right;">
-12
-</td>
-<td style="text-align:right;">
-13
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-0.16
-</td>
-<td style="text-align:left;">
--0.05
-</td>
-<td style="text-align:right;">
-0.12
-</td>
-<td style="text-align:right;">
--0.02
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-</tbody>
-<tfoot><tr>
-<td style="padding: 0; " colspan="100%">
-<sup></sup>
-</td>
-</tr></tfoot>
-</table>
-</div>
+<a href="#purge-dataset-copies" class="anchor"></a>Purge dataset copies</h2>
+<p>Because the files created in analysis are large, multiple objects containing copies of the source dataset have been saved to our output directory during the analysis process. We therefore need to delete all of these copies.</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/write_to_delete_mdl_fls.html">write_to_delete_mdl_fls</a></span><span class="op">(</span><span class="va">outp_smry_ls</span><span class="op">)</span>
+<span class="va">outp_smry_ls</span><span class="op">$</span><span class="va">scored_data_tb</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></code></pre></div>
 </div>
 <div id="save-work" class="section level2">
 <h2 class="hasAnchor">
 <a href="#save-work" class="anchor"></a>Save work</h2>
 <p>Finally, we can save a complete record of our analysis.</p>
-<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">outp_smry_ls</span>,<span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">outp_smry_ls</span><span class="op">$</span><span class="va">path_to_write_to_1L_chr</span>,<span class="st">"/I_ALL_OUTPUT_.RDS"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
   </div>

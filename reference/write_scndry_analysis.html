@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9172</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9237</span>
       </span>
     </div>
 
@@ -106,7 +106,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Model_TTU.html">Model Transfer to Utility</a>
+      <a href="../articles/CSP_EQ5D_TTU.html">Analysis, Reporting and Dissemination Workflow</a>
+    </li>
+    <li>
+      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -141,25 +144,27 @@
     </div>
 
     <pre class="usage"><span class='fu'>write_scndry_analysis</span><span class='op'>(</span>
-  <span class='va'>analysis_params_ls</span>,
+  <span class='va'>analysis_core_params_ls</span>,
   <span class='va'>candidate_covar_nms_chr</span>,
   <span class='va'>candidate_predrs_chr</span>,
-  <span class='va'>prefd_covars_chr</span>,
   <span class='va'>header_yaml_args_ls</span>,
-  <span class='va'>subtitle_1L_chr</span>,
-  <span class='va'>reference_1L_int</span>,
+  <span class='va'>path_params_ls</span>,
   <span class='va'>paths_ls</span>,
-  <span class='va'>R_fl_nm_1L_chr</span>,
-  <span class='va'>rprt_lup</span>,
-  abstract_args_ls <span class='op'>=</span> <span class='cn'>NULL</span>
+  <span class='va'>prefd_covars_chr</span>,
+  <span class='va'>reference_1L_int</span>,
+  subtitle_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rprt_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rprt_nm_1L_chr <span class='op'>=</span> <span class='st'>"Suplry_Analysis_Rprt"</span>,
+  abstract_args_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rename_lup <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>analysis_params_ls</th>
-      <td><p>Analysis params (a list)</p></td>
+      <th>analysis_core_params_ls</th>
+      <td><p>Analysis core params (a list)</p></td>
     </tr>
     <tr>
       <th>candidate_covar_nms_chr</th>
@@ -170,36 +175,44 @@
       <td><p>Candidate predictors (a character vector)</p></td>
     </tr>
     <tr>
-      <th>prefd_covars_chr</th>
-      <td><p>Preferred covariates (a character vector)</p></td>
-    </tr>
-    <tr>
       <th>header_yaml_args_ls</th>
       <td><p>Header yaml arguments (a list)</p></td>
     </tr>
     <tr>
-      <th>subtitle_1L_chr</th>
-      <td><p>Subtitle (a character vector of length one)</p></td>
-    </tr>
-    <tr>
-      <th>reference_1L_int</th>
-      <td><p>Reference (an integer vector of length one)</p></td>
+      <th>path_params_ls</th>
+      <td><p>Path params (a list)</p></td>
     </tr>
     <tr>
       <th>paths_ls</th>
       <td><p>Paths (a list)</p></td>
     </tr>
     <tr>
-      <th>R_fl_nm_1L_chr</th>
-      <td><p>R file name (a character vector of length one)</p></td>
+      <th>prefd_covars_chr</th>
+      <td><p>Preferred covariates (a character vector)</p></td>
+    </tr>
+    <tr>
+      <th>reference_1L_int</th>
+      <td><p>Reference (an integer vector of length one)</p></td>
+    </tr>
+    <tr>
+      <th>subtitle_1L_chr</th>
+      <td><p>Subtitle (a character vector of length one), Default: NULL</p></td>
     </tr>
     <tr>
       <th>rprt_lup</th>
-      <td><p>Report (a lookup table)</p></td>
+      <td><p>Report (a lookup table), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>rprt_nm_1L_chr</th>
+      <td><p>Report name (a character vector of length one), Default: 'Suplry_Analysis_Rprt'</p></td>
     </tr>
     <tr>
       <th>abstract_args_ls</th>
       <td><p>Abstract arguments (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>rename_lup</th>
+      <td><p>Rename (a lookup table), Default: NULL</p></td>
     </tr>
     </table>
 

@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9172</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9237</span>
       </span>
     </div>
 
@@ -106,7 +106,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Model_TTU.html">Model Transfer to Utility</a>
+      <a href="../articles/CSP_EQ5D_TTU.html">Analysis, Reporting and Dissemination Workflow</a>
+    </li>
+    <li>
+      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -142,11 +145,13 @@
 
     <pre class="usage"><span class='fu'>write_ts_mdls_from_alg_outp</span><span class='op'>(</span>
   <span class='va'>outp_smry_ls</span>,
-  <span class='va'>fn_ls</span>,
-  new_dir_nm_1L_chr <span class='op'>=</span> <span class='st'>"F_TS_Mdls"</span>,
   <span class='va'>predictors_lup</span>,
+  utl_min_val_1L_dbl <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>,
   backend_1L_chr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"brms.backend"</span>, <span class='st'>"rstan"</span><span class='op'>)</span>,
-  iters_1L_int <span class='op'>=</span> <span class='fl'>4000L</span>
+  iters_1L_int <span class='op'>=</span> <span class='fl'>4000L</span>,
+  new_dir_nm_1L_chr <span class='op'>=</span> <span class='st'>"F_TS_Mdls"</span>,
+  prior_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  control_ls <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -157,16 +162,12 @@
       <td><p>Output summary (a list)</p></td>
     </tr>
     <tr>
-      <th>fn_ls</th>
-      <td><p>Function list (a list of functions)</p></td>
-    </tr>
-    <tr>
-      <th>new_dir_nm_1L_chr</th>
-      <td><p>New directory name (a character vector of length one), Default: 'F_TS_Mdls'</p></td>
-    </tr>
-    <tr>
       <th>predictors_lup</th>
       <td><p>Predictors (a lookup table)</p></td>
+    </tr>
+    <tr>
+      <th>utl_min_val_1L_dbl</th>
+      <td><p>Utility minimum value (a double vector of length one), Default: -1</p></td>
     </tr>
     <tr>
       <th>backend_1L_chr</th>
@@ -175,6 +176,18 @@
     <tr>
       <th>iters_1L_int</th>
       <td><p>Iterations (an integer vector of length one), Default: 4000</p></td>
+    </tr>
+    <tr>
+      <th>new_dir_nm_1L_chr</th>
+      <td><p>New directory name (a character vector of length one), Default: 'F_TS_Mdls'</p></td>
+    </tr>
+    <tr>
+      <th>prior_ls</th>
+      <td><p>Prior (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>control_ls</th>
+      <td><p>Control (a list), Default: NULL</p></td>
     </tr>
     </table>
 

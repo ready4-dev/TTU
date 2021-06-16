@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9172</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9237</span>
       </span>
     </div>
 
@@ -106,7 +106,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Model_TTU.html">Model Transfer to Utility</a>
+      <a href="../articles/CSP_EQ5D_TTU.html">Analysis, Reporting and Dissemination Workflow</a>
+    </li>
+    <li>
+      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -142,7 +145,8 @@
 
     <pre class="usage"><span class='fu'>plot_obsd_predd_dnst</span><span class='op'>(</span>
   <span class='va'>tfd_data_tb</span>,
-  depnt_var_desc_1L_chr <span class='op'>=</span> <span class='st'>"AQoL-6D utility score"</span>,
+  depnt_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
+  depnt_var_desc_1L_chr <span class='op'>=</span> <span class='st'>"Total weighted utility score"</span>,
   predd_val_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"Predicted"</span>
 <span class='op'>)</span></pre>
 
@@ -154,8 +158,12 @@
       <td><p>Transformed data (a tibble)</p></td>
     </tr>
     <tr>
+      <th>depnt_var_nm_1L_chr</th>
+      <td><p>Dependent variable name (a character vector of length one), Default: 'utl_total_w'</p></td>
+    </tr>
+    <tr>
       <th>depnt_var_desc_1L_chr</th>
-      <td><p>Dependent variable description (a character vector of length one), Default: 'AQoL-6D utility score'</p></td>
+      <td><p>Dependent variable description (a character vector of length one), Default: 'Total weighted utility score'</p></td>
     </tr>
     <tr>
       <th>predd_val_var_nm_1L_chr</th>

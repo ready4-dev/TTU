@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9172</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9237</span>
       </span>
     </div>
 
@@ -106,7 +106,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Model_TTU.html">Model Transfer to Utility</a>
+      <a href="../articles/CSP_EQ5D_TTU.html">Analysis, Reporting and Dissemination Workflow</a>
+    </li>
+    <li>
+      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -148,13 +151,14 @@
   depnt_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
   depnt_var_desc_1L_chr <span class='op'>=</span> <span class='st'>"Utility score"</span>,
   round_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"round"</span>,
-  tfmn_fn <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>     <span class='va'>x</span> <span class='op'>}</span>,
+  tfmn_1L_chr <span class='op'>=</span> <span class='st'>"NTF"</span>,
   units_1L_chr <span class='op'>=</span> <span class='st'>"in"</span>,
-  height_dbl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,
-  width_dbl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>,
-  rsl_dbl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>300</span>, <span class='fl'>4</span><span class='op'>)</span>,
+  height_dbl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span>,
+  width_dbl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>2</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>6</span>, <span class='fl'>8</span><span class='op'>)</span><span class='op'>)</span>,
+  rsl_dbl <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>300</span>, <span class='fl'>10</span><span class='op'>)</span>,
   args_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
-  seed_1L_dbl <span class='op'>=</span> <span class='fl'>23456</span>
+  seed_1L_dbl <span class='op'>=</span> <span class='fl'>23456</span>,
+  utl_min_val_1L_dbl <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -189,9 +193,8 @@
       <td><p>Round variable name (a character vector of length one), Default: 'round'</p></td>
     </tr>
     <tr>
-      <th>tfmn_fn</th>
-      <td><p>Transformation (a function), Default: function(x) 
-x</p></td>
+      <th>tfmn_1L_chr</th>
+      <td><p>Transformation (a character vector of length one), Default: 'NTF'</p></td>
     </tr>
     <tr>
       <th>units_1L_chr</th>
@@ -199,15 +202,15 @@ x</p></td>
     </tr>
     <tr>
       <th>height_dbl</th>
-      <td><p>Height (a double vector), Default: c(rep(6, 2), rep(5, 2))</p></td>
+      <td><p>Height (a double vector), Default: c(rep(6, 2), rep(5, 8))</p></td>
     </tr>
     <tr>
       <th>width_dbl</th>
-      <td><p>Width (a double vector), Default: c(rep(6, 2), rep(6, 2))</p></td>
+      <td><p>Width (a double vector), Default: c(rep(6, 2), rep(6, 8))</p></td>
     </tr>
     <tr>
       <th>rsl_dbl</th>
-      <td><p>Resolution (a double vector), Default: rep(300, 4)</p></td>
+      <td><p>Resolution (a double vector), Default: rep(300, 10)</p></td>
     </tr>
     <tr>
       <th>args_ls</th>
@@ -216,6 +219,10 @@ x</p></td>
     <tr>
       <th>seed_1L_dbl</th>
       <td><p>Seed (a double vector of length one), Default: 23456</p></td>
+    </tr>
+    <tr>
+      <th>utl_min_val_1L_dbl</th>
+      <td><p>Utility minimum value (a double vector of length one), Default: -1</p></td>
     </tr>
     </table>
 

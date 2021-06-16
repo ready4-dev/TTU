@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9172</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9237</span>
       </span>
     </div>
 
@@ -106,7 +106,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Model_TTU.html">Model Transfer to Utility</a>
+      <a href="../articles/CSP_EQ5D_TTU.html">Analysis, Reporting and Dissemination Workflow</a>
+    </li>
+    <li>
+      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -145,9 +148,9 @@
   <span class='va'>data_tb</span>,
   depnt_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"utl_total_w"</span>,
   <span class='va'>predr_vars_nms_chr</span>,
-  fn <span class='op'>=</span> <span class='va'>calculate_rmse</span>,
   mdl_nm_1L_chr <span class='op'>=</span> <span class='cn'>NA_character_</span>,
-  seed_1L_dbl <span class='op'>=</span> <span class='fl'>23456</span>
+  seed_1L_dbl <span class='op'>=</span> <span class='fl'>23456</span>,
+  <span class='va'>tfmn_1L_chr</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -170,16 +173,16 @@
       <td><p>Predictor variables names (a character vector)</p></td>
     </tr>
     <tr>
-      <th>fn</th>
-      <td><p>Function (a function), Default: calculate_rmse</p></td>
-    </tr>
-    <tr>
       <th>mdl_nm_1L_chr</th>
       <td><p>Model name (a character vector of length one), Default: 'NA'</p></td>
     </tr>
     <tr>
       <th>seed_1L_dbl</th>
       <td><p>Seed (a double vector of length one), Default: 23456</p></td>
+    </tr>
+    <tr>
+      <th>tfmn_1L_chr</th>
+      <td><p>Transformation (a character vector of length one)</p></td>
     </tr>
     </table>
 

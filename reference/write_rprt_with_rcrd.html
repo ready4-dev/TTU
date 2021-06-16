@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9172</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9237</span>
       </span>
     </div>
 
@@ -106,7 +106,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Model_TTU.html">Model Transfer to Utility</a>
+      <a href="../articles/CSP_EQ5D_TTU.html">Analysis, Reporting and Dissemination Workflow</a>
+    </li>
+    <li>
+      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -143,10 +146,9 @@
     <pre class="usage"><span class='fu'>write_rprt_with_rcrd</span><span class='op'>(</span>
   <span class='va'>path_to_outp_fl_1L_chr</span>,
   <span class='va'>paths_ls</span>,
-  <span class='va'>R_fl_nm_1L_chr</span>,
   header_yaml_args_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>rprt_lup</span>,
-  <span class='va'>use_fake_data_1L_lgl</span>,
+  rprt_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
+  use_fake_data_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>,
   subtitle_1L_chr <span class='op'>=</span> <span class='st'>"Results Supplementary Report 1: Catalogue of time series models"</span>,
  
     rprt_subtitle_1L_chr <span class='op'>=</span> <span class='st'>"Methods Supplementary Report 2: Record of auto-generation of model catalogue."</span>,
@@ -172,20 +174,16 @@
       <td><p>Paths (a list)</p></td>
     </tr>
     <tr>
-      <th>R_fl_nm_1L_chr</th>
-      <td><p>R file name (a character vector of length one)</p></td>
-    </tr>
-    <tr>
       <th>header_yaml_args_ls</th>
       <td><p>Header yaml arguments (a list), Default: NULL</p></td>
     </tr>
     <tr>
       <th>rprt_lup</th>
-      <td><p>Report (a lookup table)</p></td>
+      <td><p>Report (a lookup table), Default: NULL</p></td>
     </tr>
     <tr>
       <th>use_fake_data_1L_lgl</th>
-      <td><p>Use fake data (a logical vector of length one)</p></td>
+      <td><p>Use fake data (a logical vector of length one), Default: F</p></td>
     </tr>
     <tr>
       <th>subtitle_1L_chr</th>

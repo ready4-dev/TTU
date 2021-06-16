@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9172</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9237</span>
       </span>
     </div>
 
@@ -64,7 +64,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/Model_TTU.html">Model Transfer to Utility</a>
+      <a href="../articles/CSP_EQ5D_TTU.html">Analysis, Reporting and Dissemination Workflow</a>
+    </li>
+    <li>
+      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -115,9 +118,11 @@
 <span class="co">#&gt;   dfbeta.influence.merMod         lme4</span>
 <span class="co">#&gt;   dfbetas.influence.merMod        lme4</span></code></pre></div>
 <p>This development version of the TTU package has been made available as part of the process of testing and documenting the package.</p>
-<p>The following vignette demonstrates some of the tools currently included in the TTU package:</p>
+<p>Note that, one of the key functions in TTU (<code class="sourceCode r">write_ts_mdls_from_alg_outp</code>) makes a call to the Stan program. This function requires that you have the <code>cmdstanr</code> package installed on your machine (which should occur automatically when you install TTU) and have performed the necessary configuration of that package (refer to <a href="https://mc-stan.org/cmdstanr/">https://mc-stan.org/cmdstanr/</a> for details).</p>
+<p>The following vignettes demonstrate the two main workflows supported by the TTU package:</p>
 <ul>
-<li><a href="Model_TTU.html">Modelling Transfer to Utility</a></li>
+<li><a href="Model_TTU.html">Exploratory analysis workflow</a></li>
+<li><a href="CSP_EQ5D_TTU.html">Analysis, reporting and dissemination workflow</a></li>
 </ul>
 </div>
 

@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9172</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9237</span>
       </span>
     </div>
 
@@ -106,7 +106,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Model_TTU.html">Model Transfer to Utility</a>
+      <a href="../articles/CSP_EQ5D_TTU.html">Analysis, Reporting and Dissemination Workflow</a>
+    </li>
+    <li>
+      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -143,7 +146,7 @@
     <pre class="usage"><span class='fu'>make_results_ls</span><span class='op'>(</span>
   <span class='va'>spine_of_results_ls</span>,
   <span class='va'>cs_ts_ratios_tb</span>,
-  <span class='va'>ctgl_vars_regrouping_ls</span>,
+  ctgl_vars_regrouping_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>sig_covars_some_predrs_mdls_tb</span>,
   <span class='va'>sig_thresh_covars_1L_chr</span>
 <span class='op'>)</span></pre>
@@ -161,7 +164,7 @@
     </tr>
     <tr>
       <th>ctgl_vars_regrouping_ls</th>
-      <td><p>Ctgl variables regrouping (a list)</p></td>
+      <td><p>Ctgl variables regrouping (a list), Default: NULL</p></td>
     </tr>
     <tr>
       <th>sig_covars_some_predrs_mdls_tb</th>

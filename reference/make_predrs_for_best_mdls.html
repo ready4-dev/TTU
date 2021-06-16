@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9172</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9237</span>
       </span>
     </div>
 
@@ -106,7 +106,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/Model_TTU.html">Model Transfer to Utility</a>
+      <a href="../articles/CSP_EQ5D_TTU.html">Analysis, Reporting and Dissemination Workflow</a>
+    </li>
+    <li>
+      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -140,7 +143,7 @@
     <p>make_predrs_for_best_mdls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictors for best models. The function returns Predictors for best models (a character vector).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_predrs_for_best_mdls</span><span class='op'>(</span><span class='va'>outp_smry_ls</span>, old_nms_chr <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>new_nms_chr</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>make_predrs_for_best_mdls</span><span class='op'>(</span><span class='va'>outp_smry_ls</span>, old_nms_chr <span class='op'>=</span> <span class='cn'>NULL</span>, new_nms_chr <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -155,7 +158,7 @@
     </tr>
     <tr>
       <th>new_nms_chr</th>
-      <td><p>New names (a character vector)</p></td>
+      <td><p>New names (a character vector), Default: NULL</p></td>
     </tr>
     </table>
 
