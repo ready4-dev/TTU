@@ -225,16 +225,6 @@ write_mdl_cmprsn <- function(scored_data_tb,
                                                              depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr)
   mdl_smry_ls <- add_prefd_predr_var_to_mdl_smry_ls(mdl_smry_ls,
                                                     ds_smry_ls = ds_smry_ls)
-  #
-  # mdl_smry_ls$predr_var_nm_1L_chr <- ds_smry_ls$candidate_predrs_chr[1]
-  # mdl_smry_ls$predr_var_desc_1L_chr <- ds_smry_ls$predictors_lup %>%
-  #   ready4fun::get_from_lup_obj(match_value_xx = mdl_smry_ls$predr_var_nm_1L_chr,
-  #                               match_var_nm_1L_chr = "short_name_chr",
-  #                               target_var_nm_1L_chr = "long_name_chr",
-  #                               evaluate_lgl = F)
-  # mdl_smry_ls$predr_vals_dbl <- make_predr_vals(mdl_smry_ls$predr_var_nm_1L_chr,
-  #                                               candidate_predrs_lup = ds_smry_ls$predictors_lup)
-  #
   mdl_smry_ls$smry_of_sngl_predr_mdls_tb <- write_sngl_predr_multi_mdls_outps(data_tb = bl_tb,
                                                                               folds_1L_int = mdl_smry_ls$folds_1L_int,
                                                                               mdl_types_chr = mdl_smry_ls$mdl_types_chr,
@@ -536,9 +526,6 @@ write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_
     data_tb <- data_tb %>%
       add_tfmd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
                          tfmn_1L_chr = tfmn_1L_chr)
-      # dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr,
-      #   tfmn_1L_chr = tfmn_1L_chr)), !!rlang::sym(depnt_var_nm_1L_chr) %>%
-      #   calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr))) # TEST
     model_mdl <- make_mdl(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         tfmn_1L_chr = tfmn_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr,
         covar_var_nms_chr = covar_var_nms_chr, mdl_type_1L_chr = mdl_type_1L_chr,

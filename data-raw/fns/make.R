@@ -274,7 +274,7 @@ make_fake_eq5d_ds <- function(country_1L_chr = "UK",
                               seed_1L_int = 1234,
                               sample_from_1L_int = 10000){
   set.seed(seed_1L_int)
-  require(eq5d)
+  requireNamespace("eq5d")
   data_tb <- purrr::map(c("MO","SC","UA","PD","AD"),
                         ~list(1:5) %>% stats::setNames(.x)) %>%
     purrr::flatten_dfr() %>%
@@ -1332,7 +1332,7 @@ make_tfmn_cmprsn_plt <-  function(data_tb,
     ggplot2::ggplot(ggplot2::aes(x = value, fill = variable)) +
     ggalt::geom_bkde() +
     ggplot2::geom_rug() +
-    viridis::scale_fill_viridis(guide = FALSE, discrete = TRUE) +
+    viridis::scale_fill_viridis(guide = "none", discrete = TRUE) +
     ggplot2::facet_wrap(~variable, scales = "free") +
     ggplot2::theme_bw() + ggplot2::labs(x = paste0("Transformed ",
                                                    dictionary_tb %>%

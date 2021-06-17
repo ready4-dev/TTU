@@ -31,8 +31,9 @@ predict_uncnstrd_utl <- function(data_tb, model_mdl,
     }else{
       if("betareg" %in% class(model_mdl)){
         new_data_dbl <- rlang::exec(enrichwith::get_simulate_function(model_mdl),
-                                    newdata = data_tb,
-                                    coef(enrichwith::enrich(model_mdl, with = "auxiliary functions")))
+                                    coef(enrichwith::enrich(model_mdl,
+                                                            with = "auxiliary functions",
+                                                            newdata = data_tb)))
       }else{
         if (!tfmn_for_bnml_1L_lgl & !force_new_data_1L_lgl){
           new_data_dbl <- stats::simulate(model_mdl)$sim_1 # NEED TO REMOVE OR EDIT THIS

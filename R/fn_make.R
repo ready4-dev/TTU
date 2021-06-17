@@ -363,7 +363,7 @@ make_fake_eq5d_ds <- function (country_1L_chr = "UK", version_1L_chr = "5L", typ
     prop_with_fup_data_1L_dbl = 0.65, seed_1L_int = 1234, sample_from_1L_int = 10000) 
 {
     set.seed(seed_1L_int)
-    require(eq5d)
+    requireNamespace("eq5d")
     data_tb <- purrr::map(c("MO", "SC", "UA", "PD", "AD"), ~list(1:5) %>% 
         stats::setNames(.x)) %>% purrr::flatten_dfr() %>% tidyr::expand(MO, 
         SC, UA, PD, AD) %>% dplyr::mutate(total_eq5d = eq5d::eq5d(., 
@@ -1708,7 +1708,7 @@ make_tfmn_cmprsn_plt <- function (data_tb, depnt_var_nm_1L_chr, dictionary_tb)
             "_loglog", "_cloglog")), labels = c("No transformation", 
             "Log", "Logit", "Log-log", "Complementary log-log"))) %>% 
         ggplot2::ggplot(ggplot2::aes(x = value, fill = variable)) + 
-        ggalt::geom_bkde() + ggplot2::geom_rug() + viridis::scale_fill_viridis(guide = FALSE, 
+        ggalt::geom_bkde() + ggplot2::geom_rug() + viridis::scale_fill_viridis(guide = "none", 
         discrete = TRUE) + ggplot2::facet_wrap(~variable, scales = "free") + 
         ggplot2::theme_bw() + ggplot2::labs(x = paste0("Transformed ", 
         dictionary_tb %>% ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "var_nm_chr", 
