@@ -364,6 +364,7 @@ make_fake_eq5d_ds <- function (country_1L_chr = "UK", version_1L_chr = "5L", typ
 {
     set.seed(seed_1L_int)
     requireNamespace("eq5d")
+    attachNamespace("eq5d")
     data_tb <- purrr::map(c("MO", "SC", "UA", "PD", "AD"), ~list(1:5) %>% 
         stats::setNames(.x)) %>% purrr::flatten_dfr() %>% tidyr::expand(MO, 
         SC, UA, PD, AD) %>% dplyr::mutate(total_eq5d = eq5d::eq5d(., 
