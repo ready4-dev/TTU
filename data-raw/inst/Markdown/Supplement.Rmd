@@ -62,7 +62,7 @@ params:
   path_to_data_from_top_level_chr: !r NULL
   predictors_lup: !r NULL
   prefd_covars_chr: !r NULL
-  prefd_mdl_types_chr: !r c("GLM_GSN_LOG","OLS_CLL")
+  prefd_mdl_types_chr: !r NULL
   prior_ls: !r NULL
   rprt_type_1L_chr: "Supplement"
   seed_1L_int: 12345

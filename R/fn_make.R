@@ -1125,7 +1125,7 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
 #' @param path_params_ls Path params (a list)
 #' @param maui_params_ls Maui params (a list)
 #' @param prefd_covars_chr Preferred covariates (a character vector), Default: 'NA'
-#' @param prefd_mdl_types_chr Preferred model types (a character vector), Default: c("GLM_GSN_LOG", "OLS_CLL")
+#' @param prefd_mdl_types_chr Preferred model types (a character vector), Default: NULL
 #' @param raw_ds_tfmn_fn Raw dataset transformation (a function), Default: NULL
 #' @param subtitle_1L_chr Subtitle (a character vector of length one), Default: 'Methods Report 1: Analysis Program (Primary Analysis)'
 #' @param utl_class_fn_1L_chr Utility class function (a character vector of length one), Default: 'as.numeric'
@@ -1136,8 +1136,7 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
 #' @keywords internal
 make_prmry_analysis_params_ls <- function (analysis_core_params_ls, candidate_covar_nms_chr, ds_tb, 
     path_params_ls, maui_params_ls, prefd_covars_chr = NA_character_, 
-    prefd_mdl_types_chr = c("GLM_GSN_LOG", "OLS_CLL"), raw_ds_tfmn_fn = NULL, 
-    subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)", 
+    prefd_mdl_types_chr = NULL, raw_ds_tfmn_fn = NULL, subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)", 
     utl_class_fn_1L_chr = "as.numeric") 
 {
     prmry_analysis_params_ls <- list(candidate_covar_nms_chr = candidate_covar_nms_chr, 
@@ -1804,7 +1803,7 @@ make_unique_ls_elmt_idx_int <- function (data_ls)
 #' @param path_params_ls Path params (a list)
 #' @param maui_params_ls Maui params (a list)
 #' @param prefd_covars_chr Preferred covariates (a character vector), Default: 'NA'
-#' @param prefd_mdl_types_chr Preferred model types (a character vector), Default: c("GLM_GSN_LOG", "OLS_CLL")
+#' @param prefd_mdl_types_chr Preferred model types (a character vector), Default: NULL
 #' @param raw_ds_tfmn_fn Raw dataset transformation (a function), Default: NULL
 #' @param scndry_analysis_extra_vars_chr Scndry analysis extra variables (a character vector), Default: 'NA'
 #' @param subtitle_1L_chr Subtitle (a character vector of length one), Default: 'Methods Report 1: Analysis Program (Primary Analysis)'
@@ -1816,8 +1815,8 @@ make_unique_ls_elmt_idx_int <- function (data_ls)
 #' @keywords internal
 make_valid_params_ls_ls <- function (analysis_core_params_ls, candidate_covar_nms_chr, ds_tb, 
     path_params_ls, maui_params_ls, prefd_covars_chr = NA_character_, 
-    prefd_mdl_types_chr = c("GLM_GSN_LOG", "OLS_CLL"), raw_ds_tfmn_fn = NULL, 
-    scndry_analysis_extra_vars_chr = NA_character_, subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)", 
+    prefd_mdl_types_chr = NULL, raw_ds_tfmn_fn = NULL, scndry_analysis_extra_vars_chr = NA_character_, 
+    subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)", 
     utl_class_fn_1L_chr = "as.numeric") 
 {
     valid_params_ls_ls <- make_prmry_analysis_params_ls(analysis_core_params_ls = analysis_core_params_ls, 

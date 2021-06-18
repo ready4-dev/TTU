@@ -61,7 +61,7 @@ params:
   path_from_top_level_1L_chr: !r NULL
   path_to_data_from_top_level_chr: !r NULL
   prefd_covars_chr: !r NA_character_
-  prefd_mdl_types_chr: !r c("GLM_GSN_LOG","OLS_CLL")
+  prefd_mdl_types_chr: !r NULL
   predictors_lup: !r youthvars::predictors_lup
   prior_ls: !r NULL
   prototype_lup: !r TTU::prototype_lup

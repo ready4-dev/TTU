@@ -11,7 +11,7 @@ make_prmry_analysis_params_ls(
   path_params_ls,
   maui_params_ls,
   prefd_covars_chr = NA_character_,
-  prefd_mdl_types_chr = c("GLM_GSN_LOG", "OLS_CLL"),
+  prefd_mdl_types_chr = NULL,
   raw_ds_tfmn_fn = NULL,
   subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)",
   utl_class_fn_1L_chr = "as.numeric"
@@ -30,7 +30,7 @@ make_prmry_analysis_params_ls(
 
 \item{prefd_covars_chr}{Preferred covariates (a character vector), Default: 'NA'}
 
-\item{prefd_mdl_types_chr}{Preferred model types (a character vector), Default: c("GLM_GSN_LOG", "OLS_CLL")}
+\item{prefd_mdl_types_chr}{Preferred model types (a character vector), Default: NULL}
 
 \item{raw_ds_tfmn_fn}{Raw dataset transformation (a function), Default: NULL}
 

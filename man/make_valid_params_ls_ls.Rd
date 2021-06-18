@@ -11,7 +11,7 @@ make_valid_params_ls_ls(
   path_params_ls,
   maui_params_ls,
   prefd_covars_chr = NA_character_,
-  prefd_mdl_types_chr = c("GLM_GSN_LOG", "OLS_CLL"),
+  prefd_mdl_types_chr = NULL,
   raw_ds_tfmn_fn = NULL,
   scndry_analysis_extra_vars_chr = NA_character_,
   subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)",
@@ -31,7 +31,7 @@ make_valid_params_ls_ls(
 
 \item{prefd_covars_chr}{Preferred covariates (a character vector), Default: 'NA'}
 
-\item{prefd_mdl_types_chr}{Preferred model types (a character vector), Default: c("GLM_GSN_LOG", "OLS_CLL")}
+\item{prefd_mdl_types_chr}{Preferred model types (a character vector), Default: NULL}
 
 \item{raw_ds_tfmn_fn}{Raw dataset transformation (a function), Default: NULL}
 

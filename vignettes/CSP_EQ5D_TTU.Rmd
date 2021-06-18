@@ -207,8 +207,9 @@ A list of valid input values for our primary analysis is now constructed, princi
 valid_params_ls_ls <- TTU::make_valid_params_ls_ls(analysis_core_params_ls,
                                                    candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
                                                    ds_tb = ds_tb, 
+                                                   maui_params_ls = maui_params_ls,
                                                    path_params_ls = path_params_ls,
-                                                   maui_params_ls = maui_params_ls)
+                                                   prefd_mdl_types_chr = c("OLS_NTF", "GLM_GSN_LOG", "BET_CLL"))
 ```
 
 ## Run analysis
