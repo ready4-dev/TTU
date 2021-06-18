@@ -416,13 +416,14 @@ make_fake_eq5d_ds <- function (country_1L_chr = "UK", version_1L_chr = "5L", typ
 #' Make fake time series data
 #' @description make_fake_ts_data() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake time series data. The function returns Fk data (a tibble).
 #' @param outp_smry_ls Output summary (a list)
+#' @param dep_vars_are_NA_1L_lgl Dep variables are NA (a logical vector of length one), Default: T
 #' @return Fk data (a tibble)
 #' @rdname make_fake_ts_data
 #' @export 
 #' @importFrom synthpop syn
 #' @importFrom purrr map_lgl
 #' @importFrom dplyr mutate across all_of
-make_fake_ts_data <- function (outp_smry_ls) 
+make_fake_ts_data <- function (outp_smry_ls, dep_vars_are_NA_1L_lgl = T) 
 {
     data_tb <- outp_smry_ls$scored_data_tb %>% transform_tb_to_mdl_inp(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
         predr_vars_nms_chr = outp_smry_ls$predr_cmprsn_tb$predr_chr, 
@@ -430,10 +431,13 @@ make_fake_ts_data <- function (outp_smry_ls)
         round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr)
     fk_data_ls <- synthpop::syn(data_tb, visit.sequence = names(data_tb)[names(data_tb) != 
         outp_smry_ls$id_var_nm_1L_chr], seed = outp_smry_ls$seed_1L_int)
-    dep_vars_chr <- names(fk_data_ls$syn)[names(fk_data_ls$syn) %>% 
-        purrr::map_lgl(~startsWith(.x, outp_smry_ls$depnt_var_nm_1L_chr))]
-    fk_data_tb <- fk_data_ls$syn %>% dplyr::mutate(dplyr::across(dplyr::all_of(dep_vars_chr), 
-        ~NA_real_))
+    fk_data_tb <- fk_data_ls$syn
+    if (dep_vars_are_NA_1L_lgl) {
+        dep_vars_chr <- names(fk_data_tb)[names(fk_data_tb) %>% 
+            purrr::map_lgl(~startsWith(.x, outp_smry_ls$depnt_var_nm_1L_chr))]
+        fk_data_tb <- fk_data_tb %>% dplyr::mutate(dplyr::across(dplyr::all_of(dep_vars_chr), 
+            ~NA_real_))
+    }
     return(fk_data_tb)
 }
 #' Make folds
@@ -751,9 +755,9 @@ make_mdl_desc_lines <- function (outp_smry_ls, mdl_nm_1L_chr)
     mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model == 
         mdl_nm_1L_chr)
     predictors_chr <- mdl_smry_tb$Parameter[!mdl_smry_tb$Parameter %in% 
-        c("Intercept", "R2", "RMSE", "Sigma")] %>% purrr::map_chr(~stringr::str_remove(.x, 
-        " baseline") %>% stringr::str_remove(" change")) %>% 
-        unique()
+        c("SD (Intercept)", "Intercept", "R2", "RMSE", "Sigma")] %>% 
+        purrr::map_chr(~stringr::str_remove(.x, " baseline") %>% 
+            stringr::str_remove(" change")) %>% unique()
     predictors_desc_chr <- predictors_chr %>% purrr::map_chr(~{
         scaling_1L_dbl <- ready4fun::get_from_lup_obj(outp_smry_ls$predictors_lup, 
             match_value_xx = .x, match_var_nm_1L_chr = "short_name_chr", 
@@ -1368,6 +1372,8 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_to
     set.seed(seed_1L_dbl)
     predictions <- stats::predict(mdl_ls, summary = F) %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, 
         tfmn_is_outp_1L_lgl = T)
+    sd_intcpt_df <- summary(mdl_ls, digits = 4)$random[[1]]
+    sd_intcpt_df <- sd_intcpt_df[1:nrow(sd_intcpt_df), 1:4]
     coef <- summary(mdl_ls, digits = 4)$fixed
     coef <- coef[1:nrow(coef), 1:4]
     R2 <- brms::bayes_R2(mdl_ls)
@@ -1377,11 +1383,11 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_to
     RMSE <- cbind(RMSE$mean, RMSE$sd, RMSE$Q0.25, RMSE$Q0.75) %>% 
         as.vector()
     Sigma <- summary(mdl_ls, digits = 4)$spec_par[1:4]
-    smry_of_brm_mdl_tb <- data.frame(round(rbind(coef, R2, RMSE, 
-        Sigma), 3)) %>% dplyr::mutate(Parameter = c("Intercept", 
-        purrr::map(predr_vars_nms_chr, ~paste0(.x, c(" baseline", 
-            " change"))) %>% purrr::flatten_chr(), "R2", "RMSE", 
-        "Sigma"), Model = mdl_nm_1L_chr) %>% dplyr::mutate(`95% CI` = paste(l.95..CI, 
+    smry_of_brm_mdl_tb <- data.frame(round(rbind(sd_intcpt_df, 
+        coef, R2, RMSE, Sigma), 3)) %>% dplyr::mutate(Parameter = c("SD (Intercept)", 
+        "Intercept", purrr::map(predr_vars_nms_chr, ~paste0(.x, 
+            c(" baseline", " change"))) %>% purrr::flatten_chr(), 
+        "R2", "RMSE", "Sigma"), Model = mdl_nm_1L_chr) %>% dplyr::mutate(`95% CI` = paste(l.95..CI, 
         ",", u.95..CI)) %>% dplyr::rename(SE = Est.Error) %>% 
         dplyr::select(Model, Parameter, Estimate, SE, `95% CI`)
     return(smry_of_brm_mdl_tb)

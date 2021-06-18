@@ -33,6 +33,28 @@ get_link_from_tfmn <- function (tfmn_1L_chr, is_OLS_1L_lgl = F)
         stop("Link cannot be identified - incorrect transformation argument tfmn_1L_chr")
     return(link_1L_chr)
 }
+#' Get random intercept
+#' @description get_random_intercept() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get random intercept. Function argument mdls_smry_tb specifies the where to look for the required object. The function returns Standard deviation (a double vector).
+#' @param mdls_smry_tb Models summary (a tibble)
+#' @param mdl_nm_1L_chr Model name (a character vector of length one)
+#' @param deterministic_1L_lgl Deterministic (a logical vector of length one), Default: T
+#' @return Standard deviation (a double vector)
+#' @rdname get_random_intercept
+#' @export 
+#' @importFrom dplyr filter
+#' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
+get_random_intercept <- function (mdls_smry_tb, mdl_nm_1L_chr, deterministic_1L_lgl = T) 
+{
+    mdl_smry_tb <- mdls_smry_tb %>% dplyr::filter(Model == mdl_nm_1L_chr)
+    sd_dbl <- c(mdl_smry_tb %>% ready4fun::get_from_lup_obj(match_value_xx = "SD (Intercept)", 
+        match_var_nm_1L_chr = "Parameter", target_var_nm_1L_chr = "Estimate", 
+        evaluate_lgl = F), ifelse(deterministic_1L_lgl, 0, mdl_smry_tb %>% 
+        ready4fun::get_from_lup_obj(match_value_xx = "SD (Intercept)", 
+            match_var_nm_1L_chr = "Parameter", target_var_nm_1L_chr = "SE", 
+            evaluate_lgl = F)))
+    return(sd_dbl)
+}
 #' Get significant covariates
 #' @description get_signft_covars() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get significant covariates. Function argument mdls_with_covars_smry_tb specifies the where to look for the required object. The function returns Signt covariates (a character vector).
 #' @param mdls_with_covars_smry_tb Models with covariates summary (a tibble)

@@ -35,7 +35,8 @@ add_utility_predn_to_ds <- function (data_tb, model_mdl, tfmn_1L_chr, depnt_var_
                                      utl_cls_fn = NULL,
                                      utl_min_val_1L_dbl = 0.03,
                                      force_new_data_1L_lgl = F,
-                                     is_brms_mdl_1L_lgl = T
+                                     is_brms_mdl_1L_lgl = T,
+                                     sd_dbl = NA_real_
                                      )
 {
     dep_vars_chr <- c(depnt_var_nm_1L_chr, transform_depnt_var_nm(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
@@ -50,7 +51,8 @@ add_utility_predn_to_ds <- function (data_tb, model_mdl, tfmn_1L_chr, depnt_var_
                                        new_data_is_1L_chr = new_data_is_1L_chr,
                                        utl_cls_fn = utl_cls_fn,
                                        is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl,
-                                       force_new_data_1L_lgl = force_new_data_1L_lgl)
+                                       force_new_data_1L_lgl = force_new_data_1L_lgl,
+                                       sd_dbl = NA_real_)
     data_tb <- data_tb %>% dplyr::mutate(!!rlang::sym(depnt_var_nm_1L_chr):=predictions_dbl)
     if(!is.null(predr_vars_nms_chr)){
       data_tb <- data_tb %>% dplyr::select(-tidyselect::all_of(purrr::map(predr_vars_nms_chr, ~ paste0(.x,c("_baseline","_change"))) %>%

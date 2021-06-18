@@ -15,6 +15,7 @@ predict_utility(
   utl_cls_fn = NULL,
   new_data_is_1L_chr = "Predicted",
   predn_type_1L_chr = NULL,
+  sd_dbl = NA_real_,
   tfmn_for_bnml_1L_lgl = F,
   family_1L_chr = NA_character_,
   is_brms_mdl_1L_lgl = T
@@ -40,6 +41,8 @@ predict_utility(
 \item{new_data_is_1L_chr}{New data is (a character vector of length one), Default: 'Predicted'}
 
 \item{predn_type_1L_chr}{Prediction type (a character vector of length one), Default: NULL}
+
+\item{sd_dbl}{Standard deviation (a double vector), Default: NA}
 
 \item{tfmn_for_bnml_1L_lgl}{Transformation for binomial (a logical vector of length one), Default: F}
 

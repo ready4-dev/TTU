@@ -25,6 +25,25 @@ get_link_from_tfmn <- function(tfmn_1L_chr,
     stop("Link cannot be identified - incorrect transformation argument tfmn_1L_chr")
   return(link_1L_chr)
 }
+get_random_intercept <- function(mdls_smry_tb,
+                                 mdl_nm_1L_chr,
+                                 deterministic_1L_lgl = T){
+  mdl_smry_tb <- mdls_smry_tb %>%
+    dplyr::filter(Model == mdl_nm_1L_chr)
+  sd_dbl <- c(mdl_smry_tb %>%
+                ready4fun::get_from_lup_obj(match_value_xx = "SD (Intercept)",
+                                            match_var_nm_1L_chr = "Parameter",
+                                            target_var_nm_1L_chr = "Estimate",
+                                            evaluate_lgl = F),
+              ifelse(deterministic_1L_lgl,
+                     0,
+                     mdl_smry_tb %>%
+                       ready4fun::get_from_lup_obj(match_value_xx = "SD (Intercept)",
+                                                   match_var_nm_1L_chr = "Parameter",
+                                                   target_var_nm_1L_chr = "SE",
+                                                   evaluate_lgl = F)))
+  return(sd_dbl)
+}
 get_signft_covars <- function (mdls_with_covars_smry_tb, covar_var_nms_chr)
 {
   signif_vars_chr <- mdls_with_covars_smry_tb$Significant %>%

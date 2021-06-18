@@ -19,7 +19,8 @@ predict_uncnstrd_utl <- function(data_tb, model_mdl,
                                 predn_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F,
                                 family_1L_chr = NA_character_, tfmn_1L_chr = "NTF",
                                 is_brms_mdl_1L_lgl = F,
-                                force_new_data_1L_lgl = F){
+                                force_new_data_1L_lgl = F,
+                                sd_dbl = NA_real_){
   if(new_data_is_1L_chr == "Predicted")
     new_data_dbl <- stats::predict(model_mdl, newdata = data_tb, type = predn_type_1L_chr)
   if(new_data_is_1L_chr == "Simulated"){
@@ -38,10 +39,14 @@ predict_uncnstrd_utl <- function(data_tb, model_mdl,
         if (!tfmn_for_bnml_1L_lgl & !force_new_data_1L_lgl){
           new_data_dbl <- stats::simulate(model_mdl)$sim_1 # NEED TO REMOVE OR EDIT THIS
         }else{
-          new_data_dbl <- (stats::predict(model_mdl, newdata = data_tb) + stats::rnorm(nrow(data_tb),
+          new_data_dbl <- (stats::predict(model_mdl, newdata = data_tb, type = predn_type_1L_chr) + stats::rnorm(nrow(data_tb),
                                                                     0, stats::sigma(model_mdl)))
         }
       }
+      if(!is.na(sd_dbl[1]))
+        new_data_dbl <- new_data_dbl + rnorm(length(new_data_dbl),
+                                             mean=0,
+                                             sd=max(0,rnorm(1,sd_dbl[1],sd_dbl[2])))
     }
   }
   if(is.matrix(new_data_dbl))
@@ -68,6 +73,7 @@ predict_utility <- function (data_tb,
                              utl_cls_fn = NULL,
                              new_data_is_1L_chr = "Predicted",
                              predn_type_1L_chr = NULL,
+                             sd_dbl = NA_real_,
                              tfmn_for_bnml_1L_lgl = F,
                              family_1L_chr = NA_character_,
                              is_brms_mdl_1L_lgl = T)
@@ -76,6 +82,7 @@ predict_utility <- function (data_tb,
                                         model_mdl = model_mdl,
                                         new_data_is_1L_chr = new_data_is_1L_chr,
                                         predn_type_1L_chr = predn_type_1L_chr,
+                                        sd_dbl = sd_dbl,
                                         tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl,
                                         family_1L_chr = family_1L_chr,
                                         tfmn_1L_chr = tfmn_1L_chr,

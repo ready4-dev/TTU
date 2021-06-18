@@ -79,6 +79,7 @@ add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkCli
 #' @param utl_min_val_1L_dbl Utility minimum value (a double vector of length one), Default: 0.03
 #' @param force_new_data_1L_lgl Force new data (a logical vector of length one), Default: F
 #' @param is_brms_mdl_1L_lgl Is bayesian regression models model (a logical vector of length one), Default: T
+#' @param sd_dbl Standard deviation (a double vector), Default: NA
 #' @return Data (a tibble)
 #' @rdname add_utility_predn_to_ds
 #' @export 
@@ -90,7 +91,7 @@ add_utility_predn_to_ds <- function (data_tb, model_mdl, tfmn_1L_chr, depnt_var_
     predr_vars_nms_chr = NULL, force_min_max_1L_lgl = T, impute_1L_lgl = T, 
     new_data_is_1L_chr = "Predicted", rmv_tfd_depnt_var_1L_lgl = F, 
     utl_cls_fn = NULL, utl_min_val_1L_dbl = 0.03, force_new_data_1L_lgl = F, 
-    is_brms_mdl_1L_lgl = T) 
+    is_brms_mdl_1L_lgl = T, sd_dbl = NA_real_) 
 {
     dep_vars_chr <- c(depnt_var_nm_1L_chr, transform_depnt_var_nm(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
         tfmn_1L_chr = tfmn_1L_chr)) %>% unique()
@@ -100,7 +101,8 @@ add_utility_predn_to_ds <- function (data_tb, model_mdl, tfmn_1L_chr, depnt_var_
         model_mdl = model_mdl, force_min_max_1L_lgl = force_min_max_1L_lgl, 
         utl_min_val_1L_dbl = utl_min_val_1L_dbl, impute_1L_lgl = impute_1L_lgl, 
         new_data_is_1L_chr = new_data_is_1L_chr, utl_cls_fn = utl_cls_fn, 
-        is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl, force_new_data_1L_lgl = force_new_data_1L_lgl)
+        is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl, force_new_data_1L_lgl = force_new_data_1L_lgl, 
+        sd_dbl = NA_real_)
     data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(depnt_var_nm_1L_chr), 
         predictions_dbl))
     if (!is.null(predr_vars_nms_chr)) {

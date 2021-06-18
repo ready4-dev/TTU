@@ -9,6 +9,7 @@
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param is_brms_mdl_1L_lgl Is bayesian regression models model (a logical vector of length one), Default: F
 #' @param force_new_data_1L_lgl Force new data (a logical vector of length one), Default: F
+#' @param sd_dbl Standard deviation (a double vector), Default: NA
 #' @return New data (a double vector)
 #' @rdname predict_uncnstrd_utl
 #' @export 
@@ -19,7 +20,8 @@
 #' @keywords internal
 predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Predicted", 
     predn_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, 
-    tfmn_1L_chr = "NTF", is_brms_mdl_1L_lgl = F, force_new_data_1L_lgl = F) 
+    tfmn_1L_chr = "NTF", is_brms_mdl_1L_lgl = F, force_new_data_1L_lgl = F, 
+    sd_dbl = NA_real_) 
 {
     if (new_data_is_1L_chr == "Predicted") 
         new_data_dbl <- stats::predict(model_mdl, newdata = data_tb, 
@@ -41,10 +43,13 @@ predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Pred
                 }
                 else {
                   new_data_dbl <- (stats::predict(model_mdl, 
-                    newdata = data_tb) + stats::rnorm(nrow(data_tb), 
-                    0, stats::sigma(model_mdl)))
+                    newdata = data_tb, type = predn_type_1L_chr) + 
+                    stats::rnorm(nrow(data_tb), 0, stats::sigma(model_mdl)))
                 }
             }
+            if (!is.na(sd_dbl[1])) 
+                new_data_dbl <- new_data_dbl + rnorm(length(new_data_dbl), 
+                  mean = 0, sd = max(0, rnorm(1, sd_dbl[1], sd_dbl[2])))
         }
     }
     if (is.matrix(new_data_dbl)) 
@@ -69,6 +74,7 @@ predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Pred
 #' @param utl_cls_fn Utility class (a function), Default: NULL
 #' @param new_data_is_1L_chr New data is (a character vector of length one), Default: 'Predicted'
 #' @param predn_type_1L_chr Prediction type (a character vector of length one), Default: NULL
+#' @param sd_dbl Standard deviation (a double vector), Default: NA
 #' @param tfmn_for_bnml_1L_lgl Transformation for binomial (a logical vector of length one), Default: F
 #' @param family_1L_chr Family (a character vector of length one), Default: 'NA'
 #' @param is_brms_mdl_1L_lgl Is bayesian regression models model (a logical vector of length one), Default: T
@@ -79,14 +85,15 @@ predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Pred
 predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", model_mdl, force_min_max_1L_lgl = T, 
     force_new_data_1L_lgl = F, utl_min_val_1L_dbl = 0.03, impute_1L_lgl = T, 
     utl_cls_fn = NULL, new_data_is_1L_chr = "Predicted", predn_type_1L_chr = NULL, 
-    tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, 
+    sd_dbl = NA_real_, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, 
     is_brms_mdl_1L_lgl = T) 
 {
     predd_utl_dbl <- predict_uncnstrd_utl(data_tb = data_tb, 
         model_mdl = model_mdl, new_data_is_1L_chr = new_data_is_1L_chr, 
-        predn_type_1L_chr = predn_type_1L_chr, tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl, 
-        family_1L_chr = family_1L_chr, tfmn_1L_chr = tfmn_1L_chr, 
-        force_new_data_1L_lgl = force_new_data_1L_lgl, is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl)
+        predn_type_1L_chr = predn_type_1L_chr, sd_dbl = sd_dbl, 
+        tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl, family_1L_chr = family_1L_chr, 
+        tfmn_1L_chr = tfmn_1L_chr, force_new_data_1L_lgl = force_new_data_1L_lgl, 
+        is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl)
     if (impute_1L_lgl) 
         predd_utl_dbl[which(is.na(predd_utl_dbl))] <- predd_utl_dbl %>% 
             na.omit() %>% mean()

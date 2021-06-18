@@ -17,7 +17,8 @@ add_utility_predn_to_ds(
   utl_cls_fn = NULL,
   utl_min_val_1L_dbl = 0.03,
   force_new_data_1L_lgl = F,
-  is_brms_mdl_1L_lgl = T
+  is_brms_mdl_1L_lgl = T,
+  sd_dbl = NA_real_
 )
 }
 \arguments{
@@ -46,6 +47,8 @@ add_utility_predn_to_ds(
 \item{force_new_data_1L_lgl}{Force new data (a logical vector of length one), Default: F}
 
 \item{is_brms_mdl_1L_lgl}{Is bayesian regression models model (a logical vector of length one), Default: T}
+
+\item{sd_dbl}{Standard deviation (a double vector), Default: NA}
 }
 \value{
 Data (a tibble)
