@@ -1027,6 +1027,12 @@ make_shareable_mdl <- function (fake_ds_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "
 {
     if (is.null(mdl_types_lup))
         utils::data(mdl_types_lup, envir = environment())
+  if (is.na(tfmn_1L_chr))
+    tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
+                                               match_value_xx = mdl_type_1L_chr,
+                                               match_var_nm_1L_chr = "short_name_chr",
+                                               target_var_nm_1L_chr = "tfmn_chr",
+                                               evaluate_lgl = F)
   predr_var_nms_chr <- mdl_smry_tb$Parameter[!mdl_smry_tb$Parameter %in% c("SD (Intercept)", "Intercept",
                                                       "R2", "RMSE","Sigma")] %>%
     stringi::stri_replace_last_fixed(" baseline","_baseline") %>%
@@ -1053,15 +1059,26 @@ make_shareable_mdl <- function (fake_ds_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "
         tfmn_1L_chr = tfmn_1L_chr, mdl_type_1L_chr = mdl_type_1L_chr,
         mdl_types_lup = mdl_types_lup, control_1L_chr = control_1L_chr,
         start_1L_chr = start_1L_chr)
-    par_nms_chr <- model_mdl$coefficients %>% names()
+    if(ready4fun::get_from_lup_obj(mdl_types_lup,
+                                   match_value_xx = mdl_type_1L_chr,
+                                   match_var_nm_1L_chr = "short_name_chr",
+                                   target_var_nm_1L_chr = "fn_chr",
+                                   evaluate_lgl = F) == "betareg::betareg"){
+      model_coeffs_dbl <- model_mdl$coefficients$mean
+
+    }else{
+      model_coeffs_dbl <- model_mdl$coefficients
+    }
+    par_nms_chr <- model_coeffs_dbl %>% names()
     mdl_smry_tb <- mdl_smry_tb %>% dplyr::mutate(Parameter = dplyr::case_when(Parameter ==
         "Intercept" ~ "(Intercept)", TRUE ~ purrr::map_chr(Parameter,
         ~stringr::str_replace_all(.x, " ", "_")))) %>% dplyr::filter(Parameter %in%
         par_nms_chr) %>% dplyr::slice(match(par_nms_chr, Parameter))
     assertthat::assert_that(all(par_nms_chr == mdl_smry_tb$Parameter),
         msg = "Parameter names mismatch between data and model summary table")
-    model_mdl$coefficients <- mdl_smry_tb$Estimate
-    names(model_mdl$coefficients) <- par_nms_chr
+    model_coeffs_dbl <- mdl_smry_tb$Estimate
+    names(model_coeffs_dbl) <- par_nms_chr
+    model_mdl$coefficients <- model_coeffs_dbl
     return(model_mdl)
 }
 make_sngl_mdl_smry_tb <- function(mdls_tb,
