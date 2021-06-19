@@ -715,7 +715,8 @@ write_scndry_analysis_dir <- function(paths_ls,
 }
 write_shareable_mdls <- function (outp_smry_ls,
                                   new_dir_nm_1L_chr = "G_Shareable",
-                                  shareable_title_detail_1L_chr = "")
+                                  shareable_title_detail_1L_chr = "",
+                                  write_mdls_to_dv_1L_lgl = F)
 {
   output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr,
                                           new_dir_nm_1L_chr = new_dir_nm_1L_chr)
@@ -736,13 +737,14 @@ write_shareable_mdls <- function (outp_smry_ls,
   sorted_mdl_nms_chr <- sort(ranked_mdl_nms_chr)
   rank_idcs_int <- purrr::map_int(sorted_mdl_nms_chr,~which(ranked_mdl_nms_chr==.x))
   incld_mdl_paths_chr <- incld_mdl_paths_chr[order(rank_idcs_int)]
+  fake_ds_tb <- make_fake_ts_data(outp_smry_ls, dep_vars_are_NA_1L_lgl = F)
   mdl_types_lup <- outp_smry_ls$mdl_types_lup
     shareable_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>%
         purrr::map2(incld_mdl_paths_chr, ~{
             model_mdl <- readRDS(paste0(outp_smry_ls$path_to_write_to_1L_chr,"/",.y))
             mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model ==
                 .x)
-            data_tb <- model_mdl$data
+            #data_tb <- model_mdl$data
             mdl_nm_1L_chr <- .x
             mdl_type_1L_chr <- (mdl_types_lup %>%
                                   dplyr::pull(short_name_chr))[mdl_types_lup %>%
@@ -755,7 +757,8 @@ write_shareable_mdls <- function (outp_smry_ls,
                                                        evaluate_lgl = F)
             # if (endsWith(.x, "OLS_CLL")) # EDIT
             #     data_tb <- data_tb %>% dplyr::rename(!!rlang::sym(paste0(outp_smry_ls$depnt_var_nm_1L_chr,"_CLL")) := !!rlang::sym(paste0(outp_smry_ls$depnt_var_nm_1L_chr,"_cloglog"))) # REMOVE THIS ON UPDATE
-            shareable_mdl <- make_shareable_mdl(data_tb = data_tb,
+
+            shareable_mdl <- make_shareable_mdl(fake_ds_tb = fake_ds_tb,#data_tb,
                 mdl_smry_tb = mdl_smry_tb, depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
                 id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr,
                 tfmn_1L_chr = tfmn_1L_chr,
@@ -771,29 +774,47 @@ write_shareable_mdls <- function (outp_smry_ls,
     outp_smry_ls$shareable_mdls_ls <- shareable_mdls_ls
     outp_smry_ls$shareable_mdls_tb <-  NULL
     if (!is.null(outp_smry_ls$dv_ls)) {
-      outp_smry_ls$shareable_mdls_tb <- write_shareable_mdls_to_dv(outp_smry_ls,
-                                                                   new_dir_nm_1L_chr = new_dir_nm_1L_chr,
-                                                                   shareable_title_detail_1L_chr = shareable_title_detail_1L_chr)
+      if(!write_mdls_to_dv_1L_lgl){
+        saveRDS(fake_ds_tb, paste0(output_dir_1L_chr, "/fake_data_for_mdls",
+                                   ".RDS"))
+        write_shareable_mdls_to_dv(outp_smry_ls,
+                                   new_dir_nm_1L_chr = new_dir_nm_1L_chr,
+                                   share_only_fake_ds_1L_lgl = T)
+      }else{
+        outp_smry_ls$shareable_mdls_tb <- write_shareable_mdls_to_dv(outp_smry_ls,
+                                                                     new_dir_nm_1L_chr = new_dir_nm_1L_chr,
+                                                                     shareable_title_detail_1L_chr = shareable_title_detail_1L_chr)
+      }
+
     }
    # outp_smry_ls$shareable_mdls_tb <- shareable_mdls_tb
     return(outp_smry_ls)
 }
 write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable",
-                                        shareable_title_detail_1L_chr = ""){
+                                        shareable_title_detail_1L_chr = "",
+                                        share_only_fake_ds_1L_lgl = F){
   output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr,
                                           new_dir_nm_1L_chr = new_dir_nm_1L_chr)
-  shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$shareable_mdls_ls),
-                                      title_chr = paste0("A shareable (contains no confidential data) statistical model, ",
-                                                         names(outp_smry_ls$shareable_mdls_ls), ".",
-                                                         shareable_title_detail_1L_chr))
+  if(share_only_fake_ds_1L_lgl){
+    shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = "FAKE_DATA_FOR_MODELS",
+                                        title_chr = "A synthetic (fake) dataset that can be used to construct model objects from tables of coefficients")
+  }else{
+    shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$shareable_mdls_ls),
+                                        title_chr = paste0("A shareable (contains no confidential data) statistical model, ",
+                                                           names(outp_smry_ls$shareable_mdls_ls), ".",
+                                                           shareable_title_detail_1L_chr))
+  }
   ready4use::write_fls_to_dv_ds(shareable_mdls_tb, dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
                                 ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr, parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr,
                                 paths_to_dirs_chr = output_dir_1L_chr, paths_are_rltv_1L_lgl = F,inc_fl_types_chr = ".RDS")
-  ds_ls <- dataverse::get_dataset(outp_smry_ls$dv_ls$ds_url_1L_chr)
-  shareable_mdls_tb <- shareable_mdls_tb %>% dplyr::mutate(dv_nm_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
-                                                           fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ready4use::get_fl_id_from_dv_ls(ds_ls,
-                                                                                                                                          fl_nm_1L_chr = paste0(.x, ".RDS")) %>% as.integer()))
-  return(shareable_mdls_tb)
+  if(!share_only_fake_ds_1L_lgl){
+    ds_ls <- dataverse::get_dataset(outp_smry_ls$dv_ls$ds_url_1L_chr)
+    shareable_mdls_tb <- shareable_mdls_tb %>% dplyr::mutate(dv_nm_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
+                                                             fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ready4use::get_fl_id_from_dv_ls(ds_ls,
+                                                                                                                                            fl_nm_1L_chr = paste0(.x, ".RDS")) %>% as.integer()))
+
+  }
+    return(shareable_mdls_tb)
 }
 write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var_nm_1L_chr, predr_var_desc_1L_chr,
     predr_vals_dbl, path_to_write_to_1L_chr, new_dir_nm_1L_chr =  "A_Candidate_Mdls_Cmprsn", start_1L_chr = NULL,

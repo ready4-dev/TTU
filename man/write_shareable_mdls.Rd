@@ -7,7 +7,8 @@
 write_shareable_mdls(
   outp_smry_ls,
   new_dir_nm_1L_chr = "G_Shareable",
-  shareable_title_detail_1L_chr = ""
+  shareable_title_detail_1L_chr = "",
+  write_mdls_to_dv_1L_lgl = F
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ write_shareable_mdls(
 \item{new_dir_nm_1L_chr}{New directory name (a character vector of length one), Default: 'G_Shareable'}
 
 \item{shareable_title_detail_1L_chr}{Shareable title detail (a character vector of length one), Default: ''}
+
+\item{write_mdls_to_dv_1L_lgl}{Write models to dataverse (a logical vector of length one), Default: F}
 }
 \value{
 Output summary (a list)

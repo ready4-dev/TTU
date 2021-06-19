@@ -5,7 +5,7 @@
 \title{Make shareable}
 \usage{
 make_shareable_mdl(
-  data_tb,
+  fake_ds_tb,
   mdl_smry_tb,
   depnt_var_nm_1L_chr = "utl_total_w",
   id_var_nm_1L_chr = "fkClientID",
@@ -18,7 +18,7 @@ make_shareable_mdl(
 )
 }
 \arguments{
-\item{data_tb}{Data (a tibble)}
+\item{fake_ds_tb}{Fake dataset (a tibble)}
 
 \item{mdl_smry_tb}{Model summary (a tibble)}
 

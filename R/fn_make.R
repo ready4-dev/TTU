@@ -1288,7 +1288,7 @@ make_results_ls_spine <- function (output_data_dir_1L_chr, var_nm_change_lup = N
 }
 #' Make shareable
 #' @description make_shareable_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make shareable model. The function returns Model (a model).
-#' @param data_tb Data (a tibble)
+#' @param fake_ds_tb Fake dataset (a tibble)
 #' @param mdl_smry_tb Model summary (a tibble)
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'utl_total_w'
 #' @param id_var_nm_1L_chr Identity variable name (a character vector of length one), Default: 'fkClientID'
@@ -1302,37 +1302,38 @@ make_results_ls_spine <- function (output_data_dir_1L_chr, var_nm_change_lup = N
 #' @rdname make_shareable_mdl
 #' @export 
 #' @importFrom utils data
-#' @importFrom synthpop syn
-#' @importFrom dplyr mutate case_when filter slice
+#' @importFrom stringi stri_replace_last_fixed
+#' @importFrom dplyr select mutate case_when filter slice
+#' @importFrom tidyselect all_of
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_replace_all
 #' @importFrom assertthat assert_that
 #' @keywords internal
-make_shareable_mdl <- function (data_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "utl_total_w", 
+make_shareable_mdl <- function (fake_ds_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "utl_total_w", 
     id_var_nm_1L_chr = "fkClientID", tfmn_1L_chr = "CLL", mdl_type_1L_chr = "OLS_CLL", 
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NA_character_, 
     seed_1L_int = 12345L) 
 {
     if (is.null(mdl_types_lup)) 
         utils::data(mdl_types_lup, envir = environment())
-    all_var_nms_chr <- names(data_tb)
-    tfd_depnt_var_nm_1L_chr <- all_var_nms_chr[all_var_nms_chr %>% 
-        startsWith(depnt_var_nm_1L_chr)]
-    predr_var_nms_chr <- setdiff(all_var_nms_chr, c(tfd_depnt_var_nm_1L_chr, 
-        id_var_nm_1L_chr))
+    predr_var_nms_chr <- mdl_smry_tb$Parameter[!mdl_smry_tb$Parameter %in% 
+        c("SD (Intercept)", "Intercept", "R2", "RMSE", "Sigma")] %>% 
+        stringi::stri_replace_last_fixed(" baseline", "_baseline") %>% 
+        stringi::stri_replace_last_fixed(" change", "_change")
+    tfmd_depnt_var_nm_1L_chr <- transform_depnt_var_nm(depnt_var_nm_1L_chr, 
+        tfmn_1L_chr = tfmn_1L_chr)
     if (length(predr_var_nms_chr) > 1) {
         covar_var_nms_chr <- predr_var_nms_chr[2:length(predr_var_nms_chr)]
     }
     else {
         covar_var_nms_chr <- NA_character_
     }
-    fk_data_ls <- synthpop::syn(data_tb, visit.sequence = all_var_nms_chr[all_var_nms_chr != 
-        id_var_nm_1L_chr], seed = seed_1L_int)
-    model_mdl <- make_mdl(fk_data_ls$syn, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
-        predr_var_nm_1L_chr = predr_var_nms_chr[1], covar_var_nms_chr = covar_var_nms_chr, 
-        tfmn_1L_chr = tfmn_1L_chr, mdl_type_1L_chr = mdl_type_1L_chr, 
-        mdl_types_lup = mdl_types_lup, control_1L_chr = control_1L_chr, 
-        start_1L_chr = start_1L_chr)
+    model_mdl <- make_mdl(fake_ds_tb %>% dplyr::select(id_var_nm_1L_chr, 
+        tfmd_depnt_var_nm_1L_chr, tidyselect::all_of(predr_var_nms_chr)), 
+        depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, predr_var_nm_1L_chr = predr_var_nms_chr[1], 
+        covar_var_nms_chr = covar_var_nms_chr, tfmn_1L_chr = tfmn_1L_chr, 
+        mdl_type_1L_chr = mdl_type_1L_chr, mdl_types_lup = mdl_types_lup, 
+        control_1L_chr = control_1L_chr, start_1L_chr = start_1L_chr)
     par_nms_chr <- model_mdl$coefficients %>% names()
     mdl_smry_tb <- mdl_smry_tb %>% dplyr::mutate(Parameter = dplyr::case_when(Parameter == 
         "Intercept" ~ "(Intercept)", TRUE ~ purrr::map_chr(Parameter, 
