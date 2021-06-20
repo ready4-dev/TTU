@@ -8,7 +8,8 @@ write_shareable_mdls_to_dv(
   outp_smry_ls,
   new_dir_nm_1L_chr = "G_Shareable",
   shareable_title_detail_1L_chr = "",
-  share_only_fake_ds_1L_lgl = F
+  share_ingredients_1L_lgl = T,
+  output_dir_chr = NA_character_
 )
 }
 \arguments{
@@ -18,7 +19,9 @@ write_shareable_mdls_to_dv(
 
 \item{shareable_title_detail_1L_chr}{Shareable title detail (a character vector of length one), Default: ''}
 
-\item{share_only_fake_ds_1L_lgl}{Share only fake dataset (a logical vector of length one), Default: F}
+\item{share_ingredients_1L_lgl}{Share ingredients (a logical vector of length one), Default: T}
+
+\item{output_dir_chr}{Output directory (a character vector), Default: 'NA'}
 }
 \value{
 Shareable models (a tibble)

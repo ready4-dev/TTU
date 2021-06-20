@@ -233,7 +233,7 @@ TTU::write_mdl_smry_rprt(header_yaml_args_ls,
 ```
 
 ## Share (de-confidentialised) results
-If details to a valid online data repository have been supplied, the following function call uploads shareable versions (ie source dataset copies have been replaced with synthetic data) to that dataset. The resulting dataset is available at: https://doi.org/10.7910/DVN/612HDC
+If details to a valid online data repository have been supplied, the following function call uploads data from which shareable versions (where copies of the source dataset have been replaced with synthetic data) to that dataset. The resulting dataset is available at: https://doi.org/10.7910/DVN/612HDC
 ```{r echo = TRUE, eval=FALSE }
 if(!is.null(dv_ls)){
   TTU::write_study_outp_ds(dv_ls,

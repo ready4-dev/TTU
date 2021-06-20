@@ -856,6 +856,24 @@ write_scndry_analysis_dir <- function (paths_ls, reference_1L_int = 1)
         paths_ls$write_to_dir_nm_1L_chr) %>% dir.create()
     return(paths_ls)
 }
+#' Write shareable directory
+#' @description write_shareable_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable directory. The function returns Output directory (a character vector).
+#' @param outp_smry_ls Output summary (a list)
+#' @param new_dir_nm_1L_chr New directory name (a character vector of length one), Default: 'G_Shareable'
+#' @param sub_dir_nm_1L_chr Sub directory name (a character vector of length one), Default: 'Ingredients'
+#' @return Output directory (a character vector)
+#' @rdname write_shareable_dir
+#' @export 
+
+#' @keywords internal
+write_shareable_dir <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", sub_dir_nm_1L_chr = "Ingredients") 
+{
+    output_dir_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr, 
+        new_dir_nm_1L_chr = new_dir_nm_1L_chr)
+    output_dir_chr[2] <- write_new_outp_dir(output_dir_1L_chr, 
+        new_dir_nm_1L_chr = sub_dir_nm_1L_chr)
+    return(output_dir_chr)
+}
 #' Write shareable models
 #' @description write_shareable_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable models. The function returns Output summary (a list).
 #' @param outp_smry_ls Output summary (a list)
@@ -873,7 +891,7 @@ write_scndry_analysis_dir <- function (paths_ls, reference_1L_int = 1)
 write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "", 
     write_mdls_to_dv_1L_lgl = F) 
 {
-    output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr, 
+    output_dir_chr <- write_shareable_dir(outp_smry_ls = outp_smry_ls, 
         new_dir_nm_1L_chr = new_dir_nm_1L_chr)
     incld_mdl_paths_chr <- outp_smry_ls$file_paths_chr %>% purrr::map_chr(~{
         file_path_1L_chr <- .x
@@ -917,22 +935,25 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
                 tfmn_1L_chr = tfmn_1L_chr, mdl_type_1L_chr = mdl_type_1L_chr, 
                 mdl_types_lup = mdl_types_lup, control_1L_chr = NA_character_, 
                 start_1L_chr = NA_character_, seed_1L_int = outp_smry_ls$seed_1L_int)
-            saveRDS(shareable_mdl, paste0(output_dir_1L_chr, 
+            saveRDS(shareable_mdl, paste0(output_dir_chr[1], 
                 "/", .x, ".RDS"))
             shareable_mdl
         }) %>% stats::setNames(outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())
     outp_smry_ls$shareable_mdls_ls <- shareable_mdls_ls
     outp_smry_ls$shareable_mdls_tb <- NULL
+    ingredients_ls <- list(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
+        dictionary_tb = outp_smry_ls$dictionary_tb %>% dplyr::filter(var_nm_chr %in% 
+            names(fake_ds_tb)), id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, 
+        fake_ds_tb = fake_ds_tb, round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr)
+    saveRDS(ingredients_ls, paste0(output_dir_chr[2], "/mdl_ingredients", 
+        ".RDS"))
     if (!is.null(outp_smry_ls$dv_ls)) {
-        if (!write_mdls_to_dv_1L_lgl) {
-            saveRDS(fake_ds_tb, paste0(output_dir_1L_chr, "/fake_data_for_mdls", 
-                ".RDS"))
-            write_shareable_mdls_to_dv(outp_smry_ls, new_dir_nm_1L_chr = new_dir_nm_1L_chr, 
-                share_only_fake_ds_1L_lgl = T)
-        }
-        else {
+        write_shareable_mdls_to_dv(outp_smry_ls, new_dir_nm_1L_chr = new_dir_nm_1L_chr, 
+            share_ingredients_1L_lgl = T, output_dir_chr = output_dir_chr)
+        if (write_mdls_to_dv_1L_lgl) {
             outp_smry_ls$shareable_mdls_tb <- write_shareable_mdls_to_dv(outp_smry_ls, 
-                new_dir_nm_1L_chr = new_dir_nm_1L_chr, shareable_title_detail_1L_chr = shareable_title_detail_1L_chr)
+                new_dir_nm_1L_chr = new_dir_nm_1L_chr, shareable_title_detail_1L_chr = shareable_title_detail_1L_chr, 
+                share_ingredients_1L_lgl = F, output_dir_chr = output_dir_chr)
         }
     }
     return(outp_smry_ls)
@@ -942,7 +963,8 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
 #' @param outp_smry_ls Output summary (a list)
 #' @param new_dir_nm_1L_chr New directory name (a character vector of length one), Default: 'G_Shareable'
 #' @param shareable_title_detail_1L_chr Shareable title detail (a character vector of length one), Default: ''
-#' @param share_only_fake_ds_1L_lgl Share only fake dataset (a logical vector of length one), Default: F
+#' @param share_ingredients_1L_lgl Share ingredients (a logical vector of length one), Default: T
+#' @param output_dir_chr Output directory (a character vector), Default: 'NA'
 #' @return Shareable models (a tibble)
 #' @rdname write_shareable_mdls_to_dv
 #' @export 
@@ -953,11 +975,12 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
 #' @importFrom purrr map_int
 #' @keywords internal
 write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "", 
-    share_only_fake_ds_1L_lgl = F) 
+    share_ingredients_1L_lgl = T, output_dir_chr = NA_character_) 
 {
-    output_dir_1L_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr, 
-        new_dir_nm_1L_chr = new_dir_nm_1L_chr)
-    if (share_only_fake_ds_1L_lgl) {
+    if (is.na(output_dir_chr[1])) 
+        output_dir_chr <- write_shareable_dir(outp_smry_ls = outp_smry_ls, 
+            new_dir_nm_1L_chr = new_dir_nm_1L_chr)
+    if (share_ingredients_1L_lgl) {
         shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = "FAKE_DATA_FOR_MODELS", 
             title_chr = "A synthetic (fake) dataset that can be used to construct model objects from tables of coefficients")
     }
@@ -968,9 +991,9 @@ write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Sha
     }
     ready4use::write_fls_to_dv_ds(shareable_mdls_tb, dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
         ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr, parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr, 
-        paths_to_dirs_chr = output_dir_1L_chr, paths_are_rltv_1L_lgl = F, 
-        inc_fl_types_chr = ".RDS")
-    if (!share_only_fake_ds_1L_lgl) {
+        paths_to_dirs_chr = output_dir_chr[ifelse(share_ingredients_1L_lgl, 
+            2, 1)], paths_are_rltv_1L_lgl = F, inc_fl_types_chr = ".RDS")
+    if (!share_ingredients_1L_lgl) {
         ds_ls <- dataverse::get_dataset(outp_smry_ls$dv_ls$ds_url_1L_chr)
         shareable_mdls_tb <- shareable_mdls_tb %>% dplyr::mutate(dv_nm_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
             fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ready4use::get_fl_id_from_dv_ls(ds_ls, 
