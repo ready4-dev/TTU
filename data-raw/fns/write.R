@@ -812,7 +812,7 @@ write_shareable_mdls_to_dv <- function (outp_smry_ls,
     output_dir_chr <- write_shareable_dir(outp_smry_ls = outp_smry_ls,
                                         new_dir_nm_1L_chr = new_dir_nm_1L_chr)
   if(share_ingredients_1L_lgl){
-    shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = "FAKE_DATA_FOR_MODELS",
+    shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = "mdl_ingredients",
                                         title_chr = "A synthetic (fake) dataset that can be used to construct model objects from tables of coefficients")
   }else{
     shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$shareable_mdls_ls),
