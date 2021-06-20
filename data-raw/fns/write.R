@@ -718,7 +718,7 @@ write_shareable_dir <- function(outp_smry_ls,
                                 sub_dir_nm_1L_chr = "Ingredients"){
   output_dir_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr,
                                        new_dir_nm_1L_chr = new_dir_nm_1L_chr)
-  output_dir_chr[2] <- write_new_outp_dir(output_dir_1L_chr,
+  output_dir_chr[2] <- write_new_outp_dir(output_dir_chr,
                                           new_dir_nm_1L_chr = sub_dir_nm_1L_chr)
   return(output_dir_chr)
 }
