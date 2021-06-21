@@ -216,8 +216,13 @@ predict_shrble_lm <-function (object, newdata, se.fit = FALSE, scale = NULL, df 
   n <- length(object$residuals)
   p <- object$rank
   p1 <- seq_len(p)
+  qr_fn <- function (x, ...){ # replacement for qr.lm
+    if (is.null(r <- x$qr))
+      stop("lm object does not have a proper 'qr' component.\n Rank zero or should not have used lm(.., qr=FALSE).")
+    r
+  }
   piv <- if (p)
-    stats:::qr.lm(object)$pivot[p1] ## edit
+    qr_fn(object)$pivot[p1] ## change from: qr.lm
   if (p < ncol(X) && !(missing(newdata) || is.null(newdata)))
     warning("prediction from a rank-deficient fit may be misleading")
   beta <- object$coefficients

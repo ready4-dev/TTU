@@ -235,7 +235,7 @@ predict_shrble_glm <- function (object, newdata = NULL, type = c("link", "respon
 #' @return NULL
 #' @rdname predict_shrble_lm
 #' @export 
-#' @importFrom stats qr.lm
+
 #' @keywords internal
 predict_shrble_lm <- function (object, newdata, se.fit = FALSE, scale = NULL, df = Inf, 
     interval = c("none", "confidence", "prediction"), level = 0.95, 
@@ -269,8 +269,13 @@ predict_shrble_lm <- function (object, newdata, se.fit = FALSE, scale = NULL, df
     n <- length(object$residuals)
     p <- object$rank
     p1 <- seq_len(p)
+    qr_fn <- function(x, ...) {
+        if (is.null(r <- x$qr)) 
+            stop("lm object does not have a proper 'qr' component.\n Rank zero or should not have used lm(.., qr=FALSE).")
+        r
+    }
     piv <- if (p) 
-        stats:::qr.lm(object)$pivot[p1]
+        qr_fn(object)$pivot[p1]
     if (p < ncol(X) && !(missing(newdata) || is.null(newdata))) 
         warning("prediction from a rank-deficient fit may be misleading")
     beta <- object$coefficients
