@@ -10,6 +10,7 @@ predict_uncnstrd_utl(
   new_data_is_1L_chr = "Predicted",
   predn_type_1L_chr = NULL,
   tfmn_for_bnml_1L_lgl = F,
+  deterministic_1L_lgl = T,
   family_1L_chr = NA_character_,
   tfmn_1L_chr = "NTF",
   is_brms_mdl_1L_lgl = F,
@@ -27,6 +28,8 @@ predict_uncnstrd_utl(
 \item{predn_type_1L_chr}{Prediction type (a character vector of length one), Default: NULL}
 
 \item{tfmn_for_bnml_1L_lgl}{Transformation for binomial (a logical vector of length one), Default: F}
+
+\item{deterministic_1L_lgl}{Deterministic (a logical vector of length one), Default: T}
 
 \item{family_1L_chr}{Family (a character vector of length one), Default: 'NA'}
 

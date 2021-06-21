@@ -14,17 +14,19 @@ transform_chr_digit_pairs <- function(digit_pairs_chr,
 transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_chr = "utl_total_w",
     source_data_nm_1L_chr = "Original", new_data_is_1L_chr = "Predicted",
     predn_type_1L_chr = NULL, family_1L_chr = NA_character_, impute_1L_lgl = F, is_brms_mdl_1L_lgl = F,
-    tfmn_for_bnml_1L_lgl = F, tfmn_1L_chr = "NTF", utl_cls_fn = NULL, utl_min_val_1L_dbl = NA_real_)
+    sd_dbl = NA_real_, tfmn_for_bnml_1L_lgl = F, tfmn_1L_chr = "NTF", utl_cls_fn = NULL, utl_min_val_1L_dbl = NA_real_)
 {
   new_data_dbl <- predict_utility(data_tb = data_tb,
                                   tfmn_1L_chr = tfmn_1L_chr,
                                   model_mdl = model_mdl,
                                   force_min_max_1L_lgl = !is.na(utl_min_val_1L_dbl),
+                                  force_new_data_1L_lgl = T,
                                   utl_min_val_1L_dbl = utl_min_val_1L_dbl,
                                   impute_1L_lgl = impute_1L_lgl,
                                   utl_cls_fn = utl_cls_fn,
                                   new_data_is_1L_chr = new_data_is_1L_chr,
                                   predn_type_1L_chr = predn_type_1L_chr,
+                                  sd_dbl = sd_dbl,
                                   tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl,
                                   family_1L_chr = family_1L_chr,
                                   is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl)

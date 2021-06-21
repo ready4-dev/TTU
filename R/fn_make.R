@@ -1333,12 +1333,12 @@ make_shareable_mdl <- function (fake_ds_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "
     else {
         covar_var_nms_chr <- NA_character_
     }
-    model_mdl <- make_mdl(fake_ds_tb %>% dplyr::select(id_var_nm_1L_chr, 
-        tfmd_depnt_var_nm_1L_chr, tidyselect::all_of(predr_var_nms_chr)), 
-        depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, predr_var_nm_1L_chr = predr_var_nms_chr[1], 
-        covar_var_nms_chr = covar_var_nms_chr, tfmn_1L_chr = tfmn_1L_chr, 
-        mdl_type_1L_chr = mdl_type_1L_chr, mdl_types_lup = mdl_types_lup, 
-        control_1L_chr = control_1L_chr, start_1L_chr = start_1L_chr)
+    model_mdl <- make_mdl(fake_ds_tb %>% dplyr::select(tidyselect::all_of(c(id_var_nm_1L_chr, 
+        tfmd_depnt_var_nm_1L_chr, predr_var_nms_chr))), depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+        predr_var_nm_1L_chr = predr_var_nms_chr[1], covar_var_nms_chr = covar_var_nms_chr, 
+        tfmn_1L_chr = tfmn_1L_chr, mdl_type_1L_chr = mdl_type_1L_chr, 
+        mdl_types_lup = mdl_types_lup, control_1L_chr = control_1L_chr, 
+        start_1L_chr = start_1L_chr)
     if (ready4fun::get_from_lup_obj(mdl_types_lup, match_value_xx = mdl_type_1L_chr, 
         match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = "fn_chr", 
         evaluate_lgl = F) == "betareg::betareg") {
@@ -1356,7 +1356,14 @@ make_shareable_mdl <- function (fake_ds_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "
         msg = "Parameter names mismatch between data and model summary table")
     model_coeffs_dbl <- mdl_smry_tb$Estimate
     names(model_coeffs_dbl) <- par_nms_chr
-    model_mdl$coefficients <- model_coeffs_dbl
+    if (ready4fun::get_from_lup_obj(mdl_types_lup, match_value_xx = mdl_type_1L_chr, 
+        match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = "fn_chr", 
+        evaluate_lgl = F) == "betareg::betareg") {
+        model_mdl$coefficients$mean <- model_coeffs_dbl
+    }
+    else {
+        model_mdl$coefficients <- model_coeffs_dbl
+    }
     return(model_mdl)
 }
 #' Make summary of bayesian regression model
@@ -1554,7 +1561,7 @@ make_smry_of_ts_mdl_outp <- function (data_tb, predr_vars_nms_chr, mdl_nm_1L_chr
         if (file.exists(smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)) 
             file.remove(smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)
         saveRDS(mdl_ls, smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)
-        smry_of_ts_mdl_ls$paths_to_mdl_plts_chr <- write_brm_model_plts(mdl_ls, 
+        smry_of_ts_mdl_ls$paths_to_mdl_plts_chr <- write_ts_mdl_plts(mdl_ls, 
             tfd_data_tb = tfd_data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
             mdl_nm_1L_chr = mdl_nm_1L_chr, path_to_write_to_1L_chr = path_to_write_to_1L_chr, 
             round_var_nm_1L_chr = round_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr, 

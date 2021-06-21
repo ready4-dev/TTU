@@ -14,6 +14,7 @@ transform_data_tb_for_cmprsn(
   family_1L_chr = NA_character_,
   impute_1L_lgl = F,
   is_brms_mdl_1L_lgl = F,
+  sd_dbl = NA_real_,
   tfmn_for_bnml_1L_lgl = F,
   tfmn_1L_chr = "NTF",
   utl_cls_fn = NULL,
@@ -38,6 +39,8 @@ transform_data_tb_for_cmprsn(
 \item{impute_1L_lgl}{Impute (a logical vector of length one), Default: F}
 
 \item{is_brms_mdl_1L_lgl}{Is bayesian regression models model (a logical vector of length one), Default: F}
+
+\item{sd_dbl}{Standard deviation (a double vector), Default: NA}
 
 \item{tfmn_for_bnml_1L_lgl}{Transformation for binomial (a logical vector of length one), Default: F}
 
