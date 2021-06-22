@@ -8,7 +8,8 @@ plot_obsd_predd_dnst(
   tfd_data_tb,
   depnt_var_nm_1L_chr = "utl_total_w",
   depnt_var_desc_1L_chr = "Total weighted utility score",
-  predd_val_var_nm_1L_chr = "Predicted"
+  predd_val_var_nm_1L_chr = "Predicted",
+  cmprsn_predd_var_nm_1L_chr = NA_character_
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ plot_obsd_predd_dnst(
 \item{depnt_var_desc_1L_chr}{Dependent variable description (a character vector of length one), Default: 'Total weighted utility score'}
 
 \item{predd_val_var_nm_1L_chr}{Predicted value variable name (a character vector of length one), Default: 'Predicted'}
+
+\item{cmprsn_predd_var_nm_1L_chr}{Comparison predicted variable name (a character vector of length one), Default: 'NA'}
 }
 \description{
 plot_obsd_predd_dnst() is a Plot function that plots data Specifically, this function implements an algorithm to plot observed predicted density. The function is called for its side effects and does not return a value.

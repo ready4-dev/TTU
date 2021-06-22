@@ -734,7 +734,10 @@ make_mdl_desc_lines <- function(outp_smry_ls,
                                                                   evaluate_lgl = F),
                                       ". The predictor variables are ",
                                       "baseline values and subsequent changes in ",
-                                      collapse = ""), predictors_desc_chr,".")
+                                      collapse = ""), predictors_desc_chr,". ",
+                               "The catalogue reference for this model is",
+                               mdl_nm_1L_chr,
+                               ".")
   return(mdl_desc_lines_chr)
 }
 make_output_format_ls <- function(manuscript_outp_1L_chr = "Word",

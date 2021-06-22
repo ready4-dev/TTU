@@ -4,10 +4,16 @@
 \alias{transform_predd_var_nm}
 \title{Transform predicted variable name}
 \usage{
-transform_predd_var_nm(new_data_is_1L_chr, utl_min_val_1L_dbl = NA_real_)
+transform_predd_var_nm(
+  new_data_is_1L_chr,
+  sfx_1L_chr = "",
+  utl_min_val_1L_dbl = NA_real_
+)
 }
 \arguments{
 \item{new_data_is_1L_chr}{New data is (a character vector of length one)}
+
+\item{sfx_1L_chr}{Suffix (a character vector of length one), Default: ''}
 
 \item{utl_min_val_1L_dbl}{Utility minimum value (a double vector of length one), Default: NA}
 }
@@ -15,6 +21,6 @@ transform_predd_var_nm(new_data_is_1L_chr, utl_min_val_1L_dbl = NA_real_)
 Tfmd predicted variable name (a character vector of length one)
 }
 \description{
-transform_predd_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform predicted variable name. Function argument new_data_is_1L_chr specifies the object to be updated. Argument utl_min_val_1L_dbl provides the object to be updated. The function returns Tfmd predicted variable name (a character vector of length one).
+transform_predd_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform predicted variable name. Function argument new_data_is_1L_chr specifies the object to be updated. Argument sfx_1L_chr provides the object to be updated. The function returns Tfmd predicted variable name (a character vector of length one).
 }
 \keyword{internal}

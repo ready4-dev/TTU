@@ -7,7 +7,7 @@
 write_shareable_dir(
   outp_smry_ls,
   new_dir_nm_1L_chr = "G_Shareable",
-  sub_dir_nm_1L_chr = "Ingredients"
+  sub_dirs_chr = c("Ingredients", "Models", "Table_Predn_Tools")
 )
 }
 \arguments{
@@ -15,7 +15,7 @@ write_shareable_dir(
 
 \item{new_dir_nm_1L_chr}{New directory name (a character vector of length one), Default: 'G_Shareable'}
 
-\item{sub_dir_nm_1L_chr}{Sub directory name (a character vector of length one), Default: 'Ingredients'}
+\item{sub_dirs_chr}{Sub directories (a character vector), Default: c("Ingredients", "Models", "Table_Predn_Tools")}
 }
 \value{
 Output directory (a character vector)

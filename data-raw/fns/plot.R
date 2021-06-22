@@ -26,10 +26,16 @@ plot_lnr_cmprsn <- function (data_tb,
         y = depnt_var_desc_1L_chr)
 }
 plot_obsd_predd_dnst <- function (tfd_data_tb, depnt_var_nm_1L_chr = "utl_total_w", depnt_var_desc_1L_chr = "Total weighted utility score",
-    predd_val_var_nm_1L_chr = "Predicted")
+    predd_val_var_nm_1L_chr = "Predicted", cmprsn_predd_var_nm_1L_chr = NA_character_)
 {
+    if(is.na(cmprsn_predd_var_nm_1L_chr))
+      cmprsn_predd_var_nm_1L_chr <- NULL
+  args_ls <- list(predd_val_var_nm_1L_chr,
+                    cmprsn_predd_var_nm_1L_chr)
     tfd_data_tb %>% dplyr::mutate(Observed = !!rlang::sym(depnt_var_nm_1L_chr)) %>%
-        tidyr::gather(variable, value, !!rlang::sym(predd_val_var_nm_1L_chr),
+        tidyr::gather(variable, value,
+                      !!!args_ls,
+                      #!!rlang::sym(predd_val_var_nm_1L_chr),!!rlang::sym(cmprsn_predd_var_nm_1L_chr),
             Observed) %>% ggplot2::ggplot(ggplot2::aes(x = value,
         fill = variable)) + ggalt::geom_bkde(alpha = 0.5) + ggplot2::geom_rug() +
         viridis::scale_fill_viridis(discrete = TRUE) + ggplot2::theme_bw() +

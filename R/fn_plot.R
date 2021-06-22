@@ -53,6 +53,7 @@ plot_lnr_cmprsn <- function (data_tb, predn_ds_tb, predr_var_nm_1L_chr, predr_va
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'utl_total_w'
 #' @param depnt_var_desc_1L_chr Dependent variable description (a character vector of length one), Default: 'Total weighted utility score'
 #' @param predd_val_var_nm_1L_chr Predicted value variable name (a character vector of length one), Default: 'Predicted'
+#' @param cmprsn_predd_var_nm_1L_chr Comparison predicted variable name (a character vector of length one), Default: 'NA'
 #' @return NULL
 #' @rdname plot_obsd_predd_dnst
 #' @export 
@@ -64,12 +65,15 @@ plot_lnr_cmprsn <- function (data_tb, predn_ds_tb, predr_var_nm_1L_chr, predr_va
 #' @importFrom viridis scale_fill_viridis
 #' @keywords internal
 plot_obsd_predd_dnst <- function (tfd_data_tb, depnt_var_nm_1L_chr = "utl_total_w", depnt_var_desc_1L_chr = "Total weighted utility score", 
-    predd_val_var_nm_1L_chr = "Predicted") 
+    predd_val_var_nm_1L_chr = "Predicted", cmprsn_predd_var_nm_1L_chr = NA_character_) 
 {
+    if (is.na(cmprsn_predd_var_nm_1L_chr)) 
+        cmprsn_predd_var_nm_1L_chr <- NULL
+    args_ls <- list(predd_val_var_nm_1L_chr, cmprsn_predd_var_nm_1L_chr)
     tfd_data_tb %>% dplyr::mutate(Observed = !!rlang::sym(depnt_var_nm_1L_chr)) %>% 
-        tidyr::gather(variable, value, !!rlang::sym(predd_val_var_nm_1L_chr), 
-            Observed) %>% ggplot2::ggplot(ggplot2::aes(x = value, 
-        fill = variable)) + ggalt::geom_bkde(alpha = 0.5) + ggplot2::geom_rug() + 
+        tidyr::gather(variable, value, !!!args_ls, Observed) %>% 
+        ggplot2::ggplot(ggplot2::aes(x = value, fill = variable)) + 
+        ggalt::geom_bkde(alpha = 0.5) + ggplot2::geom_rug() + 
         viridis::scale_fill_viridis(discrete = TRUE) + ggplot2::theme_bw() + 
         ggplot2::theme(legend.position = "bottom") + ggplot2::labs(x = depnt_var_desc_1L_chr, 
         y = "Density", fill = "")

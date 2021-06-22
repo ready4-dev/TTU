@@ -11,10 +11,11 @@ transform_chr_digit_pairs <- function(digit_pairs_chr,
     })
   return(tfd_digit_pairs_chr)
 }
+
 transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_chr = "utl_total_w",
     source_data_nm_1L_chr = "Original", new_data_is_1L_chr = "Predicted",
     predn_type_1L_chr = NULL, family_1L_chr = NA_character_, impute_1L_lgl = F, is_brms_mdl_1L_lgl = F,
-    sd_dbl = NA_real_, tfmn_for_bnml_1L_lgl = F, tfmn_1L_chr = "NTF", utl_cls_fn = NULL, utl_min_val_1L_dbl = NA_real_)
+    sd_dbl = NA_real_, sfx_1L_chr = "", tfmn_for_bnml_1L_lgl = F, tfmn_1L_chr = "NTF", utl_cls_fn = NULL, utl_min_val_1L_dbl = NA_real_)
 {
   new_data_dbl <- predict_utility(data_tb = data_tb,
                                   tfmn_1L_chr = tfmn_1L_chr,
@@ -31,6 +32,7 @@ transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_ch
                                   family_1L_chr = family_1L_chr,
                                   is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl)
     tfd_data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_predd_var_nm(new_data_is_1L_chr,
+                                                                                      sfx_1L_chr = sfx_1L_chr,
                                                                                       utl_min_val_1L_dbl = utl_min_val_1L_dbl)),
         new_data_dbl), `:=`(!!rlang::sym(source_data_nm_1L_chr),
         !!rlang::sym(depnt_var_nm_1L_chr)))
@@ -50,6 +52,50 @@ transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF")
 #     tfd_depnt_var_nm_1L_chr <- paste0(depnt_var_nm_1L_chr, "_cloglog")
 #     return(tfd_depnt_var_nm_1L_chr)
 # }
+transform_ds_for_all_cmprsn_plts <- function(tfd_data_tb,
+                                             model_mdl,
+                                             depnt_var_nm_1L_chr,
+                                             is_brms_mdl_1L_lgl,
+                                             predn_type_1L_chr,
+                                             sd_dbl,
+                                             sfx_1L_chr = "",
+                                             tfmn_1L_chr,
+                                             utl_min_val_1L_dbl = -1){
+  tfd_data_tb <- transform_data_tb_for_cmprsn(tfd_data_tb %>% dplyr::ungroup(),
+                                              model_mdl = model_mdl,
+                                              depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                                              predn_type_1L_chr = predn_type_1L_chr,
+                                              sfx_1L_chr = sfx_1L_chr,
+                                              tfmn_1L_chr = tfmn_1L_chr) %>%
+    transform_data_tb_for_cmprsn(model_mdl = model_mdl,
+                                 depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                                 family_1L_chr = NA_character_,
+                                 is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl,
+                                 new_data_is_1L_chr = "Simulated",
+                                 predn_type_1L_chr = predn_type_1L_chr,
+                                 sd_dbl = sd_dbl,
+                                 sfx_1L_chr = sfx_1L_chr,
+                                 tfmn_1L_chr = tfmn_1L_chr,
+                                 tfmn_for_bnml_1L_lgl = FALSE) %>%
+    transform_data_tb_for_cmprsn(model_mdl = model_mdl,
+                                 depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                                 predn_type_1L_chr = predn_type_1L_chr,
+                                 sfx_1L_chr = sfx_1L_chr,
+                                 tfmn_1L_chr = tfmn_1L_chr,
+                                 utl_min_val_1L_dbl = utl_min_val_1L_dbl) %>%
+    transform_data_tb_for_cmprsn(model_mdl = model_mdl,
+                                 depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                                 family_1L_chr = NA_character_,
+                                 is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl,
+                                 new_data_is_1L_chr = "Simulated",
+                                 predn_type_1L_chr = predn_type_1L_chr,
+                                 sfx_1L_chr = sfx_1L_chr,
+                                 sd_dbl = sd_dbl,
+                                 tfmn_1L_chr = tfmn_1L_chr,
+                                 tfmn_for_bnml_1L_lgl = FALSE,
+                                 utl_min_val_1L_dbl = utl_min_val_1L_dbl)
+  return(tfd_data_tb)
+}
 transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_var_nm_1L_chr,
     covar_var_nms_chr = NA_character_)
 {
@@ -227,9 +273,11 @@ transform_paths_ls_for_scndry <- function(paths_ls,
   return(paths_ls)
 }
 transform_predd_var_nm <- function (new_data_is_1L_chr,
+                                    sfx_1L_chr = "",
                                     utl_min_val_1L_dbl = NA_real_)
 {
   tfmd_predd_var_nm_1L_chr <- paste0(new_data_is_1L_chr,
+                                     sfx_1L_chr,
                                      ifelse(!is.na(utl_min_val_1L_dbl),
                                             " (constrained)",
                                             ""))
@@ -286,14 +334,13 @@ transform_rprt_lup <- function(rprt_lup,
 transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr,
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round",
     round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, scaling_fctr_dbl = 0.01,
-    tfmn_1L_chr = "NTF",
-    ungroup_1L_lgl = F#, add_cll_tfmn_1L_lgl = T
-    )
+    tfmn_1L_chr = "NTF", ungroup_1L_lgl = F)
 {
     if(length(scaling_fctr_dbl)!=length(predr_vars_nms_chr)){
       scaling_fctr_dbl <- rep(scaling_fctr_dbl[1],length(predr_vars_nms_chr))
     }
-  data_tb <- data.frame(data_tb)
+  data_tb <- data.frame(data_tb) %>%
+    ready4use::remove_labels_from_ds()
     tfd_for_mdl_inp_tb <- data_tb %>% dplyr::select(dplyr::all_of(id_var_nm_1L_chr), dplyr::all_of(round_var_nm_1L_chr),
         dplyr::all_of(predr_vars_nms_chr),
         dplyr::all_of(depnt_var_nm_1L_chr) # Moved from first var in tb
@@ -309,19 +356,15 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
                                                                                                           0,
                                                                                                           (. - dplyr::lag(.))*scaling_fctr_dbl[idx_1L_int]))))
                                           })
-    #if(add_cll_tfmn_1L_lgl){
       tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>%
       dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr,
-                                                             tfmn_1L_chr = tfmn_1L_chr)#transform_depnt_var_nm_for_cll(depnt_var_nm_1L_chr)
+                                                             tfmn_1L_chr = tfmn_1L_chr)
                                       ),
                          !!rlang::sym(depnt_var_nm_1L_chr) %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
                                                                                        tfmn_is_outp_1L_lgl = F,
                                                                                        dep_var_max_val_1L_dbl = 0.999)
-        # log(-log(1 - ifelse(!!rlang::sym(depnt_var_nm_1L_chr) ==
-        #     1, 0.999, !!rlang::sym(depnt_var_nm_1L_chr))))
         ))
-    #}
-    if(drop_all_msng_1L_lgl){
+        if(drop_all_msng_1L_lgl){
       tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>%
         stats::na.omit()
     }
@@ -329,6 +372,14 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
       tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>%
         dplyr::ungroup()
     }
+      rename_tb <- tibble::tibble(old_id_xx = tfd_for_mdl_inp_tb %>% dplyr::pull(id_var_nm_1L_chr) %>% unique(),
+                                  new_id_int = 1:length(tfd_for_mdl_inp_tb %>% dplyr::pull(id_var_nm_1L_chr) %>% unique()))
+      tfd_for_mdl_inp_tb  <- tfd_for_mdl_inp_tb %>%
+        dplyr::mutate(!!rlang::sym(id_var_nm_1L_chr) := !!rlang::sym(id_var_nm_1L_chr) %>% purrr::map_int(~ ready4fun::get_from_lup_obj(rename_tb,
+                                                                                                                          match_value_xx = .x,
+                                                                                                                          match_var_nm_1L_chr = "old_id_xx",
+                                                                                                                          target_var_nm_1L_chr = "new_id_int",
+                                                                                                                          evaluate_lgl = F)))
     return(tfd_for_mdl_inp_tb)
 }
 transform_tbl_to_rnd_vars <- function(ds_tb,

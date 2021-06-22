@@ -5,13 +5,13 @@
 \title{Write time series model plots}
 \usage{
 write_ts_mdl_plts(
-  mdl_ls,
+  brms_mdl,
+  table_predn_mdl = NULL,
   tfd_data_tb,
   mdl_nm_1L_chr,
   path_to_write_to_1L_chr,
   depnt_var_nm_1L_chr = "utl_total_w",
   depnt_var_desc_1L_chr = "Utility score",
-  is_brms_mdl_1L_lgl = T,
   predn_type_1L_chr = NULL,
   round_var_nm_1L_chr = "round",
   sd_dbl = NA_real_,
@@ -26,7 +26,9 @@ write_ts_mdl_plts(
 )
 }
 \arguments{
-\item{mdl_ls}{Model list (a list of models)}
+\item{brms_mdl}{Bayesian regression models (a model)}
+
+\item{table_predn_mdl}{Table prediction (a model), Default: NULL}
 
 \item{tfd_data_tb}{Transformed data (a tibble)}
 
@@ -37,8 +39,6 @@ write_ts_mdl_plts(
 \item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one), Default: 'utl_total_w'}
 
 \item{depnt_var_desc_1L_chr}{Dependent variable description (a character vector of length one), Default: 'Utility score'}
-
-\item{is_brms_mdl_1L_lgl}{Is bayesian regression models model (a logical vector of length one), Default: T}
 
 \item{predn_type_1L_chr}{Prediction type (a character vector of length one), Default: NULL}
 

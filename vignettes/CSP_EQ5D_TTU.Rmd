@@ -223,17 +223,8 @@ TTU::write_report(params_ls = valid_params_ls_ls$params_ls,
                   header_yaml_args_ls = header_yaml_args_ls)
 ```
 
-## Report results
-[A report, summarising all the transfer to utility models](https://dataverse.harvard.edu/api/access/datafile/4806542) created in the preceding step is authored with the following function call. 
-```{r echo = TRUE, eval=FALSE }
-TTU::write_mdl_smry_rprt(header_yaml_args_ls,
-                         path_params_ls = path_params_ls,
-                         use_fake_data_1L_lgl = use_fake_data_1L_lgl,
-                         output_format_ls = output_format_ls)
-```
-
-## Share (de-confidentialised) results
-If details to a valid online data repository have been supplied, the following function call uploads data from which shareable versions (where copies of the source dataset have been replaced with synthetic data) to that dataset. The resulting dataset is available at: https://doi.org/10.7910/DVN/612HDC
+## Share model summaries
+If details to a valid online data repository have been supplied, the following function call uploads data from which predictions can be made using model coefficients. The uploaded files can be viewed at: https://doi.org/10.7910/DVN/612HDC
 ```{r echo = TRUE, eval=FALSE }
 if(!is.null(dv_ls)){
   TTU::write_study_outp_ds(dv_ls,
@@ -243,6 +234,16 @@ if(!is.null(dv_ls)){
 }
 ```
 
+## Report results
+[A report, summarising all the transfer to utility models](https://dataverse.harvard.edu/api/access/datafile/4806542) created in the preceding step is authored with the following function call. 
+```{r echo = TRUE, eval=FALSE }
+TTU::write_mdl_smry_rprt(header_yaml_args_ls,
+                         path_params_ls = path_params_ls,
+                         dv_ls = dv_ls,
+                         use_fake_data_1L_lgl = use_fake_data_1L_lgl,
+                         output_format_ls = output_format_ls,
+                         use_shareable_mdls_1L_lgl = T)
+```
 
 ```{r echo = FALSE, eval=FALSE }
 # Render Scientific Summary

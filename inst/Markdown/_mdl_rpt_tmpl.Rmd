@@ -23,7 +23,7 @@ rlang::exec(ready4show::print_table,!!!brms_mdl_print_ls[[5]])
 ```{r {{mdl_nms_chr}}, tab.cap=paste0({{caption_1L_chr}},' model performance parameters'), echo = F, results="asis"}
 df <- params_ls$outp_smry_ls$mdls_smry_tb %>%
   dplyr::filter(Model == {{mdl_nms_chr}}) %>%
-  dplyr::filter(Parameter %in% c("R2","RMSE","Sigma")) %>%
+  dplyr::filter(Parameter %in% c("R2","RMSE")) %>%
   dplyr::select(-Model) 
 add_to_row_ls <- list()
 add_to_row_ls$pos <- list(0, nrow(df)

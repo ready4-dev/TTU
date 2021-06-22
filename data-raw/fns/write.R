@@ -182,28 +182,36 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                                 use_fake_data_1L_lgl = FALSE,
                                 output_format_ls,
                                 abstract_args_ls = NULL,
+                                dv_ls = NULL,
                                 reference_1L_int = NULL,
                                 rprt_lup = NULL,
                                 rcrd_nm_1L_chr = "Write_Rprt_Rcrd",
                                 rprt_nm_1L_chr = "TS_TTU_Mdls_Smry",
                                 rprt_subtitle_1L_chr = NULL,
-                                subtitle_1L_chr = NULL){
+                                subtitle_1L_chr = NULL,
+                                use_shareable_mdls_1L_lgl = F){
   paths_ls <- path_params_ls$paths_ls
   if(is.null(rprt_lup))
     data("rprt_lup", package = "TTU", envir = environment())
   if(is.null(reference_1L_int)){
+    dv_ds_nm_and_url_chr <- dv_ls$primary_dv_chr
     path_to_outp_fl_1L_chr <- paste0(paths_ls$output_data_dir_1L_chr,"/I_ALL_OUTPUT_.RDS")
     if(is.null(subtitle_1L_chr))
       subtitle_1L_chr <- "Results Report 1: TTU Models (Primary Analysis)"
     if(is.null(rprt_subtitle_1L_chr))
       rprt_subtitle_1L_chr <- "Methods Report 2: Reporting Program (Primary Analysis)."
     #rcrd_rprt_append_ls <- NULL
-    main_rprt_append_ls <- NULL
+    if(use_shareable_mdls_1L_lgl){
+      main_rprt_append_ls <-list(rltv_path_to_data_dir_1L_chr = "../Output/G_Shareable/Models")
+    }else{
+      main_rprt_append_ls <- NULL
+    }
   }else{
     path_to_outp_fl_1L_chr <- here::here(paths_ls$path_from_top_level_1L_chr,
                                         paths_ls$write_to_dir_nm_1L_chr,
                                         paste0("secondary_",reference_1L_int),
                                         "Output","I_ALL_OUTPUT_.RDS")
+    dv_ds_nm_and_url_chr <- dv_ls %>% purrr::pluck(paste0("secondary_",reference_1L_int,"_dv_chr"))
     if(is.null(subtitle_1L_chr))
     subtitle_1L_chr <- paste0("Results Report ",
                               reference_1L_int+1,
@@ -240,6 +248,16 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                        rprt_lup = rprt_lup,
                        #rcrd_rprt_append_ls = rcrd_rprt_append_ls,
                        main_rprt_append_ls = main_rprt_append_ls)
+  if(!is.null(dv_ls)){
+    ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = rprt_nm_1L_chr,
+                                                          title_chr = rprt_subtitle_1L_chr),
+                                  dv_nm_1L_chr = dv_ds_nm_and_url_chr[1],
+                                  ds_url_1L_chr = dv_ds_nm_and_url_chr[2],
+                                  parent_dv_dir_1L_chr = paths_ls$dv_dir_1L_chr,
+                                  paths_to_dirs_chr = paths_ls$reports_dir_1L_chr,
+                                  inc_fl_types_chr = ".pdf",
+                                  paths_are_rltv_1L_lgl = F)
+  }
 }
 write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predrs_var_nms_chr,
     covar_var_nms_chr, mdl_type_1L_chr, path_to_write_to_1L_chr, new_dir_nm_1L_chr = "D_Covars_Selection",
@@ -624,11 +642,12 @@ write_scndry_analysis_dir <- function(paths_ls,
 }
 write_shareable_dir <- function(outp_smry_ls,
                                 new_dir_nm_1L_chr = "G_Shareable",
-                                sub_dir_nm_1L_chr = "Ingredients"){
+                                sub_dirs_chr = c("Ingredients","Models","Table_Predn_Tools")){
   output_dir_chr <- write_new_outp_dir(outp_smry_ls$path_to_write_to_1L_chr,
                                        new_dir_nm_1L_chr = new_dir_nm_1L_chr)
-  output_dir_chr[2] <- write_new_outp_dir(output_dir_chr,
-                                          new_dir_nm_1L_chr = sub_dir_nm_1L_chr)
+  output_dir_chr <- c(output_dir_chr,
+                      sub_dirs_chr %>% purrr::map_chr(~write_new_outp_dir(output_dir_chr,
+                                                                          new_dir_nm_1L_chr = .x)))
   return(output_dir_chr)
 }
 write_shareable_mdls <- function (outp_smry_ls,
@@ -660,6 +679,7 @@ write_shareable_mdls <- function (outp_smry_ls,
     shareable_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>%
         purrr::map2(incld_mdl_paths_chr, ~{
             model_mdl <- readRDS(paste0(outp_smry_ls$path_to_write_to_1L_chr,"/",.y))
+            model_mdl$data <- fake_ds_tb %>% dplyr::select(names(model_mdl$data))
             mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model ==
                 .x)
             mdl_nm_1L_chr <- .x
@@ -677,6 +697,8 @@ write_shareable_mdls <- function (outp_smry_ls,
                                                              match_var_nm_1L_chr = "short_name_chr",
                                                              target_var_nm_1L_chr = "predn_type_chr",
                                                              evaluate_lgl = F)
+            if (is.na(predn_type_1L_chr))
+              predn_type_1L_chr <- NULL
             control_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
                                                           match_value_xx = mdl_type_1L_chr,
                                                           match_var_nm_1L_chr = "short_name_chr",
@@ -687,7 +709,7 @@ write_shareable_mdls <- function (outp_smry_ls,
               dplyr::select(Estimate, SE) %>%
               t() %>%
               as.vector()
-            shareable_mdl <- make_shareable_mdl(fake_ds_tb = fake_ds_tb,
+            table_predn_mdl <- make_shareable_mdl(fake_ds_tb = fake_ds_tb,
                 mdl_smry_tb = mdl_smry_tb, depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
                 id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr,
                 tfmn_1L_chr = tfmn_1L_chr,
@@ -696,20 +718,23 @@ write_shareable_mdls <- function (outp_smry_ls,
                 control_1L_chr = control_1L_chr,
                 start_1L_chr = NA_character_,
                 seed_1L_int = outp_smry_ls$seed_1L_int)
-            saveRDS(shareable_mdl, paste0(output_dir_chr[1], "/", .x,
+            saveRDS(table_predn_mdl, paste0(output_dir_chr[4], "/", .x,
                 ".RDS"))
-            write_ts_mdl_plts(shareable_mdl,
+            saveRDS(model_mdl, paste0(output_dir_chr[3], "/", .x,
+                                          ".RDS"))
+            write_ts_mdl_plts(brms_mdl = model_mdl,
+                              table_predn_mdl = table_predn_mdl,
                               tfd_data_tb = fake_ds_tb,
-                              depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
-                              is_brms_mdl_1L_lgl = F,
+                              depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
+                              #is_brms_mdl_1L_lgl = F,
                               mdl_nm_1L_chr = mdl_nm_1L_chr,
-                              path_to_write_to_1L_chr = output_dir_chr[1],
+                              path_to_write_to_1L_chr = output_dir_chr[3],
                               predn_type_1L_chr = predn_type_1L_chr,
                               round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr,
                               sd_dbl = sd_dbl,
                               tfmn_1L_chr = tfmn_1L_chr,
                               utl_min_val_1L_dbl = ifelse(!is.null(outp_smry_ls$utl_min_val_1L_dbl),
-                                                          utl_min_val_1L_dbl,
+                                                          outp_smry_ls$utl_min_val_1L_dbl,
                                                           -1))
             shareable_mdl
         }) %>% stats::setNames(outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())
@@ -761,7 +786,7 @@ write_shareable_mdls_to_dv <- function (outp_smry_ls,
                                 ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr, parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr,
                                 paths_to_dirs_chr = output_dir_chr[ifelse(share_ingredients_1L_lgl,
                                                                           2,
-                                                                          1)], paths_are_rltv_1L_lgl = F,inc_fl_types_chr = ".RDS")
+                                                                          3)], paths_are_rltv_1L_lgl = F,inc_fl_types_chr = ".RDS")
   if(!share_ingredients_1L_lgl){
     ds_ls <- dataverse::get_dataset(outp_smry_ls$dv_ls$ds_url_1L_chr)
     shareable_mdls_tb <- shareable_mdls_tb %>% dplyr::mutate(dv_nm_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
@@ -904,56 +929,51 @@ write_to_delete_mdl_fls <- function(outp_smry_ls){
                                             "/",
                                             .x)))
 }
-write_ts_mdl_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_write_to_1L_chr,
-                               depnt_var_nm_1L_chr = "utl_total_w", depnt_var_desc_1L_chr = "Utility score", is_brms_mdl_1L_lgl = T,
+write_ts_mdl_plts <- function (brms_mdl, table_predn_mdl = NULL, tfd_data_tb, mdl_nm_1L_chr, path_to_write_to_1L_chr,
+                               depnt_var_nm_1L_chr = "utl_total_w", depnt_var_desc_1L_chr = "Utility score", #is_brms_mdl_1L_lgl = T,
                                predn_type_1L_chr = NULL, round_var_nm_1L_chr = "round", sd_dbl = NA_real_, tfmn_1L_chr = "NTF",
                                units_1L_chr = "in", height_dbl = c(rep(6, 2), rep(5,8)), width_dbl = c(rep(6, 2), rep(6, 8)),
                                rsl_dbl = rep(300,10), args_ls = NULL, seed_1L_dbl = 23456, utl_min_val_1L_dbl = -1)
 {
   set.seed(seed_1L_dbl)
-  tfd_data_tb <- transform_data_tb_for_cmprsn(tfd_data_tb %>% dplyr::ungroup(),
-                                              model_mdl = mdl_ls,
-                                              depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
-                                              predn_type_1L_chr = predn_type_1L_chr,
-                                              tfmn_1L_chr = tfmn_1L_chr) %>%
-    transform_data_tb_for_cmprsn(model_mdl = mdl_ls,
-                                 depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
-                                 new_data_is_1L_chr = "Simulated",
-                                 predn_type_1L_chr = predn_type_1L_chr,
-                                 sd_dbl = sd_dbl,
-                                 tfmn_for_bnml_1L_lgl = FALSE,
-                                 family_1L_chr = NA_character_,
-                                 tfmn_1L_chr = tfmn_1L_chr,
-                                 is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl) %>%
-    transform_data_tb_for_cmprsn(model_mdl = mdl_ls,
-                                 depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
-                                 predn_type_1L_chr = predn_type_1L_chr,
-                                 tfmn_1L_chr = tfmn_1L_chr,
-                                 utl_min_val_1L_dbl = utl_min_val_1L_dbl) %>%
-    transform_data_tb_for_cmprsn(model_mdl = mdl_ls,
-                                 depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
-                                 new_data_is_1L_chr = "Simulated",
-                                 predn_type_1L_chr = predn_type_1L_chr,
-                                 tfmn_for_bnml_1L_lgl = FALSE,
-                                 family_1L_chr = NA_character_,
-                                 sd_dbl = sd_dbl,
-                                 tfmn_1L_chr = tfmn_1L_chr,
-                                 is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl,
-                                 utl_min_val_1L_dbl = utl_min_val_1L_dbl)
+  tfd_data_tb <- transform_ds_for_all_cmprsn_plts(tfd_data_tb = tfd_data_tb,
+                                                  model_mdl = brms_mdl,
+                                                  depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                                                  is_brms_mdl_1L_lgl = inherits(brms_mdl,"brmsfit"),
+                                                  predn_type_1L_chr = predn_type_1L_chr,
+                                                  sd_dbl = NA_real_,
+                                                  sfx_1L_chr = ifelse(!is.null(table_predn_mdl),
+                                                                      " from model",
+                                                                      sfx_1L_chr),
+                                                  tfmn_1L_chr = tfmn_1L_chr,
+                                                  utl_min_val_1L_dbl = utl_min_val_1L_dbl)
+  if(!is.null(table_predn_mdl)){
+    tfd_data_tb <- transform_ds_for_all_cmprsn_plts(tfd_data_tb = tfd_data_tb,
+                                                    model_mdl = table_predn_mdl,
+                                                    depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                                                    is_brms_mdl_1L_lgl = F,
+                                                    predn_type_1L_chr = predn_type_1L_chr,
+                                                    sd_dbl = sd_dbl,
+                                                    sfx_1L_chr = ifelse(!is.null(brms_mdl),
+                                                                        " from table",
+                                                                        sfx_1L_chr),
+                                                    tfmn_1L_chr = tfmn_1L_chr,
+                                                    utl_min_val_1L_dbl = utl_min_val_1L_dbl)
+  }
   plt_nms_chr <- paste0(mdl_nm_1L_chr, "_",
                         c("coefs", "hetg",
                           "dnst", "sctr_plt",
                           "sim_dnst", "sim_sctr",
                           "cnstrd_dnst","cnstrd_sctr_plt",
                           "cnstrd_sim_dnst", "cnstrd_sim_sctr"))
-  mdl_plts_paths_ls <- purrr::map(ifelse(is_brms_mdl_1L_lgl,1,3):10, ~{
+  mdl_plts_paths_ls <- purrr::map(ifelse(inherits(brms_mdl,"brmsfit"),1,3):10, ~{
     plt_fn <- fn_args_ls <- NULL
     if (.x %in% c(1, 2)) {
-      plt <- plot(mdl_ls, ask = F, plot = F)
+      plt <- plot(brms_mdl, ask = F, plot = F)
       if (length(plt) >= .x) {
-        fn_args_ls <- list(mdl_ls = mdl_ls, idx_1L_int = as.integer(.x))
-        plt_fn <- function(mdl_ls, idx_1L_int) {
-          plot(mdl_ls, ask = F, plot = F)[idx_1L_int]
+        fn_args_ls <- list(brms_mdl = brms_mdl, idx_1L_int = as.integer(.x))
+        plt_fn <- function(brms_mdl, idx_1L_int) {
+          plot(brms_mdl, ask = F, plot = F)[idx_1L_int]
         }
       }
     }
@@ -965,13 +985,32 @@ write_ts_mdl_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_write
                            depnt_var_desc_1L_chr = depnt_var_desc_1L_chr,
                            predd_val_var_nm_1L_chr = ifelse(.x %in% c(3,7),
                                                             transform_predd_var_nm("Predicted",
+                                                                                   sfx_1L_chr = ifelse(!is.null(table_predn_mdl),
+                                                                                                       " from model",
+                                                                                                       sfx_1L_chr),
                                                                                    utl_min_val_1L_dbl = ifelse(.x == 3,
                                                                                                                NA_real_,
                                                                                                                utl_min_val_1L_dbl)),
                                                             transform_predd_var_nm("Simulated",
+                                                                                   sfx_1L_chr = ifelse(!is.null(table_predn_mdl),
+                                                                                                       " from model",
+                                                                                                       sfx_1L_chr),
                                                                                    utl_min_val_1L_dbl = ifelse(.x == 5,
                                                                                                                NA_real_,
-                                                                                                               utl_min_val_1L_dbl))))
+                                                                                                               utl_min_val_1L_dbl))),
+                           cmprsn_predd_var_nm_1L_chr = ifelse(is.null(table_predn_mdl),
+                                                               NA_character_,
+                                                               ifelse(.x %in% c(3,7),
+                                                               transform_predd_var_nm("Predicted",
+                                                                                      sfx_1L_chr = " from table",
+                                                                                      utl_min_val_1L_dbl = ifelse(.x == 3,
+                                                                                                                  NA_real_,
+                                                                                                                  utl_min_val_1L_dbl)),
+                                                               transform_predd_var_nm("Simulated",
+                                                                                      sfx_1L_chr =" from table",
+                                                                                      utl_min_val_1L_dbl = ifelse(.x == 5,
+                                                                                                                  NA_real_,
+                                                                                                                  utl_min_val_1L_dbl)))))
       }
       else {
         plt_fn <- plot_obsd_predd_sctr_cmprsn
@@ -980,10 +1019,16 @@ write_ts_mdl_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_write
                            round_var_nm_1L_chr = round_var_nm_1L_chr,
                            predd_val_var_nm_1L_chr = ifelse(.x %in% c(4,8),
                                                             transform_predd_var_nm("Predicted",
+                                                                                   sfx_1L_chr = ifelse(!is.null(table_predn_mdl),
+                                                                                                       " from model",
+                                                                                                       sfx_1L_chr),
                                                                                    utl_min_val_1L_dbl = ifelse(.x == 4,
                                                                                                                NA_real_,
                                                                                                                utl_min_val_1L_dbl)),
                                                             transform_predd_var_nm("Simulated",
+                                                                                   sfx_1L_chr = ifelse(!is.null(table_predn_mdl),
+                                                                                                       " from model",
+                                                                                                       sfx_1L_chr),
                                                                                    utl_min_val_1L_dbl = ifelse(.x == 6,
                                                                                                                NA_real_,
                                                                                                                utl_min_val_1L_dbl))),
@@ -995,7 +1040,7 @@ write_ts_mdl_plts <- function (mdl_ls, tfd_data_tb, mdl_nm_1L_chr, path_to_write
                                  plt_nm_1L_chr = plt_nms_chr[.x], units_1L_chr = units_1L_chr,
                                  width_1L_dbl = width_dbl[.x], height_1L_dbl = height_dbl[.x],
                                  rsl_1L_dbl = rsl_dbl[.x])
-  }) %>% stats::setNames(plt_nms_chr[ifelse(is_brms_mdl_1L_lgl,1,3):10]) %>% purrr::discard(is.na)
+  }) %>% stats::setNames(plt_nms_chr[ifelse(inherits(brms_mdl,"brmsfit"),1,3):10]) %>% purrr::discard(is.na)
   return(mdl_plts_paths_ls)
 }
 write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_ls,

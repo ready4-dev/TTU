@@ -36,6 +36,7 @@ transform_chr_digit_pairs <- function (digit_pairs_chr, nbr_of_digits_1L_int = 2
 #' @param impute_1L_lgl Impute (a logical vector of length one), Default: F
 #' @param is_brms_mdl_1L_lgl Is bayesian regression models model (a logical vector of length one), Default: F
 #' @param sd_dbl Standard deviation (a double vector), Default: NA
+#' @param sfx_1L_chr Suffix (a character vector of length one), Default: ''
 #' @param tfmn_for_bnml_1L_lgl Transformation for binomial (a logical vector of length one), Default: F
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param utl_cls_fn Utility class (a function), Default: NULL
@@ -50,8 +51,8 @@ transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_ch
     source_data_nm_1L_chr = "Original", new_data_is_1L_chr = "Predicted", 
     predn_type_1L_chr = NULL, family_1L_chr = NA_character_, 
     impute_1L_lgl = F, is_brms_mdl_1L_lgl = F, sd_dbl = NA_real_, 
-    tfmn_for_bnml_1L_lgl = F, tfmn_1L_chr = "NTF", utl_cls_fn = NULL, 
-    utl_min_val_1L_dbl = NA_real_) 
+    sfx_1L_chr = "", tfmn_for_bnml_1L_lgl = F, tfmn_1L_chr = "NTF", 
+    utl_cls_fn = NULL, utl_min_val_1L_dbl = NA_real_) 
 {
     new_data_dbl <- predict_utility(data_tb = data_tb, tfmn_1L_chr = tfmn_1L_chr, 
         model_mdl = model_mdl, force_min_max_1L_lgl = !is.na(utl_min_val_1L_dbl), 
@@ -61,8 +62,9 @@ transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_ch
         sd_dbl = sd_dbl, tfmn_for_bnml_1L_lgl = tfmn_for_bnml_1L_lgl, 
         family_1L_chr = family_1L_chr, is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl)
     tfd_data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_predd_var_nm(new_data_is_1L_chr, 
-        utl_min_val_1L_dbl = utl_min_val_1L_dbl)), new_data_dbl), 
-        `:=`(!!rlang::sym(source_data_nm_1L_chr), !!rlang::sym(depnt_var_nm_1L_chr)))
+        sfx_1L_chr = sfx_1L_chr, utl_min_val_1L_dbl = utl_min_val_1L_dbl)), 
+        new_data_dbl), `:=`(!!rlang::sym(source_data_nm_1L_chr), 
+        !!rlang::sym(depnt_var_nm_1L_chr)))
     return(tfd_data_tb)
 }
 #' Transform dependent variable name
@@ -79,6 +81,44 @@ transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF")
     tfd_depnt_var_nm_1L_chr <- paste0(depnt_var_nm_1L_chr, ifelse(tfmn_1L_chr == 
         "NTF", "", paste0("_", tfmn_1L_chr)))
     return(tfd_depnt_var_nm_1L_chr)
+}
+#' Transform dataset for all comparison plots
+#' @description transform_ds_for_all_cmprsn_plts() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dataset for all comparison plots. Function argument tfd_data_tb specifies the object to be updated. Argument model_mdl provides the object to be updated. The function returns Transformed data (a tibble).
+#' @param tfd_data_tb Transformed data (a tibble)
+#' @param model_mdl Model (a model)
+#' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one)
+#' @param is_brms_mdl_1L_lgl Is bayesian regression models model (a logical vector of length one)
+#' @param predn_type_1L_chr Prediction type (a character vector of length one)
+#' @param sd_dbl Standard deviation (a double vector)
+#' @param sfx_1L_chr Suffix (a character vector of length one), Default: ''
+#' @param tfmn_1L_chr Transformation (a character vector of length one)
+#' @param utl_min_val_1L_dbl Utility minimum value (a double vector of length one), Default: -1
+#' @return Transformed data (a tibble)
+#' @rdname transform_ds_for_all_cmprsn_plts
+#' @export 
+#' @importFrom dplyr ungroup
+#' @keywords internal
+transform_ds_for_all_cmprsn_plts <- function (tfd_data_tb, model_mdl, depnt_var_nm_1L_chr, is_brms_mdl_1L_lgl, 
+    predn_type_1L_chr, sd_dbl, sfx_1L_chr = "", tfmn_1L_chr, 
+    utl_min_val_1L_dbl = -1) 
+{
+    tfd_data_tb <- transform_data_tb_for_cmprsn(tfd_data_tb %>% 
+        dplyr::ungroup(), model_mdl = model_mdl, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+        predn_type_1L_chr = predn_type_1L_chr, sfx_1L_chr = sfx_1L_chr, 
+        tfmn_1L_chr = tfmn_1L_chr) %>% transform_data_tb_for_cmprsn(model_mdl = model_mdl, 
+        depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, family_1L_chr = NA_character_, 
+        is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl, new_data_is_1L_chr = "Simulated", 
+        predn_type_1L_chr = predn_type_1L_chr, sd_dbl = sd_dbl, 
+        sfx_1L_chr = sfx_1L_chr, tfmn_1L_chr = tfmn_1L_chr, tfmn_for_bnml_1L_lgl = FALSE) %>% 
+        transform_data_tb_for_cmprsn(model_mdl = model_mdl, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+            predn_type_1L_chr = predn_type_1L_chr, sfx_1L_chr = sfx_1L_chr, 
+            tfmn_1L_chr = tfmn_1L_chr, utl_min_val_1L_dbl = utl_min_val_1L_dbl) %>% 
+        transform_data_tb_for_cmprsn(model_mdl = model_mdl, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+            family_1L_chr = NA_character_, is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl, 
+            new_data_is_1L_chr = "Simulated", predn_type_1L_chr = predn_type_1L_chr, 
+            sfx_1L_chr = sfx_1L_chr, sd_dbl = sd_dbl, tfmn_1L_chr = tfmn_1L_chr, 
+            tfmn_for_bnml_1L_lgl = FALSE, utl_min_val_1L_dbl = utl_min_val_1L_dbl)
+    return(tfd_data_tb)
 }
 #' Transform dataset for modelling
 #' @description transform_ds_for_mdlng() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dataset for modelling. Function argument data_tb specifies the object to be updated. Argument depnt_var_nm_1L_chr provides the object to be updated. The function returns Transformed data (a tibble).
@@ -279,18 +319,20 @@ transform_paths_ls_for_scndry <- function (paths_ls, reference_1L_int = 1, remov
     return(paths_ls)
 }
 #' Transform predicted variable name
-#' @description transform_predd_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform predicted variable name. Function argument new_data_is_1L_chr specifies the object to be updated. Argument utl_min_val_1L_dbl provides the object to be updated. The function returns Tfmd predicted variable name (a character vector of length one).
+#' @description transform_predd_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform predicted variable name. Function argument new_data_is_1L_chr specifies the object to be updated. Argument sfx_1L_chr provides the object to be updated. The function returns Tfmd predicted variable name (a character vector of length one).
 #' @param new_data_is_1L_chr New data is (a character vector of length one)
+#' @param sfx_1L_chr Suffix (a character vector of length one), Default: ''
 #' @param utl_min_val_1L_dbl Utility minimum value (a double vector of length one), Default: NA
 #' @return Tfmd predicted variable name (a character vector of length one)
 #' @rdname transform_predd_var_nm
 #' @export 
 
 #' @keywords internal
-transform_predd_var_nm <- function (new_data_is_1L_chr, utl_min_val_1L_dbl = NA_real_) 
+transform_predd_var_nm <- function (new_data_is_1L_chr, sfx_1L_chr = "", utl_min_val_1L_dbl = NA_real_) 
 {
-    tfmd_predd_var_nm_1L_chr <- paste0(new_data_is_1L_chr, ifelse(!is.na(utl_min_val_1L_dbl), 
-        " (constrained)", ""))
+    tfmd_predd_var_nm_1L_chr <- paste0(new_data_is_1L_chr, sfx_1L_chr, 
+        ifelse(!is.na(utl_min_val_1L_dbl), " (constrained)", 
+            ""))
     return(tfmd_predd_var_nm_1L_chr)
 }
 #' Transform predictor name part of phrases
@@ -370,10 +412,13 @@ transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharin
 #' @return Transformed for model input (a tibble)
 #' @rdname transform_tb_to_mdl_inp
 #' @export 
-#' @importFrom dplyr select all_of group_by arrange mutate across first lag ungroup
+#' @importFrom ready4use remove_labels_from_ds
+#' @importFrom dplyr select all_of group_by arrange mutate across first lag ungroup pull
 #' @importFrom rlang sym
-#' @importFrom purrr reduce
+#' @importFrom purrr reduce map_int
 #' @importFrom stats na.omit
+#' @importFrom tibble tibble
+#' @importFrom ready4fun get_from_lup_obj
 transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, 
@@ -382,7 +427,7 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
     if (length(scaling_fctr_dbl) != length(predr_vars_nms_chr)) {
         scaling_fctr_dbl <- rep(scaling_fctr_dbl[1], length(predr_vars_nms_chr))
     }
-    data_tb <- data.frame(data_tb)
+    data_tb <- data.frame(data_tb) %>% ready4use::remove_labels_from_ds()
     tfd_for_mdl_inp_tb <- data_tb %>% dplyr::select(dplyr::all_of(id_var_nm_1L_chr), 
         dplyr::all_of(round_var_nm_1L_chr), dplyr::all_of(predr_vars_nms_chr), 
         dplyr::all_of(depnt_var_nm_1L_chr)) %>% dplyr::group_by(!!rlang::sym(id_var_nm_1L_chr)) %>% 
@@ -406,6 +451,13 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
     if (ungroup_1L_lgl) {
         tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% dplyr::ungroup()
     }
+    rename_tb <- tibble::tibble(old_id_xx = tfd_for_mdl_inp_tb %>% 
+        dplyr::pull(id_var_nm_1L_chr) %>% unique(), new_id_int = 1:length(tfd_for_mdl_inp_tb %>% 
+        dplyr::pull(id_var_nm_1L_chr) %>% unique()))
+    tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% dplyr::mutate(`:=`(!!rlang::sym(id_var_nm_1L_chr), 
+        !!rlang::sym(id_var_nm_1L_chr) %>% purrr::map_int(~ready4fun::get_from_lup_obj(rename_tb, 
+            match_value_xx = .x, match_var_nm_1L_chr = "old_id_xx", 
+            target_var_nm_1L_chr = "new_id_int", evaluate_lgl = F))))
     return(tfd_for_mdl_inp_tb)
 }
 #' Transform table to rnd variables
