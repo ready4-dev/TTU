@@ -724,7 +724,12 @@ write_shareable_mdls <- function (outp_smry_ls,
                                           ".RDS"))
             write_ts_mdl_plts(brms_mdl = model_mdl,
                               table_predn_mdl = table_predn_mdl,
-                              tfd_data_tb = fake_ds_tb,
+                              tfd_data_tb = outp_smry_ls$scored_data_tb %>%
+                                transform_tb_to_mdl_inp(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
+                                                        predr_vars_nms_chr = outp_smry_ls$predr_cmprsn_tb$predr_chr,
+                                                        id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr,
+                                                        round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr,
+                                                        round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr),
                               depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
                               #is_brms_mdl_1L_lgl = F,
                               mdl_nm_1L_chr = mdl_nm_1L_chr,

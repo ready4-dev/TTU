@@ -880,7 +880,13 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
             saveRDS(model_mdl, paste0(output_dir_chr[3], "/", 
                 .x, ".RDS"))
             write_ts_mdl_plts(brms_mdl = model_mdl, table_predn_mdl = table_predn_mdl, 
-                tfd_data_tb = fake_ds_tb, depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
+                tfd_data_tb = outp_smry_ls$scored_data_tb %>% 
+                  transform_tb_to_mdl_inp(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
+                    predr_vars_nms_chr = outp_smry_ls$predr_cmprsn_tb$predr_chr, 
+                    id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, 
+                    round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr, 
+                    round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr), 
+                depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
                 mdl_nm_1L_chr = mdl_nm_1L_chr, path_to_write_to_1L_chr = output_dir_chr[3], 
                 predn_type_1L_chr = predn_type_1L_chr, round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr, 
                 sd_dbl = sd_dbl, tfmn_1L_chr = tfmn_1L_chr, utl_min_val_1L_dbl = ifelse(!is.null(outp_smry_ls$utl_min_val_1L_dbl), 
