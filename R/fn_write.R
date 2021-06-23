@@ -246,8 +246,9 @@ write_mdl_smry_rprt <- function (header_yaml_args_ls, path_params_ls, use_fake_d
         abstract_args_ls = abstract_args_ls, rcrd_rprt_append_ls = path_params_ls[1:2], 
         rprt_lup = rprt_lup, main_rprt_append_ls = main_rprt_append_ls)
     if (!is.null(dv_ls)) {
-        ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = rprt_nm_1L_chr, 
-            title_chr = rprt_subtitle_1L_chr), dv_nm_1L_chr = dv_ds_nm_and_url_chr[1], 
+        ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = c(rprt_nm_1L_chr, 
+            "Write_Rprt_Rcrd"), title_chr = c(subtitle_1L_chr, 
+            rprt_subtitle_1L_chr)), dv_nm_1L_chr = dv_ds_nm_and_url_chr[1], 
             ds_url_1L_chr = dv_ds_nm_and_url_chr[2], parent_dv_dir_1L_chr = paths_ls$dv_dir_1L_chr, 
             paths_to_dirs_chr = paths_ls$reports_dir_1L_chr, 
             inc_fl_types_chr = ".pdf", paths_are_rltv_1L_lgl = F)
@@ -1032,6 +1033,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @return NULL
 #' @rdname write_study_outp_ds
 #' @export 
+#' @importFrom dplyr filter mutate case_when
 #' @importFrom purrr pluck
 #' @importFrom rlang exec
 #' @importFrom ready4use write_fls_to_dv_ds
@@ -1046,7 +1048,14 @@ write_study_outp_ds <- function (dv_ls, output_format_ls, path_params_ls, abstra
     if (is.null(rprt_lup)) {
         data("rprt_lup", package = "TTU", envir = environment())
         rprt_lup <- transform_rprt_lup(rprt_lup, add_suplry_rprt_1L_lgl = F, 
-            add_sharing_rprt_1L_lgl = T)
+            add_sharing_rprt_1L_lgl = T) %>% dplyr::filter(rprt_nms_chr != 
+            "TS_TTU_Mdls_Smry")
+        rprt_lup <- dplyr::mutate(rprt_lup, title_chr = dplyr::case_when(rprt_nms_chr == 
+            "Main_Analysis_Rprt" ~ paste0("Methods Report ", 
+            ifelse(is.null(reference_1L_int), 1, 1 + 3 * reference_1L_int), 
+            ": Analysis Program (", ifelse(is.null(reference_1L_int), 
+                "Primary Analysis", paste0("Secondary Analysis ", 
+                  LETTERS[reference_1L_int])), ")"), T ~ title_chr))
     }
     if (is.null(reference_1L_int)) {
         dv_ds_nm_and_url_chr <- dv_ls$primary_dv_chr
