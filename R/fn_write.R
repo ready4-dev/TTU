@@ -891,7 +891,7 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
                 predn_type_1L_chr = predn_type_1L_chr, round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr, 
                 sd_dbl = sd_dbl, tfmn_1L_chr = tfmn_1L_chr, utl_min_val_1L_dbl = ifelse(!is.null(outp_smry_ls$utl_min_val_1L_dbl), 
                   outp_smry_ls$utl_min_val_1L_dbl, -1))
-            shareable_mdl
+            table_predn_mdl
         }) %>% stats::setNames(outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())
     outp_smry_ls$shareable_mdls_ls <- shareable_mdls_ls
     outp_smry_ls$shareable_mdls_tb <- NULL
@@ -1176,7 +1176,7 @@ write_ts_mdl_plts <- function (brms_mdl, table_predn_mdl = NULL, tfd_data_tb, md
             model_mdl = table_predn_mdl, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
             is_brms_mdl_1L_lgl = F, predn_type_1L_chr = predn_type_1L_chr, 
             sd_dbl = sd_dbl, sfx_1L_chr = ifelse(!is.null(brms_mdl), 
-                " from table", sfx_1L_chr), tfmn_1L_chr = tfmn_1L_chr, 
+                " from coefficients", sfx_1L_chr), tfmn_1L_chr = tfmn_1L_chr, 
             utl_min_val_1L_dbl = utl_min_val_1L_dbl)
     }
     plt_nms_chr <- paste0(mdl_nm_1L_chr, "_", c("coefs", "hetg", 
@@ -1208,9 +1208,9 @@ write_ts_mdl_plts <- function (brms_mdl, table_predn_mdl = NULL, tfd_data_tb, md
                       " from model", sfx_1L_chr), utl_min_val_1L_dbl = ifelse(.x == 
                       5, NA_real_, utl_min_val_1L_dbl))), cmprsn_predd_var_nm_1L_chr = ifelse(is.null(table_predn_mdl), 
                     NA_character_, ifelse(.x %in% c(3, 7), transform_predd_var_nm("Predicted", 
-                      sfx_1L_chr = " from table", utl_min_val_1L_dbl = ifelse(.x == 
+                      sfx_1L_chr = " from coefficients", utl_min_val_1L_dbl = ifelse(.x == 
                         3, NA_real_, utl_min_val_1L_dbl)), transform_predd_var_nm("Simulated", 
-                      sfx_1L_chr = " from table", utl_min_val_1L_dbl = ifelse(.x == 
+                      sfx_1L_chr = " from coefficients", utl_min_val_1L_dbl = ifelse(.x == 
                         5, NA_real_, utl_min_val_1L_dbl)))))
             }
             else {
