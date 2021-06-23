@@ -1169,14 +1169,14 @@ write_ts_mdl_plts <- function (brms_mdl, table_predn_mdl = NULL, tfd_data_tb, md
         model_mdl = brms_mdl, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
         is_brms_mdl_1L_lgl = inherits(brms_mdl, "brmsfit"), predn_type_1L_chr = predn_type_1L_chr, 
         sd_dbl = NA_real_, sfx_1L_chr = ifelse(!is.null(table_predn_mdl), 
-            " from model", sfx_1L_chr), tfmn_1L_chr = tfmn_1L_chr, 
+            " from brmsfit", sfx_1L_chr), tfmn_1L_chr = tfmn_1L_chr, 
         utl_min_val_1L_dbl = utl_min_val_1L_dbl)
     if (!is.null(table_predn_mdl)) {
         tfd_data_tb <- transform_ds_for_all_cmprsn_plts(tfd_data_tb = tfd_data_tb, 
             model_mdl = table_predn_mdl, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
             is_brms_mdl_1L_lgl = F, predn_type_1L_chr = predn_type_1L_chr, 
             sd_dbl = sd_dbl, sfx_1L_chr = ifelse(!is.null(brms_mdl), 
-                " from coefficients", sfx_1L_chr), tfmn_1L_chr = tfmn_1L_chr, 
+                " from table", sfx_1L_chr), tfmn_1L_chr = tfmn_1L_chr, 
             utl_min_val_1L_dbl = utl_min_val_1L_dbl)
     }
     plt_nms_chr <- paste0(mdl_nm_1L_chr, "_", c("coefs", "hetg", 
@@ -1202,15 +1202,15 @@ write_ts_mdl_plts <- function (brms_mdl, table_predn_mdl = NULL, tfd_data_tb, md
                   depnt_var_desc_1L_chr = depnt_var_desc_1L_chr, 
                   predd_val_var_nm_1L_chr = ifelse(.x %in% c(3, 
                     7), transform_predd_var_nm("Predicted", sfx_1L_chr = ifelse(!is.null(table_predn_mdl), 
-                    " from model", sfx_1L_chr), utl_min_val_1L_dbl = ifelse(.x == 
+                    " from brmsfit", sfx_1L_chr), utl_min_val_1L_dbl = ifelse(.x == 
                     3, NA_real_, utl_min_val_1L_dbl)), transform_predd_var_nm("Simulated", 
                     sfx_1L_chr = ifelse(!is.null(table_predn_mdl), 
-                      " from model", sfx_1L_chr), utl_min_val_1L_dbl = ifelse(.x == 
+                      " from brmsfit", sfx_1L_chr), utl_min_val_1L_dbl = ifelse(.x == 
                       5, NA_real_, utl_min_val_1L_dbl))), cmprsn_predd_var_nm_1L_chr = ifelse(is.null(table_predn_mdl), 
                     NA_character_, ifelse(.x %in% c(3, 7), transform_predd_var_nm("Predicted", 
-                      sfx_1L_chr = " from coefficients", utl_min_val_1L_dbl = ifelse(.x == 
+                      sfx_1L_chr = " from table", utl_min_val_1L_dbl = ifelse(.x == 
                         3, NA_real_, utl_min_val_1L_dbl)), transform_predd_var_nm("Simulated", 
-                      sfx_1L_chr = " from coefficients", utl_min_val_1L_dbl = ifelse(.x == 
+                      sfx_1L_chr = " from table", utl_min_val_1L_dbl = ifelse(.x == 
                         5, NA_real_, utl_min_val_1L_dbl)))))
             }
             else {
@@ -1221,10 +1221,10 @@ write_ts_mdl_plts <- function (brms_mdl, table_predn_mdl = NULL, tfd_data_tb, md
                   round_var_nm_1L_chr = round_var_nm_1L_chr, 
                   predd_val_var_nm_1L_chr = ifelse(.x %in% c(4, 
                     8), transform_predd_var_nm("Predicted", sfx_1L_chr = ifelse(!is.null(table_predn_mdl), 
-                    " from model", sfx_1L_chr), utl_min_val_1L_dbl = ifelse(.x == 
+                    " from brmsfit", sfx_1L_chr), utl_min_val_1L_dbl = ifelse(.x == 
                     4, NA_real_, utl_min_val_1L_dbl)), transform_predd_var_nm("Simulated", 
                     sfx_1L_chr = ifelse(!is.null(table_predn_mdl), 
-                      " from model", sfx_1L_chr), utl_min_val_1L_dbl = ifelse(.x == 
+                      " from brmsfit", sfx_1L_chr), utl_min_val_1L_dbl = ifelse(.x == 
                       6, NA_real_, utl_min_val_1L_dbl))), args_ls = args_ls)
             }
         }

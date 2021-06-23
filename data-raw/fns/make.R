@@ -735,7 +735,7 @@ make_mdl_desc_lines <- function(outp_smry_ls,
                                       ". The predictor variables are ",
                                       "baseline values and subsequent changes in ",
                                       collapse = ""), predictors_desc_chr,". ",
-                               "The catalogue reference for this model is",
+                               "The catalogue reference for this model is ",
                                mdl_nm_1L_chr,
                                ".")
   return(mdl_desc_lines_chr)
