@@ -748,7 +748,7 @@ make_mdl_coef_ratio_ls <- function (outp_smry_ls, predr_ctgs_ls = NULL)
 #' @export 
 #' @importFrom dplyr filter
 #' @importFrom purrr map_chr
-#' @importFrom stringr str_remove str_replace_all
+#' @importFrom stringr str_remove
 #' @importFrom ready4fun get_from_lup_obj
 #' @keywords internal
 make_mdl_desc_lines <- function (outp_smry_ls, mdl_nm_1L_chr, output_type_1L_chr = "PDF") 
@@ -780,8 +780,8 @@ make_mdl_desc_lines <- function (outp_smry_ls, mdl_nm_1L_chr, output_type_1L_chr
             evaluate_lgl = F), ". The predictor variables are ", 
         "baseline values and subsequent changes in ", collapse = ""), 
         predictors_desc_chr, ". ", "The catalogue reference for this model is ", 
-        ifelse(output_type_1L_chr = "PDF", stringr::str_replace_all(mdl_nm_1L_chr, 
-            "_", "{\\_}"), mdl_nm_1L_chr), ".")
+        ifelse(output_type_1L_chr == "PDF", paste0("\\texttt{\\detokenize{", 
+            mdl_nm_1L_chr, "}}"), mdl_nm_1L_chr), ".")
     return(mdl_desc_lines_chr)
 }
 #' Make model names
