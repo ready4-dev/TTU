@@ -44,7 +44,7 @@ institutes_tb %>%
 We combine the data about authors with other bibliographic information.
 
 ```{r}
-header_yaml_args_ls <- TTU::make_header_yaml_args_ls(authors_tb = authors_tb,
+header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = authors_tb,
                                                      institutes_tb = institutes_tb,
                                                      title_1L_chr = "A hypothetical study using fake data for instructional purposes only",
                                                      keywords_chr = c("this","is","a","replication","using","fake","data","do", "not","cite"))
@@ -54,7 +54,7 @@ header_yaml_args_ls <- TTU::make_header_yaml_args_ls(authors_tb = authors_tb,
 We add parameters relating to the desired output format of the reports we will be producing.
 
 ```{r }
-output_format_ls <- TTU::make_output_format_ls(manuscript_outp_1L_chr = "Word",
+output_format_ls <- make_output_format_ls(manuscript_outp_1L_chr = "Word",
                                                manuscript_digits_1L_int = 2L,
                                                supplementary_outp_1L_chr = "PDF",
                                                supplementary_digits_1L_int = 2L)
@@ -89,7 +89,7 @@ use_fake_data_1L_lgl <-  TRUE
 A data dictionary must also be supplied for the dataset. The dictionary must be of class `ready4_dictionary` from the `ready4use` package.
 
 ```{r}
-dictionary_tb <- TTU::make_eq5d_ds_dict(ds_tb) 
+dictionary_tb <- make_eq5d_ds_dict(ds_tb) 
 ```
 
 The data dictionary is reproduced below.
@@ -105,7 +105,7 @@ dictionary_tb %>%
 We describe the features of our dataset that are most relevant to the analyses we are planning to undertake. Note all, Multi-Attribute Utility Instrument (MAUI) question variables must start with a common prefix, which needs to be passed to the `maui_item_pfx_1L_chr` argument. The dataset does not need to include variables for total health utility scores (weighted and unweighted), as these variables will be computed during the analysis. However, you can supply the names you wish assigned to these variables once they are computed using the `utl_wtd_var_nm_1L_chr` and `utl_unwtd_var_nm_1L_chr` arguments.
 
 ```{r echo = TRUE}
-ds_descvs_ls <- TTU::make_ds_descvs_ls(candidate_predrs_chr = c("k10_int","psych_well_int"),#
+ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("k10_int","psych_well_int"),#
                      cohort_descv_var_nms_chr = c("d_age", "Gender", "d_relation_s","d_sexual_ori_s", "Region", "CALD", "d_studying_working"),
                      dictionary_tb = dictionary_tb, 
                      id_var_nm_1L_chr = "uid", 
@@ -121,7 +121,7 @@ ds_descvs_ls <- TTU::make_ds_descvs_ls(candidate_predrs_chr = c("k10_int","psych
 We create a lookup table with metadata on the dataset variables that we specified in the `candidate_predrs_chr` element of `ds_descvs_ls` as our candidate predictors.
 
 ```{r}
-predictors_lup <- TTU::TTU_predictors_lup(TTU::make_pt_TTU_predictors_lup(short_name_chr = ds_descvs_ls$candidate_predrs_chr,
+predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = ds_descvs_ls$candidate_predrs_chr,
                                               long_name_chr = c("Kessler Psychological Distress - 10 Item Total Score",
                                                    "Overall Psychological Wellbeing (Winefield et al. 2012)"),
                                               min_val_dbl = c(10,18),
@@ -142,7 +142,7 @@ We also need to provide information specific to the MAUI used to collect the dat
  - also calculate an unweighted score that is a simple sum of all MAUI item question responses (e.g. the last three lines of the example `maui_scoring_fn`).
 
 ```{r}
-maui_params_ls <- TTU::make_maui_params_ls(maui_itm_short_nms_chr = c("Mobility", "Self-care", "Activities","Pain","Anxiety"),
+maui_params_ls <- make_maui_params_ls(maui_itm_short_nms_chr = c("Mobility", "Self-care", "Activities","Pain","Anxiety"),
                                       maui_scoring_fn = function(data_tb,
                                              maui_item_pfx_1L_chr,
                                              id_var_nm_1L_chr, 
@@ -165,7 +165,7 @@ maui_params_ls <- TTU::make_maui_params_ls(maui_itm_short_nms_chr = c("Mobility"
 We combine a lookup table of our candidate model types with parameters specific to the analyses to be run to compare the performance of each model.
 
 ```{r}
-mdl_smry_ls <- TTU::make_mdl_smry_ls(mdl_types_lup = TTU::get_cndts_for_mxd_mdls(),
+mdl_smry_ls <- make_mdl_smry_ls(mdl_types_lup = get_cndts_for_mxd_mdls(),
                                      folds_1L_int = 10L,
                                      max_nbr_of_boruta_mdl_runs_int = 300L)
 ```
@@ -173,7 +173,7 @@ mdl_smry_ls <- TTU::make_mdl_smry_ls(mdl_types_lup = TTU::get_cndts_for_mxd_mdls
 We create a summary object that contains the core parameters that will be common to most of the analyses we are planning to run.
 
 ```{r echo = TRUE }
-analysis_core_params_ls <- TTU::make_analysis_core_params_ls(ds_descvs_ls = ds_descvs_ls,
+analysis_core_params_ls <- make_analysis_core_params_ls(ds_descvs_ls = ds_descvs_ls,
                                                              mdl_smry_ls = mdl_smry_ls,
                                                              output_format_ls = output_format_ls,
                                                              predictors_lup = predictors_lup,
@@ -185,7 +185,7 @@ analysis_core_params_ls <- TTU::make_analysis_core_params_ls(ds_descvs_ls = ds_d
 We next create an object that specifies the relative locations of the input data and the intended destination for analysis outputs and reports. The default settings of the `make_path_params_ls` function will write all output into a new directory, created one level up from the current working directory.
 
 ```{r, warning=F, message=F, eval=F}
-path_params_ls <- TTU::make_path_params_ls(use_fake_data_1L_lgl = use_fake_data_1L_lgl,
+path_params_ls <- make_path_params_ls(use_fake_data_1L_lgl = use_fake_data_1L_lgl,
                                       write_new_dir_1L_lgl = T)
 ```
 
@@ -204,7 +204,7 @@ dv_ls <- list(primary_dv_chr = c("fakes", # REPLACE WITH DATAVERSE IN WHICH YOUR
 A list of valid input values for our primary analysis is now constructed, principally using the objects created in the preceding steps. The `make_valid_params_ls_ls` checks the naming conventions used in some variables of interest and where necessary modifies the names of these variables.
 
 ```{r eval = F}
-valid_params_ls_ls <- TTU::make_valid_params_ls_ls(analysis_core_params_ls,
+valid_params_ls_ls <- make_valid_params_ls_ls(analysis_core_params_ls,
                                                    candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
                                                    ds_tb = ds_tb, 
                                                    maui_params_ls = maui_params_ls,
@@ -216,7 +216,7 @@ valid_params_ls_ls <- TTU::make_valid_params_ls_ls(analysis_core_params_ls,
 All analytic steps are executed with the following function call, which also creates [a report detailing the program that performs these tasks](https://dataverse.harvard.edu/api/access/datafile/4806541).
 
 ```{r echo = TRUE, eval=FALSE}
-TTU::write_report(params_ls = valid_params_ls_ls$params_ls,
+write_report(params_ls = valid_params_ls_ls$params_ls,
                   paths_ls = path_params_ls$paths_ls,
                   rprt_nm_1L_chr = "Main_Analysis_Rprt",
                   abstract_args_ls = NULL,
@@ -227,7 +227,7 @@ TTU::write_report(params_ls = valid_params_ls_ls$params_ls,
 If details to a valid online data repository have been supplied, the following function call uploads data from which predictions can be made using model coefficients. The uploaded files can be viewed at: https://doi.org/10.7910/DVN/612HDC
 ```{r echo = TRUE, eval=FALSE }
 if(!is.null(dv_ls)){
-  TTU::write_study_outp_ds(dv_ls,
+  write_study_outp_ds(dv_ls,
                            output_format_ls = output_format_ls,
                            path_params_ls = path_params_ls,
                            use_fake_data_1L_lgl = use_fake_data_1L_lgl)
@@ -237,7 +237,7 @@ if(!is.null(dv_ls)){
 ## Report results
 [A report, summarising all the transfer to utility models](https://dataverse.harvard.edu/api/access/datafile/4806542) created in the preceding step is authored with the following function call. 
 ```{r echo = TRUE, eval=FALSE }
-TTU::write_mdl_smry_rprt(header_yaml_args_ls,
+write_mdl_smry_rprt(header_yaml_args_ls,
                          path_params_ls = path_params_ls,
                          dv_ls = dv_ls,
                          use_fake_data_1L_lgl = use_fake_data_1L_lgl,
@@ -297,7 +297,7 @@ saveRDS(results_ls,paste0(path_params_ls$paths_ls$output_data_dir_1L_chr,"/resul
 All remaining local copies (but not the original version) of the study dataset are deleted from the workspace.
 
 ```{r echo = TRUE, eval=FALSE }
-TTU::write_to_delete_ds_copies(path_params_ls$paths_ls)
+write_to_delete_ds_copies(path_params_ls$paths_ls)
 ```
 
 \elandscape

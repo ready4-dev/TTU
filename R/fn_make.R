@@ -742,15 +742,16 @@ make_mdl_coef_ratio_ls <- function (outp_smry_ls, predr_ctgs_ls = NULL)
 #' @description make_mdl_desc_lines() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model description lines. The function returns Model description lines (a character vector).
 #' @param outp_smry_ls Output summary (a list)
 #' @param mdl_nm_1L_chr Model name (a character vector of length one)
+#' @param output_type_1L_chr Output type (a character vector of length one), Default: 'PDF'
 #' @return Model description lines (a character vector)
 #' @rdname make_mdl_desc_lines
 #' @export 
 #' @importFrom dplyr filter
 #' @importFrom purrr map_chr
-#' @importFrom stringr str_remove
+#' @importFrom stringr str_remove str_replace_all
 #' @importFrom ready4fun get_from_lup_obj
 #' @keywords internal
-make_mdl_desc_lines <- function (outp_smry_ls, mdl_nm_1L_chr) 
+make_mdl_desc_lines <- function (outp_smry_ls, mdl_nm_1L_chr, output_type_1L_chr = "PDF") 
 {
     mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model == 
         mdl_nm_1L_chr)
@@ -779,7 +780,8 @@ make_mdl_desc_lines <- function (outp_smry_ls, mdl_nm_1L_chr)
             evaluate_lgl = F), ". The predictor variables are ", 
         "baseline values and subsequent changes in ", collapse = ""), 
         predictors_desc_chr, ". ", "The catalogue reference for this model is ", 
-        mdl_nm_1L_chr, ".")
+        ifelse(output_type_1L_chr = "PDF", stringr::str_replace_all(mdl_nm_1L_chr, 
+            "_", "{\\_}"), mdl_nm_1L_chr), ".")
     return(mdl_desc_lines_chr)
 }
 #' Make model names

@@ -4,12 +4,14 @@
 \alias{make_mdl_desc_lines}
 \title{Make model description lines}
 \usage{
-make_mdl_desc_lines(outp_smry_ls, mdl_nm_1L_chr)
+make_mdl_desc_lines(outp_smry_ls, mdl_nm_1L_chr, output_type_1L_chr = "PDF")
 }
 \arguments{
 \item{outp_smry_ls}{Output summary (a list)}
 
 \item{mdl_nm_1L_chr}{Model name (a character vector of length one)}
+
+\item{output_type_1L_chr}{Output type (a character vector of length one), Default: 'PDF'}
 }
 \value{
 Model description lines (a character vector)

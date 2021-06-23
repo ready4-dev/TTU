@@ -694,7 +694,8 @@ make_mdl_type_smry_tbl <- function(mdls_tb,
   return(mdl_type_smry_tbl_tb)
 }
 make_mdl_desc_lines <- function(outp_smry_ls,
-                                mdl_nm_1L_chr){
+                                mdl_nm_1L_chr,
+                                output_type_1L_chr = "PDF"){
   mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>%
     dplyr::filter(Model == mdl_nm_1L_chr)
   predictors_chr <- mdl_smry_tb$Parameter[!mdl_smry_tb$Parameter %in% c("SD (Intercept)","Intercept","R2","RMSE","Sigma")] %>%
@@ -736,7 +737,9 @@ make_mdl_desc_lines <- function(outp_smry_ls,
                                       "baseline values and subsequent changes in ",
                                       collapse = ""), predictors_desc_chr,". ",
                                "The catalogue reference for this model is ",
-                               mdl_nm_1L_chr,
+                               ifelse(output_type_1L_chr = "PDF",
+                                      stringr::str_replace_all(mdl_nm_1L_chr,"_","{\\_}"),
+                                      mdl_nm_1L_chr),
                                ".")
   return(mdl_desc_lines_chr)
 }
