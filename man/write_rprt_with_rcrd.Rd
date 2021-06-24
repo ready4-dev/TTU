@@ -10,11 +10,10 @@ write_rprt_with_rcrd(
   header_yaml_args_ls = NULL,
   rprt_lup = NULL,
   use_fake_data_1L_lgl = F,
-  subtitle_1L_chr = "Results Supplementary Report 1: Catalogue of time series models",
- 
-    rprt_subtitle_1L_chr = "Methods Supplementary Report 2: Record of auto-generation of model catalogue.",
   rprt_nm_1L_chr = "TS_TTU_Mdls_Smry",
   rcrd_nm_1L_chr = "Write_Rprt_Rcrd",
+  reference_1L_int = NULL,
+  start_at_int = c(2, 1),
   output_type_1L_chr = "PDF",
   rprt_output_type_1L_chr = "PDF",
   nbr_of_digits_1L_int = 2L,
@@ -34,13 +33,13 @@ write_rprt_with_rcrd(
 
 \item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one), Default: F}
 
-\item{subtitle_1L_chr}{Subtitle (a character vector of length one), Default: 'Results Supplementary Report 1: Catalogue of time series models'}
-
-\item{rprt_subtitle_1L_chr}{Report subtitle (a character vector of length one), Default: 'Methods Supplementary Report 2: Record of auto-generation of model catalogue.'}
-
 \item{rprt_nm_1L_chr}{Report name (a character vector of length one), Default: 'TS_TTU_Mdls_Smry'}
 
 \item{rcrd_nm_1L_chr}{Rcrd name (a character vector of length one), Default: 'Write_Rprt_Rcrd'}
+
+\item{reference_1L_int}{Reference (an integer vector of length one), Default: NULL}
+
+\item{start_at_int}{Start at (an integer vector), Default: c(2, 1)}
 
 \item{output_type_1L_chr}{Output type (a character vector of length one), Default: 'PDF'}
 

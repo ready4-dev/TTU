@@ -375,12 +375,15 @@ transform_predr_nm_part_of_phrases <- function (phrases_chr, old_nms_chr = NULL,
 #' @param rprt_lup Report (a lookup table)
 #' @param add_suplry_rprt_1L_lgl Add suplry report (a logical vector of length one), Default: T
 #' @param add_sharing_rprt_1L_lgl Add sharing report (a logical vector of length one), Default: F
+#' @param start_at_int Start at (an integer vector), Default: NULL
+#' @param reference_1L_int Reference (an integer vector of length one), Default: NULL
 #' @return Report (a lookup table)
 #' @rdname transform_rprt_lup
 #' @export 
 #' @importFrom tibble add_case
-#' @importFrom dplyr filter
-transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharing_rprt_1L_lgl = F) 
+#' @importFrom dplyr filter mutate case_when
+transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharing_rprt_1L_lgl = F, 
+    start_at_int = NULL, reference_1L_int = NULL) 
 {
     if (add_suplry_rprt_1L_lgl) {
         rprt_lup <- rprt_lup %>% tibble::add_case(rprt_nms_chr = "Suplry_Analysis_Rprt", 
@@ -394,6 +397,24 @@ transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharin
             title_chr = "Supplementary report outlining the algorithm to create and disseminate shareable study output.", 
             paths_to_rmd_dir_1L_chr = NA_character_, pkg_dirs_chr = "Markdown", 
             packages_chr = "TTU", nms_of_rmd_chr = "Share.Rmd")
+    }
+    if (!is.null(start_at_int[1])) {
+        rprt_lup <- dplyr::mutate(rprt_lup, title_chr = dplyr::case_when(rprt_nms_chr %in% 
+            c("Main_Analysis_Rprt") ~ paste0("Methods Report ", 
+            start_at_int[1], ": Analysis Program (", "Primary Analysis", 
+            ")"), rprt_nms_chr %in% c("Suplry_Analysis_Rprt") ~ 
+            paste0("Methods Report ", start_at_int[1] + 3, ": Analysis Program (", 
+                "Secondary Analysis", ")"), rprt_nms_chr %in% 
+            c("Write_Rprt_Rcrd") ~ paste0("Methods Report ", 
+            start_at_int[1] + 1, ": Reporting Program"), rprt_nms_chr %in% 
+            c("Share_Outp_Rprt") ~ paste0("Methods Report ", 
+            start_at_int[1] + 2, ": Sharing Program"), rprt_nms_chr %in% 
+            c("TS_TTU_Mdls_Smry") ~ paste0("Results Report ", 
+            ifelse(is.null(reference_1L_int), start_at_int[2], 
+                start_at_int[2] + reference_1L_int), ": Catalogue of time series models (", 
+            ifelse(is.null(reference_1L_int), "Primary Analysis", 
+                paste0("Secondary Analysis ", LETTERS[reference_1L_int])), 
+            ")"), T ~ title_chr))
     }
     return(rprt_lup)
 }
@@ -477,6 +498,31 @@ transform_tbl_to_rnd_vars <- function (ds_tb, nbr_of_digits_1L_int = 2L)
     tfd_ds_tb <- ds_tb %>% tibble::as_tibble() %>% dplyr::mutate(dplyr::across(where(is.numeric), 
         ~round(.x, nbr_of_digits_1L_int) %>% format(nsmall = nbr_of_digits_1L_int)))
     return(tfd_ds_tb)
+}
+#' Transform timepoint values
+#' @description transform_timepoint_vals() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform timepoint values. Function argument timepoint_vals_chr specifies the object to be updated. Argument timepoint_levels_chr provides the object to be updated. The function returns Timepoint values (a character vector).
+#' @param timepoint_vals_chr Timepoint values (a character vector)
+#' @param timepoint_levels_chr Timepoint levels (a character vector)
+#' @param bl_val_1L_chr Baseline value (a character vector of length one)
+#' @return Timepoint values (a character vector)
+#' @rdname transform_timepoint_vals
+#' @export 
+
+#' @keywords internal
+transform_timepoint_vals <- function (timepoint_vals_chr, timepoint_levels_chr, bl_val_1L_chr) 
+{
+    if (length(timepoint_vals_chr) == 1) {
+        timepoint_vals_chr <- bl_val_1L_chr
+    }
+    else {
+        unique_vals_chr <- unique(timepoint_vals_chr)
+        if (length(timepoint_vals_chr) > length(unique_vals_chr)) 
+            timepoint_vals_chr <- c(unique_vals_chr, setdiff(c(bl_val_1L_chr, 
+                setdiff(timepoint_levels_chr, bl_val_1L_chr)), 
+                unique_vals_chr)[1:(length(timepoint_vals_chr) - 
+                length(unique_vals_chr))])
+    }
+    return(timepoint_vals_chr)
 }
 #' Transform time series model data
 #' @description transform_ts_mdl_data() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform time series model data. Function argument mdl_ls specifies the object to be updated. Argument data_tb provides the object to be updated. The function returns Cnfdl (a list of models).

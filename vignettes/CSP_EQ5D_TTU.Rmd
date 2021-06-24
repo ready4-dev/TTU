@@ -228,9 +228,9 @@ If details to a valid online data repository have been supplied, the following f
 ```{r echo = TRUE, eval=FALSE }
 if(!is.null(dv_ls)){
   write_study_outp_ds(dv_ls,
-                           output_format_ls = output_format_ls,
-                           path_params_ls = path_params_ls,
-                           use_fake_data_1L_lgl = use_fake_data_1L_lgl)
+                      output_format_ls = output_format_ls,
+                      path_params_ls = path_params_ls,
+                      use_fake_data_1L_lgl = use_fake_data_1L_lgl)
 }
 ```
 

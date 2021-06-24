@@ -49,13 +49,16 @@ params:
   dv_ds_nm_and_url_chr: !r NA_character_
   dv_mdl_desc_1L_chr: !r NA_character_
   ds_tb: !r NULL
+  #eval_1L_lgl: !r FALSE
   inc_fl_types_chr: ".pdf"
   nbr_of_digits_1L_int: !r 2L
   output_type_1L_chr: "PDF"
   path_from_top_level_1L_chr: !r NULL
   path_to_data_from_top_level_chr: !r NULL
-  purge_data_1L_lgl: FALSE
+  #purge_data_1L_lgl: FALSE
   rprt_lup: !r NULL
+  #rprt_output_type_1L_chr: "PDF"
+  #rprt_subtitle_1L_chr: !r NA_character_
   rprt_type_1L_chr: "Share"
   share_mdls_1L_lgl: TRUE
   subtitle_1L_chr: "Record of creation and dissemination of shareable outputs"
@@ -78,9 +81,9 @@ if(params_ls$share_mdls_1L_lgl){
   child_chr <- NULL
 }
 ```
-# Create shareable data
-```{r, child = child_chr[1]}
-```
+<!-- # Create shareable data -->
+<!-- ```{r, child = child_chr[1]} -->
+<!-- ``` -->
 
 # Specify destination data repository
 ```{r, child=c('_Add_DV_Details.Rmd')}

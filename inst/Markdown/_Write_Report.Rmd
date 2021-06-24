@@ -5,7 +5,8 @@ date: "16/04/2021"
 output: html_document
 ---
 
-Write document summarising all time series models created in this analysis.
+## Create model catalogue
+Write a file that summarises the key features of all time series models created by this analysis.
 
 ```{r eval = params_ls$eval_1L_lgl, message=FALSE, results='hide', warning=FALSE}
 outp_smry_ls <-  append(outp_smry_ls, 

@@ -15,7 +15,7 @@ write_study_outp_ds(
   purge_data_1L_lgl = FALSE,
   reference_1L_int = NULL,
   rprt_lup = NULL,
-  subtitle_1L_chr = NULL,
+  start_at_int = c(2, 1),
   use_fake_data_1L_lgl = F
 )
 }
@@ -38,7 +38,7 @@ write_study_outp_ds(
 
 \item{rprt_lup}{Report (a lookup table), Default: NULL}
 
-\item{subtitle_1L_chr}{Subtitle (a character vector of length one), Default: NULL}
+\item{start_at_int}{Start at (an integer vector), Default: c(2, 1)}
 
 \item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one), Default: F}
 }

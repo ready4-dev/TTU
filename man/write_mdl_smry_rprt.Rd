@@ -15,8 +15,7 @@ write_mdl_smry_rprt(
   rprt_lup = NULL,
   rcrd_nm_1L_chr = "Write_Rprt_Rcrd",
   rprt_nm_1L_chr = "TS_TTU_Mdls_Smry",
-  rprt_subtitle_1L_chr = NULL,
-  subtitle_1L_chr = NULL,
+  start_at_int = c(2, 1),
   use_shareable_mdls_1L_lgl = F
 )
 }
@@ -41,9 +40,7 @@ write_mdl_smry_rprt(
 
 \item{rprt_nm_1L_chr}{Report name (a character vector of length one), Default: 'TS_TTU_Mdls_Smry'}
 
-\item{rprt_subtitle_1L_chr}{Report subtitle (a character vector of length one), Default: NULL}
-
-\item{subtitle_1L_chr}{Subtitle (a character vector of length one), Default: NULL}
+\item{start_at_int}{Start at (an integer vector), Default: c(2, 1)}
 
 \item{use_shareable_mdls_1L_lgl}{Use shareable models (a logical vector of length one), Default: F}
 }

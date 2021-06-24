@@ -7,7 +7,9 @@
 transform_rprt_lup(
   rprt_lup,
   add_suplry_rprt_1L_lgl = T,
-  add_sharing_rprt_1L_lgl = F
+  add_sharing_rprt_1L_lgl = F,
+  start_at_int = NULL,
+  reference_1L_int = NULL
 )
 }
 \arguments{
@@ -16,6 +18,10 @@ transform_rprt_lup(
 \item{add_suplry_rprt_1L_lgl}{Add suplry report (a logical vector of length one), Default: T}
 
 \item{add_sharing_rprt_1L_lgl}{Add sharing report (a logical vector of length one), Default: F}
+
+\item{start_at_int}{Start at (an integer vector), Default: NULL}
+
+\item{reference_1L_int}{Reference (an integer vector of length one), Default: NULL}
 }
 \value{
 Report (a lookup table)

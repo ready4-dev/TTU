@@ -187,19 +187,24 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                                 rprt_lup = NULL,
                                 rcrd_nm_1L_chr = "Write_Rprt_Rcrd",
                                 rprt_nm_1L_chr = "TS_TTU_Mdls_Smry",
-                                rprt_subtitle_1L_chr = NULL,
-                                subtitle_1L_chr = NULL,
+                                #rprt_subtitle_1L_chr = NULL,
+                                start_at_int = c(2,1),
+                                #subtitle_1L_chr = NULL,
                                 use_shareable_mdls_1L_lgl = F){
   paths_ls <- path_params_ls$paths_ls
   if(is.null(rprt_lup))
     data("rprt_lup", package = "TTU", envir = environment())
+  rprt_lup <- rprt_lup %>% transform_rprt_lup(add_suplry_rprt_1L_lgl = !is.null(reference_1L_int),
+                                              add_sharing_rprt_1L_lgl = T,
+                                              start_at_int = start_at_int,
+                                              reference_1L_int = reference_1L_int)
   if(is.null(reference_1L_int)){
     dv_ds_nm_and_url_chr <- dv_ls$primary_dv_chr
     path_to_outp_fl_1L_chr <- paste0(paths_ls$output_data_dir_1L_chr,"/I_ALL_OUTPUT_.RDS")
-    if(is.null(subtitle_1L_chr))
-      subtitle_1L_chr <- "Results Report 1: TTU Models (Primary Analysis)"
-    if(is.null(rprt_subtitle_1L_chr))
-      rprt_subtitle_1L_chr <- "Methods Report 2: Reporting Program (Primary Analysis)."
+    # if(is.null(subtitle_1L_chr))
+    #   subtitle_1L_chr <- "Results Report 1: TTU Models (Primary Analysis)"
+    # if(is.null(rprt_subtitle_1L_chr))
+    #   rprt_subtitle_1L_chr <- "Methods Report 2: Reporting Program (Primary Analysis)."
     #rcrd_rprt_append_ls <- NULL
     if(use_shareable_mdls_1L_lgl){
       main_rprt_append_ls <-list(rltv_path_to_data_dir_1L_chr = "../Output/G_Shareable/Models")
@@ -212,19 +217,19 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                                         paste0("secondary_",reference_1L_int),
                                         "Output","I_ALL_OUTPUT_.RDS")
     dv_ds_nm_and_url_chr <- dv_ls %>% purrr::pluck(paste0("secondary_",reference_1L_int,"_dv_chr"))
-    if(is.null(subtitle_1L_chr))
-    subtitle_1L_chr <- paste0("Results Report ",
-                              reference_1L_int+1,
-                              ": TTU Models (Secondary Analysis ",
-                              LETTERS[reference_1L_int],
-                              ")")
-
-    if(is.null(rprt_subtitle_1L_chr))
-      rprt_subtitle_1L_chr <- paste0("Methods Report ",
-                                     2+reference_1L_int*3,
-                                     ": Reporting Program (Secondary Analysis ",
-                                     LETTERS[reference_1L_int],
-                                     ").")
+    # if(is.null(subtitle_1L_chr))
+    # subtitle_1L_chr <- paste0("Results Report ",
+    #                           reference_1L_int+1,
+    #                           ": TTU Models (Secondary Analysis ",
+    #                           LETTERS[reference_1L_int],
+    #                           ")")
+    #
+    # if(is.null(rprt_subtitle_1L_chr))
+    #   rprt_subtitle_1L_chr <- paste0("Methods Report ",
+    #                                  2+reference_1L_int*3,
+    #                                  ": Reporting Program (Secondary Analysis ",
+    #                                  LETTERS[reference_1L_int],
+    #                                  ").")
     #rcrd_rprt_append_ls <- path_params_ls[1:2]
     main_rprt_append_ls <- list(existing_predrs_ls = readRDS(paste0(paths_ls$output_data_dir_1L_chr,
                                                                    "/I_ALL_OUTPUT_.RDS")) %>%
@@ -236,8 +241,10 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                        paths_ls = paths_ls,
                        header_yaml_args_ls = header_yaml_args_ls,
                        use_fake_data_1L_lgl = use_fake_data_1L_lgl,
-                       subtitle_1L_chr = subtitle_1L_chr,
-                       rprt_subtitle_1L_chr = rprt_subtitle_1L_chr,
+                       reference_1L_int = reference_1L_int,
+                       start_at_int = start_at_int,
+                       # subtitle_1L_chr = subtitle_1L_chr,
+                       # rprt_subtitle_1L_chr = rprt_subtitle_1L_chr,
                        rprt_nm_1L_chr = rprt_nm_1L_chr,
                        rcrd_nm_1L_chr = rcrd_nm_1L_chr,
                        output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr,
@@ -249,8 +256,10 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                        #rcrd_rprt_append_ls = rcrd_rprt_append_ls,
                        main_rprt_append_ls = main_rprt_append_ls)
   if(!is.null(dv_ls)){
-    ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = c(rprt_nm_1L_chr,"Write_Rprt_Rcrd"),
-                                                          title_chr = c(subtitle_1L_chr,rprt_subtitle_1L_chr)),
+    ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = c(rprt_nm_1L_chr,rcrd_nm_1L_chr),
+                                                          title_chr = rprt_lup %>%
+                                                            dplyr::filter(rprt_nms_chr %in% c(rprt_nm_1L_chr,rcrd_nm_1L_chr)) %>%
+                                                            dplyr::pull(title_chr)),
                                   dv_nm_1L_chr = dv_ds_nm_and_url_chr[1],
                                   ds_url_1L_chr = dv_ds_nm_and_url_chr[2],
                                   parent_dv_dir_1L_chr = paths_ls$dv_dir_1L_chr,
@@ -548,10 +557,12 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                                  header_yaml_args_ls = NULL,
                                  rprt_lup = NULL,
                                  use_fake_data_1L_lgl = F,
-                                 subtitle_1L_chr = "Results Supplementary Report 1: Catalogue of time series models",
-                                 rprt_subtitle_1L_chr = "Methods Supplementary Report 2: Record of auto-generation of model catalogue.",
+                                 # subtitle_1L_chr = "Results Supplementary Report 1: Catalogue of time series models",
+                                 # rprt_subtitle_1L_chr = "Methods Supplementary Report 2: Record of auto-generation of model catalogue.",
                                  rprt_nm_1L_chr = "TS_TTU_Mdls_Smry",
                                  rcrd_nm_1L_chr = "Write_Rprt_Rcrd",
+                                 reference_1L_int = NULL,
+                                 start_at_int = c(2,1),
                                  output_type_1L_chr = "PDF",
                                  rprt_output_type_1L_chr = "PDF",
                                  nbr_of_digits_1L_int = 2L,
@@ -560,10 +571,18 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                                  rcrd_rprt_append_ls = NULL){
   if(is.null(rprt_lup))
     data("rprt_lup", package = "TTU", envir = environment())
+  rprt_lup <- rprt_lup %>% transform_rprt_lup(add_suplry_rprt_1L_lgl = !is.null(reference_1L_int),
+                                              add_sharing_rprt_1L_lgl = T,
+                                              start_at_int = start_at_int,
+                                              reference_1L_int = reference_1L_int)
   list(outp_smry_ls =  append(readRDS(path_to_outp_fl_1L_chr),
                               list(rprt_lup = rprt_lup)),
        output_type_1L_chr = output_type_1L_chr,
-       subtitle_1L_chr = subtitle_1L_chr) %>%
+       subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup,
+                                                     match_value_xx = "TS_TTU_Mdls_Smry",
+                                                     match_var_nm_1L_chr = "rprt_nms_chr",
+                                                     target_var_nm_1L_chr = "title_chr",
+                                                     evaluate_lgl = F)) %>%
     append(main_rprt_append_ls) %>%
     write_report(paths_ls = paths_ls,
                  rprt_nm_1L_chr = rprt_nm_1L_chr,
@@ -578,8 +597,16 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
        rprt_lup = rprt_lup,
        rprt_nm_1L_chr = rprt_nm_1L_chr,
        rprt_output_type_1L_chr = output_type_1L_chr,
-       rprt_subtitle_1L_chr = subtitle_1L_chr,
-       subtitle_1L_chr = rprt_subtitle_1L_chr,
+       rprt_subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup,
+                                                          match_value_xx = "TS_TTU_Mdls_Smry",
+                                                          match_var_nm_1L_chr = "rprt_nms_chr",
+                                                          target_var_nm_1L_chr = "title_chr",
+                                                          evaluate_lgl = F),
+       subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup,
+                                                     match_value_xx = "Write_Rprt_Rcrd",
+                                                     match_var_nm_1L_chr = "rprt_nms_chr",
+                                                     target_var_nm_1L_chr = "title_chr",
+                                                     evaluate_lgl = F),
        use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>%
     append(rcrd_rprt_append_ls) %>%
     write_report(paths_ls = paths_ls,
@@ -849,42 +876,31 @@ write_study_outp_ds <- function(dv_ls,
                                 purge_data_1L_lgl = FALSE,
                                 reference_1L_int = NULL,
                                 rprt_lup = NULL,
-                                subtitle_1L_chr = NULL,
+                                start_at_int = c(2,1),
+                                #subtitle_1L_chr = NULL,
                                 use_fake_data_1L_lgl = F){
   paths_ls <- path_params_ls$paths_ls
   if(is.null(rprt_lup)){
     data("rprt_lup", package = "TTU", envir = environment())
     rprt_lup <- transform_rprt_lup(rprt_lup,
-                                       add_suplry_rprt_1L_lgl = F,
-                                       add_sharing_rprt_1L_lgl = T) %>%
-      dplyr::filter(rprt_nms_chr != "TS_TTU_Mdls_Smry")
-    rprt_lup <- dplyr::mutate(rprt_lup,
-                             title_chr = dplyr::case_when(rprt_nms_chr == "Main_Analysis_Rprt" ~ paste0("Methods Report ",
-                                                                                                        ifelse(is.null(reference_1L_int),
-                                                                                                               1,
-                                                                                                               1+3*reference_1L_int),
-                                                                                                        ": Analysis Program (",
-                                                                                                        ifelse(is.null(reference_1L_int),
-                                                                                                               "Primary Analysis",
-                                                                                                               paste0("Secondary Analysis ",LETTERS[reference_1L_int])),
-                                                                                                        ")"),
-                                                          T ~ title_chr))
+                                   add_suplry_rprt_1L_lgl = !is.null(reference_1L_int),
+                                   add_sharing_rprt_1L_lgl = T,
+                                   #number_rprts_1L_lgl = T,
+                                   start_at_int = start_at_int,
+                                   reference_1L_int = reference_1L_int)
+    # %>%
+    #   dplyr::filter(rprt_nms_chr != "TS_TTU_Mdls_Smry")
   }
+  # if(is.null(subtitle_1L_chr)){
+  #   subtitle_1L_chr <- #"Methods Report 3: Sharing Program (Primary Analysis)"
+  # }
   if(is.null(reference_1L_int)){
     dv_ds_nm_and_url_chr <- dv_ls$primary_dv_chr
-    if(is.null(subtitle_1L_chr)){
-      subtitle_1L_chr <- "Methods Report 3: Sharing Program (Primary Analysis)"
-    }
+    included_rprts_chr <- rprt_lup$rprt_nms_chr[rprt_lup$rprt_nms_chr != "Share_Outp_Rprt"]
     transform_paths_ls <- NULL
   }else{
     dv_ds_nm_and_url_chr <- dv_ls %>% purrr::pluck(paste0("secondary_",reference_1L_int,"_dv_chr"))
-    if(is.null(subtitle_1L_chr)){
-    subtitle_1L_chr <- paste0("Methods Report ",
-                              3+3*reference_1L_int,
-                              ": Sharing Program (Secondary Analysis ",
-                              LETTERS[reference_1L_int],
-                              ")")
-    }
+    included_rprts_chr <- c("Suplry_Analysis_Rprt","TS_TTU_Mdls_Smry")[min(2,reference_1L_int):2]
     transform_paths_ls = list(fn = transform_paths_ls_for_scndry,
                               args_ls = list(reference_1L_int = reference_1L_int,
                                              remove_prmry_1L_lgl = T))
@@ -892,12 +908,19 @@ write_study_outp_ds <- function(dv_ls,
   }
   params_ls <- list(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
                     dv_mdl_desc_1L_chr = dv_mdl_desc_1L_chr,
+                   # eval_1L_lgl = F,# REMOVE?
                     inc_fl_types_chr = inc_fl_types_chr,
                     nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int,
                     output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr,
-                    purge_data_1L_lgl = purge_data_1L_lgl,
+                    #purge_data_1L_lgl = purge_data_1L_lgl, # REMOVE?
                     rprt_lup = rprt_lup,
-                    subtitle_1L_chr = subtitle_1L_chr,
+                    # rprt_output_type_1L_chr = "PDF",# # REMOVE?
+                    # rprt_subtitle_1L_chr = NA_character_,# # REMOVE?
+                    subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup,
+                                                                  match_value_xx = "Share_Outp_Rprt",
+                                                                  match_var_nm_1L_chr = "rprt_nms_chr",
+                                                                  target_var_nm_1L_chr = "title_chr",
+                                                                  evaluate_lgl = F),
                     transform_paths_ls = transform_paths_ls,
                     use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>%
     append(path_params_ls[1:2])

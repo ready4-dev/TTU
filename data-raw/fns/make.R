@@ -359,7 +359,17 @@ make_fake_ts_data <- function (outp_smry_ls,
         round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr)
     fk_data_ls <- synthpop::syn(data_tb, visit.sequence = names(data_tb)[names(data_tb) !=
         outp_smry_ls$id_var_nm_1L_chr], seed = outp_smry_ls$seed_1L_int)
-    fk_data_tb <- fk_data_ls$syn
+    fk_data_tb <- fk_data_ls$syn %>%
+      dplyr::mutate(!!rlang::sym(outp_smry_ls$round_var_nm_1L_chr) := as.character(!!rlang::sym(outp_smry_ls$round_var_nm_1L_chr))) %>%
+      dplyr::group_by(!!rlang::sym(outp_smry_ls$id_var_nm_1L_chr)) %>%
+      dplyr::mutate(!!rlang::sym(outp_smry_ls$round_var_nm_1L_chr) := !!rlang::sym(outp_smry_ls$round_var_nm_1L_chr) %>%
+                      #c("BL","BL") %>%
+                      transform_timepoint_vals(timepoint_levels_chr = outp_smry_ls$scored_data_tb %>%
+                                                 dplyr::pull(!!rlang::sym(outp_smry_ls$round_var_nm_1L_chr)) %>%
+                                                 unique(),
+                                               bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr)
+                      )%>%
+      dplyr::ungroup()
     if(dep_vars_are_NA_1L_lgl){
       dep_vars_chr <- names(fk_data_tb)[names(fk_data_tb) %>%
                                               purrr::map_lgl(~startsWith(.x, outp_smry_ls$depnt_var_nm_1L_chr))]
