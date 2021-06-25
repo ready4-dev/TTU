@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Transform predicted variable name — transform_predd_var_nm" />
-<meta property="og:description" content="transform_predd_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform predicted variable name. Function argument new_data_is_1L_chr specifies the object to be updated. Argument utl_min_val_1L_dbl provides the object to be updated. The function returns Tfmd predicted variable name (a character vector of length one)." />
+<meta property="og:description" content="transform_predd_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform predicted variable name. Function argument new_data_is_1L_chr specifies the object to be updated. Argument sfx_1L_chr provides the object to be updated. The function returns Tfmd predicted variable name (a character vector of length one)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9241</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9261</span>
       </span>
     </div>
 
@@ -140,10 +140,14 @@
     </div>
 
     <div class="ref-description">
-    <p>transform_predd_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform predicted variable name. Function argument new_data_is_1L_chr specifies the object to be updated. Argument utl_min_val_1L_dbl provides the object to be updated. The function returns Tfmd predicted variable name (a character vector of length one).</p>
+    <p>transform_predd_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform predicted variable name. Function argument new_data_is_1L_chr specifies the object to be updated. Argument sfx_1L_chr provides the object to be updated. The function returns Tfmd predicted variable name (a character vector of length one).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>transform_predd_var_nm</span><span class='op'>(</span><span class='va'>new_data_is_1L_chr</span>, utl_min_val_1L_dbl <span class='op'>=</span> <span class='cn'>NA_real_</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>transform_predd_var_nm</span><span class='op'>(</span>
+  <span class='va'>new_data_is_1L_chr</span>,
+  sfx_1L_chr <span class='op'>=</span> <span class='st'>""</span>,
+  utl_min_val_1L_dbl <span class='op'>=</span> <span class='cn'>NA_real_</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,6 +155,10 @@
     <tr>
       <th>new_data_is_1L_chr</th>
       <td><p>New data is (a character vector of length one)</p></td>
+    </tr>
+    <tr>
+      <th>sfx_1L_chr</th>
+      <td><p>Suffix (a character vector of length one), Default: ''</p></td>
     </tr>
     <tr>
       <th>utl_min_val_1L_dbl</th>

@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9241</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9261</span>
       </span>
     </div>
 
@@ -143,7 +143,7 @@
     <p>make_fake_ts_data() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake time series data. The function returns Fk data (a tibble).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_fake_ts_data</span><span class='op'>(</span><span class='va'>outp_smry_ls</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>make_fake_ts_data</span><span class='op'>(</span><span class='va'>outp_smry_ls</span>, dep_vars_are_NA_1L_lgl <span class='op'>=</span> <span class='cn'>T</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,6 +151,10 @@
     <tr>
       <th>outp_smry_ls</th>
       <td><p>Output summary (a list)</p></td>
+    </tr>
+    <tr>
+      <th>dep_vars_are_NA_1L_lgl</th>
+      <td><p>Dep variables are NA (a logical vector of length one), Default: T</p></td>
     </tr>
     </table>
 

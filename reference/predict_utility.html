@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9241</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9261</span>
       </span>
     </div>
 
@@ -154,6 +154,7 @@
   utl_cls_fn <span class='op'>=</span> <span class='cn'>NULL</span>,
   new_data_is_1L_chr <span class='op'>=</span> <span class='st'>"Predicted"</span>,
   predn_type_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sd_dbl <span class='op'>=</span> <span class='cn'>NA_real_</span>,
   tfmn_for_bnml_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>,
   family_1L_chr <span class='op'>=</span> <span class='cn'>NA_character_</span>,
   is_brms_mdl_1L_lgl <span class='op'>=</span> <span class='cn'>T</span>
@@ -201,6 +202,10 @@
     <tr>
       <th>predn_type_1L_chr</th>
       <td><p>Prediction type (a character vector of length one), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>sd_dbl</th>
+      <td><p>Standard deviation (a double vector), Default: NA</p></td>
     </tr>
     <tr>
       <th>tfmn_for_bnml_1L_lgl</th>

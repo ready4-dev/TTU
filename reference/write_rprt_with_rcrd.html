@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9241</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9261</span>
       </span>
     </div>
 
@@ -149,11 +149,10 @@
   header_yaml_args_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
   rprt_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
   use_fake_data_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>,
-  subtitle_1L_chr <span class='op'>=</span> <span class='st'>"Results Supplementary Report 1: Catalogue of time series models"</span>,
- 
-    rprt_subtitle_1L_chr <span class='op'>=</span> <span class='st'>"Methods Supplementary Report 2: Record of auto-generation of model catalogue."</span>,
   rprt_nm_1L_chr <span class='op'>=</span> <span class='st'>"TS_TTU_Mdls_Smry"</span>,
   rcrd_nm_1L_chr <span class='op'>=</span> <span class='st'>"Write_Rprt_Rcrd"</span>,
+  reference_1L_int <span class='op'>=</span> <span class='cn'>NULL</span>,
+  start_at_int <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>1</span><span class='op'>)</span>,
   output_type_1L_chr <span class='op'>=</span> <span class='st'>"PDF"</span>,
   rprt_output_type_1L_chr <span class='op'>=</span> <span class='st'>"PDF"</span>,
   nbr_of_digits_1L_int <span class='op'>=</span> <span class='fl'>2L</span>,
@@ -186,20 +185,20 @@
       <td><p>Use fake data (a logical vector of length one), Default: F</p></td>
     </tr>
     <tr>
-      <th>subtitle_1L_chr</th>
-      <td><p>Subtitle (a character vector of length one), Default: 'Results Supplementary Report 1: Catalogue of time series models'</p></td>
-    </tr>
-    <tr>
-      <th>rprt_subtitle_1L_chr</th>
-      <td><p>Report subtitle (a character vector of length one), Default: 'Methods Supplementary Report 2: Record of auto-generation of model catalogue.'</p></td>
-    </tr>
-    <tr>
       <th>rprt_nm_1L_chr</th>
       <td><p>Report name (a character vector of length one), Default: 'TS_TTU_Mdls_Smry'</p></td>
     </tr>
     <tr>
       <th>rcrd_nm_1L_chr</th>
       <td><p>Rcrd name (a character vector of length one), Default: 'Write_Rprt_Rcrd'</p></td>
+    </tr>
+    <tr>
+      <th>reference_1L_int</th>
+      <td><p>Reference (an integer vector of length one), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>start_at_int</th>
+      <td><p>Start at (an integer vector), Default: c(2, 1)</p></td>
     </tr>
     <tr>
       <th>output_type_1L_chr</th>
