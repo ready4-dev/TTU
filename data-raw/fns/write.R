@@ -762,6 +762,7 @@ write_shareable_mdls <- function (outp_smry_ls,
                               predn_type_1L_chr = predn_type_1L_chr,
                               round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr,
                               sd_dbl = sd_dbl,
+                              sfx_1L_chr = " from table",
                               tfmn_1L_chr = tfmn_1L_chr,
                               utl_min_val_1L_dbl = ifelse(!is.null(outp_smry_ls$utl_min_val_1L_dbl),
                                                           outp_smry_ls$utl_min_val_1L_dbl,
@@ -1003,7 +1004,7 @@ write_to_delete_mdl_fls <- function(outp_smry_ls){
 }
 write_ts_mdl_plts <- function (brms_mdl, table_predn_mdl = NULL, tfd_data_tb, mdl_nm_1L_chr, path_to_write_to_1L_chr,
                                depnt_var_nm_1L_chr = "utl_total_w", depnt_var_desc_1L_chr = "Utility score", #is_brms_mdl_1L_lgl = T,
-                               predn_type_1L_chr = NULL, round_var_nm_1L_chr = "round", sd_dbl = NA_real_, tfmn_1L_chr = "NTF",
+                               predn_type_1L_chr = NULL, round_var_nm_1L_chr = "round", sd_dbl = NA_real_, sfx_1L_chr = " from table", tfmn_1L_chr = "NTF",
                                units_1L_chr = "in", height_dbl = c(rep(6, 2), rep(5,8)), width_dbl = c(rep(6, 2), rep(6, 8)),
                                rsl_dbl = rep(300,10), args_ls = NULL, seed_1L_dbl = 23456, utl_min_val_1L_dbl = -1)
 {

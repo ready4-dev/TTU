@@ -890,7 +890,8 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
                 depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
                 mdl_nm_1L_chr = mdl_nm_1L_chr, path_to_write_to_1L_chr = output_dir_chr[3], 
                 predn_type_1L_chr = predn_type_1L_chr, round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr, 
-                sd_dbl = sd_dbl, tfmn_1L_chr = tfmn_1L_chr, utl_min_val_1L_dbl = ifelse(!is.null(outp_smry_ls$utl_min_val_1L_dbl), 
+                sd_dbl = sd_dbl, sfx_1L_chr = " from table", 
+                tfmn_1L_chr = tfmn_1L_chr, utl_min_val_1L_dbl = ifelse(!is.null(outp_smry_ls$utl_min_val_1L_dbl), 
                   outp_smry_ls$utl_min_val_1L_dbl, -1))
             table_predn_mdl
         }) %>% stats::setNames(outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())
@@ -1163,6 +1164,7 @@ write_to_delete_mdl_fls <- function (outp_smry_ls)
 #' @param predn_type_1L_chr Prediction type (a character vector of length one), Default: NULL
 #' @param round_var_nm_1L_chr Round variable name (a character vector of length one), Default: 'round'
 #' @param sd_dbl Standard deviation (a double vector), Default: NA
+#' @param sfx_1L_chr Suffix (a character vector of length one), Default: ' from table'
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param units_1L_chr Units (a character vector of length one), Default: 'in'
 #' @param height_dbl Height (a double vector), Default: c(rep(6, 2), rep(5, 8))
@@ -1181,10 +1183,11 @@ write_to_delete_mdl_fls <- function (outp_smry_ls)
 write_ts_mdl_plts <- function (brms_mdl, table_predn_mdl = NULL, tfd_data_tb, mdl_nm_1L_chr, 
     path_to_write_to_1L_chr, depnt_var_nm_1L_chr = "utl_total_w", 
     depnt_var_desc_1L_chr = "Utility score", predn_type_1L_chr = NULL, 
-    round_var_nm_1L_chr = "round", sd_dbl = NA_real_, tfmn_1L_chr = "NTF", 
-    units_1L_chr = "in", height_dbl = c(rep(6, 2), rep(5, 8)), 
-    width_dbl = c(rep(6, 2), rep(6, 8)), rsl_dbl = rep(300, 10), 
-    args_ls = NULL, seed_1L_dbl = 23456, utl_min_val_1L_dbl = -1) 
+    round_var_nm_1L_chr = "round", sd_dbl = NA_real_, sfx_1L_chr = " from table", 
+    tfmn_1L_chr = "NTF", units_1L_chr = "in", height_dbl = c(rep(6, 
+        2), rep(5, 8)), width_dbl = c(rep(6, 2), rep(6, 8)), 
+    rsl_dbl = rep(300, 10), args_ls = NULL, seed_1L_dbl = 23456, 
+    utl_min_val_1L_dbl = -1) 
 {
     set.seed(seed_1L_dbl)
     tfd_data_tb <- transform_ds_for_all_cmprsn_plts(tfd_data_tb = tfd_data_tb, 

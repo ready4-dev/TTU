@@ -15,6 +15,7 @@ write_ts_mdl_plts(
   predn_type_1L_chr = NULL,
   round_var_nm_1L_chr = "round",
   sd_dbl = NA_real_,
+  sfx_1L_chr = " from table",
   tfmn_1L_chr = "NTF",
   units_1L_chr = "in",
   height_dbl = c(rep(6, 2), rep(5, 8)),
@@ -45,6 +46,8 @@ write_ts_mdl_plts(
 \item{round_var_nm_1L_chr}{Round variable name (a character vector of length one), Default: 'round'}
 
 \item{sd_dbl}{Standard deviation (a double vector), Default: NA}
+
+\item{sfx_1L_chr}{Suffix (a character vector of length one), Default: ' from table'}
 
 \item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 
