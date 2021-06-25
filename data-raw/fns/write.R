@@ -710,10 +710,8 @@ write_shareable_mdls <- function (outp_smry_ls,
             mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model ==
                 .x)
             mdl_nm_1L_chr <- .x
-            mdl_type_1L_chr <- (mdl_types_lup %>%
-                                  dplyr::pull(short_name_chr))[mdl_types_lup %>%
-                                                                 dplyr::pull(short_name_chr) %>%
-                                                                 purrr::map_lgl(~endsWith(mdl_nm_1L_chr,.x))]
+            mdl_type_1L_chr <- get_mdl_type_from_nm(mdl_nm_1L_chr,
+                                                    mdl_types_lup = mdl_types_lup)
             tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
                                                        match_value_xx = mdl_type_1L_chr,
                                                        match_var_nm_1L_chr = "short_name_chr",
@@ -775,13 +773,43 @@ write_shareable_mdls <- function (outp_smry_ls,
     ingredients_ls <- list(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
                            dictionary_tb = outp_smry_ls$dictionary_tb %>%
                              dplyr::filter(var_nm_chr %in% names(fake_ds_tb)),
-                           mdls_smry_tb = outp_smry_ls$mdls_smry_tb,#
                            id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr,
                            fake_ds_tb = fake_ds_tb,
-                           predictors_tb = mdl_ingredients_ls$dictionary_tb %>%
-                             dplyr::filter(var_nm_chr %in% (outp_smry_ls$predr_vars_nms_ls %>%
-                                                              purrr::flatten_chr() %>% unique())),#
-                           round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr)
+                           mdls_lup = outp_smry_ls$shareable_mdls_ls %>%
+                             purrr::map2_dfr(names(outp_smry_ls$shareable_mdls_ls),
+                                             ~{
+                                               if(inherits(.x,"betareg")){
+                                                 coeffs_dbl <- .x$coefficients$mean
+                                               }else{
+                                                 coeffs_dbl <- .x$coefficients
+                                               }
+                                               mdl_type_1L_chr = get_mdl_type_from_nm(.y,
+                                                                                       mdl_types_lup = outp_smry_ls$mdl_types_lup)
+                                               tibble::tibble(mdl_nms_chr = .y) %>%
+                                                 dplyr::mutate(predrs_ls = list(coeffs_dbl %>%
+                                                                                  names() %>%
+                                                                                  stringr::str_remove_all("_change") %>%
+                                                                                  stringr::str_remove_all("_baseline") %>%
+                                                                                  unique() %>%
+                                                                                  purrr::discard(~ .x== "(Intercept)")),
+                                                               mdl_type_chr = mdl_type_1L_chr,
+                                                               tfmn_chr = ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup,
+                                                                                                      match_value_xx = mdl_type_1L_chr,
+                                                                                                      match_var_nm_1L_chr = "short_name_chr",
+                                                                                                      target_var_nm_1L_chr = "tfmn_chr",
+                                                                                                      evaluate_lgl = F))
+                                             }), #
+                           mdls_smry_tb = outp_smry_ls$mdls_smry_tb,#
+                           mdl_types_lup = mdl_types_lup,
+                           # predictors_tb = mdl_ingredients_ls$dictionary_tb %>%
+                           #   dplyr::filter(var_nm_chr %in% (outp_smry_ls$predr_vars_nms_ls %>%
+                           #                                    purrr::flatten_chr() %>% unique())),#
+                           predictors_lup = outp_smry_ls$predictors_lup,#
+                           round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr,
+                           seed_1L_int = outp_smry_ls$seed_1L_int,
+                           utl_min_val_1L_dbl = ifelse(!is.null(outp_smry_ls$utl_min_val_1L_dbl),
+                                                       outp_smry_ls$utl_min_val_1L_dbl,
+                                                       -1))
     saveRDS(ingredients_ls, paste0(output_dir_chr[2], "/mdl_ingredients",
                                    ".RDS"))
     if (!is.null(outp_smry_ls$dv_ls)) {

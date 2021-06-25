@@ -33,6 +33,26 @@ get_link_from_tfmn <- function (tfmn_1L_chr, is_OLS_1L_lgl = F)
         stop("Link cannot be identified - incorrect transformation argument tfmn_1L_chr")
     return(link_1L_chr)
 }
+#' Get model type from name
+#' @description get_mdl_type_from_nm() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get model type from name. Function argument mdl_nm_1L_chr specifies the where to look for the required object. The function returns Model type (a character vector of length one).
+#' @param mdl_nm_1L_chr Model name (a character vector of length one)
+#' @param mdl_types_lup Model types (a lookup table), Default: NULL
+#' @return Model type (a character vector of length one)
+#' @rdname get_mdl_type_from_nm
+#' @export 
+#' @importFrom utils data
+#' @importFrom dplyr pull
+#' @importFrom purrr map_lgl
+#' @keywords internal
+get_mdl_type_from_nm <- function (mdl_nm_1L_chr, mdl_types_lup = NULL) 
+{
+    if (is.null(mdl_types_lup)) 
+        utils::data("mdl_types_lup", package = "TTU", envir = environment())
+    mdl_type_1L_chr <- (mdl_types_lup %>% dplyr::pull(short_name_chr))[mdl_types_lup %>% 
+        dplyr::pull(short_name_chr) %>% purrr::map_lgl(~endsWith(mdl_nm_1L_chr, 
+        .x))]
+    return(mdl_type_1L_chr)
+}
 #' Get random intercept
 #' @description get_random_intercept() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get random intercept. Function argument mdls_smry_tb specifies the where to look for the required object. The function returns Standard deviation (a double vector).
 #' @param mdls_smry_tb Models summary (a tibble)
@@ -73,4 +93,30 @@ get_signft_covars <- function (mdls_with_covars_smry_tb, covar_var_nms_chr)
     if (identical(signt_covars_chr, character(0))) 
         signt_covars_chr <- NA_character_
     return(signt_covars_chr)
+}
+#' Get table prediction
+#' @description get_table_predn_mdl() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get table prediction model. Function argument mdl_nm_1L_chr specifies the where to look for the required object. The function returns Table prediction (a model).
+#' @param mdl_nm_1L_chr Model name (a character vector of length one)
+#' @param ingredients_ls Ingredients (a list)
+#' @return Table prediction (a model)
+#' @rdname get_table_predn_mdl
+#' @export 
+#' @importFrom purrr pluck
+#' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
+get_table_predn_mdl <- function (mdl_nm_1L_chr, ingredients_ls) 
+{
+    mdl_type_1L_chr <- get_mdl_type_from_nm(selected_mdl, mdl_types_lup = ingredients_ls$mdl_types_lup)
+    table_predn_mdl <- make_shareable_mdl(fake_ds_tb = ingredients_ls$fake_ds_tb, 
+        mdl_smry_tb = mdls_smry_ls %>% purrr::pluck(selected_mdl), 
+        depnt_var_nm_1L_chr = ingredients_ls$depnt_var_nm_1L_chr, 
+        id_var_nm_1L_chr = ingredients_ls$id_var_nm_1L_chr, tfmn_1L_chr = ready4fun::get_from_lup_obj(ingredients_ls$mdl_types_lup, 
+            match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
+            target_var_nm_1L_chr = "tfmn_chr", evaluate_lgl = F), 
+        mdl_type_1L_chr = mdl_type_1L_chr, mdl_types_lup = ingredients_ls$mdl_types_lup, 
+        control_1L_chr = ready4fun::get_from_lup_obj(ingredients_ls$mdl_types_lup, 
+            match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
+            target_var_nm_1L_chr = "control_chr", evaluate_lgl = F), 
+        start_1L_chr = NA_character_, seed_1L_int = ingredients_ls$seed_1L_int)
+    return(table_predn_mdl)
 }

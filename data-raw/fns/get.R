@@ -6,6 +6,16 @@ get_cndts_for_mxd_mdls <- function(mdl_types_lup = NULL){
                   short_name_chr != "BET_LOG" )
   return(cndts_for_mxd_mdls_lup)
 }
+get_mdl_type_from_nm <- function(mdl_nm_1L_chr,
+                                 mdl_types_lup = NULL){
+  if(is.null(mdl_types_lup))
+    utils::data("mdl_types_lup", package = "TTU", envir = environment())
+  mdl_type_1L_chr <- (mdl_types_lup %>%
+                        dplyr::pull(short_name_chr))[mdl_types_lup %>%
+                                                       dplyr::pull(short_name_chr) %>%
+                                                       purrr::map_lgl(~endsWith(mdl_nm_1L_chr,.x))]
+  return(mdl_type_1L_chr)
+}
 get_link_from_tfmn <- function(tfmn_1L_chr,
                                is_OLS_1L_lgl = F){
   link_1L_chr <- ifelse(is_OLS_1L_lgl,
@@ -55,4 +65,27 @@ get_signft_covars <- function (mdls_with_covars_smry_tb, covar_var_nms_chr)
     signt_covars_chr <- NA_character_
   return(signt_covars_chr)
 }
-
+get_table_predn_mdl <- function(mdl_nm_1L_chr,
+                                ingredients_ls){
+  mdl_type_1L_chr <- get_mdl_type_from_nm(selected_mdl,
+                                          mdl_types_lup = ingredients_ls$mdl_types_lup)
+  table_predn_mdl <- make_shareable_mdl(fake_ds_tb = ingredients_ls$fake_ds_tb,
+                                        mdl_smry_tb = mdls_smry_ls %>% purrr::pluck(selected_mdl),
+                                        depnt_var_nm_1L_chr = ingredients_ls$depnt_var_nm_1L_chr,
+                                        id_var_nm_1L_chr = ingredients_ls$id_var_nm_1L_chr,
+                                        tfmn_1L_chr = ready4fun::get_from_lup_obj(ingredients_ls$mdl_types_lup,
+                                                                                  match_value_xx = mdl_type_1L_chr,
+                                                                                  match_var_nm_1L_chr = "short_name_chr",
+                                                                                  target_var_nm_1L_chr = "tfmn_chr",
+                                                                                  evaluate_lgl = F),
+                                        mdl_type_1L_chr = mdl_type_1L_chr,
+                                        mdl_types_lup = ingredients_ls$mdl_types_lup,
+                                        control_1L_chr = ready4fun::get_from_lup_obj(ingredients_ls$mdl_types_lup,
+                                                                                     match_value_xx = mdl_type_1L_chr,
+                                                                                     match_var_nm_1L_chr = "short_name_chr",
+                                                                                     target_var_nm_1L_chr = "control_chr",
+                                                                                     evaluate_lgl = F),
+                                        start_1L_chr = NA_character_,
+                                        seed_1L_int = ingredients_ls$seed_1L_int)
+  return(table_predn_mdl)
+}

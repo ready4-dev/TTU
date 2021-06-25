@@ -343,6 +343,7 @@ make_eq5d_ds_dict <- function (data_tb = make_fake_eq5d_ds(), predictors_lup = m
 #' @param country_1L_chr Country (a character vector of length one), Default: 'UK'
 #' @param version_1L_chr Version (a character vector of length one), Default: '5L'
 #' @param type_1L_chr Type (a character vector of length one), Default: 'CW'
+#' @param force_attach_1L_lgl Force attach (a logical vector of length one), Default: T
 #' @param prop_with_fup_data_1L_dbl Prop with follow-up data (a double vector of length one), Default: 0.65
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 1234
 #' @param sample_from_1L_int Sample from (an integer vector of length one), Default: 10000
@@ -360,11 +361,13 @@ make_eq5d_ds_dict <- function (data_tb = make_fake_eq5d_ds(), predictors_lup = m
 #' @importFrom stringr str_c
 #' @importFrom lubridate days
 make_fake_eq5d_ds <- function (country_1L_chr = "UK", version_1L_chr = "5L", type_1L_chr = "CW", 
-    prop_with_fup_data_1L_dbl = 0.65, seed_1L_int = 1234, sample_from_1L_int = 10000) 
+    force_attach_1L_lgl = T, prop_with_fup_data_1L_dbl = 0.65, 
+    seed_1L_int = 1234, sample_from_1L_int = 10000) 
 {
     set.seed(seed_1L_int)
     requireNamespace("eq5d")
-    attachNamespace("eq5d")
+    if (force_attach_1L_lgl) 
+        attachNamespace("eq5d")
     data_tb <- purrr::map(c("MO", "SC", "UA", "PD", "AD"), ~list(1:5) %>% 
         stats::setNames(.x)) %>% purrr::flatten_dfr() %>% tidyr::expand(MO, 
         SC, UA, PD, AD) %>% dplyr::mutate(total_eq5d = eq5d::eq5d(., 

@@ -463,8 +463,7 @@ predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Pred
                 newdata = data_tb, nsamples = 1) %>% as.vector()
         }
         else {
-            if ("betareg" %in% class(model_mdl)) {
-                model_mdl$model <- data_tb
+            if ("betareg" %in% class(model_mdl) & !force_new_data_1L_lgl) {
                 new_data_dbl <- rlang::exec(enrichwith::get_simulate_function(model_mdl), 
                   coef(enrichwith::enrich(model_mdl, with = "auxiliary functions")))
             }
@@ -482,8 +481,9 @@ predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Pred
                     new_data_dbl <- stats::predict(model_mdl, 
                       newdata = data_tb, type = predn_type_1L_chr)
                   }
-                  new_data_dbl <- new_data_dbl + stats::rnorm(nrow(data_tb), 
-                    0, stats::sigma(model_mdl))
+                  if (!"betareg" %in% class(model_mdl)) 
+                    new_data_dbl <- new_data_dbl + stats::rnorm(nrow(data_tb), 
+                      0, stats::sigma(model_mdl))
                 }
             }
         }

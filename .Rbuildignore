@@ -127,3 +127,5 @@
 ^data-raw/vignettes/_OLD_EQ5D_TTU\.Rmd$
 ^data-raw/vignettes/_Reporting_Params\.R$
 ^data-raw/vignettes/_Reporting_Params\.Rmd$
+^data-raw/fns/rename\.R$
+^data-raw/vignettes/_Adding_Predictions_To_DS\.R$

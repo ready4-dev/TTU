@@ -812,11 +812,12 @@ write_shareable_dir <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable"
 #' @return Output summary (a list)
 #' @rdname write_shareable_mdls
 #' @export 
-#' @importFrom purrr map_chr flatten_chr map map_lgl map_int map2
-#' @importFrom stringr str_locate
-#' @importFrom dplyr select filter pull
+#' @importFrom purrr map_chr flatten_chr map map_lgl map_int map2 map2_dfr discard
+#' @importFrom stringr str_locate str_remove_all
+#' @importFrom dplyr select filter mutate
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom stats setNames
+#' @importFrom tibble tibble
 write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "", 
     write_mdls_to_dv_1L_lgl = F) 
 {
@@ -853,9 +854,8 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
             mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model == 
                 .x)
             mdl_nm_1L_chr <- .x
-            mdl_type_1L_chr <- (mdl_types_lup %>% dplyr::pull(short_name_chr))[mdl_types_lup %>% 
-                dplyr::pull(short_name_chr) %>% purrr::map_lgl(~endsWith(mdl_nm_1L_chr, 
-                .x))]
+            mdl_type_1L_chr <- get_mdl_type_from_nm(mdl_nm_1L_chr, 
+                mdl_types_lup = mdl_types_lup)
             tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
                 match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
                 target_var_nm_1L_chr = "tfmn_chr", evaluate_lgl = F)
@@ -898,11 +898,29 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
     outp_smry_ls$shareable_mdls_tb <- NULL
     ingredients_ls <- list(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
         dictionary_tb = outp_smry_ls$dictionary_tb %>% dplyr::filter(var_nm_chr %in% 
-            names(fake_ds_tb)), mdls_smry_tb = outp_smry_ls$mdls_smry_tb, 
-        id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, fake_ds_tb = fake_ds_tb, 
-        predictors_tb = mdl_ingredients_ls$dictionary_tb %>% 
-            dplyr::filter(var_nm_chr %in% (outp_smry_ls$predr_vars_nms_ls %>% 
-                purrr::flatten_chr() %>% unique())), round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr)
+            names(fake_ds_tb)), id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, 
+        fake_ds_tb = fake_ds_tb, mdls_lup = outp_smry_ls$shareable_mdls_ls %>% 
+            purrr::map2_dfr(names(outp_smry_ls$shareable_mdls_ls), 
+                ~{
+                  if (inherits(.x, "betareg")) {
+                    coeffs_dbl <- .x$coefficients$mean
+                  } else {
+                    coeffs_dbl <- .x$coefficients
+                  }
+                  mdl_type_1L_chr = get_mdl_type_from_nm(.y, 
+                    mdl_types_lup = outp_smry_ls$mdl_types_lup)
+                  tibble::tibble(mdl_nms_chr = .y) %>% dplyr::mutate(predrs_ls = list(coeffs_dbl %>% 
+                    names() %>% stringr::str_remove_all("_change") %>% 
+                    stringr::str_remove_all("_baseline") %>% 
+                    unique() %>% purrr::discard(~.x == "(Intercept)")), 
+                    mdl_type_chr = mdl_type_1L_chr, tfmn_chr = ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup, 
+                      match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
+                      target_var_nm_1L_chr = "tfmn_chr", evaluate_lgl = F))
+                }), mdls_smry_tb = outp_smry_ls$mdls_smry_tb, 
+        mdl_types_lup = mdl_types_lup, predictors_lup = outp_smry_ls$predictors_lup, 
+        round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr, 
+        seed_1L_int = outp_smry_ls$seed_1L_int, utl_min_val_1L_dbl = ifelse(!is.null(outp_smry_ls$utl_min_val_1L_dbl), 
+            outp_smry_ls$utl_min_val_1L_dbl, -1))
     saveRDS(ingredients_ls, paste0(output_dir_chr[2], "/mdl_ingredients", 
         ".RDS"))
     if (!is.null(outp_smry_ls$dv_ls)) {

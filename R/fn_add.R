@@ -70,16 +70,17 @@ add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkCli
 #' @param model_mdl Model (a model)
 #' @param tfmn_1L_chr Transformation (a character vector of length one)
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one)
-#' @param predr_vars_nms_chr Predictor variables names (a character vector), Default: NULL
 #' @param force_min_max_1L_lgl Force minimum maximum (a logical vector of length one), Default: T
-#' @param impute_1L_lgl Impute (a logical vector of length one), Default: T
-#' @param new_data_is_1L_chr New data is (a character vector of length one), Default: 'Predicted'
-#' @param rmv_tfd_depnt_var_1L_lgl Remove transformed dependent variable (a logical vector of length one), Default: F
-#' @param utl_cls_fn Utility class (a function), Default: NULL
-#' @param utl_min_val_1L_dbl Utility minimum value (a double vector of length one), Default: 0.03
 #' @param force_new_data_1L_lgl Force new data (a logical vector of length one), Default: F
+#' @param impute_1L_lgl Impute (a logical vector of length one), Default: T
 #' @param is_brms_mdl_1L_lgl Is bayesian regression models model (a logical vector of length one), Default: T
+#' @param new_data_is_1L_chr New data is (a character vector of length one), Default: 'Predicted'
+#' @param predn_type_1L_chr Prediction type (a character vector of length one), Default: NULL
+#' @param predr_vars_nms_chr Predictor variables names (a character vector), Default: NULL
+#' @param rmv_tfd_depnt_var_1L_lgl Remove transformed dependent variable (a logical vector of length one), Default: F
 #' @param sd_dbl Standard deviation (a double vector), Default: NA
+#' @param utl_cls_fn Utility class (a function), Default: NULL
+#' @param utl_min_val_1L_dbl Utility minimum value (a double vector of length one), Default: -1
 #' @return Data (a tibble)
 #' @rdname add_utility_predn_to_ds
 #' @export 
@@ -88,10 +89,10 @@ add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkCli
 #' @importFrom rlang sym
 #' @importFrom tidyselect all_of
 add_utility_predn_to_ds <- function (data_tb, model_mdl, tfmn_1L_chr, depnt_var_nm_1L_chr, 
-    predr_vars_nms_chr = NULL, force_min_max_1L_lgl = T, impute_1L_lgl = T, 
-    new_data_is_1L_chr = "Predicted", rmv_tfd_depnt_var_1L_lgl = F, 
-    utl_cls_fn = NULL, utl_min_val_1L_dbl = 0.03, force_new_data_1L_lgl = F, 
-    is_brms_mdl_1L_lgl = T, sd_dbl = NA_real_) 
+    force_min_max_1L_lgl = T, force_new_data_1L_lgl = F, impute_1L_lgl = T, 
+    is_brms_mdl_1L_lgl = T, new_data_is_1L_chr = "Predicted", 
+    predn_type_1L_chr = NULL, predr_vars_nms_chr = NULL, rmv_tfd_depnt_var_1L_lgl = F, 
+    sd_dbl = NA_real_, utl_cls_fn = NULL, utl_min_val_1L_dbl = -1) 
 {
     dep_vars_chr <- c(depnt_var_nm_1L_chr, transform_depnt_var_nm(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
         tfmn_1L_chr = tfmn_1L_chr)) %>% unique()
@@ -102,7 +103,7 @@ add_utility_predn_to_ds <- function (data_tb, model_mdl, tfmn_1L_chr, depnt_var_
         utl_min_val_1L_dbl = utl_min_val_1L_dbl, impute_1L_lgl = impute_1L_lgl, 
         new_data_is_1L_chr = new_data_is_1L_chr, utl_cls_fn = utl_cls_fn, 
         is_brms_mdl_1L_lgl = is_brms_mdl_1L_lgl, force_new_data_1L_lgl = force_new_data_1L_lgl, 
-        sd_dbl = NA_real_)
+        predn_type_1L_chr = predn_type_1L_chr, sd_dbl = sd_dbl)
     data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(depnt_var_nm_1L_chr), 
         predictions_dbl))
     if (!is.null(predr_vars_nms_chr)) {
@@ -114,4 +115,80 @@ add_utility_predn_to_ds <- function (data_tb, model_mdl, tfmn_1L_chr, depnt_var_
             depnt_var_nm_1L_chr]))
     }
     return(data_tb)
+}
+#' Add utility prediction to new dataset
+#' @description add_utl_predn_to_new_ds() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add utility prediction to new dataset. Function argument data_tb specifies the object to be updated. The function returns Updated (a tibble).
+#' @param data_tb Data (a tibble)
+#' @param ingredients_ls Ingredients (a list)
+#' @param mdl_nm_1L_chr Model name (a character vector of length one)
+#' @param deterministic_1L_lgl Deterministic (a logical vector of length one), Default: T
+#' @param force_min_max_1L_lgl Force minimum maximum (a logical vector of length one), Default: T
+#' @param model_mdl Model (a model), Default: NULL
+#' @param new_data_is_1L_chr New data is (a character vector of length one), Default: 'Simulated'
+#' @param predr_vars_nms_chr Predictor variables names (a character vector), Default: NULL
+#' @param round_var_nm_1L_chr Round variable name (a character vector of length one), Default: 'Timepoint'
+#' @param round_bl_val_1L_chr Round baseline value (a character vector of length one), Default: 'BL'
+#' @param utl_cls_fn Utility class (a function), Default: NULL
+#' @param utl_var_nm_1L_chr Utility variable name (a character vector of length one), Default: NULL
+#' @return Updated (a tibble)
+#' @rdname add_utl_predn_to_new_ds
+#' @export 
+#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom dplyr filter pull rename left_join select
+#' @importFrom purrr flatten_chr
+#' @importFrom rlang sym
+#' @importFrom tidyselect all_of
+#' @keywords internal
+add_utl_predn_to_new_ds <- function (data_tb, ingredients_ls, mdl_nm_1L_chr, deterministic_1L_lgl = T, 
+    force_min_max_1L_lgl = T, model_mdl = NULL, new_data_is_1L_chr = "Simulated", 
+    predr_vars_nms_chr = NULL, round_var_nm_1L_chr = "Timepoint", 
+    round_bl_val_1L_chr = "BL", utl_cls_fn = NULL, utl_var_nm_1L_chr = NULL) 
+{
+    if (is.null(model_mdl)) 
+        model_mdl <- get_table_predn_mdl(mdl_nm_1L_chr, ingredients_ls = ingredients_ls)
+    tfmn_1L_chr <- ready4fun::get_from_lup_obj(ingredients_ls$mdl_types_lup, 
+        match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
+        target_var_nm_1L_chr = "tfmn_chr", evaluate_lgl = F)
+    predn_type_1L_chr <- ready4fun::get_from_lup_obj(ingredients_ls$mdl_types_lup, 
+        match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
+        target_var_nm_1L_chr = "predn_type_chr", evaluate_lgl = F)
+    if (is.na(predn_type_1L_chr)) 
+        predn_type_1L_chr <- NULL
+    if (!is.null(predr_vars_nms_chr)) {
+        data_tb <- rename_from_nmd_vec(data_tb, nmd_vec_chr = predr_vars_nms_chr, 
+            vec_nms_as_new_1L_lgl = T)
+    }
+    mdl_predr_terms_chr <- ingredients_ls$mdls_lup %>% dplyr::filter(mdl_nms_chr == 
+        mdl_nm_1L_chr) %>% dplyr::pull(predrs_ls) %>% purrr::flatten_chr()
+    original_ds_vars_chr <- names(data_tb)[!names(data_tb) %in% 
+        c(mdl_predr_terms_chr, ifelse(!is.null(utl_var_nm_1L_chr), 
+            utl_var_nm_1L_chr, ingredients_ls$depnt_var_nm_1L_chr))]
+    updated_tb <- data_tb %>% transform_ds_to_predn_ds(predr_vars_nms_chr = mdl_predr_terms_chr, 
+        tfmn_1L_chr = tfmn_1L_chr, depnt_var_nm_1L_chr = ingredients_ls$depnt_var_nm_1L_chr, 
+        id_var_nm_1L_chr = ingredients_ls$id_var_nm_1L_chr, round_var_nm_1L_chr = round_var_nm_1L_chr, 
+        round_bl_val_1L_chr = round_bl_val_1L_chr, predictors_lup = ingredients_ls$predictors_lup) %>% 
+        add_utility_predn_to_ds(model_mdl = model_mdl, tfmn_1L_chr = tfmn_1L_chr, 
+            depnt_var_nm_1L_chr = ingredients_ls$depnt_var_nm_1L_chr, 
+            predr_vars_nms_chr = mdl_predr_terms_chr, force_min_max_1L_lgl = force_min_max_1L_lgl, 
+            force_new_data_1L_lgl = T, impute_1L_lgl = T, is_brms_mdl_1L_lgl = inherits(model_mdl, 
+                "brmsfit"), new_data_is_1L_chr = new_data_is_1L_chr, 
+            predn_type_1L_chr = NULL, rmv_tfd_depnt_var_1L_lgl = T, 
+            utl_cls_fn = utl_cls_fn, utl_min_val_1L_dbl = ingredients_ls$utl_min_val_1L_dbl, 
+            sd_dbl = get_random_intercept(ingredients_ls$mdls_smry_tb, 
+                mdl_nm_1L_chr = mdl_nm_1L_chr, deterministic_1L_lgl = deterministic_1L_lgl))
+    if (!is.null(utl_var_nm_1L_chr)) {
+        updated_tb <- updated_tb %>% dplyr::rename(`:=`(!!rlang::sym(utl_var_nm_1L_chr), 
+            tidyselect::all_of(mdl_dep_var_1L_chr)))
+    }
+    if (!is.null(names(predr_vars_nms_chr))) {
+        updated_tb <- rename_from_nmd_vec(updated_tb, nmd_vec_chr = predr_vars_nms_chr, 
+            vec_nms_as_new_1L_lgl = F)
+    }
+    names_to_incl_chr <- c(names(updated_tb), setdiff(names(data_tb), 
+        names(updated_tb)))
+    updated_tb <- dplyr::left_join(data_tb %>% dplyr::select(tidyselect::all_of(original_ds_vars_chr)), 
+        updated_tb)
+    updated_tb <- updated_tb %>% dplyr::select(tidyselect::all_of(names_to_incl_chr[names_to_incl_chr %in% 
+        names(updated_tb)]))
+    return(updated_tb)
 }

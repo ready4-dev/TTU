@@ -130,7 +130,7 @@ predict_shrble_betareg <- function(object, newdata = NULL, # EDIT OF predict.bet
 predict_shrble_glm <- function (object, newdata = NULL, type = c("link", "response",
                                                                              "terms"), se.fit = FALSE, dispersion = NULL, terms = NULL,
                                             na.action = na.pass, sd_1L_dbl, ...)
-{
+{ # EDIT OF predict.glm
   type <- match.arg(type)
   na.act <- object$na.action
   object$na.action <- NULL
@@ -188,7 +188,7 @@ predict_shrble_lm <-function (object, newdata, se.fit = FALSE, scale = NULL, df 
                     weights = 1,
                     sd_1L_dbl,# Added
                     ...)
-{
+{ # EDIT OF predict.lm
   tt <- terms(object)
   if (!inherits(object, "lm"))
     warning("calling predict.lm(<fake-lm-object>) ...")
@@ -369,9 +369,6 @@ predict_shrble_lm <-function (object, newdata, se.fit = FALSE, scale = NULL, df 
     list(fit = predictor, se.fit = se, df = df, residual.scale = sqrt(res.var))
   else predictor
 }
-
-
-
 predict_utl_from_k10 <- function(k10_1L_dbl,
                                      b0_aqol_mdl_1L_dbl = 0.204665,
                                      b1_aqol_mdl_1L_dbl = -3.617134,
@@ -413,12 +410,14 @@ predict_uncnstrd_utl <- function(data_tb, model_mdl,
                                               nsamples=1) %>% as.vector()
 
     }else{
-      if("betareg" %in% class(model_mdl)){
-        model_mdl$model <- data_tb
+      if("betareg" %in% class(model_mdl) & !force_new_data_1L_lgl){
+        # model_mdl$model <- data_tb
+        # SEE: https://stackoverflow.com/questions/59311610/how-to-calculate-confidence-intervals-for-fitted-values-of-beta-regression-using
+        # May need to try alternative to betareg
         new_data_dbl <- rlang::exec(enrichwith::get_simulate_function(model_mdl),
                                     coef(enrichwith::enrich(model_mdl,
-                                                            with = "auxiliary functions"#,newdata = data_tb
-                                                            ))) # REPLACE THIS
+                                                            with = "auxiliary functions")))
+
       }else{
         if (!tfmn_for_bnml_1L_lgl & !force_new_data_1L_lgl){
           new_data_dbl <- stats::simulate(model_mdl)$sim_1 # NEED TO REMOVE OR EDIT THIS
@@ -434,16 +433,12 @@ predict_uncnstrd_utl <- function(data_tb, model_mdl,
                                            newdata = data_tb,
                                            type = predn_type_1L_chr)
           }
-
+          if(!"betareg" %in% class(model_mdl))
           new_data_dbl <- new_data_dbl + stats::rnorm(nrow(data_tb),
-                                                                                   0,
-                                                                                   stats::sigma(model_mdl))
+                                                      0,
+                                                      stats::sigma(model_mdl))
         }
       }
-      # if(!is.na(sd_dbl[1]))
-      #   new_data_dbl <- new_data_dbl + rnorm(length(new_data_dbl),
-      #                                        mean=0,
-      #                                        sd=max(0,rnorm(1,sd_dbl[1],sd_dbl[2])))
     }
   }
   if(is.matrix(new_data_dbl))
@@ -473,8 +468,7 @@ predict_utility <- function (data_tb,
                              sd_dbl = NA_real_,
                              tfmn_for_bnml_1L_lgl = F,
                              family_1L_chr = NA_character_,
-                             is_brms_mdl_1L_lgl = T)
-{
+                             is_brms_mdl_1L_lgl = T){
   predd_utl_dbl <- predict_uncnstrd_utl(data_tb = data_tb,
                                         model_mdl = model_mdl,
                                         new_data_is_1L_chr = new_data_is_1L_chr,

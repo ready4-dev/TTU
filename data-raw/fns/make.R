@@ -270,11 +270,13 @@ make_eq5d_ds_dict <- function(data_tb = make_fake_eq5d_ds(),
 make_fake_eq5d_ds <- function(country_1L_chr = "UK",
                               version_1L_chr = "5L",
                               type_1L_chr = "CW",
+                              force_attach_1L_lgl = T,
                               prop_with_fup_data_1L_dbl = 0.65,
                               seed_1L_int = 1234,
                               sample_from_1L_int = 10000){
   set.seed(seed_1L_int)
   requireNamespace("eq5d")
+  if(force_attach_1L_lgl)
   attachNamespace("eq5d")
   data_tb <- purrr::map(c("MO","SC","UA","PD","AD"),
                         ~list(1:5) %>% stats::setNames(.x)) %>%
