@@ -898,8 +898,11 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
     outp_smry_ls$shareable_mdls_tb <- NULL
     ingredients_ls <- list(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
         dictionary_tb = outp_smry_ls$dictionary_tb %>% dplyr::filter(var_nm_chr %in% 
-            names(fake_ds_tb)), id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, 
-        fake_ds_tb = fake_ds_tb, round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr)
+            names(fake_ds_tb)), mdls_smry_tb = outp_smry_ls$mdls_smry_tb, 
+        id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, fake_ds_tb = fake_ds_tb, 
+        predictors_tb = mdl_ingredients_ls$dictionary_tb %>% 
+            dplyr::filter(var_nm_chr %in% (outp_smry_ls$predr_vars_nms_ls %>% 
+                purrr::flatten_chr() %>% unique())), round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr)
     saveRDS(ingredients_ls, paste0(output_dir_chr[2], "/mdl_ingredients", 
         ".RDS"))
     if (!is.null(outp_smry_ls$dv_ls)) {
@@ -937,7 +940,7 @@ write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Sha
             new_dir_nm_1L_chr = new_dir_nm_1L_chr)
     if (share_ingredients_1L_lgl) {
         shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = "mdl_ingredients", 
-            title_chr = "A synthetic (fake) dataset that can be used to construct model objects from tables of coefficients")
+            title_chr = "An R object that can be used to construct model objects from tables of coefficients. Contains a synthetic dataset.")
     }
     else {
         shareable_mdls_tb <- tibble::tibble(ds_obj_nm_chr = names(outp_smry_ls$shareable_mdls_ls), 
