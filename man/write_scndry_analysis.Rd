@@ -5,41 +5,35 @@
 \title{Write scndry analysis}
 \usage{
 write_scndry_analysis(
-  analysis_core_params_ls,
+  predictors_lup = NULL,
+  valid_params_ls_ls,
   candidate_covar_nms_chr,
-  candidate_predrs_chr,
   header_yaml_args_ls,
   path_params_ls,
-  paths_ls,
   prefd_covars_chr,
   reference_1L_int,
-  subtitle_1L_chr = NULL,
-  rprt_lup = NULL,
+  start_at_int = c(2, 1),
   rprt_nm_1L_chr = "Suplry_Analysis_Rprt",
   abstract_args_ls = NULL,
   rename_lup = NULL
 )
 }
 \arguments{
-\item{analysis_core_params_ls}{Analysis core params (a list)}
+\item{predictors_lup}{Predictors (a lookup table), Default: NULL}
+
+\item{valid_params_ls_ls}{Valid params (a list of lists)}
 
 \item{candidate_covar_nms_chr}{Candidate covariate names (a character vector)}
-
-\item{candidate_predrs_chr}{Candidate predictors (a character vector)}
 
 \item{header_yaml_args_ls}{Header yaml arguments (a list)}
 
 \item{path_params_ls}{Path params (a list)}
 
-\item{paths_ls}{Paths (a list)}
-
 \item{prefd_covars_chr}{Preferred covariates (a character vector)}
 
 \item{reference_1L_int}{Reference (an integer vector of length one)}
 
-\item{subtitle_1L_chr}{Subtitle (a character vector of length one), Default: NULL}
-
-\item{rprt_lup}{Report (a lookup table), Default: NULL}
+\item{start_at_int}{Start at (an integer vector), Default: c(2, 1)}
 
 \item{rprt_nm_1L_chr}{Report name (a character vector of length one), Default: 'Suplry_Analysis_Rprt'}
 

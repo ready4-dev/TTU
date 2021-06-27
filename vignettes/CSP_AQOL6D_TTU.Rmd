@@ -1,0 +1,278 @@
+---
+title: "Analysis, Reporting and Dissemination Workflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Analysis, Reporting and Dissemination Workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+\blandscape
+<!---BLOCK_LANDSCAPE_START--->
+
+This vignette is an example of implementing of analysis, reporting and sharing workflow to develop transfer to AQoL-6D health utility models. Some of the initial steps in this example are described in more detail in the [EQ-5D example](CSP_EQ5D_TTU.html).
+```{r echo = TRUE, message=FALSE}
+library(magrittr)
+library(TTU)
+```
+
+# Input parameters
+
+## Reporting parameters
+
+### Bibliograhic data
+We begin by specifying the authorship and other bibliographic data that we wish to attach to all reports that we generate.
+
+```{r}
+header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = ready4show::authors_tb,
+                                                institutes_tb = ready4show::institutes_tb,
+                                                title_1L_chr = "A hypothetical study using fake data for instructional purposes only",
+                                                keywords_chr = c("this","is","a","replication","using","fake","data","do", "not","cite"))
+```
+
+### Report formatting
+We add parameters relating to the desired output format of the reports we will be producing.
+
+```{r }
+output_format_ls <- make_output_format_ls(manuscript_outp_1L_chr = "Word",
+                                               manuscript_digits_1L_int = 2L,
+                                               supplementary_outp_1L_chr = "PDF",
+                                               supplementary_digits_1L_int = 2L)
+```
+
+## Data parameters
+
+### Dataset
+We read in our study dataset (in this case we are using fake data).
+
+```{r message=FALSE}
+ds_tb <- youthvars::replication_popl_tb %>% 
+            youthvars::transform_raw_ds_for_analysis() 
+```
+
+```{r }
+use_fake_data_1L_lgl <-  TRUE
+```
+
+### Dataset metadata
+We describe the features of our dataset that are most relevant to the analyses we are planning to undertake. 
+
+```{r echo = TRUE}
+ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("K6","PHQ9"),#
+                     cohort_descv_var_nms_chr = c("d_age", "d_relation_s","d_studying_working","c_p_diag_s","c_clinical_staging_s"),
+                     dictionary_tb = youthvars::make_final_rpln_ds_dict(), 
+                     id_var_nm_1L_chr = "fkClientID", 
+                     msrmnt_date_var_nm_1L_chr = "d_interview_date",
+                     round_var_nm_1L_chr = "round", 
+                     round_vals_chr = c("Baseline", "Follow-up"),
+                     maui_item_pfx_1L_chr = "aqol6d_q", 
+                     utl_wtd_var_nm_1L_chr = "aqol6d_total_w", 
+                     utl_unwtd_var_nm_1L_chr = "aqol6d_total_c")
+```
+
+### Candidate predictors metadata
+We create a lookup table with metadata on the dataset variables that we specified in the `candidate_predrs_chr` element of `ds_descvs_ls` as our candidate predictors.
+
+```{r}
+predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = ds_descvs_ls$candidate_predrs_chr,
+                                              long_name_chr = c("K6 total score", "PHQ9 total score"),
+                                              min_val_dbl = 0,
+                                              max_val_dbl = c(24,27),
+                                              class_chr = "integer",
+                                              increment_dbl = 1,
+                                              class_fn_chr = "as.integer",
+                                              mdl_scaling_dbl = 0.01,
+                                              covariate_lgl = F))
+```
+
+## Analysis parameters
+
+### Multi-Attribute Utility Instrument (MAUI) parameters
+We also need to provide information specific to the MAUI used to collect the data from which health utility will be derived.
+
+```{r}
+maui_params_ls <- make_maui_params_ls(maui_itm_short_nms_chr = c("Household tasks", "Getting around","Morbility","Self care","Enjoy close rels","Family rels", "Community involvement","Despair","Worry", "Sad", "Agitated","Energy level","Control", "Coping","Frequency of pain", "Degree of pain","Pain interference","Vision", "Hearing","Communication"),
+                                      maui_scoring_fn = youthvars::add_adol6d_scores,
+                    utl_min_val_1L_dbl = 0.03)
+```
+
+## Candidate model types
+We combine a lookup table of our candidate model types with parameters specific to the analyses to be run to compare the performance of each model.
+
+```{r}
+mdl_smry_ls <- make_mdl_smry_ls(mdl_types_lup = get_cndts_for_mxd_mdls(),
+                                     folds_1L_int = 10L,
+                                     max_nbr_of_boruta_mdl_runs_int = 300L)
+```
+
+We create a summary object that contains the core parameters that will be common to most of the analyses we are planning to run.
+
+```{r echo = TRUE }
+analysis_core_params_ls <- make_analysis_core_params_ls(ds_descvs_ls = ds_descvs_ls,
+                                                             mdl_smry_ls = mdl_smry_ls,
+                                                             output_format_ls = output_format_ls,
+                                                             predictors_lup = predictors_lup,
+                                                             use_fake_data_1L_lgl = use_fake_data_1L_lgl)
+```
+
+## Path parameters
+We next create an object that specifies the relative locations of the input data and the intended destination for analysis outputs and reports. The default settings of the `make_path_params_ls` function will write all output into a new directory, created one level up from the current working directory.
+
+```{r, warning=F, message=F, eval=F}
+path_params_ls <- make_path_params_ls(use_fake_data_1L_lgl = use_fake_data_1L_lgl,
+                                      write_new_dir_1L_lgl = T)
+```
+
+## Output repositories
+We provide details of dataverse dataset(s) to which results will be posted. You will need to supply details for repositories to which you have write permissions - the values supplied in the below call will not work for you. If you do not have write permissions for a dataverse dataset, use `dv_ls <- NULL`. 
+
+```{r echo = TRUE }
+dv_ls <- list(primary_dv_chr = c("firstbounce", # REPLACE WITH YOUR DATASET DETAILS
+                                 "https://doi.org/10.7910/DVN/JC6PTV"), 
+              #secondary_2_dv_chr = c("fakes","https://doi.org/10.7910/DVN/D74QMP"),
+              secondary_1_dv_chr = c("fakes","https://doi.org/10.7910/DVN/F2H3PA"))
+```
+
+# Primary Analysis
+
+## Specify analysis parameters
+A list of valid input values for our primary analysis is now constructed, principally using the objects created in the preceding steps. The `make_valid_params_ls_ls` checks the naming conventions used in some variables of interest and where necessary modifies the names of these variables.
+
+```{r eval = F}
+valid_params_ls_ls <- make_valid_params_ls_ls(analysis_core_params_ls,
+                                                   candidate_covar_nms_chr = c("d_age", "SOFAS", "c_p_diag_s", "c_clinical_staging_s", "d_relation_s", "d_studying_working"),
+                                                   ds_tb = ds_tb, 
+                                                   maui_params_ls = maui_params_ls,
+                                                   path_params_ls = path_params_ls,
+                                                   prefd_mdl_types_chr = c("OLS_NTF", "OLS_CLL"))
+```
+
+## Run analysis
+### Primary analysis
+All analytic steps are executed with the following function call.
+
+```{r echo = TRUE, eval=FALSE}
+write_report(params_ls = valid_params_ls_ls$params_ls,
+                  paths_ls = path_params_ls$paths_ls,
+                  rprt_nm_1L_chr = "Main_Analysis_Rprt",
+                  abstract_args_ls = NULL,
+                  header_yaml_args_ls = header_yaml_args_ls)
+```
+
+### Secondary Analyses 
+
+```{r}
+TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = "SOFAS",
+                                              long_name_chr = c("SOFAS total score"),
+                                              min_val_dbl = 0,
+                                              max_val_dbl = 100,
+                                              class_chr = "integer",
+                                              increment_dbl = 1,
+                                              class_fn_chr = "youthvars::youthvars_sofas",
+                                              mdl_scaling_dbl = 0.01,
+                                              covariate_lgl = F)) %>%
+  write_scndry_analysis(valid_params_ls_ls = valid_params_ls_ls,
+                           candidate_covar_nms_chr = c("d_age", "c_p_diag_s", "c_clinical_staging_s", "d_relation_s", "d_studying_working"),
+                           header_yaml_args_ls = header_yaml_args_ls,
+                           path_params_ls = path_params_ls,
+                           prefd_covars_chr = NULL,
+                           reference_1L_int = 1)
+  
+```
+
+## Report results
+Create results and methods reports. 
+
+```{r echo = TRUE, eval=FALSE }
+write_mdl_smry_rprt(header_yaml_args_ls,
+                    path_params_ls = path_params_ls,
+                    use_fake_data_1L_lgl = use_fake_data_1L_lgl,
+                    output_format_ls = output_format_ls,
+                    reference_int = 1,#0:1
+                    use_shareable_mdls_1L_lgl = T)
+
+```
+
+
+## Share model summaries
+Share the results created in the previous step via an online repository. The uploaded files can be viewed at: https://doi.org/10.7910/DVN/JC6PTV
+```{r echo = TRUE, eval=FALSE }
+if(!is.null(dv_ls)){
+  write_study_outp_ds(dv_ls,
+                      output_format_ls = output_format_ls,
+                      path_params_ls = path_params_ls,
+                      use_fake_data_1L_lgl = use_fake_data_1L_lgl)
+}
+```
+
+
+
+
+
+# ```{r echo = TRUE }
+## Share (de-confidentialised) results
+# if(!is.null(dv_ls$secondary_2_dv_chr)){
+#       write_study_outp_ds(dv_ls,
+#                                output_format_ls = output_format_ls,
+#                                path_params_ls = path_params_ls,
+#                                reference_1L_int = 1)
+# }
+# ```
+
+
+```{r echo = FALSE, eval=FALSE }
+# Render Scientific Summary
+# if(!use_fake_data_1L_lgl){
+  # var_nm_change_lup <- tibble::tibble(old_nms_chr = c("k10","psychwell"),
+  #                                     new_nms_chr = c("K10", "Winefield wellbeing"))
+study_descs_ls <- make_study_descs_ls(health_utl_nm_1L_chr = "EQ-5D",
+                                           time_btwn_bl_and_fup_1L_chr = "three months",
+                                           predr_ctgs_ls = list(`psychological distress` = c("k10"),
+                                                                `psychological wellbeing` =  c("psychwell")))
+spine_of_results_ls <- make_results_ls_spine(output_data_dir_1L_chr = path_params_ls$paths_ls$output_data_dir_1L_chr,
+                                                  #var_nm_change_lup = var_nm_change_lup,
+                                                  study_descs_ls = study_descs_ls,
+                                                  nbr_of_digits_1L_int = output_format_ls$manuscript_digits_1L_int)
+cs_ts_ratios_tb = tibble::tibble(predr_nm_chr = c("k10","psychwell"),
+                                 ratios_chr = c(paste0("about ",
+                                                       round(spine_of_results_ls$mdl_coef_ratios_ls$`psychological distress`,2)),
+                                                paste0(round(spine_of_results_ls$mdl_coef_ratios_ls$`psychological wellbeing`,2))
+                                 ))
+# ctgl_vars_regrouping_ls = list('Primary Diagnosis' = list(anxdpr = list(name_1L_chr = "anxiety/depression",
+#                                                                           ctgs_chr = c("Anxiety", "Depression", "Depression and Anxiety"))),
+#                                  'Clinical Stage' = list(early = list(name_1L_chr = "early (prior to first episode of a serious mental disorder) clinical stages",
+#                                                                       ctgs_chr = c("0-1a","1b"))))
+sig_covars_some_predrs_mdls_tb = tibble::tibble(covars_ls = list(c("No other confounding factor")
+                                                                 # ,c("sex at birth"),c("primary diagnosis", "clinical staging","age")
+                                                                 ),
+                                                                 predrs_mdls_ls = list(c("either predictor")#, c("K6"),c("anxiety and depression measurements other than PHQ-9")
+                                                                                       ),
+                                                                 sig_thresh_dbl = c(NA_real_#,0.01,NA_real_
+                                                                                    ),
+                                                                 assn_strgth_chr = c(NA_character_#,NA_character_,"weakly"
+                                                                                     ))
+results_ls <- make_results_ls(spine_of_results_ls,
+                              cs_ts_ratios_tb = cs_ts_ratios_tb,
+                              ctgl_vars_regrouping_ls = NULL,
+                              sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb,
+                              sig_thresh_covars_1L_chr = "0.005")
+saveRDS(results_ls,paste0(path_params_ls$paths_ls$output_data_dir_1L_chr,"/results_ls.RDS"))
+  rmarkdown::render("AQoL_VIH/AQoL_VIH.Rmd",
+                    output_format = NULL,
+                    params = list(figures_in_body_lgl = F,
+                                  output_type_1L_chr = "Word",
+                                  results_ls = results_ls,
+                                  tables_in_body_lgl = F),
+                    output_file = paste0("AQoL_VIH", ".docx"),
+                    output_dir = path_params_ls$paths_ls$reports_dir_1L_chr)
+# }
+```
+
+# Purge dataset copies
+All remaining local copies (but not the original version) of the study dataset are deleted from the workspace.
+
+```{r echo = TRUE, eval=FALSE }
+write_to_delete_ds_copies(path_params_ls$paths_ls)
+```
+
+\elandscape
+<!---BLOCK_LANDSCAPE_STOP--->

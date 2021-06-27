@@ -11,7 +11,7 @@ write_mdl_smry_rprt(
   output_format_ls,
   abstract_args_ls = NULL,
   dv_ls = NULL,
-  reference_1L_int = NULL,
+  reference_int = 0,
   rprt_lup = NULL,
   rcrd_nm_1L_chr = "Write_Rprt_Rcrd",
   rprt_nm_1L_chr = "TS_TTU_Mdls_Smry",
@@ -32,7 +32,7 @@ write_mdl_smry_rprt(
 
 \item{dv_ls}{Dataverse (a list), Default: NULL}
 
-\item{reference_1L_int}{Reference (an integer vector of length one), Default: NULL}
+\item{reference_int}{Reference (an integer vector), Default: 0}
 
 \item{rprt_lup}{Report (a lookup table), Default: NULL}
 
@@ -44,7 +44,10 @@ write_mdl_smry_rprt(
 
 \item{use_shareable_mdls_1L_lgl}{Use shareable models (a logical vector of length one), Default: F}
 }
+\value{
+Report lups (a list)
+}
 \description{
-write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Report lups (a list).
 }
 \keyword{internal}

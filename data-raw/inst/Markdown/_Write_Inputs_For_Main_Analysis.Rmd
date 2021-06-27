@@ -9,7 +9,7 @@ Write a copy of the input parameters.
 
 ```{r }
 saveRDS(params_ls, here::here(paste0(paths_ls$output_data_dir_1L_chr,
-                                     "/I_INPUTS",
+                                     "/I_INPUTS_",
                                      params_ls$rprt_type_1L_chr,
                                      ".rds")))
 ```
