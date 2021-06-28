@@ -7,7 +7,8 @@
 transform_paths_ls_for_scndry(
   paths_ls,
   reference_1L_int = 1,
-  remove_prmry_1L_lgl = F
+  remove_prmry_1L_lgl = F,
+  remove_mkdn_1L_lgl = F
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ transform_paths_ls_for_scndry(
 \item{reference_1L_int}{Reference (an integer vector of length one), Default: 1}
 
 \item{remove_prmry_1L_lgl}{Remove prmry (a logical vector of length one), Default: F}
+
+\item{remove_mkdn_1L_lgl}{PARAM_DESCRIPTION, Default: F}
 }
 \value{
 Paths (a list)

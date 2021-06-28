@@ -122,16 +122,6 @@ path_params_ls <- make_path_params_ls(use_fake_data_1L_lgl = use_fake_data_1L_lg
                                       write_new_dir_1L_lgl = T)
 ```
 
-## Output repositories
-We provide details of dataverse dataset(s) to which results will be posted. You will need to supply details for repositories to which you have write permissions - the values supplied in the below call will not work for you. If you do not have write permissions for a dataverse dataset, use `dv_ls <- NULL`. 
-
-```{r echo = TRUE }
-dv_ls <- list(primary_dv_chr = c("firstbounce", # REPLACE WITH YOUR DATASET DETAILS
-                                 "https://doi.org/10.7910/DVN/JC6PTV"), 
-              #secondary_2_dv_chr = c("fakes","https://doi.org/10.7910/DVN/D74QMP"),
-              secondary_1_dv_chr = c("fakes","https://doi.org/10.7910/DVN/F2H3PA"))
-```
-
 ## Validate parameters
 A list of valid input values for our primary analysis is now constructed, principally using the objects created in the preceding steps. The `make_valid_params_ls_ls` checks the naming conventions used in some variables of interest and where necessary (for consistency with reporting templates) modifies the names of these variables.
 
@@ -158,7 +148,7 @@ write_report(params_ls = valid_params_ls_ls$params_ls,
 ```
 
 ### Secondary Analyses 
-We can specify supplementary analyses (that apply the same preferred model types as the primary analysis to different combinations of candidate predictors and co-variates) by creating a new predictors lookup table and making a call to the `write_scndry_analysis` function.
+We can specify supplementary analyses (that apply the same preferred model types as the primary analysis to different combinations of candidate predictors and covariates) by creating a new predictors lookup table and making a call to the `write_scndry_analysis` function.
 
 ```{r}
 TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = "SOFAS",
@@ -194,10 +184,19 @@ rprt_lups_ls <- write_mdl_smry_rprt(header_yaml_args_ls,
 
 
 ## Share model summaries
+We first details of dataverse dataset(s) to which results will be posted. You will need to supply details for repositories to which you have write permissions - the values supplied in the below call will not work for you. If you do not have write permissions for a dataverse dataset, use `dv_ds_nm_and_url_chr <- NULL`. 
+
+```{r echo = TRUE }
+dv_ds_nm_and_url_chr <- c("firstbounce", # Name of dataverse containing dataset
+                          "https://doi.org/10.7910/DVN/JC6PTV") # Dataset DOI
+# REPLACE THESE VALUES WITH DETAILS OF A DATAVERSE DATASET FOR WHICH YOU HAVE WRITE PERMISSIONS.
+```
+
 Share the results created in the previous step via an online repository. The uploaded files can be viewed at: https://doi.org/10.7910/DVN/JC6PTV
 ```{r echo = TRUE, eval=FALSE }
-if(!is.null(dv_ls)){
-  write_study_outp_ds(dv_ls,
+if(!is.null(dv_ds_nm_and_url_chr)){
+  write_study_outp_ds(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
+                      rprt_lups_ls = rprt_lups_ls,
                       output_format_ls = output_format_ls,
                       path_params_ls = path_params_ls,
                       use_fake_data_1L_lgl = use_fake_data_1L_lgl)

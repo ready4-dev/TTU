@@ -5,7 +5,8 @@
 \title{Write study output dataset}
 \usage{
 write_study_outp_ds(
-  dv_ls,
+  dv_ds_nm_and_url_chr,
+  rprt_lups_ls,
   output_format_ls,
   path_params_ls,
   abstract_args_ls = NULL,
@@ -13,14 +14,14 @@ write_study_outp_ds(
     dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.",
   inc_fl_types_chr = ".pdf",
   purge_data_1L_lgl = FALSE,
-  reference_1L_int = NULL,
-  rprt_lup = NULL,
   start_at_int = c(2, 1),
   use_fake_data_1L_lgl = F
 )
 }
 \arguments{
-\item{dv_ls}{Dataverse (a list)}
+\item{dv_ds_nm_and_url_chr}{PARAM_DESCRIPTION}
+
+\item{rprt_lups_ls}{PARAM_DESCRIPTION}
 
 \item{output_format_ls}{Output format (a list)}
 
@@ -33,10 +34,6 @@ write_study_outp_ds(
 \item{inc_fl_types_chr}{Include file types (a character vector), Default: '.pdf'}
 
 \item{purge_data_1L_lgl}{Purge data (a logical vector of length one), Default: FALSE}
-
-\item{reference_1L_int}{Reference (an integer vector of length one), Default: NULL}
-
-\item{rprt_lup}{Report (a lookup table), Default: NULL}
 
 \item{start_at_int}{Start at (an integer vector), Default: c(2, 1)}
 

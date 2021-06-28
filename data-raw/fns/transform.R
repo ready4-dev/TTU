@@ -11,7 +11,6 @@ transform_chr_digit_pairs <- function(digit_pairs_chr,
     })
   return(tfd_digit_pairs_chr)
 }
-
 transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_chr = "utl_total_w",
     source_data_nm_1L_chr = "Original", new_data_is_1L_chr = "Predicted",
     predn_type_1L_chr = NULL, family_1L_chr = NA_character_, impute_1L_lgl = F, is_brms_mdl_1L_lgl = F,
@@ -296,7 +295,8 @@ transform_params_ls_from_lup <- function(params_ls,
 }
 transform_paths_ls_for_scndry <- function(paths_ls,
                                           reference_1L_int = 1,
-                                          remove_prmry_1L_lgl = F){
+                                          remove_prmry_1L_lgl = F,
+                                          remove_mkdn_1L_lgl = F){
   paths_ls$prmry_analysis_dir_nm_1L_chr <- paths_ls$write_to_dir_nm_1L_chr
   paths_ls$write_to_dir_nm_1L_chr <- paste0(paths_ls$write_to_dir_nm_1L_chr,
                                             "/secondary_",
@@ -308,6 +308,8 @@ transform_paths_ls_for_scndry <- function(paths_ls,
     "/Reports")
   if(remove_prmry_1L_lgl)
     paths_ls <- paths_ls[names(paths_ls) != "prmry_analysis_dir_nm_1L_chr"]
+  if(remove_mkdn_1L_lgl)
+    paths_ls <- paths_ls[names(paths_ls) != "reports_dir_1L_chr"]
   return(paths_ls)
 }
 transform_predd_var_nm <- function (new_data_is_1L_chr,

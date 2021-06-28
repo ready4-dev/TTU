@@ -343,11 +343,13 @@ transform_params_ls_to_valid <- function (params_ls, scndry_analysis_extra_vars_
 #' @param paths_ls Paths (a list)
 #' @param reference_1L_int Reference (an integer vector of length one), Default: 1
 #' @param remove_prmry_1L_lgl Remove prmry (a logical vector of length one), Default: F
+#' @param remove_mkdn_1L_lgl PARAM_DESCRIPTION, Default: F
 #' @return Paths (a list)
 #' @rdname transform_paths_ls_for_scndry
 #' @export 
 #' @importFrom stringr str_sub
-transform_paths_ls_for_scndry <- function (paths_ls, reference_1L_int = 1, remove_prmry_1L_lgl = F) 
+transform_paths_ls_for_scndry <- function (paths_ls, reference_1L_int = 1, remove_prmry_1L_lgl = F, 
+    remove_mkdn_1L_lgl = F) 
 {
     paths_ls$prmry_analysis_dir_nm_1L_chr <- paths_ls$write_to_dir_nm_1L_chr
     paths_ls$write_to_dir_nm_1L_chr <- paste0(paths_ls$write_to_dir_nm_1L_chr, 
@@ -357,6 +359,8 @@ transform_paths_ls_for_scndry <- function (paths_ls, reference_1L_int = 1, remov
             10)), "/", paths_ls$write_to_dir_nm_1L_chr, "/Reports")
     if (remove_prmry_1L_lgl) 
         paths_ls <- paths_ls[names(paths_ls) != "prmry_analysis_dir_nm_1L_chr"]
+    if (remove_mkdn_1L_lgl) 
+        paths_ls <- paths_ls[names(paths_ls) != "reports_dir_1L_chr"]
     return(paths_ls)
 }
 #' Transform predicted variable name

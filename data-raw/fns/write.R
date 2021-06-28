@@ -266,6 +266,45 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
               }) %>% stats::setNames(reference_int %>% purrr::map_chr(~ifelse(.x==0,
                                                                               "Primary",
                                                                               paste0("secondary_",.x))))
+  consolidated_mdl_ings_ls <- reference_int %>%
+    purrr::reduce(.init = paste0(paths_ls$output_data_dir_1L_chr,"/G_Shareable/Ingredients/mdl_ingredients.RDS") %>%
+                    readRDS(),
+                  ~
+                    if(.y>0){
+                    ingredients_ls <- here::here(paths_ls$path_from_top_level_1L_chr,
+                                                 paths_ls$write_to_dir_nm_1L_chr,
+                                                 paste0("secondary_",reference_1L_int),
+                                                 "Output",
+                                                 "G_Shareable",
+                                                 "Ingredients",
+                                                 "mdl_ingredients.RDS") %>% readRDS()
+                    .x <- append(.x,
+                                 list(ingredients_ls) %>%
+                                   setNames(paste0("secondary_",.y)))
+                    .x$dictionary_tb <- dplyr::bind_rows(.x$dictionary_tb,
+                                                         ingredients_ls$dictionary_tb) %>%
+                      dplyr::distinct()
+                    .x$mdls_lup <- dplyr::bind_rows(.x$mdls_lup,
+                                                    ingredients_ls$mdls_lup %>%
+                                                      dplyr::mutate(source_chr = paste0("Secondary Analysis ",
+                                                                                        LETTERS[.y]))) %>%
+                      dplyr::distinct()
+                    .x$mdls_smry_tb <- dplyr::bind_rows(.x$mdls_smry_tb,
+                                                        ingredients_ls$mdls_smry_tb) %>%
+                      dplyr::distinct()
+                    .x$predictors_lup <- dplyr::bind_rows(.x$predictors_lup,
+                                                        ingredients_ls$predictors_lup) %>%
+                      dplyr::distinct()
+                    .x
+                  }else{
+                    .x$Primary <- .x
+                    .x$mdls_lup <- .x$mdls_lup %>%
+                      dplyr::mutate(source_chr = "Primary Analysis")
+                    .x
+                  })
+  saveRDS(consolidated_mdl_ings_ls,
+          paste0(paths_ls$output_data_dir_1L_chr,"/G_Shareable/Ingredients/mdl_ingredients.RDS"))
+
 return(rprt_lups_ls)
 }
 write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predrs_var_nms_chr,
@@ -934,69 +973,67 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
             dplyr::arrange(dplyr::desc(RsquaredP))
     return(smry_of_sngl_predr_mdls_tb)
 }
-write_study_outp_ds <- function(dv_ls,
+write_study_outp_ds <- function(dv_ds_nm_and_url_chr,
+                                rprt_lups_ls,
                                 output_format_ls,
                                 path_params_ls,
                                 abstract_args_ls = NULL,
                                 dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.",
                                 inc_fl_types_chr = ".pdf",
                                 purge_data_1L_lgl = FALSE,
-                                reference_1L_int = NULL,
-                                rprt_lup = NULL,
                                 start_at_int = c(2,1),
-                                #subtitle_1L_chr = NULL,
                                 use_fake_data_1L_lgl = F){
   paths_ls <- path_params_ls$paths_ls
-  if(is.null(rprt_lup)){
-    data("rprt_lup", package = "TTU", envir = environment())
-    rprt_lup <- transform_rprt_lup(rprt_lup,
-                                   add_suplry_rprt_1L_lgl = !is.null(reference_1L_int),
-                                   add_sharing_rprt_1L_lgl = T,
-                                   #number_rprts_1L_lgl = T,
-                                   start_at_int = start_at_int,
-                                   reference_1L_int = reference_1L_int)
-    # %>%
-    #   dplyr::filter(rprt_nms_chr != "TS_TTU_Mdls_Smry")
-  }
-  # if(is.null(subtitle_1L_chr)){
-  #   subtitle_1L_chr <- #"Methods Report 3: Sharing Program (Primary Analysis)"
-  # }
-  if(is.null(reference_1L_int)){
-    dv_ds_nm_and_url_chr <- dv_ls$primary_dv_chr
-    included_rprts_chr <- rprt_lup$rprt_nms_chr[rprt_lup$rprt_nms_chr != "Share_Outp_Rprt"]
-    transform_paths_ls <- NULL
-  }else{
-    dv_ds_nm_and_url_chr <- dv_ls %>% purrr::pluck(paste0("secondary_",reference_1L_int,"_dv_chr"))
-    included_rprts_chr <- c("Suplry_Analysis_Rprt","TS_TTU_Mdls_Smry")[min(2,reference_1L_int):2]
-    transform_paths_ls = list(fn = transform_paths_ls_for_scndry,
-                              args_ls = list(reference_1L_int = reference_1L_int,
-                                             remove_prmry_1L_lgl = T))
-    paths_ls <- rlang::exec(transform_paths_ls$fn, paths_ls, !!!transform_paths_ls$args_ls)
-  }
-  params_ls <- list(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
-                    dv_mdl_desc_1L_chr = dv_mdl_desc_1L_chr,
-                   # eval_1L_lgl = F,# REMOVE?
-                    inc_fl_types_chr = inc_fl_types_chr,
-                    nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int,
-                    output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr,
-                    #purge_data_1L_lgl = purge_data_1L_lgl, # REMOVE?
-                    rprt_lup = rprt_lup,
-                    # rprt_output_type_1L_chr = "PDF",# # REMOVE?
-                    # rprt_subtitle_1L_chr = NA_character_,# # REMOVE?
-                    subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup,
-                                                                  match_value_xx = "Share_Outp_Rprt",
-                                                                  match_var_nm_1L_chr = "rprt_nms_chr",
-                                                                  target_var_nm_1L_chr = "title_chr",
-                                                                  evaluate_lgl = F),
-                    transform_paths_ls = transform_paths_ls,
-                    use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>%
-    append(path_params_ls[1:2])
-  params_ls %>%
-    write_report(paths_ls = paths_ls,
-                 rprt_nm_1L_chr = "Share_Outp_Rprt",
-                 abstract_args_ls = abstract_args_ls,
-                 header_yaml_args_ls = header_yaml_args_ls,
-                 rprt_lup = rprt_lup)
+  rprt_lups_ls %>%
+    purrr::walk2(names(rprt_lups_ls),
+                 ~ {
+                   rprt_lup <- .x
+                   reference_1L_int <- ifelse(.y == "Primary",
+                                              0,
+                                              as.numeric(stringr::str_remove(.y,"secondary_")))
+                   if(is.null(rprt_lup)){
+                     data("rprt_lup", package = "TTU", envir = environment())
+                     rprt_lup <- transform_rprt_lup(rprt_lup,
+                                                    add_suplry_rprt_1L_lgl = !is.null(reference_1L_int),
+                                                    add_sharing_rprt_1L_lgl = T,
+                                                    start_at_int = start_at_int,
+                                                    reference_1L_int = reference_1L_int)
+                                       }
+                    if(reference_1L_int ==0){
+                     included_rprts_chr <- rprt_lup$rprt_nms_chr[rprt_lup$rprt_nms_chr != "Share_Outp_Rprt"]
+                     transform_paths_ls <- NULL
+                   }else{
+                     included_rprts_chr <- c("Suplry_Analysis_Rprt","TS_TTU_Mdls_Smry")[min(2,reference_1L_int):2]
+                     transform_paths_ls = list(fn = transform_paths_ls_for_scndry,
+                                               args_ls = list(reference_1L_int = reference_1L_int,
+                                                              remove_prmry_1L_lgl = T,
+                                                              remove_mkdn_1L_lgl = T))
+                     paths_ls <- rlang::exec(transform_paths_ls$fn, paths_ls, !!!transform_paths_ls$args_ls)
+                   }
+                   params_ls <- list(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
+                                     dv_mdl_desc_1L_chr = dv_mdl_desc_1L_chr,
+                                     inc_fl_types_chr = inc_fl_types_chr,
+                                     nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int,
+                                     output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr,
+                                     rprt_lup = rprt_lup %>%
+                                       dplyr::filter(rprt_nms_chr %in% included_rprts_chr),
+                                     share_mdls_1L_lgl = (reference_1L_int==0)
+                                     subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup,
+                                                                                   match_value_xx = "Share_Outp_Rprt",
+                                                                                   match_var_nm_1L_chr = "rprt_nms_chr",
+                                                                                   target_var_nm_1L_chr = "title_chr",
+                                                                                   evaluate_lgl = F),
+                                     transform_paths_ls = transform_paths_ls,
+                                     use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>%
+                     append(path_params_ls[1:2])
+                   params_ls %>%
+                     write_report(paths_ls = paths_ls,
+                                  rprt_nm_1L_chr = "Share_Outp_Rprt",
+                                  abstract_args_ls = abstract_args_ls,
+                                  header_yaml_args_ls = header_yaml_args_ls,
+                                  rprt_lup = rprt_lup)
+                 })
+
   ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "Share_Outp_Rprt",
                                                         title_chr = params_ls$subtitle_1L_chr),
                                 dv_nm_1L_chr = dv_ds_nm_and_url_chr[1],
