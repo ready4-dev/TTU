@@ -23,5 +23,6 @@ Note that, one of the key functions in TTU (`write_ts_mdls_from_alg_outp`{.R}) m
 
 The following vignettes demonstrate the two main workflows supported by the TTU package:
 
-- [Exploratory analysis workflow](Model_TTU.html)
-- [Analysis, reporting and dissemination workflow](CSP_EQ5D_TTU.html)
+- [Exploratory analysis workflow (General population - EQ5D)](Model_TTU.html)
+- [Reporting workflow (General population - EQ5D)](CSP_EQ5D_TTU.html)
+- [Reporting workflow (Clinical population - AQoL6D)](CSP_AQOL6D_TTU.html)

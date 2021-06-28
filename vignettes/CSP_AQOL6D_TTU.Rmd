@@ -1,11 +1,12 @@
 ---
-title: "Analysis, Reporting and Dissemination Workflow Example 2"
+title: "Reporting Workflow, AQoL-6D Clinical Population Example"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Analysis, Reporting and Dissemination Workflow Example 2}
+  %\VignetteIndexEntry{Reporting Workflow, AQoL-6D Clinical Population Example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
 \blandscape
 <!---BLOCK_LANDSCAPE_START--->
 
