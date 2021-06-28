@@ -151,7 +151,7 @@ write_report(params_ls = valid_params_ls_ls$params_ls,
 ## Secondary Analyses 
 We can specify supplementary analyses (that apply the same preferred model types as the primary analysis to different combinations of candidate predictors and covariates) by creating a new predictors lookup table and making a call to the `write_scndry_analysis` function.
 
-```{r}
+```{r echo = TRUE, eval=FALSE}
 TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = "SOFAS",
                                               long_name_chr = c("SOFAS total score"),
                                               min_val_dbl = 0,
@@ -190,14 +190,13 @@ Note: you will need to replace the values assigned to the `dv_ds_nm_and_url_chr`
 
 The dataset populated by the below call can be viewed at: https://doi.org/10.7910/DVN/JC6PTV
 ```{r echo = TRUE, eval=FALSE }
-if(!is.null(dv_ds_nm_and_url_chr)){
-  write_study_outp_ds(dv_ds_nm_and_url_chr = c("firstbounce", # Name of dataverse containing dataset
-                          "https://doi.org/10.7910/DVN/JC6PTV") # Dataset DOI
+write_study_outp_ds(dv_ds_nm_and_url_chr = c("firstbounce", # Name of dataverse containing dataset
+                          "https://doi.org/10.7910/DVN/JC6PTV"), # Dataset DOI
                       rprt_lups_ls = rprt_lups_ls,
                       output_format_ls = output_format_ls,
                       path_params_ls = path_params_ls,
                       use_fake_data_1L_lgl = use_fake_data_1L_lgl)
-}
+
 ```
 
 
