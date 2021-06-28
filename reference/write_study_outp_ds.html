@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9261</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9266</span>
       </span>
     </div>
 
@@ -106,7 +106,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/CSP_EQ5D_TTU.html">Analysis, Reporting and Dissemination Workflow</a>
+      <a href="../articles/CSP_AQOL6D_TTU.html">Reporting Workflow, AQoL-6D Clinical Population Example</a>
+    </li>
+    <li>
+      <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
       <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
@@ -144,7 +147,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>write_study_outp_ds</span><span class='op'>(</span>
-  <span class='va'>dv_ls</span>,
+  <span class='va'>dv_ds_nm_and_url_chr</span>,
+  <span class='va'>rprt_lups_ls</span>,
   <span class='va'>output_format_ls</span>,
   <span class='va'>path_params_ls</span>,
   abstract_args_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
@@ -152,8 +156,6 @@
     dv_mdl_desc_1L_chr <span class='op'>=</span> <span class='st'>"This is a time series transfer to utility model designed for use with the youthu R package."</span>,
   inc_fl_types_chr <span class='op'>=</span> <span class='st'>".pdf"</span>,
   purge_data_1L_lgl <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  reference_1L_int <span class='op'>=</span> <span class='cn'>NULL</span>,
-  rprt_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
   start_at_int <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>1</span><span class='op'>)</span>,
   use_fake_data_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>
 <span class='op'>)</span></pre>
@@ -162,8 +164,12 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>dv_ls</th>
-      <td><p>Dataverse (a list)</p></td>
+      <th>dv_ds_nm_and_url_chr</th>
+      <td><p>Dataverse dataset name and url (a character vector)</p></td>
+    </tr>
+    <tr>
+      <th>rprt_lups_ls</th>
+      <td><p>Report lups (a list)</p></td>
     </tr>
     <tr>
       <th>output_format_ls</th>
@@ -188,14 +194,6 @@
     <tr>
       <th>purge_data_1L_lgl</th>
       <td><p>Purge data (a logical vector of length one), Default: FALSE</p></td>
-    </tr>
-    <tr>
-      <th>reference_1L_int</th>
-      <td><p>Reference (an integer vector of length one), Default: NULL</p></td>
-    </tr>
-    <tr>
-      <th>rprt_lup</th>
-      <td><p>Report (a lookup table), Default: NULL</p></td>
     </tr>
     <tr>
       <th>start_at_int</th>

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Analysis, Reporting and Dissemination Workflow • TTU</title>
+<title>Reporting Workflow, EQ5D General Population Example • TTU</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Analysis, Reporting and Dissemination Workflow">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Reporting Workflow, EQ5D General Population Example">
 <meta property="og:description" content="TTU">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9261</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9266</span>
       </span>
     </div>
 
@@ -64,7 +64,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/CSP_EQ5D_TTU.html">Analysis, Reporting and Dissemination Workflow</a>
+      <a href="../articles/CSP_AQOL6D_TTU.html">Reporting Workflow, AQoL-6D Clinical Population Example</a>
+    </li>
+    <li>
+      <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
       <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
@@ -93,7 +96,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Analysis, Reporting and Dissemination Workflow</h1>
+      <h1 data-toc-skip>Reporting Workflow, EQ5D General Population Example</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/ready4-dev/TTU/blob/master/vignettes/CSP_EQ5D_TTU.Rmd"><code>vignettes/CSP_EQ5D_TTU.Rmd</code></a></small>
@@ -1149,24 +1152,11 @@ character
 <code class="sourceCode R"><span class="va">path_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_path_params_ls.html">make_path_params_ls</a></span><span class="op">(</span>use_fake_data_1L_lgl <span class="op">=</span> <span class="va">use_fake_data_1L_lgl</span>,
                                       write_new_dir_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="output-repositories" class="section level2">
+<div id="validate-parameters" class="section level2">
 <h2 class="hasAnchor">
-<a href="#output-repositories" class="anchor"></a>Output repositories</h2>
-<p>We provide details of dataverse dataset(s) to which results will be posted. You will need to supply details for repositories to which you have write permissions - the values supplied in the below call will not work for you. If you do not have write permissions for a dataverse dataset, use <code>dv_ls &lt;- NULL</code>.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dv_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>primary_dv_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"fakes"</span>, <span class="co"># REPLACE WITH DATAVERSE IN WHICH YOUR DATASET IS LOCATED</span>
-                                 <span class="st">"https://doi.org/10.7910/DVN/612HDC"</span> <span class="co"># REPLACE WITH YOUR DATASET'S DOI</span>
-                                 <span class="op">)</span><span class="op">)</span></code></pre></div>
-</div>
-</div>
-<div id="primary-analysis" class="section level1">
-<h1 class="hasAnchor">
-<a href="#primary-analysis" class="anchor"></a>Primary Analysis</h1>
-<div id="specify-analysis-parameters" class="section level2">
-<h2 class="hasAnchor">
-<a href="#specify-analysis-parameters" class="anchor"></a>Specify analysis parameters</h2>
+<a href="#validate-parameters" class="anchor"></a>Validate parameters</h2>
 <p>A list of valid input values for our primary analysis is now constructed, principally using the objects created in the preceding steps. The <code>make_valid_params_ls_ls</code> checks the naming conventions used in some variables of interest and where necessary modifies the names of these variables.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">valid_params_ls_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_valid_params_ls_ls.html">make_valid_params_ls_ls</a></span><span class="op">(</span><span class="va">analysis_core_params_ls</span>,
                                                    candidate_covar_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d_sex_birth_s"</span>, <span class="st">"d_age"</span>,  <span class="st">"d_sexual_ori_s"</span>, <span class="st">"d_relation_s"</span>, <span class="st">"d_studying_working"</span><span class="op">)</span>,
                                                    ds_tb <span class="op">=</span> <span class="va">ds_tb</span>, 
@@ -1174,41 +1164,45 @@ character
                                                    path_params_ls <span class="op">=</span> <span class="va">path_params_ls</span>,
                                                    prefd_mdl_types_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"OLS_NTF"</span>, <span class="st">"GLM_GSN_LOG"</span>, <span class="st">"BET_CLL"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="run-analysis" class="section level2">
-<h2 class="hasAnchor">
-<a href="#run-analysis" class="anchor"></a>Run analysis</h2>
+</div>
+<div id="run-analysis" class="section level1">
+<h1 class="hasAnchor">
+<a href="#run-analysis" class="anchor"></a>Run analysis</h1>
 <p>All analytic steps are executed with the following function call, which also creates <a href="https://dataverse.harvard.edu/api/access/datafile/4806541">a report detailing the program that performs these tasks</a>.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/write_report.html">write_report</a></span><span class="op">(</span>params_ls <span class="op">=</span> <span class="va">valid_params_ls_ls</span><span class="op">$</span><span class="va">params_ls</span>,
                   paths_ls <span class="op">=</span> <span class="va">path_params_ls</span><span class="op">$</span><span class="va">paths_ls</span>,
                   rprt_nm_1L_chr <span class="op">=</span> <span class="st">"Main_Analysis_Rprt"</span>,
                   abstract_args_ls <span class="op">=</span> <span class="cn">NULL</span>,
                   header_yaml_args_ls <span class="op">=</span> <span class="va">header_yaml_args_ls</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="report-results" class="section level2">
-<h2 class="hasAnchor">
-<a href="#report-results" class="anchor"></a>Report results</h2>
+<div id="report-results" class="section level1">
+<h1 class="hasAnchor">
+<a href="#report-results" class="anchor"></a>Report results</h1>
 <p>The following function call authors a <a href="https://dataverse.harvard.edu/api/access/datafile/4826550">report, summarising all the transfer to utility models</a> and writes it to a local directory along with other supplementary reporting information.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/write_mdl_smry_rprt.html">write_mdl_smry_rprt</a></span><span class="op">(</span><span class="va">header_yaml_args_ls</span>,
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">rprt_lups_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_smry_rprt.html">write_mdl_smry_rprt</a></span><span class="op">(</span><span class="va">header_yaml_args_ls</span>,
                          path_params_ls <span class="op">=</span> <span class="va">path_params_ls</span>,
-                         <span class="co">#dv_ls = dv_ls,</span>
                          use_fake_data_1L_lgl <span class="op">=</span> <span class="va">use_fake_data_1L_lgl</span>,
                          output_format_ls <span class="op">=</span> <span class="va">output_format_ls</span>,
                          use_shareable_mdls_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="share-model-summaries" class="section level2">
-<h2 class="hasAnchor">
-<a href="#share-model-summaries" class="anchor"></a>Share model summaries</h2>
+<div id="share-results" class="section level1">
+<h1 class="hasAnchor">
+<a href="#share-results" class="anchor"></a>Share results</h1>
+<p>We provide details of dataverse dataset(s) to which results will be posted. You will need to supply details for repositories to which you have write permissions - the values supplied in the below call will not work for you. If you do not have write permissions for a dataverse dataset, use <code>dv_ds_nm_and_url_chr &lt;- NULL</code>.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dv_ds_nm_and_url_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"fakes"</span>, <span class="co"># REPLACE WITH DATAVERSE IN WHICH YOUR DATASET IS LOCATED</span>
+                          <span class="st">"https://doi.org/10.7910/DVN/612HDC"</span><span class="op">)</span> <span class="co"># REPLACE WITH YOUR DATASET'S DOI</span></code></pre></div>
 <p>If details to a valid online data repository have been supplied, the following function call uploads data from which predictions can be made using model coefficients. The uploaded files can be viewed at: <a href="https://doi.org/10.7910/DVN/612HDC" class="uri">https://doi.org/10.7910/DVN/612HDC</a></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">dv_ls</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
-  <span class="fu"><a href="../reference/write_study_outp_ds.html">write_study_outp_ds</a></span><span class="op">(</span><span class="va">dv_ls</span>,
+<code class="sourceCode R"><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">dv_ds_nm_and_url_chr</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu"><a href="../reference/write_study_outp_ds.html">write_study_outp_ds</a></span><span class="op">(</span>dv_ds_nm_and_url_chr <span class="op">=</span> <span class="va">dv_ds_nm_and_url_chr</span>,
+                      rprt_lups_ls <span class="op">=</span> <span class="va">rprt_lups_ls</span>,
                       output_format_ls <span class="op">=</span> <span class="va">output_format_ls</span>,
                       path_params_ls <span class="op">=</span> <span class="va">path_params_ls</span>,
                       use_fake_data_1L_lgl <span class="op">=</span> <span class="va">use_fake_data_1L_lgl</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
-</div>
 </div>
 <div id="purge-dataset-copies" class="section level1">
 <h1 class="hasAnchor">

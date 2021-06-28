@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Write model summary report — write_mdl_smry_rprt" />
-<meta property="og:description" content="write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour" />
+<meta property="og:description" content="write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Report lups (a list)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9261</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9266</span>
       </span>
     </div>
 
@@ -106,7 +106,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/CSP_EQ5D_TTU.html">Analysis, Reporting and Dissemination Workflow</a>
+      <a href="../articles/CSP_AQOL6D_TTU.html">Reporting Workflow, AQoL-6D Clinical Population Example</a>
+    </li>
+    <li>
+      <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
       <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
@@ -140,7 +143,7 @@
     </div>
 
     <div class="ref-description">
-    <p>write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour</p>
+    <p>write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Report lups (a list).</p>
     </div>
 
     <pre class="usage"><span class='fu'>write_mdl_smry_rprt</span><span class='op'>(</span>
@@ -150,7 +153,7 @@
   <span class='va'>output_format_ls</span>,
   abstract_args_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
   dv_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
-  reference_1L_int <span class='op'>=</span> <span class='cn'>NULL</span>,
+  reference_int <span class='op'>=</span> <span class='fl'>0</span>,
   rprt_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
   rcrd_nm_1L_chr <span class='op'>=</span> <span class='st'>"Write_Rprt_Rcrd"</span>,
   rprt_nm_1L_chr <span class='op'>=</span> <span class='st'>"TS_TTU_Mdls_Smry"</span>,
@@ -186,8 +189,8 @@
       <td><p>Dataverse (a list), Default: NULL</p></td>
     </tr>
     <tr>
-      <th>reference_1L_int</th>
-      <td><p>Reference (an integer vector of length one), Default: NULL</p></td>
+      <th>reference_int</th>
+      <td><p>Reference (an integer vector), Default: 0</p></td>
     </tr>
     <tr>
       <th>rprt_lup</th>
@@ -211,6 +214,9 @@
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Report lups (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

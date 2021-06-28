@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9261</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9266</span>
       </span>
     </div>
 
@@ -106,7 +106,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/CSP_EQ5D_TTU.html">Analysis, Reporting and Dissemination Workflow</a>
+      <a href="../articles/CSP_AQOL6D_TTU.html">Reporting Workflow, AQoL-6D Clinical Population Example</a>
+    </li>
+    <li>
+      <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
       <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
@@ -146,7 +149,8 @@
     <pre class="usage"><span class='fu'>transform_paths_ls_for_scndry</span><span class='op'>(</span>
   <span class='va'>paths_ls</span>,
   reference_1L_int <span class='op'>=</span> <span class='fl'>1</span>,
-  remove_prmry_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>
+  remove_prmry_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>,
+  remove_mkdn_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -163,6 +167,10 @@
     <tr>
       <th>remove_prmry_1L_lgl</th>
       <td><p>Remove prmry (a logical vector of length one), Default: F</p></td>
+    </tr>
+    <tr>
+      <th>remove_mkdn_1L_lgl</th>
+      <td><p>Remove markdown (a logical vector of length one), Default: F</p></td>
     </tr>
     </table>
 
