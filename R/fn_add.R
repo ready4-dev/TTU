@@ -23,17 +23,19 @@ add_prefd_predr_var_to_mdl_smry_ls <- function (mdl_smry_ls, ds_smry_ls)
 #' @param data_tb Data (a tibble)
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one)
 #' @param tfmn_1L_chr Transformation (a character vector of length one)
+#' @param dep_var_max_val_1L_dbl Dep variable maximum value (a double vector of length one), Default: NULL
 #' @return Data (a tibble)
 #' @rdname add_tfmd_var_to_ds
 #' @export 
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
 #' @keywords internal
-add_tfmd_var_to_ds <- function (data_tb, depnt_var_nm_1L_chr, tfmn_1L_chr) 
+add_tfmd_var_to_ds <- function (data_tb, depnt_var_nm_1L_chr, tfmn_1L_chr, dep_var_max_val_1L_dbl = NULL) 
 {
     data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr, 
         tfmn_1L_chr = tfmn_1L_chr)), !!rlang::sym(depnt_var_nm_1L_chr) %>% 
-        calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr)))
+        calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, tfmn_is_outp_1L_lgl = F, 
+            dep_var_max_val_1L_dbl = dep_var_max_val_1L_dbl)))
     return(data_tb)
 }
 #' Add unique identifiers to tibbles

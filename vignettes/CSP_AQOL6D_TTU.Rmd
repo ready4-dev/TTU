@@ -132,10 +132,8 @@ dv_ls <- list(primary_dv_chr = c("firstbounce", # REPLACE WITH YOUR DATASET DETA
               secondary_1_dv_chr = c("fakes","https://doi.org/10.7910/DVN/F2H3PA"))
 ```
 
-# Primary Analysis
-
-## Specify analysis parameters
-A list of valid input values for our primary analysis is now constructed, principally using the objects created in the preceding steps. The `make_valid_params_ls_ls` checks the naming conventions used in some variables of interest and where necessary modifies the names of these variables.
+## Validate parameters
+A list of valid input values for our primary analysis is now constructed, principally using the objects created in the preceding steps. The `make_valid_params_ls_ls` checks the naming conventions used in some variables of interest and where necessary (for consistency with reporting templates) modifies the names of these variables.
 
 ```{r eval = F}
 valid_params_ls_ls <- make_valid_params_ls_ls(analysis_core_params_ls,
@@ -143,12 +141,13 @@ valid_params_ls_ls <- make_valid_params_ls_ls(analysis_core_params_ls,
                                                    ds_tb = ds_tb, 
                                                    maui_params_ls = maui_params_ls,
                                                    path_params_ls = path_params_ls,
-                                                   prefd_mdl_types_chr = c("OLS_NTF", "OLS_CLL"))
+                                                   prefd_mdl_types_chr = c("GLM_GSN_LOG",
+                                                                           "OLS_CLL"))
 ```
 
 ## Run analysis
 ### Primary analysis
-All analytic steps are executed with the following function call.
+All analytic steps for our primary analysis are executed with the following function call.
 
 ```{r echo = TRUE, eval=FALSE}
 write_report(params_ls = valid_params_ls_ls$params_ls,
@@ -159,6 +158,7 @@ write_report(params_ls = valid_params_ls_ls$params_ls,
 ```
 
 ### Secondary Analyses 
+We can specify supplementary analyses (that apply the same preferred model types as the primary analysis to different combinations of candidate predictors and co-variates) by creating a new predictors lookup table and making a call to the `write_scndry_analysis` function.
 
 ```{r}
 TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = "SOFAS",
@@ -183,12 +183,12 @@ TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = "SOFAS",
 Create results and methods reports. 
 
 ```{r echo = TRUE, eval=FALSE }
-write_mdl_smry_rprt(header_yaml_args_ls,
-                    path_params_ls = path_params_ls,
-                    use_fake_data_1L_lgl = use_fake_data_1L_lgl,
-                    output_format_ls = output_format_ls,
-                    reference_int = 1,#0:1
-                    use_shareable_mdls_1L_lgl = T)
+rprt_lups_ls <- write_mdl_smry_rprt(header_yaml_args_ls,
+                                    path_params_ls = path_params_ls,
+                                    use_fake_data_1L_lgl = use_fake_data_1L_lgl,
+                                    output_format_ls = output_format_ls,
+                                    reference_int = 0:1,
+                                    use_shareable_mdls_1L_lgl = T)
 
 ```
 

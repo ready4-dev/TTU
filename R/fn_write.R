@@ -188,11 +188,12 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
 #' @return Report lups (a list)
 #' @rdname write_mdl_smry_rprt
 #' @export 
-#' @importFrom purrr map pluck
+#' @importFrom purrr map pluck map_chr
 #' @importFrom here here
 #' @importFrom ready4use write_fls_to_dv_ds
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter pull
+#' @importFrom stats setNames
 #' @keywords internal
 write_mdl_smry_rprt <- function (header_yaml_args_ls, path_params_ls, use_fake_data_1L_lgl = FALSE, 
     output_format_ls, abstract_args_ls = NULL, dv_ls = NULL, 
@@ -264,7 +265,8 @@ write_mdl_smry_rprt <- function (header_yaml_args_ls, path_params_ls, use_fake_d
                 inc_fl_types_chr = ".pdf", paths_are_rltv_1L_lgl = F)
         }
         rprt_lup
-    })
+    }) %>% stats::setNames(reference_int %>% purrr::map_chr(~ifelse(.x == 
+        0, "Primary", paste0("secondary_", .x))))
     return(rprt_lups_ls)
 }
 #' Write model type covariates models
@@ -758,16 +760,16 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_
 #' @param start_at_int Start at (an integer vector), Default: c(2, 1)
 #' @param rprt_nm_1L_chr Report name (a character vector of length one), Default: 'Suplry_Analysis_Rprt'
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
-#' @param rename_lup Rename (a lookup table), Default: NULL
 #' @return NULL
 #' @rdname write_scndry_analysis
 #' @export 
 #' @importFrom purrr map_chr
 #' @importFrom ready4fun get_from_lup_obj
+#' @importFrom dplyr filter
 write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, candidate_covar_nms_chr, 
     header_yaml_args_ls, path_params_ls, prefd_covars_chr, reference_1L_int, 
     start_at_int = c(2, 1), rprt_nm_1L_chr = "Suplry_Analysis_Rprt", 
-    abstract_args_ls = NULL, rename_lup = NULL) 
+    abstract_args_ls = NULL) 
 {
     analysis_params_ls <- valid_params_ls_ls$params_ls %>% append(path_params_ls[1:2])
     rename_lup <- valid_params_ls_ls$rename_lup
@@ -792,11 +794,10 @@ write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, ca
             match_value_xx = .x, match_var_nm_1L_chr = "old_nms_chr", 
             target_var_nm_1L_chr = "new_nms_chr", evaluate_lgl = F)))
     }
-    if (is.null(rprt_lup)) {
-        data("rprt_lup", package = "TTU", envir = environment())
-        rprt_lup <- rprt_lup %>% transform_rprt_lup(start_at_int = start_at_int, 
-            reference_1L_int = reference_1L_int)
-    }
+    data("rprt_lup", package = "TTU", envir = environment())
+    rprt_lup <- rprt_lup %>% transform_rprt_lup(start_at_int = start_at_int, 
+        reference_1L_int = reference_1L_int) %>% dplyr::filter(rprt_nms_chr == 
+        "Suplry_Analysis_Rprt")
     analysis_params_ls$subtitle_1L_chr <- ready4fun::get_from_lup_obj(rprt_lup, 
         match_value_xx = "Suplry_Analysis_Rprt", match_var_nm_1L_chr = "rprt_nms_chr", 
         target_var_nm_1L_chr = "title_chr", evaluate_lgl = F)
@@ -859,7 +860,7 @@ write_shareable_dir <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable"
 #' @export 
 #' @importFrom purrr map_chr flatten_chr map map_lgl map_int map2 map2_dfr discard
 #' @importFrom stringr str_locate str_remove_all
-#' @importFrom dplyr select filter mutate
+#' @importFrom dplyr filter select mutate
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom stats setNames
 #' @importFrom tibble tibble
@@ -895,7 +896,6 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
         purrr::map2(incld_mdl_paths_chr, ~{
             model_mdl <- readRDS(paste0(outp_smry_ls$path_to_write_to_1L_chr, 
                 "/", .y))
-            model_mdl$data <- fake_ds_tb %>% dplyr::select(names(model_mdl$data))
             mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model == 
                 .x)
             mdl_nm_1L_chr <- .x
@@ -915,7 +915,11 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
             sd_dbl <- mdl_smry_tb %>% dplyr::filter(Parameter == 
                 "SD (Intercept)") %>% dplyr::select(Estimate, 
                 SE) %>% t() %>% as.vector()
-            table_predn_mdl <- make_shareable_mdl(fake_ds_tb = fake_ds_tb, 
+            mdl_fake_ds_tb <- fake_ds_tb %>% add_tfmd_var_to_ds(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
+                tfmn_1L_chr = tfmn_1L_chr, dep_var_max_val_1L_dbl = 0.999) %>% 
+                dplyr::select(names(model_mdl$data))
+            model_mdl$data <- mdl_fake_ds_tb
+            table_predn_mdl <- make_shareable_mdl(fake_ds_tb = mdl_fake_ds_tb, 
                 mdl_smry_tb = mdl_smry_tb, depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
                 id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, 
                 tfmn_1L_chr = tfmn_1L_chr, mdl_type_1L_chr = mdl_type_1L_chr, 

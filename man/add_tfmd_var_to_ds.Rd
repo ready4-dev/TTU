@@ -4,7 +4,12 @@
 \alias{add_tfmd_var_to_ds}
 \title{Add tfmd variable to dataset}
 \usage{
-add_tfmd_var_to_ds(data_tb, depnt_var_nm_1L_chr, tfmn_1L_chr)
+add_tfmd_var_to_ds(
+  data_tb,
+  depnt_var_nm_1L_chr,
+  tfmn_1L_chr,
+  dep_var_max_val_1L_dbl = NULL
+)
 }
 \arguments{
 \item{data_tb}{Data (a tibble)}
@@ -12,6 +17,8 @@ add_tfmd_var_to_ds(data_tb, depnt_var_nm_1L_chr, tfmn_1L_chr)
 \item{depnt_var_nm_1L_chr}{Dependent variable name (a character vector of length one)}
 
 \item{tfmn_1L_chr}{Transformation (a character vector of length one)}
+
+\item{dep_var_max_val_1L_dbl}{Dep variable maximum value (a double vector of length one), Default: NULL}
 }
 \value{
 Data (a tibble)

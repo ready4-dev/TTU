@@ -503,10 +503,8 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
                     round_bl_val_1L_chr, 0, (. - dplyr::lag(.)) * 
                     scaling_fctr_dbl[idx_1L_int]))))
         })
-    tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr, 
-        tfmn_1L_chr = tfmn_1L_chr)), !!rlang::sym(depnt_var_nm_1L_chr) %>% 
-        calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, tfmn_is_outp_1L_lgl = F, 
-            dep_var_max_val_1L_dbl = 0.999)))
+    tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% add_tfmd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+        tfmn_1L_chr = tfmn_1L_chr, dep_var_max_val_1L_dbl = 0.999)
     if (drop_all_msng_1L_lgl) {
         tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% stats::na.omit()
     }

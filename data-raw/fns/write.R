@@ -263,7 +263,9 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                                                 paths_are_rltv_1L_lgl = F)
                 }
                 rprt_lup
-              })
+              }) %>% stats::setNames(reference_int %>% purrr::map_chr(~ifelse(.x==0,
+                                                                              "Primary",
+                                                                              paste0("secondary_",.x))))
 return(rprt_lups_ls)
 }
 write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predrs_var_nms_chr,
@@ -621,8 +623,7 @@ write_scndry_analysis <- function(predictors_lup = NULL,
                                   reference_1L_int,
                                   start_at_int = c(2,1),
                                   rprt_nm_1L_chr = "Suplry_Analysis_Rprt",
-                                  abstract_args_ls = NULL,
-                                  rename_lup = NULL) {
+                                  abstract_args_ls = NULL) {
   analysis_params_ls <- valid_params_ls_ls$params_ls %>%
     append(path_params_ls[1:2])
   rename_lup <- valid_params_ls_ls$rename_lup
@@ -658,11 +659,12 @@ write_scndry_analysis <- function(predictors_lup = NULL,
                                                          evaluate_lgl = F)))
   }
 
-  if(is.null(rprt_lup)){
+  #if(is.null(rprt_lup)){
     data("rprt_lup", package = "TTU", envir = environment())
     rprt_lup <- rprt_lup %>% transform_rprt_lup(start_at_int = start_at_int,
-                                                reference_1L_int = reference_1L_int)
-  }
+                                                reference_1L_int = reference_1L_int) %>%
+      dplyr::filter(rprt_nms_chr == "Suplry_Analysis_Rprt")
+  #}
   analysis_params_ls$subtitle_1L_chr <- ready4fun::get_from_lup_obj(rprt_lup,
                                                                     match_value_xx = "Suplry_Analysis_Rprt",
                                                                     match_var_nm_1L_chr = "rprt_nms_chr",
@@ -732,7 +734,7 @@ write_shareable_mdls <- function (outp_smry_ls,
     shareable_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>%
         purrr::map2(incld_mdl_paths_chr, ~{
             model_mdl <- readRDS(paste0(outp_smry_ls$path_to_write_to_1L_chr,"/",.y))
-            model_mdl$data <- fake_ds_tb %>% dplyr::select(names(model_mdl$data))
+
             mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model ==
                 .x)
             mdl_nm_1L_chr <- .x
@@ -760,7 +762,13 @@ write_shareable_mdls <- function (outp_smry_ls,
               dplyr::select(Estimate, SE) %>%
               t() %>%
               as.vector()
-            table_predn_mdl <- make_shareable_mdl(fake_ds_tb = fake_ds_tb,
+            mdl_fake_ds_tb <- fake_ds_tb %>%
+              add_tfmd_var_to_ds(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
+                                 tfmn_1L_chr = tfmn_1L_chr,
+                                 dep_var_max_val_1L_dbl = 0.999) %>%
+              dplyr::select(names(model_mdl$data))
+            model_mdl$data <- mdl_fake_ds_tb
+            table_predn_mdl <- make_shareable_mdl(fake_ds_tb = mdl_fake_ds_tb,
                 mdl_smry_tb = mdl_smry_tb, depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
                 id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr,
                 tfmn_1L_chr = tfmn_1L_chr,

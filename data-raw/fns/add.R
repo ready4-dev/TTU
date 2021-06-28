@@ -9,10 +9,13 @@ add_prefd_predr_var_to_mdl_smry_ls <- function(mdl_smry_ls,
 }
 add_tfmd_var_to_ds <- function(data_tb,
                                depnt_var_nm_1L_chr,
-                               tfmn_1L_chr){
+                               tfmn_1L_chr,
+                               dep_var_max_val_1L_dbl = NULL){
   data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr,
                                                                                 tfmn_1L_chr = tfmn_1L_chr)), !!rlang::sym(depnt_var_nm_1L_chr) %>%
-                                              calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr)))
+                                              calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
+                                                                      tfmn_is_outp_1L_lgl = F,
+                                                                      dep_var_max_val_1L_dbl = dep_var_max_val_1L_dbl)))
   return(data_tb)
 }
 add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkClientID")
