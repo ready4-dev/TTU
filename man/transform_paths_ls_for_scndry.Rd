@@ -18,7 +18,7 @@ transform_paths_ls_for_scndry(
 
 \item{remove_prmry_1L_lgl}{Remove prmry (a logical vector of length one), Default: F}
 
-\item{remove_mkdn_1L_lgl}{PARAM_DESCRIPTION, Default: F}
+\item{remove_mkdn_1L_lgl}{Remove markdown (a logical vector of length one), Default: F}
 }
 \value{
 Paths (a list)

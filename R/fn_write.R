@@ -272,8 +272,8 @@ write_mdl_smry_rprt <- function (header_yaml_args_ls, path_params_ls, use_fake_d
         ~if (.y > 0) {
             ingredients_ls <- here::here(paths_ls$path_from_top_level_1L_chr, 
                 paths_ls$write_to_dir_nm_1L_chr, paste0("secondary_", 
-                  reference_1L_int), "Output", "G_Shareable", 
-                "Ingredients", "mdl_ingredients.RDS") %>% readRDS()
+                  .y), "Output", "G_Shareable", "Ingredients", 
+                "mdl_ingredients.RDS") %>% readRDS()
             .x <- append(.x, list(ingredients_ls) %>% setNames(paste0("secondary_", 
                 .y)))
             .x$dictionary_tb <- dplyr::bind_rows(.x$dictionary_tb, 
@@ -1117,8 +1117,8 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 }
 #' Write study output dataset
 #' @description write_study_outp_ds() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write study output dataset. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
-#' @param dv_ds_nm_and_url_chr PARAM_DESCRIPTION
-#' @param rprt_lups_ls PARAM_DESCRIPTION
+#' @param dv_ds_nm_and_url_chr Dataverse dataset name and url (a character vector)
+#' @param rprt_lups_ls Report lups (a list)
 #' @param output_format_ls Output format (a list)
 #' @param path_params_ls Path params (a list)
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
@@ -1150,8 +1150,8 @@ write_study_outp_ds <- function (dv_ds_nm_and_url_chr, rprt_lups_ls, output_form
             "secondary_")))
         if (is.null(rprt_lup)) {
             data("rprt_lup", package = "TTU", envir = environment())
-            rprt_lup <- transform_rprt_lup(rprt_lup, add_suplry_rprt_1L_lgl = !is.null(reference_1L_int), 
-                add_sharing_rprt_1L_lgl = T, start_at_int = start_at_int, 
+            rprt_lup <- transform_rprt_lup(rprt_lup, add_suplry_rprt_1L_lgl = reference_1L_int > 
+                0, add_sharing_rprt_1L_lgl = T, start_at_int = start_at_int, 
                 reference_1L_int = reference_1L_int)
         }
         if (reference_1L_int == 0) {
@@ -1164,7 +1164,7 @@ write_study_outp_ds <- function (dv_ds_nm_and_url_chr, rprt_lups_ls, output_form
                 reference_1L_int):2]
             transform_paths_ls = list(fn = transform_paths_ls_for_scndry, 
                 args_ls = list(reference_1L_int = reference_1L_int, 
-                  remove_prmry_1L_lgl = T))
+                  remove_prmry_1L_lgl = T, remove_mkdn_1L_lgl = T))
             paths_ls <- rlang::exec(transform_paths_ls$fn, paths_ls, 
                 !!!transform_paths_ls$args_ls)
         }
@@ -1173,7 +1173,8 @@ write_study_outp_ds <- function (dv_ds_nm_and_url_chr, rprt_lups_ls, output_form
             nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int, 
             output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr, 
             rprt_lup = rprt_lup %>% dplyr::filter(rprt_nms_chr %in% 
-                included_rprts_chr), subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup, 
+                included_rprts_chr), share_mdls_1L_lgl = (reference_1L_int == 
+                0), subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup, 
                 match_value_xx = "Share_Outp_Rprt", match_var_nm_1L_chr = "rprt_nms_chr", 
                 target_var_nm_1L_chr = "title_chr", evaluate_lgl = F), 
             transform_paths_ls = transform_paths_ls, use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>% 
@@ -1183,9 +1184,11 @@ write_study_outp_ds <- function (dv_ds_nm_and_url_chr, rprt_lups_ls, output_form
             rprt_lup = rprt_lup)
     })
     ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "Share_Outp_Rprt", 
-        title_chr = params_ls$subtitle_1L_chr), dv_nm_1L_chr = dv_ds_nm_and_url_chr[1], 
+        title_chr = rprt_lups_ls[[1]] %>% ready4fun::get_from_lup_obj(match_value_xx = "Share_Outp_Rprt", 
+            match_var_nm_1L_chr = "rprt_nms_chr", target_var_nm_1L_chr = "title_chr", 
+            evaluate_lgl = F)), dv_nm_1L_chr = dv_ds_nm_and_url_chr[1], 
         ds_url_1L_chr = dv_ds_nm_and_url_chr[2], parent_dv_dir_1L_chr = paths_ls$dv_dir_1L_chr, 
-        paths_to_dirs_chr = paths_ls$reports_dir_1L_chr, inc_fl_types_chr = params_ls$inc_fl_types_chr, 
+        paths_to_dirs_chr = paths_ls$reports_dir_1L_chr, inc_fl_types_chr = inc_fl_types_chr, 
         paths_are_rltv_1L_lgl = F)
 }
 #' Write to delete dataset copies

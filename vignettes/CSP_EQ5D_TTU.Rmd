@@ -1,8 +1,8 @@
 ---
-title: "Analysis, Reporting and Dissemination Workflow"
+title: "Analysis, Reporting and Dissemination Workflow Example 1"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Analysis, Reporting and Dissemination Workflow}
+  %\VignetteIndexEntry{Analysis, Reporting and Dissemination Workflow Example 1}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -189,18 +189,7 @@ path_params_ls <- make_path_params_ls(use_fake_data_1L_lgl = use_fake_data_1L_lg
                                       write_new_dir_1L_lgl = T)
 ```
 
-## Output repositories
-We provide details of dataverse dataset(s) to which results will be posted. You will need to supply details for repositories to which you have write permissions - the values supplied in the below call will not work for you. If you do not have write permissions for a dataverse dataset, use `dv_ls <- NULL`. 
-
-```{r echo = TRUE }
-dv_ls <- list(primary_dv_chr = c("fakes", # REPLACE WITH DATAVERSE IN WHICH YOUR DATASET IS LOCATED
-                                 "https://doi.org/10.7910/DVN/612HDC" # REPLACE WITH YOUR DATASET'S DOI
-                                 ))
-```
-
-# Primary Analysis
-
-## Specify analysis parameters
+## Validate parameters
 A list of valid input values for our primary analysis is now constructed, principally using the objects created in the preceding steps. The `make_valid_params_ls_ls` checks the naming conventions used in some variables of interest and where necessary modifies the names of these variables.
 
 ```{r eval = F}
@@ -212,7 +201,7 @@ valid_params_ls_ls <- make_valid_params_ls_ls(analysis_core_params_ls,
                                                    prefd_mdl_types_chr = c("OLS_NTF", "GLM_GSN_LOG", "BET_CLL"))
 ```
 
-## Run analysis
+# Run analysis
 All analytic steps are executed with the following function call, which also creates [a report detailing the program that performs these tasks](https://dataverse.harvard.edu/api/access/datafile/4806541).
 
 ```{r echo = TRUE, eval=FALSE}
@@ -223,22 +212,31 @@ write_report(params_ls = valid_params_ls_ls$params_ls,
                   header_yaml_args_ls = header_yaml_args_ls)
 ```
 
-## Report results
+# Report results
 The following function call authors a [report, summarising all the transfer to utility models](https://dataverse.harvard.edu/api/access/datafile/4826550) and writes it to a local directory along with other supplementary reporting information. 
 ```{r echo = TRUE, eval=FALSE }
-write_mdl_smry_rprt(header_yaml_args_ls,
+rprt_lups_ls <- write_mdl_smry_rprt(header_yaml_args_ls,
                          path_params_ls = path_params_ls,
-                         #dv_ls = dv_ls,
                          use_fake_data_1L_lgl = use_fake_data_1L_lgl,
                          output_format_ls = output_format_ls,
                          use_shareable_mdls_1L_lgl = T)
 ```
 
-## Share model summaries
+# Share results
+We provide details of dataverse dataset(s) to which results will be posted. You will need to supply details for repositories to which you have write permissions - the values supplied in the below call will not work for you. If you do not have write permissions for a dataverse dataset, use `dv_ds_nm_and_url_chr <- NULL`. 
+
+```{r echo = TRUE }
+dv_ds_nm_and_url_chr <- c("fakes", # REPLACE WITH DATAVERSE IN WHICH YOUR DATASET IS LOCATED
+                          "https://doi.org/10.7910/DVN/612HDC") # REPLACE WITH YOUR DATASET'S DOI
+                                 
+```
+
 If details to a valid online data repository have been supplied, the following function call uploads data from which predictions can be made using model coefficients. The uploaded files can be viewed at: https://doi.org/10.7910/DVN/612HDC
+
 ```{r echo = TRUE, eval=FALSE }
-if(!is.null(dv_ls)){
-  write_study_outp_ds(dv_ls,
+if(!is.null(dv_ds_nm_and_url_chr)){
+  write_study_outp_ds(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
+                      rprt_lups_ls = rprt_lups_ls,
                       output_format_ls = output_format_ls,
                       path_params_ls = path_params_ls,
                       use_fake_data_1L_lgl = use_fake_data_1L_lgl)

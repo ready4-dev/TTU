@@ -19,9 +19,9 @@ write_study_outp_ds(
 )
 }
 \arguments{
-\item{dv_ds_nm_and_url_chr}{PARAM_DESCRIPTION}
+\item{dv_ds_nm_and_url_chr}{Dataverse dataset name and url (a character vector)}
 
-\item{rprt_lups_ls}{PARAM_DESCRIPTION}
+\item{rprt_lups_ls}{Report lups (a list)}
 
 \item{output_format_ls}{Output format (a list)}
 

@@ -1,8 +1,8 @@
 ---
-title: "Analysis, Reporting and Dissemination Workflow"
+title: "Analysis, Reporting and Dissemination Workflow Example 2"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Analysis, Reporting and Dissemination Workflow}
+  %\VignetteIndexEntry{Analysis, Reporting and Dissemination Workflow Example 2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -135,8 +135,8 @@ valid_params_ls_ls <- make_valid_params_ls_ls(analysis_core_params_ls,
                                                                            "OLS_CLL"))
 ```
 
-## Run analysis
-### Primary analysis
+# Run analysis
+## Primary analysis
 All analytic steps for our primary analysis are executed with the following function call.
 
 ```{r echo = TRUE, eval=FALSE}
@@ -147,7 +147,7 @@ write_report(params_ls = valid_params_ls_ls$params_ls,
                   header_yaml_args_ls = header_yaml_args_ls)
 ```
 
-### Secondary Analyses 
+## Secondary Analyses 
 We can specify supplementary analyses (that apply the same preferred model types as the primary analysis to different combinations of candidate predictors and covariates) by creating a new predictors lookup table and making a call to the `write_scndry_analysis` function.
 
 ```{r}
@@ -169,7 +169,7 @@ TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = "SOFAS",
   
 ```
 
-## Report results
+# Report results
 Create results and methods reports. 
 
 ```{r echo = TRUE, eval=FALSE }
@@ -182,20 +182,16 @@ rprt_lups_ls <- write_mdl_smry_rprt(header_yaml_args_ls,
 
 ```
 
+# Share results
+Share the results created in the previous step via an online repository. 
 
-## Share model summaries
-We first details of dataverse dataset(s) to which results will be posted. You will need to supply details for repositories to which you have write permissions - the values supplied in the below call will not work for you. If you do not have write permissions for a dataverse dataset, use `dv_ds_nm_and_url_chr <- NULL`. 
+Note: you will need to replace the values assigned to the `dv_ds_nm_and_url_chr` argument with the details of repositories for which you have write permissions - the values supplied in the below call will not work for you. If you do not have write permissions for a dataverse dataset, use `dv_ds_nm_and_url_chr = NULL`.
 
-```{r echo = TRUE }
-dv_ds_nm_and_url_chr <- c("firstbounce", # Name of dataverse containing dataset
-                          "https://doi.org/10.7910/DVN/JC6PTV") # Dataset DOI
-# REPLACE THESE VALUES WITH DETAILS OF A DATAVERSE DATASET FOR WHICH YOU HAVE WRITE PERMISSIONS.
-```
-
-Share the results created in the previous step via an online repository. The uploaded files can be viewed at: https://doi.org/10.7910/DVN/JC6PTV
+The dataset populated by the below call can be viewed at: https://doi.org/10.7910/DVN/JC6PTV
 ```{r echo = TRUE, eval=FALSE }
 if(!is.null(dv_ds_nm_and_url_chr)){
-  write_study_outp_ds(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
+  write_study_outp_ds(dv_ds_nm_and_url_chr = c("firstbounce", # Name of dataverse containing dataset
+                          "https://doi.org/10.7910/DVN/JC6PTV") # Dataset DOI
                       rprt_lups_ls = rprt_lups_ls,
                       output_format_ls = output_format_ls,
                       path_params_ls = path_params_ls,
@@ -203,19 +199,6 @@ if(!is.null(dv_ds_nm_and_url_chr)){
 }
 ```
 
-
-
-
-
-# ```{r echo = TRUE }
-## Share (de-confidentialised) results
-# if(!is.null(dv_ls$secondary_2_dv_chr)){
-#       write_study_outp_ds(dv_ls,
-#                                output_format_ls = output_format_ls,
-#                                path_params_ls = path_params_ls,
-#                                reference_1L_int = 1)
-# }
-# ```
 
 
 ```{r echo = FALSE, eval=FALSE }

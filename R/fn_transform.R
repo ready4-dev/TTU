@@ -343,7 +343,7 @@ transform_params_ls_to_valid <- function (params_ls, scndry_analysis_extra_vars_
 #' @param paths_ls Paths (a list)
 #' @param reference_1L_int Reference (an integer vector of length one), Default: 1
 #' @param remove_prmry_1L_lgl Remove prmry (a logical vector of length one), Default: F
-#' @param remove_mkdn_1L_lgl PARAM_DESCRIPTION, Default: F
+#' @param remove_mkdn_1L_lgl Remove markdown (a logical vector of length one), Default: F
 #' @return Paths (a list)
 #' @rdname transform_paths_ls_for_scndry
 #' @export 
