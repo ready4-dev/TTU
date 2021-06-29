@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9267</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9268</span>
       </span>
     </div>
 
@@ -146,7 +146,7 @@
     <p>get_table_predn_mdl() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get table prediction model. Function argument mdl_nm_1L_chr specifies the where to look for the required object. The function returns Table prediction (a model).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_table_predn_mdl</span><span class='op'>(</span><span class='va'>mdl_nm_1L_chr</span>, <span class='va'>ingredients_ls</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_table_predn_mdl</span><span class='op'>(</span><span class='va'>mdl_nm_1L_chr</span>, <span class='va'>ingredients_ls</span>, analysis_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -158,6 +158,10 @@
     <tr>
       <th>ingredients_ls</th>
       <td><p>Ingredients (a list)</p></td>
+    </tr>
+    <tr>
+      <th>analysis_1L_chr</th>
+      <td><p>Analysis (a character vector of length one), Default: NULL</p></td>
     </tr>
     </table>
 
