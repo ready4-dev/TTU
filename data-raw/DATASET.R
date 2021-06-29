@@ -197,20 +197,20 @@ pkg_dss_tb <- tibble::tibble(short_name_chr = c("coefs","hetg",
 # BORUTA_VAR_IMP
 # RF_VAR_IMP
 ##
-pkg_dss_tb <- tibble::tibble(rprt_nms_chr = "TS_TTU_Mdls_Smry",
+pkg_dss_tb <- tibble::tibble(rprt_nms_chr = "AAA_TTU_MDL_CTG",
                            title_chr = "Results supplement: time series transfer to utility models.",
                            paths_to_rmd_dir_1L_chr = NA_character_,
                            pkg_dirs_chr = "Markdown",
                            packages_chr = "TTU",
                            nms_of_rmd_chr = "Report_TS_Mdls.RMD",
                            rltv_paths_to_outpt_yaml_chr = "_output.yml") %>%
-  tibble::add_case(rprt_nms_chr = "Main_Analysis_Rprt",
+  tibble::add_case(rprt_nms_chr = "AAA_PMRY_ANLYS_MTH",
                    title_chr = "Methods supplement: Main analysis algorithm",
                    paths_to_rmd_dir_1L_chr = NA_character_,
                    pkg_dirs_chr = "Markdown",
                    packages_chr = "TTU",
                    nms_of_rmd_chr = "Analyse.Rmd") %>%
-  tibble::add_case(rprt_nms_chr = "Write_Rprt_Rcrd",
+  tibble::add_case(rprt_nms_chr = "AAA_RPRT_WRTNG_MTH",
                    title_chr = "Methods supplement: algorithm to auto-generate reports.",
                    paths_to_rmd_dir_1L_chr = NA_character_,
                    pkg_dirs_chr = "Markdown",

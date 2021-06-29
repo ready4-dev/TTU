@@ -13,7 +13,7 @@ write_scndry_analysis(
   prefd_covars_chr,
   reference_1L_int,
   start_at_int = c(2, 1),
-  rprt_nm_1L_chr = "Suplry_Analysis_Rprt",
+  rprt_nm_1L_chr = "AAA_SUPLRY_ANLYS_MTH",
   abstract_args_ls = NULL
 )
 }
@@ -34,7 +34,7 @@ write_scndry_analysis(
 
 \item{start_at_int}{Start at (an integer vector), Default: c(2, 1)}
 
-\item{rprt_nm_1L_chr}{Report name (a character vector of length one), Default: 'Suplry_Analysis_Rprt'}
+\item{rprt_nm_1L_chr}{Report name (a character vector of length one), Default: 'AAA_SUPLRY_ANLYS_MTH'}
 
 \item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
 }

@@ -355,17 +355,17 @@ transform_rprt_lup <- function(rprt_lup,
                                reference_1L_int = NULL){
   if(add_suplry_rprt_1L_lgl){
     rprt_lup <- rprt_lup  %>%
-      tibble::add_case(rprt_nms_chr = "Suplry_Analysis_Rprt",
+      tibble::add_case(rprt_nms_chr = "AAA_SUPLRY_ANLYS_MTH",
                        title_chr = "Report outlining the algorithm to run the supplemenatary analysis.",
                        paths_to_rmd_dir_1L_chr = NA_character_,
                        pkg_dirs_chr = "Markdown",
                        packages_chr = "TTU",
                        nms_of_rmd_chr = "Supplement.Rmd") %>%
-      dplyr::filter(rprt_nms_chr != "Main_Analysis_Rprt")
+      dplyr::filter(rprt_nms_chr != "AAA_PMRY_ANLYS_MTH")
   }
   if(add_sharing_rprt_1L_lgl){
     rprt_lup <- rprt_lup  %>%
-      tibble::add_case(rprt_nms_chr = "Share_Outp_Rprt",
+      tibble::add_case(rprt_nms_chr = "AAA_SHARING_MTH",
                        title_chr = "Supplementary report outlining the algorithm to create and disseminate shareable study output.",
                        paths_to_rmd_dir_1L_chr = NA_character_,
                        pkg_dirs_chr = "Markdown",
@@ -374,23 +374,23 @@ transform_rprt_lup <- function(rprt_lup,
   }
   if(!is.null(start_at_int[1])){
     rprt_lup <- dplyr::mutate(rprt_lup,
-                              title_chr = dplyr::case_when(rprt_nms_chr %in% c("Main_Analysis_Rprt") ~ paste0("Methods Report ",
+                              title_chr = dplyr::case_when(rprt_nms_chr %in% c("AAA_PMRY_ANLYS_MTH") ~ paste0("Methods Report ",
                                                                                                               start_at_int[1],
                                                                                                               ": Analysis Program (",
                                                                                                               "Primary Analysis",
                                                                                                               ")"),
-                                                           rprt_nms_chr %in% c("Suplry_Analysis_Rprt") ~ paste0("Methods Report ",
+                                                           rprt_nms_chr %in% c("AAA_SUPLRY_ANLYS_MTH") ~ paste0("Methods Report ",
                                                                                      start_at_int[1]+3,
                                                                                      ": Analysis Program (",
                                                                                      "Secondary Analysis",
                                                                                      ")"),
-                                                           rprt_nms_chr %in% c("Write_Rprt_Rcrd") ~ paste0("Methods Report ",
+                                                           rprt_nms_chr %in% c("AAA_RPRT_WRTNG_MTH") ~ paste0("Methods Report ",
                                                                                                            start_at_int[1] + 1,
                                                                                                             ": Reporting Program"),
-                                                           rprt_nms_chr %in% c("Share_Outp_Rprt") ~ paste0("Methods Report ",
+                                                           rprt_nms_chr %in% c("AAA_SHARING_MTH") ~ paste0("Methods Report ",
                                                                                                            start_at_int[1] + 2,
                                                                                                            ": Sharing Program"),
-                                                           rprt_nms_chr %in% c("TS_TTU_Mdls_Smry") ~ paste0("Results Report ",
+                                                           rprt_nms_chr %in% c("AAA_TTU_MDL_CTG") ~ paste0("Results Report ",
                                                                                                             ifelse(is.null(reference_1L_int),
                                                                                                                    start_at_int[2],
                                                                                                                    start_at_int[2]+reference_1L_int),

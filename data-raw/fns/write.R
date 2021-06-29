@@ -185,8 +185,8 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                                 dv_ls = NULL,
                                 reference_int = 0,
                                 rprt_lup = NULL,
-                                rcrd_nm_1L_chr = "Write_Rprt_Rcrd",
-                                rprt_nm_1L_chr = "TS_TTU_Mdls_Smry",
+                                rcrd_nm_1L_chr = "AAA_RPRT_WRTNG_MTH",
+                                rprt_nm_1L_chr = "AAA_TTU_MDL_CTG",
                                 start_at_int = c(2,1),
                                 use_shareable_mdls_1L_lgl = F){
   paths_ls <- path_params_ls$paths_ls
@@ -596,8 +596,8 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                                  header_yaml_args_ls = NULL,
                                  rprt_lup = NULL,
                                  use_fake_data_1L_lgl = F,
-                                 rprt_nm_1L_chr = "TS_TTU_Mdls_Smry",
-                                 rcrd_nm_1L_chr = "Write_Rprt_Rcrd",
+                                 rprt_nm_1L_chr = "AAA_TTU_MDL_CTG",
+                                 rcrd_nm_1L_chr = "AAA_RPRT_WRTNG_MTH",
                                  reference_1L_int = NULL,
                                  start_at_int = c(2,1),
                                  output_type_1L_chr = "PDF",
@@ -622,12 +622,12 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
        rprt_nm_1L_chr = rprt_nm_1L_chr,
        rprt_output_type_1L_chr = output_type_1L_chr,
        rprt_subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup,
-                                                          match_value_xx = "TS_TTU_Mdls_Smry",
+                                                          match_value_xx = "AAA_TTU_MDL_CTG",
                                                           match_var_nm_1L_chr = "rprt_nms_chr",
                                                           target_var_nm_1L_chr = "title_chr",
                                                           evaluate_lgl = F),
        subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup,
-                                                     match_value_xx = "Write_Rprt_Rcrd",
+                                                     match_value_xx = "AAA_RPRT_WRTNG_MTH",
                                                      match_var_nm_1L_chr = "rprt_nms_chr",
                                                      target_var_nm_1L_chr = "title_chr",
                                                      evaluate_lgl = F),
@@ -642,7 +642,7 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                               list(rprt_lup = rprt_lup)),
        output_type_1L_chr = output_type_1L_chr,
        subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup,
-                                                     match_value_xx = "TS_TTU_Mdls_Smry",
+                                                     match_value_xx = "AAA_TTU_MDL_CTG",
                                                      match_var_nm_1L_chr = "rprt_nms_chr",
                                                      target_var_nm_1L_chr = "title_chr",
                                                      evaluate_lgl = F)) %>%
@@ -661,7 +661,7 @@ write_scndry_analysis <- function(predictors_lup = NULL,
                                   prefd_covars_chr,
                                   reference_1L_int,
                                   start_at_int = c(2,1),
-                                  rprt_nm_1L_chr = "Suplry_Analysis_Rprt",
+                                  rprt_nm_1L_chr = "AAA_SUPLRY_ANLYS_MTH",
                                   abstract_args_ls = NULL) {
   analysis_params_ls <- valid_params_ls_ls$params_ls %>%
     append(path_params_ls[1:2])
@@ -702,10 +702,10 @@ write_scndry_analysis <- function(predictors_lup = NULL,
     data("rprt_lup", package = "TTU", envir = environment())
     rprt_lup <- rprt_lup %>% transform_rprt_lup(start_at_int = start_at_int,
                                                 reference_1L_int = reference_1L_int) %>%
-      dplyr::filter(rprt_nms_chr == "Suplry_Analysis_Rprt")
+      dplyr::filter(rprt_nms_chr == "AAA_SUPLRY_ANLYS_MTH")
   #}
   analysis_params_ls$subtitle_1L_chr <- ready4fun::get_from_lup_obj(rprt_lup,
-                                                                    match_value_xx = "Suplry_Analysis_Rprt",
+                                                                    match_value_xx = "AAA_SUPLRY_ANLYS_MTH",
                                                                     match_var_nm_1L_chr = "rprt_nms_chr",
                                                                     target_var_nm_1L_chr = "title_chr",
                                                                     evaluate_lgl = F)
@@ -1000,10 +1000,10 @@ write_study_outp_ds <- function(dv_ds_nm_and_url_chr,
                                                     reference_1L_int = reference_1L_int)
                                        }
                     if(reference_1L_int==0){
-                     included_rprts_chr <- rprt_lup$rprt_nms_chr[rprt_lup$rprt_nms_chr != "Share_Outp_Rprt"]
+                     included_rprts_chr <- rprt_lup$rprt_nms_chr[rprt_lup$rprt_nms_chr != "AAA_SHARING_MTH"]
                      transform_paths_ls <- NULL
                    }else{
-                     included_rprts_chr <- c("Suplry_Analysis_Rprt","TS_TTU_Mdls_Smry")[min(2,reference_1L_int):2]
+                     included_rprts_chr <- c("AAA_SUPLRY_ANLYS_MTH","AAA_TTU_MDL_CTG")[min(2,reference_1L_int):2]
                      transform_paths_ls = list(fn = transform_paths_ls_for_scndry,
                                                args_ls = list(reference_1L_int = reference_1L_int,
                                                               remove_prmry_1L_lgl = T,
@@ -1019,7 +1019,7 @@ write_study_outp_ds <- function(dv_ds_nm_and_url_chr,
                                        dplyr::filter(rprt_nms_chr %in% included_rprts_chr),
                                      share_mdls_1L_lgl = (reference_1L_int==0),
                                      subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup,
-                                                                                   match_value_xx = "Share_Outp_Rprt",
+                                                                                   match_value_xx = "AAA_SHARING_MTH",
                                                                                    match_var_nm_1L_chr = "rprt_nms_chr",
                                                                                    target_var_nm_1L_chr = "title_chr",
                                                                                    evaluate_lgl = F),
@@ -1028,14 +1028,14 @@ write_study_outp_ds <- function(dv_ds_nm_and_url_chr,
                      append(path_params_ls[1:2])
                    params_ls %>%
                      write_report(paths_ls = paths_ls,
-                                  rprt_nm_1L_chr = "Share_Outp_Rprt",
+                                  rprt_nm_1L_chr = "AAA_SHARING_MTH",
                                   abstract_args_ls = abstract_args_ls,
                                   header_yaml_args_ls = header_yaml_args_ls,
                                   rprt_lup = rprt_lup)
                  })
-  ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "Share_Outp_Rprt",
+  ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "AAA_SHARING_MTH",
                                                         title_chr =  rprt_lups_ls[[1]] %>%
-                                                          ready4fun::get_from_lup_obj(match_value_xx = "Share_Outp_Rprt",
+                                                          ready4fun::get_from_lup_obj(match_value_xx = "AAA_SHARING_MTH",
                                                                                       match_var_nm_1L_chr = "rprt_nms_chr",
                                                                                       target_var_nm_1L_chr = "title_chr",
                                                                                       evaluate_lgl = F)),

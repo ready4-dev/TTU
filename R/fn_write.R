@@ -181,8 +181,8 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
 #' @param dv_ls Dataverse (a list), Default: NULL
 #' @param reference_int Reference (an integer vector), Default: 0
 #' @param rprt_lup Report (a lookup table), Default: NULL
-#' @param rcrd_nm_1L_chr Rcrd name (a character vector of length one), Default: 'Write_Rprt_Rcrd'
-#' @param rprt_nm_1L_chr Report name (a character vector of length one), Default: 'TS_TTU_Mdls_Smry'
+#' @param rcrd_nm_1L_chr Rcrd name (a character vector of length one), Default: 'AAA_RPRT_WRTNG_MTH'
+#' @param rprt_nm_1L_chr Report name (a character vector of length one), Default: 'AAA_TTU_MDL_CTG'
 #' @param start_at_int Start at (an integer vector), Default: c(2, 1)
 #' @param use_shareable_mdls_1L_lgl Use shareable models (a logical vector of length one), Default: F
 #' @return Report lups (a list)
@@ -197,9 +197,9 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
 #' @keywords internal
 write_mdl_smry_rprt <- function (header_yaml_args_ls, path_params_ls, use_fake_data_1L_lgl = FALSE, 
     output_format_ls, abstract_args_ls = NULL, dv_ls = NULL, 
-    reference_int = 0, rprt_lup = NULL, rcrd_nm_1L_chr = "Write_Rprt_Rcrd", 
-    rprt_nm_1L_chr = "TS_TTU_Mdls_Smry", start_at_int = c(2, 
-        1), use_shareable_mdls_1L_lgl = F) 
+    reference_int = 0, rprt_lup = NULL, rcrd_nm_1L_chr = "AAA_RPRT_WRTNG_MTH", 
+    rprt_nm_1L_chr = "AAA_TTU_MDL_CTG", start_at_int = c(2, 1), 
+    use_shareable_mdls_1L_lgl = F) 
 {
     paths_ls <- path_params_ls$paths_ls
     if (is.null(rprt_lup)) 
@@ -726,8 +726,8 @@ write_report <- function (params_ls, paths_ls, rprt_nm_1L_chr, abstract_args_ls 
 #' @param header_yaml_args_ls Header yaml arguments (a list), Default: NULL
 #' @param rprt_lup Report (a lookup table), Default: NULL
 #' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: F
-#' @param rprt_nm_1L_chr Report name (a character vector of length one), Default: 'TS_TTU_Mdls_Smry'
-#' @param rcrd_nm_1L_chr Rcrd name (a character vector of length one), Default: 'Write_Rprt_Rcrd'
+#' @param rprt_nm_1L_chr Report name (a character vector of length one), Default: 'AAA_TTU_MDL_CTG'
+#' @param rcrd_nm_1L_chr Rcrd name (a character vector of length one), Default: 'AAA_RPRT_WRTNG_MTH'
 #' @param reference_1L_int Reference (an integer vector of length one), Default: NULL
 #' @param start_at_int Start at (an integer vector), Default: c(2, 1)
 #' @param output_type_1L_chr Output type (a character vector of length one), Default: 'PDF'
@@ -741,8 +741,8 @@ write_report <- function (params_ls, paths_ls, rprt_nm_1L_chr, abstract_args_ls 
 #' @export 
 #' @importFrom ready4fun get_from_lup_obj
 write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_args_ls = NULL, 
-    rprt_lup = NULL, use_fake_data_1L_lgl = F, rprt_nm_1L_chr = "TS_TTU_Mdls_Smry", 
-    rcrd_nm_1L_chr = "Write_Rprt_Rcrd", reference_1L_int = NULL, 
+    rprt_lup = NULL, use_fake_data_1L_lgl = F, rprt_nm_1L_chr = "AAA_TTU_MDL_CTG", 
+    rcrd_nm_1L_chr = "AAA_RPRT_WRTNG_MTH", reference_1L_int = NULL, 
     start_at_int = c(2, 1), output_type_1L_chr = "PDF", rprt_output_type_1L_chr = "PDF", 
     nbr_of_digits_1L_int = 2L, abstract_args_ls = NULL, main_rprt_append_ls = NULL, 
     rcrd_rprt_append_ls = NULL) 
@@ -757,10 +757,10 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_
         output_type_1L_chr = rprt_output_type_1L_chr, nbr_of_digits_1L_int = nbr_of_digits_1L_int, 
         rprt_lup = rprt_lup, rprt_nm_1L_chr = rprt_nm_1L_chr, 
         rprt_output_type_1L_chr = output_type_1L_chr, rprt_subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup, 
-            match_value_xx = "TS_TTU_Mdls_Smry", match_var_nm_1L_chr = "rprt_nms_chr", 
+            match_value_xx = "AAA_TTU_MDL_CTG", match_var_nm_1L_chr = "rprt_nms_chr", 
             target_var_nm_1L_chr = "title_chr", evaluate_lgl = F), 
         subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup, 
-            match_value_xx = "Write_Rprt_Rcrd", match_var_nm_1L_chr = "rprt_nms_chr", 
+            match_value_xx = "AAA_RPRT_WRTNG_MTH", match_var_nm_1L_chr = "rprt_nms_chr", 
             target_var_nm_1L_chr = "title_chr", evaluate_lgl = F), 
         use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>% append(rcrd_rprt_append_ls) %>% 
         write_report(paths_ls = paths_ls, rprt_nm_1L_chr = rcrd_nm_1L_chr, 
@@ -769,7 +769,7 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_
     list(outp_smry_ls = append(readRDS(path_to_outp_fl_1L_chr), 
         list(rprt_lup = rprt_lup)), output_type_1L_chr = output_type_1L_chr, 
         subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup, 
-            match_value_xx = "TS_TTU_Mdls_Smry", match_var_nm_1L_chr = "rprt_nms_chr", 
+            match_value_xx = "AAA_TTU_MDL_CTG", match_var_nm_1L_chr = "rprt_nms_chr", 
             target_var_nm_1L_chr = "title_chr", evaluate_lgl = F)) %>% 
         append(main_rprt_append_ls) %>% write_report(paths_ls = paths_ls, 
         rprt_nm_1L_chr = rprt_nm_1L_chr, abstract_args_ls = abstract_args_ls, 
@@ -785,7 +785,7 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_
 #' @param prefd_covars_chr Preferred covariates (a character vector)
 #' @param reference_1L_int Reference (an integer vector of length one)
 #' @param start_at_int Start at (an integer vector), Default: c(2, 1)
-#' @param rprt_nm_1L_chr Report name (a character vector of length one), Default: 'Suplry_Analysis_Rprt'
+#' @param rprt_nm_1L_chr Report name (a character vector of length one), Default: 'AAA_SUPLRY_ANLYS_MTH'
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
 #' @return NULL
 #' @rdname write_scndry_analysis
@@ -795,7 +795,7 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_
 #' @importFrom dplyr filter
 write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, candidate_covar_nms_chr, 
     header_yaml_args_ls, path_params_ls, prefd_covars_chr, reference_1L_int, 
-    start_at_int = c(2, 1), rprt_nm_1L_chr = "Suplry_Analysis_Rprt", 
+    start_at_int = c(2, 1), rprt_nm_1L_chr = "AAA_SUPLRY_ANLYS_MTH", 
     abstract_args_ls = NULL) 
 {
     analysis_params_ls <- valid_params_ls_ls$params_ls %>% append(path_params_ls[1:2])
@@ -824,9 +824,9 @@ write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, ca
     data("rprt_lup", package = "TTU", envir = environment())
     rprt_lup <- rprt_lup %>% transform_rprt_lup(start_at_int = start_at_int, 
         reference_1L_int = reference_1L_int) %>% dplyr::filter(rprt_nms_chr == 
-        "Suplry_Analysis_Rprt")
+        "AAA_SUPLRY_ANLYS_MTH")
     analysis_params_ls$subtitle_1L_chr <- ready4fun::get_from_lup_obj(rprt_lup, 
-        match_value_xx = "Suplry_Analysis_Rprt", match_var_nm_1L_chr = "rprt_nms_chr", 
+        match_value_xx = "AAA_SUPLRY_ANLYS_MTH", match_var_nm_1L_chr = "rprt_nms_chr", 
         target_var_nm_1L_chr = "title_chr", evaluate_lgl = F)
     analysis_params_ls$candidate_covar_nms_chr <- candidate_covar_nms_chr
     path_params_ls$paths_ls <- write_scndry_analysis_dir(path_params_ls$paths_ls, 
@@ -1156,11 +1156,11 @@ write_study_outp_ds <- function (dv_ds_nm_and_url_chr, rprt_lups_ls, output_form
         }
         if (reference_1L_int == 0) {
             included_rprts_chr <- rprt_lup$rprt_nms_chr[rprt_lup$rprt_nms_chr != 
-                "Share_Outp_Rprt"]
+                "AAA_SHARING_MTH"]
             transform_paths_ls <- NULL
         }
         else {
-            included_rprts_chr <- c("Suplry_Analysis_Rprt", "TS_TTU_Mdls_Smry")[min(2, 
+            included_rprts_chr <- c("AAA_SUPLRY_ANLYS_MTH", "AAA_TTU_MDL_CTG")[min(2, 
                 reference_1L_int):2]
             transform_paths_ls = list(fn = transform_paths_ls_for_scndry, 
                 args_ls = list(reference_1L_int = reference_1L_int, 
@@ -1175,16 +1175,16 @@ write_study_outp_ds <- function (dv_ds_nm_and_url_chr, rprt_lups_ls, output_form
             rprt_lup = rprt_lup %>% dplyr::filter(rprt_nms_chr %in% 
                 included_rprts_chr), share_mdls_1L_lgl = (reference_1L_int == 
                 0), subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup, 
-                match_value_xx = "Share_Outp_Rprt", match_var_nm_1L_chr = "rprt_nms_chr", 
+                match_value_xx = "AAA_SHARING_MTH", match_var_nm_1L_chr = "rprt_nms_chr", 
                 target_var_nm_1L_chr = "title_chr", evaluate_lgl = F), 
             transform_paths_ls = transform_paths_ls, use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>% 
             append(path_params_ls[1:2])
-        params_ls %>% write_report(paths_ls = paths_ls, rprt_nm_1L_chr = "Share_Outp_Rprt", 
+        params_ls %>% write_report(paths_ls = paths_ls, rprt_nm_1L_chr = "AAA_SHARING_MTH", 
             abstract_args_ls = abstract_args_ls, header_yaml_args_ls = header_yaml_args_ls, 
             rprt_lup = rprt_lup)
     })
-    ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "Share_Outp_Rprt", 
-        title_chr = rprt_lups_ls[[1]] %>% ready4fun::get_from_lup_obj(match_value_xx = "Share_Outp_Rprt", 
+    ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "AAA_SHARING_MTH", 
+        title_chr = rprt_lups_ls[[1]] %>% ready4fun::get_from_lup_obj(match_value_xx = "AAA_SHARING_MTH", 
             match_var_nm_1L_chr = "rprt_nms_chr", target_var_nm_1L_chr = "title_chr", 
             evaluate_lgl = F)), dv_nm_1L_chr = dv_ds_nm_and_url_chr[1], 
         ds_url_1L_chr = dv_ds_nm_and_url_chr[2], parent_dv_dir_1L_chr = paths_ls$dv_dir_1L_chr, 

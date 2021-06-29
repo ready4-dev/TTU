@@ -13,8 +13,8 @@ write_mdl_smry_rprt(
   dv_ls = NULL,
   reference_int = 0,
   rprt_lup = NULL,
-  rcrd_nm_1L_chr = "Write_Rprt_Rcrd",
-  rprt_nm_1L_chr = "TS_TTU_Mdls_Smry",
+  rcrd_nm_1L_chr = "AAA_RPRT_WRTNG_MTH",
+  rprt_nm_1L_chr = "AAA_TTU_MDL_CTG",
   start_at_int = c(2, 1),
   use_shareable_mdls_1L_lgl = F
 )
@@ -36,9 +36,9 @@ write_mdl_smry_rprt(
 
 \item{rprt_lup}{Report (a lookup table), Default: NULL}
 
-\item{rcrd_nm_1L_chr}{Rcrd name (a character vector of length one), Default: 'Write_Rprt_Rcrd'}
+\item{rcrd_nm_1L_chr}{Rcrd name (a character vector of length one), Default: 'AAA_RPRT_WRTNG_MTH'}
 
-\item{rprt_nm_1L_chr}{Report name (a character vector of length one), Default: 'TS_TTU_Mdls_Smry'}
+\item{rprt_nm_1L_chr}{Report name (a character vector of length one), Default: 'AAA_TTU_MDL_CTG'}
 
 \item{start_at_int}{Start at (an integer vector), Default: c(2, 1)}
 

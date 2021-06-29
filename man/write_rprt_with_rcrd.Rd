@@ -10,8 +10,8 @@ write_rprt_with_rcrd(
   header_yaml_args_ls = NULL,
   rprt_lup = NULL,
   use_fake_data_1L_lgl = F,
-  rprt_nm_1L_chr = "TS_TTU_Mdls_Smry",
-  rcrd_nm_1L_chr = "Write_Rprt_Rcrd",
+  rprt_nm_1L_chr = "AAA_TTU_MDL_CTG",
+  rcrd_nm_1L_chr = "AAA_RPRT_WRTNG_MTH",
   reference_1L_int = NULL,
   start_at_int = c(2, 1),
   output_type_1L_chr = "PDF",
@@ -33,9 +33,9 @@ write_rprt_with_rcrd(
 
 \item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one), Default: F}
 
-\item{rprt_nm_1L_chr}{Report name (a character vector of length one), Default: 'TS_TTU_Mdls_Smry'}
+\item{rprt_nm_1L_chr}{Report name (a character vector of length one), Default: 'AAA_TTU_MDL_CTG'}
 
-\item{rcrd_nm_1L_chr}{Rcrd name (a character vector of length one), Default: 'Write_Rprt_Rcrd'}
+\item{rcrd_nm_1L_chr}{Rcrd name (a character vector of length one), Default: 'AAA_RPRT_WRTNG_MTH'}
 
 \item{reference_1L_int}{Reference (an integer vector of length one), Default: NULL}
 

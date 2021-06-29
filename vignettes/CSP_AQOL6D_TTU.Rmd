@@ -143,7 +143,7 @@ All analytic steps for our primary analysis are executed with the following func
 ```{r echo = TRUE, eval=FALSE}
 write_report(params_ls = valid_params_ls_ls$params_ls,
                   paths_ls = path_params_ls$paths_ls,
-                  rprt_nm_1L_chr = "Main_Analysis_Rprt",
+                  rprt_nm_1L_chr = "AAA_PMRY_ANLYS_MTH",
                   abstract_args_ls = NULL,
                   header_yaml_args_ls = header_yaml_args_ls)
 ```

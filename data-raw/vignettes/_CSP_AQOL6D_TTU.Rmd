@@ -160,7 +160,7 @@ valid_params_ls_ls <- TTU::make_valid_params_ls_ls(analysis_core_params_ls,
 ```{r echo = TRUE }
 TTU::write_report(params_ls = valid_params_ls_ls$params_ls,
                   paths_ls = paths_ls,
-                  rprt_nm_1L_chr = "Main_Analysis_Rprt",
+                  rprt_nm_1L_chr = "AAA_PMRY_ANLYS_MTH",
                   abstract_args_ls = NULL,
                   header_yaml_args_ls = header_yaml_args_ls)
 ```

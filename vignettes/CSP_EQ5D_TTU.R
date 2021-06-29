@@ -125,7 +125,7 @@ analysis_core_params_ls <- make_analysis_core_params_ls(ds_descvs_ls = ds_descvs
 ## ----echo = TRUE, eval=FALSE--------------------------------------------------
 #  write_report(params_ls = valid_params_ls_ls$params_ls,
 #                    paths_ls = path_params_ls$paths_ls,
-#                    rprt_nm_1L_chr = "Main_Analysis_Rprt",
+#                    rprt_nm_1L_chr = "AAA_PMRY_ANLYS_MTH",
 #                    abstract_args_ls = NULL,
 #                    header_yaml_args_ls = header_yaml_args_ls)
 
