@@ -98,21 +98,37 @@ get_signft_covars <- function (mdls_with_covars_smry_tb, covar_var_nms_chr)
 #' @description get_table_predn_mdl() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get table prediction model. Function argument mdl_nm_1L_chr specifies the where to look for the required object. The function returns Table prediction (a model).
 #' @param mdl_nm_1L_chr Model name (a character vector of length one)
 #' @param ingredients_ls Ingredients (a list)
+#' @param analysis_1L_chr Analysis (a character vector of length one), Default: NULL
 #' @return Table prediction (a model)
 #' @rdname get_table_predn_mdl
 #' @export 
-#' @importFrom purrr pluck
 #' @importFrom ready4fun get_from_lup_obj
+#' @importFrom stringr str_sub
+#' @importFrom purrr pluck
+#' @importFrom dplyr filter
 #' @keywords internal
-get_table_predn_mdl <- function (mdl_nm_1L_chr, ingredients_ls) 
+get_table_predn_mdl <- function (mdl_nm_1L_chr, ingredients_ls, analysis_1L_chr = NULL) 
 {
-    mdl_type_1L_chr <- get_mdl_type_from_nm(selected_mdl, mdl_types_lup = ingredients_ls$mdl_types_lup)
-    table_predn_mdl <- make_shareable_mdl(fake_ds_tb = ingredients_ls$fake_ds_tb, 
-        mdl_smry_tb = mdls_smry_ls %>% purrr::pluck(selected_mdl), 
-        depnt_var_nm_1L_chr = ingredients_ls$depnt_var_nm_1L_chr, 
-        id_var_nm_1L_chr = ingredients_ls$id_var_nm_1L_chr, tfmn_1L_chr = ready4fun::get_from_lup_obj(ingredients_ls$mdl_types_lup, 
-            match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
-            target_var_nm_1L_chr = "tfmn_chr", evaluate_lgl = F), 
+    mdl_type_1L_chr <- get_mdl_type_from_nm(mdl_nm_1L_chr, mdl_types_lup = ingredients_ls$mdl_types_lup)
+    tfmn_1L_chr <- ready4fun::get_from_lup_obj(ingredients_ls$mdl_types_lup, 
+        match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
+        target_var_nm_1L_chr = "tfmn_chr", evaluate_lgl = F)
+    if (is.null(analysis_1L_chr)) {
+        fake_ds_tb <- ingredients_ls$fake_ds_tb
+    }
+    else {
+        reference_1L_chr <- ifelse(analysis_1L_chr == "Primary Analysis", 
+            "Primary", paste0("secondary_", which(LETTERS == 
+                stringr::str_sub(analysis_1L_chr, start = -1))))
+        fake_ds_tb <- ingredients_ls %>% purrr::pluck(reference_1L_chr) %>% 
+            purrr::pluck("fake_ds_tb")
+    }
+    fake_ds_tb <- fake_ds_tb %>% add_tfmd_var_to_ds(depnt_var_nm_1L_chr = ingredients_ls$depnt_var_nm_1L_chr, 
+        tfmn_1L_chr = tfmn_1L_chr)
+    table_predn_mdl <- make_shareable_mdl(fake_ds_tb = fake_ds_tb, 
+        mdl_smry_tb = ingredients_ls$mdls_smry_tb %>% dplyr::filter(Model == 
+            mdl_nm_1L_chr), depnt_var_nm_1L_chr = ingredients_ls$depnt_var_nm_1L_chr, 
+        id_var_nm_1L_chr = ingredients_ls$id_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr, 
         mdl_type_1L_chr = mdl_type_1L_chr, mdl_types_lup = ingredients_ls$mdl_types_lup, 
         control_1L_chr = ready4fun::get_from_lup_obj(ingredients_ls$mdl_types_lup, 
             match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 

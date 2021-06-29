@@ -4,12 +4,14 @@
 \alias{get_table_predn_mdl}
 \title{Get table prediction}
 \usage{
-get_table_predn_mdl(mdl_nm_1L_chr, ingredients_ls)
+get_table_predn_mdl(mdl_nm_1L_chr, ingredients_ls, analysis_1L_chr = NULL)
 }
 \arguments{
 \item{mdl_nm_1L_chr}{Model name (a character vector of length one)}
 
 \item{ingredients_ls}{Ingredients (a list)}
+
+\item{analysis_1L_chr}{Analysis (a character vector of length one), Default: NULL}
 }
 \value{
 Table prediction (a model)
