@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Model types lookup table — mdl_types_lup • TTU</title>
+<title>Make unique identifier rename — make_uid_rename_lup • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Model types lookup table — mdl_types_lup" />
-<meta property="og:description" content="A lookup table of abbreviations to describe the different model types supported by TTU functions" />
+<meta property="og:title" content="Make unique identifier rename — make_uid_rename_lup" />
+<meta property="og:description" content="make_uid_rename_lup() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make unique identifier rename lookup table. The function returns Unique identifier rename lookup table (a tibble)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -137,37 +137,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Model types lookup table</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/db_mdl_types_lup.R'><code>R/db_mdl_types_lup.R</code></a></small>
-    <div class="hidden name"><code>mdl_types_lup.Rd</code></div>
+    <h1>Make unique identifier rename</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
+    <div class="hidden name"><code>make_uid_rename_lup.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>A lookup table of abbreviations to describe the different model types supported by TTU functions</p>
+    <p>make_uid_rename_lup() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make unique identifier rename lookup table. The function returns Unique identifier rename lookup table (a tibble).</p>
     </div>
 
-    <pre class="usage"><span class='va'>mdl_types_lup</span></pre>
+    <pre class="usage"><span class='fu'>make_uid_rename_lup</span><span class='op'>(</span><span class='va'>data_tb</span>, id_var_nm_1L_chr <span class='op'>=</span> <span class='st'>"UID"</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data_tb</th>
+      <td><p>Data (a tibble)</p></td>
+    </tr>
+    <tr>
+      <th>id_var_nm_1L_chr</th>
+      <td><p>Identity variable name (a character vector of length one), Default: 'UID'</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class <code>tbl_df</code> (inherits from <code>tbl</code>, <code>data.frame</code>) with 12 rows and 9 columns.</p>
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>A tibble</p>
-<dl>
-<dt>short_name_chr</dt><dd><p>Short name (a character vector)</p></dd>
-<dt>long_name_chr</dt><dd><p>Long name (a character vector)</p></dd>
-<dt>control_chr</dt><dd><p>Control (a character vector)</p></dd>
-<dt>family_chr</dt><dd><p>Family (a character vector)</p></dd>
-<dt>fn_chr</dt><dd><p>Function (a character vector)</p></dd>
-<dt>start_chr</dt><dd><p>Start (a character vector)</p></dd>
-<dt>predn_type_chr</dt><dd><p>Prediction type (a character vector)</p></dd>
-<dt>tfmn_chr</dt><dd><p>Transformation (a character vector)</p></dd>
-<dt>tfmn_for_bnml_lgl</dt><dd><p>Transformation for binomial (a logical vector)</p></dd>
-
-</dl>
-
+    <p>Unique identifier rename lookup table (a tibble)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
