@@ -1435,6 +1435,16 @@ make_two_mdl_types_smry_tbl <- function(outp_smry_ls,
     dplyr::rename_with(~"Parameter",.cols = paste0("Parameter_",outp_smry_ls$prefd_mdl_types_chr[1]))
   return(two_mdl_types_smry_tbl_tb)
 }
+make_uid_rename_lup <- function(data_tb,
+                                id_var_nm_1L_chr = "UID"){
+  uid_rename_lup_tb <- tibble::tibble(old_id_xx = data_tb %>%
+                                        dplyr::pull(id_var_nm_1L_chr) %>%
+                                        unique(),
+                                      new_id_int = 1:length(data_tb %>%
+                                                              dplyr::pull(id_var_nm_1L_chr) %>%
+                                                              unique()))
+  return(uid_rename_lup_tb)
+}
 make_unique_ls_elmt_idx_int <- function (data_ls)
 {
   combos_tb <- tibble::as_tibble(data_ls, .name_repair = ~paste0("r_",

@@ -152,10 +152,12 @@ transform_mdl_vars_with_clss <- function(ds_tb,
     data("predictors_lup", package = "youthvars", envir = environment())
   if(is.null(prototype_lup))
     data("prototype_lup", package = "TTU", envir = environment())
-  predictors_lup <- tibble::add_case(predictors_lup,
-                                     short_name_chr = depnt_var_nm_1L_chr,
-                                     class_chr = "numeric",
-                                     class_fn_chr = class_fn_1L_chr)
+  if(!is.null(depnt_var_nm_1L_chr)){
+    predictors_lup <- tibble::add_case(predictors_lup,
+                                       short_name_chr = depnt_var_nm_1L_chr,
+                                       class_chr = "numeric",
+                                       class_fn_chr = class_fn_1L_chr)
+  }
   tfd_ds_tb <- purrr::reduce(predictors_lup$short_name_chr,
                              .init = ds_tb,
                              ~ if(.y %in% names(.x)){
@@ -432,13 +434,6 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
         add_tfmd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
                            tfmn_1L_chr = tfmn_1L_chr,
                            dep_var_max_val_1L_dbl = 0.999)
-      # dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr,
-      #                                                        tfmn_1L_chr = tfmn_1L_chr)
-      #                                 ),
-      #                    !!rlang::sym(depnt_var_nm_1L_chr) %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
-      #                                                                                  tfmn_is_outp_1L_lgl = F,
-      #                                                                                  dep_var_max_val_1L_dbl = 0.999)
-      #   ))
         if(drop_all_msng_1L_lgl){
       tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>%
         stats::na.omit()
@@ -447,14 +442,15 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
       tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>%
         dplyr::ungroup()
     }
-      rename_tb <- tibble::tibble(old_id_xx = tfd_for_mdl_inp_tb %>% dplyr::pull(id_var_nm_1L_chr) %>% unique(),
-                                  new_id_int = 1:length(tfd_for_mdl_inp_tb %>% dplyr::pull(id_var_nm_1L_chr) %>% unique()))
+      # rename_tb <- tibble::tibble(old_id_xx = tfd_for_mdl_inp_tb %>% dplyr::pull(id_var_nm_1L_chr) %>% unique(),
+      #                             new_id_int = 1:length(tfd_for_mdl_inp_tb %>% dplyr::pull(id_var_nm_1L_chr) %>% unique()))
       tfd_for_mdl_inp_tb  <- tfd_for_mdl_inp_tb %>%
-        dplyr::mutate(!!rlang::sym(id_var_nm_1L_chr) := !!rlang::sym(id_var_nm_1L_chr) %>% purrr::map_int(~ ready4fun::get_from_lup_obj(rename_tb,
-                                                                                                                          match_value_xx = .x,
-                                                                                                                          match_var_nm_1L_chr = "old_id_xx",
-                                                                                                                          target_var_nm_1L_chr = "new_id_int",
-                                                                                                                          evaluate_lgl = F)))
+        transform_uid_var(id_var_nm_1L_chr = id_var_nm_1L_chr)
+        # dplyr::mutate(!!rlang::sym(id_var_nm_1L_chr) := !!rlang::sym(id_var_nm_1L_chr) %>% purrr::map_int(~ ready4fun::get_from_lup_obj(rename_tb,
+        #                                                                                                                   match_value_xx = .x,
+        #                                                                                                                   match_var_nm_1L_chr = "old_id_xx",
+        #                                                                                                                   target_var_nm_1L_chr = "new_id_int",
+        #                                                                                                                   evaluate_lgl = F)))
     return(tfd_for_mdl_inp_tb)
 }
 transform_tbl_to_rnd_vars <- function(ds_tb,
@@ -494,4 +490,34 @@ transform_ts_mdl_data <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_t
     dplyr::summarise(dplyr::across(dplyr::everything(), ~sample(.x,
                                                                 1)))
   return(cnfdl_mdl_ls)
+}
+transform_uid_var <- function(data_tb,
+                              id_var_nm_1L_chr,
+                              rename_tb = NULL,
+                              old_new_chr = c("old_id_xx","new_id_int")){
+  if(is.null(rename_tb)){
+    rename_tb <- make_uid_rename_lup(data_tb,
+                                     id_var_nm_1L_chr = id_var_nm_1L_chr)
+  }
+  if(!identical(rename_tb$old_id_xx,rename_tb$new_id_int)){
+    fn <- ifelse("character" %in% class(rename_tb %>% dplyr::pull(old_new_chr[2])),
+                 purrr::flatten_chr,
+                 ifelse("integer" %in% class(rename_tb %>% dplyr::pull(old_new_chr[2])),
+                        purrr::flatten_int,
+                        purrr::flatten_dbl))
+    # first_fn <- ifelse("character" %in% class(rename_tb %>% dplyr::pull(old_new_chr[2])),
+    #                    as.character,
+    #                    as.numeric)
+    tfmd_data_tb <- data_tb %>%
+      dplyr::mutate(`:=`(!!rlang::sym(id_var_nm_1L_chr),
+                         !!rlang::sym(id_var_nm_1L_chr) %>%
+                           purrr::map(~ready4fun::get_from_lup_obj(rename_tb,
+                                                                   match_value_xx = .x,
+                                                                   match_var_nm_1L_chr = old_new_chr[1],
+                                                                   target_var_nm_1L_chr = old_new_chr[2],
+                                                                   evaluate_lgl = F)) %>% fn()))
+  }else{
+    tfmd_data_tb <- data_tb
+  }
+  return(tfmd_data_tb)
 }

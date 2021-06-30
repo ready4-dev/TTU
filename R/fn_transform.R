@@ -207,8 +207,10 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
         data("predictors_lup", package = "youthvars", envir = environment())
     if (is.null(prototype_lup)) 
         data("prototype_lup", package = "TTU", envir = environment())
-    predictors_lup <- tibble::add_case(predictors_lup, short_name_chr = depnt_var_nm_1L_chr, 
-        class_chr = "numeric", class_fn_chr = class_fn_1L_chr)
+    if (!is.null(depnt_var_nm_1L_chr)) {
+        predictors_lup <- tibble::add_case(predictors_lup, short_name_chr = depnt_var_nm_1L_chr, 
+            class_chr = "numeric", class_fn_chr = class_fn_1L_chr)
+    }
     tfd_ds_tb <- purrr::reduce(predictors_lup$short_name_chr, 
         .init = ds_tb, ~if (.y %in% names(.x)) {
             label_1L_chr <- Hmisc::label(.x[[.y]])
@@ -479,12 +481,10 @@ transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharin
 #' @rdname transform_tb_to_mdl_inp
 #' @export 
 #' @importFrom ready4use remove_labels_from_ds
-#' @importFrom dplyr select all_of group_by arrange mutate across first lag ungroup pull
+#' @importFrom dplyr select all_of group_by arrange mutate across first lag ungroup
 #' @importFrom rlang sym
-#' @importFrom purrr reduce map_int
+#' @importFrom purrr reduce
 #' @importFrom stats na.omit
-#' @importFrom tibble tibble
-#' @importFrom ready4fun get_from_lup_obj
 transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, 
@@ -515,13 +515,7 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
     if (ungroup_1L_lgl) {
         tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% dplyr::ungroup()
     }
-    rename_tb <- tibble::tibble(old_id_xx = tfd_for_mdl_inp_tb %>% 
-        dplyr::pull(id_var_nm_1L_chr) %>% unique(), new_id_int = 1:length(tfd_for_mdl_inp_tb %>% 
-        dplyr::pull(id_var_nm_1L_chr) %>% unique()))
-    tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% dplyr::mutate(`:=`(!!rlang::sym(id_var_nm_1L_chr), 
-        !!rlang::sym(id_var_nm_1L_chr) %>% purrr::map_int(~ready4fun::get_from_lup_obj(rename_tb, 
-            match_value_xx = .x, match_var_nm_1L_chr = "old_id_xx", 
-            target_var_nm_1L_chr = "new_id_int", evaluate_lgl = F))))
+    tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% transform_uid_var(id_var_nm_1L_chr = id_var_nm_1L_chr)
     return(tfd_for_mdl_inp_tb)
 }
 #' Transform table to rnd variables
@@ -593,4 +587,40 @@ transform_ts_mdl_data <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_t
         dplyr::summarise(dplyr::across(dplyr::everything(), ~sample(.x, 
             1)))
     return(cnfdl_mdl_ls)
+}
+#' Transform unique identifier variable
+#' @description transform_uid_var() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform unique identifier variable. Function argument data_tb specifies the object to be updated. Argument id_var_nm_1L_chr provides the object to be updated. The function returns Tfmd data (a tibble).
+#' @param data_tb Data (a tibble)
+#' @param id_var_nm_1L_chr Identity variable name (a character vector of length one)
+#' @param rename_tb Rename (a tibble), Default: NULL
+#' @param old_new_chr Old new (a character vector), Default: c("old_id_xx", "new_id_int")
+#' @return Tfmd data (a tibble)
+#' @rdname transform_uid_var
+#' @export 
+#' @importFrom dplyr pull mutate
+#' @importFrom purrr flatten_chr flatten_int flatten_dbl map
+#' @importFrom rlang sym
+#' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
+transform_uid_var <- function (data_tb, id_var_nm_1L_chr, rename_tb = NULL, old_new_chr = c("old_id_xx", 
+    "new_id_int")) 
+{
+    if (is.null(rename_tb)) {
+        rename_tb <- make_uid_rename_lup(data_tb, id_var_nm_1L_chr = id_var_nm_1L_chr)
+    }
+    if (!identical(rename_tb$old_id_xx, rename_tb$new_id_int)) {
+        fn <- ifelse("character" %in% class(rename_tb %>% dplyr::pull(old_new_chr[2])), 
+            purrr::flatten_chr, ifelse("integer" %in% class(rename_tb %>% 
+                dplyr::pull(old_new_chr[2])), purrr::flatten_int, 
+                purrr::flatten_dbl))
+        tfmd_data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(id_var_nm_1L_chr), 
+            !!rlang::sym(id_var_nm_1L_chr) %>% purrr::map(~ready4fun::get_from_lup_obj(rename_tb, 
+                match_value_xx = .x, match_var_nm_1L_chr = old_new_chr[1], 
+                target_var_nm_1L_chr = old_new_chr[2], evaluate_lgl = F)) %>% 
+                fn()))
+    }
+    else {
+        tfmd_data_tb <- data_tb
+    }
+    return(tfmd_data_tb)
 }

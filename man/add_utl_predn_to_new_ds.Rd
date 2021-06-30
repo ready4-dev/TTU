@@ -8,8 +8,10 @@ add_utl_predn_to_new_ds(
   data_tb,
   ingredients_ls,
   mdl_nm_1L_chr,
+  analysis_1L_chr = NULL,
   deterministic_1L_lgl = T,
   force_min_max_1L_lgl = T,
+  id_var_nm_1L_chr = NULL,
   model_mdl = NULL,
   new_data_is_1L_chr = "Simulated",
   predr_vars_nms_chr = NULL,
@@ -26,9 +28,13 @@ add_utl_predn_to_new_ds(
 
 \item{mdl_nm_1L_chr}{Model name (a character vector of length one)}
 
+\item{analysis_1L_chr}{Analysis (a character vector of length one), Default: NULL}
+
 \item{deterministic_1L_lgl}{Deterministic (a logical vector of length one), Default: T}
 
 \item{force_min_max_1L_lgl}{Force minimum maximum (a logical vector of length one), Default: T}
+
+\item{id_var_nm_1L_chr}{Identity variable name (a character vector of length one), Default: NULL}
 
 \item{model_mdl}{Model (a model), Default: NULL}
 

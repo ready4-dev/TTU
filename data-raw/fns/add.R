@@ -34,8 +34,10 @@ add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkCli
 add_utl_predn_to_new_ds <- function(data_tb,
                                     ingredients_ls,
                                     mdl_nm_1L_chr,
+                                    analysis_1L_chr = NULL,
                                     deterministic_1L_lgl = T,
                                     force_min_max_1L_lgl = T,
+                                    id_var_nm_1L_chr = NULL,
                                     model_mdl = NULL,
                                     #impute_1L_lgl = T,
                                     new_data_is_1L_chr = "Simulated",
@@ -46,7 +48,9 @@ add_utl_predn_to_new_ds <- function(data_tb,
                                     utl_var_nm_1L_chr = NULL){
   if(is.null(model_mdl))
     model_mdl <- get_table_predn_mdl(mdl_nm_1L_chr,
-                                     ingredients_ls = ingredients_ls)
+                                     ingredients_ls = ingredients_ls,
+                                     analysis_1L_chr = analysis_1L_chr)
+  mdl_type_1L_chr <- get_mdl_type_from_nm(mdl_nm_1L_chr)
   tfmn_1L_chr <- ready4fun::get_from_lup_obj(ingredients_ls$mdl_types_lup,
                                              match_value_xx = mdl_type_1L_chr,
                                              match_var_nm_1L_chr = "short_name_chr",
@@ -59,6 +63,9 @@ add_utl_predn_to_new_ds <- function(data_tb,
                                                    evaluate_lgl = F)
   if(is.na(predn_type_1L_chr))
     predn_type_1L_chr <- NULL
+  id_var_nm_1L_chr <- ifelse(is.null(id_var_nm_1L_chr),
+                            ingredients_ls$id_var_nm_1L_chr,
+                            id_var_nm_1L_chr)
   if(!is.null(predr_vars_nms_chr)){
     data_tb <- rename_from_nmd_vec(data_tb,
                                    nmd_vec_chr = predr_vars_nms_chr,
@@ -76,7 +83,7 @@ add_utl_predn_to_new_ds <- function(data_tb,
     transform_ds_to_predn_ds(predr_vars_nms_chr = mdl_predr_terms_chr,
                              tfmn_1L_chr = tfmn_1L_chr,
                              depnt_var_nm_1L_chr = ingredients_ls$depnt_var_nm_1L_chr,
-                             id_var_nm_1L_chr = ingredients_ls$id_var_nm_1L_chr,
+                             id_var_nm_1L_chr = id_var_nm_1L_chr,
                              round_var_nm_1L_chr = round_var_nm_1L_chr,
                              round_bl_val_1L_chr = round_bl_val_1L_chr,
                              predictors_lup = ingredients_ls$predictors_lup) %>%
@@ -96,9 +103,10 @@ add_utl_predn_to_new_ds <- function(data_tb,
                             sd_dbl = get_random_intercept(ingredients_ls$mdls_smry_tb,
                                                           mdl_nm_1L_chr = mdl_nm_1L_chr,
                                                           deterministic_1L_lgl = deterministic_1L_lgl))
+
   if(!is.null(utl_var_nm_1L_chr)){
     updated_tb <- updated_tb %>%
-      dplyr::rename(!!rlang::sym(utl_var_nm_1L_chr):=tidyselect::all_of(mdl_dep_var_1L_chr))
+      dplyr::rename(!!rlang::sym(utl_var_nm_1L_chr):=tidyselect::all_of(ingredients_ls$depnt_var_nm_1L_chr))
   }
   if(!is.null(names(predr_vars_nms_chr))){
     updated_tb <- rename_from_nmd_vec(updated_tb,
@@ -108,10 +116,16 @@ add_utl_predn_to_new_ds <- function(data_tb,
   names_to_incl_chr <- c(names(updated_tb),
                          setdiff(names(data_tb),
                                  names(updated_tb)))
-  updated_tb <- dplyr::left_join(data_tb %>% dplyr::select(tidyselect::all_of(original_ds_vars_chr)),
-                                 updated_tb)
-  updated_tb <- updated_tb %>%
-    dplyr::select(tidyselect::all_of(names_to_incl_chr[names_to_incl_chr %in% names(updated_tb)]))
+  rename_tb <- make_uid_rename_lup(data_tb,
+                                   id_var_nm_1L_chr = id_var_nm_1L_chr)
+  updated_tb <- dplyr::left_join(data_tb %>%
+                                   dplyr::select(tidyselect::all_of(original_ds_vars_chr)) %>%
+                                   transform_uid_var(id_var_nm_1L_chr = id_var_nm_1L_chr,
+                                                     rename_tb = rename_tb),
+                                 updated_tb) %>%
+    transform_uid_var(id_var_nm_1L_chr = id_var_nm_1L_chr,
+                      rename_tb = rename_tb,
+                      old_new_chr = c("new_id_int","old_id_xx"))
   return(updated_tb)
 }
 add_utility_predn_to_ds <- function (data_tb,

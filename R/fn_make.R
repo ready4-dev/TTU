@@ -1804,6 +1804,23 @@ make_two_mdl_types_smry_tbl <- function (outp_smry_ls, mdls_tb)
             outp_smry_ls$prefd_mdl_types_chr[1]))
     return(two_mdl_types_smry_tbl_tb)
 }
+#' Make unique identifier rename
+#' @description make_uid_rename_lup() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make unique identifier rename lookup table. The function returns Unique identifier rename lookup table (a tibble).
+#' @param data_tb Data (a tibble)
+#' @param id_var_nm_1L_chr Identity variable name (a character vector of length one), Default: 'UID'
+#' @return Unique identifier rename lookup table (a tibble)
+#' @rdname make_uid_rename_lup
+#' @export 
+#' @importFrom tibble tibble
+#' @importFrom dplyr pull
+#' @keywords internal
+make_uid_rename_lup <- function (data_tb, id_var_nm_1L_chr = "UID") 
+{
+    uid_rename_lup_tb <- tibble::tibble(old_id_xx = data_tb %>% 
+        dplyr::pull(id_var_nm_1L_chr) %>% unique(), new_id_int = 1:length(data_tb %>% 
+        dplyr::pull(id_var_nm_1L_chr) %>% unique()))
+    return(uid_rename_lup_tb)
+}
 #' Make unique list element index
 #' @description make_unique_ls_elmt_idx_int() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make unique list element index integer vector. The function returns Unique list element index (an integer vector).
 #' @param data_ls Data (a list)
