@@ -828,6 +828,7 @@ write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, ca
     analysis_params_ls$subtitle_1L_chr <- ready4fun::get_from_lup_obj(rprt_lup, 
         match_value_xx = "AAA_SUPLRY_ANLYS_MTH", match_var_nm_1L_chr = "rprt_nms_chr", 
         target_var_nm_1L_chr = "title_chr", evaluate_lgl = F)
+    analysis_params_ls$prefd_covars_chr <- prefd_covars_chr
     analysis_params_ls$candidate_covar_nms_chr <- candidate_covar_nms_chr
     path_params_ls$paths_ls <- write_scndry_analysis_dir(path_params_ls$paths_ls, 
         reference_1L_int = reference_1L_int)

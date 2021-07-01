@@ -1140,11 +1140,13 @@ make_sngl_mdl_smry_tb <- function(mdls_tb,
   rownames(new_tb)  <- NULL
   return(new_tb)
 }
-make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_total_w",
-    predr_vars_nms_chr, #fn = calculate_rmse,
-    mdl_nm_1L_chr = NA_character_,
-    seed_1L_dbl = 23456, tfmn_1L_chr)
-{
+make_smry_of_brm_mdl <- function (mdl_ls,
+                                  data_tb,
+                                  depnt_var_nm_1L_chr = "utl_total_w",
+                                  predr_vars_nms_chr, #fn = calculate_rmse,
+                                  mdl_nm_1L_chr = NA_character_,
+                                  seed_1L_dbl = 23456,
+                                  tfmn_1L_chr) {
     if (is.na(mdl_nm_1L_chr))
         mdl_nm_1L_chr <- predr_vars_nms_chr[1]
     set.seed(seed_1L_dbl)
@@ -1164,10 +1166,16 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_to
     Sigma <- summary(mdl_ls, digits = 4)$spec_par[1:4]
     smry_of_brm_mdl_tb <- data.frame(round(rbind(sd_intcpt_df, coef, R2, RMSE,
         Sigma), 3)) %>% dplyr::mutate(Parameter = c("SD (Intercept)","Intercept",
-        purrr::map(predr_vars_nms_chr, ~paste0(.x, c(" baseline",
-            " change"))) %>% purrr::flatten_chr(), "R2", "RMSE",
-        "Sigma"), Model = mdl_nm_1L_chr) %>% dplyr::mutate(`95% CI` = paste(l.95..CI,
-        ",", u.95..CI)) %>% dplyr::rename(SE = Est.Error) %>%
+                                                    purrr::map(predr_vars_nms_chr,
+                                                               ~paste0(.x, c(" baseline",
+                                                                             " change"))) %>%
+                                                      purrr::flatten_chr(),
+                                                    "R2", "RMSE", "Sigma"),
+                                      Model = mdl_nm_1L_chr) %>%
+      dplyr::mutate(`95% CI` = paste(l.95..CI,
+                                     ",",
+                                     u.95..CI)) %>%
+      dplyr::rename(SE = Est.Error) %>%
         dplyr::select(Model, Parameter, Estimate, SE, `95% CI`)
     return(smry_of_brm_mdl_tb)
 }
