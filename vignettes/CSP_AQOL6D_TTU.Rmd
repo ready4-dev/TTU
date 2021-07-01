@@ -165,13 +165,13 @@ TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = "SOFAS",
                            candidate_covar_nms_chr = c("d_age", "c_p_diag_s", "c_clinical_staging_s", "d_relation_s", "d_studying_working"),
                            header_yaml_args_ls = header_yaml_args_ls,
                            path_params_ls = path_params_ls,
-                           prefd_covars_chr = NULL,
+                           prefd_covars_chr = NA_character_,
                            reference_1L_int = 1)
   
 ```
 
 # Report results
-Create results and methods reports. 
+As we have undertaken more than one analysis, we need to supply integer values to the `reference_int` argument of the `write_mdl_smry_rprt` function for each analysis that we wish to generate a report for. The value `0` corresponds to the primary analysis, with each subsequent integer corresponding to a supplementary analysis.
 
 ```{r echo = TRUE, eval=FALSE }
 rprt_lups_ls <- write_mdl_smry_rprt(header_yaml_args_ls,

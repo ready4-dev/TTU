@@ -423,15 +423,16 @@ make_fake_eq5d_ds <- function (country_1L_chr = "UK", version_1L_chr = "5L", typ
 #' @return Fk data (a tibble)
 #' @rdname make_fake_ts_data
 #' @export 
+#' @importFrom purrr flatten_chr map_lgl
 #' @importFrom synthpop syn
 #' @importFrom dplyr mutate group_by pull ungroup across all_of
 #' @importFrom rlang sym
-#' @importFrom purrr map_lgl
 make_fake_ts_data <- function (outp_smry_ls, dep_vars_are_NA_1L_lgl = T) 
 {
     data_tb <- outp_smry_ls$scored_data_tb %>% transform_tb_to_mdl_inp(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
-        predr_vars_nms_chr = outp_smry_ls$predr_cmprsn_tb$predr_chr, 
-        id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr, 
+        predr_vars_nms_chr = outp_smry_ls$predr_vars_nms_ls %>% 
+            purrr::flatten_chr() %>% unique(), id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, 
+        round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr, 
         round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr)
     fk_data_ls <- synthpop::syn(data_tb, visit.sequence = names(data_tb)[names(data_tb) != 
         outp_smry_ls$id_var_nm_1L_chr], seed = outp_smry_ls$seed_1L_int)

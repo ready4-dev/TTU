@@ -613,7 +613,7 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                                                 start_at_int = start_at_int,
                                                 reference_1L_int = reference_1L_int)
   }
-  list(abstract_args_ls = NULL,
+  params_ls <- list(abstract_args_ls = NULL,
        eval_1L_lgl = F,
        header_yaml_args_ls = header_yaml_args_ls,
        output_type_1L_chr = rprt_output_type_1L_chr,
@@ -632,7 +632,8 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                                                      target_var_nm_1L_chr = "title_chr",
                                                      evaluate_lgl = F),
        use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>%
-    append(rcrd_rprt_append_ls) %>%
+    append(rcrd_rprt_append_ls)
+  params_ls %>%
     write_report(paths_ls = paths_ls,
                  rprt_nm_1L_chr = rcrd_nm_1L_chr,
                  abstract_args_ls = NULL,
@@ -658,7 +659,7 @@ write_scndry_analysis <- function(predictors_lup = NULL,
                                   candidate_covar_nms_chr,
                                   header_yaml_args_ls,
                                   path_params_ls,
-                                  prefd_covars_chr,
+                                  prefd_covars_chr = NA_character_,
                                   reference_1L_int,
                                   start_at_int = c(2,1),
                                   rprt_nm_1L_chr = "AAA_SUPLRY_ANLYS_MTH",
@@ -687,7 +688,7 @@ write_scndry_analysis <- function(predictors_lup = NULL,
                                                          target_var_nm_1L_chr = "new_nms_chr",
                                                          evaluate_lgl = F)))
   }
-  if(!is.null(prefd_covars_chr)){
+  if(!is.na(prefd_covars_chr)){
     prefd_covars_chr <- prefd_covars_chr %>%
       purrr::map_chr(~ifelse(!.x %in% rename_lup$old_nms_chr,
                              .x,
@@ -824,7 +825,7 @@ write_shareable_mdls <- function (outp_smry_ls,
                               table_predn_mdl = table_predn_mdl,
                               tfd_data_tb = outp_smry_ls$scored_data_tb %>%
                                 transform_tb_to_mdl_inp(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
-                                                        predr_vars_nms_chr = outp_smry_ls$predr_cmprsn_tb$predr_chr,
+                                                        predr_vars_nms_chr = outp_smry_ls$predr_vars_nms_ls %>% purrr::flatten_chr() %>% unique(),
                                                         id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr,
                                                         round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr,
                                                         round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr),
