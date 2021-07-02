@@ -38,4 +38,3 @@ Data (a tibble)
 \description{
 transform_ds_to_predn_ds() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dataset to prediction dataset. Function argument data_tb specifies the object to be updated. Argument predr_vars_nms_chr provides the object to be updated. The function returns Data (a tibble).
 }
-\keyword{internal}

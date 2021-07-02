@@ -14,4 +14,3 @@ knit_mdl_rprt(knit_pars_ls, path_to_mdl_rprt_tmpl_1L_chr)
 \description{
 knit_mdl_rprt() is a Knit function that knits a rmarkdown file Specifically, this function implements an algorithm to knit model report. The function is called for its side effects and does not return a value.
 }
-\keyword{internal}

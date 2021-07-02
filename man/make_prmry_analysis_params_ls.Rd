@@ -44,4 +44,3 @@ Prmry analysis params (a list)
 \description{
 make_prmry_analysis_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make prmry analysis params list. The function returns Prmry analysis params (a list).
 }
-\keyword{internal}

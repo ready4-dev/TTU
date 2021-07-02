@@ -25,4 +25,3 @@ Transformed single predictor models (a tibble)
 \description{
 make_tfd_sngl_predr_mdls_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make transformed single predictor models tibble. The function returns Transformed single predictor models (a tibble).
 }
-\keyword{internal}

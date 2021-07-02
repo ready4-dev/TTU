@@ -17,4 +17,3 @@ Transformed digit pairs (a character vector)
 \description{
 transform_chr_digit_pairs() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform character vector digit pairs. Function argument digit_pairs_chr specifies the object to be updated. Argument nbr_of_digits_1L_int provides the object to be updated. The function returns Transformed digit pairs (a character vector).
 }
-\keyword{internal}

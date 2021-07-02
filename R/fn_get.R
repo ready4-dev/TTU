@@ -22,7 +22,6 @@ get_cndts_for_mxd_mdls <- function (mdl_types_lup = NULL)
 #' @rdname get_link_from_tfmn
 #' @export 
 
-#' @keywords internal
 get_link_from_tfmn <- function (tfmn_1L_chr, is_OLS_1L_lgl = F) 
 {
     link_1L_chr <- ifelse(is_OLS_1L_lgl, "identity", ifelse(tfmn_1L_chr == 
@@ -43,7 +42,6 @@ get_link_from_tfmn <- function (tfmn_1L_chr, is_OLS_1L_lgl = F)
 #' @importFrom utils data
 #' @importFrom dplyr pull
 #' @importFrom purrr map_lgl
-#' @keywords internal
 get_mdl_type_from_nm <- function (mdl_nm_1L_chr, mdl_types_lup = NULL) 
 {
     if (is.null(mdl_types_lup)) 
@@ -63,7 +61,6 @@ get_mdl_type_from_nm <- function (mdl_nm_1L_chr, mdl_types_lup = NULL)
 #' @export 
 #' @importFrom dplyr filter
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 get_random_intercept <- function (mdls_smry_tb, mdl_nm_1L_chr, deterministic_1L_lgl = T) 
 {
     mdl_smry_tb <- mdls_smry_tb %>% dplyr::filter(Model == mdl_nm_1L_chr)
@@ -106,7 +103,6 @@ get_signft_covars <- function (mdls_with_covars_smry_tb, covar_var_nms_chr)
 #' @importFrom stringr str_sub
 #' @importFrom purrr pluck
 #' @importFrom dplyr filter
-#' @keywords internal
 get_table_predn_mdl <- function (mdl_nm_1L_chr, ingredients_ls, analysis_1L_chr = NULL) 
 {
     mdl_type_1L_chr <- get_mdl_type_from_nm(mdl_nm_1L_chr, mdl_types_lup = ingredients_ls$mdl_types_lup)

@@ -23,4 +23,3 @@ Cohort (a list)
 \description{
 make_cohort_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make cohort list. The function returns Cohort (a list).
 }
-\keyword{internal}

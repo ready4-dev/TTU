@@ -17,4 +17,3 @@ Model type (a character vector of length one)
 \description{
 get_mdl_type_from_nm() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get model type from name. Function argument mdl_nm_1L_chr specifies the where to look for the required object. The function returns Model type (a character vector of length one).
 }
-\keyword{internal}

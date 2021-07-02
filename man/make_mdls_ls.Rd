@@ -17,4 +17,3 @@ Models (a list)
 \description{
 make_mdls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make models list. The function returns Models (a list).
 }
-\keyword{internal}

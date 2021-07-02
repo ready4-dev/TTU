@@ -38,4 +38,3 @@ predict_shrble_glm(
 \description{
 predict_shrble_glm() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict shrble glm. The function is called for its side effects and does not return a value.
 }
-\keyword{internal}

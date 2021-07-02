@@ -10,7 +10,7 @@ write_scndry_analysis(
   candidate_covar_nms_chr,
   header_yaml_args_ls,
   path_params_ls,
-  prefd_covars_chr,
+  prefd_covars_chr = NA_character_,
   reference_1L_int,
   start_at_int = c(2, 1),
   rprt_nm_1L_chr = "AAA_SUPLRY_ANLYS_MTH",
@@ -28,7 +28,7 @@ write_scndry_analysis(
 
 \item{path_params_ls}{Path params (a list)}
 
-\item{prefd_covars_chr}{Preferred covariates (a character vector)}
+\item{prefd_covars_chr}{Preferred covariates (a character vector), Default: 'NA'}
 
 \item{reference_1L_int}{Reference (an integer vector of length one)}
 

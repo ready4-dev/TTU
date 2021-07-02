@@ -17,4 +17,3 @@ Params (a list)
 \description{
 transform_params_ls_from_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform params list from lookup table. Function argument params_ls specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns Params (a list).
 }
-\keyword{internal}

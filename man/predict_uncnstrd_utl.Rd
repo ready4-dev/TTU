@@ -47,4 +47,3 @@ New data (a double vector)
 \description{
 predict_uncnstrd_utl() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict uncnstrd utility. The function returns New data (a double vector).
 }
-\keyword{internal}

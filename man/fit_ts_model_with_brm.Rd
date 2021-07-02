@@ -44,4 +44,3 @@ Model list (a list of models)
 \description{
 fit_ts_model_with_brm() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit time series model with bayesian regression model. The function returns Model list (a list of models).
 }
-\keyword{internal}

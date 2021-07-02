@@ -32,4 +32,3 @@ Output summary (a list)
 \description{
 write_predr_and_mdl_tstng_results() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predictor and model testing results. The function returns Output summary (a list).
 }
-\keyword{internal}

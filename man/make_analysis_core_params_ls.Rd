@@ -41,4 +41,3 @@ Analysis core params (a list)
 \description{
 make_analysis_core_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make analysis core params list. The function returns Analysis core params (a list).
 }
-\keyword{internal}

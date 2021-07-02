@@ -23,4 +23,3 @@ Ttu cs (a list)
 \description{
 make_ttu_cs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ttu cs list. The function returns Ttu cs (a list).
 }
-\keyword{internal}

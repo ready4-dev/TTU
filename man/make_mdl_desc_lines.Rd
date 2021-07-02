@@ -19,4 +19,3 @@ Model description lines (a character vector)
 \description{
 make_mdl_desc_lines() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model description lines. The function returns Model description lines (a character vector).
 }
-\keyword{internal}

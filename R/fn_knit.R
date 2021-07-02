@@ -7,7 +7,6 @@
 #' @export 
 #' @importFrom purrr pmap
 #' @importFrom knitr knit_expand knit_child
-#' @keywords internal
 knit_mdl_rprt <- function (knit_pars_ls, path_to_mdl_rprt_tmpl_1L_chr) 
 {
     src <- purrr::pmap(append(knit_pars_ls, list(names(knit_pars_ls$plt_nms_ls))), 

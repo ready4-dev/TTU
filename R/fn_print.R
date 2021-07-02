@@ -6,7 +6,6 @@
 #' @rdname print_all_plts_for_mdl_set
 #' @export 
 #' @importFrom purrr flatten walk
-#' @keywords internal
 print_all_plts_for_mdl_set <- function (output_ls, start_from_1L_int = 0L) 
 {
     label_refs_mat <- paste0("lab", 1:(output_ls %>% purrr::flatten() %>% 
@@ -26,7 +25,6 @@ print_all_plts_for_mdl_set <- function (output_ls, start_from_1L_int = 0L)
 #' @rdname print_ts_mdl_plts
 #' @export 
 #' @importFrom purrr pwalk
-#' @keywords internal
 print_ts_mdl_plts <- function (paths_to_plts_chr, title_1L_chr, label_refs_chr, mdl_smry_ls) 
 {
     cat("\n")

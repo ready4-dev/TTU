@@ -23,4 +23,3 @@ Output directory (a character vector)
 \description{
 write_shareable_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write shareable directory. The function returns Output directory (a character vector).
 }
-\keyword{internal}

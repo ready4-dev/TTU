@@ -17,4 +17,3 @@ Unique identifier rename lookup table (a tibble)
 \description{
 make_uid_rename_lup() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make unique identifier rename lookup table. The function returns Unique identifier rename lookup table (a tibble).
 }
-\keyword{internal}

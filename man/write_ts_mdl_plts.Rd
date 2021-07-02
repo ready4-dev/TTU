@@ -71,4 +71,3 @@ Model plots paths (a list)
 \description{
 write_ts_mdl_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series model plots. The function returns Model plots paths (a list).
 }
-\keyword{internal}

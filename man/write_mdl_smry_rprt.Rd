@@ -50,4 +50,3 @@ Report lups (a list)
 \description{
 write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Report lups (a list).
 }
-\keyword{internal}

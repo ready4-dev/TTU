@@ -35,4 +35,3 @@ Summary of bayesian regression model model (a tibble)
 \description{
 make_smry_of_brm_mdl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make summary of bayesian regression model model. The function returns Summary of bayesian regression model model (a tibble).
 }
-\keyword{internal}

@@ -62,4 +62,3 @@ Summary of time series (a list of models)
 \description{
 make_smry_of_ts_mdl_outp() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make summary of time series model output. The function returns Summary of time series (a list of models).
 }
-\keyword{internal}

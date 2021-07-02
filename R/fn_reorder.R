@@ -37,7 +37,6 @@ reorder_cndt_predrs_chr <- function (candidate_predrs_chr, data_tb, depnt_var_nm
 #' @importFrom dplyr slice arrange bind_rows select
 #' @importFrom rlang sym
 #' @importFrom purrr map
-#' @keywords internal
 reorder_tbs_for_target_cors <- function (tbs_ls, cor_dbl, cor_var_chr, id_var_to_rm_1L_chr = NA_character_) 
 {
     n_fup_dbl <- nrow(tbs_ls[[2]])

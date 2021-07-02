@@ -47,4 +47,3 @@ Valid params (a list of lists)
 \description{
 make_valid_params_ls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make valid params list list. The function returns Valid params (a list of lists).
 }
-\keyword{internal}

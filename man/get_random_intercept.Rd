@@ -19,4 +19,3 @@ Standard deviation (a double vector)
 \description{
 get_random_intercept() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get random intercept. Function argument mdls_smry_tb specifies the where to look for the required object. The function returns Standard deviation (a double vector).
 }
-\keyword{internal}
