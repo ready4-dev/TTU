@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9271</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9275</span>
       </span>
     </div>
 
@@ -150,6 +150,7 @@
   predictors_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>valid_params_ls_ls</span>,
   <span class='va'>candidate_covar_nms_chr</span>,
+  candidate_predrs_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>header_yaml_args_ls</span>,
   <span class='va'>path_params_ls</span>,
   prefd_covars_chr <span class='op'>=</span> <span class='cn'>NA_character_</span>,
@@ -173,6 +174,10 @@
     <tr>
       <th>candidate_covar_nms_chr</th>
       <td><p>Candidate covariate names (a character vector)</p></td>
+    </tr>
+    <tr>
+      <th>candidate_predrs_chr</th>
+      <td><p>Candidate predictors (a character vector), Default: NULL</p></td>
     </tr>
     <tr>
       <th>header_yaml_args_ls</th>
