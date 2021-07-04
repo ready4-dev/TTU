@@ -792,7 +792,7 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_
 #' @return NULL
 #' @rdname write_scndry_analysis
 #' @export 
-#' @importFrom purrr map_chr
+#' @importFrom purrr map_chr pluck
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr filter
 write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, candidate_covar_nms_chr, 
@@ -824,7 +824,7 @@ write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, ca
                   match_var_nm_1L_chr = "old_nms_chr", target_var_nm_1L_chr = "new_nms_chr", 
                   evaluate_lgl = F)))
     }
-    if (!is.na(prefd_covars_chr)) {
+    if (ifelse(is.null(prefd_covars_chr), F, !is.na(prefd_covars_chr))) {
         prefd_covars_chr <- prefd_covars_chr %>% purrr::map_chr(~ifelse(!.x %in% 
             rename_lup$old_nms_chr, .x, ready4fun::get_from_lup_obj(rename_lup, 
             match_value_xx = .x, match_var_nm_1L_chr = "old_nms_chr", 
@@ -841,13 +841,14 @@ write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, ca
     analysis_params_ls$candidate_covar_nms_chr <- candidate_covar_nms_chr
     path_params_ls$paths_ls <- write_scndry_analysis_dir(path_params_ls$paths_ls, 
         reference_1L_int = reference_1L_int)
-    params_ls <- list(candidate_predrs_chr = predictors_lup$short_name_chr, 
+    params_ls <- list(candidate_predrs_chr = candidate_predrs_chr, 
         transform_paths_ls = list(fn = transform_paths_ls_for_scndry, 
             args_ls = list(reference_1L_int = reference_1L_int))) %>% 
         append(analysis_params_ls)
     params_ls$utl_class_fn_1L_chr <- params_ls$raw_ds_tfmn_fn <- NULL
-    new_valid_params_ls_ls <- transform_params_ls_to_valid(params_ls)
-    new_valid_params_ls_ls$params_ls %>% write_report(paths_ls = path_params_ls$paths_ls, 
+    params_ls <- transform_params_ls_to_valid(params_ls) %>% 
+        purrr::pluck("params_ls")
+    params_ls %>% write_report(paths_ls = path_params_ls$paths_ls, 
         rprt_nm_1L_chr = rprt_nm_1L_chr, abstract_args_ls = abstract_args_ls, 
         header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
 }
