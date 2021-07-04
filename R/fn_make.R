@@ -482,7 +482,7 @@ make_folds_ls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", folds_1
 #' @return Header yaml arguments (a list)
 #' @rdname make_header_yaml_args_ls
 #' @export 
-#' @importFrom ready4show authors_tb institutes_tb
+
 #' @keywords internal
 make_header_yaml_args_ls <- function (authors_tb, institutes_tb, title_1L_chr, keywords_chr, 
     fl_nm_1L_chr = "header_common.yaml", use_fake_data_1L_lgl = F) 
@@ -493,8 +493,10 @@ make_header_yaml_args_ls <- function (authors_tb, institutes_tb, title_1L_chr, k
             title_1L_chr = title_1L_chr, keywords_chr = keywords_chr)
     }
     else {
-        header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = ready4show::authors_tb, 
-            institutes_tb = ready4show::institutes_tb, title_1L_chr = "A hypothetical study using fake data for instructional purposes only", 
+        data("authors_tb", package = "ready4show", envir = environment())
+        data("institutes_tb", package = "ready4show", envir = environment())
+        header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = authors_tb, 
+            institutes_tb = institutes_tb, title_1L_chr = "A hypothetical study using fake data for instructional purposes only", 
             keywords_chr = c("this", "is", "a", "replication", 
                 "using", "fake", "data", "do", "not", "cite"))
     }

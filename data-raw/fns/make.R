@@ -399,8 +399,10 @@ make_header_yaml_args_ls <- function(authors_tb,
                                 title_1L_chr = title_1L_chr,
                                 keywords_chr = keywords_chr)
   }else{
-    header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = ready4show::authors_tb,
-                                                    institutes_tb = ready4show::institutes_tb,
+    data("authors_tb", package = "ready4show", envir = environment())
+    data("institutes_tb", package = "ready4show", envir = environment())
+    header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = authors_tb,
+                                                    institutes_tb = institutes_tb,
                                                     title_1L_chr = "A hypothetical study using fake data for instructional purposes only",
                                                     keywords_chr = c("this","is","a","replication","using","fake","data","do", "not","cite"))
   }
