@@ -29,3 +29,4 @@ New data (a double vector)
 \description{
 predict_from_shareable_mdl() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict from shareable model. The function returns New data (a double vector).
 }
+\keyword{internal}

@@ -19,3 +19,4 @@ Ranked predictors (a list)
 \description{
 make_ranked_predrs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ranked predictors list. The function returns Ranked predictors (a list).
 }
+\keyword{internal}

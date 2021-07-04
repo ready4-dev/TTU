@@ -8,6 +8,7 @@ write_scndry_analysis(
   predictors_lup = NULL,
   valid_params_ls_ls,
   candidate_covar_nms_chr,
+  candidate_predrs_chr = NULL,
   header_yaml_args_ls,
   path_params_ls,
   prefd_covars_chr = NA_character_,
@@ -23,6 +24,8 @@ write_scndry_analysis(
 \item{valid_params_ls_ls}{Valid params (a list of lists)}
 
 \item{candidate_covar_nms_chr}{Candidate covariate names (a character vector)}
+
+\item{candidate_predrs_chr}{Candidate predictors (a character vector), Default: NULL}
 
 \item{header_yaml_args_ls}{Header yaml arguments (a list)}
 

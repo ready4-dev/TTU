@@ -26,3 +26,4 @@ Tfmd data (a tibble)
 \description{
 transform_uid_var() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform unique identifier variable. Function argument data_tb specifies the object to be updated. Argument id_var_nm_1L_chr provides the object to be updated. The function returns Tfmd data (a tibble).
 }
+\keyword{internal}

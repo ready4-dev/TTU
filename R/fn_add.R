@@ -6,6 +6,7 @@
 #' @rdname add_prefd_predr_var_to_mdl_smry_ls
 #' @export 
 #' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
 add_prefd_predr_var_to_mdl_smry_ls <- function (mdl_smry_ls, ds_smry_ls) 
 {
     mdl_smry_ls$predr_var_nm_1L_chr <- ds_smry_ls$candidate_predrs_chr[1]
@@ -28,6 +29,7 @@ add_prefd_predr_var_to_mdl_smry_ls <- function (mdl_smry_ls, ds_smry_ls)
 #' @export 
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
+#' @keywords internal
 add_tfmd_var_to_ds <- function (data_tb, depnt_var_nm_1L_chr, tfmn_1L_chr, dep_var_max_val_1L_dbl = NULL) 
 {
     data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr, 
@@ -50,6 +52,7 @@ add_tfmd_var_to_ds <- function (data_tb, depnt_var_nm_1L_chr, tfmn_1L_chr, dep_v
 #' @importFrom tidyselect all_of
 #' @importFrom stringr str_replace
 #' @importFrom stats setNames
+#' @keywords internal
 add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkClientID") 
 {
     participant_ids <- paste0(prefix_1L_chr, 1:nrow(tbs_ls[[1]])) %>% 
@@ -139,6 +142,7 @@ add_utility_predn_to_ds <- function (data_tb, model_mdl, tfmn_1L_chr, depnt_var_
 #' @importFrom purrr flatten_chr
 #' @importFrom rlang sym
 #' @importFrom tidyselect all_of
+#' @keywords internal
 add_utl_predn_to_new_ds <- function (data_tb, ingredients_ls, mdl_nm_1L_chr, analysis_1L_chr = NULL, 
     deterministic_1L_lgl = T, force_min_max_1L_lgl = T, id_var_nm_1L_chr = NULL, 
     model_mdl = NULL, new_data_is_1L_chr = "Simulated", predr_vars_nms_chr = NULL, 

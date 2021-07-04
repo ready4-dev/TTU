@@ -9,6 +9,7 @@
 #' @rdname predict_from_shareable_mdl
 #' @export 
 #' @importFrom rlang exec
+#' @keywords internal
 predict_from_shareable_mdl <- function (model_mdl, data_tb, predn_type_1L_chr = "response", 
     sd_dbl, deterministic_1L_lgl = T) 
 {
@@ -34,6 +35,7 @@ predict_from_shareable_mdl <- function (model_mdl, data_tb, predn_type_1L_chr = 
 #' @rdname predict_shrble_betareg
 #' @export 
 
+#' @keywords internal
 predict_shrble_betareg <- function (object, newdata = NULL, type = c("response", "link", 
     "precision", "variance", "quantile"), na.action = na.pass, 
     at = 0.5, sd_1L_dbl, ...) 
@@ -161,6 +163,7 @@ predict_shrble_betareg <- function (object, newdata = NULL, type = c("response",
 #' @rdname predict_shrble_glm
 #' @export 
 
+#' @keywords internal
 predict_shrble_glm <- function (object, newdata = NULL, type = c("link", "response", 
     "terms"), se.fit = FALSE, dispersion = NULL, terms = NULL, 
     na.action = na.pass, sd_1L_dbl, ...) 
@@ -233,6 +236,7 @@ predict_shrble_glm <- function (object, newdata = NULL, type = c("link", "respon
 #' @rdname predict_shrble_lm
 #' @export 
 
+#' @keywords internal
 predict_shrble_lm <- function (object, newdata, se.fit = FALSE, scale = NULL, df = Inf, 
     interval = c("none", "confidence", "prediction"), level = 0.95, 
     type = c("response", "terms"), terms = NULL, na.action = na.pass, 
@@ -437,6 +441,7 @@ predict_shrble_lm <- function (object, newdata, se.fit = FALSE, scale = NULL, df
 #' @importFrom brms posterior_predict
 #' @importFrom rlang exec
 #' @importFrom enrichwith get_simulate_function enrich
+#' @keywords internal
 predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Predicted", 
     predn_type_1L_chr = NULL, tfmn_for_bnml_1L_lgl = F, deterministic_1L_lgl = T, 
     family_1L_chr = NA_character_, tfmn_1L_chr = "NTF", is_brms_mdl_1L_lgl = F, 
@@ -550,6 +555,7 @@ predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", model_mdl, force_min_
 #' @rdname predict_utl_from_k10
 #' @export 
 
+#' @keywords internal
 predict_utl_from_k10 <- function (k10_1L_dbl, b0_aqol_mdl_1L_dbl = 0.204665, b1_aqol_mdl_1L_dbl = -3.617134, 
     b0_eq5d_mdl_1L_dbl = 0.8644649, b1_eq5d_mdl_1L_dbl = -2.926161, 
     aqol_error_1L_dbl = 0, eq5d_error_1L_dbl = 0) 

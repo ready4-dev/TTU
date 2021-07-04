@@ -17,3 +17,4 @@ Transformed dependent variable name (a character vector of length one)
 \description{
 transform_depnt_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dependent variable name. Function argument depnt_var_nm_1L_chr specifies the object to be updated. Argument tfmn_1L_chr provides the object to be updated. The function returns Transformed dependent variable name (a character vector of length one).
 }
+\keyword{internal}

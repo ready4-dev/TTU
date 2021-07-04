@@ -23,3 +23,4 @@ Timepoint values (a character vector)
 \description{
 transform_timepoint_vals() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform timepoint values. Function argument timepoint_vals_chr specifies the object to be updated. Argument timepoint_levels_chr provides the object to be updated. The function returns Timepoint values (a character vector).
 }
+\keyword{internal}

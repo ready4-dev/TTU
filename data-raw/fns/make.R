@@ -390,13 +390,20 @@ make_header_yaml_args_ls <- function(authors_tb,
                                      institutes_tb,
                                      title_1L_chr,
                                      keywords_chr,
-                                     fl_nm_1L_chr = "header_common.yaml"){
-
-  header_yaml_args_ls <- list(authors_tb = authors_tb,
-                              institutes_tb = institutes_tb,
-                              fl_nm_1L_chr = "header_common.yaml",
-                              title_1L_chr = title_1L_chr,
-                              keywords_chr = keywords_chr)
+                                     fl_nm_1L_chr = "header_common.yaml",
+                                     use_fake_data_1L_lgl = F){
+  if(!use_fake_data_1L_lgl){
+    header_yaml_args_ls <- list(authors_tb = authors_tb,
+                                institutes_tb = institutes_tb,
+                                fl_nm_1L_chr = "header_common.yaml",
+                                title_1L_chr = title_1L_chr,
+                                keywords_chr = keywords_chr)
+  }else{
+    header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = ready4show::authors_tb,
+                                                    institutes_tb = ready4show::institutes_tb,
+                                                    title_1L_chr = "A hypothetical study using fake data for instructional purposes only",
+                                                    keywords_chr = c("this","is","a","replication","using","fake","data","do", "not","cite"))
+  }
   return(header_yaml_args_ls)
 }
 make_hlth_utl_and_predrs_ls <- function(outp_smry_ls,
@@ -845,7 +852,7 @@ make_predr_vals <- function (predr_var_nm_1L_chr, candidate_predrs_lup = NULL)
     if (is.null(candidate_predrs_lup)) {
         utils::data("candidate_predrs_lup", envir = environment())
     }
-    args_ls <- purrr::map_dbl(names(candidate_predrs_lup)[3:4],
+    args_ls <- purrr::map_dbl(names(candidate_predrs_lup),#[3:4]
                               ~candidate_predrs_lup %>% ready4fun::get_from_lup_obj(match_value_xx = predr_var_nm_1L_chr,
                                                                                     match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = .x,
                                                                                     evaluate_lgl = F)) %>% as.list()

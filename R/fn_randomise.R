@@ -7,6 +7,7 @@
 #' @export 
 #' @importFrom stats runif
 #' @importFrom purrr map2_dbl
+#' @keywords internal
 randomise_changes_in_fct_levs <- function (vector_fct, prob_unchanged_dbl) 
 {
     labels_chr <- levels(vector_fct)

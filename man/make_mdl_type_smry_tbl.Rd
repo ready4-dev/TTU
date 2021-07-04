@@ -26,3 +26,4 @@ Model type summary table (a tibble)
 \description{
 make_mdl_type_smry_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model type summary table. The function returns Model type summary table (a tibble).
 }
+\keyword{internal}

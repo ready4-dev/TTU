@@ -12,3 +12,4 @@ Predictors (a lookup table)
 \description{
 make_psych_predrs_lup() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make psych predictors lookup table. The function returns Predictors (a lookup table).
 }
+\keyword{internal}

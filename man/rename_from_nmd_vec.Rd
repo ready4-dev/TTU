@@ -19,3 +19,4 @@ Renamed data (a tibble)
 \description{
 rename_from_nmd_vec() is a Rename function that renames elements of an object based on a pre-speccified schema. Specifically, this function implements an algorithm to rename from named vector. The function returns Renamed data (a tibble).
 }
+\keyword{internal}

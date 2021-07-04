@@ -9,7 +9,8 @@ make_header_yaml_args_ls(
   institutes_tb,
   title_1L_chr,
   keywords_chr,
-  fl_nm_1L_chr = "header_common.yaml"
+  fl_nm_1L_chr = "header_common.yaml",
+  use_fake_data_1L_lgl = F
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ make_header_yaml_args_ls(
 \item{keywords_chr}{Keywords (a character vector)}
 
 \item{fl_nm_1L_chr}{File name (a character vector of length one), Default: 'header_common.yaml'}
+
+\item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one), Default: F}
 }
 \value{
 Header yaml arguments (a list)
@@ -29,3 +32,4 @@ Header yaml arguments (a list)
 \description{
 make_header_yaml_args_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make header yaml arguments list. The function returns Header yaml arguments (a list).
 }
+\keyword{internal}

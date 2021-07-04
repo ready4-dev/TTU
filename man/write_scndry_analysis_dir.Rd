@@ -17,3 +17,4 @@ Paths (a list)
 \description{
 write_scndry_analysis_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scndry analysis directory. The function returns Paths (a list).
 }
+\keyword{internal}

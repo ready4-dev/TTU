@@ -20,3 +20,4 @@ Dictionary (a tibble)
 \description{
 make_eq5d_ds_dict() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make eq5d dataset dictionary. The function returns Dictionary (a tibble).
 }
+\keyword{internal}

@@ -26,3 +26,4 @@ Transformed dep variable value (a double vector)
 \description{
 calculate_dpnt_var_tfmn() is a Calculate function that performs a numeric calculation. Specifically, this function implements an algorithm to calculate dpnt variable transformation. The function returns Transformed dep variable value (a double vector).
 }
+\keyword{internal}

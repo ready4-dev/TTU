@@ -17,3 +17,4 @@ Transformed dataset (a tibble)
 \description{
 transform_tbl_to_rnd_vars() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform table to rnd variables. Function argument ds_tb specifies the object to be updated. Argument nbr_of_digits_1L_int provides the object to be updated. The function returns Transformed dataset (a tibble).
 }
+\keyword{internal}

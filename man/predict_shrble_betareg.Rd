@@ -32,3 +32,4 @@ predict_shrble_betareg(
 \description{
 predict_shrble_betareg() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict shrble betareg. The function is called for its side effects and does not return a value.
 }
+\keyword{internal}

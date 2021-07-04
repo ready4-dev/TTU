@@ -17,3 +17,4 @@ Model summary (a list)
 \description{
 add_prefd_predr_var_to_mdl_smry_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add preferred predictor variable to model summary list. Function argument mdl_smry_ls specifies the object to be updated. The function returns Model summary (a list).
 }
+\keyword{internal}

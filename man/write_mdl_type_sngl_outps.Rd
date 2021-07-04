@@ -56,3 +56,4 @@ Summary of one predictor model (a tibble)
 \description{
 write_mdl_type_sngl_outps() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type single outputs. The function returns Summary of one predictor model (a tibble).
 }
+\keyword{internal}

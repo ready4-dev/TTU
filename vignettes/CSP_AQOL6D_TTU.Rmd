@@ -59,7 +59,9 @@ We describe the features of our dataset that are most relevant to the analyses w
 
 ```{r echo = TRUE}
 ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("K6","PHQ9"),#
-                     cohort_descv_var_nms_chr = c("d_age", "d_relation_s","d_studying_working","c_p_diag_s","c_clinical_staging_s"),
+                                  cohort_descv_var_nms_chr = c("d_age","d_relation_s",
+                                                               "d_studying_working",
+                                                               "c_p_diag_s","c_clinical_staging_s"),
                      dictionary_tb = youthvars::make_final_rpln_ds_dict(), 
                      id_var_nm_1L_chr = "fkClientID", 
                      msrmnt_date_var_nm_1L_chr = "d_interview_date",
@@ -71,18 +73,21 @@ ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("K6","PHQ9"),#
 ```
 
 ### Candidate predictors metadata
-We create a lookup table with metadata on the dataset variables that we specified in the `candidate_predrs_chr` element of `ds_descvs_ls` as our candidate predictors.
+We create a lookup table with metadata on the dataset variables that we specified in the `candidate_predrs_chr` element of `ds_descvs_ls` as our candidate predictors, as well as the preferred covariates that we will specify later in the `make_valid_params_ls_ls` function.
 
 ```{r}
-predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = ds_descvs_ls$candidate_predrs_chr,
-                                              long_name_chr = c("K6 total score", "PHQ9 total score"),
+predictors_lup <- make_pt_TTU_predictors_lup(short_name_chr = c(ds_descvs_ls$candidate_predrs_chr, "SOFAS"),
+                                              long_name_chr = c("K6 total score", "PHQ9 total score", "SOFAS total score"),
                                               min_val_dbl = 0,
-                                              max_val_dbl = c(24,27),
+                                              max_val_dbl = c(24,27,100),
                                               class_chr = "integer",
                                               increment_dbl = 1,
-                                              class_fn_chr = "as.integer",
+                                              class_fn_chr = c("youthvars::youthvars_k6",
+                                                               "youthvars::youthvars_phq9",
+                                                               "youthvars::youthvars_sofas"),
                                               mdl_scaling_dbl = 0.01,
-                                              covariate_lgl = F))
+                                              covariate_lgl = F) %>%
+  TTU_predictors_lup()
 ```
 
 ## Analysis parameters

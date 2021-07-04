@@ -56,3 +56,4 @@ Updated (a tibble)
 \description{
 add_utl_predn_to_new_ds() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add utility prediction to new dataset. Function argument data_tb specifies the object to be updated. The function returns Updated (a tibble).
 }
+\keyword{internal}
