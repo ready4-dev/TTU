@@ -51,6 +51,21 @@ transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF")
 #     tfd_depnt_var_nm_1L_chr <- paste0(depnt_var_nm_1L_chr, "_cloglog")
 #     return(tfd_depnt_var_nm_1L_chr)
 # }
+transform_dict_with_rename_lup <- function(dictionary_tb,
+                                           rename_lup){
+  var_lbl_1L_chr <- Hmisc::label(dictionary_tb$var_nm_chr)
+  tfmd_dictionary_tb <- dictionary_tb %>%
+    dplyr::mutate(var_nm_chr = var_nm_chr %>%
+                    purrr::map_chr(~ifelse(.x %in% rename_lup$old_nms_chr,
+                                           ready4fun::get_from_lup_obj(rename_lup,
+                                                                       match_value_xx = .x,
+                                                                       match_var_nm_1L_chr = "old_nms_chr",
+                                                                       target_var_nm_1L_chr = "new_nms_chr",
+                                                                       evaluate_lgl = F),
+                                           .x)))
+  Hmisc::label(tfmd_dictionary_tb[["var_nm_chr"]]) <- var_lbl_1L_chr
+  return(tfmd_dictionary_tb)
+}
 transform_ds_for_all_cmprsn_plts <- function(tfd_data_tb,
                                              model_mdl,
                                              depnt_var_nm_1L_chr,
@@ -143,6 +158,21 @@ transform_ds_to_predn_ds <- function(data_tb,
                                                       tfmn_1L_chr = tfmn_1L_chr)
   return(data_tb)
 }
+transform_ds_with_rename_lup <- function(ds_tb,
+                                         rename_lup,
+                                         target_var_nms_chr = NULL){
+  if(is.null(target_var_nms_chr))
+    target_var_nms_chr <- intersect(names(ds_tb),rename_lup$old_nms_chr)
+  tfmd_ds_tb <- dplyr::rename_with(ds_tb,
+                                   .cols = target_var_nms_chr,
+                                   ~ ready4fun::get_from_lup_obj(rename_lup,
+                                                                 match_value_xx = .x,
+                                                                 match_var_nm_1L_chr = "old_nms_chr",
+                                                                 target_var_nm_1L_chr = "new_nms_chr",
+                                                                 evaluate_lgl = F))
+  return(tfmd_ds_tb)
+
+}
 transform_mdl_vars_with_clss <- function(ds_tb,
                                          predictors_lup = NULL,
                                          prototype_lup = NULL,
@@ -212,24 +242,31 @@ transform_params_ls_to_valid <- function(params_ls,
                                new_nms_chr = make.unique(c(unchanged_var_nms_chr,
                                                            valid_var_nms_chr), sep="V")) %>%
     dplyr::filter(!old_nms_chr %in% unchanged_var_nms_chr)
-  params_ls$ds_tb <- dplyr::rename_with(params_ls$ds_tb,
-                                        .cols = target_var_nms_chr,
-                                        ~ ready4fun::get_from_lup_obj(rename_lup,
-                                                                      match_value_xx = .x,
-                                                                      match_var_nm_1L_chr = "old_nms_chr",
-                                                                      target_var_nm_1L_chr = "new_nms_chr",
-                                                                      evaluate_lgl = F))
-  var_lbl_1L_chr <- Hmisc::label(params_ls$ds_descvs_ls$dictionary_tb$var_nm_chr)
+  params_ls$ds_tb <- transform_ds_with_rename_lup(params_ls$ds_tb,
+                                                  rename_lup = rename_lup,
+                                                  target_var_nms_chr = target_var_nms_chr)
+    # dplyr::rename_with(params_ls$ds_tb,
+    #                                     .cols = target_var_nms_chr,
+    #                                     ~ ready4fun::get_from_lup_obj(rename_lup,
+    #                                                                   match_value_xx = .x,
+    #                                                                   match_var_nm_1L_chr = "old_nms_chr",
+    #                                                                   target_var_nm_1L_chr = "new_nms_chr",
+    #                                                                   evaluate_lgl = F))
   params_ls$ds_descvs_ls$dictionary_tb <- params_ls$ds_descvs_ls$dictionary_tb %>%
-    dplyr::mutate(var_nm_chr = var_nm_chr %>%
-                    purrr::map_chr(~ifelse(.x %in% rename_lup$old_nms_chr,
-                                           ready4fun::get_from_lup_obj(rename_lup,
-                                                                       match_value_xx = .x,
-                                                                       match_var_nm_1L_chr = "old_nms_chr",
-                                                                       target_var_nm_1L_chr = "new_nms_chr",
-                                                                       evaluate_lgl = F),
-                                           .x)))
-  Hmisc::label(params_ls$ds_descvs_ls$dictionary_tb[["var_nm_chr"]]) <- var_lbl_1L_chr#
+    transform_dict_with_rename_lup(rename_lup = rename_lup)
+  # var_lbl_1L_chr <- Hmisc::label(params_ls$ds_descvs_ls$dictionary_tb$var_nm_chr)
+  # params_ls$ds_descvs_ls$dictionary_tb <- params_ls$ds_descvs_ls$dictionary_tb %>%
+  #   dplyr::mutate(var_nm_chr = var_nm_chr %>%
+  #                   purrr::map_chr(~ifelse(.x %in% rename_lup$old_nms_chr,
+  #                                          ready4fun::get_from_lup_obj(rename_lup,
+  #                                                                      match_value_xx = .x,
+  #                                                                      match_var_nm_1L_chr = "old_nms_chr",
+  #                                                                      target_var_nm_1L_chr = "new_nms_chr",
+  #                                                                      evaluate_lgl = F),
+  #                                          .x)))
+  # Hmisc::label(params_ls$ds_descvs_ls$dictionary_tb[["var_nm_chr"]]) <- var_lbl_1L_chr#
+  rename_lup <- rename_lup %>%
+    dplyr::filter(old_nms_chr != new_nms_chr)
   valid_params_ls_ls <- list(params_ls = params_ls %>%
                                transform_params_ls_from_lup(rename_lup = rename_lup),
                              rename_lup = rename_lup)

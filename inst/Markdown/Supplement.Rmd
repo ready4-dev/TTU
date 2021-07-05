@@ -64,6 +64,7 @@ params:
   prefd_covars_chr: !r NULL
   prefd_mdl_types_chr: !r NULL
   prior_ls: !r NULL
+  rename_lup: !r NULL
   rprt_type_1L_chr: "Supplement"
   seed_1L_int: 12345
   subtitle_1L_chr: "Secondary analysis algorithm for Transfer to Utility study"

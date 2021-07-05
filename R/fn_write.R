@@ -846,8 +846,9 @@ write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, ca
             args_ls = list(reference_1L_int = reference_1L_int))) %>% 
         append(analysis_params_ls)
     params_ls$utl_class_fn_1L_chr <- params_ls$raw_ds_tfmn_fn <- NULL
-    params_ls <- transform_params_ls_to_valid(params_ls) %>% 
-        purrr::pluck("params_ls")
+    params_ls_ls <- transform_params_ls_to_valid(params_ls)
+    params_ls <- params_ls_ls %>% purrr::pluck("params_ls") %>% 
+        append(list(rename_lup = params_ls_ls$rename_lup))
     params_ls %>% write_report(paths_ls = path_params_ls$paths_ls, 
         rprt_nm_1L_chr = rprt_nm_1L_chr, abstract_args_ls = abstract_args_ls, 
         header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
