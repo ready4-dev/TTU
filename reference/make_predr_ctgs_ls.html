@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Make fake eq5d dataset — make_fake_eq5d_ds • TTU</title>
+<title>Make predictor category categoriess — make_predr_ctgs_ls • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Make fake eq5d dataset — make_fake_eq5d_ds" />
-<meta property="og:description" content="make_fake_eq5d_ds() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake eq5d dataset. The function returns Data (a tibble)." />
+<meta property="og:title" content="Make predictor category categoriess — make_predr_ctgs_ls" />
+<meta property="og:description" content="make_predr_ctgs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictor category categoriess list. The function returns Predictor category categoriess (a list)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -137,61 +137,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Make fake eq5d dataset</h1>
+    <h1>Make predictor category categoriess</h1>
     <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
-    <div class="hidden name"><code>make_fake_eq5d_ds.Rd</code></div>
+    <div class="hidden name"><code>make_predr_ctgs_ls.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>make_fake_eq5d_ds() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake eq5d dataset. The function returns Data (a tibble).</p>
+    <p>make_predr_ctgs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictor category categoriess list. The function returns Predictor category categoriess (a list).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_fake_eq5d_ds</span><span class='op'>(</span>
-  country_1L_chr <span class='op'>=</span> <span class='st'>"UK"</span>,
-  version_1L_chr <span class='op'>=</span> <span class='st'>"5L"</span>,
-  type_1L_chr <span class='op'>=</span> <span class='st'>"CW"</span>,
-  force_attach_1L_lgl <span class='op'>=</span> <span class='cn'>T</span>,
-  prop_with_fup_data_1L_dbl <span class='op'>=</span> <span class='fl'>0.65</span>,
-  seed_1L_int <span class='op'>=</span> <span class='fl'>1234</span>,
-  sample_from_1L_int <span class='op'>=</span> <span class='fl'>10000</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>make_predr_ctgs_ls</span><span class='op'>(</span><span class='va'>outp_smry_ls</span>, include_idx_int <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>country_1L_chr</th>
-      <td><p>Country (a character vector of length one), Default: 'UK'</p></td>
+      <th>outp_smry_ls</th>
+      <td><p>Output summary (a list)</p></td>
     </tr>
     <tr>
-      <th>version_1L_chr</th>
-      <td><p>Version (a character vector of length one), Default: '5L'</p></td>
-    </tr>
-    <tr>
-      <th>type_1L_chr</th>
-      <td><p>Type (a character vector of length one), Default: 'CW'</p></td>
-    </tr>
-    <tr>
-      <th>force_attach_1L_lgl</th>
-      <td><p>Force attach (a logical vector of length one), Default: T</p></td>
-    </tr>
-    <tr>
-      <th>prop_with_fup_data_1L_dbl</th>
-      <td><p>Prop with follow-up data (a double vector of length one), Default: 0.65</p></td>
-    </tr>
-    <tr>
-      <th>seed_1L_int</th>
-      <td><p>Seed (an integer vector of length one), Default: 1234</p></td>
-    </tr>
-    <tr>
-      <th>sample_from_1L_int</th>
-      <td><p>Sample from (an integer vector of length one), Default: 10000</p></td>
+      <th>include_idx_int</th>
+      <td><p>Include index (an integer vector), Default: NULL</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Data (a tibble)</p>
+    <p>Predictor category categoriess (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

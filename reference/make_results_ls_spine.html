@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9276</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9277</span>
       </span>
     </div>
 
@@ -148,9 +148,11 @@
 
     <pre class="usage"><span class='fu'>make_results_ls_spine</span><span class='op'>(</span>
   <span class='va'>output_data_dir_1L_chr</span>,
-  var_nm_change_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>study_descs_ls</span>,
-  nbr_of_digits_1L_int <span class='op'>=</span> <span class='fl'>2L</span>
+  fn_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  include_idx_int <span class='op'>=</span> <span class='cn'>NULL</span>,
+  nbr_of_digits_1L_int <span class='op'>=</span> <span class='fl'>2L</span>,
+  var_nm_change_lup <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -161,16 +163,24 @@
       <td><p>Output data directory (a character vector of length one)</p></td>
     </tr>
     <tr>
-      <th>var_nm_change_lup</th>
-      <td><p>Variable name change (a lookup table), Default: NULL</p></td>
-    </tr>
-    <tr>
       <th>study_descs_ls</th>
       <td><p>Study descriptions (a list)</p></td>
     </tr>
     <tr>
+      <th>fn_ls</th>
+      <td><p>Function list (a list of functions), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>include_idx_int</th>
+      <td><p>Include index (an integer vector), Default: NULL</p></td>
+    </tr>
+    <tr>
       <th>nbr_of_digits_1L_int</th>
       <td><p>Number of digits (an integer vector of length one), Default: 2</p></td>
+    </tr>
+    <tr>
+      <th>var_nm_change_lup</th>
+      <td><p>Variable name change (a lookup table), Default: NULL</p></td>
     </tr>
     </table>
 
