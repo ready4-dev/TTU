@@ -6,7 +6,6 @@
 \usage{
 make_results_ls(
   spine_of_results_ls,
-  cs_ts_ratios_tb,
   ctgl_vars_regrouping_ls = NULL,
   sig_covars_some_predrs_mdls_tb,
   sig_thresh_covars_1L_chr
@@ -14,8 +13,6 @@ make_results_ls(
 }
 \arguments{
 \item{spine_of_results_ls}{Spine of results (a list)}
-
-\item{cs_ts_ratios_tb}{Cs time series ratios (a tibble)}
 
 \item{ctgl_vars_regrouping_ls}{Ctgl variables regrouping (a list), Default: NULL}
 

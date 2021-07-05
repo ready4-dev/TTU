@@ -7,7 +7,7 @@
 make_study_descs_ls(
   health_utl_nm_1L_chr,
   time_btwn_bl_and_fup_1L_chr,
-  predr_ctgs_ls
+  predr_ctgs_ls = NULL
 )
 }
 \arguments{
@@ -15,7 +15,7 @@ make_study_descs_ls(
 
 \item{time_btwn_bl_and_fup_1L_chr}{Time btwn baseline and follow-up (a character vector of length one)}
 
-\item{predr_ctgs_ls}{Predictor category categoriess (a list)}
+\item{predr_ctgs_ls}{Predictor category categoriess (a list), Default: NULL}
 }
 \value{
 Study descriptions (a list)

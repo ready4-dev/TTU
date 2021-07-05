@@ -250,6 +250,40 @@ make_cohort_ls <- function (descv_tbls_ls, ctgl_vars_regrouping_ls = NULL, nbr_o
     }
     return(cohort_ls)
 }
+#' Make cs time series ratios
+#' @description make_cs_ts_ratios_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make cs time series ratios tibble. The function returns Cs time series ratios (a tibble).
+#' @param predr_ctgs_ls Predictor category categoriess (a list)
+#' @param mdl_coef_ratios_ls Model coefficient ratios (a list)
+#' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
+#' @param fn_ls Function list (a list of functions), Default: NULL
+#' @return Cs time series ratios (a tibble)
+#' @rdname make_cs_ts_ratios_tb
+#' @export 
+#' @importFrom purrr map map_dfr pluck
+#' @importFrom tibble tibble
+#' @importFrom rlang exec
+#' @keywords internal
+make_cs_ts_ratios_tb <- function (predr_ctgs_ls, mdl_coef_ratios_ls, nbr_of_digits_1L_int = 2L, 
+    fn_ls = NULL) 
+{
+    if (is.null(fn_ls)) 
+        fn_ls <- purrr::map(1:length(predr_ctgs_ls), ~mean)
+    cs_ts_ratios_tb <- 1:length(predr_ctgs_ls) %>% purrr::map_dfr(~{
+        if (length(predr_ctgs_ls %>% purrr::pluck(.x)) > 1) {
+            predr_nm_1L_chr <- paste0(names(predr_ctgs_ls)[.x] %>% 
+                tolower(), " measurements")
+        }
+        else {
+            predr_nm_1L_chr <- predr_ctgs_ls %>% purrr::pluck(.x)
+        }
+        tibble::tibble(predr_nm_chr = predr_nm_1L_chr, ratios_chr = paste0(round(rlang::exec(fn_ls %>% 
+            purrr::pluck(.x), mdl_coef_ratios_ls %>% purrr::pluck(.x)), 
+            nbr_of_digits_1L_int), ifelse(identical(min, fn_ls %>% 
+            purrr::pluck(.x)), " or over", ifelse(identical(max, 
+            fn_ls %>% purrr::pluck(.x)), " or under", ""))))
+    })
+    return(cs_ts_ratios_tb)
+}
 #' Make dataset descriptives
 #' @description make_ds_descvs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make dataset descriptives list. The function returns Dataset descriptives (a list).
 #' @param candidate_predrs_chr Candidate predictors (a character vector)
@@ -1036,6 +1070,36 @@ make_predn_ds_with_one_predr <- function (model_mdl, depnt_var_nm_1L_chr = "utl_
                 tfmn_is_outp_1L_lgl = T)))
     return(predn_ds_tb)
 }
+#' Make predictor category categoriess
+#' @description make_predr_ctgs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictor category categoriess list. The function returns Predictor category categoriess (a list).
+#' @param outp_smry_ls Output summary (a list)
+#' @param include_idx_int Include index (an integer vector), Default: NULL
+#' @return Predictor category categoriess (a list)
+#' @rdname make_predr_ctgs_ls
+#' @export 
+#' @importFrom purrr flatten_chr map_chr map pluck
+#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom ready4use remove_labels_from_ds
+#' @importFrom dplyr filter pull
+#' @importFrom stats setNames
+#' @keywords internal
+make_predr_ctgs_ls <- function (outp_smry_ls, include_idx_int = NULL) 
+{
+    predictors_chr <- outp_smry_ls$predr_vars_nms_ls %>% purrr::flatten_chr() %>% 
+        unique()
+    categories_chr <- predictors_chr %>% purrr::map_chr(~outp_smry_ls$dictionary_tb %>% 
+        ready4fun::get_from_lup_obj(match_value_xx = .x, match_var_nm_1L_chr = "var_nm_chr", 
+            target_var_nm_1L_chr = "var_ctg_chr", evaluate_lgl = F)) %>% 
+        unique()
+    predr_ctgs_ls <- categories_chr %>% purrr::map(~outp_smry_ls$dictionary_tb %>% 
+        ready4use::remove_labels_from_ds() %>% dplyr::filter(var_ctg_chr == 
+        .x) %>% dplyr::pull(var_nm_chr)) %>% stats::setNames(categories_chr)
+    if (!is.null(include_idx_int)) {
+        predr_ctgs_ls <- include_idx_int %>% purrr::map(~predr_ctgs_ls %>% 
+            purrr::pluck(.x)) %>% stats::setNames(categories_chr[include_idx_int])
+    }
+    return(predr_ctgs_ls)
+}
 #' Make predictor values
 #' @description make_predr_vals() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make predictor values. The function returns Predictor values (a double vector).
 #' @param predr_var_nm_1L_chr Predictor variable name (a character vector of length one)
@@ -1228,7 +1292,6 @@ make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_ch
 #' Make results
 #' @description make_results_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make results list. The function returns Results (a list).
 #' @param spine_of_results_ls Spine of results (a list)
-#' @param cs_ts_ratios_tb Cs time series ratios (a tibble)
 #' @param ctgl_vars_regrouping_ls Ctgl variables regrouping (a list), Default: NULL
 #' @param sig_covars_some_predrs_mdls_tb Sig covariates some predictors models (a tibble)
 #' @param sig_thresh_covars_1L_chr Sig thresh covariates (a character vector of length one)
@@ -1240,7 +1303,7 @@ make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_ch
 #' @importFrom cowplot save_plot
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter pull
-make_results_ls <- function (spine_of_results_ls, cs_ts_ratios_tb, ctgl_vars_regrouping_ls = NULL, 
+make_results_ls <- function (spine_of_results_ls, ctgl_vars_regrouping_ls = NULL, 
     sig_covars_some_predrs_mdls_tb, sig_thresh_covars_1L_chr) 
 {
     mdls_smry_tbls_ls <- make_mdls_smry_tbls_ls(spine_of_results_ls$outp_smry_ls, 
@@ -1266,7 +1329,8 @@ make_results_ls <- function (spine_of_results_ls, cs_ts_ratios_tb, ctgl_vars_reg
         new_nms_chr = spine_of_results_ls$var_nm_change_lup$new_nms_chr), 
         r2_dbl = mdls_smry_tbls_ls$prefd_predr_mdl_smry_tb %>% 
             dplyr::filter(Parameter == "R2") %>% dplyr::pull(Estimate)), 
-        cs_ts_ratios_tb = cs_ts_ratios_tb, incld_covars_chr = spine_of_results_ls$outp_smry_ls$prefd_covars_chr)
+        cs_ts_ratios_tb = spine_of_results_ls$cs_ts_ratios_tb, 
+        incld_covars_chr = spine_of_results_ls$outp_smry_ls$prefd_covars_chr)
     results_ls <- list(cohort_ls = make_cohort_ls(descv_tbls_ls, 
         ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls, nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int), 
         hlth_utl_and_predrs_ls = make_hlth_utl_and_predrs_ls(spine_of_results_ls$outp_smry_ls, 
@@ -1288,29 +1352,36 @@ make_results_ls <- function (spine_of_results_ls, cs_ts_ratios_tb, ctgl_vars_reg
 #' Make results list spine
 #' @description make_results_ls_spine() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make results list spine. The function returns Spine of results (a list).
 #' @param output_data_dir_1L_chr Output data directory (a character vector of length one)
-#' @param var_nm_change_lup Variable name change (a lookup table), Default: NULL
 #' @param study_descs_ls Study descriptions (a list)
+#' @param fn_ls Function list (a list of functions), Default: NULL
+#' @param include_idx_int Include index (an integer vector), Default: NULL
 #' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
+#' @param var_nm_change_lup Variable name change (a lookup table), Default: NULL
 #' @return Spine of results (a list)
 #' @rdname make_results_ls_spine
 #' @export 
 
-make_results_ls_spine <- function (output_data_dir_1L_chr, var_nm_change_lup = NULL, study_descs_ls, 
-    nbr_of_digits_1L_int = 2L) 
+make_results_ls_spine <- function (output_data_dir_1L_chr, study_descs_ls, fn_ls = NULL, 
+    include_idx_int = NULL, nbr_of_digits_1L_int = 2L, var_nm_change_lup = NULL) 
 {
     if (is.null(var_nm_change_lup)) {
         var_nm_change_lup <- list(old_nms_chr = NULL, new_nms_chr = NULL)
     }
     outp_smry_ls <- readRDS(paste0(output_data_dir_1L_chr, "/I_ALL_OUTPUT_.RDS"))
+    study_descs_ls$predr_ctgs_ls <- make_predr_ctgs_ls(outp_smry_ls, 
+        include_idx_int = include_idx_int)
     mdl_coef_ratios_ls <- make_mdl_coef_ratio_ls(outp_smry_ls, 
         predr_ctgs_ls = study_descs_ls$predr_ctgs_ls)
     mdls_smry_tbls_ls <- make_mdls_smry_tbls_ls(outp_smry_ls, 
         nbr_of_digits_1L_int = nbr_of_digits_1L_int)
     covars_mdls_ls <- make_mdls_ls(outp_smry_ls, mdls_tb = mdls_smry_tbls_ls$covar_mdls_tb)
-    spine_of_results_ls <- list(outp_smry_ls = outp_smry_ls, 
-        output_data_dir_1L_chr = output_data_dir_1L_chr, mdl_coef_ratios_ls = mdl_coef_ratios_ls, 
-        nbr_of_digits_1L_int = nbr_of_digits_1L_int, study_descs_ls = study_descs_ls, 
-        var_nm_change_lup = var_nm_change_lup)
+    cs_ts_ratios_tb <- make_cs_ts_ratios_tb(predr_ctgs_ls = study_descs_ls$predr_ctgs_ls, 
+        mdl_coef_ratios_ls = mdl_coef_ratios_ls, fn_ls = fn_ls, 
+        nbr_of_digits_1L_int = nbr_of_digits_1L_int)
+    spine_of_results_ls <- list(cs_ts_ratios_tb = cs_ts_ratios_tb, 
+        outp_smry_ls = outp_smry_ls, output_data_dir_1L_chr = output_data_dir_1L_chr, 
+        mdl_coef_ratios_ls = mdl_coef_ratios_ls, nbr_of_digits_1L_int = nbr_of_digits_1L_int, 
+        study_descs_ls = study_descs_ls, var_nm_change_lup = var_nm_change_lup)
     return(spine_of_results_ls)
 }
 #' Make shareable
@@ -1678,13 +1749,13 @@ make_ss_tbls_ls <- function (outp_smry_ls, mdls_smry_tbls_ls, covars_mdls_ls, de
 #' @description make_study_descs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make study descriptions list. The function returns Study descriptions (a list).
 #' @param health_utl_nm_1L_chr Health utility name (a character vector of length one)
 #' @param time_btwn_bl_and_fup_1L_chr Time btwn baseline and follow-up (a character vector of length one)
-#' @param predr_ctgs_ls Predictor category categoriess (a list)
+#' @param predr_ctgs_ls Predictor category categoriess (a list), Default: NULL
 #' @return Study descriptions (a list)
 #' @rdname make_study_descs_ls
 #' @export 
 
 make_study_descs_ls <- function (health_utl_nm_1L_chr, time_btwn_bl_and_fup_1L_chr, 
-    predr_ctgs_ls) 
+    predr_ctgs_ls = NULL) 
 {
     study_descs_ls <- list(health_utl_nm_1L_chr = health_utl_nm_1L_chr, 
         time_btwn_bl_and_fup_1L_chr = time_btwn_bl_and_fup_1L_chr, 
