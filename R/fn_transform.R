@@ -6,14 +6,13 @@
 #' @rdname transform_chr_digit_pairs
 #' @export 
 #' @importFrom purrr map_chr pluck
+#' @importFrom stringr str_squish
 #' @keywords internal
 transform_chr_digit_pairs <- function (digit_pairs_chr, nbr_of_digits_1L_int = 2L) 
 {
     tfd_digit_pairs_chr <- digit_pairs_chr %>% purrr::map_chr(~{
-        abs_vals_elmnts_chr <- .x %>% regmatches(gregexpr("[[:digit:]]+", 
-            .)) %>% purrr::pluck(1)
-        abs_vals_chr <- c(paste0(abs_vals_elmnts_chr[1:2], collapse = "."), 
-            paste0(abs_vals_elmnts_chr[3:4], collapse = "."))
+        abs_vals_chr <- .x %>% strsplit(",") %>% purrr::pluck(1) %>% 
+            stringr::str_squish()
         abs_vals_chr[1] <- ifelse(startsWith(.x, paste0("-", 
             abs_vals_chr[1])), paste0("-", abs_vals_chr[1]), 
             abs_vals_chr[1])
