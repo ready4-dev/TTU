@@ -498,6 +498,13 @@ transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharin
                 paste0("Secondary Analysis ", LETTERS[reference_1L_int])), 
             ")"), T ~ title_chr))
     }
+    if (!is.null(reference_1L_int)) {
+        rprt_lup <- dplyr::mutate(rprt_lup, rprt_nms_chr = dplyr::case_when(rprt_nms_chr %in% 
+            c("AAA_TTU_MDL_CTG") ~ paste0("AAA_TTU_MDL_CTG", 
+            ifelse(is.null(reference_1L_int), "", ifelse(reference_1L_int == 
+                0, "", paste0("-", reference_1L_int)))), T ~ 
+            rprt_nms_chr))
+    }
     return(rprt_lup)
 }
 #' Transform tibble to model input

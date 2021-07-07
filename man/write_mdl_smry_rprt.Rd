@@ -10,7 +10,7 @@ write_mdl_smry_rprt(
   use_fake_data_1L_lgl = FALSE,
   output_format_ls,
   abstract_args_ls = NULL,
-  dv_ls = NULL,
+  dv_ds_nm_and_url_chr = NULL,
   reference_int = 0,
   rprt_lup = NULL,
   rcrd_nm_1L_chr = "AAA_RPRT_WRTNG_MTH",
@@ -30,7 +30,7 @@ write_mdl_smry_rprt(
 
 \item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
 
-\item{dv_ls}{Dataverse (a list), Default: NULL}
+\item{dv_ds_nm_and_url_chr}{Dataverse dataset name and url (a character vector), Default: NULL}
 
 \item{reference_int}{Reference (an integer vector), Default: 0}
 

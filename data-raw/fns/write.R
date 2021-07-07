@@ -37,6 +37,22 @@ write_main_oupt_dir <- function(params_ls = NULL,
   paths_ls <- youthvars::write_all_outp_dirs(paths_ls)
   return(paths_ls)
 }
+write_manuscript <- function(results_ls,
+                             output_format_ls,
+                             path_params_ls,
+                             append_params_ls = NULL,
+                             fl_nm_1L_chr = "TTU_Manuscript",
+                             path_to_RMDs_chr = c("../Manuscript/Word/Word.Rmd","../Manuscript/PDF/PDF.Rmd")){
+  rmarkdown::render(ifelse(output_format_ls$manuscript_outp_1L_chr =="Word",path_to_RMDs_chr[1],path_to_RMDs_chr[2]),
+                    output_format = NULL,
+                    params = list(results_ls = results_ls) %>%
+                      append(append_params_ls),
+                    output_file = paste0(fl_nm_1L_chr,
+                                         ifelse(output_format_ls$manuscript_outp_1L_chr =="Word",
+                                                ".docx",
+                                                ".pdf")),
+                    output_dir = path_params_ls$paths_ls$reports_dir_1L_chr)
+}
 write_mdl_cmprsn <- function(scored_data_tb,
                               ds_smry_ls,
                               mdl_smry_ls,
@@ -182,7 +198,7 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                                 use_fake_data_1L_lgl = FALSE,
                                 output_format_ls,
                                 abstract_args_ls = NULL,
-                                dv_ls = NULL,
+                                dv_ds_nm_and_url_chr = NULL,
                                 reference_int = 0,
                                 rprt_lup = NULL,
                                 rcrd_nm_1L_chr = "AAA_RPRT_WRTNG_MTH",
@@ -204,7 +220,6 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                                                             start_at_int = start_at_int,
                                                             reference_1L_int = reference_1L_int)
                 if(is.null(reference_1L_int)){
-                  dv_ds_nm_and_url_chr <- dv_ls$primary_dv_chr
                   path_to_outp_fl_1L_chr <- paste0(paths_ls$output_data_dir_1L_chr,"/I_ALL_OUTPUT_.RDS")
                   if(use_shareable_mdls_1L_lgl){
                     main_rprt_append_ls <-list(rltv_path_to_data_dir_1L_chr = "../Output/G_Shareable/Models")
@@ -217,7 +232,6 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                                                        paths_ls$write_to_dir_nm_1L_chr,
                                                        paste0("secondary_",reference_1L_int),
                                                        "Output","I_ALL_OUTPUT_.RDS")
-                  dv_ds_nm_and_url_chr <- dv_ls %>% purrr::pluck(paste0("secondary_",reference_1L_int,"_dv_chr"))
                   main_rprt_append_ls <- list(existing_predrs_ls = readRDS(paste0(paths_ls$output_data_dir_1L_chr,
                                                                                   "/I_ALL_OUTPUT_.RDS")) %>%
                                                 purrr::pluck("predr_vars_nms_ls"))
@@ -241,7 +255,8 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                                      use_fake_data_1L_lgl = use_fake_data_1L_lgl,
                                      reference_1L_int = reference_1L_int,
                                      start_at_int = start_at_int,
-                                     rprt_nm_1L_chr = rprt_nm_1L_chr,
+                                     rprt_nm_1L_chr = rprt_lup$rprt_nms_chr[purrr::map_lgl(rprt_lup$rprt_nms_chr,
+                                                                                           ~startsWith(.x,rprt_nm_1L_chr))],
                                      rcrd_nm_1L_chr = rcrd_nm_1L_chr,
                                      output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr,
                                      rprt_output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr,
@@ -250,7 +265,7 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                                      rcrd_rprt_append_ls = rcrd_rprt_append_ls,
                                      rprt_lup = rprt_lup,
                                      main_rprt_append_ls = main_rprt_append_ls)
-                if(!is.null(dv_ls)){
+                if(!is.null(dv_ds_nm_and_url_chr)){
                   ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = c(rprt_nm_1L_chr,rcrd_nm_1L_chr),
                                                                         title_chr = rprt_lup %>%
                                                                           dplyr::filter(rprt_nms_chr %in% c(rprt_nm_1L_chr,rcrd_nm_1L_chr)) %>%
@@ -622,7 +637,7 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
        rprt_nm_1L_chr = rprt_nm_1L_chr,
        rprt_output_type_1L_chr = output_type_1L_chr,
        rprt_subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup,
-                                                          match_value_xx = "AAA_TTU_MDL_CTG",
+                                                          match_value_xx = rprt_nm_1L_chr,
                                                           match_var_nm_1L_chr = "rprt_nms_chr",
                                                           target_var_nm_1L_chr = "title_chr",
                                                           evaluate_lgl = F),
@@ -643,7 +658,7 @@ write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                               list(rprt_lup = rprt_lup)),
        output_type_1L_chr = output_type_1L_chr,
        subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup,
-                                                     match_value_xx = "AAA_TTU_MDL_CTG",
+                                                     match_value_xx = rprt_nm_1L_chr,
                                                      match_var_nm_1L_chr = "rprt_nms_chr",
                                                      target_var_nm_1L_chr = "title_chr",
                                                      evaluate_lgl = F)) %>%
@@ -1018,7 +1033,7 @@ write_study_outp_ds <- function(dv_ds_nm_and_url_chr,
                      included_rprts_chr <- rprt_lup$rprt_nms_chr[rprt_lup$rprt_nms_chr != "AAA_SHARING_MTH"]
                      transform_paths_ls <- NULL
                    }else{
-                     included_rprts_chr <- c("AAA_SUPLRY_ANLYS_MTH","AAA_TTU_MDL_CTG")[min(2,reference_1L_int):2]
+                     included_rprts_chr <- c("AAA_SUPLRY_ANLYS_MTH",paste0("AAA_TTU_MDL_CTG-",reference_1L_int))[min(2,reference_1L_int):2]
                      transform_paths_ls = list(fn = transform_paths_ls_for_scndry,
                                                args_ls = list(reference_1L_int = reference_1L_int,
                                                               remove_prmry_1L_lgl = T,
