@@ -755,6 +755,7 @@ make_mdls_smry_tbls_ls <- function(outp_smry_ls,
        dplyr::filter(Parameter == "R2") %>%
        dplyr::pull(Estimate) %>%
        as.numeric() %>%
+       abs() %>%
        max()
      prefd_mdl_1L_chr <- mdl_type_smry_tb %>%
        dplyr::filter(Parameter == "R2") %>%
@@ -1073,7 +1074,7 @@ make_results_ls <- function(spine_of_results_ls,
                                                  output_data_dir_1L_chr = spine_of_results_ls$output_data_dir_1L_chr,
                                                  predr_var_nms_chr=spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]])
   cowplot::save_plot(paste0(spine_of_results_ls$output_data_dir_1L_chr,"/dens_and_sctr.png"), composite_plt, base_height = 20)
-  ttu_cs_ls = make_ttu_cs_ls(spine_of_results_ls$outp_smry_ls,
+  ttu_cs_ls <- make_ttu_cs_ls(spine_of_results_ls$outp_smry_ls,
                              sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb,
                              sig_thresh_covars_1L_chr = sig_thresh_covars_1L_chr)
   mdl_type_descs_chr <- mdls_smry_tbls_ls$prefd_predr_mdl_smry_tb$Model %>%
@@ -1084,6 +1085,22 @@ make_results_ls <- function(spine_of_results_ls,
                                                 match_var_nm_1L_chr = "short_name_chr",
                                                 target_var_nm_1L_chr = "long_name_chr",
                                                 evaluate_lgl = F))
+  ttu_cs_ls$rf_seq_dscdng_chr <- ttu_cs_ls$rf_seq_dscdng_chr %>%
+    purrr::map_chr(~ifelse(.x %in% spine_of_results_ls$var_nm_change_lup$old_nms_chr,
+                                                         .x %>%
+                                                   ready4fun::get_from_lup_obj(data_lookup_tb = spine_of_results_ls$var_nm_change_lup,
+                                                                               match_var_nm_1L_chr = "old_nms_chr",
+                                                                               target_var_nm_1L_chr = "new_nms_chr",
+                                                                               evaluate_lgl = F),
+                                                   .x))
+  ttu_cs_ls$cs_mdls_predrs_seq_dscdng_chr <- ttu_cs_ls$cs_mdls_predrs_seq_dscdng_chr  %>%
+    purrr::map_chr(~ifelse(.x %in% spine_of_results_ls$var_nm_change_lup$old_nms_chr,
+                           .x %>%
+                             ready4fun::get_from_lup_obj(data_lookup_tb = spine_of_results_ls$var_nm_change_lup,
+                                                         match_var_nm_1L_chr = "old_nms_chr",
+                                                         target_var_nm_1L_chr = "new_nms_chr",
+                                                         evaluate_lgl = F),
+                           .x))
   ttu_lngl_ls = list(best_mdls_tb = tibble::tibble(model_type = mdl_type_descs_chr %>%
                                                      purrr::map_chr(~ifelse(startsWith(.x,"Ordinary Least Squares"),"LLM","GLMM")),
                                                    link_and_tfmn_chr = mdl_type_descs_chr %>%
@@ -1112,7 +1129,14 @@ make_results_ls <- function(spine_of_results_ls,
                      mdl_coef_ratios_ls = spine_of_results_ls$mdl_coef_ratios_ls,
                      paths_to_figs_ls = make_paths_to_ss_plts_ls(spine_of_results_ls$output_data_dir_1L_chr,
                                                                  outp_smry_ls = spine_of_results_ls$outp_smry_ls),
-                     predr_var_nms_chr = spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]],
+                     predr_var_nms_chr = spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]] %>%
+                       purrr::map_chr(~ifelse(.x %in% spine_of_results_ls$var_nm_change_lup$old_nms_chr,
+                                              .x %>%
+                                                ready4fun::get_from_lup_obj(data_lookup_tb = spine_of_results_ls$var_nm_change_lup,
+                                                                            match_var_nm_1L_chr = "old_nms_chr",
+                                                                            target_var_nm_1L_chr = "new_nms_chr",
+                                                                            evaluate_lgl = F),
+                                              .x)),
                      r_version_1L_chr = paste0(spine_of_results_ls$outp_smry_ls$session_data_ls$R.version$major,
                                                ".",
                                                spine_of_results_ls$outp_smry_ls$session_data_ls$R.version$minor),
