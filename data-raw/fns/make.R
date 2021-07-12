@@ -198,7 +198,7 @@ make_cs_ts_ratios_tb <- function(predr_ctgs_ls,
                                  fn_ls = NULL){
   if(is.null(fn_ls))
     fn_ls <- purrr::map(1:length(predr_ctgs_ls),
-                        ~ mean)
+                        ~ make_mdl_coef_range_text)
   cs_ts_ratios_tb <- 1:length(predr_ctgs_ls) %>%
     purrr::map_dfr(
            ~ {
@@ -209,16 +209,21 @@ make_cs_ts_ratios_tb <- function(predr_ctgs_ls,
                predr_nm_1L_chr <- predr_ctgs_ls %>% purrr::pluck(.x)
              }
              tibble::tibble(predr_nm_chr = predr_nm_1L_chr,
-                            ratios_chr = paste0(round(rlang::exec(fn_ls %>%
+                            ratios_chr = ifelse(identical(make_mdl_coef_range_text,fn_ls %>% purrr::pluck(.x)),
+                                                make_mdl_coef_range_text(mdl_coef_ratios_ls %>%
+                                                                           purrr::pluck(names(predr_ctgs_ls)[.x]),
+                                                                         nbr_of_digits_1L_int = nbr_of_digits_1L_int),
+                                                paste0(round(rlang::exec(fn_ls %>%
                                                                     purrr::pluck(.x),
                                                                   mdl_coef_ratios_ls %>%
-                                                                    purrr::pluck(.x)),
+                                                                    purrr::pluck(names(predr_ctgs_ls)[.x])),
                                                       nbr_of_digits_1L_int),
                                                 ifelse(identical(min,fn_ls %>% purrr::pluck(.x)),
                                                        " or over",
                                                        ifelse(identical(max,fn_ls %>% purrr::pluck(.x)),
                                                               " or under",
                                                               ""))))
+                            )
              })
   return(cs_ts_ratios_tb)
 }
@@ -666,7 +671,7 @@ make_mdl_coef_ratio_ls <- function(outp_smry_ls,
         coefs_dbl[2]/coefs_dbl[1]
       })
     }
-    )
+    ) %>% stats::setNames(outp_smry_ls$predr_cmprsn_tb$predr_chr)
   mdl_coef_ratios_ls = list(mean_ratios_dbl = ratios_ls %>% purrr::map_dbl(~mean(.x)))
   if(!is.null(predr_ctgs_ls)){
     append_ls <- purrr::map(predr_ctgs_ls,
@@ -675,6 +680,17 @@ make_mdl_coef_ratio_ls <- function(outp_smry_ls,
     mdl_coef_ratios_ls <- append(mdl_coef_ratios_ls, append_ls)
   }
   return(mdl_coef_ratios_ls)
+}
+make_mdl_coef_range_text <- function(coef_ratios_dbl,
+                                     nbr_of_digits_1L_int = 2L){
+  if(length(coef_ratios_dbl) == 1){
+    coef_range_text_chr <- as.character(round(coef_ratios_dbl, nbr_of_digits_1L_int))
+  }else{
+    min_1L_dbl <- round(min(coef_ratios_dbl), nbr_of_digits_1L_int)
+    max_1L_dbl <- round(max(coef_ratios_dbl), nbr_of_digits_1L_int)
+    coef_range_text_chr <- paste0("between ", min_1L_dbl," and ", max_1L_dbl)
+  }
+  return(coef_range_text_chr)
 }
 make_mdl_nms_ls <- function (predr_vars_nms_ls, mdl_types_chr)
 {
@@ -727,8 +743,27 @@ make_mdls_smry_tbls_ls <- function(outp_smry_ls,
   indpt_predrs_mdls_tb <- mdls_smry_tb %>% dplyr::filter(Model %in% (paste0(outp_smry_ls$predr_cmprsn_tb$predr_chr,"_1_") %>% purrr::map(~paste0(.x,
                                                                                                                                                  outp_smry_ls$prefd_mdl_types_chr)) %>% purrr::flatten_chr()))
   covar_mdls_tb <- mdls_smry_tb %>% dplyr::filter(!Model %in% indpt_predrs_mdls_tb$Model)
-  prefd_predr_mdl_smry_tb <- indpt_predrs_mdls_tb %>%
-    dplyr::filter(Model %>% purrr::map_lgl(~startsWith(.x, outp_smry_ls$predr_vars_nms_ls[[1]])))
+  mdl_types_chr <- indpt_predrs_mdls_tb$Model %>% purrr::map_chr(~get_mdl_type_from_nm(.x,
+                                                                      mdl_types_lup = outp_smry_ls$mdl_types_lup)) %>%
+    unique()
+  prefd_predr_mdl_smry_tb <- mdl_types_chr %>%
+    purrr::map_dfr(~{
+      mdl_type_1L_chr <- .x
+     mdl_type_smry_tb <- indpt_predrs_mdls_tb %>%
+        dplyr::filter(Model %>% purrr::map_lgl(~endsWith(.x, mdl_type_1L_chr)))
+     max_r2_dbl <- mdl_type_smry_tb %>%
+       dplyr::filter(Parameter == "R2") %>%
+       dplyr::pull(Estimate) %>%
+       as.numeric() %>%
+       max()
+     prefd_mdl_1L_chr <- mdl_type_smry_tb %>%
+       dplyr::filter(Parameter == "R2") %>%
+       dplyr::filter(as.numeric(Estimate) == max_r2_dbl) %>%
+       dplyr::pull(Model) %>%
+       purrr::pluck(1)
+     mdl_type_smry_tb %>%
+       dplyr::filter(Model == prefd_mdl_1L_chr)
+    })
   mdls_smry_tbls_ls <- list(indpt_predrs_mdls_tb = indpt_predrs_mdls_tb,
                             covar_mdls_tb = covar_mdls_tb,
                             prefd_predr_mdl_smry_tb = prefd_predr_mdl_smry_tb)
@@ -1041,8 +1076,23 @@ make_results_ls <- function(spine_of_results_ls,
   ttu_cs_ls = make_ttu_cs_ls(spine_of_results_ls$outp_smry_ls,
                              sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb,
                              sig_thresh_covars_1L_chr = sig_thresh_covars_1L_chr)
-  ttu_lngl_ls = list(best_mdls_tb = tibble::tibble(model_type = c("GLMM","LMM"),
-                                                   link_and_tfmn_chr = c("Gaussian distribution with log link","c-loglog transformed)"),
+  mdl_type_descs_chr <- mdls_smry_tbls_ls$prefd_predr_mdl_smry_tb$Model %>%
+    purrr::map_chr(~get_mdl_type_from_nm(.x)) %>%
+    unique() %>%
+    purrr::map_chr(~ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup,
+                                                match_value_xx = .x,
+                                                match_var_nm_1L_chr = "short_name_chr",
+                                                target_var_nm_1L_chr = "long_name_chr",
+                                                evaluate_lgl = F))
+  ttu_lngl_ls = list(best_mdls_tb = tibble::tibble(model_type = mdl_type_descs_chr %>%
+                                                     purrr::map_chr(~ifelse(startsWith(.x,"Ordinary Least Squares"),"LLM","GLMM")),
+                                                   link_and_tfmn_chr = mdl_type_descs_chr %>%
+                                                     purrr::map_chr(~ifelse(startsWith(.x,"Ordinary Least Squares"),
+                                                                            stringr::str_remove(.x,"Ordinary Least Squares ") %>%
+                                                                              stringr::str_sub(start = 2, end = -2) %>%
+                                                                              tolower(),
+                                                                            stringr::str_remove(.x,"Generalised Linear Mixed Model with ") %>%
+                                                                              stringr::str_remove("Beta Regression Model with "))),#c("Gaussian distribution with log link","c-loglog transformed)"),
                                                    name_chr = make_predrs_for_best_mdls(spine_of_results_ls$outp_smry_ls,
                                                                                         old_nms_chr = spine_of_results_ls$var_nm_change_lup$old_nms_chr,
                                                                                         new_nms_chr = spine_of_results_ls$var_nm_change_lup$new_nms_chr),
