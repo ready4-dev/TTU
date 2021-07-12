@@ -1393,6 +1393,7 @@ make_results_ls <- function (spine_of_results_ls, ctgl_vars_regrouping_ls = NULL
         mdl_coef_ratios_ls = spine_of_results_ls$mdl_coef_ratios_ls, 
         paths_to_figs_ls = make_paths_to_ss_plts_ls(spine_of_results_ls$output_data_dir_1L_chr, 
             outp_smry_ls = spine_of_results_ls$outp_smry_ls), 
+        predr_var_nms_chr = spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]], 
         r_version_1L_chr = paste0(spine_of_results_ls$outp_smry_ls$session_data_ls$R.version$major, 
             ".", spine_of_results_ls$outp_smry_ls$session_data_ls$R.version$minor), 
         study_descs_ls = spine_of_results_ls$study_descs_ls, 
