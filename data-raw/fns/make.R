@@ -1079,7 +1079,7 @@ make_results_ls <- function(spine_of_results_ls,
   mdl_type_descs_chr <- mdls_smry_tbls_ls$prefd_predr_mdl_smry_tb$Model %>%
     purrr::map_chr(~get_mdl_type_from_nm(.x)) %>%
     unique() %>%
-    purrr::map_chr(~ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup,
+    purrr::map_chr(~ready4fun::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup,
                                                 match_value_xx = .x,
                                                 match_var_nm_1L_chr = "short_name_chr",
                                                 target_var_nm_1L_chr = "long_name_chr",
