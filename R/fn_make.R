@@ -1,11 +1,14 @@
 #' Make analysis core params
 #' @description make_analysis_core_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make analysis core params list. The function returns Analysis core params (a list).
 #' @param ds_descvs_ls Dataset descriptives (a list)
-#' @param mdl_smry_ls Model summary (a list)
+#' @param mdl_smry_ls Model summary (a list), Default: make_mdl_smry_ls()
 #' @param output_format_ls Output format (a list), Default: make_output_format_ls()
 #' @param predictors_lup Predictors (a lookup table)
+#' @param candidate_covar_nms_chr Candidate covariate names (a character vector), Default: 'NA'
 #' @param control_ls Control (a list), Default: NULL
 #' @param iters_1L_int Iterations (an integer vector of length one), Default: 4000
+#' @param prefd_covars_chr Preferred covariates (a character vector), Default: NULL
+#' @param prefd_mdl_types_chr Preferred model types (a character vector), Default: NULL
 #' @param prior_ls Prior (a list), Default: NULL
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 12345
 #' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: F
@@ -14,15 +17,18 @@
 #' @export 
 
 #' @keywords internal
-make_analysis_core_params_ls <- function (ds_descvs_ls, mdl_smry_ls, output_format_ls = make_output_format_ls(), 
-    predictors_lup, control_ls = NULL, iters_1L_int = 4000L, 
-    prior_ls = NULL, seed_1L_int = 12345, use_fake_data_1L_lgl = F) 
+make_analysis_core_params_ls <- function (ds_descvs_ls, mdl_smry_ls = make_mdl_smry_ls(), output_format_ls = make_output_format_ls(), 
+    predictors_lup, candidate_covar_nms_chr = NA_character_, 
+    control_ls = NULL, iters_1L_int = 4000L, prefd_covars_chr = NULL, 
+    prefd_mdl_types_chr = NULL, prior_ls = NULL, seed_1L_int = 12345, 
+    use_fake_data_1L_lgl = F) 
 {
-    analysis_core_params_ls <- list(ds_descvs_ls = ds_descvs_ls, 
-        iters_1L_int = iters_1L_int, mdl_smry_ls = mdl_smry_ls, 
-        nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int, 
+    analysis_core_params_ls <- list(candidate_covar_nms_chr = candidate_covar_nms_chr, 
+        ds_descvs_ls = ds_descvs_ls, iters_1L_int = iters_1L_int, 
+        mdl_smry_ls = mdl_smry_ls, nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int, 
         output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr, 
-        predictors_lup = predictors_lup, seed_1L_int = seed_1L_int, 
+        predictors_lup = predictors_lup, prefd_covars_chr = prefd_covars_chr, 
+        prefd_mdl_types_chr = prefd_mdl_types_chr, seed_1L_int = seed_1L_int, 
         use_fake_data_1L_lgl = use_fake_data_1L_lgl, prior_ls = prior_ls, 
         control_ls = control_ls)
     return(analysis_core_params_ls)
@@ -685,6 +691,7 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
 #' @param maui_itm_short_nms_chr Maui item short names (a character vector)
 #' @param maui_domains_pfcs_1L_chr Maui domains pfcs (a character vector of length one), Default: NULL
 #' @param maui_scoring_fn Maui scoring (a function), Default: NULL
+#' @param short_and_long_nm PARAM_DESCRIPTION, Default: NULL
 #' @param utl_min_val_1L_dbl Utility minimum value (a double vector of length one), Default: -1
 #' @return Maui params (a list)
 #' @rdname make_maui_params_ls
@@ -693,7 +700,7 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
 #' @importFrom rlang sym
 #' @keywords internal
 make_maui_params_ls <- function (maui_itm_short_nms_chr, maui_domains_pfcs_1L_chr = NULL, 
-    maui_scoring_fn = NULL, utl_min_val_1L_dbl = -1) 
+    maui_scoring_fn = NULL, short_and_long_nm = NULL, utl_min_val_1L_dbl = -1) 
 {
     if (is.null(maui_scoring_fn)) {
         maui_scoring_fn <- function(data_tb, maui_item_pfx_1L_chr, 
@@ -705,7 +712,7 @@ make_maui_params_ls <- function (maui_itm_short_nms_chr, maui_domains_pfcs_1L_ch
     }
     maui_params_ls <- list(maui_domains_pfcs_1L_chr = maui_domains_pfcs_1L_chr, 
         maui_itm_short_nms_chr = maui_itm_short_nms_chr, maui_scoring_fn = maui_scoring_fn, 
-        utl_min_val_1L_dbl = utl_min_val_1L_dbl)
+        short_and_long_nm = short_and_long_nm, utl_min_val_1L_dbl = utl_min_val_1L_dbl)
     return(maui_params_ls)
 }
 #' Make
@@ -906,7 +913,7 @@ make_mdl_smry_elmt_tbl <- function (mat, ctg_chr)
 }
 #' Make model summary
 #' @description make_mdl_smry_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model summary list. The function returns Model summary (a list).
-#' @param mdl_types_lup Model types (a lookup table), Default: NULL
+#' @param mdl_types_lup Model types (a lookup table), Default: get_cndts_for_mxd_mdls()
 #' @param mdl_types_chr Model types (a character vector), Default: NULL
 #' @param choose_from_pfx_chr Choose from prefix (a character vector), Default: NULL
 #' @param folds_1L_int Folds (an integer vector of length one), Default: 10
@@ -916,8 +923,8 @@ make_mdl_smry_elmt_tbl <- function (mat, ctg_chr)
 #' @export 
 #' @importFrom stringr word
 #' @keywords internal
-make_mdl_smry_ls <- function (mdl_types_lup = NULL, mdl_types_chr = NULL, choose_from_pfx_chr = NULL, 
-    folds_1L_int = 10L, max_nbr_of_boruta_mdl_runs_int = 300L) 
+make_mdl_smry_ls <- function (mdl_types_lup = get_cndts_for_mxd_mdls(), mdl_types_chr = NULL, 
+    choose_from_pfx_chr = NULL, folds_1L_int = 10L, max_nbr_of_boruta_mdl_runs_int = 300L) 
 {
     if (is.null(mdl_types_lup)) 
         data("mdl_types_lup", package = "TTU", envir = environment())
@@ -1257,11 +1264,11 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
 #' Make prmry analysis params
 #' @description make_prmry_analysis_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make prmry analysis params list. The function returns Prmry analysis params (a list).
 #' @param analysis_core_params_ls Analysis core params (a list)
-#' @param candidate_covar_nms_chr Candidate covariate names (a character vector)
+#' @param candidate_covar_nms_chr Candidate covariate names (a character vector), Default: 'NA'
 #' @param ds_tb Dataset (a tibble)
 #' @param path_params_ls Path params (a list)
 #' @param maui_params_ls Maui params (a list)
-#' @param prefd_covars_chr Preferred covariates (a character vector), Default: 'NA'
+#' @param prefd_covars_chr Preferred covariates (a character vector), Default: NULL
 #' @param prefd_mdl_types_chr Preferred model types (a character vector), Default: NULL
 #' @param raw_ds_tfmn_fn Raw dataset transformation (a function), Default: NULL
 #' @param subtitle_1L_chr Subtitle (a character vector of length one), Default: 'Methods Report 1: Analysis Program (Primary Analysis)'
@@ -1271,16 +1278,26 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
 #' @export 
 
 #' @keywords internal
-make_prmry_analysis_params_ls <- function (analysis_core_params_ls, candidate_covar_nms_chr, ds_tb, 
-    path_params_ls, maui_params_ls, prefd_covars_chr = NA_character_, 
+make_prmry_analysis_params_ls <- function (analysis_core_params_ls, candidate_covar_nms_chr = NA_character_, 
+    ds_tb, path_params_ls, maui_params_ls, prefd_covars_chr = NULL, 
     prefd_mdl_types_chr = NULL, raw_ds_tfmn_fn = NULL, subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)", 
     utl_class_fn_1L_chr = "as.numeric") 
 {
-    prmry_analysis_params_ls <- list(candidate_covar_nms_chr = candidate_covar_nms_chr, 
-        ds_tb = ds_tb, prefd_covars_chr = prefd_covars_chr, prefd_mdl_types_chr = prefd_mdl_types_chr, 
-        raw_ds_tfmn_fn = raw_ds_tfmn_fn, subtitle_1L_chr = subtitle_1L_chr, 
-        utl_class_fn_1L_chr = utl_class_fn_1L_chr) %>% append(analysis_core_params_ls) %>% 
-        append(path_params_ls[1:2]) %>% append(maui_params_ls)
+    if (is.na(analysis_core_params_ls$candidate_covar_nms_chr[1]) & 
+        !is.na(candidate_covar_nms_chr[1])) {
+        analysis_core_params_ls$candidate_covar_nms_chr <- candidate_covar_nms_chr
+    }
+    if (is.null(analysis_core_params_ls$prefd_covars_chr) & !is.null(prefd_covars_chr)) {
+        analysis_core_params_ls$prefd_covars_chr <- prefd_covars_chr
+    }
+    if (is.null(analysis_core_params_ls$prefd_mdl_types_chr) & 
+        !is.null(prefd_mdl_types_chr)) {
+        analysis_core_params_ls$prefd_mdl_types_chr <- prefd_mdl_types_chr
+    }
+    prmry_analysis_params_ls <- list(ds_tb = ds_tb, raw_ds_tfmn_fn = raw_ds_tfmn_fn, 
+        subtitle_1L_chr = subtitle_1L_chr, utl_class_fn_1L_chr = utl_class_fn_1L_chr) %>% 
+        append(analysis_core_params_ls) %>% append(path_params_ls[1:2]) %>% 
+        append(maui_params_ls)
     return(prmry_analysis_params_ls)
 }
 #' Make psych predictors
@@ -1394,13 +1411,15 @@ make_results_ls <- function (spine_of_results_ls, ctgl_vars_regrouping_ls = NULL
             dplyr::filter(Parameter == "R2") %>% dplyr::pull(Estimate)), 
         cs_ts_ratios_tb = spine_of_results_ls$cs_ts_ratios_tb, 
         incld_covars_chr = spine_of_results_ls$outp_smry_ls$prefd_covars_chr)
-    results_ls <- list(cohort_ls = make_cohort_ls(descv_tbls_ls, 
-        ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls, nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int), 
+    results_ls <- list(candidate_covars_ls = spine_of_results_ls$candidate_covars_ls, 
+        cohort_ls = make_cohort_ls(descv_tbls_ls, ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls, 
+            nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int), 
         hlth_utl_and_predrs_ls = make_hlth_utl_and_predrs_ls(spine_of_results_ls$outp_smry_ls, 
             descv_tbls_ls = descv_tbls_ls, nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int, 
             old_nms_chr = spine_of_results_ls$var_nm_change_lup$old_nms_chr, 
             new_nms_chr = spine_of_results_ls$var_nm_change_lup$new_nms_chr), 
         mdl_coef_ratios_ls = spine_of_results_ls$mdl_coef_ratios_ls, 
+        mdl_ingredients_ls = spine_of_results_ls$mdl_ingredients_ls, 
         paths_to_figs_ls = make_paths_to_ss_plts_ls(spine_of_results_ls$output_data_dir_1L_chr, 
             outp_smry_ls = spine_of_results_ls$outp_smry_ls), 
         predr_var_nms_chr = spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]] %>% 
@@ -1418,23 +1437,65 @@ make_results_ls <- function (spine_of_results_ls, ctgl_vars_regrouping_ls = NULL
 }
 #' Make results list spine
 #' @description make_results_ls_spine() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make results list spine. The function returns Spine of results (a list).
-#' @param output_data_dir_1L_chr Output data directory (a character vector of length one)
 #' @param study_descs_ls Study descriptions (a list)
+#' @param output_format_ls Output format (a list), Default: NULL
+#' @param params_ls_ls Params (a list of lists), Default: NULL
+#' @param path_params_ls Path params (a list), Default: NULL
+#' @param output_data_dir_1L_chr Output data directory (a character vector of length one), Default: NULL
 #' @param fn_ls Function list (a list of functions), Default: NULL
 #' @param include_idx_int Include index (an integer vector), Default: NULL
-#' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
+#' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: NULL
 #' @param var_nm_change_lup Variable name change (a lookup table), Default: NULL
 #' @return Spine of results (a list)
 #' @rdname make_results_ls_spine
 #' @export 
-
-make_results_ls_spine <- function (output_data_dir_1L_chr, study_descs_ls, fn_ls = NULL, 
-    include_idx_int = NULL, nbr_of_digits_1L_int = 2L, var_nm_change_lup = NULL) 
+#' @importFrom purrr map_chr map
+#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom stats setNames
+make_results_ls_spine <- function (study_descs_ls, output_format_ls = NULL, params_ls_ls = NULL, 
+    path_params_ls = NULL, output_data_dir_1L_chr = NULL, fn_ls = NULL, 
+    include_idx_int = NULL, nbr_of_digits_1L_int = NULL, var_nm_change_lup = NULL) 
 {
+    if (!missing("output_data_dir_1L_chr")) {
+        warning("The output_data_dir_1L_chr argument is soft deprecated.")
+    }
+    else {
+        output_data_dir_1L_chr <- path_params_ls$paths_ls$output_data_dir_1L_chr
+    }
+    if (!missing("nbr_of_digits_1L_int")) {
+        warning("The nbr_of_digits_1L_int argument is soft deprecated.")
+    }
+    else {
+        nbr_of_digits_1L_int <- output_format_ls$manuscript_digits_1L_int
+    }
     if (is.null(var_nm_change_lup)) {
         var_nm_change_lup <- list(old_nms_chr = NULL, new_nms_chr = NULL)
     }
     outp_smry_ls <- readRDS(paste0(output_data_dir_1L_chr, "/I_ALL_OUTPUT_.RDS"))
+    mdl_ingredients_ls <- readRDS(paste0(output_data_dir_1L_chr, 
+        "/G_Shareable/Ingredients/mdl_ingredients.RDS"))
+    if (!is.null(params_ls_ls)) {
+        covar_ctgs_chr <- params_ls_ls$params_ls$candidate_covar_nms_chr %>% 
+            purrr::map_chr(~ready4fun::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb, 
+                match_value_xx = .x, match_var_nm_1L_chr = "var_nm_chr", 
+                target_var_nm_1L_chr = "var_ctg_chr", evaluate_lgl = F)) %>% 
+            unique()
+        candidate_covars_ls <- covar_ctgs_chr %>% purrr::map(~{
+            var_desc_chr <- ready4fun::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb, 
+                match_value_xx = .x, match_var_nm_1L_chr = "var_ctg_chr", 
+                target_var_nm_1L_chr = "var_desc_chr", evaluate_lgl = F)
+            class(var_desc_chr) <- setdiff(class(var_desc_chr), 
+                "labelled")
+            attr(var_desc_chr, "label") <- NULL
+            var_nm_chr <- ready4fun::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb, 
+                match_value_xx = .x, match_var_nm_1L_chr = "var_ctg_chr", 
+                target_var_nm_1L_chr = "var_nm_chr", evaluate_lgl = F)
+            var_desc_chr[var_nm_chr %in% params_ls_ls$params_ls$candidate_covar_nms_chr]
+        }) %>% stats::setNames(covar_ctgs_chr)
+    }
+    else {
+        candidate_covars_ls <- NULL
+    }
     study_descs_ls$predr_ctgs_ls <- make_predr_ctgs_ls(outp_smry_ls, 
         include_idx_int = include_idx_int)
     mdl_coef_ratios_ls <- make_mdl_coef_ratio_ls(outp_smry_ls, 
@@ -1445,9 +1506,10 @@ make_results_ls_spine <- function (output_data_dir_1L_chr, study_descs_ls, fn_ls
     cs_ts_ratios_tb <- make_cs_ts_ratios_tb(predr_ctgs_ls = study_descs_ls$predr_ctgs_ls, 
         mdl_coef_ratios_ls = mdl_coef_ratios_ls, fn_ls = fn_ls, 
         nbr_of_digits_1L_int = nbr_of_digits_1L_int)
-    spine_of_results_ls <- list(cs_ts_ratios_tb = cs_ts_ratios_tb, 
-        outp_smry_ls = outp_smry_ls, output_data_dir_1L_chr = output_data_dir_1L_chr, 
-        mdl_coef_ratios_ls = mdl_coef_ratios_ls, nbr_of_digits_1L_int = nbr_of_digits_1L_int, 
+    spine_of_results_ls <- list(candidate_covars_ls = candidate_covars_ls, 
+        cs_ts_ratios_tb = cs_ts_ratios_tb, outp_smry_ls = outp_smry_ls, 
+        output_data_dir_1L_chr = output_data_dir_1L_chr, mdl_coef_ratios_ls = mdl_coef_ratios_ls, 
+        mdl_ingredients_ls = mdl_ingredients_ls, nbr_of_digits_1L_int = nbr_of_digits_1L_int, 
         study_descs_ls = study_descs_ls, var_nm_change_lup = var_nm_change_lup)
     return(spine_of_results_ls)
 }
@@ -1814,19 +1876,35 @@ make_ss_tbls_ls <- function (outp_smry_ls, mdls_smry_tbls_ls, covars_mdls_ls, de
 }
 #' Make study descriptions
 #' @description make_study_descs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make study descriptions list. The function returns Study descriptions (a list).
-#' @param health_utl_nm_1L_chr Health utility name (a character vector of length one)
 #' @param time_btwn_bl_and_fup_1L_chr Time btwn baseline and follow-up (a character vector of length one)
+#' @param coi_1L_chr Coi (a character vector of length one), Default: 'None declared.'
+#' @param ethics_1L_chr Ethics (a character vector of length one), Default: NULL
+#' @param funding_1L_chr Funding (a character vector of length one), Default: NULL
+#' @param health_utl_nm_1L_chr Health utility name (a character vector of length one), Default: NULL
+#' @param params_ls_ls Params (a list of lists), Default: NULL
 #' @param predr_ctgs_ls Predictor category categoriess (a list), Default: NULL
+#' @param sample_desc_1L_chr Sample description (a character vector of length one), Default: NULL
 #' @return Study descriptions (a list)
 #' @rdname make_study_descs_ls
 #' @export 
 
-make_study_descs_ls <- function (health_utl_nm_1L_chr, time_btwn_bl_and_fup_1L_chr, 
-    predr_ctgs_ls = NULL) 
+make_study_descs_ls <- function (time_btwn_bl_and_fup_1L_chr, coi_1L_chr = "None declared.", 
+    ethics_1L_chr = NULL, funding_1L_chr = NULL, health_utl_nm_1L_chr = NULL, 
+    params_ls_ls = NULL, predr_ctgs_ls = NULL, sample_desc_1L_chr = NULL) 
 {
-    study_descs_ls <- list(health_utl_nm_1L_chr = health_utl_nm_1L_chr, 
+    if (!missing("health_utl_nm_1L_chr")) {
+        warning("The health_utl_nm_1L_chr argument is now soft deprecated. Passing a valid value to params_ls_ls will ensure the names of the MAUI instrument are included in function operations.")
+    }
+    else {
+        health_utl_nm_1L_chr <- params_ls_ls$short_and_long_nm[1]
+    }
+    health_utl_long_nm_1L_chr <- ifelse(!is.null(params_ls_ls$short_and_long_nm), 
+        params_ls_ls$short_and_long_nm[2], NA_character_)
+    study_descs_ls <- list(coi_1L_chr = coi_1L_chr, ethics_1L_chr = ethics_1L_chr, 
+        funding_1L_chr = funding_1L_chr, health_utl_nm_1L_chr = health_utl_nm_1L_chr, 
+        health_utl_long_nm_1L_chr = health_utl_long_nm_1L_chr, 
         time_btwn_bl_and_fup_1L_chr = time_btwn_bl_and_fup_1L_chr, 
-        predr_ctgs_ls = predr_ctgs_ls)
+        predr_ctgs_ls = predr_ctgs_ls, sample_desc_1L_chr = sample_desc_1L_chr)
     return(study_descs_ls)
 }
 #' Make transformed single predictor models
@@ -2009,11 +2087,11 @@ make_unique_ls_elmt_idx_int <- function (data_ls)
 #' Make valid params
 #' @description make_valid_params_ls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make valid params list list. The function returns Valid params (a list of lists).
 #' @param analysis_core_params_ls Analysis core params (a list)
-#' @param candidate_covar_nms_chr Candidate covariate names (a character vector)
 #' @param ds_tb Dataset (a tibble)
 #' @param path_params_ls Path params (a list)
 #' @param maui_params_ls Maui params (a list)
-#' @param prefd_covars_chr Preferred covariates (a character vector), Default: 'NA'
+#' @param candidate_covar_nms_chr Candidate covariate names (a character vector), Default: 'NA'
+#' @param prefd_covars_chr Preferred covariates (a character vector), Default: NULL
 #' @param prefd_mdl_types_chr Preferred model types (a character vector), Default: NULL
 #' @param raw_ds_tfmn_fn Raw dataset transformation (a function), Default: NULL
 #' @param scndry_analysis_extra_vars_chr Scndry analysis extra variables (a character vector), Default: 'NA'
@@ -2024,17 +2102,25 @@ make_unique_ls_elmt_idx_int <- function (data_ls)
 #' @export 
 
 #' @keywords internal
-make_valid_params_ls_ls <- function (analysis_core_params_ls, candidate_covar_nms_chr, ds_tb, 
-    path_params_ls, maui_params_ls, prefd_covars_chr = NA_character_, 
+make_valid_params_ls_ls <- function (analysis_core_params_ls, ds_tb, path_params_ls, maui_params_ls, 
+    candidate_covar_nms_chr = NA_character_, prefd_covars_chr = NULL, 
     prefd_mdl_types_chr = NULL, raw_ds_tfmn_fn = NULL, scndry_analysis_extra_vars_chr = NA_character_, 
     subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)", 
     utl_class_fn_1L_chr = "as.numeric") 
 {
+    if (!missing("candidate_covar_nms_chr")) 
+        warning("The candidate_covar_nms_chr argument is soft deprecated. We recommend declaring the value for this argument when using the make_analysis_core_params_ls function.")
+    if (!missing("prefd_covars_chr")) 
+        warning("The prefd_covars_chr argument is soft deprecated. We recommend declaring the value for this argument when using the make_analysis_core_params_ls function.")
+    if (!missing("prefd_mdl_types_chr")) 
+        warning("The prefd_mdl_types_chr argument is soft deprecated. We recommend declaring the value for this argument when using the make_analysis_core_params_ls function.")
     valid_params_ls_ls <- make_prmry_analysis_params_ls(analysis_core_params_ls = analysis_core_params_ls, 
         candidate_covar_nms_chr = candidate_covar_nms_chr, ds_tb = ds_tb, 
         path_params_ls = path_params_ls, maui_params_ls = maui_params_ls, 
         prefd_covars_chr = prefd_covars_chr, prefd_mdl_types_chr = prefd_mdl_types_chr, 
         raw_ds_tfmn_fn = raw_ds_tfmn_fn, subtitle_1L_chr = subtitle_1L_chr, 
         utl_class_fn_1L_chr = utl_class_fn_1L_chr) %>% transform_params_ls_to_valid(scndry_analysis_extra_vars_chr = scndry_analysis_extra_vars_chr)
+    valid_params_ls_ls$params_ls$short_and_long_nm <- NULL
+    valid_params_ls_ls$short_and_long_nm <- maui_params_ls$short_and_long_nm
     return(valid_params_ls_ls)
 }

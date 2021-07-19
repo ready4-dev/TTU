@@ -1149,7 +1149,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
     return(smry_of_sngl_predr_mdls_tb)
 }
 #' Write study output dataset
-#' @description write_study_outp_ds() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write study output dataset. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @description write_study_outp_ds() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write study output dataset. The function returns Dataverse dataset name and url (a character vector).
 #' @param dv_ds_nm_and_url_chr Dataverse dataset name and url (a character vector)
 #' @param rprt_lups_ls Report lups (a list)
 #' @param output_format_ls Output format (a list)
@@ -1160,7 +1160,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @param purge_data_1L_lgl Purge data (a logical vector of length one), Default: FALSE
 #' @param start_at_int Start at (an integer vector), Default: c(2, 1)
 #' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: F
-#' @return NULL
+#' @return Dataverse dataset name and url (a character vector)
 #' @rdname write_study_outp_ds
 #' @export 
 #' @importFrom purrr walk2
@@ -1223,6 +1223,7 @@ write_study_outp_ds <- function (dv_ds_nm_and_url_chr, rprt_lups_ls, output_form
         ds_url_1L_chr = dv_ds_nm_and_url_chr[2], parent_dv_dir_1L_chr = paths_ls$dv_dir_1L_chr, 
         paths_to_dirs_chr = paths_ls$reports_dir_1L_chr, inc_fl_types_chr = inc_fl_types_chr, 
         paths_are_rltv_1L_lgl = F)
+    return(dv_ds_nm_and_url_chr)
 }
 #' Write to delete dataset copies
 #' @description write_to_delete_ds_copies() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write to delete dataset copies. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour

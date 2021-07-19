@@ -6,11 +6,11 @@
 \usage{
 make_prmry_analysis_params_ls(
   analysis_core_params_ls,
-  candidate_covar_nms_chr,
+  candidate_covar_nms_chr = NA_character_,
   ds_tb,
   path_params_ls,
   maui_params_ls,
-  prefd_covars_chr = NA_character_,
+  prefd_covars_chr = NULL,
   prefd_mdl_types_chr = NULL,
   raw_ds_tfmn_fn = NULL,
   subtitle_1L_chr = "Methods Report 1: Analysis Program (Primary Analysis)",
@@ -20,7 +20,7 @@ make_prmry_analysis_params_ls(
 \arguments{
 \item{analysis_core_params_ls}{Analysis core params (a list)}
 
-\item{candidate_covar_nms_chr}{Candidate covariate names (a character vector)}
+\item{candidate_covar_nms_chr}{Candidate covariate names (a character vector), Default: 'NA'}
 
 \item{ds_tb}{Dataset (a tibble)}
 
@@ -28,7 +28,7 @@ make_prmry_analysis_params_ls(
 
 \item{maui_params_ls}{Maui params (a list)}
 
-\item{prefd_covars_chr}{Preferred covariates (a character vector), Default: 'NA'}
+\item{prefd_covars_chr}{Preferred covariates (a character vector), Default: NULL}
 
 \item{prefd_mdl_types_chr}{Preferred model types (a character vector), Default: NULL}
 

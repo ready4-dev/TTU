@@ -1075,6 +1075,7 @@ write_study_outp_ds <- function(dv_ds_nm_and_url_chr,
                                 paths_to_dirs_chr = paths_ls$reports_dir_1L_chr,
                                 inc_fl_types_chr = inc_fl_types_chr,
                                 paths_are_rltv_1L_lgl = F)
+  return(dv_ds_nm_and_url_chr)
 }
 write_to_delete_ds_copies <- function(paths_ls){
   paths_to_outp_chr <- c(paste0(paths_ls$output_data_dir_1L_chr,"/I_ALL_OUTPUT_.RDS"))

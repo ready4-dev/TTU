@@ -39,7 +39,10 @@ write_study_outp_ds(
 
 \item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one), Default: F}
 }
+\value{
+Dataverse dataset name and url (a character vector)
+}
 \description{
-write_study_outp_ds() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write study output dataset. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+write_study_outp_ds() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write study output dataset. The function returns Dataverse dataset name and url (a character vector).
 }
 \keyword{internal}

@@ -5,7 +5,7 @@
 \title{Make model summary}
 \usage{
 make_mdl_smry_ls(
-  mdl_types_lup = NULL,
+  mdl_types_lup = get_cndts_for_mxd_mdls(),
   mdl_types_chr = NULL,
   choose_from_pfx_chr = NULL,
   folds_1L_int = 10L,
@@ -13,7 +13,7 @@ make_mdl_smry_ls(
 )
 }
 \arguments{
-\item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
+\item{mdl_types_lup}{Model types (a lookup table), Default: get_cndts_for_mxd_mdls()}
 
 \item{mdl_types_chr}{Model types (a character vector), Default: NULL}
 

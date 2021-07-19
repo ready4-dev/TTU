@@ -6,11 +6,14 @@
 \usage{
 make_analysis_core_params_ls(
   ds_descvs_ls,
-  mdl_smry_ls,
+  mdl_smry_ls = make_mdl_smry_ls(),
   output_format_ls = make_output_format_ls(),
   predictors_lup,
+  candidate_covar_nms_chr = NA_character_,
   control_ls = NULL,
   iters_1L_int = 4000L,
+  prefd_covars_chr = NULL,
+  prefd_mdl_types_chr = NULL,
   prior_ls = NULL,
   seed_1L_int = 12345,
   use_fake_data_1L_lgl = F
@@ -19,15 +22,21 @@ make_analysis_core_params_ls(
 \arguments{
 \item{ds_descvs_ls}{Dataset descriptives (a list)}
 
-\item{mdl_smry_ls}{Model summary (a list)}
+\item{mdl_smry_ls}{Model summary (a list), Default: make_mdl_smry_ls()}
 
 \item{output_format_ls}{Output format (a list), Default: make_output_format_ls()}
 
 \item{predictors_lup}{Predictors (a lookup table)}
 
+\item{candidate_covar_nms_chr}{Candidate covariate names (a character vector), Default: 'NA'}
+
 \item{control_ls}{Control (a list), Default: NULL}
 
 \item{iters_1L_int}{Iterations (an integer vector of length one), Default: 4000}
+
+\item{prefd_covars_chr}{Preferred covariates (a character vector), Default: NULL}
+
+\item{prefd_mdl_types_chr}{Preferred model types (a character vector), Default: NULL}
 
 \item{prior_ls}{Prior (a list), Default: NULL}
 

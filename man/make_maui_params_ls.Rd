@@ -8,6 +8,7 @@ make_maui_params_ls(
   maui_itm_short_nms_chr,
   maui_domains_pfcs_1L_chr = NULL,
   maui_scoring_fn = NULL,
+  short_and_long_nm = NULL,
   utl_min_val_1L_dbl = -1
 )
 }
@@ -17,6 +18,8 @@ make_maui_params_ls(
 \item{maui_domains_pfcs_1L_chr}{Maui domains pfcs (a character vector of length one), Default: NULL}
 
 \item{maui_scoring_fn}{Maui scoring (a function), Default: NULL}
+
+\item{short_and_long_nm}{PARAM_DESCRIPTION, Default: NULL}
 
 \item{utl_min_val_1L_dbl}{Utility minimum value (a double vector of length one), Default: -1}
 }
