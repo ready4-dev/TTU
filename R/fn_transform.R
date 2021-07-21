@@ -7,7 +7,6 @@
 #' @export 
 #' @importFrom purrr map_chr pluck
 #' @importFrom stringr str_squish
-#' @keywords internal
 transform_chr_digit_pairs <- function (digit_pairs_chr, nbr_of_digits_1L_int = 2L) 
 {
     tfd_digit_pairs_chr <- digit_pairs_chr %>% purrr::map_chr(~{
@@ -45,7 +44,6 @@ transform_chr_digit_pairs <- function (digit_pairs_chr, nbr_of_digits_1L_int = 2
 #' @export 
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
-#' @keywords internal
 transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_chr = "utl_total_w", 
     source_data_nm_1L_chr = "Original", new_data_is_1L_chr = "Predicted", 
     predn_type_1L_chr = NULL, family_1L_chr = NA_character_, 
@@ -74,7 +72,6 @@ transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_ch
 #' @rdname transform_depnt_var_nm
 #' @export 
 
-#' @keywords internal
 transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF") 
 {
     tfd_depnt_var_nm_1L_chr <- paste0(depnt_var_nm_1L_chr, ifelse(tfmn_1L_chr == 
@@ -92,7 +89,6 @@ transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF")
 #' @importFrom dplyr mutate
 #' @importFrom purrr map_chr
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 transform_dict_with_rename_lup <- function (dictionary_tb, rename_lup) 
 {
     var_lbl_1L_chr <- Hmisc::label(dictionary_tb$var_nm_chr)
@@ -119,7 +115,6 @@ transform_dict_with_rename_lup <- function (dictionary_tb, rename_lup)
 #' @rdname transform_ds_for_all_cmprsn_plts
 #' @export 
 #' @importFrom dplyr ungroup
-#' @keywords internal
 transform_ds_for_all_cmprsn_plts <- function (tfd_data_tb, model_mdl, depnt_var_nm_1L_chr, is_brms_mdl_1L_lgl, 
     predn_type_1L_chr, sd_dbl, sfx_1L_chr = "", tfmn_1L_chr, 
     utl_min_val_1L_dbl = -1) 
@@ -155,7 +150,6 @@ transform_ds_for_all_cmprsn_plts <- function (tfd_data_tb, model_mdl, depnt_var_
 #' @importFrom tidyr drop_na
 #' @importFrom rlang syms
 #' @importFrom dplyr select
-#' @keywords internal
 transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_var_nm_1L_chr, 
     covar_var_nms_chr = NA_character_) 
 {
@@ -182,7 +176,6 @@ transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w"
 #' @importFrom rlang sym exec
 #' @importFrom purrr reduce map_dbl
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 transform_ds_to_predn_ds <- function (data_tb, predr_vars_nms_chr, tfmn_1L_chr, depnt_var_nm_1L_chr, 
     id_var_nm_1L_chr, round_var_nm_1L_chr, round_bl_val_1L_chr, 
     predictors_lup) 
@@ -216,7 +209,6 @@ transform_ds_to_predn_ds <- function (data_tb, predr_vars_nms_chr, tfmn_1L_chr, 
 #' @export 
 #' @importFrom dplyr rename_with
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 transform_ds_with_rename_lup <- function (ds_tb, rename_lup, target_var_nms_chr = NULL) 
 {
     if (is.null(target_var_nms_chr)) 
@@ -287,6 +279,23 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
         })
     return(tfd_ds_tb)
 }
+#' Transform names
+#' @description transform_names() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform names. Function argument names_chr specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns New names (a character vector).
+#' @param names_chr Names (a character vector)
+#' @param rename_lup Rename (a lookup table)
+#' @return New names (a character vector)
+#' @rdname transform_names
+#' @export 
+#' @importFrom purrr map_chr
+#' @importFrom ready4fun get_from_lup_obj
+transform_names <- function (names_chr, rename_lup) 
+{
+    new_names_chr <- names_chr %>% purrr::map_chr(~ifelse(.x %in% 
+        rename_lup$old_nms_chr, .x %>% ready4fun::get_from_lup_obj(data_lookup_tb = rename_lup, 
+        match_var_nm_1L_chr = "old_nms_chr", target_var_nm_1L_chr = "new_nms_chr", 
+        evaluate_lgl = F), .x))
+    return(new_names_chr)
+}
 #' Transform params list from
 #' @description transform_params_ls_from_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform params list from lookup table. Function argument params_ls specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns Params (a list).
 #' @param params_ls Params (a list)
@@ -296,7 +305,6 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
 #' @export 
 #' @importFrom purrr map_chr
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 transform_params_ls_from_lup <- function (params_ls, rename_lup) 
 {
     if (!is.null(params_ls$ds_descvs_ls)) {
@@ -350,7 +358,6 @@ transform_params_ls_from_lup <- function (params_ls, rename_lup)
 #' @importFrom stringi stri_replace_last_fixed stri_replace_all_fixed
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter
-#' @keywords internal
 transform_params_ls_to_valid <- function (params_ls, scndry_analysis_extra_vars_chr = NA_character_) 
 {
     target_var_nms_chr <- c(params_ls$ds_descvs_ls$candidate_predrs_chr, 
@@ -409,7 +416,6 @@ transform_paths_ls_for_scndry <- function (paths_ls, reference_1L_int = 1, remov
 #' @rdname transform_predd_var_nm
 #' @export 
 
-#' @keywords internal
 transform_predd_var_nm <- function (new_data_is_1L_chr, sfx_1L_chr = "", utl_min_val_1L_dbl = NA_real_) 
 {
     tfmd_predd_var_nm_1L_chr <- paste0(new_data_is_1L_chr, sfx_1L_chr, 
@@ -428,7 +434,6 @@ transform_predd_var_nm <- function (new_data_is_1L_chr, sfx_1L_chr = "", utl_min
 #' @importFrom tibble tibble
 #' @importFrom purrr map_chr map_lgl
 #' @importFrom stringr str_detect str_replace
-#' @keywords internal
 transform_predr_nm_part_of_phrases <- function (phrases_chr, old_nms_chr = NULL, new_nms_chr = NULL) 
 {
     if (is.null(old_nms_chr)) {
@@ -569,7 +574,6 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
 #' @export 
 #' @importFrom dplyr select mutate across
 #' @importFrom tibble as_tibble
-#' @keywords internal
 transform_tbl_to_rnd_vars <- function (ds_tb, nbr_of_digits_1L_int = 2L) 
 {
     numeric_vars_chr <- ds_tb %>% dplyr::select(where(is.numeric)) %>% 
@@ -587,7 +591,6 @@ transform_tbl_to_rnd_vars <- function (ds_tb, nbr_of_digits_1L_int = 2L)
 #' @rdname transform_timepoint_vals
 #' @export 
 
-#' @keywords internal
 transform_timepoint_vals <- function (timepoint_vals_chr, timepoint_levels_chr, bl_val_1L_chr) 
 {
     if (length(timepoint_vals_chr) == 1) {
@@ -616,7 +619,6 @@ transform_timepoint_vals <- function (timepoint_vals_chr, timepoint_levels_chr, 
 #' @export 
 #' @importFrom dplyr select all_of summarise across everything
 #' @importFrom purrr map flatten_chr
-#' @keywords internal
 transform_ts_mdl_data <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_total_w", 
     predr_vars_nms_chr, id_var_nm_1L_chr = "fkClientID", mdl_nm_1L_chr) 
 {
@@ -643,7 +645,6 @@ transform_ts_mdl_data <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_t
 #' @importFrom purrr flatten_chr flatten_int flatten_dbl map
 #' @importFrom rlang sym
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 transform_uid_var <- function (data_tb, id_var_nm_1L_chr, rename_tb = NULL, old_new_chr = c("old_id_xx", 
     "new_id_int")) 
 {

@@ -16,7 +16,6 @@
 #' @importFrom utils data
 #' @importFrom ready4show write_mdl_plt_fl
 #' @importFrom MASS boxcox
-#' @keywords internal
 write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1L_chr, 
     depnt_var_nm_1L_chr = "utl_total_w", covar_var_nms_chr = NA_character_, 
     fl_nm_pfx_1L_chr = "A_RT", height_1L_dbl = 6, width_1L_dbl = 6, 
@@ -74,7 +73,6 @@ write_main_oupt_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_f
 #' @rdname write_manuscript
 #' @export 
 #' @importFrom rmarkdown render
-#' @keywords internal
 write_manuscript <- function (results_ls, output_format_ls, path_params_ls, append_params_ls = NULL, 
     fl_nm_1L_chr = "TTU_Manuscript", path_to_RMDs_chr = c("../Manuscript/Word/Word.Rmd", 
         "../Manuscript/PDF/PDF.Rmd")) 
@@ -144,7 +142,6 @@ write_mdl_cmprsn <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, output_da
 #' @export 
 #' @importFrom purrr pwalk
 #' @importFrom ready4show write_mdl_plt_fl
-#' @keywords internal
 write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", depnt_var_nm_1L_chr = "utl_total_w", 
     depnt_var_desc_1L_chr = "Utility score", tfmn_1L_chr = "NTF", 
     predr_var_nm_1L_chr, predr_var_desc_1L_chr, predr_vals_dbl, 
@@ -217,7 +214,6 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter pull bind_rows distinct mutate
 #' @importFrom stats setNames
-#' @keywords internal
 write_mdl_smry_rprt <- function (header_yaml_args_ls, path_params_ls, use_fake_data_1L_lgl = FALSE, 
     output_format_ls, abstract_args_ls = NULL, dv_ds_nm_and_url_chr = NULL, 
     reference_int = 0, rprt_lup = NULL, rcrd_nm_1L_chr = "AAA_RPRT_WRTNG_MTH", 
@@ -464,7 +460,6 @@ write_mdl_type_multi_outps <- function (data_tb, folds_1L_int = 10, predrs_var_n
 #' @importFrom purrr map_chr
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom tibble tibble
-#' @keywords internal
 write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_1L_chr = "utl_total_w", 
     start_1L_chr = NULL, tfmn_1L_chr = "NTF", predr_var_nm_1L_chr, 
     predr_var_desc_1L_chr, predr_vals_dbl, covar_var_nms_chr = NA_character_, 
@@ -573,7 +568,6 @@ write_mdls_with_covars_cmprsn <- function (scored_data_tb, bl_tb, ds_smry_ls, md
 #' @rdname write_new_outp_dir
 #' @export 
 
-#' @keywords internal
 write_new_outp_dir <- function (path_to_write_to_1L_chr, new_dir_nm_1L_chr) 
 {
     output_dir_1L_chr <- paste0(path_to_write_to_1L_chr, "/", 
@@ -639,7 +633,6 @@ write_predr_and_covars_cmprsn <- function (scored_data_tb, bl_tb, ds_smry_ls, md
 #' @rdname write_predr_and_mdl_tstng_results
 #' @export 
 
-#' @keywords internal
 write_predr_and_mdl_tstng_results <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, session_data_ls, 
     output_data_dir_1L_chr, seed_1L_int = 1234) 
 {
@@ -882,7 +875,6 @@ write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, ca
 #' @rdname write_scndry_analysis_dir
 #' @export 
 #' @importFrom here here
-#' @keywords internal
 write_scndry_analysis_dir <- function (paths_ls, reference_1L_int = 1) 
 {
     paths_ls <- transform_paths_ls_for_scndry(paths_ls, reference_1L_int = reference_1L_int)
@@ -899,7 +891,6 @@ write_scndry_analysis_dir <- function (paths_ls, reference_1L_int = 1)
 #' @rdname write_shareable_dir
 #' @export 
 #' @importFrom purrr map_chr
-#' @keywords internal
 write_shareable_dir <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", sub_dirs_chr = c("Ingredients", 
     "Models", "Table_Predn_Tools")) 
 {
@@ -1059,7 +1050,6 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
 #' @importFrom dataverse get_dataset
 #' @importFrom dplyr mutate
 #' @importFrom purrr map_int
-#' @keywords internal
 write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "", 
     share_ingredients_1L_lgl = T, output_dir_chr = NA_character_) 
 {
@@ -1170,7 +1160,6 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom ready4use write_fls_to_dv_ds
 #' @importFrom tibble tibble
-#' @keywords internal
 write_study_outp_ds <- function (dv_ds_nm_and_url_chr, rprt_lups_ls, output_format_ls, 
     path_params_ls, abstract_args_ls = NULL, dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.", 
     inc_fl_types_chr = ".pdf", purge_data_1L_lgl = FALSE, start_at_int = c(2, 
@@ -1296,7 +1285,6 @@ write_to_delete_mdl_fls <- function (outp_smry_ls)
 #' @importFrom purrr map discard
 #' @importFrom ready4show write_mdl_plt_fl
 #' @importFrom stats setNames
-#' @keywords internal
 write_ts_mdl_plts <- function (brms_mdl, table_predn_mdl = NULL, tfd_data_tb, mdl_nm_1L_chr, 
     path_to_write_to_1L_chr, depnt_var_nm_1L_chr = "utl_total_w", 
     depnt_var_desc_1L_chr = "Utility score", predn_type_1L_chr = NULL, 
@@ -1401,7 +1389,6 @@ write_ts_mdl_plts <- function (brms_mdl, table_predn_mdl = NULL, tfd_data_tb, md
 #' @rdname write_ts_mdls
 #' @export 
 #' @importFrom purrr map_dfr
-#' @keywords internal
 write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_ls, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", utl_min_val_1L_dbl = -1, 

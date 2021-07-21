@@ -14,6 +14,82 @@ get_cndts_for_mxd_mdls <- function (mdl_types_lup = NULL)
         short_name_chr != "BET_LOG")
     return(cndts_for_mxd_mdls_lup)
 }
+#' Get covariate category categoriess
+#' @description get_covar_ctgs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get covariate category categoriess. Function argument results_ls specifies the where to look for the required object. The function returns Covariate category categoriess (a character vector).
+#' @param results_ls Results (a list)
+#' @param collapse_1L_lgl Collapse (a logical vector of length one), Default: T
+#' @return Covariate category categoriess (a character vector)
+#' @rdname get_covar_ctgs
+#' @export 
+#' @importFrom stringi stri_replace_last_fixed
+get_covar_ctgs <- function (results_ls, collapse_1L_lgl = T) 
+{
+    covar_ctgs_chr <- names(results_ls$candidate_covars_ls) %>% 
+        tolower()
+    if (collapse_1L_lgl) {
+        covar_ctgs_chr <- covar_ctgs_chr %>% paste0(collapse = ", ") %>% 
+            stringi::stri_replace_last_fixed(",", " and")
+    }
+    return(covar_ctgs_chr)
+}
+#' Get covariates by category categories
+#' @description get_covars_by_ctg() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get covariates by category categories. Function argument results_ls specifies the where to look for the required object. The function returns Covariates by category categories (a list).
+#' @param results_ls Results (a list)
+#' @param collapse_1L_lgl Collapse (a logical vector of length one), Default: F
+#' @return Covariates by category categories (a list)
+#' @rdname get_covars_by_ctg
+#' @export 
+#' @importFrom purrr map map2
+#' @importFrom stats setNames
+#' @importFrom stringi stri_replace_last_fixed
+#' @importFrom Hmisc capitalize
+get_covars_by_ctg <- function (results_ls, collapse_1L_lgl = F) 
+{
+    covars_by_ctg_ls <- results_ls$candidate_covars_ls %>% purrr::map(~.x %>% 
+        tolower()) %>% stats::setNames(get_covar_ctgs(results_ls, 
+        collapse_1L_lgl = F))
+    if (collapse_1L_lgl) {
+        covars_by_ctg_ls <- covars_by_ctg_ls %>% purrr::map2(names(covars_by_ctg_ls), 
+            ~{
+                covars_1L_chr <- .x %>% paste0(collapse = ", ") %>% 
+                  stringi::stri_replace_last_fixed(",", " and")
+                paste0(ifelse(length(.x) > 1, .y %>% Hmisc::capitalize(), 
+                  paste0("The ", .y)), " covariate", ifelse(length(.x) > 
+                  1, "s were ", " was "), covars_1L_chr, ".")
+            })
+    }
+    return(covars_by_ctg_ls)
+}
+#' Get health utility name
+#' @description get_hlth_utl_nm() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get health utility name. Function argument results_ls specifies the where to look for the required object. The function returns Health utility name (a character vector of length one).
+#' @param results_ls Results (a list)
+#' @param short_nm_1L_lgl Short name (a logical vector of length one), Default: T
+#' @return Health utility name (a character vector of length one)
+#' @rdname get_hlth_utl_nm
+#' @export 
+
+get_hlth_utl_nm <- function (results_ls, short_nm_1L_lgl = T) 
+{
+    health_utl_nm_1L_chr <- ifelse(short_nm_1L_lgl, results_ls$study_descs_ls$health_utl_nm_1L_chr, 
+        results_ls$study_descs_ls$health_utl_long_nm_1L_chr)
+    return(health_utl_nm_1L_chr)
+}
+#' Get health utility statistic
+#' @description get_hlth_utl_stat() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get health utility statistic. Function argument results_ls specifies the where to look for the required object. The function returns Health utility statistic (a character vector of length one).
+#' @param results_ls Results (a list)
+#' @param stat_1L_chr Statistic (a character vector of length one), Default: 'bl_mean'
+#' @return Health utility statistic (a character vector of length one)
+#' @rdname get_hlth_utl_stat
+#' @export 
+
+get_hlth_utl_stat <- function (results_ls, stat_1L_chr = "bl_mean") 
+{
+    hlth_utl_stat_1L_chr <- switch(stat_1L_chr, bl_mean = results_ls$hlth_utl_and_predrs_ls$bl_hu_mean_1L_dbl, 
+        bl_sd = results_ls$hlth_utl_and_predrs_ls$bl_hu_sd_1L_dbl, 
+        fup_mean = results_ls$hlth_utl_and_predrs_ls$fup_hu_mean_1L_dbl, 
+        fup_sd = results_ls$hlth_utl_and_predrs_ls$fup_hu_sd_1L_dbl)
+    return(hlth_utl_stat_1L_chr)
+}
 #' Get link from transformation
 #' @description get_link_from_tfmn() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get link from transformation. Function argument tfmn_1L_chr specifies the where to look for the required object. The function returns Link (a character vector of length one).
 #' @param tfmn_1L_chr Transformation (a character vector of length one)
@@ -22,7 +98,6 @@ get_cndts_for_mxd_mdls <- function (mdl_types_lup = NULL)
 #' @rdname get_link_from_tfmn
 #' @export 
 
-#' @keywords internal
 get_link_from_tfmn <- function (tfmn_1L_chr, is_OLS_1L_lgl = F) 
 {
     link_1L_chr <- ifelse(is_OLS_1L_lgl, "identity", ifelse(tfmn_1L_chr == 
@@ -32,6 +107,40 @@ get_link_from_tfmn <- function (tfmn_1L_chr, is_OLS_1L_lgl = F)
     if (link_1L_chr == "ERROR") 
         stop("Link cannot be identified - incorrect transformation argument tfmn_1L_chr")
     return(link_1L_chr)
+}
+#' Get model comparisons
+#' @description get_mdl_cmprsns() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get model comparisons. Function argument results_ls specifies the where to look for the required object. The function returns Model comparisons (a character vector of length one).
+#' @param results_ls Results (a list)
+#' @param describe_1L_lgl Describe (a logical vector of length one), Default: T
+#' @param mixed_1L_lgl Mixed (a logical vector of length one), Default: F
+#' @return Model comparisons (a character vector of length one)
+#' @rdname get_mdl_cmprsns
+#' @export 
+#' @importFrom purrr map_chr
+#' @importFrom stringi stri_replace_last_fixed
+get_mdl_cmprsns <- function (results_ls, describe_1L_lgl = T, mixed_1L_lgl = F) 
+{
+    mdl_cmprsns_1L_chr <- paste0(ifelse(!"OLS" %in% results_ls$tables_ls$tenf_phq9$Model, 
+        "", ifelse(describe_1L_lgl, paste0("OLS regression models used ", 
+            results_ls$tables_ls$tenf_phq9$Model[(which(results_ls$tables_ls$tenf_phq9$Model == 
+                "OLS") + 1):(which(results_ls$tables_ls$tenf_phq9$Model == 
+                "GLM") - 1)] %>% unique() %>% purrr::map_chr(~.x %>% 
+                stringi::stri_replace_last_fixed("(", "(measured on a scale of ")) %>% 
+                paste0(collapse = ", ") %>% stringi::stri_replace_last_fixed(",", 
+                " and") %>% tolower(), "."), ifelse(mixed_1L_lgl, 
+            "linear mixed effect models (LMMs)", "ordinary least squares (OLS) regression models"))), 
+        ifelse(!describe_1L_lgl & length(intersect(c("OLS", "GLM"), 
+            results_ls$tables_ls$tenf_phq9$Model)) == 2, " and ", 
+            ifelse(describe_1L_lgl, " ", "")), ifelse(!"GLM" %in% 
+            results_ls$tables_ls$tenf_phq9$Model, "", ifelse(describe_1L_lgl, 
+            paste0("GLMs used ", results_ls$tables_ls$tenf_phq9$Model[(which(results_ls$tables_ls$tenf_phq9$Model == 
+                "GLM") + 1):length(results_ls$tables_ls$tenf_phq9$Model)] %>% 
+                unique() %>% purrr::map_chr(~.x %>% stringi::stri_replace_last_fixed("(", 
+                "(measured on a scale of ")) %>% paste0(collapse = ", ") %>% 
+                stringi::stri_replace_last_fixed(",", " and") %>% 
+                tolower()), ifelse(mixed_1L_lgl, "generalised linear mixed effect models (GLMMs)", 
+                "generalised linear models (GLMs)"))))
+    return(mdl_cmprsns_1L_chr)
 }
 #' Get model type from name
 #' @description get_mdl_type_from_nm() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get model type from name. Function argument mdl_nm_1L_chr specifies the where to look for the required object. The function returns Model type (a character vector of length one).
@@ -43,7 +152,6 @@ get_link_from_tfmn <- function (tfmn_1L_chr, is_OLS_1L_lgl = F)
 #' @importFrom utils data
 #' @importFrom dplyr pull
 #' @importFrom purrr map_lgl
-#' @keywords internal
 get_mdl_type_from_nm <- function (mdl_nm_1L_chr, mdl_types_lup = NULL) 
 {
     if (is.null(mdl_types_lup)) 
@@ -52,6 +160,207 @@ get_mdl_type_from_nm <- function (mdl_nm_1L_chr, mdl_types_lup = NULL)
         dplyr::pull(short_name_chr) %>% purrr::map_lgl(~endsWith(mdl_nm_1L_chr, 
         .x))]
     return(mdl_type_1L_chr)
+}
+#' Get models with significant covariates
+#' @description get_mdls_with_signft_covars() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get models with significant covariates. Function argument outp_smry_ls specifies the where to look for the required object. The function returns Models with significant covariates (a list).
+#' @param outp_smry_ls Output summary (a list)
+#' @param params_ls_ls Params (a list of lists)
+#' @return Models with significant covariates (a list)
+#' @rdname get_mdls_with_signft_covars
+#' @export 
+#' @importFrom purrr map flatten map_lgl
+#' @importFrom dplyr filter pull
+#' @importFrom stats setNames
+get_mdls_with_signft_covars <- function (outp_smry_ls, params_ls_ls) 
+{
+    signft_covars_chr <- outp_smry_ls$mdls_with_covars_smry_tb %>% 
+        get_signft_covars(covar_var_nms_chr = params_ls_ls$params_ls$candidate_covar_nms_chr)
+    signft_vars_ls <- outp_smry_ls[["mdls_with_covars_smry_tb"]]$Significant %>% 
+        purrr::map(~strsplit(.x, " ")) %>% purrr::flatten()
+    mdls_with_signft_covars_ls <- signft_covars_chr %>% purrr::map(~{
+        covar_nm_1L_chr <- .x
+        mdls_chr <- outp_smry_ls$mdls_with_covars_smry_tb %>% 
+            dplyr::filter(purrr::map_lgl(signft_vars_ls, ~any(.x == 
+                covar_nm_1L_chr))) %>% dplyr::pull(variable)
+        mdls_chr
+    }) %>% stats::setNames(signft_covars_chr)
+    return(mdls_with_signft_covars_ls)
+}
+#' Get number of predictors
+#' @description get_nbr_of_predrs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get number of predictors. Function argument results_ls specifies the where to look for the required object. The function returns Number of predictors (an output object of multiple potential types).
+#' @param results_ls Results (a list)
+#' @param as_words_1L_lgl As words (a logical vector of length one), Default: T
+#' @return Number of predictors (an output object of multiple potential types)
+#' @rdname get_nbr_of_predrs
+#' @export 
+#' @importFrom purrr map_int
+#' @importFrom xfun numbers_to_words
+get_nbr_of_predrs <- function (results_ls, as_words_1L_lgl = T) 
+{
+    nbr_of_predrs_xx <- results_ls$study_descs_ls$predr_ctgs_ls %>% 
+        purrr::map_int(~length(.x[.x %in% results_ls$candidate_predrs_chr])) %>% 
+        sum()
+    if (as_words_1L_lgl) 
+        nbr_of_predrs_xx <- nbr_of_predrs_xx %>% xfun::numbers_to_words()
+    return(nbr_of_predrs_xx)
+}
+#' Get number of predictors by category categories
+#' @description get_nbr_of_predrs_by_ctg() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get number of predictors by category categories. Function argument results_ls specifies the where to look for the required object. The function returns Predictors by category categories (a character vector of length one).
+#' @param results_ls Results (a list)
+#' @return Predictors by category categories (a character vector of length one)
+#' @rdname get_nbr_of_predrs_by_ctg
+#' @export 
+#' @importFrom purrr map_lgl map2_chr
+#' @importFrom xfun numbers_to_words
+#' @importFrom stringi stri_replace_last_fixed
+get_nbr_of_predrs_by_ctg <- function (results_ls) 
+{
+    multiple_1L_lgl <- length(get_predr_ctgs(results_ls, collapse_1L_lgl = F) > 
+        1)
+    predrs_by_ctg_1L_chr <- results_ls$study_descs_ls$predr_ctgs_ls[names(results_ls$study_descs_ls$predr_ctgs_ls) %>% 
+        tolower() %>% purrr::map_lgl(~.x %in% get_predr_ctgs(results_ls, 
+        collapse_1L_lgl = F))] %>% purrr::map2_chr(get_predr_ctgs(results_ls, 
+        collapse_1L_lgl = F), ~paste0(.y, ifelse(multiple_1L_lgl, 
+        paste0(" (", length(.x[.x %in% results_ls$candidate_predrs_chr]) %>% 
+            xfun::numbers_to_words(), " measure", ifelse(length(.x[.x %in% 
+            results_ls$candidate_predrs_chr]) > 1, "s", ""), 
+            ")"), ""))) %>% paste0(collapse = ", ") %>% stringi::stri_replace_last_fixed(",", 
+        " and") %>% tolower()
+    return(predrs_by_ctg_1L_chr)
+}
+#' Get number of scndry analyses
+#' @description get_nbr_of_scndry_analyses() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get number of scndry analyses. Function argument results_ls specifies the where to look for the required object. The function returns Number of scndry analyses length one (an output object of multiple potential types).
+#' @param results_ls Results (a list)
+#' @param as_words_1L_lgl As words (a logical vector of length one), Default: T
+#' @param capitalise_1L_lgl Capitalise (a logical vector of length one), Default: T
+#' @return Number of scndry analyses length one (an output object of multiple potential types)
+#' @rdname get_nbr_of_scndry_analyses
+#' @export 
+#' @importFrom xfun numbers_to_words
+#' @importFrom Hmisc capitalize
+get_nbr_of_scndry_analyses <- function (results_ls, as_words_1L_lgl = T, capitalise_1L_lgl = T) 
+{
+    nbr_of_scndry_analyses_1L_xx <- names(results_ls$mdl_ingredients_ls) %>% 
+        startsWith("secondary") %>% sum()
+    if (as_words_1L_lgl) {
+        nbr_of_scndry_analyses_1L_xx <- nbr_of_scndry_analyses_1L_xx %>% 
+            xfun::numbers_to_words()
+        if (capitalise_1L_lgl) {
+            nbr_of_scndry_analyses_1L_xx <- nbr_of_scndry_analyses_1L_xx %>% 
+                Hmisc::capitalize()
+        }
+    }
+    return(nbr_of_scndry_analyses_1L_xx)
+}
+#' Get ordered single csnl models
+#' @description get_ordered_sngl_csnl_mdls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get ordered single csnl models. Function argument results_ls specifies the where to look for the required object. The function returns Ordered single csnl models (a character vector).
+#' @param results_ls Results (a list)
+#' @param select_int Select (an integer vector), Default: NULL
+#' @param collapse_1L_lgl Collapse (a logical vector of length one), Default: F
+#' @return Ordered single csnl models (a character vector)
+#' @rdname get_ordered_sngl_csnl_mdls
+#' @export 
+#' @importFrom stringi stri_replace_last
+get_ordered_sngl_csnl_mdls <- function (results_ls, select_int = NULL, collapse_1L_lgl = F) 
+{
+    ordered_sngl_csnl_mdls_chr <- results_ls$ttu_cs_ls$cs_mdls_predrs_seq_dscdng_chr
+    if (!is.null(select_int)) {
+        ordered_sngl_csnl_mdls_chr <- ordered_sngl_csnl_mdls_chr[select_int]
+    }
+    if (collapse_1L_lgl) {
+        ordered_sngl_csnl_mdls_chr <- ordered_sngl_csnl_mdls_chr %>% 
+            paste0(collapse = ", ") %>% stringi::stri_replace_last(fixed = ",", 
+            " and")
+    }
+    return(ordered_sngl_csnl_mdls_chr)
+}
+#' Get population descriptives
+#' @description get_popl_descvs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get population descriptives. Function argument results_ls specifies the where to look for the required object. The function returns Population descriptives (a character vector of length one).
+#' @param results_ls Results (a list)
+#' @return Population descriptives (a character vector of length one)
+#' @rdname get_popl_descvs
+#' @export 
+#' @importFrom stringi stri_replace_last_fixed
+get_popl_descvs <- function (results_ls) 
+{
+    popl_descvs_1L_chr <- results_ls$tables_ls$participant_descs$variable %>% 
+        unique() %>% tolower() %>% paste0(collapse = ", ") %>% 
+        stringi::stri_replace_last_fixed(",", " and")
+    return(popl_descvs_1L_chr)
+}
+#' Get predictor category categoriess
+#' @description get_predr_ctgs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get predictor category categoriess. Function argument results_ls specifies the where to look for the required object. The function returns Predictor category categoriess (a character vector).
+#' @param results_ls Results (a list)
+#' @param collapse_1L_lgl Collapse (a logical vector of length one), Default: T
+#' @return Predictor category categoriess (a character vector)
+#' @rdname get_predr_ctgs
+#' @export 
+#' @importFrom purrr map_int
+#' @importFrom stringi stri_replace_last_fixed
+get_predr_ctgs <- function (results_ls, collapse_1L_lgl = T) 
+{
+    predr_ctgs_chr <- (results_ls$study_descs_ls$predr_ctgs_ls %>% 
+        names())[(results_ls$study_descs_ls$predr_ctgs_ls %>% 
+        purrr::map_int(~length(.x[.x %in% results_ls$candidate_predrs_chr]))) > 
+        0] %>% tolower()
+    if (collapse_1L_lgl) {
+        predr_ctgs_chr <- predr_ctgs_chr %>% paste0(collapse = ", ") %>% 
+            stringi::stri_replace_last_fixed(",", " and")
+    }
+    return(predr_ctgs_chr)
+}
+#' Get predictors by category categories
+#' @description get_predrs_by_ctg() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get predictors by category categories. Function argument results_ls specifies the where to look for the required object. The function returns Predictors by category categories (a list).
+#' @param results_ls Results (a list)
+#' @param long_desc_1L_lgl Long description (a logical vector of length one), Default: F
+#' @param transform_1L_lgl Transform (a logical vector of length one), Default: F
+#' @param collapse_1L_lgl Collapse (a logical vector of length one), Default: F
+#' @return Predictors by category categories (a list)
+#' @rdname get_predrs_by_ctg
+#' @export 
+#' @importFrom purrr map_lgl map map2 map_chr flatten_chr
+#' @importFrom stats setNames
+#' @importFrom Hmisc capitalize
+#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom stringi stri_replace_last_fixed stri_replace_last
+get_predrs_by_ctg <- function (results_ls, long_desc_1L_lgl = F, transform_1L_lgl = F, 
+    collapse_1L_lgl = F) 
+{
+    predrs_by_ctg_ls <- results_ls$study_descs_ls$predr_ctgs_ls[names(results_ls$study_descs_ls$predr_ctgs_ls) %>% 
+        tolower() %>% purrr::map_lgl(~.x %in% get_predr_ctgs(results_ls, 
+        collapse_1L_lgl = F))] %>% purrr::map(~.x[.x %in% results_ls$candidate_predrs_chr]) %>% 
+        stats::setNames(get_predr_ctgs(results_ls, collapse_1L_lgl = F))
+    if (long_desc_1L_lgl) {
+        predrs_by_ctg_ls <- predrs_by_ctg_ls %>% purrr::map2(names(predrs_by_ctg_ls) %>% 
+            Hmisc::capitalize(), ~{
+            predr_descs_1L_chr <- .x %>% purrr::map_chr(~paste0(ready4fun::get_from_lup_obj(results_ls$mdl_ingredients_ls$dictionary_tb, 
+                match_value_xx = .x, match_var_nm_1L_chr = "var_nm_chr", 
+                target_var_nm_1L_chr = "var_desc_chr", evaluate_lgl = F), 
+                " (", .x %>% transform_names(rename_lup = results_ls$var_nm_change_lup), 
+                " - measured on a scale of ", ready4fun::get_from_lup_obj(results_ls$mdl_ingredients_ls$predictors_lup, 
+                  match_value_xx = .x, match_var_nm_1L_chr = "short_name_chr", 
+                  target_var_nm_1L_chr = "min_val_dbl", evaluate_lgl = F), 
+                "-", ready4fun::get_from_lup_obj(results_ls$mdl_ingredients_ls$predictors_lup, 
+                  match_value_xx = .x, match_var_nm_1L_chr = "short_name_chr", 
+                  target_var_nm_1L_chr = "max_val_dbl", evaluate_lgl = F), 
+                ")")) %>% paste0(collapse = ", ") %>% stringi::stri_replace_last_fixed(",", 
+                " and")
+            paste0(.y, " was measured by ", predr_descs_1L_chr, 
+                ".")
+        })
+    }
+    else {
+        if (transform_1L_lgl) {
+            predrs_by_ctg_ls <- predrs_by_ctg_ls %>% purrr::map(~{
+                purrr::map_chr(.x, ~transform_names(.x, rename_lup = results_ls$var_nm_change_lup))
+            }) %>% purrr::flatten_chr()
+            if (collapse_1L_lgl) {
+                predrs_by_ctg_ls <- predrs_by_ctg_ls %>% paste0(collapse = ", ") %>% 
+                  stringi::stri_replace_last(fixed = ",", " and")
+            }
+        }
+    }
+    return(predrs_by_ctg_ls)
 }
 #' Get random intercept
 #' @description get_random_intercept() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get random intercept. Function argument mdls_smry_tb specifies the where to look for the required object. The function returns Standard deviation (a double vector).
@@ -63,7 +372,6 @@ get_mdl_type_from_nm <- function (mdl_nm_1L_chr, mdl_types_lup = NULL)
 #' @export 
 #' @importFrom dplyr filter
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 get_random_intercept <- function (mdls_smry_tb, mdl_nm_1L_chr, deterministic_1L_lgl = T) 
 {
     mdl_smry_tb <- mdls_smry_tb %>% dplyr::filter(Model == mdl_nm_1L_chr)
@@ -74,6 +382,43 @@ get_random_intercept <- function (mdls_smry_tb, mdl_nm_1L_chr, deterministic_1L_
             match_var_nm_1L_chr = "Parameter", target_var_nm_1L_chr = "SE", 
             evaluate_lgl = F)))
     return(sd_dbl)
+}
+#' Get scndry anlys descriptions
+#' @description get_scndry_anlys_descs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get scndry anlys descriptions. Function argument results_ls specifies the where to look for the required object. The function returns Scndry anlys descriptions (a character vector).
+#' @param results_ls Results (a list)
+#' @return Scndry anlys descriptions (a character vector)
+#' @rdname get_scndry_anlys_descs
+#' @export 
+#' @importFrom purrr map_chr pluck
+#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom ready4use remove_labels_from_ds
+#' @importFrom stringi stri_replace_last_fixed
+get_scndry_anlys_descs <- function (results_ls) 
+{
+    nbr_of_scndry_analyses_1L_int <- get_nbr_of_scndry_analyses(results_ls, 
+        as_words_1L_lgl = F)
+    if (nbr_of_scndry_analyses_1L_int > 0) {
+        scndry_anlys_descs_chr <- 1:nbr_of_scndry_analyses_1L_int %>% 
+            purrr::map_chr(~{
+                secondary_ls <- results_ls$mdl_ingredients_ls %>% 
+                  purrr::pluck(paste0("secondary_", .x))
+                mdls_lup <- secondary_ls$mdls_lup
+                predictors_chr <- mdls_lup$predrs_ls %>% unique() %>% 
+                  purrr::map_chr(~{
+                    .x %>% purrr::map_chr(~ready4fun::get_from_lup_obj(secondary_ls$dictionary_tb %>% 
+                      ready4use::remove_labels_from_ds(), match_value_xx = .x, 
+                      match_var_nm_1L_chr = "var_nm_chr", target_var_nm_1L_chr = "var_desc_chr", 
+                      evaluate_lgl = F)) %>% paste0(collapse = ", ") %>% 
+                      stringi::stri_replace_last_fixed(",", " and")
+                  })
+                paste0(ifelse(nbr_of_scndry_analyses_1L_int == 
+                  1, "The secondary analysis used ", paste0("Secondary Analysis ", 
+                  LETTERS[.x], " used ")), ifelse(length(predictors_chr) == 
+                  1, paste0(predictors_chr, " as a predictor."), 
+                  paste0(predictors_chr, " as predictors.")))
+            })
+    }
+    return(scndry_anlys_descs_chr)
 }
 #' Get significant covariates
 #' @description get_signft_covars() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get significant covariates. Function argument mdls_with_covars_smry_tb specifies the where to look for the required object. The function returns Signt covariates (a character vector).
@@ -106,7 +451,6 @@ get_signft_covars <- function (mdls_with_covars_smry_tb, covar_var_nms_chr)
 #' @importFrom stringr str_sub
 #' @importFrom purrr pluck
 #' @importFrom dplyr filter
-#' @keywords internal
 get_table_predn_mdl <- function (mdl_nm_1L_chr, ingredients_ls, analysis_1L_chr = NULL) 
 {
     mdl_type_1L_chr <- get_mdl_type_from_nm(mdl_nm_1L_chr, mdl_types_lup = ingredients_ls$mdl_types_lup)

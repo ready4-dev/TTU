@@ -35,61 +35,25 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
-    assertthat,
     betareg,
-    boot,
-    Boruta,
-    brms,
-    caret,
     cmdstanr (>= 0.4.0.9000),
-    cowplot,
-    dataverse (>= 0.3.8.9000),
-    dplyr,
-    enrichwith,
     eq5d,
-    faux,
-    ggalt,
     ggfortify,
-    ggplot2,
-    here,
-    Hmisc,
     knitr,
     knitrBootstrap,
     lifecycle,
-    lubridate,
-    magrittr,
-    MASS,
-    methods,
-    pacman,
-    psych,
-    purrr,
-    randomForest,
     readr,
-    ready4class (>= 0.0.0.9199),
-    ready4fun (>= 0.0.0.9298),
     ready4show (>= 0.0.0.9035),
     ready4use (>= 0.0.0.9133),
-    rlang,
-    rmarkdown,
-    stats,
-    stringi,
-    stringr,
-    synthpop,
     testthat,
-    tibble,
-    tidyr,
-    tidyselect,
-    utils,
-    viridis,
     youthvars (>= 0.0.0.9058)
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
-Remotes: 
+Remotes:  
     stan-dev/cmdstanr,
     ready4-dev/ready4show,
     ready4-dev/ready4use,
-    ready4-dev/youthvars,
-    iqss/dataverse-client-r,
-    ready4-dev/ready4class,
-    ready4-dev/ready4fun
+    ready4-dev/youthvars
+Suggests: 
+    rmarkdown
