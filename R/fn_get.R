@@ -22,6 +22,7 @@ get_cndts_for_mxd_mdls <- function (mdl_types_lup = NULL)
 #' @rdname get_covar_ctgs
 #' @export 
 #' @importFrom stringi stri_replace_last_fixed
+#' @keywords internal
 get_covar_ctgs <- function (results_ls, collapse_1L_lgl = T) 
 {
     covar_ctgs_chr <- names(results_ls$candidate_covars_ls) %>% 
@@ -43,6 +44,7 @@ get_covar_ctgs <- function (results_ls, collapse_1L_lgl = T)
 #' @importFrom stats setNames
 #' @importFrom stringi stri_replace_last_fixed
 #' @importFrom Hmisc capitalize
+#' @keywords internal
 get_covars_by_ctg <- function (results_ls, collapse_1L_lgl = F) 
 {
     covars_by_ctg_ls <- results_ls$candidate_covars_ls %>% purrr::map(~.x %>% 
@@ -68,6 +70,7 @@ get_covars_by_ctg <- function (results_ls, collapse_1L_lgl = F)
 #' @rdname get_hlth_utl_nm
 #' @export 
 
+#' @keywords internal
 get_hlth_utl_nm <- function (results_ls, short_nm_1L_lgl = T) 
 {
     health_utl_nm_1L_chr <- ifelse(short_nm_1L_lgl, results_ls$study_descs_ls$health_utl_nm_1L_chr, 
@@ -82,6 +85,7 @@ get_hlth_utl_nm <- function (results_ls, short_nm_1L_lgl = T)
 #' @rdname get_hlth_utl_stat
 #' @export 
 
+#' @keywords internal
 get_hlth_utl_stat <- function (results_ls, stat_1L_chr = "bl_mean") 
 {
     hlth_utl_stat_1L_chr <- switch(stat_1L_chr, bl_mean = results_ls$hlth_utl_and_predrs_ls$bl_hu_mean_1L_dbl, 
@@ -98,6 +102,7 @@ get_hlth_utl_stat <- function (results_ls, stat_1L_chr = "bl_mean")
 #' @rdname get_link_from_tfmn
 #' @export 
 
+#' @keywords internal
 get_link_from_tfmn <- function (tfmn_1L_chr, is_OLS_1L_lgl = F) 
 {
     link_1L_chr <- ifelse(is_OLS_1L_lgl, "identity", ifelse(tfmn_1L_chr == 
@@ -118,6 +123,7 @@ get_link_from_tfmn <- function (tfmn_1L_chr, is_OLS_1L_lgl = F)
 #' @export 
 #' @importFrom purrr map_chr
 #' @importFrom stringi stri_replace_last_fixed
+#' @keywords internal
 get_mdl_cmprsns <- function (results_ls, describe_1L_lgl = T, mixed_1L_lgl = F) 
 {
     mdl_cmprsns_1L_chr <- paste0(ifelse(!"OLS" %in% results_ls$tables_ls$tenf_phq9$Model, 
@@ -152,6 +158,7 @@ get_mdl_cmprsns <- function (results_ls, describe_1L_lgl = T, mixed_1L_lgl = F)
 #' @importFrom utils data
 #' @importFrom dplyr pull
 #' @importFrom purrr map_lgl
+#' @keywords internal
 get_mdl_type_from_nm <- function (mdl_nm_1L_chr, mdl_types_lup = NULL) 
 {
     if (is.null(mdl_types_lup)) 
@@ -171,6 +178,7 @@ get_mdl_type_from_nm <- function (mdl_nm_1L_chr, mdl_types_lup = NULL)
 #' @importFrom purrr map flatten map_lgl
 #' @importFrom dplyr filter pull
 #' @importFrom stats setNames
+#' @keywords internal
 get_mdls_with_signft_covars <- function (outp_smry_ls, params_ls_ls) 
 {
     signft_covars_chr <- outp_smry_ls$mdls_with_covars_smry_tb %>% 
@@ -195,6 +203,7 @@ get_mdls_with_signft_covars <- function (outp_smry_ls, params_ls_ls)
 #' @export 
 #' @importFrom purrr map_int
 #' @importFrom xfun numbers_to_words
+#' @keywords internal
 get_nbr_of_predrs <- function (results_ls, as_words_1L_lgl = T) 
 {
     nbr_of_predrs_xx <- results_ls$study_descs_ls$predr_ctgs_ls %>% 
@@ -213,6 +222,7 @@ get_nbr_of_predrs <- function (results_ls, as_words_1L_lgl = T)
 #' @importFrom purrr map_lgl map2_chr
 #' @importFrom xfun numbers_to_words
 #' @importFrom stringi stri_replace_last_fixed
+#' @keywords internal
 get_nbr_of_predrs_by_ctg <- function (results_ls) 
 {
     multiple_1L_lgl <- length(get_predr_ctgs(results_ls, collapse_1L_lgl = F) > 
@@ -238,6 +248,7 @@ get_nbr_of_predrs_by_ctg <- function (results_ls)
 #' @export 
 #' @importFrom xfun numbers_to_words
 #' @importFrom Hmisc capitalize
+#' @keywords internal
 get_nbr_of_scndry_analyses <- function (results_ls, as_words_1L_lgl = T, capitalise_1L_lgl = T) 
 {
     nbr_of_scndry_analyses_1L_xx <- names(results_ls$mdl_ingredients_ls) %>% 
@@ -261,6 +272,7 @@ get_nbr_of_scndry_analyses <- function (results_ls, as_words_1L_lgl = T, capital
 #' @rdname get_ordered_sngl_csnl_mdls
 #' @export 
 #' @importFrom stringi stri_replace_last
+#' @keywords internal
 get_ordered_sngl_csnl_mdls <- function (results_ls, select_int = NULL, collapse_1L_lgl = F) 
 {
     ordered_sngl_csnl_mdls_chr <- results_ls$ttu_cs_ls$cs_mdls_predrs_seq_dscdng_chr
@@ -281,6 +293,7 @@ get_ordered_sngl_csnl_mdls <- function (results_ls, select_int = NULL, collapse_
 #' @rdname get_popl_descvs
 #' @export 
 #' @importFrom stringi stri_replace_last_fixed
+#' @keywords internal
 get_popl_descvs <- function (results_ls) 
 {
     popl_descvs_1L_chr <- results_ls$tables_ls$participant_descs$variable %>% 
@@ -297,6 +310,7 @@ get_popl_descvs <- function (results_ls)
 #' @export 
 #' @importFrom purrr map_int
 #' @importFrom stringi stri_replace_last_fixed
+#' @keywords internal
 get_predr_ctgs <- function (results_ls, collapse_1L_lgl = T) 
 {
     predr_ctgs_chr <- (results_ls$study_descs_ls$predr_ctgs_ls %>% 
@@ -323,6 +337,7 @@ get_predr_ctgs <- function (results_ls, collapse_1L_lgl = T)
 #' @importFrom Hmisc capitalize
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom stringi stri_replace_last_fixed stri_replace_last
+#' @keywords internal
 get_predrs_by_ctg <- function (results_ls, long_desc_1L_lgl = F, transform_1L_lgl = F, 
     collapse_1L_lgl = F) 
 {
@@ -372,6 +387,7 @@ get_predrs_by_ctg <- function (results_ls, long_desc_1L_lgl = F, transform_1L_lg
 #' @export 
 #' @importFrom dplyr filter
 #' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
 get_random_intercept <- function (mdls_smry_tb, mdl_nm_1L_chr, deterministic_1L_lgl = T) 
 {
     mdl_smry_tb <- mdls_smry_tb %>% dplyr::filter(Model == mdl_nm_1L_chr)
@@ -393,6 +409,7 @@ get_random_intercept <- function (mdls_smry_tb, mdl_nm_1L_chr, deterministic_1L_
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom ready4use remove_labels_from_ds
 #' @importFrom stringi stri_replace_last_fixed
+#' @keywords internal
 get_scndry_anlys_descs <- function (results_ls) 
 {
     nbr_of_scndry_analyses_1L_int <- get_nbr_of_scndry_analyses(results_ls, 
@@ -451,6 +468,7 @@ get_signft_covars <- function (mdls_with_covars_smry_tb, covar_var_nms_chr)
 #' @importFrom stringr str_sub
 #' @importFrom purrr pluck
 #' @importFrom dplyr filter
+#' @keywords internal
 get_table_predn_mdl <- function (mdl_nm_1L_chr, ingredients_ls, analysis_1L_chr = NULL) 
 {
     mdl_type_1L_chr <- get_mdl_type_from_nm(mdl_nm_1L_chr, mdl_types_lup = ingredients_ls$mdl_types_lup)

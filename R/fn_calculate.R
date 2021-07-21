@@ -10,6 +10,7 @@
 #' @importFrom purrr map_dbl
 #' @importFrom boot inv.logit
 #' @importFrom psych logit
+#' @keywords internal
 calculate_dpnt_var_tfmn <- function (dep_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_is_outp_1L_lgl = F, 
     dep_var_max_val_1L_dbl = NULL) 
 {
@@ -48,6 +49,7 @@ calculate_dpnt_var_tfmn <- function (dep_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_
 #' @rdname calculate_rmse
 #' @export 
 
+#' @keywords internal
 calculate_rmse <- function (y_dbl, yhat_dbl) 
 {
     rmse_dbl <- sqrt(mean((yhat_dbl - y_dbl)^2))

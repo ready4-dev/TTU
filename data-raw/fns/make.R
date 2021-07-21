@@ -1208,7 +1208,7 @@ make_random_forest_text <- function(results_ls){
                         results_ls$ttu_cs_ls$mdl_predrs_and_rf_seqs_cmprsn_1L_chr,
                         " with the random forest model in which ",
                         results_ls$ttu_cs_ls$rf_seq_dscdng_chr[1],
-                        " was found to be the most ‘important’ predictor")
+                        " was found to be the most \'important\' predictor")
   return(text_1L_chr)
 }
 make_ranked_predrs_ls <- function(descv_tbls_ls,
