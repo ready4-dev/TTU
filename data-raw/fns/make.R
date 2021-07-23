@@ -350,6 +350,11 @@ make_covariates_text <- function(results_ls){
   }
   return(text_1L_chr)
 }
+make_covar_ttu_tbl_title <- function(results_ls,
+                                     ref_1L_int = 1){
+  title_1L_chr <- paste0('Estimated coefficients from longitudinal TTU models based on individual candidate predictors with ',results_ls$ttu_lngl_ls$incld_covars_chr %>% paste0(collapse = ", ") %>% stringi::stri_replace_last(fixed = ",", " and"),' using ', results_ls$ttu_lngl_ls$best_mdls_tb[[ref_1L_int,"model_type"]], ' (', results_ls$ttu_lngl_ls$best_mdls_tb[[ref_1L_int,"link_and_tfmn_chr"]],')')
+  return(title_1L_chr)
+}
 make_cs_ts_ratios_tb <- function(predr_ctgs_ls,
                                  mdl_coef_ratios_ls,
                                  nbr_of_digits_1L_int = 2L,
@@ -1602,9 +1607,13 @@ make_scaling_text <- function(results_ls,
                               table_1L_chr = "cfscl"){
   if(table_1L_chr == "cfscl"){
     table_df <- results_ls$tables_ls$ind_preds_coefs_tbl
-  }
-  if(table_1L_chr == "coefscovarstype1"){
-    table_df <- results_ls$tables_ls$mdl_type_1_covar_mdls_tb
+  }else{
+    if(startsWith(table_1L_chr,"coefscovarstype")){
+      table_df <- results_ls$tables_ls %>%
+        purrr::pluck(paste0("mdl_type_",
+             table_1L_chr %>% stringr::str_remove("coefscovarstype"),
+             "_covar_mdls_tb"))
+    }
   }
   predrs_chr <- table_df$Parameter %>% setdiff(c("SD (Intercept)","Intercept")) %>% stringr::str_replace_all(" model","") %>% stringr::str_replace_all(" baseline","") %>% stringr::str_replace_all(" change","") %>% unique()
   predrs_lup <- results_ls$mdl_ingredients_ls$predictors_lup %>%
@@ -1999,6 +2008,22 @@ make_ten_fold_text <- function(results_ls){
                                       "")),
                         paste0("the predictive ability of ", mdls_chr[1]))
   return(text_1L_chr)
+}
+make_ten_folds_tbl_title <- function(results_ls,
+                                     ref_1L_int = 1){
+  title_1L_chr <- ifelse(ref_1L_int == 1,
+                         paste0('10-fold cross-validated model fitting index for different ',
+                                results_ls$ttu_cs_ls$best_mdl_types_ls %>%
+                                  names() %>%
+                                  paste0(collapse = ", ") %>%
+                                  stringi::stri_replace_last(fixed = ",", " and"),
+                                ' models using ',
+                                results_ls$ttu_cs_ls$cs_mdls_predrs_seq_dscdng_chr[1],
+                                ' as predictor with the baseline data'),
+                         paste0('10-fold cross-validated model fitting index for different candidate predictors estimated using ',
+                                results_ls$ttu_cs_ls$selected_mdls_chr[1],
+                                ' with the baseline data'))
+  return(title_1L_chr)
 }
 make_tfd_sngl_predr_mdls_tb <- function(outp_smry_ls,
                                         nbr_of_digits_1L_int = 2L,

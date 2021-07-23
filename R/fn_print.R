@@ -129,8 +129,7 @@ print_covar_ttu_tbls <- function (params_ls, caption_1L_chr, table_1L_chr, ref_1
                 table_1L_chr = knitr::opts_current$get("tab.id")), 
                 "}\n"))
         df$Parameter <- df$Parameter %>% purrr::map_chr(~ifelse(endsWith(.x, 
-            "\n                                                                   model"), 
-            paste0("\\textbf{", .x, "}"), .x))
+            " model"), paste0("\\textbf{", .x, "}"), .x))
     }
     else {
         add_to_row_ls <- NULL
@@ -174,8 +173,7 @@ print_indpnt_predrs_coefs_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_r
     }
     if (params_ls$output_type_1L_chr == "PDF") {
         tb$Parameter <- tb$Parameter %>% purrr::map_chr(~ifelse(endsWith(.x, 
-            "\n                                                                   model"), 
-            paste0("\\textbf{", .x, "}"), .x))
+            " model"), paste0("\\textbf{", .x, "}"), .x))
     }
     tb %>% ready4show::print_table(output_type_1L_chr = params_ls$output_type_1L_chr, 
         caption_1L_chr = caption_1L_chr, mkdn_tbl_ref_1L_chr = mkdn_tbl_ref_1L_chr, 

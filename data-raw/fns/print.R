@@ -97,8 +97,8 @@ print_covar_ttu_tbls <- function(params_ls,
                                       make_scaling_text(results_ls,
                                                         table_1L_chr = knitr::opts_current$get("tab.id")),
                                       "}\n"))
-    df$Parameter <- df$Parameter %>% purrr::map_chr(~ifelse(endsWith(.x,"
-                                                                   model"),
+    df$Parameter <- df$Parameter %>% purrr::map_chr(~ifelse(endsWith(.x,
+                                                                     " model"),
                                                             paste0("\\textbf{",.x,"}"),.x))
   }else{
     add_to_row_ls <- NULL
@@ -141,8 +141,8 @@ print_indpnt_predrs_coefs_tbl <- function(params_ls,
     tb$Parameter <- stringr::str_replace_all(stringr::str_replace_all(stringr::str_replace_all(tb$Parameter, '\\\\textbf', ''), '\\{', ''), '\\}', '')
   }
   if(params_ls$output_type_1L_chr == "PDF"){
-    tb$Parameter <- tb$Parameter %>% purrr::map_chr(~ifelse(endsWith(.x,"
-                                                                   model"),
+    tb$Parameter <- tb$Parameter %>% purrr::map_chr(~ifelse(endsWith(.x,
+                                                                     " model"),
                                                             paste0("\\textbf{",.x,"}"),.x))
   }
   tb %>%

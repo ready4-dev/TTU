@@ -347,6 +347,25 @@ make_correlation_text <- function (results_ls)
         "."))
     return(correlation_text_1L_chr)
 }
+#' Make covariate ttu table title
+#' @description make_covar_ttu_tbl_title() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make covariate ttu table title. The function returns Title (a character vector of length one).
+#' @param results_ls Results (a list)
+#' @param ref_1L_int Reference (an integer vector of length one), Default: 1
+#' @return Title (a character vector of length one)
+#' @rdname make_covar_ttu_tbl_title
+#' @export 
+#' @importFrom stringi stri_replace_last
+#' @keywords internal
+make_covar_ttu_tbl_title <- function (results_ls, ref_1L_int = 1) 
+{
+    title_1L_chr <- paste0("Estimated coefficients from longitudinal TTU models based on individual candidate predictors with ", 
+        results_ls$ttu_lngl_ls$incld_covars_chr %>% paste0(collapse = ", ") %>% 
+            stringi::stri_replace_last(fixed = ",", " and"), 
+        " using ", results_ls$ttu_lngl_ls$best_mdls_tb[[ref_1L_int, 
+            "model_type"]], " (", results_ls$ttu_lngl_ls$best_mdls_tb[[ref_1L_int, 
+            "link_and_tfmn_chr"]], ")")
+    return(title_1L_chr)
+}
 #' Make covariates text
 #' @description make_covariates_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make covariates text. The function returns Text (a character vector of length one).
 #' @param results_ls Results (a list)
@@ -1915,9 +1934,9 @@ make_results_ls_spine <- function (output_format_ls = NULL, params_ls_ls = NULL,
 #' @return Text (a character vector of length one)
 #' @rdname make_scaling_text
 #' @export 
-#' @importFrom stringr str_replace_all
+#' @importFrom purrr pluck map_chr
+#' @importFrom stringr str_remove str_replace_all
 #' @importFrom dplyr filter pull
-#' @importFrom purrr map_chr
 #' @importFrom stringi stri_replace_last
 #' @keywords internal
 make_scaling_text <- function (results_ls, table_1L_chr = "cfscl") 
@@ -1925,8 +1944,12 @@ make_scaling_text <- function (results_ls, table_1L_chr = "cfscl")
     if (table_1L_chr == "cfscl") {
         table_df <- results_ls$tables_ls$ind_preds_coefs_tbl
     }
-    if (table_1L_chr == "coefscovarstype1") {
-        table_df <- results_ls$tables_ls$mdl_type_1_covar_mdls_tb
+    else {
+        if (startsWith(table_1L_chr, "coefscovarstype")) {
+            table_df <- results_ls$tables_ls %>% purrr::pluck(paste0("mdl_type_", 
+                table_1L_chr %>% stringr::str_remove("coefscovarstype"), 
+                "_covar_mdls_tb"))
+        }
     }
     predrs_chr <- table_df$Parameter %>% setdiff(c("SD (Intercept)", 
         "Intercept")) %>% stringr::str_replace_all(" model", 
@@ -2398,6 +2421,25 @@ make_ten_fold_text <- function (results_ls)
             2, paste0(mdls_chr[length(mdls_chr)], " had the least predictive capability."), 
             "")), paste0("the predictive ability of ", mdls_chr[1]))
     return(text_1L_chr)
+}
+#' Make ten folds table title
+#' @description make_ten_folds_tbl_title() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ten folds table title. The function returns Title (a character vector of length one).
+#' @param results_ls Results (a list)
+#' @param ref_1L_int Reference (an integer vector of length one), Default: 1
+#' @return Title (a character vector of length one)
+#' @rdname make_ten_folds_tbl_title
+#' @export 
+#' @importFrom stringi stri_replace_last
+#' @keywords internal
+make_ten_folds_tbl_title <- function (results_ls, ref_1L_int = 1) 
+{
+    title_1L_chr <- ifelse(ref_1L_int == 1, paste0("10-fold cross-validated model fitting index for different ", 
+        results_ls$ttu_cs_ls$best_mdl_types_ls %>% names() %>% 
+            paste0(collapse = ", ") %>% stringi::stri_replace_last(fixed = ",", 
+            " and"), " models using ", results_ls$ttu_cs_ls$cs_mdls_predrs_seq_dscdng_chr[1], 
+        " as predictor with the baseline data"), paste0("10-fold cross-validated model fitting index for different candidate predictors estimated using ", 
+        results_ls$ttu_cs_ls$selected_mdls_chr[1], " with the baseline data"))
+    return(title_1L_chr)
 }
 #' Make transformed single predictor models
 #' @description make_tfd_sngl_predr_mdls_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make transformed single predictor models tibble. The function returns Transformed single predictor models (a tibble).
