@@ -1,6 +1,6 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9286
+Version: 0.0.0.9287
 Authors@R: 
     c(person(given = "Caroline",
              family = "Gao",
@@ -53,6 +53,7 @@ Imports:
     ggplot2,
     here,
     Hmisc,
+    kableExtra,
     knitr,
     knitrBootstrap,
     lifecycle,
