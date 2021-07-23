@@ -171,14 +171,20 @@ rprt_lups_ls <- write_mdl_smry_rprt(header_yaml_args_ls,
 ```
 
 # Share results
-Share the results created in the previous step via an online repository. 
+We can now share the results created in the previous step in an online repository. To do this, you will need to have an account with a Dataverse (https://dataverse.org/) provider (e.g., https://dataverse.harvard.edu/). You also need to have created:
 
-Note: you will need to replace the values assigned to the `dv_ds_nm_and_url_chr` argument with the details of dataverse datasets for which you have write permissions - the values supplied in the below call will not work for you. If you do not have write permissions for a dataverse dataset, use `dv_ds_nm_and_url_chr = NULL`. If you are writing results to a dataverse dataset, you will also need to have created a dataverse API key and stored the API key and server values in your local environment. To see how to do this, visit: https://github.com/IQSS/dataverse-client-r
+ - a dataverse API key and stored the API key and server values in your local environment (to see how to do this, visit: https://github.com/IQSS/dataverse-client-r )
+ - an empty dataset (steps 1-3 and 5 in https://guides.dataverse.org/en/5.5/user/dataset-management.html#adding-a-new-dataset)
 
-The dataset populated by the below call can be viewed at: https://doi.org/10.7910/DVN/D74QMP
-```{r echo = TRUE, eval=FALSE }
+If you have created an empty dataverse dataset to post results to, assign the DOI for your dataset and the name of the dataverse containing it to an object, `dv_ds_nm_and_url_chr` (these values will be different to those below, which will not work for you). If you do not wish to post results to a dataverse dataset, set `dv_ds_nm_and_url_chr <- NULL`.
+
+```{r}
 dv_ds_nm_and_url_chr <- c("fakes", # Name of dataverse containing dataset - Replace
                           "https://doi.org/10.7910/DVN/D74QMP") # Dataset DOI - Replace
+```
+
+Next pass these details, along with some paramters created earlier to the `write_study_outp_ds` function. 
+```{r echo = TRUE, eval=FALSE }
 write_study_outp_ds(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
                     rprt_lups_ls = rprt_lups_ls,
                     output_format_ls = output_format_ls,
@@ -187,15 +193,19 @@ write_study_outp_ds(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
 
 ```
 
+The dataset populated by the above call can be viewed at: https://doi.org/10.7910/DVN/D74QMP
+
 # Create manuscript
 The first step to creating a manuscript that provides the scientific summary of the study is to provide some metadata about the study itself.
 
 ```{r}
-study_descs_ls <- make_study_descs_ls(coi_1L_chr = "None declared.",
+study_descs_ls <- make_study_descs_ls(background_1L_chr = "Our study is entirely fictional and has been created to illustrate TTU package functionality.",
+                                      coi_1L_chr = "None declared.",
+                                      conclusion_1L_chr = "If this study was real, the results would be interesting.",
                                       ethics_1L_chr = "The study was reviewed and granted approval by Awesome University's Human Research Ethics Committee (1111111.1).",
                                       funding_1L_chr = "The study was funded by Generous Benefactor.",
                                       params_ls_ls = params_ls_ls,
-                                      sample_desc_1L_chr = "The study sample was recruited from young people aged 12 to 25 years who attended Australian primary care services for mental health related needs between November 2019 to August 2020.",
+                                      sample_desc_1L_chr = "The study sample is fake data that pretends to be young people aged 12 to 25 years who attended Australian primary care services for mental health related needs between November 2019 to August 2020.",
                                       time_btwn_bl_and_fup_1L_chr = "three months")
 ```
 
@@ -207,12 +217,13 @@ var_nm_change_lup <- tibble::tibble(old_nms_chr = c("PHQ9","GAD7"),
 ```
 
 ```{r eval=FALSE}
-results_ls <- make_results_ls_spine(output_format_ls,
-                                    params_ls_ls = params_ls_ls,
-                                    path_params_ls = path_params_ls,
-                                    study_descs_ls = study_descs_ls,
-                                    var_nm_change_lup = var_nm_change_lup) %>%
-  make_results_ls()
+results_ls <- make_results_ls(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
+                              output_format_ls = output_format_ls,
+                              params_ls_ls = params_ls_ls,
+                              path_params_ls = path_params_ls,
+                              study_descs_ls = study_descs_ls,
+                              var_nm_change_lup = var_nm_change_lup)
+
 ```
 ```{r echo = FALSE, eval=FALSE }
 saveRDS(results_ls,paste0(path_params_ls$paths_ls$output_data_dir_1L_chr,"/results_ls.RDS"))

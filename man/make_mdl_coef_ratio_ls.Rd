@@ -4,10 +4,10 @@
 \alias{make_mdl_coef_ratio_ls}
 \title{Make model coefficient ratio}
 \usage{
-make_mdl_coef_ratio_ls(outp_smry_ls, predr_ctgs_ls = NULL)
+make_mdl_coef_ratio_ls(mdl_ingredients_ls, predr_ctgs_ls = NULL)
 }
 \arguments{
-\item{outp_smry_ls}{Output summary (a list)}
+\item{mdl_ingredients_ls}{Model ingredients (a list)}
 
 \item{predr_ctgs_ls}{Predictor category categoriess (a list), Default: NULL}
 }

@@ -1,3 +1,11 @@
+get_background_text <- function(results_ls){
+  text_1L_chr <- results_ls$study_descs_ls$background_1L_chr
+  return(text_1L_chr)
+}
+get_conclusion_text <- function(results_ls){
+  text_1L_chr <- results_ls$study_descs_ls$conclusion_1L_chr
+  return(text_1L_chr)
+}
 get_cndts_for_mxd_mdls <- function(mdl_types_lup = NULL){
   if(is.null(mdl_types_lup))
     utils::data("mdl_types_lup", package = "TTU", envir = environment())
@@ -50,6 +58,16 @@ get_hlth_utl_stat <- function(results_ls,
                                  "fup_mean" = results_ls$hlth_utl_and_predrs_ls$fup_hu_mean_1L_dbl,
                                  "fup_sd" = results_ls$hlth_utl_and_predrs_ls$fup_hu_sd_1L_dbl)
   return(hlth_utl_stat_1L_chr)
+}
+get_lngl_ttu_types <- function(results_ls,
+                               collapse_1L_lgl = T){
+  mdl_types_chr <- results_ls$ttu_lngl_ls$best_mdls_tb$model_type
+  if(collapse_1L_lgl){
+    mdl_types_chr <- mdl_types_chr %>%
+      paste0(collapse = ", ") %>%
+      stringi::stri_replace_last(fixed = ",", " and")
+  }
+  return(mdl_types_chr)
 }
 get_mdls_with_signft_covars <- function(outp_smry_ls,
                                         params_ls_ls){

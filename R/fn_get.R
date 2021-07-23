@@ -1,3 +1,16 @@
+#' Get background text
+#' @description get_background_text() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get background text. Function argument results_ls specifies the where to look for the required object. The function returns Text (a character vector of length one).
+#' @param results_ls Results (a list)
+#' @return Text (a character vector of length one)
+#' @rdname get_background_text
+#' @export 
+
+#' @keywords internal
+get_background_text <- function (results_ls) 
+{
+    text_1L_chr <- results_ls$study_descs_ls$background_1L_chr
+    return(text_1L_chr)
+}
 #' Get candidates for mxd models
 #' @description get_cndts_for_mxd_mdls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get candidates for mxd models. Function argument mdl_types_lup specifies the where to look for the required object. The function returns Candidates for mxd models (a lookup table).
 #' @param mdl_types_lup Model types (a lookup table), Default: NULL
@@ -13,6 +26,19 @@ get_cndts_for_mxd_mdls <- function (mdl_types_lup = NULL)
     cndts_for_mxd_mdls_lup <- mdl_types_lup %>% dplyr::filter(!tfmn_for_bnml_lgl, 
         short_name_chr != "BET_LOG")
     return(cndts_for_mxd_mdls_lup)
+}
+#' Get conclusion text
+#' @description get_conclusion_text() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get conclusion text. Function argument results_ls specifies the where to look for the required object. The function returns Text (a character vector of length one).
+#' @param results_ls Results (a list)
+#' @return Text (a character vector of length one)
+#' @rdname get_conclusion_text
+#' @export 
+
+#' @keywords internal
+get_conclusion_text <- function (results_ls) 
+{
+    text_1L_chr <- results_ls$study_descs_ls$conclusion_1L_chr
+    return(text_1L_chr)
 }
 #' Get covariate category categoriess
 #' @description get_covar_ctgs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get covariate category categoriess. Function argument results_ls specifies the where to look for the required object. The function returns Covariate category categoriess (a character vector).
@@ -112,6 +138,24 @@ get_link_from_tfmn <- function (tfmn_1L_chr, is_OLS_1L_lgl = F)
     if (link_1L_chr == "ERROR") 
         stop("Link cannot be identified - incorrect transformation argument tfmn_1L_chr")
     return(link_1L_chr)
+}
+#' Get lngl ttu types
+#' @description get_lngl_ttu_types() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get lngl ttu types. Function argument results_ls specifies the where to look for the required object. The function returns Model types (a character vector).
+#' @param results_ls Results (a list)
+#' @param collapse_1L_lgl Collapse (a logical vector of length one), Default: T
+#' @return Model types (a character vector)
+#' @rdname get_lngl_ttu_types
+#' @export 
+#' @importFrom stringi stri_replace_last
+#' @keywords internal
+get_lngl_ttu_types <- function (results_ls, collapse_1L_lgl = T) 
+{
+    mdl_types_chr <- results_ls$ttu_lngl_ls$best_mdls_tb$model_type
+    if (collapse_1L_lgl) {
+        mdl_types_chr <- mdl_types_chr %>% paste0(collapse = ", ") %>% 
+            stringi::stri_replace_last(fixed = ",", " and")
+    }
+    return(mdl_types_chr)
 }
 #' Get model comparisons
 #' @description get_mdl_cmprsns() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get model comparisons. Function argument results_ls specifies the where to look for the required object. The function returns Model comparisons (a character vector of length one).

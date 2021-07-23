@@ -16,6 +16,224 @@ print_all_plts_for_mdl_set <- function (output_ls, start_from_1L_int = 0L)
         title_1L_chr = names(output_ls)[.x], label_refs_chr = label_refs_mat[.x, 
             ]))
 }
+#' Print cohort table
+#' @description print_cohort_table() is a Print function that prints output to console Specifically, this function implements an algorithm to print cohort table. The function is called for its side effects and does not return a value.
+#' @param params_ls Params (a list)
+#' @param caption_1L_chr Caption (a character vector of length one)
+#' @param mkdn_tbl_ref_1L_chr Markdown table reference (a character vector of length one)
+#' @return NULL
+#' @rdname print_cohort_table
+#' @export 
+#' @importFrom dplyr mutate_all
+#' @importFrom stringr str_replace
+#' @importFrom kableExtra kbl kable_styling column_spec add_header_above collapse_rows
+#' @importFrom knitr opts_current
+#' @importFrom ready4show print_table
+#' @keywords internal
+print_cohort_table <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr) 
+{
+    results_ls <- params_ls$results_ls
+    df <- results_ls$tables_ls$participant_descs
+    df$variable <- gsub("\\s*\\([^\\)]+\\)", "", df$variable)
+    if (params_ls$output_type_1L_chr == "PDF") {
+        df <- df %>% dplyr::mutate_all(~stringr::str_replace(.x, 
+            "%", "\\\\%") %>% stringr::str_replace(",", "\\\\,"))
+    }
+    if (params_ls$output_type_1L_chr == "PDF") {
+        names(df) <- c("", "", "(N =", paste0(results_ls$cohort_ls$n_inc_1L_dbl, 
+            ")"), "(N =", paste0(results_ls$cohort_ls$n_fup_1L_dbl, 
+            ")"))
+        df %>% kableExtra::kbl(booktabs = T, caption = knitr::opts_current$get("tab.cap"), 
+            escape = F) %>% kableExtra::kable_styling() %>% kableExtra::column_spec(3:6, 
+            width = "3em") %>% kableExtra::column_spec(1, bold = T, 
+            width = "14em") %>% kableExtra::add_header_above(c(" ", 
+            " ", Baseline = 2, `Follow-Up` = 2)) %>% kableExtra::collapse_rows(columns = 1)
+    }
+    else {
+        df <- df %>% transform_tb_for_merged_col_1(output_type_1L_chr = params_ls$output_type_1L_chr)
+        add_to_row_ls <- make_bl_fup_add_to_row_ls(df, n_at_bl_1L_int = results_ls$cohort_ls$n_inc_1L_dbl, 
+            n_at_fup_1L_int = results_ls$cohort_ls$n_fup_1L_dbl)
+        df %>% ready4show::print_table(output_type_1L_chr = params_ls$output_type_1L_chr, 
+            caption_1L_chr = caption_1L_chr, mkdn_tbl_ref_1L_chr = paste0("tab:", 
+                knitr::opts_current$get("tab.id")), use_rdocx_1L_lgl = ifelse(params_ls$output_type_1L_chr == 
+                "Word", T, F), add_to_row_ls = add_to_row_ls, 
+            sanitize_fn = force)
+    }
+}
+#' Print corls table
+#' @description print_corls_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print corls table. The function is called for its side effects and does not return a value.
+#' @param params_ls Params (a list)
+#' @param caption_1L_chr Caption (a character vector of length one)
+#' @param mkdn_tbl_ref_1L_chr Markdown table reference (a character vector of length one)
+#' @return NULL
+#' @rdname print_corls_tbl
+#' @export 
+#' @importFrom dplyr mutate
+#' @importFrom purrr map_chr
+#' @importFrom stringr str_remove_all
+#' @importFrom kableExtra kbl kable_styling column_spec add_header_above collapse_rows
+#' @importFrom knitr opts_current
+#' @importFrom ready4show print_table
+#' @keywords internal
+print_corls_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr) 
+{
+    results_ls <- params_ls$results_ls
+    tb <- results_ls$tables_ls$pred_dist_and_cors
+    tb <- tb %>% dplyr::mutate(label = label %>% purrr::map_chr(~stringr::str_remove_all(.x, 
+        " \\(Weighted total\\)")))
+    if (params_ls$output_type_1L_chr == "PDF") {
+        names(tb) <- c("", "", "(N =", paste0(results_ls$cohort_ls$n_inc_1L_dbl, 
+            ")"), "(N =", paste0(results_ls$cohort_ls$n_fup_1L_dbl, 
+            ")"), "\\textit{p}")
+        tb %>% kableExtra::kbl(booktabs = T, caption = knitr::opts_current$get("tab.cap"), 
+            escape = F) %>% kableExtra::kable_styling() %>% kableExtra::column_spec(3:6, 
+            width = "3em") %>% kableExtra::column_spec(1, bold = T, 
+            width = "14em") %>% kableExtra::add_header_above(c(" ", 
+            " ", Baseline = 2, `Follow-Up` = 2, " ")) %>% kableExtra::collapse_rows(columns = 1)
+    }
+    else {
+        tb <- tb %>% transform_tb_for_merged_col_1(output_type_1L_chr = params_ls$output_type_1L_chr)
+        tb %>% ready4show::print_table(output_type_1L_chr = params_ls$output_type_1L_chr, 
+            caption_1L_chr = caption_1L_chr, mkdn_tbl_ref_1L_chr = mkdn_tbl_ref_1L_chr, 
+            use_rdocx_1L_lgl = ifelse(params_ls$output_type_1L_chr == 
+                "Word", T, F), add_to_row_ls = add_to_row_ls, 
+            sanitize_fn = force)
+    }
+}
+#' Print covariate ttu tables
+#' @description print_covar_ttu_tbls() is a Print function that prints output to console Specifically, this function implements an algorithm to print covariate ttu tables. The function is called for its side effects and does not return a value.
+#' @param params_ls Params (a list)
+#' @param caption_1L_chr Caption (a character vector of length one)
+#' @param table_1L_chr Table (a character vector of length one)
+#' @param ref_1L_int Reference (an integer vector of length one), Default: 1
+#' @return NULL
+#' @rdname print_covar_ttu_tbls
+#' @export 
+#' @importFrom purrr pluck map_chr
+#' @importFrom dplyr mutate
+#' @importFrom stringr str_replace_all
+#' @importFrom knitr opts_current
+#' @importFrom ready4show print_table
+#' @keywords internal
+print_covar_ttu_tbls <- function (params_ls, caption_1L_chr, table_1L_chr, ref_1L_int = 1) 
+{
+    results_ls <- params_ls$results_ls
+    df <- results_ls$tables_ls %>% purrr::pluck(paste0("mdl_type_", 
+        ref_1L_int, "_covar_mdls_tb")) %>% dplyr::mutate(Parameter = Parameter %>% 
+        purrr::map_chr(~stringr::str_replace_all(.x, "_", " ")))
+    if (params_ls$output_type_1L_chr == "PDF") {
+        add_to_row_ls <- list()
+        add_to_row_ls$pos <- list(0, nrow(df))
+        add_to_row_ls$command <- c("Parameter & Estimate\t& SE\t& 95CI & R2\t& Sigma\\\\\n", 
+            paste0("\\hline\n", "{\\footnotesize ", make_scaling_text(results_ls, 
+                table_1L_chr = knitr::opts_current$get("tab.id")), 
+                "}\n"))
+        df$Parameter <- df$Parameter %>% purrr::map_chr(~ifelse(endsWith(.x, 
+            "\n                                                                   model"), 
+            paste0("\\textbf{", .x, "}"), .x))
+    }
+    else {
+        add_to_row_ls <- NULL
+    }
+    df %>% ready4show::print_table(output_type_1L_chr = params_ls$output_type_1L_chr, 
+        caption_1L_chr = caption_1L_chr, mkdn_tbl_ref_1L_chr = paste0("tab:", 
+            table_1L_chr), use_rdocx_1L_lgl = ifelse(params_ls$output_type_1L_chr == 
+            "Word", T, F), add_to_row_ls = add_to_row_ls, footnotes_chr = make_scaling_text(results_ls, 
+            table_1L_chr = table_1L_chr), hline_after_ls = c(-1, 
+            0), sanitize_fn = force)
+}
+#' Print indpnt predictors coefficients table
+#' @description print_indpnt_predrs_coefs_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print indpnt predictors coefficients table. The function is called for its side effects and does not return a value.
+#' @param params_ls Params (a list)
+#' @param caption_1L_chr Caption (a character vector of length one)
+#' @param mkdn_tbl_ref_1L_chr Markdown table reference (a character vector of length one)
+#' @return NULL
+#' @rdname print_indpnt_predrs_coefs_tbl
+#' @export 
+#' @importFrom stringr str_replace_all
+#' @importFrom purrr map_chr
+#' @importFrom ready4show print_table
+#' @keywords internal
+print_indpnt_predrs_coefs_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr) 
+{
+    results_ls <- params_ls$results_ls
+    tb <- results_ls$tables_ls$ind_preds_coefs_tbl
+    add_to_row_ls <- list()
+    add_to_row_ls$pos <- list(-1, 0, nrow(tb))
+    add_to_row_ls$command <- c(paste0("\\toprule \n", "&\\multicolumn{5}{c}{", 
+        paste0(results_ls$ttu_lngl_ls$best_mdls_tb[[1, "model_type"]], 
+            " - ", results_ls$ttu_lngl_ls$best_mdls_tb[[1, "link_and_tfmn_chr"]]), 
+        "}&\\multicolumn{5}{c}{", paste0(results_ls$ttu_lngl_ls$best_mdls_tb[[2, 
+            "model_type"]], " - ", results_ls$ttu_lngl_ls$best_mdls_tb[[2, 
+            "link_and_tfmn_chr"]]), "}\\\\\n"), paste0("Parameter & Estimate\t& SE\t& 95CI & R2\t& Sigma & Estimate & SE\t& 95CI & R2 & Sigma \\\\\n", 
+        "\\midrule \n"), paste0("\\hline\n", "{\\footnotesize ", 
+        make_scaling_text(results_ls), "}\n"))
+    if (params_ls$output_type_1L_chr == "Word") {
+        tb$Parameter <- stringr::str_replace_all(stringr::str_replace_all(stringr::str_replace_all(tb$Parameter, 
+            "\\\\textbf", ""), "\\{", ""), "\\}", "")
+    }
+    if (params_ls$output_type_1L_chr == "PDF") {
+        tb$Parameter <- tb$Parameter %>% purrr::map_chr(~ifelse(endsWith(.x, 
+            "\n                                                                   model"), 
+            paste0("\\textbf{", .x, "}"), .x))
+    }
+    tb %>% ready4show::print_table(output_type_1L_chr = params_ls$output_type_1L_chr, 
+        caption_1L_chr = caption_1L_chr, mkdn_tbl_ref_1L_chr = mkdn_tbl_ref_1L_chr, 
+        use_rdocx_1L_lgl = ifelse(params$output_type_1L_chr == 
+            "Word", T, F), add_to_row_ls = add_to_row_ls, footnotes_chr = make_scaling_text(results_ls), 
+        sanitize_fn = force)
+}
+#' Print ten folds table
+#' @description print_ten_folds_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print ten folds table. The function is called for its side effects and does not return a value.
+#' @param params_ls Params (a list)
+#' @param caption_1L_chr Caption (a character vector of length one)
+#' @param mkdn_tbl_ref_1L_chr Markdown table reference (a character vector of length one)
+#' @param ref_1L_int Reference (an integer vector of length one), Default: 1
+#' @return NULL
+#' @rdname print_ten_folds_tbl
+#' @export 
+#' @importFrom dplyr mutate across everything
+#' @importFrom stringr str_replace_all
+#' @importFrom purrr map_chr
+#' @importFrom ready4show print_table
+#' @keywords internal
+print_ten_folds_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr, ref_1L_int = 1) 
+{
+    results_ls <- params_ls$results_ls
+    if (ref_1L_int == 1) {
+        df <- results_ls$tables_ls$tenf_phq9 %>% dplyr::mutate(Model = gsub("\"", 
+            "", Model)) %>% dplyr::mutate(dplyr::across(.cols = dplyr::everything(), 
+            ~.x %>% stringr::str_replace_all("  NA", NA_character_)))
+    }
+    else {
+        df <- results_ls$tables_ls$tenf_glm
+    }
+    if (params_ls$output_type_1L_chr == "PDF") {
+        add_to_row_ls <- list()
+        add_to_row_ls$pos <- list(0, 0, 0, nrow(df))
+        add_to_row_ls$command <- c("&\\multicolumn{3}{c}{Training model fit}&\\multicolumn{3}{c}{Testing model fit}\\\\\n", 
+            "&\\multicolumn{3}{c}{(averaged over 10 folds)}&\\multicolumn{3}{c}{(averaged over 10 folds)}\\\\\n", 
+            "Model & R2\t& RMSE & MAE &  R2\t& RMSE & MAE  \\\\\n", 
+            paste0("\\hline\n", "{\\footnotesize  RMSE: Root Mean Squared Error; MAE: Mean Absolute Error}\n"))
+        if (ref_1L_int == 1) {
+            df$Model <- df$Model %>% purrr::map_chr(~ifelse(.x %in% 
+                c("GLM", "OLS"), paste0("\\textbf{", .x, "}"), 
+                .x))
+        }
+        else {
+            df$Predictor <- df$Predictor %>% purrr::map_chr(~paste0("\\textbf{", 
+                .x, "}"))
+        }
+    }
+    else {
+        add_to_row_ls <- NULL
+    }
+    df %>% ready4show::print_table(output_type_1L_chr = params_ls$output_type_1L_chr, 
+        caption_1L_chr = caption_1L_chr, mkdn_tbl_ref_1L_chr = mkdn_tbl_ref_1L_chr, 
+        use_rdocx_1L_lgl = ifelse(params_ls$output_type_1L_chr == 
+            "Word", T, F), add_to_row_ls = add_to_row_ls, hline_after_ls = c(-1, 
+            0), sanitize_fn = force)
+}
 #' Print time series model plots
 #' @description print_ts_mdl_plts() is a Print function that prints output to console Specifically, this function implements an algorithm to print time series model plots. The function is called for its side effects and does not return a value.
 #' @param paths_to_plts_chr Paths to plots (a character vector)

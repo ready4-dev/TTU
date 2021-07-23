@@ -5,33 +5,33 @@
 \title{Make results list spine}
 \usage{
 make_results_ls_spine(
-  study_descs_ls,
   output_format_ls = NULL,
   params_ls_ls = NULL,
   path_params_ls = NULL,
-  output_data_dir_1L_chr = NULL,
+  study_descs_ls,
   fn_ls = NULL,
   include_idx_int = NULL,
   nbr_of_digits_1L_int = NULL,
+  output_data_dir_1L_chr = NULL,
   var_nm_change_lup = NULL
 )
 }
 \arguments{
-\item{study_descs_ls}{Study descriptions (a list)}
-
 \item{output_format_ls}{Output format (a list), Default: NULL}
 
 \item{params_ls_ls}{Params (a list of lists), Default: NULL}
 
 \item{path_params_ls}{Path params (a list), Default: NULL}
 
-\item{output_data_dir_1L_chr}{Output data directory (a character vector of length one), Default: NULL}
+\item{study_descs_ls}{Study descriptions (a list)}
 
 \item{fn_ls}{Function list (a list of functions), Default: NULL}
 
 \item{include_idx_int}{Include index (an integer vector), Default: NULL}
 
 \item{nbr_of_digits_1L_int}{Number of digits (an integer vector of length one), Default: NULL}
+
+\item{output_data_dir_1L_chr}{Output data directory (a character vector of length one), Default: NULL}
 
 \item{var_nm_change_lup}{Variable name change (a lookup table), Default: NULL}
 }

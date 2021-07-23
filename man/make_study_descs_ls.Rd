@@ -6,7 +6,9 @@
 \usage{
 make_study_descs_ls(
   time_btwn_bl_and_fup_1L_chr,
+  background_1L_chr = "",
   coi_1L_chr = "None declared.",
+  conclusion_1L_chr = "",
   ethics_1L_chr = NULL,
   funding_1L_chr = NULL,
   health_utl_nm_1L_chr = NULL,
@@ -18,7 +20,11 @@ make_study_descs_ls(
 \arguments{
 \item{time_btwn_bl_and_fup_1L_chr}{Time btwn baseline and follow-up (a character vector of length one)}
 
+\item{background_1L_chr}{Background (a character vector of length one), Default: ''}
+
 \item{coi_1L_chr}{Coi (a character vector of length one), Default: 'None declared.'}
+
+\item{conclusion_1L_chr}{Conclusion (a character vector of length one), Default: ''}
 
 \item{ethics_1L_chr}{Ethics (a character vector of length one), Default: NULL}
 

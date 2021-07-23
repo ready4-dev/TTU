@@ -5,14 +5,38 @@
 \title{Make results}
 \usage{
 make_results_ls(
-  spine_of_results_ls,
+  spine_of_results_ls = NULL,
+  dv_ds_nm_and_url_chr = NULL,
+  output_format_ls = NULL,
+  params_ls_ls = NULL,
+  path_params_ls = NULL,
+  study_descs_ls = NULL,
+  fn_ls = NULL,
+  include_idx_int = NULL,
+  var_nm_change_lup = NULL,
   ctgl_vars_regrouping_ls = NULL,
   sig_covars_some_predrs_mdls_tb = NULL,
   sig_thresh_covars_1L_chr = NULL
 )
 }
 \arguments{
-\item{spine_of_results_ls}{Spine of results (a list)}
+\item{spine_of_results_ls}{Spine of results (a list), Default: NULL}
+
+\item{dv_ds_nm_and_url_chr}{Dataverse dataset name and url (a character vector), Default: NULL}
+
+\item{output_format_ls}{Output format (a list), Default: NULL}
+
+\item{params_ls_ls}{Params (a list of lists), Default: NULL}
+
+\item{path_params_ls}{Path params (a list), Default: NULL}
+
+\item{study_descs_ls}{Study descriptions (a list), Default: NULL}
+
+\item{fn_ls}{Function list (a list of functions), Default: NULL}
+
+\item{include_idx_int}{Include index (an integer vector), Default: NULL}
+
+\item{var_nm_change_lup}{Variable name change (a lookup table), Default: NULL}
 
 \item{ctgl_vars_regrouping_ls}{Ctgl variables regrouping (a list), Default: NULL}
 
