@@ -465,6 +465,16 @@ transform_rprt_lup <- function(rprt_lup,
   }
   return(rprt_lup)
 }
+transform_tb_for_merged_col_1 <- function(df,
+                                          output_type_1L_chr = "PDF"){
+  df[[1]] <- as.character(df[[1]])
+  rle.lengths <- rle(df[[1]])$lengths
+  first <- !duplicated(df[[1]])
+  df[[1]][!first] <- ""
+  if(output_type_1L_chr == "PDF")
+    df[[1]][first] <- paste0("\\midrule\\multirow{", rle.lengths, "}{*}{\\textbf{", df[[1]][first], "}}")
+  return(df)
+}
 transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr,
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round",
     round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, scaling_fctr_dbl = 0.01,

@@ -525,6 +525,26 @@ transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharin
     }
     return(rprt_lup)
 }
+#' Transform tibble for merged column 1
+#' @description transform_tb_for_merged_col_1() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble for merged column 1. Function argument df specifies the object to be updated. Argument output_type_1L_chr provides the object to be updated. The function returns Data.frame (a data.frame).
+#' @param df Data.frame (a data.frame)
+#' @param output_type_1L_chr Output type (a character vector of length one), Default: 'PDF'
+#' @return Data.frame (a data.frame)
+#' @rdname transform_tb_for_merged_col_1
+#' @export 
+
+#' @keywords internal
+transform_tb_for_merged_col_1 <- function (df, output_type_1L_chr = "PDF") 
+{
+    df[[1]] <- as.character(df[[1]])
+    rle.lengths <- rle(df[[1]])$lengths
+    first <- !duplicated(df[[1]])
+    df[[1]][!first] <- ""
+    if (output_type_1L_chr == "PDF") 
+        df[[1]][first] <- paste0("\\midrule\\multirow{", rle.lengths, 
+            "}{*}{\\textbf{", df[[1]][first], "}}")
+    return(df)
+}
 #' Transform tibble to model input
 #' @description transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument depnt_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble).
 #' @param data_tb Data (a tibble)
