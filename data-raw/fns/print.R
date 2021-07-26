@@ -161,12 +161,12 @@ print_ten_folds_tbl <- function(params_ls,
                                 ref_1L_int = 1){
   results_ls <- params_ls$results_ls
   if(ref_1L_int ==1){
-    df <- results_ls$tables_ls$tenf_phq9 %>%
+    df <- results_ls$tables_ls$tenf_sngl_predr_tb %>%
       dplyr::mutate(Model = gsub('"', '', Model)) %>%
       dplyr::mutate(dplyr::across(.cols = dplyr::everything(), ~ .x %>%
                                     stringr::str_replace_all("  NA", NA_character_)))
   }else{
-    df <- results_ls$tables_ls$tenf_glm
+    df <- results_ls$tables_ls$tenf_prefd_mdl_tb
   }
   #df <- df
   if(params_ls$output_type_1L_chr == "PDF"){

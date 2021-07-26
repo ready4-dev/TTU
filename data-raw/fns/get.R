@@ -123,21 +123,21 @@ get_mdl_cmprsns <- function(results_ls,
                             mixed_1L_lgl = F){
   mdl_cmprsns_1L_chr <- paste0(
     ifelse(!"OLS" %in%
-             results_ls$tables_ls$tenf_phq9$Model,
+             results_ls$tables_ls$tenf_sngl_predr_tb$Model,
            "",
            ifelse(describe_1L_lgl,
-                  paste0("OLS regression models used ", results_ls$tables_ls$tenf_phq9$Model[(which(results_ls$tables_ls$tenf_phq9$Model=="OLS")+1):(which(results_ls$tables_ls$tenf_phq9$Model=="GLM")-1)] %>% unique() %>% purrr::map_chr(~ .x %>% stringi::stri_replace_last_fixed("(","(measured on a scale of ")) %>% paste0(collapse = ", ") %>% stringi::stri_replace_last_fixed(","," and") %>% tolower(),"."),
+                  paste0("OLS regression models used ", results_ls$tables_ls$tenf_sngl_predr_tb$Model[(which(results_ls$tables_ls$tenf_sngl_predr_tb$Model=="OLS")+1):(which(results_ls$tables_ls$tenf_sngl_predr_tb$Model=="GLM")-1)] %>% unique() %>% purrr::map_chr(~ .x %>% stringi::stri_replace_last_fixed("(","(measured on a scale of ")) %>% paste0(collapse = ", ") %>% stringi::stri_replace_last_fixed(","," and") %>% tolower(),"."),
                   ifelse(mixed_1L_lgl,"linear mixed effect models (LMMs)","ordinary least squares (OLS) regression models"))
 
     ),
     ifelse(!describe_1L_lgl & length(intersect(c("OLS","GLM"),
-                                               results_ls$tables_ls$tenf_phq9$Model))==2," and ",ifelse(describe_1L_lgl," ","")),
+                                               results_ls$tables_ls$tenf_sngl_predr_tb$Model))==2," and ",ifelse(describe_1L_lgl," ","")),
     ifelse(!"GLM" %in%
-             results_ls$tables_ls$tenf_phq9$Model,
+             results_ls$tables_ls$tenf_sngl_predr_tb$Model,
            "",
            ifelse(describe_1L_lgl,
                   paste0("GLMs used ",
-                         results_ls$tables_ls$tenf_phq9$Model[(which(results_ls$tables_ls$tenf_phq9$Model=="GLM")+1):length(results_ls$tables_ls$tenf_phq9$Model)] %>%
+                         results_ls$tables_ls$tenf_sngl_predr_tb$Model[(which(results_ls$tables_ls$tenf_sngl_predr_tb$Model=="GLM")+1):length(results_ls$tables_ls$tenf_sngl_predr_tb$Model)] %>%
                            unique() %>%
                            purrr::map_chr(~ .x %>%
                                             stringi::stri_replace_last_fixed("(","(measured on a scale of ")) %>% paste0(collapse = ", ") %>% stringi::stri_replace_last_fixed(","," and") %>% tolower()),

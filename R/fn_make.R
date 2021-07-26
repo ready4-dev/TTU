@@ -74,6 +74,24 @@ make_analysis_ds_smry_ls <- function (ds_descvs_ls, candidate_covar_nms_chr, pre
         dictionary_tb = ds_descvs_ls$dictionary_tb)
     return(analysis_ds_smry_ls)
 }
+#' Make baseline follow-up add to row
+#' @description make_bl_fup_add_to_row_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make baseline follow-up add to row list. The function returns Add to row (a list).
+#' @param df Data.frame (a data.frame)
+#' @param n_at_bl_1L_int N at baseline (an integer vector of length one)
+#' @param n_at_fup_1L_int N at follow-up (an integer vector of length one)
+#' @return Add to row (a list)
+#' @rdname make_bl_fup_add_to_row_ls
+#' @export 
+
+#' @keywords internal
+make_bl_fup_add_to_row_ls <- function (df, n_at_bl_1L_int, n_at_fup_1L_int) 
+{
+    add_to_row_ls <- list(pos = list(-1, nrow(df)), command = c(paste("\\toprule \n", 
+        paste0("\\multicolumn{2}{c}{} & \\multicolumn{2}{c}{\\textbf{Baseline (N=", 
+            n_at_bl_1L_int, ")}} & \\multicolumn{2}{c}{\\textbf{Follow-up (N=", 
+            n_at_fup_1L_int, ")}} \\\\\n")), paste("\\bottomrule \n")))
+    return(add_to_row_ls)
+}
 #' Make bayesian regression models model print list
 #' @description make_brms_mdl_print_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make bayesian regression models model print list. The function returns Bayesian regression models model print (a list).
 #' @param mdl_ls Model list (a list of models)
@@ -2356,14 +2374,14 @@ make_ss_tbls_ls <- function (outp_smry_ls, mdls_smry_tbls_ls, covars_mdls_ls, de
     ss_tbls_ls <- append(mdl_types_tables_ls, list(ind_preds_coefs_tbl = make_all_mdl_types_smry_tbl(outp_smry_ls, 
         mdls_tb = mdls_smry_tbls_ls$indpt_predrs_mdls_tb), participant_descs = descv_tbls_ls$cohort_desc_tb, 
         pred_dist_and_cors = descv_tbls_ls$predr_pars_and_cors_tb, 
-        tenf_glm = outp_smry_ls[["smry_of_mdl_sngl_predrs_tb"]] %>% 
+        tenf_prefd_mdl_tb = outp_smry_ls[["smry_of_mdl_sngl_predrs_tb"]] %>% 
             tibble::as_tibble() %>% dplyr::mutate(dplyr::across(where(is.numeric), 
             ~.x %>% purrr::map_dbl(~min(max(.x, -1.1), 1.1)))) %>% 
             transform_tbl_to_rnd_vars(nbr_of_digits_1L_int = nbr_of_digits_1L_int) %>% 
             dplyr::mutate(dplyr::across(.cols = dplyr::everything(), 
                 ~.x %>% stringr::str_replace_all("-1.10", "< -1.00") %>% 
                   stringr::str_replace_all("1.10", "> 1.00"))), 
-        tenf_phq9 = make_tfd_sngl_predr_mdls_tb(outp_smry_ls, 
+        tenf_sngl_predr_tb = make_tfd_sngl_predr_mdls_tb(outp_smry_ls, 
             nbr_of_digits_1L_int = nbr_of_digits_1L_int)))
     return(ss_tbls_ls)
 }

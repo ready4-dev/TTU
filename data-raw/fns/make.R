@@ -56,6 +56,18 @@ make_analysis_ds_smry_ls <- function(ds_descvs_ls,
 
   return(analysis_ds_smry_ls)
 }
+make_bl_fup_add_to_row_ls <-  function(df,
+                                       n_at_bl_1L_int,
+                                       n_at_fup_1L_int){
+  add_to_row_ls <- list(pos = list(-1, nrow(df)),
+                        command = c(paste("\\toprule \n",
+                                          paste0("\\multicolumn{2}{c}{} & \\multicolumn{2}{c}{\\textbf{Baseline (N=",n_at_bl_1L_int,")}} & \\multicolumn{2}{c}{\\textbf{Follow-up (N=",n_at_fup_1L_int,")}} \\\\\n")),
+                                    paste("\\bottomrule \n"
+                                    )
+                        )
+  )
+  return(add_to_row_ls)
+}
 make_brms_mdl_print_ls <- function (mdl_ls, label_stub_1L_chr, caption_1L_chr, output_type_1L_chr = "PDF",
                                     digits_1L_dbl = 2, big_mark_1L_chr = " ")
 {
@@ -1952,14 +1964,14 @@ make_ss_tbls_ls <- function(outp_smry_ls,
                                                                               mdls_tb = mdls_smry_tbls_ls$indpt_predrs_mdls_tb),
                      participant_descs = descv_tbls_ls$cohort_desc_tb,
                      pred_dist_and_cors = descv_tbls_ls$predr_pars_and_cors_tb,
-                     tenf_glm =  outp_smry_ls[["smry_of_mdl_sngl_predrs_tb"]] %>%
+                     tenf_prefd_mdl_tb =  outp_smry_ls[["smry_of_mdl_sngl_predrs_tb"]] %>%
                        tibble::as_tibble() %>%
                        dplyr::mutate(dplyr::across(where(is.numeric), ~ .x %>% purrr::map_dbl(~min(max(.x,-1.1),1.1)))) %>%
                        transform_tbl_to_rnd_vars(nbr_of_digits_1L_int = nbr_of_digits_1L_int) %>%
                        dplyr::mutate(dplyr::across(.cols = dplyr::everything(), ~ .x %>%
                                                      stringr::str_replace_all("-1.10","< -1.00") %>%
                                                      stringr::str_replace_all("1.10","> 1.00"))),
-                     tenf_phq9 = make_tfd_sngl_predr_mdls_tb(outp_smry_ls,
+                     tenf_sngl_predr_tb = make_tfd_sngl_predr_mdls_tb(outp_smry_ls,
                                                              nbr_of_digits_1L_int = nbr_of_digits_1L_int)))
   return(ss_tbls_ls)
 }
