@@ -69,36 +69,6 @@ get_lngl_ttu_types <- function(results_ls,
   }
   return(mdl_types_chr)
 }
-get_mdls_with_signft_covars <- function(outp_smry_ls,
-                                        params_ls_ls){
-  signft_covars_chr <- outp_smry_ls$mdls_with_covars_smry_tb %>%
-    get_signft_covars(covar_var_nms_chr = params_ls_ls$params_ls$candidate_covar_nms_chr)
-
-  signft_vars_ls <- outp_smry_ls[["mdls_with_covars_smry_tb"]]$Significant %>%
-    purrr::map(~strsplit(.x, " ")) %>% purrr::flatten()
-  mdls_with_signft_covars_ls <- signft_covars_chr %>%
-    purrr::map(~{
-      covar_nm_1L_chr <- .x
-      mdls_chr <- outp_smry_ls$mdls_with_covars_smry_tb %>%
-        dplyr::filter(purrr::map_lgl(signft_vars_ls,
-                                     ~ any(.x == covar_nm_1L_chr))) %>%
-        dplyr::pull(variable)
-      mdls_chr
-
-    }) %>%
-    stats::setNames(signft_covars_chr)
-  return(mdls_with_signft_covars_ls)
-}
-get_mdl_type_from_nm <- function(mdl_nm_1L_chr,
-                                 mdl_types_lup = NULL){
-  if(is.null(mdl_types_lup))
-    utils::data("mdl_types_lup", package = "TTU", envir = environment())
-  mdl_type_1L_chr <- (mdl_types_lup %>%
-                        dplyr::pull(short_name_chr))[mdl_types_lup %>%
-                                                       dplyr::pull(short_name_chr) %>%
-                                                       purrr::map_lgl(~endsWith(mdl_nm_1L_chr,.x))]
-  return(mdl_type_1L_chr)
-}
 get_link_from_tfmn <- function(tfmn_1L_chr,
                                is_OLS_1L_lgl = F){
   link_1L_chr <- ifelse(is_OLS_1L_lgl,
@@ -144,6 +114,36 @@ get_mdl_cmprsns <- function(results_ls,
                   ifelse(mixed_1L_lgl,"generalised linear mixed effect models (GLMMs)","generalised linear models (GLMs)"))
     ))
   return(mdl_cmprsns_1L_chr)
+}
+get_mdls_with_signft_covars <- function(outp_smry_ls,
+                                        params_ls_ls){
+  signft_covars_chr <- outp_smry_ls$mdls_with_covars_smry_tb %>%
+    get_signft_covars(covar_var_nms_chr = params_ls_ls$params_ls$candidate_covar_nms_chr)
+
+  signft_vars_ls <- outp_smry_ls[["mdls_with_covars_smry_tb"]]$Significant %>%
+    purrr::map(~strsplit(.x, " ")) %>% purrr::flatten()
+  mdls_with_signft_covars_ls <- signft_covars_chr %>%
+    purrr::map(~{
+      covar_nm_1L_chr <- .x
+      mdls_chr <- outp_smry_ls$mdls_with_covars_smry_tb %>%
+        dplyr::filter(purrr::map_lgl(signft_vars_ls,
+                                     ~ any(.x == covar_nm_1L_chr))) %>%
+        dplyr::pull(variable)
+      mdls_chr
+
+    }) %>%
+    stats::setNames(signft_covars_chr)
+  return(mdls_with_signft_covars_ls)
+}
+get_mdl_type_from_nm <- function(mdl_nm_1L_chr,
+                                 mdl_types_lup = NULL){
+  if(is.null(mdl_types_lup))
+    utils::data("mdl_types_lup", package = "TTU", envir = environment())
+  mdl_type_1L_chr <- (mdl_types_lup %>%
+                        dplyr::pull(short_name_chr))[mdl_types_lup %>%
+                                                       dplyr::pull(short_name_chr) %>%
+                                                       purrr::map_lgl(~endsWith(mdl_nm_1L_chr,.x))]
+  return(mdl_type_1L_chr)
 }
 get_nbr_of_predrs <- function(results_ls,
                               as_words_1L_lgl = T){
@@ -275,6 +275,12 @@ get_predr_ctgs <- function(results_ls,
 
   return(predr_ctgs_chr)
 }
+get_prefd_mdl_predrs <- function(results_ls){
+  predrs_1L_chr <- results_ls$predr_var_nms_chr %>%
+    paste0(collapse = ", ") %>%
+    stringi::stri_replace_last(fixed = ",", " and")
+  return(predrs_1L_chr)
+}
 get_random_intercept <- function(mdls_smry_tb,
                                  mdl_nm_1L_chr,
                                  deterministic_1L_lgl = T){
@@ -323,6 +329,16 @@ get_scndry_anlys_descs <- function(results_ls){
       })
   }
   return(scndry_anlys_descs_chr)
+}
+get_selected_mixed_mdls <- function(results_ls,
+                                    collapse_1L_lgl = T){
+  mixed_mdls_xx <- results_ls$ttu_lngl_ls$best_mdls_tb %>% purrr::pmap_chr(~paste0(..1," (",..2,")"))
+  if(collapse_1L_lgl){
+    mixed_mdls_xx <- mixed_mdls_xx  %>%
+      paste0(collapse = ", ") %>%
+      stringi::stri_replace_last(fixed = ",", " and")
+  }
+  return(mixed_mdls_xx)
 }
 get_signft_covars <- function (mdls_with_covars_smry_tb, covar_var_nms_chr)
 {

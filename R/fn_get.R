@@ -421,6 +421,20 @@ get_predrs_by_ctg <- function (results_ls, long_desc_1L_lgl = F, transform_1L_lg
     }
     return(predrs_by_ctg_ls)
 }
+#' Get preferred model predictors
+#' @description get_prefd_mdl_predrs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get preferred model predictors. Function argument results_ls specifies the where to look for the required object. The function returns Predictors (a character vector of length one).
+#' @param results_ls Results (a list)
+#' @return Predictors (a character vector of length one)
+#' @rdname get_prefd_mdl_predrs
+#' @export 
+#' @importFrom stringi stri_replace_last
+#' @keywords internal
+get_prefd_mdl_predrs <- function (results_ls) 
+{
+    predrs_1L_chr <- results_ls$predr_var_nms_chr %>% paste0(collapse = ", ") %>% 
+        stringi::stri_replace_last(fixed = ",", " and")
+    return(predrs_1L_chr)
+}
 #' Get random intercept
 #' @description get_random_intercept() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get random intercept. Function argument mdls_smry_tb specifies the where to look for the required object. The function returns Standard deviation (a double vector).
 #' @param mdls_smry_tb Models summary (a tibble)
@@ -480,6 +494,26 @@ get_scndry_anlys_descs <- function (results_ls)
             })
     }
     return(scndry_anlys_descs_chr)
+}
+#' Get selected mixed models
+#' @description get_selected_mixed_mdls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get selected mixed models. Function argument results_ls specifies the where to look for the required object. The function returns Mixed models (an output object of multiple potential types).
+#' @param results_ls Results (a list)
+#' @param collapse_1L_lgl Collapse (a logical vector of length one), Default: T
+#' @return Mixed models (an output object of multiple potential types)
+#' @rdname get_selected_mixed_mdls
+#' @export 
+#' @importFrom purrr pmap_chr
+#' @importFrom stringi stri_replace_last
+#' @keywords internal
+get_selected_mixed_mdls <- function (results_ls, collapse_1L_lgl = T) 
+{
+    mixed_mdls_xx <- results_ls$ttu_lngl_ls$best_mdls_tb %>% 
+        purrr::pmap_chr(~paste0(..1, " (", ..2, ")"))
+    if (collapse_1L_lgl) {
+        mixed_mdls_xx <- mixed_mdls_xx %>% paste0(collapse = ", ") %>% 
+            stringi::stri_replace_last(fixed = ",", " and")
+    }
+    return(mixed_mdls_xx)
 }
 #' Get significant covariates
 #' @description get_signft_covars() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get significant covariates. Function argument mdls_with_covars_smry_tb specifies the where to look for the required object. The function returns Signt covariates (a character vector).

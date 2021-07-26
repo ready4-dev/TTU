@@ -284,6 +284,22 @@ make_correlation_text <- function(results_ls){
                                            "."))
   return(correlation_text_1L_chr)
 }
+make_covar_ttu_tbl_refs <- function(params_ls){
+  results_ls <- params_ls$results_ls
+  n_mdls_1L_int <- length(results_ls$ttu_lngl_ls$best_mdls_tb$model_type)
+  n_covars_1L_int <- length(results_ls$ttu_lngl_ls$incld_covars_chr)
+  text_1L_chr <- paste0(ifelse(n_covars_1L_int < 1,
+                               "",
+                               paste0(" (see ",
+                                      ifelse(params$output_type_1L_chr=="Word","","Table"),
+                                      "s ",
+                                      paste0("\\@ref(tab:coefscovarstype",1:n_mdls_1L_int,")", collapse = ", ") %>%
+                                        stringi::stri_replace_last(fixed = ",", " and"),
+                                      ")"
+                               ))
+  )
+  return(text_1L_chr)
+}
 make_covariates_text <- function(results_ls){
   if(!is.null(results_ls$candidate_covars_ls)){
     if(length(results_ls$candidate_covars_ls)<1){
@@ -736,6 +752,27 @@ make_hlth_utl_and_predrs_ls <- function(outp_smry_ls,
                                 cor_seq_dscdng_chr =  ranked_predrs_ls$ranked_predrs_chr)
   return(hlth_utl_and_predrs_ls)
 
+}
+make_indpnt_predrs_lngl_tbls_ref <- function(params_ls){
+  results_ls <- params_ls$results_ls
+  n_mdls_1L_int <- length(results_ls$ttu_lngl_ls$best_mdls_tb$model_type)
+  text_1L_chr <- paste0(ifelse(params$output_type_1L_chr=="Word","","Table"),
+                        ifelse(n_mdls_1L_int < 3,
+                               " \\@ref(tab:cfscl)",
+                               paste0("s ",
+                                      paste0("\\@ref(tab:cfscl",1:n_mdls_1L_int,")", collapse = ", ") %>%
+                                        stringi::stri_replace_last(fixed = ",", " and")
+                               ))
+  )
+  return(text_1L_chr)
+}
+make_indpnt_predrs_lngl_tbl_title <- function (results_ls, ref_1L_int = 1)
+{
+  title_1L_chr <- paste0("Estimated coefficients for single predictor longitudinal TTU models using ",
+                         results_ls$ttu_lngl_ls$best_mdls_tb[[ref_1L_int,
+                                                              "model_type"]], " (", results_ls$ttu_lngl_ls$best_mdls_tb[[ref_1L_int,
+                                                                                                                         "link_and_tfmn_chr"]], ")")
+  return(title_1L_chr)
 }
 make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, predr_vars_nms_ls,
                                output_type_1L_chr = "HTML", mdl_types_lup = NULL, plt_types_lup = NULL,
@@ -1450,7 +1487,7 @@ make_results_ls <- function(spine_of_results_ls = NULL,
   descv_tbls_ls <- paste0(spine_of_results_ls$output_data_dir_1L_chr,"/",spine_of_results_ls$outp_smry_ls$file_paths_chr[spine_of_results_ls$outp_smry_ls$file_paths_chr %>% purrr::map_lgl(~stringr::str_detect(.x,"descv_tbls_ls.RDS"))]) %>% readRDS()
   composite_plt <- make_cmpst_sctr_and_dnsty_plt(spine_of_results_ls$outp_smry_ls,
                                                  output_data_dir_1L_chr = spine_of_results_ls$output_data_dir_1L_chr,
-                                                 predr_var_nms_chr=spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]])
+                                                 predr_var_nms_chr = spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]])
   cowplot::save_plot(paste0(spine_of_results_ls$output_data_dir_1L_chr,"/dens_and_sctr.png"), composite_plt, base_height = 20)
   ttu_cs_ls <- make_ttu_cs_ls(spine_of_results_ls$outp_smry_ls,
                              sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb,
@@ -1617,7 +1654,7 @@ make_results_ls_spine <-  function(output_format_ls = NULL,
 }
 make_scaling_text <- function(results_ls,
                               table_1L_chr = "cfscl"){
-  if(table_1L_chr == "cfscl"){
+  if(startsWith(table_1L_chr,"cfscl")){
     table_df <- results_ls$tables_ls$ind_preds_coefs_tbl
   }else{
     if(startsWith(table_1L_chr,"coefscovarstype")){

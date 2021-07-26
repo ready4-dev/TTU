@@ -365,6 +365,26 @@ make_correlation_text <- function (results_ls)
         "."))
     return(correlation_text_1L_chr)
 }
+#' Make covariate ttu table references
+#' @description make_covar_ttu_tbl_refs() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make covariate ttu table references. The function returns Text (a character vector of length one).
+#' @param params_ls Params (a list)
+#' @return Text (a character vector of length one)
+#' @rdname make_covar_ttu_tbl_refs
+#' @export 
+#' @importFrom stringi stri_replace_last
+#' @keywords internal
+make_covar_ttu_tbl_refs <- function (params_ls) 
+{
+    results_ls <- params_ls$results_ls
+    n_mdls_1L_int <- length(results_ls$ttu_lngl_ls$best_mdls_tb$model_type)
+    n_covars_1L_int <- length(results_ls$ttu_lngl_ls$incld_covars_chr)
+    text_1L_chr <- paste0(ifelse(n_covars_1L_int < 1, "", paste0(" (see ", 
+        ifelse(params$output_type_1L_chr == "Word", "", "Table"), 
+        "s ", paste0("\\@ref(tab:coefscovarstype", 1:n_mdls_1L_int, 
+            ")", collapse = ", ") %>% stringi::stri_replace_last(fixed = ",", 
+            " and"), ")")))
+    return(text_1L_chr)
+}
 #' Make covariate ttu table title
 #' @description make_covar_ttu_tbl_title() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make covariate ttu table title. The function returns Title (a character vector of length one).
 #' @param results_ls Results (a list)
@@ -872,6 +892,42 @@ make_hlth_utl_and_predrs_ls <- function (outp_smry_ls, descv_tbls_ls, nbr_of_dig
         predrs_nartv_seq_chr = ranked_predrs_ls$unranked_predrs_chr, 
         cor_seq_dscdng_chr = ranked_predrs_ls$ranked_predrs_chr)
     return(hlth_utl_and_predrs_ls)
+}
+#' Make indpnt predictors lngl table title
+#' @description make_indpnt_predrs_lngl_tbl_title() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make indpnt predictors lngl table title. The function returns Title (a character vector of length one).
+#' @param results_ls Results (a list)
+#' @param ref_1L_int Reference (an integer vector of length one), Default: 1
+#' @return Title (a character vector of length one)
+#' @rdname make_indpnt_predrs_lngl_tbl_title
+#' @export 
+
+#' @keywords internal
+make_indpnt_predrs_lngl_tbl_title <- function (results_ls, ref_1L_int = 1) 
+{
+    title_1L_chr <- paste0("Estimated coefficients for single predictor longitudinal TTU models using ", 
+        results_ls$ttu_lngl_ls$best_mdls_tb[[ref_1L_int, "model_type"]], 
+        " (", results_ls$ttu_lngl_ls$best_mdls_tb[[ref_1L_int, 
+            "link_and_tfmn_chr"]], ")")
+    return(title_1L_chr)
+}
+#' Make indpnt predictors lngl tables reference
+#' @description make_indpnt_predrs_lngl_tbls_ref() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make indpnt predictors lngl tables reference. The function returns Text (a character vector of length one).
+#' @param params_ls Params (a list)
+#' @return Text (a character vector of length one)
+#' @rdname make_indpnt_predrs_lngl_tbls_ref
+#' @export 
+#' @importFrom stringi stri_replace_last
+#' @keywords internal
+make_indpnt_predrs_lngl_tbls_ref <- function (params_ls) 
+{
+    results_ls <- params_ls$results_ls
+    n_mdls_1L_int <- length(results_ls$ttu_lngl_ls$best_mdls_tb$model_type)
+    text_1L_chr <- paste0(ifelse(params$output_type_1L_chr == 
+        "Word", "", "Table"), ifelse(n_mdls_1L_int < 3, " \\@ref(tab:cfscl)", 
+        paste0("s ", paste0("\\@ref(tab:cfscl", 1:n_mdls_1L_int, 
+            ")", collapse = ", ") %>% stringi::stri_replace_last(fixed = ",", 
+            " and"))))
+    return(text_1L_chr)
 }
 #' Make knit parameters
 #' @description make_knit_pars_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make knit parameters list. The function returns Knit parameters (a list).
@@ -1959,7 +2015,7 @@ make_results_ls_spine <- function (output_format_ls = NULL, params_ls_ls = NULL,
 #' @keywords internal
 make_scaling_text <- function (results_ls, table_1L_chr = "cfscl") 
 {
-    if (table_1L_chr == "cfscl") {
+    if (startsWith(table_1L_chr, "cfscl")) {
         table_df <- results_ls$tables_ls$ind_preds_coefs_tbl
     }
     else {

@@ -112,8 +112,6 @@ print_corls_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
 #' @importFrom purrr pluck map_chr
 #' @importFrom dplyr mutate
 #' @importFrom stringr str_replace_all
-#' @importFrom knitr opts_current
-#' @importFrom ready4show print_table
 #' @keywords internal
 print_covar_ttu_tbls <- function (params_ls, caption_1L_chr, table_1L_chr, ref_1L_int = 1) 
 {
@@ -121,25 +119,8 @@ print_covar_ttu_tbls <- function (params_ls, caption_1L_chr, table_1L_chr, ref_1
     df <- results_ls$tables_ls %>% purrr::pluck(paste0("mdl_type_", 
         ref_1L_int, "_covar_mdls_tb")) %>% dplyr::mutate(Parameter = Parameter %>% 
         purrr::map_chr(~stringr::str_replace_all(.x, "_", " ")))
-    if (params_ls$output_type_1L_chr == "PDF") {
-        add_to_row_ls <- list()
-        add_to_row_ls$pos <- list(0, nrow(df))
-        add_to_row_ls$command <- c("Parameter & Estimate\t& SE\t& 95CI & R2\t& Sigma\\\\\n", 
-            paste0("\\hline\n", "{\\footnotesize ", make_scaling_text(results_ls, 
-                table_1L_chr = knitr::opts_current$get("tab.id")), 
-                "}\n"))
-        df$Parameter <- df$Parameter %>% purrr::map_chr(~ifelse(endsWith(.x, 
-            " model"), paste0("\\textbf{", .x, "}"), .x))
-    }
-    else {
-        add_to_row_ls <- NULL
-    }
-    df %>% ready4show::print_table(output_type_1L_chr = params_ls$output_type_1L_chr, 
-        caption_1L_chr = caption_1L_chr, mkdn_tbl_ref_1L_chr = paste0("tab:", 
-            table_1L_chr), use_rdocx_1L_lgl = ifelse(params_ls$output_type_1L_chr == 
-            "Word", T, F), add_to_row_ls = add_to_row_ls, footnotes_chr = make_scaling_text(results_ls, 
-            table_1L_chr = table_1L_chr), hline_after_ls = c(-1, 
-            0), sanitize_fn = force)
+    df %>% print_lngl_ttu_tbls(caption_1L_chr = caption_1L_chr, 
+        params_ls = params_ls, ref_1L_int = ref_1L_int, table_1L_chr = table_1L_chr)
 }
 #' Print indpnt predictors coefficients table
 #' @description print_indpnt_predrs_coefs_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print indpnt predictors coefficients table. The function is called for its side effects and does not return a value.
@@ -177,9 +158,74 @@ print_indpnt_predrs_coefs_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_r
     }
     tb %>% ready4show::print_table(output_type_1L_chr = params_ls$output_type_1L_chr, 
         caption_1L_chr = caption_1L_chr, mkdn_tbl_ref_1L_chr = mkdn_tbl_ref_1L_chr, 
-        use_rdocx_1L_lgl = ifelse(params$output_type_1L_chr == 
+        use_rdocx_1L_lgl = ifelse(params_ls$output_type_1L_chr == 
             "Word", T, F), add_to_row_ls = add_to_row_ls, footnotes_chr = make_scaling_text(results_ls), 
         sanitize_fn = force)
+}
+#' Print indpnt predictors lngl model coefficients
+#' @description print_indpnt_predrs_lngl_mdl_coefs() is a Print function that prints output to console Specifically, this function implements an algorithm to print indpnt predictors lngl model coefficients. The function is called for its side effects and does not return a value.
+#' @param params_ls Params (a list)
+#' @param caption_1L_chr Caption (a character vector of length one)
+#' @param ref_1L_int Reference (an integer vector of length one), Default: 1
+#' @param table_1L_chr Table (a character vector of length one)
+#' @return NULL
+#' @rdname print_indpnt_predrs_lngl_mdl_coefs
+#' @export 
+#' @importFrom purrr pluck keep
+#' @importFrom dplyr select rename_with
+#' @importFrom stringr str_remove
+#' @keywords internal
+print_indpnt_predrs_lngl_mdl_coefs <- function (params_ls, caption_1L_chr, ref_1L_int = 1, table_1L_chr) 
+{
+    results_ls <- params_ls$results_ls
+    mdl_type_1L_chr <- results_ls$mdl_ingredients_ls$mdls_lup$mdl_type_chr %>% 
+        unique() %>% purrr::pluck(ref_1L_int)
+    tb <- results_ls$tables_ls$ind_preds_coefs_tbl %>% dplyr::select(Parameter, 
+        names(.) %>% purrr::keep(~{
+            endsWith(.x, mdl_type_1L_chr)
+        })) %>% dplyr::rename_with(.cols = names(.) %>% purrr::keep(~{
+        endsWith(.x, mdl_type_1L_chr)
+    }), ~stringr::str_remove(.x, paste0("_", mdl_type_1L_chr)))
+    tb %>% print_lngl_ttu_tbls(caption_1L_chr = caption_1L_chr, 
+        params_ls = params_ls, ref_1L_int = ref_1L_int, table_1L_chr = table_1L_chr)
+}
+#' Print lngl ttu tables
+#' @description print_lngl_ttu_tbls() is a Print function that prints output to console Specifically, this function implements an algorithm to print lngl ttu tables. The function is called for its side effects and does not return a value.
+#' @param table_df Table (a data.frame)
+#' @param params_ls Params (a list)
+#' @param caption_1L_chr Caption (a character vector of length one)
+#' @param table_1L_chr Table (a character vector of length one)
+#' @param ref_1L_int Reference (an integer vector of length one), Default: 1
+#' @return NULL
+#' @rdname print_lngl_ttu_tbls
+#' @export 
+#' @importFrom knitr opts_current
+#' @importFrom purrr map_chr
+#' @importFrom ready4show print_table
+#' @keywords internal
+print_lngl_ttu_tbls <- function (table_df, params_ls, caption_1L_chr, table_1L_chr, 
+    ref_1L_int = 1) 
+{
+    results_ls <- params_ls$results_ls
+    if (params_ls$output_type_1L_chr == "PDF") {
+        add_to_row_ls <- list()
+        add_to_row_ls$pos <- list(0, nrow(table_df))
+        add_to_row_ls$command <- c("Parameter & Estimate\t& SE\t& 95CI & R2\t& Sigma\\\\\n", 
+            paste0("\\hline\n", "{\\footnotesize ", make_scaling_text(results_ls, 
+                table_1L_chr = knitr::opts_current$get("tab.id")), 
+                "}\n"))
+        table_df$Parameter <- table_df$Parameter %>% purrr::map_chr(~ifelse(endsWith(.x, 
+            " model"), paste0("\\textbf{", .x, "}"), .x))
+    }
+    else {
+        add_to_row_ls <- NULL
+    }
+    table_df %>% ready4show::print_table(output_type_1L_chr = params_ls$output_type_1L_chr, 
+        caption_1L_chr = caption_1L_chr, mkdn_tbl_ref_1L_chr = paste0("tab:", 
+            table_1L_chr), use_rdocx_1L_lgl = ifelse(params_ls$output_type_1L_chr == 
+            "Word", T, F), add_to_row_ls = add_to_row_ls, footnotes_chr = make_scaling_text(results_ls, 
+            table_1L_chr = table_1L_chr), hline_after_ls = c(-1, 
+            0), sanitize_fn = force)
 }
 #' Print ten folds table
 #' @description print_ten_folds_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print ten folds table. The function is called for its side effects and does not return a value.
