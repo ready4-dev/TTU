@@ -379,7 +379,7 @@ make_covar_ttu_tbl_refs <- function (params_ls)
     n_mdls_1L_int <- length(results_ls$ttu_lngl_ls$best_mdls_tb$model_type)
     n_covars_1L_int <- length(results_ls$ttu_lngl_ls$incld_covars_chr)
     text_1L_chr <- paste0(ifelse(n_covars_1L_int < 1, "", paste0(" (see ", 
-        ifelse(params$output_type_1L_chr == "Word", "", "Table"), 
+        ifelse(params_ls$output_type_1L_chr == "Word", "", "Table"), 
         "s ", paste0("\\@ref(tab:coefscovarstype", 1:n_mdls_1L_int, 
             ")", collapse = ", ") %>% stringi::stri_replace_last(fixed = ",", 
             " and"), ")")))
