@@ -922,7 +922,7 @@ make_indpnt_predrs_lngl_tbls_ref <- function (params_ls)
 {
     results_ls <- params_ls$results_ls
     n_mdls_1L_int <- length(results_ls$ttu_lngl_ls$best_mdls_tb$model_type)
-    text_1L_chr <- paste0(ifelse(params$output_type_1L_chr == 
+    text_1L_chr <- paste0(ifelse(params_ls$output_type_1L_chr == 
         "Word", "", "Table"), ifelse(n_mdls_1L_int < 3, " \\@ref(tab:cfscl)", 
         paste0("s ", paste0("\\@ref(tab:cfscl", 1:n_mdls_1L_int, 
             ")", collapse = ", ") %>% stringi::stri_replace_last(fixed = ",", 
