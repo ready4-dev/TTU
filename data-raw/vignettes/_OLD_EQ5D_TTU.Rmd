@@ -192,7 +192,7 @@ TTU::write_rprt_with_rcrd(path_to_outp_fl_1L_chr = paste0(paths_ls$output_data_d
 ```{r echo = TRUE }
 if(!is.null(dv_ls)){
   params_ls <- list(dv_ds_nm_and_url_chr = dv_ls$primary_dv_chr,
-                              dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.",
+                              dv_mdl_desc_1L_chr = "This is a longitudinal transfer to utility model designed for use with the youthu R package.",
                               inc_fl_types_chr = ".pdf",
                               nbr_of_digits_1L_int = nbr_of_digits_1L_int,
                               output_type_1L_chr = output_types_ls$supplementary_1L_chr,
@@ -278,7 +278,7 @@ TTU::write_rprt_with_rcrd(path_to_outp_fl_1L_chr = here::here(paths_ls$path_from
 ```{r echo = TRUE }
 if(!is.null(dv_ls$secondary_1_dv_chr)){
   params_ls <- list(dv_ds_nm_and_url_chr = dv_ls$secondary_1_dv_chr,
-                              dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.",
+                              dv_mdl_desc_1L_chr = "This is a longitudinal transfer to utility model designed for use with the youthu R package.",
                               inc_fl_types_chr = ".pdf",
                               nbr_of_digits_1L_int = nbr_of_digits_1L_int,
                               output_type_1L_chr = output_types_ls$supplementary_1L_chr,
@@ -365,7 +365,7 @@ TTU::write_rprt_with_rcrd(path_to_outp_fl_1L_chr = here::here(paths_ls$path_from
 ```{r echo = TRUE }
 if(!is.null(dv_ls$secondary_2_dv_chr)){
   params_ls <- list(dv_ds_nm_and_url_chr = dv_ls$secondary_2_dv_chr,
-                              dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.",
+                              dv_mdl_desc_1L_chr = "This is a longitudinal transfer to utility model designed for use with the youthu R package.",
                               inc_fl_types_chr = ".pdf",
                               nbr_of_digits_1L_int = nbr_of_digits_1L_int,
                               output_type_1L_chr = output_types_ls$supplementary_1L_chr,

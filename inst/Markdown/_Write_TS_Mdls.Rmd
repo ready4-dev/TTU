@@ -5,7 +5,7 @@ date: "23/03/2021"
 output: html_document
 ---
 
-Test time series models for each of the `r length(outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())` models specified in the previous step. 
+Test longitudinal models for each of the `r length(outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr())` models specified in the previous step. 
 
 ```{r results='hide', message=FALSE, warning=FALSE}
 outp_smry_ls <- TTU::write_ts_mdls_from_alg_outp(outp_smry_ls,

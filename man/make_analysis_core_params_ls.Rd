@@ -9,14 +9,14 @@ make_analysis_core_params_ls(
   mdl_smry_ls = make_mdl_smry_ls(),
   output_format_ls = make_output_format_ls(),
   predictors_lup,
-  candidate_covar_nms_chr = NA_character_,
   control_ls = NULL,
   iters_1L_int = 4000L,
   prefd_covars_chr = NULL,
   prefd_mdl_types_chr = NULL,
   prior_ls = NULL,
   seed_1L_int = 12345,
-  use_fake_data_1L_lgl = F
+  candidate_covar_nms_chr = NULL,
+  use_fake_data_1L_lgl = NULL
 )
 }
 \arguments{
@@ -27,8 +27,6 @@ make_analysis_core_params_ls(
 \item{output_format_ls}{Output format (a list), Default: make_output_format_ls()}
 
 \item{predictors_lup}{Predictors (a lookup table)}
-
-\item{candidate_covar_nms_chr}{Candidate covariate names (a character vector), Default: 'NA'}
 
 \item{control_ls}{Control (a list), Default: NULL}
 
@@ -42,7 +40,9 @@ make_analysis_core_params_ls(
 
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 12345}
 
-\item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one), Default: F}
+\item{candidate_covar_nms_chr}{Candidate covariate names (a character vector), Default: NULL}
+
+\item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one), Default: NULL}
 }
 \value{
 Analysis core params (a list)

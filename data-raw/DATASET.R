@@ -198,7 +198,7 @@ pkg_dss_tb <- tibble::tibble(short_name_chr = c("coefs","hetg",
 # RF_VAR_IMP
 ##
 pkg_dss_tb <- tibble::tibble(rprt_nms_chr = "AAA_TTU_MDL_CTG",
-                           title_chr = "Results supplement: time series transfer to utility models.",
+                           title_chr = "Results supplement: longitudinal transfer to utility models.",
                            paths_to_rmd_dir_1L_chr = NA_character_,
                            pkg_dirs_chr = "Markdown",
                            packages_chr = "TTU",

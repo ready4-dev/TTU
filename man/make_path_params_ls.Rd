@@ -8,6 +8,7 @@ make_path_params_ls(
   path_to_data_from_top_level_chr = NULL,
   path_from_top_level_1L_chr = NULL,
   path_to_current_1L_chr = NULL,
+  dv_ds_nm_and_url_chr = NULL,
   write_new_dir_1L_lgl = F,
   use_fake_data_1L_lgl = F,
   R_fl_nm_1L_chr = "aaaaaaaaaa.txt"
@@ -19,6 +20,8 @@ make_path_params_ls(
 \item{path_from_top_level_1L_chr}{Path from top level (a character vector of length one), Default: NULL}
 
 \item{path_to_current_1L_chr}{Path to current (a character vector of length one), Default: NULL}
+
+\item{dv_ds_nm_and_url_chr}{Dataverse dataset name and url (a character vector), Default: NULL}
 
 \item{write_new_dir_1L_lgl}{Write new directory (a logical vector of length one), Default: F}
 

@@ -26,25 +26,36 @@ make_all_mdl_types_smry_tbl <- function (outp_smry_ls, mdls_tb)
 #' @param mdl_smry_ls Model summary (a list), Default: make_mdl_smry_ls()
 #' @param output_format_ls Output format (a list), Default: make_output_format_ls()
 #' @param predictors_lup Predictors (a lookup table)
-#' @param candidate_covar_nms_chr Candidate covariate names (a character vector), Default: 'NA'
 #' @param control_ls Control (a list), Default: NULL
 #' @param iters_1L_int Iterations (an integer vector of length one), Default: 4000
 #' @param prefd_covars_chr Preferred covariates (a character vector), Default: NULL
 #' @param prefd_mdl_types_chr Preferred model types (a character vector), Default: NULL
 #' @param prior_ls Prior (a list), Default: NULL
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 12345
-#' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: F
+#' @param candidate_covar_nms_chr Candidate covariate names (a character vector), Default: NULL
+#' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: NULL
 #' @return Analysis core params (a list)
 #' @rdname make_analysis_core_params_ls
 #' @export 
 
 #' @keywords internal
 make_analysis_core_params_ls <- function (ds_descvs_ls, mdl_smry_ls = make_mdl_smry_ls(), output_format_ls = make_output_format_ls(), 
-    predictors_lup, candidate_covar_nms_chr = NA_character_, 
-    control_ls = NULL, iters_1L_int = 4000L, prefd_covars_chr = NULL, 
-    prefd_mdl_types_chr = NULL, prior_ls = NULL, seed_1L_int = 12345, 
-    use_fake_data_1L_lgl = F) 
+    predictors_lup, control_ls = NULL, iters_1L_int = 4000L, 
+    prefd_covars_chr = NULL, prefd_mdl_types_chr = NULL, prior_ls = NULL, 
+    seed_1L_int = 12345, candidate_covar_nms_chr = NULL, use_fake_data_1L_lgl = NULL) 
 {
+    if (missing(candidate_covar_nms_chr)) {
+        candidate_covar_nms_chr <- ds_descvs_ls$candidate_covar_nms_chr
+    }
+    else {
+        warning("candidate_covar_nms_chr is soft deprecated - it is recommended to specify the candiate covariates as part of the list object passed to the ds_descvs_ls argument")
+    }
+    if (missing(use_fake_data_1L_lgl)) {
+        use_fake_data_1L_lgl <- ds_descvs_ls$is_fake_1L_lgl
+    }
+    else {
+        warning("use_fake_data_1L_lgl is soft deprecated - it is recommended to specify whether the dataset is fake in the is_fake_1L_lgl element of the list obkect passed to the ds_descvs_ls argument")
+    }
     analysis_core_params_ls <- list(candidate_covar_nms_chr = candidate_covar_nms_chr, 
         ds_descvs_ls = ds_descvs_ls, iters_1L_int = iters_1L_int, 
         mdl_smry_ls = mdl_smry_ls, nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int, 
@@ -579,6 +590,8 @@ make_dnsty_and_sctr_plt_title <- function (results_ls)
 #' @param maui_item_pfx_1L_chr Maui item prefix (a character vector of length one)
 #' @param utl_wtd_var_nm_1L_chr Utility weighted variable name (a character vector of length one), Default: 'wtd_utl_dbl'
 #' @param utl_unwtd_var_nm_1L_chr Utility unwtd variable name (a character vector of length one), Default: 'unwtd_utl_dbl'
+#' @param candidate_covar_nms_chr Candidate covariate names (a character vector), Default: NULL
+#' @param is_fake_1L_lgl Is fake (a logical vector of length one), Default: NULL
 #' @return Dataset descriptives (a list)
 #' @rdname make_ds_descvs_ls
 #' @export 
@@ -587,12 +600,13 @@ make_dnsty_and_sctr_plt_title <- function (results_ls)
 make_ds_descvs_ls <- function (candidate_predrs_chr, cohort_descv_var_nms_chr, dictionary_tb, 
     id_var_nm_1L_chr, msrmnt_date_var_nm_1L_chr, round_var_nm_1L_chr, 
     round_vals_chr, maui_item_pfx_1L_chr, utl_wtd_var_nm_1L_chr = "wtd_utl_dbl", 
-    utl_unwtd_var_nm_1L_chr = "unwtd_utl_dbl") 
+    utl_unwtd_var_nm_1L_chr = "unwtd_utl_dbl", candidate_covar_nms_chr = NULL, 
+    is_fake_1L_lgl = NULL) 
 {
-    ds_descvs_ls <- list(candidate_predrs_chr = candidate_predrs_chr, 
-        cohort_descv_var_nms_chr = cohort_descv_var_nms_chr, 
+    ds_descvs_ls <- list(candidate_covar_nms_chr = candidate_covar_nms_chr, 
+        candidate_predrs_chr = candidate_predrs_chr, cohort_descv_var_nms_chr = cohort_descv_var_nms_chr, 
         dictionary_tb = dictionary_tb, id_var_nm_1L_chr = id_var_nm_1L_chr, 
-        msrmnt_date_var_nm_1L_chr = msrmnt_date_var_nm_1L_chr, 
+        is_fake_1L_lgl = is_fake_1L_lgl, msrmnt_date_var_nm_1L_chr = msrmnt_date_var_nm_1L_chr, 
         round_var_nm_1L_chr = round_var_nm_1L_chr, round_vals_chr = round_vals_chr, 
         maui_item_pfx_1L_chr = maui_item_pfx_1L_chr, utl_wtd_var_nm_1L_chr = utl_wtd_var_nm_1L_chr, 
         utl_unwtd_var_nm_1L_chr = utl_unwtd_var_nm_1L_chr)
@@ -928,6 +942,44 @@ make_indpnt_predrs_lngl_tbls_ref <- function (params_ls)
             ")", collapse = ", ") %>% stringi::stri_replace_last(fixed = ",", 
             " and"))))
     return(text_1L_chr)
+}
+#' Make input params
+#' @description make_input_params() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make input params. The function returns Params (a list of lists).
+#' @param ds_tb Dataset (a tibble)
+#' @param ds_descvs_ls Dataset descriptives (a list)
+#' @param maui_params_ls Maui params (a list)
+#' @param predictors_lup Predictors (a lookup table)
+#' @param control_ls Control (a list), Default: NULL
+#' @param dv_ds_nm_and_url_chr Dataverse dataset name and url (a character vector), Default: NULL
+#' @param iters_1L_int Iterations (an integer vector of length one), Default: 4000
+#' @param mdl_smry_ls Model summary (a list), Default: make_mdl_smry_ls()
+#' @param output_format_ls Output format (a list), Default: make_output_format_ls()
+#' @param path_params_ls Path params (a list), Default: NULL
+#' @param prefd_covars_chr Preferred covariates (a character vector), Default: NULL
+#' @param prefd_mdl_types_chr Preferred model types (a character vector), Default: NULL
+#' @param prior_ls Prior (a list), Default: NULL
+#' @param seed_1L_int Seed (an integer vector of length one), Default: 12345
+#' @param write_new_dir_1L_lgl Write new directory (a logical vector of length one), Default: T
+#' @return Params (a list of lists)
+#' @rdname make_input_params
+#' @export 
+
+#' @keywords internal
+make_input_params <- function (ds_tb, ds_descvs_ls, maui_params_ls, predictors_lup, 
+    control_ls = NULL, dv_ds_nm_and_url_chr = NULL, iters_1L_int = 4000L, 
+    mdl_smry_ls = make_mdl_smry_ls(), output_format_ls = make_output_format_ls(), 
+    path_params_ls = NULL, prefd_covars_chr = NULL, prefd_mdl_types_chr = NULL, 
+    prior_ls = NULL, seed_1L_int = 12345, write_new_dir_1L_lgl = T) 
+{
+    path_params_ls <- make_path_params_ls(use_fake_data_1L_lgl = ds_descvs_ls$is_fake_1L_lgl, 
+        dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr, write_new_dir_1L_lgl = write_new_dir_1L_lgl)
+    params_ls_ls <- make_analysis_core_params_ls(ds_descvs_ls = ds_descvs_ls, 
+        output_format_ls = output_format_ls, predictors_lup = predictors_lup, 
+        prefd_covars_chr = prefd_covars_chr, prefd_mdl_types_chr = prefd_mdl_types_chr, 
+        mdl_smry_ls = mdl_smry_ls, control_ls = control_ls, iters_1L_int = iters_1L_int, 
+        prior_ls = prior_ls, seed_1L_int = seed_1L_int) %>% make_valid_params_ls_ls(ds_tb = ds_tb, 
+        maui_params_ls = maui_params_ls, path_params_ls = path_params_ls)
+    return(params_ls_ls)
 }
 #' Make knit parameters
 #' @description make_knit_pars_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make knit parameters list. The function returns Knit parameters (a list).
@@ -1488,6 +1540,7 @@ make_output_format_ls <- function (manuscript_outp_1L_chr = "Word", manuscript_d
 #' @param path_to_data_from_top_level_chr Path to data from top level (a character vector), Default: NULL
 #' @param path_from_top_level_1L_chr Path from top level (a character vector of length one), Default: NULL
 #' @param path_to_current_1L_chr Path to current (a character vector of length one), Default: NULL
+#' @param dv_ds_nm_and_url_chr Dataverse dataset name and url (a character vector), Default: NULL
 #' @param write_new_dir_1L_lgl Write new directory (a logical vector of length one), Default: F
 #' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: F
 #' @param R_fl_nm_1L_chr R file name (a character vector of length one), Default: 'aaaaaaaaaa.txt'
@@ -1497,8 +1550,8 @@ make_output_format_ls <- function (manuscript_outp_1L_chr = "Word", manuscript_d
 #' @importFrom purrr pluck
 #' @keywords internal
 make_path_params_ls <- function (path_to_data_from_top_level_chr = NULL, path_from_top_level_1L_chr = NULL, 
-    path_to_current_1L_chr = NULL, write_new_dir_1L_lgl = F, 
-    use_fake_data_1L_lgl = F, R_fl_nm_1L_chr = "aaaaaaaaaa.txt") 
+    path_to_current_1L_chr = NULL, dv_ds_nm_and_url_chr = NULL, 
+    write_new_dir_1L_lgl = F, use_fake_data_1L_lgl = F, R_fl_nm_1L_chr = "aaaaaaaaaa.txt") 
 {
     if (is.null(path_to_data_from_top_level_chr)) 
         path_to_data_from_top_level_chr <- ifelse(use_fake_data_1L_lgl, 
@@ -1513,7 +1566,7 @@ make_path_params_ls <- function (path_to_data_from_top_level_chr = NULL, path_fr
     }
     path_params_ls <- list(path_from_top_level_1L_chr = path_from_top_level_1L_chr, 
         path_to_data_from_top_level_chr = path_to_data_from_top_level_chr, 
-        path_to_current_1L_chr = path_to_current_1L_chr)
+        path_to_current_1L_chr = path_to_current_1L_chr, dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr)
     if (write_new_dir_1L_lgl) 
         path_params_ls$paths_ls <- write_main_oupt_dir(path_params_ls, 
             use_fake_data_1L_lgl = use_fake_data_1L_lgl, R_fl_nm_1L_chr = R_fl_nm_1L_chr)
@@ -2722,6 +2775,7 @@ make_valid_params_ls_ls <- function (analysis_core_params_ls, ds_tb, path_params
         utl_class_fn_1L_chr = utl_class_fn_1L_chr) %>% transform_params_ls_to_valid(scndry_analysis_extra_vars_chr = scndry_analysis_extra_vars_chr)
     valid_params_ls_ls$params_ls$short_and_long_nm <- NULL
     valid_params_ls_ls$short_and_long_nm <- maui_params_ls$short_and_long_nm
+    valid_params_ls_ls$path_params_ls <- path_params_ls
     return(valid_params_ls_ls)
 }
 #' Make within between ratios text

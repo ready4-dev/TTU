@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ## Create model catalogue
-Write a file that summarises the key features of all time series models created by this analysis.
+Write a file that summarises the key features of all longitudinal models created by this analysis.
 
 ```{r eval = params_ls$eval_1L_lgl, message=FALSE, results='hide', warning=FALSE}
 outp_smry_ls <-  append(outp_smry_ls, 

@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ## Create shareable models
-Create model objects that mirror the time series transfer to utility models in all aspects, except having their dataset objects replaced by synthetic data (to reduce the risk of accidentally sharing confidential data).
+Create model objects that mirror the longitudinal transfer to utility models in all aspects, except having their dataset objects replaced by synthetic data (to reduce the risk of accidentally sharing confidential data).
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 outp_smry_ls <- outp_smry_ls %>% 

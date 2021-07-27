@@ -1155,7 +1155,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @param output_format_ls Output format (a list)
 #' @param path_params_ls Path params (a list)
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
-#' @param dv_mdl_desc_1L_chr Dataverse model description (a character vector of length one), Default: 'This is a time series transfer to utility model designed for use with the youthu R package.'
+#' @param dv_mdl_desc_1L_chr Dataverse model description (a character vector of length one), Default: 'This is a longitudinal transfer to utility model designed for use with the youthu R package.'
 #' @param inc_fl_types_chr Include file types (a character vector), Default: '.pdf'
 #' @param purge_data_1L_lgl Purge data (a logical vector of length one), Default: FALSE
 #' @param start_at_int Start at (an integer vector), Default: c(2, 1)
@@ -1172,7 +1172,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @importFrom tibble tibble
 #' @keywords internal
 write_study_outp_ds <- function (dv_ds_nm_and_url_chr, rprt_lups_ls, output_format_ls, 
-    path_params_ls, abstract_args_ls = NULL, dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.", 
+    path_params_ls, abstract_args_ls = NULL, dv_mdl_desc_1L_chr = "This is a longitudinal transfer to utility model designed for use with the youthu R package.", 
     inc_fl_types_chr = ".pdf", purge_data_1L_lgl = FALSE, start_at_int = c(2, 
         1), use_fake_data_1L_lgl = F) 
 {

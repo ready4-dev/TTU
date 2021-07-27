@@ -14,7 +14,9 @@ make_ds_descvs_ls(
   round_vals_chr,
   maui_item_pfx_1L_chr,
   utl_wtd_var_nm_1L_chr = "wtd_utl_dbl",
-  utl_unwtd_var_nm_1L_chr = "unwtd_utl_dbl"
+  utl_unwtd_var_nm_1L_chr = "unwtd_utl_dbl",
+  candidate_covar_nms_chr = NULL,
+  is_fake_1L_lgl = NULL
 )
 }
 \arguments{
@@ -37,6 +39,10 @@ make_ds_descvs_ls(
 \item{utl_wtd_var_nm_1L_chr}{Utility weighted variable name (a character vector of length one), Default: 'wtd_utl_dbl'}
 
 \item{utl_unwtd_var_nm_1L_chr}{Utility unwtd variable name (a character vector of length one), Default: 'unwtd_utl_dbl'}
+
+\item{candidate_covar_nms_chr}{Candidate covariate names (a character vector), Default: NULL}
+
+\item{is_fake_1L_lgl}{Is fake (a logical vector of length one), Default: NULL}
 }
 \value{
 Dataset descriptives (a list)

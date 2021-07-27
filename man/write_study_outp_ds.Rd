@@ -11,7 +11,7 @@ write_study_outp_ds(
   path_params_ls,
   abstract_args_ls = NULL,
  
-    dv_mdl_desc_1L_chr = "This is a time series transfer to utility model designed for use with the youthu R package.",
+    dv_mdl_desc_1L_chr = "This is a longitudinal transfer to utility model designed for use with the youthu R package.",
   inc_fl_types_chr = ".pdf",
   purge_data_1L_lgl = FALSE,
   start_at_int = c(2, 1),
@@ -29,7 +29,7 @@ write_study_outp_ds(
 
 \item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
 
-\item{dv_mdl_desc_1L_chr}{Dataverse model description (a character vector of length one), Default: 'This is a time series transfer to utility model designed for use with the youthu R package.'}
+\item{dv_mdl_desc_1L_chr}{Dataverse model description (a character vector of length one), Default: 'This is a longitudinal transfer to utility model designed for use with the youthu R package.'}
 
 \item{inc_fl_types_chr}{Include file types (a character vector), Default: '.pdf'}
 

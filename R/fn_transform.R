@@ -511,7 +511,7 @@ transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharin
             start_at_int[1] + 2, ": Sharing Program"), rprt_nms_chr %in% 
             c("AAA_TTU_MDL_CTG") ~ paste0("Results Report ", 
             ifelse(is.null(reference_1L_int), start_at_int[2], 
-                start_at_int[2] + reference_1L_int), ": Catalogue of time series models (", 
+                start_at_int[2] + reference_1L_int), ": Catalogue of longitudinal models (", 
             ifelse(is.null(reference_1L_int), "Primary Analysis", 
                 paste0("Secondary Analysis ", LETTERS[reference_1L_int])), 
             ")"), T ~ title_chr))

@@ -31,10 +31,10 @@ fn_type_lup_tb %>%
 #                                                "prediction",
 #                                                "transformation",
 #                                                "total",
-#                                                "time series",
+#                                                "longitudinal",
 #                                                "unique identifier",
 #                                                "utility"),
-#                              no_plural_chr = c("prediction","time series"),
+#                              no_plural_chr = c("prediction","longitudinal"),
 #                              custom_plural_ls = list(utility = "utilities"))
 # abbreviations_lup <- abbreviations_lup %>%
 #   ready4fun::update_abbr_lup(short_name_chr = c(paste0(name_pfx_1L_chr,classes_to_make_tb$name_stub_chr)),

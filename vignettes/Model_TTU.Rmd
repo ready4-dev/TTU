@@ -224,11 +224,11 @@ outp_smry_ls <- write_mdls_with_covars_cmprsn(scored_data_tb = data_tb,
 
 The previous call to the `write_mdls_with_covars_cmprsn`{.R} function saves the tested models along with the two plots for each model in the "E_Predrs_W_Covars_Sngl_Mdl_Cmprsn" sub-directory of "Output". 
 
-## Apply preferred model types and predictors to time series data
-The next main step is to use the preferred model types and covariates identified from the preceding analysis of cross-sectional data in time series analysis. 
+## Apply preferred model types and predictors to longitudinal data
+The next main step is to use the preferred model types and covariates identified from the preceding analysis of cross-sectional data in longitudinal analysis. 
 
-### Time series modelling
-Next we test each of the time series models we specified in the previous step. Note, that in many cases both the `prior_ls` and `control_ls` arguments can be set to `NULL` (which may speed up execution). However, in this example doing so would result in warning messages suggesting a change to the adapt_delta control value (default = 0.8). We have therefore passed a value to the `control_ls` argument that addresses this issue.
+### longitudinal modelling
+Next we test each of the longitudinal models we specified in the previous step. Note, that in many cases both the `prior_ls` and `control_ls` arguments can be set to `NULL` (which may speed up execution). However, in this example doing so would result in warning messages suggesting a change to the adapt_delta control value (default = 0.8). We have therefore passed a value to the `control_ls` argument that addresses this issue.
 
 ```{r eval = F}
 outp_smry_ls <- write_ts_mdls_from_alg_outp(outp_smry_ls,

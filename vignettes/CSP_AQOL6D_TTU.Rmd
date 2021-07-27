@@ -34,9 +34,9 @@ We add parameters relating to the desired output format of the reports we will b
 
 ```{r }
 output_format_ls <- make_output_format_ls(manuscript_outp_1L_chr = "Word",
-                                               manuscript_digits_1L_int = 2L,
-                                               supplementary_outp_1L_chr = "PDF",
-                                               supplementary_digits_1L_int = 2L)
+                                          manuscript_digits_1L_int = 2L,
+                                          supplementary_outp_1L_chr = "PDF",
+                                          supplementary_digits_1L_int = 2L)
 ```
 
 ## Data parameters
@@ -49,20 +49,23 @@ ds_tb <- youthvars::replication_popl_tb %>%
             youthvars::transform_raw_ds_for_analysis() 
 ```
 
-```{r }
-use_fake_data_1L_lgl <-  TRUE
-```
-
 ### Dataset metadata
 We describe the features of our dataset that are most relevant to the analyses we are planning to undertake. 
 
 ```{r echo = TRUE}
 ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("K6","PHQ9"),#
+                                  candidate_covar_nms_chr = c("d_age", "SOFAS",
+                                                              "c_p_diag_s",
+                                                              "c_clinical_staging_s", 
+                                                              "d_relation_s",
+                                                              "d_studying_working"),
                                   cohort_descv_var_nms_chr = c("d_age","d_relation_s",
                                                                "d_studying_working",
-                                                               "c_p_diag_s","c_clinical_staging_s"),
+                                                               "c_p_diag_s","c_clinical_staging_s",
+                                                               "SOFAS"),
                                   dictionary_tb = youthvars::make_final_rpln_ds_dict(), 
                                   id_var_nm_1L_chr = "fkClientID", 
+                                  is_fake_1L_lgl = T,
                                   msrmnt_date_var_nm_1L_chr = "d_interview_date",
                                   round_var_nm_1L_chr = "round", 
                                   round_vals_chr = c("Baseline", "Follow-up"),
@@ -106,30 +109,26 @@ maui_params_ls <- make_maui_params_ls(maui_domains_pfcs_1L_chr = "vD",
 ## Path parameters
 We next create an object that specifies the relative locations of the input data and the intended destination for analysis outputs and reports. The default settings of the `make_path_params_ls` function will write all output into a new directory, created one level up from the current working directory.
 
-```{r, warning=F, message=F, eval=F}
-path_params_ls <- make_path_params_ls(use_fake_data_1L_lgl = use_fake_data_1L_lgl,
-                                      write_new_dir_1L_lgl = T)
-```
+# ```{r, warning=F, message=F, eval=F}
+# path_params_ls <- make_path_params_ls(use_fake_data_1L_lgl = use_fake_data_1L_lgl,
+#                                       write_new_dir_1L_lgl = T)
+# ```
 
 ## Analysis parameters
 We create a summary object that contains the core parameters that will be common to most of the analyses we are planning to run, principally using the objects created in the preceding steps. The `make_valid_params_ls_ls` checks the naming conventions used in some variables of interest and where necessary (for consistency with reporting templates) modifies the names of these variables.
 
 ```{r eval = F }
-params_ls_ls <- make_analysis_core_params_ls(ds_descvs_ls = ds_descvs_ls,
-                                             output_format_ls = output_format_ls,
-                                             predictors_lup = predictors_lup,
-                                             candidate_covar_nms_chr = c("d_age", "SOFAS",
-                                                                         "c_p_diag_s",
-                                                                         "c_clinical_staging_s", 
-                                                                         "d_relation_s",
-                                                                         "d_studying_working"),
-                                             prefd_covars_chr = "SOFAS",
-                                             prefd_mdl_types_chr = c("GLM_GSN_LOG",
-                                                                     "OLS_CLL"),
-                                             use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>%
-  make_valid_params_ls_ls(ds_tb = ds_tb, 
-                          maui_params_ls = maui_params_ls,
-                          path_params_ls = path_params_ls)
+params_ls_ls <- make_input_params(ds_tb,
+                                  ds_descvs_ls = ds_descvs_ls,
+                                  dv_ds_nm_and_url_chr = c("fakes", # Name of dataverse containing dataset
+                                                           "https://doi.org/10.7910/DVN/D74QMP"), # DOI
+                                  maui_params_ls = maui_params_ls,
+                                  output_format_ls = output_format_ls,
+                                  predictors_lup = predictors_lup,
+                                  prefd_covars_chr = "SOFAS",
+                                  prefd_mdl_types_chr = c("GLM_GSN_LOG",
+                                                          "OLS_CLL"))
+
 ```
 
 # Run analysis
@@ -178,14 +177,14 @@ We can now share the results created in the previous step in an online repositor
 
 If you have created an empty dataverse dataset to post results to, assign the DOI for your dataset and the name of the dataverse containing it to an object, `dv_ds_nm_and_url_chr` (these values will be different to those below, which will not work for you). If you do not wish to post results to a dataverse dataset, set `dv_ds_nm_and_url_chr <- NULL`.
 
-```{r}
-dv_ds_nm_and_url_chr <- c("fakes", # Name of dataverse containing dataset - Replace
-                          "https://doi.org/10.7910/DVN/D74QMP") # Dataset DOI - Replace
-```
+# ```{r}
+# dv_ds_nm_and_url_chr <- c("fakes", # Name of dataverse containing dataset - Replace
+#                           "https://doi.org/10.7910/DVN/D74QMP") # Dataset DOI - Replace
+# ```
 
 Next pass these details, along with some paramters created earlier to the `write_study_outp_ds` function. 
 ```{r echo = TRUE, eval=FALSE }
-write_study_outp_ds(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
+write_study_outp_ds(dv_ds_nm_and_url_chr = params_ls_ls$path_params_ls$dv_ds_nm_and_url_chr,
                     rprt_lups_ls = rprt_lups_ls,
                     output_format_ls = output_format_ls,
                     path_params_ls = path_params_ls,

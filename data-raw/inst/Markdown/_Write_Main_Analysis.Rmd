@@ -17,6 +17,6 @@ output: html_document
 ```{r, child=c('_Write_Cndt_Mdls_Tests.Rmd')}
 ```
 
-## Create time series models
+## Create longitudinal models
 ```{r, child=c('_Write_TS_Mdls.Rmd')}
 ```

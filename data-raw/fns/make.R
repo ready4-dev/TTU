@@ -19,14 +19,25 @@ make_analysis_core_params_ls <- function(ds_descvs_ls,
                                          mdl_smry_ls = make_mdl_smry_ls(),
                                          output_format_ls = make_output_format_ls(),
                                          predictors_lup,
-                                         candidate_covar_nms_chr = NA_character_,
                                          control_ls = NULL,
                                          iters_1L_int = 4000L,
                                          prefd_covars_chr = NULL,
                                          prefd_mdl_types_chr = NULL,
                                          prior_ls = NULL,
                                          seed_1L_int = 12345,
-                                         use_fake_data_1L_lgl = F){
+                                         candidate_covar_nms_chr = NULL,#NA_character_,
+                                         use_fake_data_1L_lgl = NULL # F
+                                         ){
+  if(missing(candidate_covar_nms_chr)){
+    candidate_covar_nms_chr <- ds_descvs_ls$candidate_covar_nms_chr
+  }else{
+    warning("candidate_covar_nms_chr is soft deprecated - it is recommended to specify the candiate covariates as part of the list object passed to the ds_descvs_ls argument")
+  }
+  if(missing(use_fake_data_1L_lgl)){
+    use_fake_data_1L_lgl <- ds_descvs_ls$is_fake_1L_lgl
+  }else{
+    warning("use_fake_data_1L_lgl is soft deprecated - it is recommended to specify whether the dataset is fake in the is_fake_1L_lgl element of the list obkect passed to the ds_descvs_ls argument")
+  }
   analysis_core_params_ls <- list(candidate_covar_nms_chr = candidate_covar_nms_chr,
                                   ds_descvs_ls = ds_descvs_ls,
                                   iters_1L_int = iters_1L_int,
@@ -473,11 +484,15 @@ make_ds_descvs_ls <- function(candidate_predrs_chr,
                               round_vals_chr,
                               maui_item_pfx_1L_chr,
                               utl_wtd_var_nm_1L_chr = "wtd_utl_dbl",
-                              utl_unwtd_var_nm_1L_chr = "unwtd_utl_dbl"){
-  ds_descvs_ls <- list(candidate_predrs_chr = candidate_predrs_chr,
+                              utl_unwtd_var_nm_1L_chr = "unwtd_utl_dbl",
+                              candidate_covar_nms_chr = NULL,
+                              is_fake_1L_lgl = NULL){
+  ds_descvs_ls <- list(candidate_covar_nms_chr = candidate_covar_nms_chr,
+                       candidate_predrs_chr = candidate_predrs_chr,
                        cohort_descv_var_nms_chr = cohort_descv_var_nms_chr,
                        dictionary_tb = dictionary_tb,
                        id_var_nm_1L_chr = id_var_nm_1L_chr,
+                       is_fake_1L_lgl = is_fake_1L_lgl,
                        msrmnt_date_var_nm_1L_chr = msrmnt_date_var_nm_1L_chr,
                        round_var_nm_1L_chr = round_var_nm_1L_chr,
                        round_vals_chr = round_vals_chr,
@@ -773,6 +788,39 @@ make_indpnt_predrs_lngl_tbl_title <- function (results_ls, ref_1L_int = 1)
                                                               "model_type"]], " (", results_ls$ttu_lngl_ls$best_mdls_tb[[ref_1L_int,
                                                                                                                          "link_and_tfmn_chr"]], ")")
   return(title_1L_chr)
+}
+make_input_params <- function(ds_tb,
+                              ds_descvs_ls,
+                              maui_params_ls,
+                              predictors_lup,
+                              control_ls = NULL,
+                              dv_ds_nm_and_url_chr = NULL,
+                              iters_1L_int = 4000L,
+                              mdl_smry_ls = make_mdl_smry_ls(),
+                              output_format_ls = make_output_format_ls(),
+                              path_params_ls = NULL,
+                              prefd_covars_chr = NULL,
+                              prefd_mdl_types_chr = NULL,
+                              prior_ls = NULL,
+                              seed_1L_int = 12345,
+                              write_new_dir_1L_lgl = T){
+  path_params_ls <- make_path_params_ls(use_fake_data_1L_lgl = ds_descvs_ls$is_fake_1L_lgl,
+                                        dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
+                                        write_new_dir_1L_lgl = write_new_dir_1L_lgl)
+  params_ls_ls <- make_analysis_core_params_ls(ds_descvs_ls = ds_descvs_ls,
+                                               output_format_ls = output_format_ls,
+                                               predictors_lup = predictors_lup,
+                                               prefd_covars_chr = prefd_covars_chr,
+                                               prefd_mdl_types_chr = prefd_mdl_types_chr,
+                                               mdl_smry_ls = mdl_smry_ls,
+                                               control_ls = control_ls,
+                                               iters_1L_int = iters_1L_int,
+                                               prior_ls = prior_ls,
+                                               seed_1L_int = seed_1L_int) %>%
+    make_valid_params_ls_ls(ds_tb = ds_tb,
+                            maui_params_ls = maui_params_ls,
+                            path_params_ls = path_params_ls)
+  return(params_ls_ls)
 }
 make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, predr_vars_nms_ls,
                                output_type_1L_chr = "HTML", mdl_types_lup = NULL, plt_types_lup = NULL,
@@ -1228,6 +1276,7 @@ make_output_format_ls <- function(manuscript_outp_1L_chr = "Word",
 make_path_params_ls <- function(path_to_data_from_top_level_chr = NULL,
                                 path_from_top_level_1L_chr = NULL,
                                 path_to_current_1L_chr = NULL,
+                                dv_ds_nm_and_url_chr = NULL,
                                 write_new_dir_1L_lgl = F,
                                 use_fake_data_1L_lgl = F,
                                 R_fl_nm_1L_chr = 'aaaaaaaaaa.txt'){
@@ -1243,7 +1292,8 @@ make_path_params_ls <- function(path_to_data_from_top_level_chr = NULL,
   }
   path_params_ls <- list(path_from_top_level_1L_chr = path_from_top_level_1L_chr,
                          path_to_data_from_top_level_chr = path_to_data_from_top_level_chr,
-                         path_to_current_1L_chr = path_to_current_1L_chr)
+                         path_to_current_1L_chr = path_to_current_1L_chr,
+                         dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr)
   if(write_new_dir_1L_lgl)
   path_params_ls$paths_ls <- write_main_oupt_dir(path_params_ls,
                                                  use_fake_data_1L_lgl = use_fake_data_1L_lgl,
@@ -2233,6 +2283,7 @@ make_valid_params_ls_ls <- function(analysis_core_params_ls,
     transform_params_ls_to_valid(scndry_analysis_extra_vars_chr = scndry_analysis_extra_vars_chr)
   valid_params_ls_ls$params_ls$short_and_long_nm <- NULL
   valid_params_ls_ls$short_and_long_nm <- maui_params_ls$short_and_long_nm
+  valid_params_ls_ls$path_params_ls <- path_params_ls
   return(valid_params_ls_ls)
 }
 make_within_between_ratios_text <- function(results_ls){

@@ -24,7 +24,7 @@ outp_smry_ls$predr_vars_nms_ls <- outp_smry_ls$predr_vars_nms_ls[outp_smry_ls$pr
         )})]
 ```
 
-### Create time series models
+### Create longitudinal models
 ```{r, child=c('_Write_TS_Mdls.Rmd')}
 ```
 
