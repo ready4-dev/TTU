@@ -227,13 +227,14 @@ transform_mdl_vars_with_clss <- function(ds_tb,
   return(tfd_ds_tb)
 }
 transform_names <- function(names_chr,
-                            rename_lup){
+                            rename_lup,
+                            invert_1L_lgl = F){
   new_names_chr <- names_chr %>%
-    purrr::map_chr(~ifelse(.x %in% rename_lup$old_nms_chr,
+    purrr::map_chr(~ifelse((!invert_1L_lgl & .x %in% rename_lup$old_nms_chr) | (invert_1L_lgl & .x %in% rename_lup$new_nms_chr),
                            .x %>%
                              ready4fun::get_from_lup_obj(data_lookup_tb = rename_lup,
-                                                         match_var_nm_1L_chr = "old_nms_chr",
-                                                         target_var_nm_1L_chr = "new_nms_chr",
+                                                         match_var_nm_1L_chr = ifelse(invert_1L_lgl,"new_nms_chr","old_nms_chr"),
+                                                         target_var_nm_1L_chr = ifelse(invert_1L_lgl,"old_nms_chr","new_nms_chr"),
                                                          evaluate_lgl = F),
                            .x))
   return(new_names_chr)

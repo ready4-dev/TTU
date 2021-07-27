@@ -803,6 +803,7 @@ make_input_params <- function(ds_tb,
                               prefd_mdl_types_chr = NULL,
                               prior_ls = NULL,
                               seed_1L_int = 12345,
+                              scndry_anlys_params_ls = NULL,
                               write_new_dir_1L_lgl = T){
   path_params_ls <- make_path_params_ls(use_fake_data_1L_lgl = ds_descvs_ls$is_fake_1L_lgl,
                                         dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
@@ -820,6 +821,8 @@ make_input_params <- function(ds_tb,
     make_valid_params_ls_ls(ds_tb = ds_tb,
                             maui_params_ls = maui_params_ls,
                             path_params_ls = path_params_ls)
+  params_ls_ls$output_format_ls <- output_format_ls
+  params_ls_ls$scndry_anlys_params_ls <- scndry_anlys_params_ls
   return(params_ls_ls)
 }
 make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, predr_vars_nms_ls,
@@ -1745,6 +1748,24 @@ make_scaling_text <- function(results_ls,
                                  ) %>%
                                  paste0(collapse = " ")))
   return(text_1L_chr)
+}
+make_scndry_anlys_params <- function(scndry_anlys_params_ls = NULL,
+                                     candidate_covar_nms_chr = NULL,
+                                     candidate_predrs_chr = NULL,
+                                     predictors_lup = NULL,
+                                     prefd_covars_chr = NA_character_
+){
+  new_params_ls <- list(candidate_covar_nms_chr = candidate_covar_nms_chr,
+                        candidate_predrs_chr = candidate_predrs_chr,
+                        predictors_lup = predictors_lup,
+                        prefd_covars_chr = prefd_covars_chr)
+  if(!is.null(scndry_anlys_params_ls)){
+    new_params_ls <- append(scndry_anlys_params_ls, list(new_params_ls)) %>%
+      stats::setNames(paste0("secondary_",1:(length(scndry_anlys_params_ls) + 1)))
+  }else{
+    new_params_ls <- list(secondary_1 = new_params_ls)
+  }
+  return(new_params_ls)
 }
 make_scndry_anlys_text <- function(results_ls){
   text_1L_chr <- ifelse(get_nbr_of_scndry_analyses(results_ls,

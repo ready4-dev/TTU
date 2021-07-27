@@ -1,3 +1,38 @@
+write_analyses <- function(input_params_ls,
+                           header_yaml_args_ls,
+                           abstract_args_ls = NULL,
+                           scndry_anlys_params_ls = NULL,
+                           start_at_int = c(2,1)){
+  write_report(params_ls = input_params_ls$params_ls,
+               paths_ls = input_params_ls$path_params_ls$paths_ls,
+               rprt_nm_1L_chr = "AAA_PMRY_ANLYS_MTH",
+               abstract_args_ls = abstract_args_ls,
+               header_yaml_args_ls = header_yaml_args_ls)
+  if(!is.null(scndry_anlys_params_ls)){
+    references_int <- 1:length(scndry_anlys_params_ls)
+    references_int %>%
+      purrr::walk(~{
+        changes_ls <- scndry_anlys_params_ls %>%
+          purrr::pluck(.x)
+        if(is.null(changes_ls$candidate_covar_nms_chr))
+          changes_ls$candidate_covar_nms_chr <- input_params_ls$params_ls$candidate_covar_nms_chr %>% transform_names(input_params_ls$rename_lup, invert_1L_lgl = T)
+        if(is.null(changes_ls$candidate_predrs_chr)){
+          changes_ls$candidate_covar_nms_chr <- changes_ls$candidate_covar_nms_chr[!changes_ls$candidate_covar_nms_chr %in% changes_ls$candidate_predrs_chr]
+        }
+        write_scndry_analysis(valid_params_ls_ls = input_params_ls,
+                              candidate_covar_nms_chr = changes_ls$candidate_covar_nms_chr,
+                              candidate_predrs_chr = changes_ls$candidate_predrs_chr,
+                              header_yaml_args_ls = header_yaml_args_ls,
+                              path_params_ls = input_params_ls$path_params_ls,
+                              prefd_covars_chr = changes_ls$prefd_covars_chr,
+                              reference_1L_int = .x,
+                              start_at_int = start_at_int,
+                              rprt_nm_1L_chr = "AAA_SUPLRY_ANLYS_MTH",
+                              abstract_args_ls = abstract_args_ls)
+      })
+  }
+
+}
 write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1L_chr,
                                 depnt_var_nm_1L_chr = "utl_total_w", covar_var_nms_chr = NA_character_,
                                 fl_nm_pfx_1L_chr = "A_RT", height_1L_dbl = 6, width_1L_dbl = 6,

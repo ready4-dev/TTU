@@ -115,46 +115,30 @@ We next create an object that specifies the relative locations of the input data
 # ```
 
 ## Analysis parameters
-We create a summary object that contains the core parameters that will be common to most of the analyses we are planning to run, principally using the objects created in the preceding steps. The `make_valid_params_ls_ls` checks the naming conventions used in some variables of interest and where necessary (for consistency with reporting templates) modifies the names of these variables.
+We create an object that specifies the input parameters for our primary analysis using the `make_input_params` function, principally using the objects created in the preceding steps. We can force the use of specified model types or covariates (rather than allowing the analysis algorithm to select these based on automated criteria) by using the `prefd_mdl_types_chr` and `prefd_covars_chr` arguments.
+The `make_input_params` performs a number of checks relating to the naming conventions used in some variables of interest and where necessary (for consistency with reporting templates) modifies the names of these variables. We can also specify how we want to adapt the input parameters (e.g. using different combinations of candidate predictors and covariates) for any supplementary analyses that we intend to run using the `scndry_anlys_params_ls ` argument in conjunction with the `make_scndry_anlys_params` function. 
 
 ```{r eval = F }
-params_ls_ls <- make_input_params(ds_tb,
-                                  ds_descvs_ls = ds_descvs_ls,
-                                  dv_ds_nm_and_url_chr = c("fakes", # Name of dataverse containing dataset
-                                                           "https://doi.org/10.7910/DVN/D74QMP"), # DOI
-                                  maui_params_ls = maui_params_ls,
-                                  output_format_ls = output_format_ls,
-                                  predictors_lup = predictors_lup,
-                                  prefd_covars_chr = "SOFAS",
-                                  prefd_mdl_types_chr = c("GLM_GSN_LOG",
-                                                          "OLS_CLL"))
+input_params_ls <- make_input_params(ds_tb,
+                                     ds_descvs_ls = ds_descvs_ls,
+                                     dv_ds_nm_and_url_chr = c("fakes", # Dataverse containing dataset
+                                                              "https://doi.org/10.7910/DVN/D74QMP"), # DOI
+                                     maui_params_ls = maui_params_ls,
+                                     output_format_ls = output_format_ls,
+                                     predictors_lup = predictors_lup,
+                                     prefd_covars_chr = "SOFAS",
+                                     prefd_mdl_types_chr = c("OLS_CLL","GLM_GSN_LOG"),
+                                     scndry_anlys_params_ls = make_scndry_anlys_params(candidate_predrs_chr = c("SOFAS"),
+                                                   prefd_covars_chr = NA_character_))
 
 ```
 
 # Run analysis
-## Primary analysis
-All analytic steps for our primary analysis are executed with the following function call.
-
-```{r echo = TRUE, eval=FALSE}
-write_report(params_ls = params_ls_ls$params_ls,
-             paths_ls = path_params_ls$paths_ls,
-             rprt_nm_1L_chr = "AAA_PMRY_ANLYS_MTH",
-             abstract_args_ls = NULL,
-             header_yaml_args_ls = header_yaml_args_ls)
-```
-
-## Secondary Analyses 
-We can specify supplementary analyses (that apply the same preferred model types as the primary analysis to different combinations of candidate predictors and covariates) by creating a new predictors lookup table and making a call to the `write_scndry_analysis` function.
-
-```{r echo = TRUE, eval=FALSE}
-write_scndry_analysis(valid_params_ls_ls = params_ls_ls,
-                      candidate_covar_nms_chr = ds_descvs_ls %>%                                                                             purrr::pluck("cohort_descv_var_nms_chr"),
-                      candidate_predrs_chr = c("SOFAS"),
-                      header_yaml_args_ls = header_yaml_args_ls,
-                      path_params_ls = path_params_ls,
-                      prefd_covars_chr = NA_character_,
-                      reference_1L_int = 1)
-  
+All analytic steps for our primary and secondary analyses are executed with the following function call.
+```{r}
+write_analyses(input_params_ls,
+               header_yaml_args_ls = header_yaml_args_ls,
+               scndry_anlys_params_ls = scndry_anlys_params_ls)
 ```
 
 # Report results
