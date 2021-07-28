@@ -5,10 +5,11 @@
 \title{Write model summary report}
 \usage{
 write_mdl_smry_rprt(
-  header_yaml_args_ls,
-  path_params_ls,
+  input_params_ls = NULL,
+  header_yaml_args_ls = NULL,
+  path_params_ls = NULL,
   use_fake_data_1L_lgl = FALSE,
-  output_format_ls,
+  output_format_ls = NULL,
   abstract_args_ls = NULL,
   dv_ds_nm_and_url_chr = NULL,
   reference_int = 0,
@@ -20,13 +21,15 @@ write_mdl_smry_rprt(
 )
 }
 \arguments{
-\item{header_yaml_args_ls}{Header yaml arguments (a list)}
+\item{input_params_ls}{Input params (a list), Default: NULL}
 
-\item{path_params_ls}{Path params (a list)}
+\item{header_yaml_args_ls}{Header yaml arguments (a list), Default: NULL}
+
+\item{path_params_ls}{Path params (a list), Default: NULL}
 
 \item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one), Default: FALSE}
 
-\item{output_format_ls}{Output format (a list)}
+\item{output_format_ls}{Output format (a list), Default: NULL}
 
 \item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
 
@@ -45,9 +48,9 @@ write_mdl_smry_rprt(
 \item{use_shareable_mdls_1L_lgl}{Use shareable models (a logical vector of length one), Default: F}
 }
 \value{
-Report lups (a list)
+Input params (a list)
 }
 \description{
-write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Report lups (a list).
+write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Input params (a list).
 }
 \keyword{internal}

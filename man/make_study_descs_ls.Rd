@@ -5,6 +5,7 @@
 \title{Make study descriptions}
 \usage{
 make_study_descs_ls(
+  input_params_ls = NULL,
   time_btwn_bl_and_fup_1L_chr,
   background_1L_chr = "",
   coi_1L_chr = "None declared.",
@@ -14,10 +15,13 @@ make_study_descs_ls(
   health_utl_nm_1L_chr = NULL,
   params_ls_ls = NULL,
   predr_ctgs_ls = NULL,
-  sample_desc_1L_chr = NULL
+  sample_desc_1L_chr = NULL,
+  var_nm_change_lup = NULL
 )
 }
 \arguments{
+\item{input_params_ls}{Input params (a list), Default: NULL}
+
 \item{time_btwn_bl_and_fup_1L_chr}{Time btwn baseline and follow-up (a character vector of length one)}
 
 \item{background_1L_chr}{Background (a character vector of length one), Default: ''}
@@ -37,10 +41,12 @@ make_study_descs_ls(
 \item{predr_ctgs_ls}{Predictor category categoriess (a list), Default: NULL}
 
 \item{sample_desc_1L_chr}{Sample description (a character vector of length one), Default: NULL}
+
+\item{var_nm_change_lup}{Variable name change (a lookup table), Default: NULL}
 }
 \value{
-Study descriptions (a list)
+Input params (a list)
 }
 \description{
-make_study_descs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make study descriptions list. The function returns Study descriptions (a list).
+make_study_descs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make study descriptions list. The function returns Input params (a list).
 }

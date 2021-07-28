@@ -152,7 +152,7 @@ write_study_outp_ds(input_params_ls)
 The `write_study_outp_ds` function writes its outputs to a draft dataset - which you can review by logging into your dataverse account, before clicking on the option to publish the dataset. The stucture of your draft dataset should be similar to those produced by this vignette, which are viewable at: https://doi.org/10.7910/DVN/D74QMP
 
 # Create manuscript
-The first step to creating a manuscript that provides the scientific summary of the study is to provide some metadata about the study itself. If you want the manuscript to refer to some of the candidate predictors by different names than that provided in the `short_name_chr` column of the `predictors_lup` object defined earlier, you can create a table of name correspondences and pass it to the `var_nm_change_lup` argument.
+The first step to creating a manuscript that provides the scientific summary of the study is to add some metadata about the study itself to our parameters list, using the `make_study_descs_ls` function. If you want the manuscript to refer to some of the candidate predictors by different names than that provided in the `short_name_chr` column of the `predictors_lup` object defined earlier, you can create a table of name correspondences and pass it to the `var_nm_change_lup` argument.
 
 ```{r}
 input_params_ls <- make_study_descs_ls(input_params_ls = input_params_ls,
@@ -167,57 +167,18 @@ input_params_ls <- make_study_descs_ls(input_params_ls = input_params_ls,
                                                                           new_nms_chr = c("PHQ-9",
                                                                                           "GAD-7")))
 ```
+
+We can now pass the updated input parameters list to the `write_manuscript` function. This will produce an initial  draft of a scientific manuscript (detailed methods and results, a basic introduction and no discussion).  When running this command yourself you can discover where the manuscript has been saved locally on your machine by printing the object `results_ls$path_params_ls$paths_ls$reports_dir_1L_chr`. If (AND ONLY IF), you are sure that you will never develop the manuscript further with a view to future publication, you can add this automatically generated draft to the study dataset by adding `write_to_dv_1L_lgl = T` to the function call (as below). The document exported to the dataset by the following call is accessible at: https://dataverse.harvard.edu/api/access/datafile/4933736 (it is in ".dovx" format as we specified "Word" as our desired output format (see earlier in the workflow)).
 ```{r eval = F}
-write_manuscript <- function(abstract_args_ls = NULL,
-                             input_params_ls = NULL,
-                             results_ls = NULL,
-                             version_1L_chr = "0.1"){
-    mkdn_data_dir_1L_chr <- ifelse(!is.null(input_params_ls),
-                                   input_params_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr,
-                                   input_params_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr)
-  if(!dir.exists(paste0(mkdn_data_dir_1L_chr,"/ttu_lng_ss-",version_1L_chr))){
- temp_fl <- tempfile() 
- download.file(paste0("https://github.com/ready4-dev/ttu_lng_ss/archive/refs/tags/v",
-                      version_1L_chr,
-                      ".zip",
-                      temp_fl)
-utils::unzip(temp_fl, 
-             exdir = mkdn_data_dir_1L_chr)
-unlink(temp_fl)
-  }
-    if(is.null(results_ls)){
-        results_ls <- make_results_ls(dv_ds_nm_and_url_chr = input_params_ls$path_params_ls$dv_ds_nm_and_url_chr,
-                                output_format_ls = input_params_ls$output_format_ls,
-                                params_ls_ls = input_params_ls,
-                                path_params_ls = input_params_ls$path_params_ls,
-                                study_descs_ls = input_params_ls$study_descs_ls,
-                                var_nm_change_lup = input_params_ls$study_descs_ls$var_nm_change_lup,
-                                version_1L_chr = version_1L_chr)
-    }
-
-                             }
-
-
-
-
+results_ls <- write_manuscript(input_params_ls = input_params_ls,
+                               write_to_dv_1L_lgl = T)
 ```
 
-```{r eval=FALSE}
+If you do wish to develop the manuscript into something you will submit for publication, there are two options for doing so:
 
+- If your planned submission format is PDF or LaTeX, edit the markdown files (printing object `results_ls$path_params_ls$paths_ls$path_to_ms_mkdn_1L_dir` will tell you where these have been saved) and run `write_manuscript(input_params_ls = input_params_ls)` again. This maintains the reproducibility of the workflow, but has higher skills requirements.
 
-```
-```{r echo = FALSE, eval=FALSE }
-saveRDS(results_ls,paste0(path_params_ls$paths_ls$output_data_dir_1L_chr,"/results_ls.RDS"))
-  # rmarkdown::render("AQoL_VIH/AQoL_VIH.Rmd",
-  #                   output_format = NULL,
-  #                   params = list(figures_in_body_lgl = F,
-  #                                 output_type_1L_chr = "Word",
-  #                                 results_ls = results_ls,
-  #                                 tables_in_body_lgl = F),
-  #                   output_file = paste0("AQoL_VIH", ".docx"),
-  #                   output_dir = path_params_ls$paths_ls$reports_dir_1L_chr)
-# }
-```
+- If your planned submission format is Word, you can just edit the word document rendered by the `write_manuscript` function. This is relatively straightforward, though  unlike the PDF output, you will need to manually edit some of the secion numbering and table headings. 
 
 # Purge dataset copies
 All remaining local copies (but not the original version) of the study dataset are deleted from the workspace.

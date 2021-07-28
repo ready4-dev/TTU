@@ -7,6 +7,7 @@
 make_input_params(
   ds_tb,
   ds_descvs_ls,
+  header_yaml_args_ls,
   maui_params_ls,
   predictors_lup,
   control_ls = NULL,
@@ -19,6 +20,7 @@ make_input_params(
   prefd_mdl_types_chr = NULL,
   prior_ls = NULL,
   seed_1L_int = 12345,
+  scndry_anlys_params_ls = NULL,
   write_new_dir_1L_lgl = T
 )
 }
@@ -26,6 +28,8 @@ make_input_params(
 \item{ds_tb}{Dataset (a tibble)}
 
 \item{ds_descvs_ls}{Dataset descriptives (a list)}
+
+\item{header_yaml_args_ls}{Header yaml arguments (a list)}
 
 \item{maui_params_ls}{Maui params (a list)}
 
@@ -50,6 +54,8 @@ make_input_params(
 \item{prior_ls}{Prior (a list), Default: NULL}
 
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 12345}
+
+\item{scndry_anlys_params_ls}{Scndry anlys params (a list), Default: NULL}
 
 \item{write_new_dir_1L_lgl}{Write new directory (a logical vector of length one), Default: T}
 }

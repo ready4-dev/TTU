@@ -291,18 +291,22 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
 #' @description transform_names() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform names. Function argument names_chr specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns New names (a character vector).
 #' @param names_chr Names (a character vector)
 #' @param rename_lup Rename (a lookup table)
+#' @param invert_1L_lgl Invert (a logical vector of length one), Default: F
 #' @return New names (a character vector)
 #' @rdname transform_names
 #' @export 
 #' @importFrom purrr map_chr
 #' @importFrom ready4fun get_from_lup_obj
 #' @keywords internal
-transform_names <- function (names_chr, rename_lup) 
+transform_names <- function (names_chr, rename_lup, invert_1L_lgl = F) 
 {
-    new_names_chr <- names_chr %>% purrr::map_chr(~ifelse(.x %in% 
-        rename_lup$old_nms_chr, .x %>% ready4fun::get_from_lup_obj(data_lookup_tb = rename_lup, 
-        match_var_nm_1L_chr = "old_nms_chr", target_var_nm_1L_chr = "new_nms_chr", 
-        evaluate_lgl = F), .x))
+    new_names_chr <- names_chr %>% purrr::map_chr(~ifelse((!invert_1L_lgl & 
+        .x %in% rename_lup$old_nms_chr) | (invert_1L_lgl & .x %in% 
+        rename_lup$new_nms_chr), .x %>% ready4fun::get_from_lup_obj(data_lookup_tb = rename_lup, 
+        match_var_nm_1L_chr = ifelse(invert_1L_lgl, "new_nms_chr", 
+            "old_nms_chr"), target_var_nm_1L_chr = ifelse(invert_1L_lgl, 
+            "old_nms_chr", "new_nms_chr"), evaluate_lgl = F), 
+        .x))
     return(new_names_chr)
 }
 #' Transform params list from
@@ -641,8 +645,8 @@ transform_timepoint_vals <- function (timepoint_vals_chr, timepoint_levels_chr, 
     }
     return(timepoint_vals_chr)
 }
-#' Transform longitudinal model data
-#' @description transform_ts_mdl_data() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform longitudinal model data. Function argument mdl_ls specifies the object to be updated. Argument data_tb provides the object to be updated. The function returns Cnfdl (a list of models).
+#' Transform time series model data
+#' @description transform_ts_mdl_data() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform time series model data. Function argument mdl_ls specifies the object to be updated. Argument data_tb provides the object to be updated. The function returns Cnfdl (a list of models).
 #' @param mdl_ls Model list (a list of models)
 #' @param data_tb Data (a tibble)
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'utl_total_w'

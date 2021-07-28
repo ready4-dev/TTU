@@ -5,27 +5,30 @@
 \title{Write study output dataset}
 \usage{
 write_study_outp_ds(
-  dv_ds_nm_and_url_chr,
-  rprt_lups_ls,
-  output_format_ls,
-  path_params_ls,
+  input_params_ls,
+  dv_ds_nm_and_url_chr = NULL,
+  rprt_lups_ls = NULL,
+  output_format_ls = NULL,
+  path_params_ls = NULL,
   abstract_args_ls = NULL,
  
     dv_mdl_desc_1L_chr = "This is a longitudinal transfer to utility model designed for use with the youthu R package.",
   inc_fl_types_chr = ".pdf",
   purge_data_1L_lgl = FALSE,
   start_at_int = c(2, 1),
-  use_fake_data_1L_lgl = F
+  use_fake_data_1L_lgl = NULL
 )
 }
 \arguments{
-\item{dv_ds_nm_and_url_chr}{Dataverse dataset name and url (a character vector)}
+\item{input_params_ls}{Input params (a list)}
 
-\item{rprt_lups_ls}{Report lups (a list)}
+\item{dv_ds_nm_and_url_chr}{Dataverse dataset name and url (a character vector), Default: NULL}
 
-\item{output_format_ls}{Output format (a list)}
+\item{rprt_lups_ls}{Report lups (a list), Default: NULL}
 
-\item{path_params_ls}{Path params (a list)}
+\item{output_format_ls}{Output format (a list), Default: NULL}
+
+\item{path_params_ls}{Path params (a list), Default: NULL}
 
 \item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
 
@@ -37,7 +40,7 @@ write_study_outp_ds(
 
 \item{start_at_int}{Start at (an integer vector), Default: c(2, 1)}
 
-\item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one), Default: F}
+\item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one), Default: NULL}
 }
 \value{
 Dataverse dataset name and url (a character vector)

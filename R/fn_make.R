@@ -498,13 +498,13 @@ make_covariates_text <- function (results_ls)
     }
     return(text_1L_chr)
 }
-#' Make cs longitudinal ratios
-#' @description make_cs_ts_ratios_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make cs longitudinal ratios tibble. The function returns Cs longitudinal ratios (a tibble).
+#' Make cs time series ratios
+#' @description make_cs_ts_ratios_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make cs time series ratios tibble. The function returns Cs time series ratios (a tibble).
 #' @param predr_ctgs_ls Predictor category categoriess (a list)
 #' @param mdl_coef_ratios_ls Model coefficient ratios (a list)
 #' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
 #' @param fn_ls Function list (a list of functions), Default: NULL
-#' @return Cs longitudinal ratios (a tibble)
+#' @return Cs time series ratios (a tibble)
 #' @rdname make_cs_ts_ratios_tb
 #' @export 
 #' @importFrom purrr map map_dfr pluck
@@ -761,8 +761,8 @@ make_fake_eq5d_ds <- function (country_1L_chr = "UK", version_1L_chr = "5L", typ
         ~ifelse((.y + 120/365.25) >= 1, .x + 1L, .x)), T ~ d_age))
     return(data_tb)
 }
-#' Make fake longitudinal data
-#' @description make_fake_ts_data() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake longitudinal data. The function returns Fk data (a tibble).
+#' Make fake time series data
+#' @description make_fake_ts_data() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake time series data. The function returns Fk data (a tibble).
 #' @param outp_smry_ls Output summary (a list)
 #' @param dep_vars_are_NA_1L_lgl Dep variables are NA (a logical vector of length one), Default: T
 #' @return Fk data (a tibble)
@@ -947,6 +947,7 @@ make_indpnt_predrs_lngl_tbls_ref <- function (params_ls)
 #' @description make_input_params() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make input params. The function returns Params (a list of lists).
 #' @param ds_tb Dataset (a tibble)
 #' @param ds_descvs_ls Dataset descriptives (a list)
+#' @param header_yaml_args_ls Header yaml arguments (a list)
 #' @param maui_params_ls Maui params (a list)
 #' @param predictors_lup Predictors (a lookup table)
 #' @param control_ls Control (a list), Default: NULL
@@ -959,17 +960,19 @@ make_indpnt_predrs_lngl_tbls_ref <- function (params_ls)
 #' @param prefd_mdl_types_chr Preferred model types (a character vector), Default: NULL
 #' @param prior_ls Prior (a list), Default: NULL
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 12345
+#' @param scndry_anlys_params_ls Scndry anlys params (a list), Default: NULL
 #' @param write_new_dir_1L_lgl Write new directory (a logical vector of length one), Default: T
 #' @return Params (a list of lists)
 #' @rdname make_input_params
 #' @export 
 
 #' @keywords internal
-make_input_params <- function (ds_tb, ds_descvs_ls, maui_params_ls, predictors_lup, 
-    control_ls = NULL, dv_ds_nm_and_url_chr = NULL, iters_1L_int = 4000L, 
-    mdl_smry_ls = make_mdl_smry_ls(), output_format_ls = make_output_format_ls(), 
+make_input_params <- function (ds_tb, ds_descvs_ls, header_yaml_args_ls, maui_params_ls, 
+    predictors_lup, control_ls = NULL, dv_ds_nm_and_url_chr = NULL, 
+    iters_1L_int = 4000L, mdl_smry_ls = make_mdl_smry_ls(), output_format_ls = make_output_format_ls(), 
     path_params_ls = NULL, prefd_covars_chr = NULL, prefd_mdl_types_chr = NULL, 
-    prior_ls = NULL, seed_1L_int = 12345, write_new_dir_1L_lgl = T) 
+    prior_ls = NULL, seed_1L_int = 12345, scndry_anlys_params_ls = NULL, 
+    write_new_dir_1L_lgl = T) 
 {
     path_params_ls <- make_path_params_ls(use_fake_data_1L_lgl = ds_descvs_ls$is_fake_1L_lgl, 
         dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr, write_new_dir_1L_lgl = write_new_dir_1L_lgl)
@@ -979,6 +982,9 @@ make_input_params <- function (ds_tb, ds_descvs_ls, maui_params_ls, predictors_l
         mdl_smry_ls = mdl_smry_ls, control_ls = control_ls, iters_1L_int = iters_1L_int, 
         prior_ls = prior_ls, seed_1L_int = seed_1L_int) %>% make_valid_params_ls_ls(ds_tb = ds_tb, 
         maui_params_ls = maui_params_ls, path_params_ls = path_params_ls)
+    params_ls_ls$header_yaml_args_ls <- header_yaml_args_ls
+    params_ls_ls$output_format_ls <- output_format_ls
+    params_ls_ls$scndry_anlys_params_ls <- scndry_anlys_params_ls
     return(params_ls_ls)
 }
 #' Make knit parameters
@@ -1870,6 +1876,7 @@ make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_ch
 #' Make results
 #' @description make_results_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make results list. The function returns Results (a list).
 #' @param spine_of_results_ls Spine of results (a list), Default: NULL
+#' @param abstract_args_ls Abstract arguments (a list), Default: NULL
 #' @param dv_ds_nm_and_url_chr Dataverse dataset name and url (a character vector), Default: NULL
 #' @param output_format_ls Output format (a list), Default: NULL
 #' @param params_ls_ls Params (a list of lists), Default: NULL
@@ -1881,6 +1888,7 @@ make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_ch
 #' @param ctgl_vars_regrouping_ls Ctgl variables regrouping (a list), Default: NULL
 #' @param sig_covars_some_predrs_mdls_tb Sig covariates some predictors models (a tibble), Default: NULL
 #' @param sig_thresh_covars_1L_chr Sig thresh covariates (a character vector of length one), Default: NULL
+#' @param version_1L_chr Version (a character vector of length one), Default: NULL
 #' @return Results (a list)
 #' @rdname make_results_ls
 #' @export 
@@ -1890,11 +1898,12 @@ make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_ch
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter pull
-make_results_ls <- function (spine_of_results_ls = NULL, dv_ds_nm_and_url_chr = NULL, 
-    output_format_ls = NULL, params_ls_ls = NULL, path_params_ls = NULL, 
-    study_descs_ls = NULL, fn_ls = NULL, include_idx_int = NULL, 
-    var_nm_change_lup = NULL, ctgl_vars_regrouping_ls = NULL, 
-    sig_covars_some_predrs_mdls_tb = NULL, sig_thresh_covars_1L_chr = NULL) 
+make_results_ls <- function (spine_of_results_ls = NULL, abstract_args_ls = NULL, 
+    dv_ds_nm_and_url_chr = NULL, output_format_ls = NULL, params_ls_ls = NULL, 
+    path_params_ls = NULL, study_descs_ls = NULL, fn_ls = NULL, 
+    include_idx_int = NULL, var_nm_change_lup = NULL, ctgl_vars_regrouping_ls = NULL, 
+    sig_covars_some_predrs_mdls_tb = NULL, sig_thresh_covars_1L_chr = NULL, 
+    version_1L_chr = NULL) 
 {
     if (is.null(spine_of_results_ls)) {
         spine_of_results_ls <- make_results_ls_spine(output_format_ls = output_format_ls, 
@@ -1948,18 +1957,20 @@ make_results_ls <- function (spine_of_results_ls = NULL, dv_ds_nm_and_url_chr = 
             dplyr::filter(Parameter == "R2") %>% dplyr::pull(Estimate)), 
         cs_ts_ratios_tb = spine_of_results_ls$cs_ts_ratios_tb, 
         incld_covars_chr = spine_of_results_ls$outp_smry_ls$prefd_covars_chr)
-    results_ls <- list(candidate_covars_ls = spine_of_results_ls$candidate_covars_ls, 
+    results_ls <- list(abstract_args_ls = abstract_args_ls, candidate_covars_ls = spine_of_results_ls$candidate_covars_ls, 
         candidate_predrs_chr = spine_of_results_ls$candidate_predrs_chr, 
         cohort_ls = make_cohort_ls(descv_tbls_ls, ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls, 
             nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int), 
-        dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr, hlth_utl_and_predrs_ls = make_hlth_utl_and_predrs_ls(spine_of_results_ls$outp_smry_ls, 
+        dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr, header_yaml_args_ls = input_params_ls$header_yaml_args_ls, 
+        hlth_utl_and_predrs_ls = make_hlth_utl_and_predrs_ls(spine_of_results_ls$outp_smry_ls, 
             descv_tbls_ls = descv_tbls_ls, nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int, 
             old_nms_chr = spine_of_results_ls$var_nm_change_lup$old_nms_chr, 
             new_nms_chr = spine_of_results_ls$var_nm_change_lup$new_nms_chr), 
         mdl_coef_ratios_ls = spine_of_results_ls$mdl_coef_ratios_ls, 
         mdl_ingredients_ls = spine_of_results_ls$mdl_ingredients_ls, 
         mdls_with_signft_covars_ls = spine_of_results_ls$mdls_with_signft_covars_ls, 
-        paths_to_figs_ls = make_paths_to_ss_plts_ls(spine_of_results_ls$output_data_dir_1L_chr, 
+        output_format_ls = input_params_ls$output_format_ls, 
+        path_params_ls = input_params_ls$path_params_ls, paths_to_figs_ls = make_paths_to_ss_plts_ls(spine_of_results_ls$output_data_dir_1L_chr, 
             outp_smry_ls = spine_of_results_ls$outp_smry_ls), 
         predr_var_nms_chr = spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]] %>% 
             purrr::map_chr(~ifelse(.x %in% spine_of_results_ls$var_nm_change_lup$old_nms_chr, 
@@ -1971,7 +1982,9 @@ make_results_ls <- function (spine_of_results_ls = NULL, dv_ds_nm_and_url_chr = 
         tables_ls = make_ss_tbls_ls(spine_of_results_ls$outp_smry_ls, 
             mdls_smry_tbls_ls = mdls_smry_tbls_ls, covars_mdls_ls = covars_mdls_ls, 
             descv_tbls_ls = descv_tbls_ls, nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int), 
-        ttu_cs_ls = ttu_cs_ls, ttu_lngl_ls = ttu_lngl_ls, var_nm_change_lup = spine_of_results_ls$var_nm_change_lup)
+        ttu_cs_ls = ttu_cs_ls, ttu_lngl_ls = ttu_lngl_ls, ttu_version_1L_chr = spine_of_results_ls$outp_smry_ls$session_data_ls$otherPkgs$TTU$Version, 
+        var_nm_change_lup = spine_of_results_ls$var_nm_change_lup, 
+        version_1L_chr = version_1L_chr)
     return(results_ls)
 }
 #' Make results list spine
@@ -2096,6 +2109,34 @@ make_scaling_text <- function (results_ls, table_1L_chr = "cfscl")
                 .x, "."))
         }) %>% paste0(collapse = " ")))
     return(text_1L_chr)
+}
+#' Make scndry anlys params
+#' @description make_scndry_anlys_params() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make scndry anlys params. The function returns New params (a list).
+#' @param scndry_anlys_params_ls Scndry anlys params (a list), Default: NULL
+#' @param candidate_covar_nms_chr Candidate covariate names (a character vector), Default: NULL
+#' @param candidate_predrs_chr Candidate predictors (a character vector), Default: NULL
+#' @param predictors_lup Predictors (a lookup table), Default: NULL
+#' @param prefd_covars_chr Preferred covariates (a character vector), Default: 'NA'
+#' @return New params (a list)
+#' @rdname make_scndry_anlys_params
+#' @export 
+#' @importFrom stats setNames
+#' @keywords internal
+make_scndry_anlys_params <- function (scndry_anlys_params_ls = NULL, candidate_covar_nms_chr = NULL, 
+    candidate_predrs_chr = NULL, predictors_lup = NULL, prefd_covars_chr = NA_character_) 
+{
+    new_params_ls <- list(candidate_covar_nms_chr = candidate_covar_nms_chr, 
+        candidate_predrs_chr = candidate_predrs_chr, predictors_lup = predictors_lup, 
+        prefd_covars_chr = prefd_covars_chr)
+    if (!is.null(scndry_anlys_params_ls)) {
+        new_params_ls <- append(scndry_anlys_params_ls, list(new_params_ls)) %>% 
+            stats::setNames(paste0("secondary_", 1:(length(scndry_anlys_params_ls) + 
+                1)))
+    }
+    else {
+        new_params_ls <- list(secondary_1 = new_params_ls)
+    }
+    return(new_params_ls)
 }
 #' Make scndry anlys text
 #' @description make_scndry_anlys_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make scndry anlys text. The function returns Text (a character vector of length one).
@@ -2330,8 +2371,8 @@ make_smry_of_mdl_outp <- function (data_tb, model_mdl = NULL, folds_1L_int = 10,
         dplyr::select(Model, dplyr::everything())
     return(smry_of_one_predr_mdl_tb)
 }
-#' Make summary of longitudinal model output
-#' @description make_smry_of_ts_mdl_outp() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make summary of longitudinal model output. The function returns Summary of longitudinal (a list of models).
+#' Make summary of time series model output
+#' @description make_smry_of_ts_mdl_outp() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make summary of time series model output. The function returns Summary of time series (a list of models).
 #' @param data_tb Data (a tibble)
 #' @param predr_vars_nms_chr Predictor variables names (a character vector)
 #' @param mdl_nm_1L_chr Model name (a character vector of length one)
@@ -2348,7 +2389,7 @@ make_smry_of_mdl_outp <- function (data_tb, model_mdl = NULL, folds_1L_int = 10,
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 1000
 #' @param prior_ls Prior (a list), Default: NULL
 #' @param control_ls Control (a list), Default: NULL
-#' @return Summary of longitudinal (a list of models)
+#' @return Summary of time series (a list of models)
 #' @rdname make_smry_of_ts_mdl_outp
 #' @export 
 #' @importFrom purrr map_dbl
@@ -2495,7 +2536,8 @@ make_ss_tbls_ls <- function (outp_smry_ls, mdls_smry_tbls_ls, covars_mdls_ls, de
     return(ss_tbls_ls)
 }
 #' Make study descriptions
-#' @description make_study_descs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make study descriptions list. The function returns Study descriptions (a list).
+#' @description make_study_descs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make study descriptions list. The function returns Input params (a list).
+#' @param input_params_ls Input params (a list), Default: NULL
 #' @param time_btwn_bl_and_fup_1L_chr Time btwn baseline and follow-up (a character vector of length one)
 #' @param background_1L_chr Background (a character vector of length one), Default: ''
 #' @param coi_1L_chr Coi (a character vector of length one), Default: 'None declared.'
@@ -2506,20 +2548,28 @@ make_ss_tbls_ls <- function (outp_smry_ls, mdls_smry_tbls_ls, covars_mdls_ls, de
 #' @param params_ls_ls Params (a list of lists), Default: NULL
 #' @param predr_ctgs_ls Predictor category categoriess (a list), Default: NULL
 #' @param sample_desc_1L_chr Sample description (a character vector of length one), Default: NULL
-#' @return Study descriptions (a list)
+#' @param var_nm_change_lup Variable name change (a lookup table), Default: NULL
+#' @return Input params (a list)
 #' @rdname make_study_descs_ls
 #' @export 
 
-make_study_descs_ls <- function (time_btwn_bl_and_fup_1L_chr, background_1L_chr = "", 
-    coi_1L_chr = "None declared.", conclusion_1L_chr = "", ethics_1L_chr = NULL, 
-    funding_1L_chr = NULL, health_utl_nm_1L_chr = NULL, params_ls_ls = NULL, 
-    predr_ctgs_ls = NULL, sample_desc_1L_chr = NULL) 
+make_study_descs_ls <- function (input_params_ls = NULL, time_btwn_bl_and_fup_1L_chr, 
+    background_1L_chr = "", coi_1L_chr = "None declared.", conclusion_1L_chr = "", 
+    ethics_1L_chr = NULL, funding_1L_chr = NULL, health_utl_nm_1L_chr = NULL, 
+    params_ls_ls = NULL, predr_ctgs_ls = NULL, sample_desc_1L_chr = NULL, 
+    var_nm_change_lup = NULL) 
 {
     if (!missing("health_utl_nm_1L_chr")) {
         warning("The health_utl_nm_1L_chr argument is now soft deprecated. Passing a valid value to params_ls_ls will ensure the names of the MAUI instrument are included in function operations.")
     }
     else {
-        health_utl_nm_1L_chr <- params_ls_ls$short_and_long_nm[1]
+        health_utl_nm_1L_chr <- input_params_ls$short_and_long_nm[1]
+    }
+    if (!missing("params_ls_ls")) {
+        warning("The params_ls_ls argument is now soft deprecated. Use input_params_ls instead.")
+    }
+    else {
+        params_ls_ls <- input_params_ls
     }
     health_utl_long_nm_1L_chr <- ifelse(!is.null(params_ls_ls$short_and_long_nm), 
         params_ls_ls$short_and_long_nm[2], NA_character_)
@@ -2528,8 +2578,15 @@ make_study_descs_ls <- function (time_btwn_bl_and_fup_1L_chr, background_1L_chr 
         ethics_1L_chr = ethics_1L_chr, funding_1L_chr = funding_1L_chr, 
         health_utl_nm_1L_chr = health_utl_nm_1L_chr, health_utl_long_nm_1L_chr = health_utl_long_nm_1L_chr, 
         time_btwn_bl_and_fup_1L_chr = time_btwn_bl_and_fup_1L_chr, 
-        predr_ctgs_ls = predr_ctgs_ls, sample_desc_1L_chr = sample_desc_1L_chr)
-    return(study_descs_ls)
+        predr_ctgs_ls = predr_ctgs_ls, sample_desc_1L_chr = sample_desc_1L_chr, 
+        var_nm_change_lup = var_nm_change_lup)
+    if (!is.null(input_params_ls)) {
+        input_params_ls$study_descs_ls <- study_descs_ls
+    }
+    else {
+        input_params_ls <- study_descs_ls
+    }
+    return(input_params_ls)
 }
 #' Make ten fold text
 #' @description make_ten_fold_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ten fold text. The function returns Text (a character vector of length one).

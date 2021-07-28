@@ -5,28 +5,37 @@
 \title{Write manuscript}
 \usage{
 write_manuscript(
-  results_ls,
-  output_format_ls,
-  path_params_ls,
-  append_params_ls = NULL,
-  fl_nm_1L_chr = "TTU_Manuscript",
-  path_to_RMDs_chr = c("../Manuscript/Word/Word.Rmd", "../Manuscript/PDF/PDF.Rmd")
+  abstract_args_ls = NULL,
+  input_params_ls = NULL,
+  results_ls = NULL,
+  figures_in_body_lgl = NULL,
+  tables_in_body_lgl = NULL,
+  title_1L_chr = "Scientific manuscript",
+  version_1L_chr = "0.1",
+  write_to_dv_1L_lgl = F
 )
 }
 \arguments{
-\item{results_ls}{Results (a list)}
+\item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
 
-\item{output_format_ls}{Output format (a list)}
+\item{input_params_ls}{Input params (a list), Default: NULL}
 
-\item{path_params_ls}{Path params (a list)}
+\item{results_ls}{Results (a list), Default: NULL}
 
-\item{append_params_ls}{Append params (a list), Default: NULL}
+\item{figures_in_body_lgl}{Figures in body (a logical vector), Default: NULL}
 
-\item{fl_nm_1L_chr}{File name (a character vector of length one), Default: 'TTU_Manuscript'}
+\item{tables_in_body_lgl}{Tables in body (a logical vector), Default: NULL}
 
-\item{path_to_RMDs_chr}{Path toMDs (a character vector), Default: c("../Manuscript/Word/Word.Rmd", "../Manuscript/PDF/PDF.Rmd")}
+\item{title_1L_chr}{Title (a character vector of length one), Default: 'Scientific manuscript'}
+
+\item{version_1L_chr}{Version (a character vector of length one), Default: '0.1'}
+
+\item{write_to_dv_1L_lgl}{Write to dataverse (a logical vector of length one), Default: F}
+}
+\value{
+Results (a list)
 }
 \description{
-write_manuscript() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write manuscript. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+write_manuscript() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write manuscript. The function returns Results (a list).
 }
 \keyword{internal}

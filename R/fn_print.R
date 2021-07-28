@@ -278,8 +278,8 @@ print_ten_folds_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr,
             "Word", T, F), add_to_row_ls = add_to_row_ls, hline_after_ls = c(-1, 
             0), sanitize_fn = force)
 }
-#' Print longitudinal model plots
-#' @description print_ts_mdl_plts() is a Print function that prints output to console Specifically, this function implements an algorithm to print longitudinal model plots. The function is called for its side effects and does not return a value.
+#' Print time series model plots
+#' @description print_ts_mdl_plts() is a Print function that prints output to console Specifically, this function implements an algorithm to print time series model plots. The function is called for its side effects and does not return a value.
 #' @param paths_to_plts_chr Paths to plots (a character vector)
 #' @param title_1L_chr Title (a character vector of length one)
 #' @param label_refs_chr Label references (a character vector)

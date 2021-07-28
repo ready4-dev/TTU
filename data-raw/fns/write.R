@@ -70,22 +70,110 @@ write_main_oupt_dir <- function(params_ls = NULL,
   paths_ls <- youthvars::write_all_outp_dirs(paths_ls)
   return(paths_ls)
 }
-write_manuscript <- function(results_ls,
-                             output_format_ls,
-                             path_params_ls,
-                             append_params_ls = NULL,
-                             fl_nm_1L_chr = "TTU_Manuscript",
-                             path_to_RMDs_chr = c("../Manuscript/Word/Word.Rmd","../Manuscript/PDF/PDF.Rmd")){
-  rmarkdown::render(ifelse(output_format_ls$manuscript_outp_1L_chr =="Word",path_to_RMDs_chr[1],path_to_RMDs_chr[2]),
+write_manuscript <- function(abstract_args_ls = NULL,
+                             input_params_ls = NULL,
+                             results_ls = NULL,
+                             figures_in_body_lgl = NULL,
+                             tables_in_body_lgl = NULL,
+                             title_1L_chr = "Scientific manuscript",
+                             version_1L_chr = "0.1",
+                             write_to_dv_1L_lgl = F){
+  mkdn_data_dir_1L_chr <- ifelse(!is.null(input_params_ls),
+                                 input_params_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr,
+                                 results_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr)
+  outp_dir_1L_chr <- ifelse(!is.null(input_params_ls),
+                            input_params_ls$path_params_ls$paths_ls$output_data_dir_1L_chr,
+                            results_ls$path_params_ls$paths_ls$output_data_dir_1L_chr)
+  output_type_1L_chr <- ifelse(!is.null(input_params_ls),
+                               input_params_ls$output_format_ls$manuscript_outp_1L_chr,
+                               results_ls$output_format_ls$manuscript_outp_1L_chr)
+  path_to_ms_mkdn_1L_dir <- paste0(mkdn_data_dir_1L_chr,"/ttu_lng_ss-",version_1L_chr)
+  path_to_results_dir_1L_chr <- ifelse(!is.null(input_params_ls),
+                                       input_params_ls$path_params_ls$paths_ls$reports_dir_1L_chr,
+                                       results_ls$path_params_ls$paths_ls$reports_dir_1L_chr)
+  if(!dir.exists(path_to_ms_mkdn_1L_dir)){
+    temp_fl <- tempfile()
+    download.file(paste0("https://github.com/ready4-dev/ttu_lng_ss/archive/refs/tags/v",
+                         version_1L_chr,
+                         ".zip",
+                         temp_fl))
+    utils::unzip(temp_fl,
+                 exdir = mkdn_data_dir_1L_chr)
+    unlink(temp_fl)
+  }
+  if(!is.null(input_params_ls)){
+    header_yaml_args_ls <- input_params_ls$header_yaml_args_ls
+  }else{
+    header_yaml_args_ls <- results_ls$header_yaml_args_ls
+    }
+  ready4show::write_header_fls(path_to_header_dir_1L_chr = paste0(path_to_ms_mkdn_1L_dir,"/Header"),
+                               header_yaml_args_ls = header_yaml_args_ls,
+                               abstract_args_ls = abstract_args_ls)
+  if(is.null(results_ls)){
+    results_ls <- make_results_ls(dv_ds_nm_and_url_chr = input_params_ls$path_params_ls$dv_ds_nm_and_url_chr,
+                                  output_format_ls = input_params_ls$output_format_ls,
+                                  params_ls_ls = input_params_ls,
+                                  path_params_ls = input_params_ls$path_params_ls,
+                                  study_descs_ls = input_params_ls$study_descs_ls,
+                                  var_nm_change_lup = input_params_ls$study_descs_ls$var_nm_change_lup,
+                                  version_1L_chr = version_1L_chr)
+  }
+  params_ls <- list(output_type_1L_chr = output_type_1L_chr,
+                    results_ls = results_ls)
+  if(!is.null(figures_in_body_lgl))
+    params_ls$figures_in_body_lgl <- figures_in_body_lgl
+  if(!is.null(tables_in_body_lgl))
+    params_ls$tables_in_body_lgl <- tables_in_body_lgl
+  rmarkdown::render(paste0(path_to_ms_mkdn_1L_dir,
+                           "/",
+                           output_type_1L_chr,
+                           "/",
+                           output_type_1L_chr,
+                           ".Rmd"),
                     output_format = NULL,
-                    params = list(results_ls = results_ls) %>%
-                      append(append_params_ls),
-                    output_file = paste0(fl_nm_1L_chr,
-                                         ifelse(output_format_ls$manuscript_outp_1L_chr =="Word",
-                                                ".docx",
-                                                ".pdf")),
-                    output_dir = path_params_ls$paths_ls$reports_dir_1L_chr)
+                    params = params_ls,
+                    output_file = paste0("TTU_Study_Manuscript",
+                                         ifelse(output_type_1L_chr == "Word",".docx",".pdf")),
+                    output_dir = path_to_results_dir_1L_chr)
+  if(write_to_dv_1L_lgl){
+    if(!is.null(input_params_ls)){
+      paths_ls <- input_params_ls$path_params_ls$paths_ls
+    }else{
+      paths_ls <- results_ls$path_params_ls$paths_ls
+    }
+    ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "TTU_Study_Manuscript",
+                                                          title_chr = title_1L_chr),
+                                  dv_nm_1L_chr = ifelse(!is.null(input_params_ls),
+                                                        input_params_ls$path_params_ls$dv_ds_nm_and_url_chr[1],
+                                                        results_ls$path_params_ls$dv_ds_nm_and_url_chr[1]),
+                                  ds_url_1L_chr = ifelse(!is.null(input_params_ls),
+                                                         input_params_ls$path_params_ls$dv_ds_nm_and_url_chr[2],
+                                                         results_ls$path_params_ls$dv_ds_nm_and_url_chr[2]),
+                                  parent_dv_dir_1L_chr = paths_ls$dv_dir_1L_chr,
+                                  paths_to_dirs_chr = paths_ls$reports_dir_1L_chr,
+                                  inc_fl_types_chr = ifelse(output_type_1L_chr == "Word",".docx",".pdf"),
+                                  paths_are_rltv_1L_lgl = F)
+  }
+  results_ls$path_params_ls$paths_ls$path_to_ms_mkdn_1L_dir <- path_to_ms_mkdn_1L_dir
+  saveRDS(results_ls,paste0(outp_dir_1L_chr,"/results_ls.RDS"))
+  return(results_ls)
 }
+# write_manuscript <- function(results_ls,
+#                              output_format_ls,
+#                              path_params_ls,
+#                              append_params_ls = NULL,
+#                              fl_nm_1L_chr = "TTU_Manuscript",
+#                              path_to_RMDs_chr = c("../Manuscript/Word/Word.Rmd","../Manuscript/PDF/PDF.Rmd")){
+#   rmarkdown::render(ifelse(output_format_ls$manuscript_outp_1L_chr =="Word",path_to_RMDs_chr[1],path_to_RMDs_chr[2]),
+#                     output_format = NULL,
+#                     params = list(results_ls = results_ls) %>%
+#                       append(append_params_ls),
+#                     output_file = paste0(fl_nm_1L_chr,
+#                                          ifelse(output_format_ls$manuscript_outp_1L_chr =="Word",
+#                                                 ".docx",
+#                                                 ".pdf")),
+#                     output_dir = path_params_ls$paths_ls$reports_dir_1L_chr)
+# }
 write_mdl_cmprsn <- function(scored_data_tb,
                               ds_smry_ls,
                               mdl_smry_ls,

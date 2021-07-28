@@ -6,6 +6,7 @@
 \usage{
 make_results_ls(
   spine_of_results_ls = NULL,
+  abstract_args_ls = NULL,
   dv_ds_nm_and_url_chr = NULL,
   output_format_ls = NULL,
   params_ls_ls = NULL,
@@ -16,11 +17,14 @@ make_results_ls(
   var_nm_change_lup = NULL,
   ctgl_vars_regrouping_ls = NULL,
   sig_covars_some_predrs_mdls_tb = NULL,
-  sig_thresh_covars_1L_chr = NULL
+  sig_thresh_covars_1L_chr = NULL,
+  version_1L_chr = NULL
 )
 }
 \arguments{
 \item{spine_of_results_ls}{Spine of results (a list), Default: NULL}
+
+\item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
 
 \item{dv_ds_nm_and_url_chr}{Dataverse dataset name and url (a character vector), Default: NULL}
 
@@ -43,6 +47,8 @@ make_results_ls(
 \item{sig_covars_some_predrs_mdls_tb}{Sig covariates some predictors models (a tibble), Default: NULL}
 
 \item{sig_thresh_covars_1L_chr}{Sig thresh covariates (a character vector of length one), Default: NULL}
+
+\item{version_1L_chr}{Version (a character vector of length one), Default: NULL}
 }
 \value{
 Results (a list)

@@ -4,12 +4,14 @@
 \alias{transform_names}
 \title{Transform names}
 \usage{
-transform_names(names_chr, rename_lup)
+transform_names(names_chr, rename_lup, invert_1L_lgl = F)
 }
 \arguments{
 \item{names_chr}{Names (a character vector)}
 
 \item{rename_lup}{Rename (a lookup table)}
+
+\item{invert_1L_lgl}{Invert (a logical vector of length one), Default: F}
 }
 \value{
 New names (a character vector)

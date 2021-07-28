@@ -1607,6 +1607,7 @@ make_results_ls <- function(spine_of_results_ls = NULL,
                      mdl_ingredients_ls = spine_of_results_ls$mdl_ingredients_ls,
                      mdls_with_signft_covars_ls = spine_of_results_ls$mdls_with_signft_covars_ls,
                      output_format_ls = input_params_ls$output_format_ls,
+                     path_params_ls = input_params_ls$path_params_ls,
                      paths_to_figs_ls = make_paths_to_ss_plts_ls(spine_of_results_ls$output_data_dir_1L_chr,
                                                                  outp_smry_ls = spine_of_results_ls$outp_smry_ls),
                      predr_var_nms_chr = spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]] %>%
@@ -2107,7 +2108,7 @@ make_study_descs_ls <- function(input_params_ls = NULL,
   if(!missing("health_utl_nm_1L_chr")){
     warning("The health_utl_nm_1L_chr argument is now soft deprecated. Passing a valid value to params_ls_ls will ensure the names of the MAUI instrument are included in function operations.")
   }else{
-    health_utl_nm_1L_chr <- params_ls_ls$short_and_long_nm[1]
+    health_utl_nm_1L_chr <- input_params_ls$short_and_long_nm[1]
   }
   if(!missing("params_ls_ls")){
     warning("The params_ls_ls argument is now soft deprecated. Use input_params_ls instead.")

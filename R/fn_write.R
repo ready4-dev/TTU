@@ -1,3 +1,43 @@
+#' Write analyses
+#' @description write_analyses() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write analyses. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @param input_params_ls Input params (a list)
+#' @param abstract_args_ls Abstract arguments (a list), Default: NULL
+#' @param start_at_int Start at (an integer vector), Default: c(2, 1)
+#' @return NULL
+#' @rdname write_analyses
+#' @export 
+#' @importFrom purrr walk pluck
+#' @keywords internal
+write_analyses <- function (input_params_ls, abstract_args_ls = NULL, start_at_int = c(2, 
+    1)) 
+{
+    write_report(params_ls = input_params_ls$params_ls, paths_ls = input_params_ls$path_params_ls$paths_ls, 
+        rprt_nm_1L_chr = "AAA_PMRY_ANLYS_MTH", abstract_args_ls = abstract_args_ls, 
+        header_yaml_args_ls = input_params_ls$header_yaml_args_ls)
+    if (!is.null(input_params_ls$scndry_anlys_params_ls)) {
+        references_int <- 1:length(input_params_ls$scndry_anlys_params_ls)
+        references_int %>% purrr::walk(~{
+            changes_ls <- input_params_ls$scndry_anlys_params_ls %>% 
+                purrr::pluck(.x)
+            if (is.null(changes_ls$candidate_covar_nms_chr)) 
+                changes_ls$candidate_covar_nms_chr <- input_params_ls$params_ls$candidate_covar_nms_chr %>% 
+                  transform_names(input_params_ls$rename_lup, 
+                    invert_1L_lgl = T)
+            if (is.null(changes_ls$candidate_predrs_chr)) {
+                changes_ls$candidate_covar_nms_chr <- changes_ls$candidate_covar_nms_chr[!changes_ls$candidate_covar_nms_chr %in% 
+                  changes_ls$candidate_predrs_chr]
+            }
+            write_scndry_analysis(valid_params_ls_ls = input_params_ls, 
+                candidate_covar_nms_chr = changes_ls$candidate_covar_nms_chr, 
+                candidate_predrs_chr = changes_ls$candidate_predrs_chr, 
+                header_yaml_args_ls = input_params_ls$header_yaml_args_ls, 
+                path_params_ls = input_params_ls$path_params_ls, 
+                prefd_covars_chr = changes_ls$prefd_covars_chr, 
+                reference_1L_int = .x, start_at_int = start_at_int, 
+                rprt_nm_1L_chr = "AAA_SUPLRY_ANLYS_MTH", abstract_args_ls = abstract_args_ls)
+        })
+    }
+}
 #' Write box cox transformation
 #' @description write_box_cox_tfmn() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write box cox transformation. The function returns Path to plot (a character vector of length one).
 #' @param data_tb Data (a tibble)
@@ -63,27 +103,96 @@ write_main_oupt_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_f
     return(paths_ls)
 }
 #' Write manuscript
-#' @description write_manuscript() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write manuscript. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
-#' @param results_ls Results (a list)
-#' @param output_format_ls Output format (a list)
-#' @param path_params_ls Path params (a list)
-#' @param append_params_ls Append params (a list), Default: NULL
-#' @param fl_nm_1L_chr File name (a character vector of length one), Default: 'TTU_Manuscript'
-#' @param path_to_RMDs_chr Path toMDs (a character vector), Default: c("../Manuscript/Word/Word.Rmd", "../Manuscript/PDF/PDF.Rmd")
-#' @return NULL
+#' @description write_manuscript() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write manuscript. The function returns Results (a list).
+#' @param abstract_args_ls Abstract arguments (a list), Default: NULL
+#' @param input_params_ls Input params (a list), Default: NULL
+#' @param results_ls Results (a list), Default: NULL
+#' @param figures_in_body_lgl Figures in body (a logical vector), Default: NULL
+#' @param tables_in_body_lgl Tables in body (a logical vector), Default: NULL
+#' @param title_1L_chr Title (a character vector of length one), Default: 'Scientific manuscript'
+#' @param version_1L_chr Version (a character vector of length one), Default: '0.1'
+#' @param write_to_dv_1L_lgl Write to dataverse (a logical vector of length one), Default: F
+#' @return Results (a list)
 #' @rdname write_manuscript
 #' @export 
+#' @importFrom utils unzip
+#' @importFrom ready4show write_header_fls
 #' @importFrom rmarkdown render
+#' @importFrom ready4use write_fls_to_dv_ds
+#' @importFrom tibble tibble
 #' @keywords internal
-write_manuscript <- function (results_ls, output_format_ls, path_params_ls, append_params_ls = NULL, 
-    fl_nm_1L_chr = "TTU_Manuscript", path_to_RMDs_chr = c("../Manuscript/Word/Word.Rmd", 
-        "../Manuscript/PDF/PDF.Rmd")) 
+write_manuscript <- function (abstract_args_ls = NULL, input_params_ls = NULL, results_ls = NULL, 
+    figures_in_body_lgl = NULL, tables_in_body_lgl = NULL, title_1L_chr = "Scientific manuscript", 
+    version_1L_chr = "0.1", write_to_dv_1L_lgl = F) 
 {
-    rmarkdown::render(ifelse(output_format_ls$manuscript_outp_1L_chr == 
-        "Word", path_to_RMDs_chr[1], path_to_RMDs_chr[2]), output_format = NULL, 
-        params = list(results_ls = results_ls) %>% append(append_params_ls), 
-        output_file = paste0(fl_nm_1L_chr, ifelse(output_format_ls$manuscript_outp_1L_chr == 
-            "Word", ".docx", ".pdf")), output_dir = path_params_ls$paths_ls$reports_dir_1L_chr)
+    mkdn_data_dir_1L_chr <- ifelse(!is.null(input_params_ls), 
+        input_params_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr, 
+        results_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr)
+    outp_dir_1L_chr <- ifelse(!is.null(input_params_ls), input_params_ls$path_params_ls$paths_ls$output_data_dir_1L_chr, 
+        results_ls$path_params_ls$paths_ls$output_data_dir_1L_chr)
+    output_type_1L_chr <- ifelse(!is.null(input_params_ls), input_params_ls$output_format_ls$manuscript_outp_1L_chr, 
+        results_ls$output_format_ls$manuscript_outp_1L_chr)
+    path_to_ms_mkdn_1L_dir <- paste0(mkdn_data_dir_1L_chr, "/ttu_lng_ss-", 
+        version_1L_chr)
+    path_to_results_dir_1L_chr <- ifelse(!is.null(input_params_ls), 
+        input_params_ls$path_params_ls$paths_ls$reports_dir_1L_chr, 
+        results_ls$path_params_ls$paths_ls$reports_dir_1L_chr)
+    if (!dir.exists(path_to_ms_mkdn_1L_dir)) {
+        temp_fl <- tempfile()
+        download.file(paste0("https://github.com/ready4-dev/ttu_lng_ss/archive/refs/tags/v", 
+            version_1L_chr, ".zip", temp_fl))
+        utils::unzip(temp_fl, exdir = mkdn_data_dir_1L_chr)
+        unlink(temp_fl)
+    }
+    if (!is.null(input_params_ls)) {
+        header_yaml_args_ls <- input_params_ls$header_yaml_args_ls
+    }
+    else {
+        header_yaml_args_ls <- results_ls$header_yaml_args_ls
+    }
+    ready4show::write_header_fls(path_to_header_dir_1L_chr = paste0(path_to_ms_mkdn_1L_dir, 
+        "/Header"), header_yaml_args_ls = header_yaml_args_ls, 
+        abstract_args_ls = abstract_args_ls)
+    if (is.null(results_ls)) {
+        results_ls <- make_results_ls(dv_ds_nm_and_url_chr = input_params_ls$path_params_ls$dv_ds_nm_and_url_chr, 
+            output_format_ls = input_params_ls$output_format_ls, 
+            params_ls_ls = input_params_ls, path_params_ls = input_params_ls$path_params_ls, 
+            study_descs_ls = input_params_ls$study_descs_ls, 
+            var_nm_change_lup = input_params_ls$study_descs_ls$var_nm_change_lup, 
+            version_1L_chr = version_1L_chr)
+    }
+    params_ls <- list(output_type_1L_chr = output_type_1L_chr, 
+        results_ls = results_ls)
+    if (!is.null(figures_in_body_lgl)) 
+        params_ls$figures_in_body_lgl <- figures_in_body_lgl
+    if (!is.null(tables_in_body_lgl)) 
+        params_ls$tables_in_body_lgl <- tables_in_body_lgl
+    rmarkdown::render(paste0(path_to_ms_mkdn_1L_dir, "/", output_type_1L_chr, 
+        "/", output_type_1L_chr, ".Rmd"), output_format = NULL, 
+        params = params_ls, output_file = paste0("TTU_Study_Manuscript", 
+            ifelse(output_type_1L_chr == "Word", ".docx", ".pdf")), 
+        output_dir = path_to_results_dir_1L_chr)
+    if (write_to_dv_1L_lgl) {
+        if (!is.null(input_params_ls)) {
+            paths_ls <- input_params_ls$path_params_ls$paths_ls
+        }
+        else {
+            paths_ls <- results_ls$path_params_ls$paths_ls
+        }
+        ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "TTU_Study_Manuscript", 
+            title_chr = title_1L_chr), dv_nm_1L_chr = ifelse(!is.null(input_params_ls), 
+            input_params_ls$path_params_ls$dv_ds_nm_and_url_chr[1], 
+            results_ls$path_params_ls$dv_ds_nm_and_url_chr[1]), 
+            ds_url_1L_chr = ifelse(!is.null(input_params_ls), 
+                input_params_ls$path_params_ls$dv_ds_nm_and_url_chr[2], 
+                results_ls$path_params_ls$dv_ds_nm_and_url_chr[2]), 
+            parent_dv_dir_1L_chr = paths_ls$dv_dir_1L_chr, paths_to_dirs_chr = paths_ls$reports_dir_1L_chr, 
+            inc_fl_types_chr = ifelse(output_type_1L_chr == "Word", 
+                ".docx", ".pdf"), paths_are_rltv_1L_lgl = F)
+    }
+    results_ls$path_params_ls$paths_ls$path_to_ms_mkdn_1L_dir <- path_to_ms_mkdn_1L_dir
+    saveRDS(results_ls, paste0(outp_dir_1L_chr, "/results_ls.RDS"))
+    return(results_ls)
 }
 #' Write model comparison
 #' @description write_mdl_cmprsn() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model comparison. The function returns Model comparison (a list).
@@ -195,11 +304,12 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
             width_1L_dbl = ..4[2]))
 }
 #' Write model summary report
-#' @description write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Report lups (a list).
-#' @param header_yaml_args_ls Header yaml arguments (a list)
-#' @param path_params_ls Path params (a list)
+#' @description write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Input params (a list).
+#' @param input_params_ls Input params (a list), Default: NULL
+#' @param header_yaml_args_ls Header yaml arguments (a list), Default: NULL
+#' @param path_params_ls Path params (a list), Default: NULL
 #' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: FALSE
-#' @param output_format_ls Output format (a list)
+#' @param output_format_ls Output format (a list), Default: NULL
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
 #' @param dv_ds_nm_and_url_chr Dataverse dataset name and url (a character vector), Default: NULL
 #' @param reference_int Reference (an integer vector), Default: 0
@@ -208,7 +318,7 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
 #' @param rprt_nm_1L_chr Report name (a character vector of length one), Default: 'AAA_TTU_MDL_CTG'
 #' @param start_at_int Start at (an integer vector), Default: c(2, 1)
 #' @param use_shareable_mdls_1L_lgl Use shareable models (a logical vector of length one), Default: F
-#' @return Report lups (a list)
+#' @return Input params (a list)
 #' @rdname write_mdl_smry_rprt
 #' @export 
 #' @importFrom purrr map pluck map_lgl map_chr reduce
@@ -218,12 +328,43 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
 #' @importFrom dplyr filter pull bind_rows distinct mutate
 #' @importFrom stats setNames
 #' @keywords internal
-write_mdl_smry_rprt <- function (header_yaml_args_ls, path_params_ls, use_fake_data_1L_lgl = FALSE, 
-    output_format_ls, abstract_args_ls = NULL, dv_ds_nm_and_url_chr = NULL, 
-    reference_int = 0, rprt_lup = NULL, rcrd_nm_1L_chr = "AAA_RPRT_WRTNG_MTH", 
-    rprt_nm_1L_chr = "AAA_TTU_MDL_CTG", start_at_int = c(2, 1), 
-    use_shareable_mdls_1L_lgl = F) 
+write_mdl_smry_rprt <- function (input_params_ls = NULL, header_yaml_args_ls = NULL, 
+    path_params_ls = NULL, use_fake_data_1L_lgl = FALSE, output_format_ls = NULL, 
+    abstract_args_ls = NULL, dv_ds_nm_and_url_chr = NULL, reference_int = 0, 
+    rprt_lup = NULL, rcrd_nm_1L_chr = "AAA_RPRT_WRTNG_MTH", rprt_nm_1L_chr = "AAA_TTU_MDL_CTG", 
+    start_at_int = c(2, 1), use_shareable_mdls_1L_lgl = F) 
 {
+    if (missing(header_yaml_args_ls)) {
+        header_yaml_args_ls <- input_params_ls$header_yaml_args_ls
+    }
+    else {
+        warning("The argument header_yaml_args_ls is soft deprecated. We recommend passing the header information as part of the list passed to the input_params_ls argument.")
+    }
+    if (missing(path_params_ls)) {
+        path_params_ls <- input_params_ls$path_params_ls
+    }
+    else {
+        warning("The argument path_params_ls is soft deprecated. We recommend passing the paths information as part of the list passed to the input_params_ls argument.")
+    }
+    if (missing(output_format_ls)) {
+        output_format_ls <- input_params_ls$output_format_ls
+    }
+    else {
+        warning("The argument output_format_ls is soft deprecated. We recommend passing the output format information as part of the list passed to the input_params_ls argument.")
+    }
+    if (missing(use_fake_data_1L_lgl)) {
+        use_fake_data_1L_lgl <- input_params_ls$params_ls$use_fake_data_1L_lgl
+    }
+    else {
+        warning("The argument use_fake_data_1L_lgl is soft deprecated. We recommend declaring whether dataset is fake as part of the list passed to the input_params_ls argument.")
+    }
+    if (missing(reference_int)) {
+        reference_int <- 0:(ifelse(is.null(input_params_ls$scndry_anlys_params_ls), 
+            0, length(input_params_ls$scndry_anlys_params_ls)))
+    }
+    else {
+        warning("The argument reference_int is soft deprecated. It is unnecessary if supplying a valid value to the input_params_ls argument.")
+    }
     paths_ls <- path_params_ls$paths_ls
     if (is.null(rprt_lup)) 
         data("rprt_lup", package = "TTU", envir = environment())
@@ -315,7 +456,13 @@ write_mdl_smry_rprt <- function (header_yaml_args_ls, path_params_ls, use_fake_d
         })
     saveRDS(consolidated_mdl_ings_ls, paste0(paths_ls$output_data_dir_1L_chr, 
         "/G_Shareable/Ingredients/mdl_ingredients.RDS"))
-    return(rprt_lups_ls)
+    if (!is.null(input_params_ls)) {
+        input_params_ls$rprt_lups_ls <- rprt_lups_ls
+    }
+    else {
+        input_params_ls <- rprt_lups_ls
+    }
+    return(input_params_ls)
 }
 #' Write model type covariates models
 #' @description write_mdl_type_covars_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type covariates models. The function returns Summary of models with covariates (a tibble).
@@ -1150,16 +1297,17 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 }
 #' Write study output dataset
 #' @description write_study_outp_ds() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write study output dataset. The function returns Dataverse dataset name and url (a character vector).
-#' @param dv_ds_nm_and_url_chr Dataverse dataset name and url (a character vector)
-#' @param rprt_lups_ls Report lups (a list)
-#' @param output_format_ls Output format (a list)
-#' @param path_params_ls Path params (a list)
+#' @param input_params_ls Input params (a list)
+#' @param dv_ds_nm_and_url_chr Dataverse dataset name and url (a character vector), Default: NULL
+#' @param rprt_lups_ls Report lups (a list), Default: NULL
+#' @param output_format_ls Output format (a list), Default: NULL
+#' @param path_params_ls Path params (a list), Default: NULL
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
 #' @param dv_mdl_desc_1L_chr Dataverse model description (a character vector of length one), Default: 'This is a longitudinal transfer to utility model designed for use with the youthu R package.'
 #' @param inc_fl_types_chr Include file types (a character vector), Default: '.pdf'
 #' @param purge_data_1L_lgl Purge data (a logical vector of length one), Default: FALSE
 #' @param start_at_int Start at (an integer vector), Default: c(2, 1)
-#' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: F
+#' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: NULL
 #' @return Dataverse dataset name and url (a character vector)
 #' @rdname write_study_outp_ds
 #' @export 
@@ -1171,11 +1319,42 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @importFrom ready4use write_fls_to_dv_ds
 #' @importFrom tibble tibble
 #' @keywords internal
-write_study_outp_ds <- function (dv_ds_nm_and_url_chr, rprt_lups_ls, output_format_ls, 
-    path_params_ls, abstract_args_ls = NULL, dv_mdl_desc_1L_chr = "This is a longitudinal transfer to utility model designed for use with the youthu R package.", 
+write_study_outp_ds <- function (input_params_ls, dv_ds_nm_and_url_chr = NULL, rprt_lups_ls = NULL, 
+    output_format_ls = NULL, path_params_ls = NULL, abstract_args_ls = NULL, 
+    dv_mdl_desc_1L_chr = "This is a longitudinal transfer to utility model designed for use with the youthu R package.", 
     inc_fl_types_chr = ".pdf", purge_data_1L_lgl = FALSE, start_at_int = c(2, 
-        1), use_fake_data_1L_lgl = F) 
+        1), use_fake_data_1L_lgl = NULL) 
 {
+    if (missing(path_params_ls)) {
+        path_params_ls <- input_params_ls$path_params_ls
+    }
+    else {
+        warning("The argument path_params_ls is soft deprecated. We recommend passing the paths information as part of the list passed to the input_params_ls argument.")
+    }
+    if (missing(output_format_ls)) {
+        output_format_ls <- input_params_ls$output_format_ls
+    }
+    else {
+        warning("The argument output_format_ls is soft deprecated. We recommend passing the output format information as part of the list passed to the input_params_ls argument.")
+    }
+    if (missing(use_fake_data_1L_lgl)) {
+        use_fake_data_1L_lgl <- input_params_ls$params_ls$use_fake_data_1L_lgl
+    }
+    else {
+        warning("The argument use_fake_data_1L_lgl is soft deprecated. We recommend declaring whether dataset is fake as part of the list passed to the input_params_ls argument.")
+    }
+    if (missing(dv_ds_nm_and_url_chr)) {
+        dv_ds_nm_and_url_chr <- input_params_ls$path_params_ls$dv_ds_nm_and_url_chr
+    }
+    else {
+        warning("The argument dv_ds_nm_and_url_chr is soft deprecated. We recommend declaring dataverse details as part of the list passed to the input_params_ls argument.")
+    }
+    if (missing(rprt_lups_ls)) {
+        rprt_lups_ls <- input_params_ls$rprt_lups_ls
+    }
+    else {
+        warning("The argument rprt_lups_ls is soft deprecated. We recommend declaring report detail as part of the list passed to the input_params_ls argument.")
+    }
     paths_ls <- path_params_ls$paths_ls
     rprt_lups_ls %>% purrr::walk2(names(rprt_lups_ls), ~{
         rprt_lup <- .x
@@ -1269,8 +1448,8 @@ write_to_delete_mdl_fls <- function (outp_smry_ls)
     paths_to_mdls_chr %>% purrr::walk(~unlink(paste0(outp_smry_ls$path_to_write_to_1L_chr, 
         "/", .x)))
 }
-#' Write longitudinal model plots
-#' @description write_ts_mdl_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write longitudinal model plots. The function returns Model plots paths (a list).
+#' Write time series model plots
+#' @description write_ts_mdl_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series model plots. The function returns Model plots paths (a list).
 #' @param brms_mdl Bayesian regression models (a model)
 #' @param table_predn_mdl Table prediction (a model), Default: NULL
 #' @param tfd_data_tb Transformed data (a tibble)
@@ -1379,8 +1558,8 @@ write_ts_mdl_plts <- function (brms_mdl, table_predn_mdl = NULL, tfd_data_tb, md
         "brmsfit"), 1, 3):10]) %>% purrr::discard(is.na)
     return(mdl_plts_paths_ls)
 }
-#' Write longitudinal models
-#' @description write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write longitudinal models. The function returns Models summary (a tibble).
+#' Write time series models
+#' @description write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models. The function returns Models summary (a tibble).
 #' @param data_tb Data (a tibble)
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'utl_total_w'
 #' @param predr_vars_nms_ls Predictor variables names (a list)
@@ -1430,8 +1609,8 @@ write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_v
     saveRDS(mdls_smry_tb, paste0(mdl_smry_dir_1L_chr, "/mdls_smry_tb.RDS"))
     return(mdls_smry_tb)
 }
-#' Write longitudinal models from algorithm output
-#' @description write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write longitudinal models from algorithm output. The function returns Output summary (a list).
+#' Write time series models from algorithm output
+#' @description write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models from algorithm output. The function returns Output summary (a list).
 #' @param outp_smry_ls Output summary (a list)
 #' @param predictors_lup Predictors (a lookup table)
 #' @param utl_min_val_1L_dbl Utility minimum value (a double vector of length one), Default: -1
