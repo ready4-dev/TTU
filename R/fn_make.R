@@ -498,13 +498,13 @@ make_covariates_text <- function (results_ls)
     }
     return(text_1L_chr)
 }
-#' Make cs time series ratios
-#' @description make_cs_ts_ratios_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make cs time series ratios tibble. The function returns Cs time series ratios (a tibble).
+#' Make cs longitudinal ratios
+#' @description make_cs_ts_ratios_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make cs longitudinal ratios tibble. The function returns Cs longitudinal ratios (a tibble).
 #' @param predr_ctgs_ls Predictor category categoriess (a list)
 #' @param mdl_coef_ratios_ls Model coefficient ratios (a list)
 #' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
 #' @param fn_ls Function list (a list of functions), Default: NULL
-#' @return Cs time series ratios (a tibble)
+#' @return Cs longitudinal ratios (a tibble)
 #' @rdname make_cs_ts_ratios_tb
 #' @export 
 #' @importFrom purrr map map_dfr pluck
@@ -761,8 +761,8 @@ make_fake_eq5d_ds <- function (country_1L_chr = "UK", version_1L_chr = "5L", typ
         ~ifelse((.y + 120/365.25) >= 1, .x + 1L, .x)), T ~ d_age))
     return(data_tb)
 }
-#' Make fake time series data
-#' @description make_fake_ts_data() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake time series data. The function returns Fk data (a tibble).
+#' Make fake longitudinal data
+#' @description make_fake_ts_data() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake longitudinal data. The function returns Fk data (a tibble).
 #' @param outp_smry_ls Output summary (a list)
 #' @param dep_vars_are_NA_1L_lgl Dep variables are NA (a logical vector of length one), Default: T
 #' @return Fk data (a tibble)
@@ -2330,8 +2330,8 @@ make_smry_of_mdl_outp <- function (data_tb, model_mdl = NULL, folds_1L_int = 10,
         dplyr::select(Model, dplyr::everything())
     return(smry_of_one_predr_mdl_tb)
 }
-#' Make summary of time series model output
-#' @description make_smry_of_ts_mdl_outp() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make summary of time series model output. The function returns Summary of time series (a list of models).
+#' Make summary of longitudinal model output
+#' @description make_smry_of_ts_mdl_outp() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make summary of longitudinal model output. The function returns Summary of longitudinal (a list of models).
 #' @param data_tb Data (a tibble)
 #' @param predr_vars_nms_chr Predictor variables names (a character vector)
 #' @param mdl_nm_1L_chr Model name (a character vector of length one)
@@ -2348,7 +2348,7 @@ make_smry_of_mdl_outp <- function (data_tb, model_mdl = NULL, folds_1L_int = 10,
 #' @param seed_1L_int Seed (an integer vector of length one), Default: 1000
 #' @param prior_ls Prior (a list), Default: NULL
 #' @param control_ls Control (a list), Default: NULL
-#' @return Summary of time series (a list of models)
+#' @return Summary of longitudinal (a list of models)
 #' @rdname make_smry_of_ts_mdl_outp
 #' @export 
 #' @importFrom purrr map_dbl

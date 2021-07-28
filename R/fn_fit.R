@@ -1,5 +1,5 @@
-#' Fit time series model with bayesian regression model
-#' @description fit_ts_model_with_brm() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit time series model with bayesian regression model. The function returns Model list (a list of models).
+#' Fit longitudinal model with bayesian regression model
+#' @description fit_ts_model_with_brm() is a Fit function that fits a model of a specified type to a dataset Specifically, this function implements an algorithm to fit longitudinal model with bayesian regression model. The function returns Model list (a list of models).
 #' @param data_tb Data (a tibble)
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one)
 #' @param predr_vars_nms_chr Predictor variables names (a character vector)

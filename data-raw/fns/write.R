@@ -1,18 +1,16 @@
 write_analyses <- function(input_params_ls,
-                           header_yaml_args_ls,
                            abstract_args_ls = NULL,
-                           scndry_anlys_params_ls = NULL,
                            start_at_int = c(2,1)){
   write_report(params_ls = input_params_ls$params_ls,
                paths_ls = input_params_ls$path_params_ls$paths_ls,
                rprt_nm_1L_chr = "AAA_PMRY_ANLYS_MTH",
                abstract_args_ls = abstract_args_ls,
-               header_yaml_args_ls = header_yaml_args_ls)
-  if(!is.null(scndry_anlys_params_ls)){
-    references_int <- 1:length(scndry_anlys_params_ls)
+               header_yaml_args_ls = input_params_ls$header_yaml_args_ls)
+  if(!is.null(input_params_ls$scndry_anlys_params_ls)){
+    references_int <- 1:length(input_params_ls$scndry_anlys_params_ls)
     references_int %>%
       purrr::walk(~{
-        changes_ls <- scndry_anlys_params_ls %>%
+        changes_ls <- input_params_ls$scndry_anlys_params_ls %>%
           purrr::pluck(.x)
         if(is.null(changes_ls$candidate_covar_nms_chr))
           changes_ls$candidate_covar_nms_chr <- input_params_ls$params_ls$candidate_covar_nms_chr %>% transform_names(input_params_ls$rename_lup, invert_1L_lgl = T)
@@ -22,7 +20,7 @@ write_analyses <- function(input_params_ls,
         write_scndry_analysis(valid_params_ls_ls = input_params_ls,
                               candidate_covar_nms_chr = changes_ls$candidate_covar_nms_chr,
                               candidate_predrs_chr = changes_ls$candidate_predrs_chr,
-                              header_yaml_args_ls = header_yaml_args_ls,
+                              header_yaml_args_ls = input_params_ls$header_yaml_args_ls,
                               path_params_ls = input_params_ls$path_params_ls,
                               prefd_covars_chr = changes_ls$prefd_covars_chr,
                               reference_1L_int = .x,
@@ -228,10 +226,11 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
                 3)], collapse = "")), ""), ..3), height_1L_dbl = ..4[1],
         width_1L_dbl = ..4[2]))
 }
-write_mdl_smry_rprt <- function(header_yaml_args_ls,
-                                path_params_ls,
+write_mdl_smry_rprt <- function(input_params_ls = NULL,
+                                header_yaml_args_ls = NULL,
+                                path_params_ls = NULL,
                                 use_fake_data_1L_lgl = FALSE,
-                                output_format_ls,
+                                output_format_ls = NULL,
                                 abstract_args_ls = NULL,
                                 dv_ds_nm_and_url_chr = NULL,
                                 reference_int = 0,
@@ -240,6 +239,33 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                                 rprt_nm_1L_chr = "AAA_TTU_MDL_CTG",
                                 start_at_int = c(2,1),
                                 use_shareable_mdls_1L_lgl = F){
+  if(missing(header_yaml_args_ls)){
+    header_yaml_args_ls <- input_params_ls$header_yaml_args_ls
+  }else{
+    warning("The argument header_yaml_args_ls is soft deprecated. We recommend passing the header information as part of the list passed to the input_params_ls argument.")
+  }
+  if(missing(path_params_ls)){
+   path_params_ls <- input_params_ls$path_params_ls
+  }else{
+    warning("The argument path_params_ls is soft deprecated. We recommend passing the paths information as part of the list passed to the input_params_ls argument.")
+  }
+  if(missing(output_format_ls)){
+    output_format_ls <- input_params_ls$output_format_ls
+  }else{
+    warning("The argument output_format_ls is soft deprecated. We recommend passing the output format information as part of the list passed to the input_params_ls argument.")
+  }
+  if(missing(use_fake_data_1L_lgl)){
+    use_fake_data_1L_lgl <- input_params_ls$params_ls$use_fake_data_1L_lgl
+  }else{
+    warning("The argument use_fake_data_1L_lgl is soft deprecated. We recommend declaring whether dataset is fake as part of the list passed to the input_params_ls argument.")
+  }
+  if(missing(reference_int)){
+    reference_int <- 0:(ifelse(is.null(input_params_ls$scndry_anlys_params_ls),
+                               0,
+                               length(input_params_ls$scndry_anlys_params_ls)))
+  }else{
+    warning("The argument reference_int is soft deprecated. It is unnecessary if supplying a valid value to the input_params_ls argument.")
+  }
   paths_ls <- path_params_ls$paths_ls
   if(is.null(rprt_lup))
     data("rprt_lup", package = "TTU", envir = environment())
@@ -257,7 +283,7 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                 if(is.null(reference_1L_int)){
                   path_to_outp_fl_1L_chr <- paste0(paths_ls$output_data_dir_1L_chr,"/I_ALL_OUTPUT_.RDS")
                   if(use_shareable_mdls_1L_lgl){
-                    main_rprt_append_ls <-list(rltv_path_to_data_dir_1L_chr = "../Output/G_Shareable/Models")
+                    main_rprt_append_ls <- list(rltv_path_to_data_dir_1L_chr = "../Output/G_Shareable/Models")
                   }else{
                     main_rprt_append_ls <- NULL
                   }
@@ -354,8 +380,12 @@ write_mdl_smry_rprt <- function(header_yaml_args_ls,
                   })
   saveRDS(consolidated_mdl_ings_ls,
           paste0(paths_ls$output_data_dir_1L_chr,"/G_Shareable/Ingredients/mdl_ingredients.RDS"))
-
-return(rprt_lups_ls)
+  if(!is.null(input_params_ls)){
+    input_params_ls$rprt_lups_ls <- rprt_lups_ls
+  }else{
+    input_params_ls <- rprt_lups_ls
+  }
+return(input_params_ls)
 }
 write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predrs_var_nms_chr,
     covar_var_nms_chr, mdl_type_1L_chr, path_to_write_to_1L_chr, new_dir_nm_1L_chr = "D_Covars_Selection",
@@ -1038,16 +1068,42 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
             dplyr::arrange(dplyr::desc(RsquaredP))
     return(smry_of_sngl_predr_mdls_tb)
 }
-write_study_outp_ds <- function(dv_ds_nm_and_url_chr,
-                                rprt_lups_ls,
-                                output_format_ls,
-                                path_params_ls,
+write_study_outp_ds <- function(input_params_ls,
+                                dv_ds_nm_and_url_chr = NULL,
+                                rprt_lups_ls = NULL,
+                                output_format_ls = NULL,
+                                path_params_ls = NULL,
                                 abstract_args_ls = NULL,
                                 dv_mdl_desc_1L_chr = "This is a longitudinal transfer to utility model designed for use with the youthu R package.",
                                 inc_fl_types_chr = ".pdf",
                                 purge_data_1L_lgl = FALSE,
                                 start_at_int = c(2,1),
-                                use_fake_data_1L_lgl = F){
+                                use_fake_data_1L_lgl = NULL){
+  if(missing(path_params_ls)){
+    path_params_ls <- input_params_ls$path_params_ls
+  }else{
+    warning("The argument path_params_ls is soft deprecated. We recommend passing the paths information as part of the list passed to the input_params_ls argument.")
+  }
+  if(missing(output_format_ls)){
+    output_format_ls <- input_params_ls$output_format_ls
+  }else{
+    warning("The argument output_format_ls is soft deprecated. We recommend passing the output format information as part of the list passed to the input_params_ls argument.")
+  }
+  if(missing(use_fake_data_1L_lgl)){
+    use_fake_data_1L_lgl <- input_params_ls$params_ls$use_fake_data_1L_lgl
+  }else{
+    warning("The argument use_fake_data_1L_lgl is soft deprecated. We recommend declaring whether dataset is fake as part of the list passed to the input_params_ls argument.")
+  }
+  if(missing(dv_ds_nm_and_url_chr)){
+    dv_ds_nm_and_url_chr <- input_params_ls$path_params_ls$dv_ds_nm_and_url_chr
+  }else{
+    warning("The argument dv_ds_nm_and_url_chr is soft deprecated. We recommend declaring dataverse details as part of the list passed to the input_params_ls argument.")
+  }
+  if(missing(rprt_lups_ls)){
+    rprt_lups_ls <- input_params_ls$rprt_lups_ls
+  }else{
+    warning("The argument rprt_lups_ls is soft deprecated. We recommend declaring report detail as part of the list passed to the input_params_ls argument.")
+  }
   paths_ls <- path_params_ls$paths_ls
   rprt_lups_ls %>%
     purrr::walk2(names(rprt_lups_ls),

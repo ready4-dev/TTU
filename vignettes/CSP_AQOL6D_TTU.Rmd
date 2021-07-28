@@ -109,20 +109,15 @@ maui_params_ls <- make_maui_params_ls(maui_domains_pfcs_1L_chr = "vD",
 ## Path parameters
 We next create an object that specifies the relative locations of the input data and the intended destination for analysis outputs and reports. The default settings of the `make_path_params_ls` function will write all output into a new directory, created one level up from the current working directory.
 
-# ```{r, warning=F, message=F, eval=F}
-# path_params_ls <- make_path_params_ls(use_fake_data_1L_lgl = use_fake_data_1L_lgl,
-#                                       write_new_dir_1L_lgl = T)
-# ```
-
 ## Analysis parameters
-We create an object that specifies the input parameters for our primary analysis using the `make_input_params` function, principally using the objects created in the preceding steps. We can force the use of specified model types or covariates (rather than allowing the analysis algorithm to select these based on automated criteria) by using the `prefd_mdl_types_chr` and `prefd_covars_chr` arguments.
-The `make_input_params` performs a number of checks relating to the naming conventions used in some variables of interest and where necessary (for consistency with reporting templates) modifies the names of these variables. We can also specify how we want to adapt the input parameters (e.g. using different combinations of candidate predictors and covariates) for any supplementary analyses that we intend to run using the `scndry_anlys_params_ls ` argument in conjunction with the `make_scndry_anlys_params` function. 
+We can now create a list of input parameters using the `make_input_params` function, principally using the objects created in the preceding steps. We can force the use of specified model types or covariates (rather than allowing the analysis algorithm to select these based on automated criteria) by using the `prefd_mdl_types_chr` and `prefd_covars_chr` arguments. We can also specify how we want to adapt our primary analysis input parameters for secondary analyses (e.g. that use different combinations of candidate predictors and covariates) using the `scndry_anlys_params_ls ` argument in conjunction with the `make_scndry_anlys_params` function. If you have created an empty dataverse dataset to post results to, assign the DOI for your dataset and the name of the dataverse containing it to the `dv_ds_nm_and_url_chr` argument (these values will be unique to you and different to those below, which will not work for you). If you do not wish to post results to a dataverse dataset, set `dv_ds_nm_and_url_chr = NULL`. The `make_input_params` function performs a number of checks relating to the naming conventions used in some variables of interest and where necessary (for consistency with reporting templates) modifies the names of these variables.
 
 ```{r eval = F }
 input_params_ls <- make_input_params(ds_tb,
                                      ds_descvs_ls = ds_descvs_ls,
                                      dv_ds_nm_and_url_chr = c("fakes", # Dataverse containing dataset
                                                               "https://doi.org/10.7910/DVN/D74QMP"), # DOI
+                                     header_yaml_args_ls = header_yaml_args_ls,
                                      maui_params_ls = maui_params_ls,
                                      output_format_ls = output_format_ls,
                                      predictors_lup = predictors_lup,
@@ -134,90 +129,93 @@ input_params_ls <- make_input_params(ds_tb,
 ```
 
 # Run analysis
-All analytic steps for our primary and secondary analyses are executed with the following function call.
+All analytic steps for our primary and secondary analyses are executed with the following function call. Note, this step can involve long execution times (potentially over an hour, depending on the input parameters).
 ```{r}
-write_analyses(input_params_ls,
-               header_yaml_args_ls = header_yaml_args_ls,
-               scndry_anlys_params_ls = scndry_anlys_params_ls)
+write_analyses(input_params_ls)
 ```
 
 # Report results
-As we have undertaken more than one analysis, we need to supply integer values to the `reference_int` argument of the `write_mdl_smry_rprt` function for each analysis that we wish to generate a report for. The value `0` corresponds to the primary analysis, with each subsequent integer corresponding to a supplementary analysis.
+We now generate the catalogues (one for the primary and one for each secondary analysis) that report the models created in the preceding step. The `write_mdl_smry_rprt` function also creates shareable versions (i.e. with copies of source dataset replaced by synthetic data) of the models. This step can take several minutes to execute.
 
 ```{r echo = TRUE, eval=FALSE }
-rprt_lups_ls <- write_mdl_smry_rprt(header_yaml_args_ls,
-                                    path_params_ls = path_params_ls,
-                                    use_fake_data_1L_lgl = use_fake_data_1L_lgl,
-                                    output_format_ls = output_format_ls,
-                                    reference_int = 0:1,
-                                    use_shareable_mdls_1L_lgl = T)
+input_params_ls <- write_mdl_smry_rprt(input_params_ls,
+                                       use_shareable_mdls_1L_lgl = T)
 ```
 
 # Share results
-We can now share the results created in the previous step in an online repository. To do this, you will need to have an account with a Dataverse (https://dataverse.org/) provider (e.g., https://dataverse.harvard.edu/). You also need to have created:
+We can now share the results created in the previous step by posting them to the online repository, the details of which we supplied earlier. 
 
- - a dataverse API key and stored the API key and server values in your local environment (to see how to do this, visit: https://github.com/IQSS/dataverse-client-r )
- - an empty dataset (steps 1-3 and 5 in https://guides.dataverse.org/en/5.5/user/dataset-management.html#adding-a-new-dataset)
-
-If you have created an empty dataverse dataset to post results to, assign the DOI for your dataset and the name of the dataverse containing it to an object, `dv_ds_nm_and_url_chr` (these values will be different to those below, which will not work for you). If you do not wish to post results to a dataverse dataset, set `dv_ds_nm_and_url_chr <- NULL`.
-
-# ```{r}
-# dv_ds_nm_and_url_chr <- c("fakes", # Name of dataverse containing dataset - Replace
-#                           "https://doi.org/10.7910/DVN/D74QMP") # Dataset DOI - Replace
-# ```
-
-Next pass these details, along with some paramters created earlier to the `write_study_outp_ds` function. 
 ```{r echo = TRUE, eval=FALSE }
-write_study_outp_ds(dv_ds_nm_and_url_chr = params_ls_ls$path_params_ls$dv_ds_nm_and_url_chr,
-                    rprt_lups_ls = rprt_lups_ls,
-                    output_format_ls = output_format_ls,
-                    path_params_ls = path_params_ls,
-                    use_fake_data_1L_lgl = use_fake_data_1L_lgl)
-
+write_study_outp_ds(input_params_ls)
 ```
 
-The dataset populated by the above call can be viewed at: https://doi.org/10.7910/DVN/D74QMP
+The `write_study_outp_ds` function writes its outputs to a draft dataset - which you can review by logging into your dataverse account, before clicking on the option to publish the dataset. The stucture of your draft dataset should be similar to those produced by this vignette, which are viewable at: https://doi.org/10.7910/DVN/D74QMP
 
 # Create manuscript
-The first step to creating a manuscript that provides the scientific summary of the study is to provide some metadata about the study itself.
+The first step to creating a manuscript that provides the scientific summary of the study is to provide some metadata about the study itself. If you want the manuscript to refer to some of the candidate predictors by different names than that provided in the `short_name_chr` column of the `predictors_lup` object defined earlier, you can create a table of name correspondences and pass it to the `var_nm_change_lup` argument.
 
 ```{r}
-study_descs_ls <- make_study_descs_ls(background_1L_chr = "Our study is entirely fictional and has been created to illustrate TTU package functionality.",
-                                      coi_1L_chr = "None declared.",
-                                      conclusion_1L_chr = "If this study was real, the results would be interesting.",
-                                      ethics_1L_chr = "The study was reviewed and granted approval by Awesome University's Human Research Ethics Committee (1111111.1).",
-                                      funding_1L_chr = "The study was funded by Generous Benefactor.",
-                                      params_ls_ls = params_ls_ls,
-                                      sample_desc_1L_chr = "The study sample is fake data that pretends to be young people aged 12 to 25 years who attended Australian primary care services for mental health related needs between November 2019 to August 2020.",
-                                      time_btwn_bl_and_fup_1L_chr = "three months")
+input_params_ls <- make_study_descs_ls(input_params_ls = input_params_ls,
+                                       background_1L_chr = "Our study is entirely fictional and has been created to illustrate TTU package functionality.",
+                                       coi_1L_chr = "None declared.",
+                                       conclusion_1L_chr = "If this study was real, the results would be interesting.",
+                                       ethics_1L_chr = "The study was reviewed and granted approval by Awesome University's Human Research Ethics Committee (1111111.1).",
+                                       funding_1L_chr = "The study was funded by Generous Benefactor.",
+                                       sample_desc_1L_chr = "The study sample is fake data that pretends to be young people aged 12 to 25 years who attended Australian primary care services for mental health related needs between November 2019 to August 2020.",
+                                       time_btwn_bl_and_fup_1L_chr = "three months",
+                                       var_nm_change_lup = tibble::tibble(old_nms_chr = c("PHQ9","GAD7"),
+                                                                          new_nms_chr = c("PHQ-9",
+                                                                                          "GAD-7")))
 ```
+```{r eval = F}
+write_manuscript <- function(abstract_args_ls = NULL,
+                             input_params_ls = NULL,
+                             results_ls = NULL,
+                             version_1L_chr = "0.1"){
+    mkdn_data_dir_1L_chr <- ifelse(!is.null(input_params_ls),
+                                   input_params_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr,
+                                   input_params_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr)
+  if(!dir.exists(paste0(mkdn_data_dir_1L_chr,"/ttu_lng_ss-",version_1L_chr))){
+ temp_fl <- tempfile() 
+ download.file(paste0("https://github.com/ready4-dev/ttu_lng_ss/archive/refs/tags/v",
+                      version_1L_chr,
+                      ".zip",
+                      temp_fl)
+utils::unzip(temp_fl, 
+             exdir = mkdn_data_dir_1L_chr)
+unlink(temp_fl)
+  }
+    if(is.null(results_ls)){
+        results_ls <- make_results_ls(dv_ds_nm_and_url_chr = input_params_ls$path_params_ls$dv_ds_nm_and_url_chr,
+                                output_format_ls = input_params_ls$output_format_ls,
+                                params_ls_ls = input_params_ls,
+                                path_params_ls = input_params_ls$path_params_ls,
+                                study_descs_ls = input_params_ls$study_descs_ls,
+                                var_nm_change_lup = input_params_ls$study_descs_ls$var_nm_change_lup,
+                                version_1L_chr = version_1L_chr)
+    }
 
-If you want the manuscript to refer to some of the candidate predictors by different names than that provided in the `short_name_chr` column of the `predictors_lup` object defined earlier, you can create a table of name correspondences.
+                             }
 
-```{r}
-var_nm_change_lup <- tibble::tibble(old_nms_chr = c("PHQ9","GAD7"),
-                                    new_nms_chr = c("PHQ-9", "GAD-7"))
+
+
+
 ```
 
 ```{r eval=FALSE}
-results_ls <- make_results_ls(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
-                              output_format_ls = output_format_ls,
-                              params_ls_ls = params_ls_ls,
-                              path_params_ls = path_params_ls,
-                              study_descs_ls = study_descs_ls,
-                              var_nm_change_lup = var_nm_change_lup)
+
 
 ```
 ```{r echo = FALSE, eval=FALSE }
 saveRDS(results_ls,paste0(path_params_ls$paths_ls$output_data_dir_1L_chr,"/results_ls.RDS"))
-  rmarkdown::render("AQoL_VIH/AQoL_VIH.Rmd",
-                    output_format = NULL,
-                    params = list(figures_in_body_lgl = F,
-                                  output_type_1L_chr = "Word",
-                                  results_ls = results_ls,
-                                  tables_in_body_lgl = F),
-                    output_file = paste0("AQoL_VIH", ".docx"),
-                    output_dir = path_params_ls$paths_ls$reports_dir_1L_chr)
+  # rmarkdown::render("AQoL_VIH/AQoL_VIH.Rmd",
+  #                   output_format = NULL,
+  #                   params = list(figures_in_body_lgl = F,
+  #                                 output_type_1L_chr = "Word",
+  #                                 results_ls = results_ls,
+  #                                 tables_in_body_lgl = F),
+  #                   output_file = paste0("AQoL_VIH", ".docx"),
+  #                   output_dir = path_params_ls$paths_ls$reports_dir_1L_chr)
 # }
 ```
 

@@ -641,8 +641,8 @@ transform_timepoint_vals <- function (timepoint_vals_chr, timepoint_levels_chr, 
     }
     return(timepoint_vals_chr)
 }
-#' Transform time series model data
-#' @description transform_ts_mdl_data() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform time series model data. Function argument mdl_ls specifies the object to be updated. Argument data_tb provides the object to be updated. The function returns Cnfdl (a list of models).
+#' Transform longitudinal model data
+#' @description transform_ts_mdl_data() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform longitudinal model data. Function argument mdl_ls specifies the object to be updated. Argument data_tb provides the object to be updated. The function returns Cnfdl (a list of models).
 #' @param mdl_ls Model list (a list of models)
 #' @param data_tb Data (a tibble)
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'utl_total_w'

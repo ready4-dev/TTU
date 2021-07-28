@@ -791,6 +791,7 @@ make_indpnt_predrs_lngl_tbl_title <- function (results_ls, ref_1L_int = 1)
 }
 make_input_params <- function(ds_tb,
                               ds_descvs_ls,
+                              header_yaml_args_ls,
                               maui_params_ls,
                               predictors_lup,
                               control_ls = NULL,
@@ -821,6 +822,7 @@ make_input_params <- function(ds_tb,
     make_valid_params_ls_ls(ds_tb = ds_tb,
                             maui_params_ls = maui_params_ls,
                             path_params_ls = path_params_ls)
+  params_ls_ls$header_yaml_args_ls <- header_yaml_args_ls
   params_ls_ls$output_format_ls <- output_format_ls
   params_ls_ls$scndry_anlys_params_ls <- scndry_anlys_params_ls
   return(params_ls_ls)
@@ -1513,6 +1515,7 @@ make_ranked_predrs_ls <- function(descv_tbls_ls,
 
 }
 make_results_ls <- function(spine_of_results_ls = NULL,
+                            abstract_args_ls = NULL,
                             dv_ds_nm_and_url_chr = NULL,
                             output_format_ls = NULL,
                             params_ls_ls = NULL,
@@ -1523,7 +1526,8 @@ make_results_ls <- function(spine_of_results_ls = NULL,
                             var_nm_change_lup = NULL,
                             ctgl_vars_regrouping_ls = NULL,
                             sig_covars_some_predrs_mdls_tb = NULL,
-                            sig_thresh_covars_1L_chr = NULL){
+                            sig_thresh_covars_1L_chr = NULL,
+                            version_1L_chr = NULL){
   if(is.null(spine_of_results_ls)){
     spine_of_results_ls <- make_results_ls_spine(output_format_ls = output_format_ls,
                                                  params_ls_ls = params_ls_ls,
@@ -1586,12 +1590,14 @@ make_results_ls <- function(spine_of_results_ls = NULL,
                                                      dplyr::pull(Estimate)),
                      cs_ts_ratios_tb = spine_of_results_ls$cs_ts_ratios_tb,
                      incld_covars_chr = spine_of_results_ls$outp_smry_ls$prefd_covars_chr)
-  results_ls <- list(candidate_covars_ls = spine_of_results_ls$candidate_covars_ls,
+  results_ls <- list(abstract_args_ls = abstract_args_ls,
+                     candidate_covars_ls = spine_of_results_ls$candidate_covars_ls,
                      candidate_predrs_chr = spine_of_results_ls$candidate_predrs_chr,
                      cohort_ls = make_cohort_ls(descv_tbls_ls,
                                                 ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls,
                                                 nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int),
                      dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
+                     header_yaml_args_ls = input_params_ls$header_yaml_args_ls,
                      hlth_utl_and_predrs_ls = make_hlth_utl_and_predrs_ls(spine_of_results_ls$outp_smry_ls,
                                                                           descv_tbls_ls = descv_tbls_ls,
                                                                           nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int,
@@ -1600,6 +1606,7 @@ make_results_ls <- function(spine_of_results_ls = NULL,
                      mdl_coef_ratios_ls = spine_of_results_ls$mdl_coef_ratios_ls,
                      mdl_ingredients_ls = spine_of_results_ls$mdl_ingredients_ls,
                      mdls_with_signft_covars_ls = spine_of_results_ls$mdls_with_signft_covars_ls,
+                     output_format_ls = input_params_ls$output_format_ls,
                      paths_to_figs_ls = make_paths_to_ss_plts_ls(spine_of_results_ls$output_data_dir_1L_chr,
                                                                  outp_smry_ls = spine_of_results_ls$outp_smry_ls),
                      predr_var_nms_chr = spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]] %>%
@@ -1621,7 +1628,9 @@ make_results_ls <- function(spine_of_results_ls = NULL,
                                                  nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int),
                      ttu_cs_ls = ttu_cs_ls,
                      ttu_lngl_ls = ttu_lngl_ls,
-                     var_nm_change_lup = spine_of_results_ls$var_nm_change_lup)
+                     ttu_version_1L_chr = spine_of_results_ls$outp_smry_ls$session_data_ls$otherPkgs$TTU$Version,
+                     var_nm_change_lup = spine_of_results_ls$var_nm_change_lup,
+                     version_1L_chr = version_1L_chr)
   return(results_ls)
 }
 make_results_ls_spine <-  function(output_format_ls = NULL,
@@ -2083,7 +2092,8 @@ make_ss_tbls_ls <- function(outp_smry_ls,
                                                              nbr_of_digits_1L_int = nbr_of_digits_1L_int)))
   return(ss_tbls_ls)
 }
-make_study_descs_ls <- function(time_btwn_bl_and_fup_1L_chr,
+make_study_descs_ls <- function(input_params_ls = NULL,
+                                time_btwn_bl_and_fup_1L_chr,
                                 background_1L_chr = "",
                                 coi_1L_chr = "None declared.",
                                 conclusion_1L_chr = "",
@@ -2092,11 +2102,17 @@ make_study_descs_ls <- function(time_btwn_bl_and_fup_1L_chr,
                                 health_utl_nm_1L_chr = NULL,
                                 params_ls_ls = NULL,
                                 predr_ctgs_ls = NULL,
-                                sample_desc_1L_chr = NULL){
+                                sample_desc_1L_chr = NULL,
+                                var_nm_change_lup = NULL){
   if(!missing("health_utl_nm_1L_chr")){
     warning("The health_utl_nm_1L_chr argument is now soft deprecated. Passing a valid value to params_ls_ls will ensure the names of the MAUI instrument are included in function operations.")
   }else{
     health_utl_nm_1L_chr <- params_ls_ls$short_and_long_nm[1]
+  }
+  if(!missing("params_ls_ls")){
+    warning("The params_ls_ls argument is now soft deprecated. Use input_params_ls instead.")
+  }else{
+    params_ls_ls <- input_params_ls
   }
   health_utl_long_nm_1L_chr <- ifelse(!is.null(params_ls_ls$short_and_long_nm),
                                       params_ls_ls$short_and_long_nm[2],
@@ -2110,8 +2126,14 @@ make_study_descs_ls <- function(time_btwn_bl_and_fup_1L_chr,
                          health_utl_long_nm_1L_chr = health_utl_long_nm_1L_chr,
                          time_btwn_bl_and_fup_1L_chr = time_btwn_bl_and_fup_1L_chr,
                          predr_ctgs_ls = predr_ctgs_ls,
-                         sample_desc_1L_chr = sample_desc_1L_chr)
-  return(study_descs_ls)
+                         sample_desc_1L_chr = sample_desc_1L_chr,
+                         var_nm_change_lup = var_nm_change_lup)
+  if(!is.null(input_params_ls)){
+    input_params_ls$study_descs_ls <- study_descs_ls
+  }else{
+    input_params_ls <- study_descs_ls
+  }
+  return(input_params_ls)
 }
 make_ten_fold_text <- function(results_ls){
   mdls_chr <- get_ordered_sngl_csnl_mdls(results_ls)

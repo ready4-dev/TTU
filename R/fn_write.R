@@ -1269,8 +1269,8 @@ write_to_delete_mdl_fls <- function (outp_smry_ls)
     paths_to_mdls_chr %>% purrr::walk(~unlink(paste0(outp_smry_ls$path_to_write_to_1L_chr, 
         "/", .x)))
 }
-#' Write time series model plots
-#' @description write_ts_mdl_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series model plots. The function returns Model plots paths (a list).
+#' Write longitudinal model plots
+#' @description write_ts_mdl_plts() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write longitudinal model plots. The function returns Model plots paths (a list).
 #' @param brms_mdl Bayesian regression models (a model)
 #' @param table_predn_mdl Table prediction (a model), Default: NULL
 #' @param tfd_data_tb Transformed data (a tibble)
@@ -1379,8 +1379,8 @@ write_ts_mdl_plts <- function (brms_mdl, table_predn_mdl = NULL, tfd_data_tb, md
         "brmsfit"), 1, 3):10]) %>% purrr::discard(is.na)
     return(mdl_plts_paths_ls)
 }
-#' Write time series models
-#' @description write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models. The function returns Models summary (a tibble).
+#' Write longitudinal models
+#' @description write_ts_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write longitudinal models. The function returns Models summary (a tibble).
 #' @param data_tb Data (a tibble)
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one), Default: 'utl_total_w'
 #' @param predr_vars_nms_ls Predictor variables names (a list)
@@ -1430,8 +1430,8 @@ write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_v
     saveRDS(mdls_smry_tb, paste0(mdl_smry_dir_1L_chr, "/mdls_smry_tb.RDS"))
     return(mdls_smry_tb)
 }
-#' Write time series models from algorithm output
-#' @description write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models from algorithm output. The function returns Output summary (a list).
+#' Write longitudinal models from algorithm output
+#' @description write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write longitudinal models from algorithm output. The function returns Output summary (a list).
 #' @param outp_smry_ls Output summary (a list)
 #' @param predictors_lup Predictors (a lookup table)
 #' @param utl_min_val_1L_dbl Utility minimum value (a double vector of length one), Default: -1

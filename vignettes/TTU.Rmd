@@ -17,12 +17,21 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(TTU)
 ```
-This development version of the TTU package has been made available as part of the process of testing and documenting the package. 
+This development version of the TTU package has been made available as part of the process of testing and documenting the package. [Installation instructions are on the package homepage](https://ready4-dev.github.io/TTU/index.html).
 
-Note that, one of the key functions in TTU (`write_ts_mdls_from_alg_outp`{.R}) makes a call to the Stan program. This function requires that you have the `cmdstanr` package installed on your machine (which should occur automatically when you install TTU) and have performed the necessary configuration of that package (refer to [https://mc-stan.org/cmdstanr/](https://mc-stan.org/cmdstanr/) for details).
+## Before you get started
+### Third party package configuration
+A key step in the workflows supported by TTU is to make calls to the Stan program. By default, functions in TTU rely on the `cmdstanr` package to do this, and you therefore need to have that package installed on your machine (which should occur automatically when you install TTU) and to have performed the necessary configuration of that package (refer to [https://mc-stan.org/cmdstanr/](https://mc-stan.org/cmdstanr/) for details).
 
+### Data repository set-up
+Furthermore, TTU package workflows support sharing of results to an online repository. If you wish to avail of this feature, you will need to have set up an account with a Dataverse (https://dataverse.org/) provider (e.g., https://dataverse.harvard.edu/). You also need to have created:
+
+ - a dataverse API key and stored the API key and server values in your local environment (to see how to do this, visit: https://github.com/IQSS/dataverse-client-r )
+ - an empty dataset for each project you undertake with TTU (steps 1-3 and 5 in https://guides.dataverse.org/en/5.5/user/dataset-management.html#adding-a-new-dataset)
+
+## Workflow vignettes
 The following vignettes demonstrate the two main workflows supported by the TTU package:
 
-- [Exploratory analysis workflow (General population - EQ5D)](Model_TTU.html)
-- [Reporting workflow (General population - EQ5D)](CSP_EQ5D_TTU.html)
-- [Reporting workflow (Clinical population - AQoL6D)](CSP_AQOL6D_TTU.html)
+- [Exploratory workflow (General population - EQ5D example)](Model_TTU.html)
+- [Reporting workflow (General population - EQ5D example)](CSP_EQ5D_TTU.html)
+- [Reporting workflow (Clinical population - AQoL6D example)](CSP_AQOL6D_TTU.html)
