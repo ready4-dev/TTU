@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9284</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9297</span>
       </span>
     </div>
 
@@ -70,7 +70,7 @@
       <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
-      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
+      <a href="../articles/Model_TTU.html">Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -114,19 +114,42 @@
 <span class="co">#&gt;   grobWidth.absoluteGrob  ggplot2</span>
 <span class="co">#&gt;   grobX.absoluteGrob      ggplot2</span>
 <span class="co">#&gt;   grobY.absoluteGrob      ggplot2</span></code></pre></div>
-<p>This development version of the TTU package has been made available as part of the process of testing and documenting the package.</p>
-<p>Note that, one of the key functions in TTU (<code class="sourceCode r">write_ts_mdls_from_alg_outp</code>) makes a call to the Stan program. This function requires that you have the <code>cmdstanr</code> package installed on your machine (which should occur automatically when you install TTU) and have performed the necessary configuration of that package (refer to <a href="https://mc-stan.org/cmdstanr/">https://mc-stan.org/cmdstanr/</a> for details).</p>
-<p>The following vignettes demonstrate the two main workflows supported by the TTU package:</p>
+<p>This development version of the TTU package has been made available as part of the process of testing and documenting the package. <a href="https://ready4-dev.github.io/TTU/index.html">Installation instructions are on the package homepage</a>.</p>
+<div id="before-you-get-started" class="section level2">
+<h2 class="hasAnchor">
+<a href="#before-you-get-started" class="anchor"></a>Before you get started</h2>
+<div id="third-party-package-configuration" class="section level3">
+<h3 class="hasAnchor">
+<a href="#third-party-package-configuration" class="anchor"></a>Third party package configuration</h3>
+<p>A key step in the workflows supported by TTU is to make calls to the Stan program. By default, functions in TTU rely on the <code>cmdstanr</code> package to do this, and you therefore need to have that package installed on your machine (which should occur automatically when you install TTU) and to have performed the necessary configuration of that package (refer to <a href="https://mc-stan.org/cmdstanr/">https://mc-stan.org/cmdstanr/</a> for details).</p>
+</div>
+<div id="data-repository-set-up" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data-repository-set-up" class="anchor"></a>Data repository set-up</h3>
+<p>Furthermore, TTU package workflows support sharing of results to an online repository. If you wish to avail of this feature, you will need to have set up an account with a Dataverse (<a href="https://dataverse.org/" class="uri">https://dataverse.org/</a>) provider (e.g., <a href="https://dataverse.harvard.edu/" class="uri">https://dataverse.harvard.edu/</a>). You also need to have created:</p>
 <ul>
-<li><a href="Model_TTU.html">Exploratory analysis workflow (General population - EQ5D)</a></li>
-<li><a href="CSP_EQ5D_TTU.html">Reporting workflow (General population - EQ5D)</a></li>
-<li><a href="CSP_AQOL6D_TTU.html">Reporting workflow (Clinical population - AQoL6D)</a></li>
+<li>a dataverse API key and stored the API key and server values in your local environment (to see how to do this, visit: <a href="https://github.com/IQSS/dataverse-client-r" class="uri">https://github.com/IQSS/dataverse-client-r</a> )</li>
+<li>an empty dataset for each project you undertake with TTU (steps 1-3 and 5 in <a href="https://guides.dataverse.org/en/5.5/user/dataset-management.html#adding-a-new-dataset" class="uri">https://guides.dataverse.org/en/5.5/user/dataset-management.html#adding-a-new-dataset</a>)</li>
 </ul>
 </div>
+</div>
+<div id="workflow-vignettes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#workflow-vignettes" class="anchor"></a>Workflow vignettes</h2>
+<p>The following vignettes demonstrate the two main workflows supported by the TTU package:</p>
+<ul>
+<li><a href="Model_TTU.html">Exploratory workflow (General population - EQ5D example)</a></li>
+<li><a href="CSP_EQ5D_TTU.html">Reporting workflow (General population - EQ5D example)</a></li>
+<li><a href="CSP_AQOL6D_TTU.html">Reporting workflow (Clinical population - AQoL6D example)</a></li>
+</ul>
+</div>
+  </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 

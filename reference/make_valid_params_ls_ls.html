@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9284</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9297</span>
       </span>
     </div>
 
@@ -112,7 +112,7 @@
       <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
-      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
+      <a href="../articles/Model_TTU.html">Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -148,11 +148,11 @@
 
     <pre class="usage"><span class='fu'>make_valid_params_ls_ls</span><span class='op'>(</span>
   <span class='va'>analysis_core_params_ls</span>,
-  <span class='va'>candidate_covar_nms_chr</span>,
   <span class='va'>ds_tb</span>,
   <span class='va'>path_params_ls</span>,
   <span class='va'>maui_params_ls</span>,
-  prefd_covars_chr <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  candidate_covar_nms_chr <span class='op'>=</span> <span class='cn'>NA_character_</span>,
+  prefd_covars_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
   prefd_mdl_types_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
   raw_ds_tfmn_fn <span class='op'>=</span> <span class='cn'>NULL</span>,
   scndry_analysis_extra_vars_chr <span class='op'>=</span> <span class='cn'>NA_character_</span>,
@@ -168,10 +168,6 @@
       <td><p>Analysis core params (a list)</p></td>
     </tr>
     <tr>
-      <th>candidate_covar_nms_chr</th>
-      <td><p>Candidate covariate names (a character vector)</p></td>
-    </tr>
-    <tr>
       <th>ds_tb</th>
       <td><p>Dataset (a tibble)</p></td>
     </tr>
@@ -184,8 +180,12 @@
       <td><p>Maui params (a list)</p></td>
     </tr>
     <tr>
+      <th>candidate_covar_nms_chr</th>
+      <td><p>Candidate covariate names (a character vector), Default: 'NA'</p></td>
+    </tr>
+    <tr>
       <th>prefd_covars_chr</th>
-      <td><p>Preferred covariates (a character vector), Default: 'NA'</p></td>
+      <td><p>Preferred covariates (a character vector), Default: NULL</p></td>
     </tr>
     <tr>
       <th>prefd_mdl_types_chr</th>

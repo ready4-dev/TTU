@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Make study descriptions — make_study_descs_ls" />
-<meta property="og:description" content="make_study_descs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make study descriptions list. The function returns Study descriptions (a list)." />
+<meta property="og:description" content="make_study_descs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make study descriptions list. The function returns Input params (a list)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9284</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9297</span>
       </span>
     </div>
 
@@ -112,7 +112,7 @@
       <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
-      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
+      <a href="../articles/Model_TTU.html">Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -143,35 +143,80 @@
     </div>
 
     <div class="ref-description">
-    <p>make_study_descs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make study descriptions list. The function returns Study descriptions (a list).</p>
+    <p>make_study_descs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make study descriptions list. The function returns Input params (a list).</p>
     </div>
 
     <pre class="usage"><span class='fu'>make_study_descs_ls</span><span class='op'>(</span>
-  <span class='va'>health_utl_nm_1L_chr</span>,
+  input_params_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>time_btwn_bl_and_fup_1L_chr</span>,
-  predr_ctgs_ls <span class='op'>=</span> <span class='cn'>NULL</span>
+  background_1L_chr <span class='op'>=</span> <span class='st'>""</span>,
+  coi_1L_chr <span class='op'>=</span> <span class='st'>"None declared."</span>,
+  conclusion_1L_chr <span class='op'>=</span> <span class='st'>""</span>,
+  ethics_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  funding_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  health_utl_nm_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  params_ls_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  predr_ctgs_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sample_desc_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  var_nm_change_lup <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>health_utl_nm_1L_chr</th>
-      <td><p>Health utility name (a character vector of length one)</p></td>
+      <th>input_params_ls</th>
+      <td><p>Input params (a list), Default: NULL</p></td>
     </tr>
     <tr>
       <th>time_btwn_bl_and_fup_1L_chr</th>
       <td><p>Time btwn baseline and follow-up (a character vector of length one)</p></td>
     </tr>
     <tr>
+      <th>background_1L_chr</th>
+      <td><p>Background (a character vector of length one), Default: ''</p></td>
+    </tr>
+    <tr>
+      <th>coi_1L_chr</th>
+      <td><p>Coi (a character vector of length one), Default: 'None declared.'</p></td>
+    </tr>
+    <tr>
+      <th>conclusion_1L_chr</th>
+      <td><p>Conclusion (a character vector of length one), Default: ''</p></td>
+    </tr>
+    <tr>
+      <th>ethics_1L_chr</th>
+      <td><p>Ethics (a character vector of length one), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>funding_1L_chr</th>
+      <td><p>Funding (a character vector of length one), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>health_utl_nm_1L_chr</th>
+      <td><p>Health utility name (a character vector of length one), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>params_ls_ls</th>
+      <td><p>Params (a list of lists), Default: NULL</p></td>
+    </tr>
+    <tr>
       <th>predr_ctgs_ls</th>
       <td><p>Predictor category categoriess (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>sample_desc_1L_chr</th>
+      <td><p>Sample description (a character vector of length one), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>var_nm_change_lup</th>
+      <td><p>Variable name change (a lookup table), Default: NULL</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Study descriptions (a list)</p>
+    <p>Input params (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

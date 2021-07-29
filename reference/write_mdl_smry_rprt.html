@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Write model summary report — write_mdl_smry_rprt" />
-<meta property="og:description" content="write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Report lups (a list)." />
+<meta property="og:description" content="write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Input params (a list)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9284</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9297</span>
       </span>
     </div>
 
@@ -112,7 +112,7 @@
       <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
-      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
+      <a href="../articles/Model_TTU.html">Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -143,14 +143,15 @@
     </div>
 
     <div class="ref-description">
-    <p>write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Report lups (a list).</p>
+    <p>write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Input params (a list).</p>
     </div>
 
     <pre class="usage"><span class='fu'>write_mdl_smry_rprt</span><span class='op'>(</span>
-  <span class='va'>header_yaml_args_ls</span>,
-  <span class='va'>path_params_ls</span>,
+  input_params_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  header_yaml_args_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  path_params_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
   use_fake_data_1L_lgl <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  <span class='va'>output_format_ls</span>,
+  output_format_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
   abstract_args_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
   dv_ds_nm_and_url_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
   reference_int <span class='op'>=</span> <span class='fl'>0</span>,
@@ -165,12 +166,16 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>input_params_ls</th>
+      <td><p>Input params (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
       <th>header_yaml_args_ls</th>
-      <td><p>Header yaml arguments (a list)</p></td>
+      <td><p>Header yaml arguments (a list), Default: NULL</p></td>
     </tr>
     <tr>
       <th>path_params_ls</th>
-      <td><p>Path params (a list)</p></td>
+      <td><p>Path params (a list), Default: NULL</p></td>
     </tr>
     <tr>
       <th>use_fake_data_1L_lgl</th>
@@ -178,7 +183,7 @@
     </tr>
     <tr>
       <th>output_format_ls</th>
-      <td><p>Output format (a list)</p></td>
+      <td><p>Output format (a list), Default: NULL</p></td>
     </tr>
     <tr>
       <th>abstract_args_ls</th>
@@ -216,7 +221,7 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Report lups (a list)</p>
+    <p>Input params (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

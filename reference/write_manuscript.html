@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Write manuscript — write_manuscript" />
-<meta property="og:description" content="write_manuscript() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write manuscript. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour" />
+<meta property="og:description" content="write_manuscript() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write manuscript. The function returns Results (a list)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9284</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9297</span>
       </span>
     </div>
 
@@ -112,7 +112,7 @@
       <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
-      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
+      <a href="../articles/Model_TTU.html">Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -143,47 +143,65 @@
     </div>
 
     <div class="ref-description">
-    <p>write_manuscript() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write manuscript. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour</p>
+    <p>write_manuscript() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write manuscript. The function returns Results (a list).</p>
     </div>
 
     <pre class="usage"><span class='fu'>write_manuscript</span><span class='op'>(</span>
-  <span class='va'>results_ls</span>,
-  <span class='va'>output_format_ls</span>,
-  <span class='va'>path_params_ls</span>,
-  append_params_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
-  fl_nm_1L_chr <span class='op'>=</span> <span class='st'>"TTU_Manuscript"</span>,
-  path_to_RMDs_chr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"../Manuscript/Word/Word.Rmd"</span>, <span class='st'>"../Manuscript/PDF/PDF.Rmd"</span><span class='op'>)</span>
+  abstract_args_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  input_params_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  results_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  figures_in_body_lgl <span class='op'>=</span> <span class='cn'>NULL</span>,
+  output_type_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  tables_in_body_lgl <span class='op'>=</span> <span class='cn'>NULL</span>,
+  title_1L_chr <span class='op'>=</span> <span class='st'>"Scientific manuscript"</span>,
+  version_1L_chr <span class='op'>=</span> <span class='st'>"0.3"</span>,
+  write_to_dv_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>abstract_args_ls</th>
+      <td><p>Abstract arguments (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>input_params_ls</th>
+      <td><p>Input params (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
       <th>results_ls</th>
-      <td><p>Results (a list)</p></td>
+      <td><p>Results (a list), Default: NULL</p></td>
     </tr>
     <tr>
-      <th>output_format_ls</th>
-      <td><p>Output format (a list)</p></td>
+      <th>figures_in_body_lgl</th>
+      <td><p>Figures in body (a logical vector), Default: NULL</p></td>
     </tr>
     <tr>
-      <th>path_params_ls</th>
-      <td><p>Path params (a list)</p></td>
+      <th>output_type_1L_chr</th>
+      <td><p>Output type (a character vector of length one), Default: NULL</p></td>
     </tr>
     <tr>
-      <th>append_params_ls</th>
-      <td><p>Append params (a list), Default: NULL</p></td>
+      <th>tables_in_body_lgl</th>
+      <td><p>Tables in body (a logical vector), Default: NULL</p></td>
     </tr>
     <tr>
-      <th>fl_nm_1L_chr</th>
-      <td><p>File name (a character vector of length one), Default: 'TTU_Manuscript'</p></td>
+      <th>title_1L_chr</th>
+      <td><p>Title (a character vector of length one), Default: 'Scientific manuscript'</p></td>
     </tr>
     <tr>
-      <th>path_to_RMDs_chr</th>
-      <td><p>Path toMDs (a character vector), Default: c("../Manuscript/Word/Word.Rmd", "../Manuscript/PDF/PDF.Rmd")</p></td>
+      <th>version_1L_chr</th>
+      <td><p>Version (a character vector of length one), Default: '0.3'</p></td>
+    </tr>
+    <tr>
+      <th>write_to_dv_1L_lgl</th>
+      <td><p>Write to dataverse (a logical vector of length one), Default: F</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>Results (a list)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

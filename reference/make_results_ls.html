@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9284</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9297</span>
       </span>
     </div>
 
@@ -112,7 +112,7 @@
       <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
-      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
+      <a href="../articles/Model_TTU.html">Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -147,10 +147,20 @@
     </div>
 
     <pre class="usage"><span class='fu'>make_results_ls</span><span class='op'>(</span>
-  <span class='va'>spine_of_results_ls</span>,
+  spine_of_results_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  abstract_args_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  dv_ds_nm_and_url_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  output_format_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  params_ls_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  path_params_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  study_descs_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  fn_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  include_idx_int <span class='op'>=</span> <span class='cn'>NULL</span>,
+  var_nm_change_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
   ctgl_vars_regrouping_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>sig_covars_some_predrs_mdls_tb</span>,
-  <span class='va'>sig_thresh_covars_1L_chr</span>
+  sig_covars_some_predrs_mdls_tb <span class='op'>=</span> <span class='cn'>NULL</span>,
+  sig_thresh_covars_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  version_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -158,7 +168,43 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>spine_of_results_ls</th>
-      <td><p>Spine of results (a list)</p></td>
+      <td><p>Spine of results (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>abstract_args_ls</th>
+      <td><p>Abstract arguments (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>dv_ds_nm_and_url_chr</th>
+      <td><p>Dataverse dataset name and url (a character vector), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>output_format_ls</th>
+      <td><p>Output format (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>params_ls_ls</th>
+      <td><p>Params (a list of lists), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>path_params_ls</th>
+      <td><p>Path params (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>study_descs_ls</th>
+      <td><p>Study descriptions (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>fn_ls</th>
+      <td><p>Function list (a list of functions), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>include_idx_int</th>
+      <td><p>Include index (an integer vector), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>var_nm_change_lup</th>
+      <td><p>Variable name change (a lookup table), Default: NULL</p></td>
     </tr>
     <tr>
       <th>ctgl_vars_regrouping_ls</th>
@@ -166,11 +212,15 @@
     </tr>
     <tr>
       <th>sig_covars_some_predrs_mdls_tb</th>
-      <td><p>Sig covariates some predictors models (a tibble)</p></td>
+      <td><p>Sig covariates some predictors models (a tibble), Default: NULL</p></td>
     </tr>
     <tr>
       <th>sig_thresh_covars_1L_chr</th>
-      <td><p>Sig thresh covariates (a character vector of length one)</p></td>
+      <td><p>Sig thresh covariates (a character vector of length one), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>version_1L_chr</th>
+      <td><p>Version (a character vector of length one), Default: NULL</p></td>
     </tr>
     </table>
 

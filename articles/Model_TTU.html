@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transfer to Utility Exploratory Analysis Workflow • TTU</title>
+<title>Exploratory Analysis Workflow • TTU</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Transfer to Utility Exploratory Analysis Workflow">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Exploratory Analysis Workflow">
 <meta property="og:description" content="TTU">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9284</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9297</span>
       </span>
     </div>
 
@@ -70,7 +70,7 @@
       <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
-      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
+      <a href="../articles/Model_TTU.html">Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -96,7 +96,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Transfer to Utility Exploratory Analysis Workflow</h1>
+      <h1 data-toc-skip>Exploratory Analysis Workflow</h1>
             
       
       <small class="dont-index">Source: <a href="https://github.com/ready4-dev/TTU/blob/master/vignettes/Model_TTU.Rmd"><code>vignettes/Model_TTU.Rmd</code></a></small>
@@ -106,7 +106,8 @@
 
     
     
-<p>The steps in this exploratory analysis workflow may need to be performed iteratively, both in order to identify the optimal model types, predictors and covariates to use and modify default values to ensure model convergence. Once you are satisfied that you have identified the optimal set of input values, you can implement the <a href="CSP_EQ5D_TTU.html">analysis, reporting and dissemination workflow</a> described in another vignette.</p>
+<p>Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.</p>
+<p>The steps in this exploratory analysis workflow may need to be performed iteratively, both in order to identify the optimal model types, predictors and covariates to use and modify default values to ensure model convergence. Once you are satisfied that you have identified the optimal set of input values, you can implement the <a href="CSP_EQ5D_TTU.html">reporting workflow</a> described in another vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/TTU/">TTU</a></span><span class="op">)</span></code></pre></div>
 <div id="set-up-workspace" class="section level2">
@@ -1575,10 +1576,10 @@ Ordinary Least Squares (Log Log transformation)
 <p>We can now identify the highest performing model in each category of candidate model based on the testing R<sup>2</sup> statistic (RsquaredP in the previous table).</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span></code></pre></div>
-<pre><code>## [1] "OLS_NTF"     "GLM_GSN_LOG" "BET_LGT"</code></pre>
+<pre><code>## [1] "BET_LGT" "OLS_NTF"</code></pre>
 <p>We can override these automated selections and instead incorporate other considerations (possibly based on judgments informed by visual inspection of the plots and the desirability of constraining predictions to a maximum value of one). We do this in the following command, specifying new preferred model types, in descending order of preference.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"OLS_NTF"</span>, <span class="st">"GLM_GSN_LOG"</span>, <span class="st">"BET_CLL"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">prefd_mdl_types_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"OLS_NTF"</span>, <span class="st">"BET_CLL"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="use-most-preferred-model-to-compare-all-candidate-predictors" class="section level3">
 <h3 class="hasAnchor">
@@ -1731,11 +1732,11 @@ psych_well_int
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">mdls_with_covars_smry_tb</span> <span class="op">%&gt;%</span>
     <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
-                            caption_1L_chr <span class="op">=</span> <span class="st">"Preferred performance of models with covariate predictors by candidate predictor"</span>, 
+                            caption_1L_chr <span class="op">=</span> <span class="st">"Performance of preferred models with covariate predictors by candidate predictor"</span>, 
                           use_lbls_as_col_nms_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
 <table class="table  lightable-paper lightable-hover">
 <caption>
-Preferred performance of models with covariate predictors by candidate predictor
+Performance of preferred models with covariate predictors by candidate predictor
 </caption>
 <thead><tr>
 <th style="text-align:left;">
@@ -1818,14 +1819,14 @@ k10_int
 <p>The previous call to the <code class="sourceCode r">write_mdls_with_covars_cmprsn</code> function saves the tested models along with the two plots for each model in the “E_Predrs_W_Covars_Sngl_Mdl_Cmprsn” sub-directory of “Output”.</p>
 </div>
 </div>
-<div id="apply-preferred-model-types-and-predictors-to-time-series-data" class="section level2">
+<div id="apply-preferred-model-types-and-predictors-to-longitudinal-data" class="section level2">
 <h2 class="hasAnchor">
-<a href="#apply-preferred-model-types-and-predictors-to-time-series-data" class="anchor"></a>Apply preferred model types and predictors to time series data</h2>
-<p>The next main step is to use the preferred model types and covariates identified from the preceding analysis of cross-sectional data in time series analysis.</p>
-<div id="time-series-modelling" class="section level3">
+<a href="#apply-preferred-model-types-and-predictors-to-longitudinal-data" class="anchor"></a>Apply preferred model types and predictors to longitudinal data</h2>
+<p>The next main step is to use the preferred model types and covariates identified from the preceding analysis of cross-sectional data in longitudinal analysis.</p>
+<div id="longitudinal-modelling" class="section level3">
 <h3 class="hasAnchor">
-<a href="#time-series-modelling" class="anchor"></a>Time series modelling</h3>
-<p>Next we test each of the time series models we specified in the previous step. Note, that in many cases both the <code>prior_ls</code> and <code>control_ls</code> arguments can be set to <code>NULL</code> (which may speed up execution). However, in this example doing so would result in warning messages suggesting a change to the adapt_delta control value (default = 0.8). We have therefore passed a value to the <code>control_ls</code> argument that addresses this issue.</p>
+<a href="#longitudinal-modelling" class="anchor"></a>longitudinal modelling</h3>
+<p>Next we test each of the longitudinal models we specified in the previous step. Note, that in many cases both the <code>prior_ls</code> and <code>control_ls</code> arguments can be set to <code>NULL</code> (which may speed up execution). However, in this example doing so would result in warning messages suggesting a change to the adapt_delta control value (default = 0.8). We have therefore passed a value to the <code>control_ls</code> argument that addresses this issue.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">outp_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_ts_mdls_from_alg_outp.html">write_ts_mdls_from_alg_outp</a></span><span class="op">(</span><span class="va">outp_smry_ls</span>,
                                             predictors_lup <span class="op">=</span> <span class="va">predictors_lup</span> ,

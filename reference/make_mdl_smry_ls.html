@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9284</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9297</span>
       </span>
     </div>
 
@@ -112,7 +112,7 @@
       <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
-      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
+      <a href="../articles/Model_TTU.html">Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -147,7 +147,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>make_mdl_smry_ls</span><span class='op'>(</span>
-  mdl_types_lup <span class='op'>=</span> <span class='cn'>NULL</span>,
+  mdl_types_lup <span class='op'>=</span> <span class='fu'><a href='get_cndts_for_mxd_mdls.html'>get_cndts_for_mxd_mdls</a></span><span class='op'>(</span><span class='op'>)</span>,
   mdl_types_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
   choose_from_pfx_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
   folds_1L_int <span class='op'>=</span> <span class='fl'>10L</span>,
@@ -159,7 +159,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>mdl_types_lup</th>
-      <td><p>Model types (a lookup table), Default: NULL</p></td>
+      <td><p>Model types (a lookup table), Default: get_cndts_for_mxd_mdls()</p></td>
     </tr>
     <tr>
       <th>mdl_types_chr</th>

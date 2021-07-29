@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9284</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9297</span>
       </span>
     </div>
 
@@ -112,7 +112,7 @@
       <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
-      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
+      <a href="../articles/Model_TTU.html">Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -148,14 +148,17 @@
 
     <pre class="usage"><span class='fu'>make_analysis_core_params_ls</span><span class='op'>(</span>
   <span class='va'>ds_descvs_ls</span>,
-  <span class='va'>mdl_smry_ls</span>,
+  mdl_smry_ls <span class='op'>=</span> <span class='fu'><a href='make_mdl_smry_ls.html'>make_mdl_smry_ls</a></span><span class='op'>(</span><span class='op'>)</span>,
   output_format_ls <span class='op'>=</span> <span class='fu'><a href='make_output_format_ls.html'>make_output_format_ls</a></span><span class='op'>(</span><span class='op'>)</span>,
   <span class='va'>predictors_lup</span>,
   control_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
   iters_1L_int <span class='op'>=</span> <span class='fl'>4000L</span>,
+  prefd_covars_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  prefd_mdl_types_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
   prior_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
   seed_1L_int <span class='op'>=</span> <span class='fl'>12345</span>,
-  use_fake_data_1L_lgl <span class='op'>=</span> <span class='cn'>F</span>
+  candidate_covar_nms_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  use_fake_data_1L_lgl <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -167,7 +170,7 @@
     </tr>
     <tr>
       <th>mdl_smry_ls</th>
-      <td><p>Model summary (a list)</p></td>
+      <td><p>Model summary (a list), Default: make_mdl_smry_ls()</p></td>
     </tr>
     <tr>
       <th>output_format_ls</th>
@@ -186,6 +189,14 @@
       <td><p>Iterations (an integer vector of length one), Default: 4000</p></td>
     </tr>
     <tr>
+      <th>prefd_covars_chr</th>
+      <td><p>Preferred covariates (a character vector), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>prefd_mdl_types_chr</th>
+      <td><p>Preferred model types (a character vector), Default: NULL</p></td>
+    </tr>
+    <tr>
       <th>prior_ls</th>
       <td><p>Prior (a list), Default: NULL</p></td>
     </tr>
@@ -194,8 +205,12 @@
       <td><p>Seed (an integer vector of length one), Default: 12345</p></td>
     </tr>
     <tr>
+      <th>candidate_covar_nms_chr</th>
+      <td><p>Candidate covariate names (a character vector), Default: NULL</p></td>
+    </tr>
+    <tr>
       <th>use_fake_data_1L_lgl</th>
-      <td><p>Use fake data (a logical vector of length one), Default: F</p></td>
+      <td><p>Use fake data (a logical vector of length one), Default: NULL</p></td>
     </tr>
     </table>
 

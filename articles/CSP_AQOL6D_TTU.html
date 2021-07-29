@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9284</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9297</span>
       </span>
     </div>
 
@@ -70,7 +70,7 @@
       <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
-      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
+      <a href="../articles/Model_TTU.html">Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -92,7 +92,8 @@
 
       
 
-      </header><script src="CSP_AQOL6D_TTU_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="CSP_AQOL6D_TTU_files/accessible-code-block-0.0.1/empty-anchor.js"></script><script src="CSP_AQOL6D_TTU_files/kePrint-0.0.1/kePrint.js"></script><link href="CSP_AQOL6D_TTU_files/lightable-0.0.1/lightable.css" rel="stylesheet">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Reporting Workflow, AQoL-6D Clinical Population Example</h1>
@@ -107,10 +108,9 @@
     
 
 <!---BLOCK_LANDSCAPE_START--->
-<p>This vignette is an example of implementing of analysis, reporting and sharing workflow to develop transfer to AQoL-6D health utility models. Some of the initial steps in this example are described in more detail in the <a href="CSP_EQ5D_TTU.html">EQ-5D example</a>.</p>
+<p>This vignette is an example of implementing of analysis, reporting and sharing workflow to develop transfer to AQoL-6D health utility models. Some of the initial steps in this example are described in more detail in the <a href="CSP_EQ5D_TTU.html">EQ-5D example</a>. This example uses entirely fake data (so do not use its outputs to inform decision making) but was based on a method that was applied to real data (see <a href="https://www.medrxiv.org/content/10.1101/2021.07.07.21260129v2.full" class="uri">https://www.medrxiv.org/content/10.1101/2021.07.07.21260129v2.full</a>).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/TTU/">TTU</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/TTU/">TTU</a></span><span class="op">)</span></code></pre></div>
 <div id="input-parameters" class="section level1">
 <h1 class="hasAnchor">
 <a href="#input-parameters" class="anchor"></a>Input parameters</h1>
@@ -121,9 +121,167 @@
 <h3 class="hasAnchor">
 <a href="#bibliograhic-data" class="anchor"></a>Bibliograhic data</h3>
 <p>We begin by specifying the authorship and other bibliographic data that we wish to attach to all reports that we generate.</p>
+<p>We begin by specifying the authorship data we wish to attach to all reports that we generate.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">header_yaml_args_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_header_yaml_args_ls.html">make_header_yaml_args_ls</a></span><span class="op">(</span>authors_tb <span class="op">=</span> <span class="fu">ready4show</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/ready4show/reference/authors_tb.html">authors_tb</a></span>,
-                                                institutes_tb <span class="op">=</span> <span class="fu">ready4show</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/ready4show/reference/institutes_tb.html">institutes_tb</a></span>,
+<code class="sourceCode R"><span class="va">authors_tb</span> <span class="op">&lt;-</span> <span class="fu">ready4show</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/ready4show/reference/authors_tb.html">authors_tb</a></span></code></pre></div>
+<table class="table  lightable-paper lightable-hover">
+<caption>
+Authors table
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+first_nm_chr
+</th>
+<th style="text-align:right;">
+middle_nm_chr
+</th>
+<th style="text-align:left;">
+last_nm_chr
+</th>
+<th style="text-align:right;">
+title
+</th>
+<th style="text-align:left;">
+qualifications_chr
+</th>
+<th style="text-align:right;">
+institute_chr
+</th>
+<th style="text-align:left;">
+sequence_int
+</th>
+<th style="text-align:right;">
+is_corresponding_lgl
+</th>
+<th style="text-align:left;">
+email_chr
+</th>
+<th style="text-align:right;">
+is_equal_first_lgl
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Alejandra
+</td>
+<td style="text-align:right;">
+Rocio
+</td>
+<td style="text-align:left;">
+Scienceace
+</td>
+<td style="text-align:right;">
+Dr
+</td>
+<td style="text-align:left;">
+MD, PhD
+</td>
+<td style="text-align:right;">
+Insitute_A, Institute_B
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+TRUE
+</td>
+<td style="text-align:left;">
+<a href="mailto:fake_email@fake_institute.com" class="email">fake_email@fake_institute.com</a>
+</td>
+<td style="text-align:right;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Fionn
+</td>
+<td style="text-align:right;">
+Seamus
+</td>
+<td style="text-align:left;">
+Researchchamp
+</td>
+<td style="text-align:right;">
+Prof
+</td>
+<td style="text-align:left;">
+MSc, PhD
+</td>
+<td style="text-align:right;">
+Institute_C, Institute_B
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+FALSE
+</td>
+<td style="text-align:left;">
+<a href="mailto:fake_email@made_up_org.com" class="email">fake_email@made_up_org.com</a>
+</td>
+<td style="text-align:right;">
+FALSE
+</td>
+</tr>
+</tbody>
+<tfoot><tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup>
+</td>
+</tr></tfoot>
+</table>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">institutes_tb</span> <span class="op">&lt;-</span> <span class="fu">ready4show</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/ready4show/reference/institutes_tb.html">institutes_tb</a></span></code></pre></div>
+<table class="table  lightable-paper lightable-hover">
+<caption>
+Author institutions table
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+short_name_chr
+</th>
+<th style="text-align:right;">
+long_name_chr
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Insitute_A
+</td>
+<td style="text-align:right;">
+Awesome University, Shanghai
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Institute_B
+</td>
+<td style="text-align:right;">
+August Institution, London
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Institute_C
+</td>
+<td style="text-align:right;">
+Highly Ranked Uni, Montreal
+</td>
+</tr>
+</tbody>
+<tfoot><tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup>
+</td>
+</tr></tfoot>
+</table>
+<p>We combine the data about authors with other bibliographic information.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">header_yaml_args_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_header_yaml_args_ls.html">make_header_yaml_args_ls</a></span><span class="op">(</span>authors_tb <span class="op">=</span> <span class="va">authors_tb</span>,
+                                                institutes_tb <span class="op">=</span> <span class="va">institutes_tb</span>,
                                                 title_1L_chr <span class="op">=</span> <span class="st">"A hypothetical study using fake data for instructional purposes only"</span>,
                                                 keywords_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"this"</span>,<span class="st">"is"</span>,<span class="st">"a"</span>,<span class="st">"replication"</span>,<span class="st">"using"</span>,<span class="st">"fake"</span>,<span class="st">"data"</span>,<span class="st">"do"</span>, <span class="st">"not"</span>,<span class="st">"cite"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
@@ -131,11 +289,11 @@
 <h3 class="hasAnchor">
 <a href="#report-formatting" class="anchor"></a>Report formatting</h3>
 <p>We add parameters relating to the desired output format of the reports we will be producing.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">output_format_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_output_format_ls.html">make_output_format_ls</a></span><span class="op">(</span>manuscript_outp_1L_chr <span class="op">=</span> <span class="st">"Word"</span>,
-                                               manuscript_digits_1L_int <span class="op">=</span> <span class="fl">2L</span>,
-                                               supplementary_outp_1L_chr <span class="op">=</span> <span class="st">"PDF"</span>,
-                                               supplementary_digits_1L_int <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></code></pre></div>
+                                          manuscript_digits_1L_int <span class="op">=</span> <span class="fl">2L</span>,
+                                          supplementary_outp_1L_chr <span class="op">=</span> <span class="st">"PDF"</span>,
+                                          supplementary_digits_1L_int <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="data-parameters" class="section level2">
@@ -145,35 +303,2348 @@
 <h3 class="hasAnchor">
 <a href="#dataset" class="anchor"></a>Dataset</h3>
 <p>We read in our study dataset (in this case we are using fake data).</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ds_tb</span> <span class="op">&lt;-</span> <span class="fu">youthvars</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/youthvars/reference/replication_popl_tb.html">replication_popl_tb</a></span> <span class="op">%&gt;%</span> 
             <span class="fu">youthvars</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/youthvars/reference/transform_raw_ds_for_analysis.html">transform_raw_ds_for_analysis</a></span><span class="op">(</span><span class="op">)</span> </code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">use_fake_data_1L_lgl</span> <span class="op">&lt;-</span>  <span class="cn">TRUE</span></code></pre></div>
+<p>The first few records of the dataset are as follows.</p>
+<table class="table  lightable-paper lightable-hover">
+<caption>
+Input dataset
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+fkClientID
+</th>
+<th style="text-align:right;">
+round
+</th>
+<th style="text-align:right;">
+d_interview_date
+</th>
+<th style="text-align:right;">
+d_age
+</th>
+<th style="text-align:right;">
+d_agegroup
+</th>
+<th style="text-align:right;">
+Gender
+</th>
+<th style="text-align:left;">
+d_gender
+</th>
+<th style="text-align:right;">
+d_sex_birth_s
+</th>
+<th style="text-align:right;">
+d_sexual_ori_s
+</th>
+<th style="text-align:right;">
+d_ATSI
+</th>
+<th style="text-align:right;">
+CALD
+</th>
+<th style="text-align:right;">
+d_country_bir_s
+</th>
+<th style="text-align:left;">
+d_english_home
+</th>
+<th style="text-align:right;">
+d_english_native
+</th>
+<th style="text-align:right;">
+Region
+</th>
+<th style="text-align:right;">
+d_studying_working
+</th>
+<th style="text-align:right;">
+d_relation_s
+</th>
+<th style="text-align:right;">
+s_centre
+</th>
+<th style="text-align:left;">
+c_p_diag_s
+</th>
+<th style="text-align:right;">
+c_clinical_staging_s
+</th>
+<th style="text-align:right;">
+K6
+</th>
+<th style="text-align:right;">
+PHQ9
+</th>
+<th style="text-align:right;">
+BADS
+</th>
+<th style="text-align:right;">
+GAD7
+</th>
+<th style="text-align:left;">
+OASIS
+</th>
+<th style="text-align:right;">
+SCARED
+</th>
+<th style="text-align:right;">
+SOFAS
+</th>
+<th style="text-align:right;">
+aqol6d_q1
+</th>
+<th style="text-align:right;">
+aqol6d_q2
+</th>
+<th style="text-align:right;">
+aqol6d_q3
+</th>
+<th style="text-align:left;">
+aqol6d_q4
+</th>
+<th style="text-align:right;">
+aqol6d_q5
+</th>
+<th style="text-align:right;">
+aqol6d_q6
+</th>
+<th style="text-align:right;">
+aqol6d_q7
+</th>
+<th style="text-align:right;">
+aqol6d_q8
+</th>
+<th style="text-align:right;">
+aqol6d_q9
+</th>
+<th style="text-align:left;">
+aqol6d_q10
+</th>
+<th style="text-align:right;">
+aqol6d_q11
+</th>
+<th style="text-align:right;">
+aqol6d_q12
+</th>
+<th style="text-align:right;">
+aqol6d_q13
+</th>
+<th style="text-align:right;">
+aqol6d_q14
+</th>
+<th style="text-align:right;">
+aqol6d_q15
+</th>
+<th style="text-align:left;">
+aqol6d_q16
+</th>
+<th style="text-align:right;">
+aqol6d_q17
+</th>
+<th style="text-align:right;">
+aqol6d_q18
+</th>
+<th style="text-align:right;">
+aqol6d_q19
+</th>
+<th style="text-align:right;">
+aqol6d_q20
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Participant_1
+</td>
+<td style="text-align:right;">
+Baseline
+</td>
+<td style="text-align:right;">
+2020-03-18
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+Age 12-17
+</td>
+<td style="text-align:right;">
+Male
+</td>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:right;">
+Male
+</td>
+<td style="text-align:right;">
+Heterosexual
+</td>
+<td style="text-align:right;">
+No
+</td>
+<td style="text-align:right;">
+No
+</td>
+<td style="text-align:right;">
+Australia
+</td>
+<td style="text-align:left;">
+Yes
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+Metro
+</td>
+<td style="text-align:right;">
+Not studying or working
+</td>
+<td style="text-align:right;">
+In a relationship
+</td>
+<td style="text-align:right;">
+Southport
+</td>
+<td style="text-align:left;">
+Other
+</td>
+<td style="text-align:right;">
+0-1a
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+96
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+6
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:right;">
+69
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Participant_2
+</td>
+<td style="text-align:right;">
+Baseline
+</td>
+<td style="text-align:right;">
+2020-04-26
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+Age 18-26
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Heterosexual
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+Other
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+No
+</td>
+<td style="text-align:right;">
+Regional
+</td>
+<td style="text-align:right;">
+Studying only
+</td>
+<td style="text-align:right;">
+In a relationship
+</td>
+<td style="text-align:right;">
+Regional Centre
+</td>
+<td style="text-align:left;">
+Anxiety
+</td>
+<td style="text-align:right;">
+0-1a
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+63
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:right;">
+41
+</td>
+<td style="text-align:right;">
+58
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Participant_3
+</td>
+<td style="text-align:right;">
+Baseline
+</td>
+<td style="text-align:right;">
+2020-03-20
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+Age 18-26
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Other
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+Metro
+</td>
+<td style="text-align:right;">
+Studying only
+</td>
+<td style="text-align:right;">
+Not in a relationship
+</td>
+<td style="text-align:right;">
+Canberra
+</td>
+<td style="text-align:left;">
+Anxiety
+</td>
+<td style="text-align:right;">
+1b
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+72
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+12
+</td>
+<td style="text-align:right;">
+43
+</td>
+<td style="text-align:right;">
+72
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Participant_4
+</td>
+<td style="text-align:right;">
+Baseline
+</td>
+<td style="text-align:right;">
+2019-11-16
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+Age 12-17
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:right;">
+Female
+</td>
+<td style="text-align:right;">
+Heterosexual
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+Other
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+No
+</td>
+<td style="text-align:right;">
+Metro
+</td>
+<td style="text-align:right;">
+Not studying or working
+</td>
+<td style="text-align:right;">
+In a relationship
+</td>
+<td style="text-align:right;">
+Southport
+</td>
+<td style="text-align:left;">
+Depression and Anxiety
+</td>
+<td style="text-align:right;">
+2-4
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+75
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+10
+</td>
+<td style="text-align:right;">
+51
+</td>
+<td style="text-align:right;">
+88
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Participant_5
+</td>
+<td style="text-align:right;">
+Baseline
+</td>
+<td style="text-align:right;">
+2020-03-23
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+Age 18-26
+</td>
+<td style="text-align:right;">
+Male
+</td>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:right;">
+Male
+</td>
+<td style="text-align:right;">
+Heterosexual
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+Other
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+No
+</td>
+<td style="text-align:right;">
+Metro
+</td>
+<td style="text-align:right;">
+Not studying or working
+</td>
+<td style="text-align:right;">
+Not in a relationship
+</td>
+<td style="text-align:right;">
+Southport
+</td>
+<td style="text-align:left;">
+Depression and Anxiety
+</td>
+<td style="text-align:right;">
+0-1a
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+14
+</td>
+<td style="text-align:right;">
+51
+</td>
+<td style="text-align:right;">
+67
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+5
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Participant_6
+</td>
+<td style="text-align:right;">
+Baseline
+</td>
+<td style="text-align:right;">
+2020-04-06
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+Age 18-26
+</td>
+<td style="text-align:right;">
+Male
+</td>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:right;">
+Male
+</td>
+<td style="text-align:right;">
+Heterosexual
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+Yes
+</td>
+<td style="text-align:right;">
+Other
+</td>
+<td style="text-align:left;">
+No
+</td>
+<td style="text-align:right;">
+No
+</td>
+<td style="text-align:right;">
+Regional
+</td>
+<td style="text-align:right;">
+Studying only
+</td>
+<td style="text-align:right;">
+In a relationship
+</td>
+<td style="text-align:right;">
+Regional Centre
+</td>
+<td style="text-align:left;">
+Anxiety
+</td>
+<td style="text-align:right;">
+1b
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+105
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+46
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+<tfoot><tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup>
+</td>
+</tr></tfoot>
+</table>
+</div>
+<div id="data-dictionary" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data-dictionary" class="anchor"></a>Data dictionary</h3>
+<p>A data dictionary must also be supplied for the dataset. The dictionary must be of class <code>ready4_dictionary</code> from the <code>ready4use</code> package.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dictionary_tb</span> <span class="op">&lt;-</span> <span class="fu">youthvars</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/youthvars/reference/make_final_rpln_ds_dict.html">make_final_rpln_ds_dict</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>The data dictionary is reproduced below.</p>
+<table class="table  lightable-paper lightable-hover">
+<caption>
+Data dictionary
+</caption>
+<thead><tr>
+<th style="text-align:left;">
+var_nm_chr
+</th>
+<th style="text-align:right;">
+var_ctg_chr
+</th>
+<th style="text-align:right;">
+var_desc_chr
+</th>
+<th style="text-align:right;">
+var_type_chr
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+aqol6d_q1
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 1
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q10
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 10
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q11
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 11
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q12
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 12
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q13
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 13
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q14
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 14
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q15
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 15
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q16
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 16
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q17
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 17
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q18
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 18
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q19
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 19
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q2
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 2
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q20
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 20
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q3
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 3
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q4
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 4
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q5
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 5
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q6
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 6
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q7
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 7
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q8
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 8
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_q9
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Question
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Question 9
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_total_c
+</td>
+<td style="text-align:right;">
+Multi-Attribute Utility Instrument Unweighted Total Score
+</td>
+<td style="text-align:right;">
+AQOL-6D (Unweighted total)
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+aqol6d_total_w
+</td>
+<td style="text-align:right;">
+Utility Overall Score (Final Weighted)
+</td>
+<td style="text-align:right;">
+AQOL-6D (Weighted total)
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+BADS
+</td>
+<td style="text-align:right;">
+Depression
+</td>
+<td style="text-align:right;">
+Behavioural Activation for Depression Scale
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+bl_date_dtm
+</td>
+<td style="text-align:right;">
+Temporal
+</td>
+<td style="text-align:right;">
+Date of baseline assessment
+</td>
+<td style="text-align:right;">
+date
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+c_clinical_staging_s
+</td>
+<td style="text-align:right;">
+Clinical
+</td>
+<td style="text-align:right;">
+Clinical Stage
+</td>
+<td style="text-align:right;">
+character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+c_p_diag_s
+</td>
+<td style="text-align:right;">
+Clinical
+</td>
+<td style="text-align:right;">
+Primary Diagnosis
+</td>
+<td style="text-align:right;">
+character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+CALD
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Culturally And Linguistically Diverse
+</td>
+<td style="text-align:right;">
+factor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_age
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Age
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_agegroup
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Age Group
+</td>
+<td style="text-align:right;">
+factor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_ATSI
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Aboriginal or Torres Strait Islander
+</td>
+<td style="text-align:right;">
+character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_country_bir_s
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Country Of Birth
+</td>
+<td style="text-align:right;">
+character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_english_home
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Speaks English At Home
+</td>
+<td style="text-align:right;">
+character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_english_native
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Native English Speaker
+</td>
+<td style="text-align:right;">
+character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_gender
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Gender
+</td>
+<td style="text-align:right;">
+character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_interview_date
+</td>
+<td style="text-align:right;">
+Temporal
+</td>
+<td style="text-align:right;">
+Date of Data Collection
+</td>
+<td style="text-align:right;">
+Date
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_relation_s
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Relationship Status
+</td>
+<td style="text-align:right;">
+character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_sex_birth_s
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Sex at Birth
+</td>
+<td style="text-align:right;">
+character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_sexual_ori_s
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Sexual Orientation
+</td>
+<td style="text-align:right;">
+factor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+d_studying_working
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Education and Employment Status
+</td>
+<td style="text-align:right;">
+character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+duaqol
+</td>
+<td style="text-align:right;">
+Utility Overall Score (Disvalue Scale)
+</td>
+<td style="text-align:right;">
+Overall score on a 0-1 disvalue scale
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+duAQoL6D
+</td>
+<td style="text-align:right;">
+Utility Overall Score (Adolescent Disutility Scale)
+</td>
+<td style="text-align:right;">
+AQoL-6D Adolescent Disutility Score (Transformed)
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+duAQoL6D_t
+</td>
+<td style="text-align:right;">
+Utility Overall Score (Adolescent Disutility Scale)
+</td>
+<td style="text-align:right;">
+AQoL-6D Adolescent Disutility Score (Untransformed)
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+duaqolld
+</td>
+<td style="text-align:right;">
+Utility Overall Score (Life-Death Scale)
+</td>
+<td style="text-align:right;">
+Overall score on a life-death disutility scale
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvD1
+</td>
+<td style="text-align:right;">
+Utility Dimension Disvalue
+</td>
+<td style="text-align:right;">
+Disvalue Score for Dimension 1 - Independent Living
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvD2
+</td>
+<td style="text-align:right;">
+Utility Dimension Disvalue
+</td>
+<td style="text-align:right;">
+Disvalue Score for Dimension 2 - Relationships
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvD3
+</td>
+<td style="text-align:right;">
+Utility Dimension Disvalue
+</td>
+<td style="text-align:right;">
+Disvalue Score for Dimension 3 - Mental Health
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvD4
+</td>
+<td style="text-align:right;">
+Utility Dimension Disvalue
+</td>
+<td style="text-align:right;">
+Disvalue Score for Dimension 4 - Coping
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvD5
+</td>
+<td style="text-align:right;">
+Utility Dimension Disvalue
+</td>
+<td style="text-align:right;">
+Disvalue Score for Dimension 5 - Pain
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvD6
+</td>
+<td style="text-align:right;">
+Utility Dimension Disvalue
+</td>
+<td style="text-align:right;">
+Disvalue Score for Dimension 6 - Senses
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ1
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue1
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ10
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue10
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ11
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue11
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ12
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue12
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ13
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue13
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ14
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue14
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ15
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue15
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ16
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue16
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ17
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue17
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ18
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue18
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ19
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue19
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ2
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue2
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ20
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue20
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ3
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue3
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ4
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue4
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ5
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue5
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ6
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue6
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ7
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue7
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ8
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue8
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+dvQ9
+</td>
+<td style="text-align:right;">
+Utility Item Disvalue
+</td>
+<td style="text-align:right;">
+Assessment of Quality of Life (6 Dimension) Item Disvalue9
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+fkClientID
+</td>
+<td style="text-align:right;">
+Identifier
+</td>
+<td style="text-align:right;">
+Unique Client Identifier
+</td>
+<td style="text-align:right;">
+character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GAD7
+</td>
+<td style="text-align:right;">
+Anxiety
+</td>
+<td style="text-align:right;">
+Generalised Anxiety Disorder Scale
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gender
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Gender (Grouped)
+</td>
+<td style="text-align:right;">
+factor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+interval_dbl
+</td>
+<td style="text-align:right;">
+Temporal
+</td>
+<td style="text-align:right;">
+Interval between baseline and follow-up assessments
+</td>
+<td style="text-align:right;">
+interval
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+K6
+</td>
+<td style="text-align:right;">
+Psychological distress
+</td>
+<td style="text-align:right;">
+Kessler Psychological Distress Scale (6 Dimension)
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+OASIS
+</td>
+<td style="text-align:right;">
+Anxiety
+</td>
+<td style="text-align:right;">
+Overall Anxiety Severity and Impairment Scale
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+participation
+</td>
+<td style="text-align:right;">
+Temporal
+</td>
+<td style="text-align:right;">
+Rounds participated in
+</td>
+<td style="text-align:right;">
+character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PHQ9
+</td>
+<td style="text-align:right;">
+Depression
+</td>
+<td style="text-align:right;">
+Patient Health Questionnaire
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Region
+</td>
+<td style="text-align:right;">
+Demographic
+</td>
+<td style="text-align:right;">
+Region of Residence (Metropolitan or Regional)
+</td>
+<td style="text-align:right;">
+factor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+round
+</td>
+<td style="text-align:right;">
+Temporal
+</td>
+<td style="text-align:right;">
+Round of Data Collection
+</td>
+<td style="text-align:right;">
+factor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+s_centre
+</td>
+<td style="text-align:right;">
+Service
+</td>
+<td style="text-align:right;">
+Service Centre Name
+</td>
+<td style="text-align:right;">
+character
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SCARED
+</td>
+<td style="text-align:right;">
+Anxiety
+</td>
+<td style="text-align:right;">
+Screen for Child Anxiety Related Disorders
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SOFAS
+</td>
+<td style="text-align:right;">
+Functioning
+</td>
+<td style="text-align:right;">
+Social and Occupational Functioning Assessment Scale
+</td>
+<td style="text-align:right;">
+integer
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+uAQoL6D
+</td>
+<td style="text-align:right;">
+Utility Overall Score (Instrument)
+</td>
+<td style="text-align:right;">
+Instrument utility score
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+uAQoL6DRotated
+</td>
+<td style="text-align:right;">
+Utility Overall Score (Instrument - Rotated)
+</td>
+<td style="text-align:right;">
+Instrument utility score rotated
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+vD1
+</td>
+<td style="text-align:right;">
+Utility Dimension Score (Adult)
+</td>
+<td style="text-align:right;">
+Adult Score Dimension 1 - Independent Living
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+vD2
+</td>
+<td style="text-align:right;">
+Utility Dimension Score (Adult)
+</td>
+<td style="text-align:right;">
+Adult Score Dimension 2 - Relationships
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+vD3
+</td>
+<td style="text-align:right;">
+Utility Dimension Score (Adult)
+</td>
+<td style="text-align:right;">
+Adult Score Dimension 3 - Mental Health
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+vD4
+</td>
+<td style="text-align:right;">
+Utility Dimension Score (Adult)
+</td>
+<td style="text-align:right;">
+Adult Score Dimension 4 - Coping.
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+vD5
+</td>
+<td style="text-align:right;">
+Utility Dimension Score (Adult)
+</td>
+<td style="text-align:right;">
+Adult Score Dimension 5 - Pain
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+vD6
+</td>
+<td style="text-align:right;">
+Utility Dimension Score (Adult)
+</td>
+<td style="text-align:right;">
+Adult Score Dimension 6 - Senses
+</td>
+<td style="text-align:right;">
+numeric
+</td>
+</tr>
+</tbody>
+<tfoot><tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup>
+</td>
+</tr></tfoot>
+</table>
 </div>
 <div id="dataset-metadata" class="section level3">
 <h3 class="hasAnchor">
 <a href="#dataset-metadata" class="anchor"></a>Dataset metadata</h3>
 <p>We describe the features of our dataset that are most relevant to the analyses we are planning to undertake.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ds_descvs_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_ds_descvs_ls.html">make_ds_descvs_ls</a></span><span class="op">(</span>candidate_predrs_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"K6"</span>,<span class="st">"PHQ9"</span><span class="op">)</span>,<span class="co">#</span>
+                                  candidate_covar_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d_age"</span>, <span class="st">"SOFAS"</span>,
+                                                              <span class="st">"c_p_diag_s"</span>,
+                                                              <span class="st">"c_clinical_staging_s"</span>, 
+                                                              <span class="st">"d_relation_s"</span>,
+                                                              <span class="st">"d_studying_working"</span><span class="op">)</span>,
                                   cohort_descv_var_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d_age"</span>,<span class="st">"d_relation_s"</span>,
                                                                <span class="st">"d_studying_working"</span>,
-                                                               <span class="st">"c_p_diag_s"</span>,<span class="st">"c_clinical_staging_s"</span><span class="op">)</span>,
-                     dictionary_tb <span class="op">=</span> <span class="fu">youthvars</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/youthvars/reference/make_final_rpln_ds_dict.html">make_final_rpln_ds_dict</a></span><span class="op">(</span><span class="op">)</span>, 
-                     id_var_nm_1L_chr <span class="op">=</span> <span class="st">"fkClientID"</span>, 
-                     msrmnt_date_var_nm_1L_chr <span class="op">=</span> <span class="st">"d_interview_date"</span>,
-                     round_var_nm_1L_chr <span class="op">=</span> <span class="st">"round"</span>, 
-                     round_vals_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Baseline"</span>, <span class="st">"Follow-up"</span><span class="op">)</span>,
-                     maui_item_pfx_1L_chr <span class="op">=</span> <span class="st">"aqol6d_q"</span>, 
-                     utl_wtd_var_nm_1L_chr <span class="op">=</span> <span class="st">"aqol6d_total_w"</span>, 
-                     utl_unwtd_var_nm_1L_chr <span class="op">=</span> <span class="st">"aqol6d_total_c"</span><span class="op">)</span></code></pre></div>
+                                                               <span class="st">"c_p_diag_s"</span>,<span class="st">"c_clinical_staging_s"</span>,
+                                                               <span class="st">"SOFAS"</span><span class="op">)</span>,
+                                  dictionary_tb <span class="op">=</span> <span class="va">dictionary_tb</span>, 
+                                  id_var_nm_1L_chr <span class="op">=</span> <span class="st">"fkClientID"</span>, 
+                                  is_fake_1L_lgl <span class="op">=</span> <span class="cn">T</span>,
+                                  msrmnt_date_var_nm_1L_chr <span class="op">=</span> <span class="st">"d_interview_date"</span>,
+                                  round_var_nm_1L_chr <span class="op">=</span> <span class="st">"round"</span>, 
+                                  round_vals_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Baseline"</span>, <span class="st">"Follow-up"</span><span class="op">)</span>,
+                                  maui_item_pfx_1L_chr <span class="op">=</span> <span class="st">"aqol6d_q"</span>, 
+                                  utl_wtd_var_nm_1L_chr <span class="op">=</span> <span class="st">"aqol6d_total_w"</span>, 
+                                  utl_unwtd_var_nm_1L_chr <span class="op">=</span> <span class="st">"aqol6d_total_c"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="candidate-predictors-metadata" class="section level3">
 <h3 class="hasAnchor">
 <a href="#candidate-predictors-metadata" class="anchor"></a>Candidate predictors metadata</h3>
 <p>We create a lookup table with metadata on the dataset variables that we specified in the <code>candidate_predrs_chr</code> element of <code>ds_descvs_ls</code> as our candidate predictors, as well as the preferred covariates that we will specify later in the <code>make_valid_params_ls_ls</code> function.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">predictors_lup</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_pt_TTU_predictors_lup.html">make_pt_TTU_predictors_lup</a></span><span class="op">(</span>short_name_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">ds_descvs_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>, <span class="st">"SOFAS"</span><span class="op">)</span>,
                                               long_name_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"K6 total score"</span>, <span class="st">"PHQ9 total score"</span>, <span class="st">"SOFAS total score"</span><span class="op">)</span>,
                                               min_val_dbl <span class="op">=</span> <span class="fl">0</span>,
@@ -194,119 +2665,95 @@
 <div id="multi-attribute-utility-instrument-maui-parameters" class="section level3">
 <h3 class="hasAnchor">
 <a href="#multi-attribute-utility-instrument-maui-parameters" class="anchor"></a>Multi-Attribute Utility Instrument (MAUI) parameters</h3>
-<p>We also need to provide information specific to the MAUI used to collect the data from which health utility will be derived.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">maui_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_maui_params_ls.html">make_maui_params_ls</a></span><span class="op">(</span>maui_itm_short_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Household tasks"</span>, <span class="st">"Getting around"</span>,<span class="st">"Morbility"</span>,<span class="st">"Self care"</span>,<span class="st">"Enjoy close rels"</span>,<span class="st">"Family rels"</span>, <span class="st">"Community involvement"</span>,<span class="st">"Despair"</span>,<span class="st">"Worry"</span>, <span class="st">"Sad"</span>, <span class="st">"Agitated"</span>,<span class="st">"Energy level"</span>,<span class="st">"Control"</span>, <span class="st">"Coping"</span>,<span class="st">"Frequency of pain"</span>, <span class="st">"Degree of pain"</span>,<span class="st">"Pain interference"</span>,<span class="st">"Vision"</span>, <span class="st">"Hearing"</span>,<span class="st">"Communication"</span><span class="op">)</span>,
-                                      maui_scoring_fn <span class="op">=</span> <span class="fu">youthvars</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/youthvars/reference/add_adol6d_scores.html">add_adol6d_scores</a></span>,
-                    utl_min_val_1L_dbl <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></code></pre></div>
-</div>
-</div>
-<div id="candidate-model-types" class="section level2">
-<h2 class="hasAnchor">
-<a href="#candidate-model-types" class="anchor"></a>Candidate model types</h2>
-<p>We combine a lookup table of our candidate model types with parameters specific to the analyses to be run to compare the performance of each model.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">mdl_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_mdl_smry_ls.html">make_mdl_smry_ls</a></span><span class="op">(</span>mdl_types_lup <span class="op">=</span> <span class="fu"><a href="../reference/get_cndts_for_mxd_mdls.html">get_cndts_for_mxd_mdls</a></span><span class="op">(</span><span class="op">)</span>,
-                                     folds_1L_int <span class="op">=</span> <span class="fl">10L</span>,
-                                     max_nbr_of_boruta_mdl_runs_int <span class="op">=</span> <span class="fl">300L</span><span class="op">)</span></code></pre></div>
-<p>We create a summary object that contains the core parameters that will be common to most of the analyses we are planning to run.</p>
+<p>We also need to provide information specific to the MAUI used to collect the data from which health utility will be derived. The minimum allowable health utility weight for this instrument can be declared using the <code>utl_min_val_1L_dbl</code> argument.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">analysis_core_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_analysis_core_params_ls.html">make_analysis_core_params_ls</a></span><span class="op">(</span>ds_descvs_ls <span class="op">=</span> <span class="va">ds_descvs_ls</span>,
-                                                             mdl_smry_ls <span class="op">=</span> <span class="va">mdl_smry_ls</span>,
-                                                             output_format_ls <span class="op">=</span> <span class="va">output_format_ls</span>,
-                                                             predictors_lup <span class="op">=</span> <span class="va">predictors_lup</span>,
-                                                             use_fake_data_1L_lgl <span class="op">=</span> <span class="va">use_fake_data_1L_lgl</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">maui_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_maui_params_ls.html">make_maui_params_ls</a></span><span class="op">(</span>maui_domains_pfcs_1L_chr <span class="op">=</span> <span class="st">"vD"</span>,
+                                      maui_itm_short_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Household tasks"</span>, <span class="st">"Getting around"</span>,<span class="st">"Morbility"</span>,<span class="st">"Self care"</span>,<span class="st">"Enjoy close rels"</span>,<span class="st">"Family rels"</span>, <span class="st">"Community involvement"</span>,<span class="st">"Despair"</span>,<span class="st">"Worry"</span>, <span class="st">"Sad"</span>, <span class="st">"Agitated"</span>,<span class="st">"Energy level"</span>,<span class="st">"Control"</span>, <span class="st">"Coping"</span>,<span class="st">"Frequency of pain"</span>, <span class="st">"Degree of pain"</span>,<span class="st">"Pain interference"</span>,<span class="st">"Vision"</span>, <span class="st">"Hearing"</span>,<span class="st">"Communication"</span><span class="op">)</span>,
+                                      maui_scoring_fn <span class="op">=</span> <span class="fu">youthvars</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/youthvars/reference/add_adol6d_scores.html">add_adol6d_scores</a></span>,
+                                      short_and_long_nm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"AQoL-6D"</span>,
+                                                            <span class="st">"Assessment of Quality of Life - Six Dimension"</span><span class="op">)</span>,
+                                      utl_min_val_1L_dbl <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="path-parameters" class="section level2">
+</div>
+<div id="analysis-parameters-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#path-parameters" class="anchor"></a>Path parameters</h2>
-<p>We next create an object that specifies the relative locations of the input data and the intended destination for analysis outputs and reports. The default settings of the <code>make_path_params_ls</code> function will write all output into a new directory, created one level up from the current working directory.</p>
+<a href="#analysis-parameters-1" class="anchor"></a>Analysis parameters</h2>
+<p>We can now create a list of input parameters using the <code>make_input_params</code> function, principally using the objects created in the preceding steps. We can force the use of specified model types or covariates (rather than allowing the analysis algorithm to select these based on automated criteria) by using the <code>prefd_mdl_types_chr</code> and <code>prefd_covars_chr</code> arguments. We can also specify how we want to adapt our primary analysis input parameters for secondary analyses (e.g. that use different combinations of candidate predictors and covariates) using the <code>scndry_anlys_params_ls</code> argument in conjunction with the <code>make_scndry_anlys_params</code> function. If you have created an empty dataverse dataset to post results to, assign the DOI for your dataset and the name of the dataverse containing it to the <code>dv_ds_nm_and_url_chr</code> argument (these values will be unique to you and different to those below, which will not work for you). If you do not wish to post results to a dataverse dataset, set <code>dv_ds_nm_and_url_chr = NULL</code>. The <code>make_input_params</code> function performs a number of checks relating to the naming conventions used in some variables of interest and where necessary (for consistency with reporting templates) modifies the names of these variables.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">path_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_path_params_ls.html">make_path_params_ls</a></span><span class="op">(</span>use_fake_data_1L_lgl <span class="op">=</span> <span class="va">use_fake_data_1L_lgl</span>,
-                                      write_new_dir_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
-</div>
-<div id="validate-parameters" class="section level2">
-<h2 class="hasAnchor">
-<a href="#validate-parameters" class="anchor"></a>Validate parameters</h2>
-<p>A list of valid input values for our primary analysis is now constructed, principally using the objects created in the preceding steps. The <code>make_valid_params_ls_ls</code> checks the naming conventions used in some variables of interest and where necessary (for consistency with reporting templates) modifies the names of these variables.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">valid_params_ls_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_valid_params_ls_ls.html">make_valid_params_ls_ls</a></span><span class="op">(</span><span class="va">analysis_core_params_ls</span>,
-                                                   candidate_covar_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d_age"</span>, <span class="st">"SOFAS"</span>, <span class="st">"c_p_diag_s"</span>, <span class="st">"c_clinical_staging_s"</span>, <span class="st">"d_relation_s"</span>, <span class="st">"d_studying_working"</span><span class="op">)</span>,
-                                              prefd_covars_chr <span class="op">=</span> <span class="st">"SOFAS"</span>,
-                                                   ds_tb <span class="op">=</span> <span class="va">ds_tb</span>, 
-                                                   maui_params_ls <span class="op">=</span> <span class="va">maui_params_ls</span>,
-                                                   path_params_ls <span class="op">=</span> <span class="va">path_params_ls</span>,
-                                                   prefd_mdl_types_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GLM_GSN_LOG"</span>,
-                                                                           <span class="st">"OLS_CLL"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">input_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_input_params.html">make_input_params</a></span><span class="op">(</span><span class="va">ds_tb</span>,
+                                     ds_descvs_ls <span class="op">=</span> <span class="va">ds_descvs_ls</span>,
+                                     dv_ds_nm_and_url_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"fakes"</span>, <span class="co"># Dataverse containing dataset</span>
+                                                              <span class="st">"https://doi.org/10.7910/DVN/D74QMP"</span><span class="op">)</span>, <span class="co"># DOI</span>
+                                     header_yaml_args_ls <span class="op">=</span> <span class="va">header_yaml_args_ls</span>,
+                                     maui_params_ls <span class="op">=</span> <span class="va">maui_params_ls</span>,
+                                     output_format_ls <span class="op">=</span> <span class="va">output_format_ls</span>,
+                                     predictors_lup <span class="op">=</span> <span class="va">predictors_lup</span>,
+                                     prefd_covars_chr <span class="op">=</span> <span class="st">"SOFAS"</span>,
+                                     prefd_mdl_types_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"OLS_CLL"</span>,<span class="st">"GLM_GSN_LOG"</span><span class="op">)</span>,
+                                     scndry_anlys_params_ls <span class="op">=</span> <span class="fu"><a href="../reference/make_scndry_anlys_params.html">make_scndry_anlys_params</a></span><span class="op">(</span>candidate_predrs_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SOFAS"</span><span class="op">)</span>,
+                                                   prefd_covars_chr <span class="op">=</span> <span class="cn">NA_character_</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="run-analysis" class="section level1">
 <h1 class="hasAnchor">
 <a href="#run-analysis" class="anchor"></a>Run analysis</h1>
-<div id="primary-analysis" class="section level2">
-<h2 class="hasAnchor">
-<a href="#primary-analysis" class="anchor"></a>Primary analysis</h2>
-<p>All analytic steps for our primary analysis are executed with the following function call.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/write_report.html">write_report</a></span><span class="op">(</span>params_ls <span class="op">=</span> <span class="va">valid_params_ls_ls</span><span class="op">$</span><span class="va">params_ls</span>,
-                  paths_ls <span class="op">=</span> <span class="va">path_params_ls</span><span class="op">$</span><span class="va">paths_ls</span>,
-                  rprt_nm_1L_chr <span class="op">=</span> <span class="st">"AAA_PMRY_ANLYS_MTH"</span>,
-                  abstract_args_ls <span class="op">=</span> <span class="cn">NULL</span>,
-                  header_yaml_args_ls <span class="op">=</span> <span class="va">header_yaml_args_ls</span><span class="op">)</span></code></pre></div>
-</div>
-<div id="secondary-analyses" class="section level2">
-<h2 class="hasAnchor">
-<a href="#secondary-analyses" class="anchor"></a>Secondary Analyses</h2>
-<p>We can specify supplementary analyses (that apply the same preferred model types as the primary analysis to different combinations of candidate predictors and covariates) by creating a new predictors lookup table and making a call to the <code>write_scndry_analysis</code> function.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/TTU_predictors_lup.html">TTU_predictors_lup</a></span><span class="op">(</span><span class="fu"><a href="../reference/make_pt_TTU_predictors_lup.html">make_pt_TTU_predictors_lup</a></span><span class="op">(</span>short_name_chr <span class="op">=</span> <span class="st">"SOFAS"</span>,
-                                              long_name_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"SOFAS total score"</span><span class="op">)</span>,
-                                              min_val_dbl <span class="op">=</span> <span class="fl">0</span>,
-                                              max_val_dbl <span class="op">=</span> <span class="fl">100</span>,
-                                              class_chr <span class="op">=</span> <span class="st">"integer"</span>,
-                                              increment_dbl <span class="op">=</span> <span class="fl">1</span>,
-                                              class_fn_chr <span class="op">=</span> <span class="st">"youthvars::youthvars_sofas"</span>,
-                                              mdl_scaling_dbl <span class="op">=</span> <span class="fl">0.01</span>,
-                                              covariate_lgl <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="../reference/write_scndry_analysis.html">write_scndry_analysis</a></span><span class="op">(</span>valid_params_ls_ls <span class="op">=</span> <span class="va">valid_params_ls_ls</span>,
-                           candidate_covar_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d_age"</span>, <span class="st">"c_p_diag_s"</span>, <span class="st">"c_clinical_staging_s"</span>, <span class="st">"d_relation_s"</span>, <span class="st">"d_studying_working"</span><span class="op">)</span>,
-                           header_yaml_args_ls <span class="op">=</span> <span class="va">header_yaml_args_ls</span>,
-                           path_params_ls <span class="op">=</span> <span class="va">path_params_ls</span>,
-                           prefd_covars_chr <span class="op">=</span> <span class="cn">NA_character_</span>,
-                           reference_1L_int <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
-</div>
+<p>All analytic steps for our primary and secondary analyses are executed with the following function call. Note, this step can involve long execution times (potentially over an hour, depending on the input parameters).</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/write_analyses.html">write_analyses</a></span><span class="op">(</span><span class="va">input_params_ls</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="report-results" class="section level1">
 <h1 class="hasAnchor">
 <a href="#report-results" class="anchor"></a>Report results</h1>
-<p>As we have undertaken more than one analysis, we need to supply integer values to the <code>reference_int</code> argument of the <code>write_mdl_smry_rprt</code> function for each analysis that we wish to generate a report for. The value <code>0</code> corresponds to the primary analysis, with each subsequent integer corresponding to a supplementary analysis.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">rprt_lups_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_smry_rprt.html">write_mdl_smry_rprt</a></span><span class="op">(</span><span class="va">header_yaml_args_ls</span>,
-                                    path_params_ls <span class="op">=</span> <span class="va">path_params_ls</span>,
-                                    use_fake_data_1L_lgl <span class="op">=</span> <span class="va">use_fake_data_1L_lgl</span>,
-                                    output_format_ls <span class="op">=</span> <span class="va">output_format_ls</span>,
-                                    reference_int <span class="op">=</span> <span class="fl">0</span><span class="op">:</span><span class="fl">1</span>,
-                                    use_shareable_mdls_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
+<p>We now generate the catalogues (one for the primary and one for each secondary analysis) that report the models created in the preceding step. The <code>write_mdl_smry_rprt</code> function also creates shareable versions (i.e. with copies of source dataset replaced by synthetic data) of the models. This step can take several minutes to execute.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">input_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_smry_rprt.html">write_mdl_smry_rprt</a></span><span class="op">(</span><span class="va">input_params_ls</span>,
+                                       use_shareable_mdls_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="share-results" class="section level1">
 <h1 class="hasAnchor">
 <a href="#share-results" class="anchor"></a>Share results</h1>
-<p>Share the results created in the previous step via an online repository.</p>
-<p>Note: you will need to replace the values assigned to the <code>dv_ds_nm_and_url_chr</code> argument with the details of repositories for which you have write permissions - the values supplied in the below call will not work for you. If you do not have write permissions for a dataverse dataset, use <code>dv_ds_nm_and_url_chr = NULL</code>.</p>
-<p>The dataset populated by the below call can be viewed at: <a href="https://doi.org/10.7910/DVN/JC6PTV" class="uri">https://doi.org/10.7910/DVN/JC6PTV</a></p>
+<p>We can now share the results created in the previous step by posting them to the online repository, the details of which we supplied earlier.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/write_study_outp_ds.html">write_study_outp_ds</a></span><span class="op">(</span><span class="va">input_params_ls</span><span class="op">)</span></code></pre></div>
+<p>The <code>write_study_outp_ds</code> function writes its outputs to a draft dataset - which you can review by logging into your dataverse account, before clicking on the option to publish the dataset. The stucture of your draft dataset should be similar to those produced by this vignette, which are viewable at: <a href="https://doi.org/10.7910/DVN/D74QMP" class="uri">https://doi.org/10.7910/DVN/D74QMP</a></p>
+</div>
+<div id="create-manuscript" class="section level1">
+<h1 class="hasAnchor">
+<a href="#create-manuscript" class="anchor"></a>Create manuscript</h1>
+<p>The first step to creating a manuscript that provides the scientific summary of the study is to add some metadata about the study itself to our parameters list, using the <code>make_study_descs_ls</code> function. If you want the manuscript to refer to some of the candidate predictors by different names than that provided in the <code>short_name_chr</code> column of the <code>predictors_lup</code> object defined earlier, you can create a table of name correspondences and pass it to the <code>var_nm_change_lup</code> argument.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">input_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_study_descs_ls.html">make_study_descs_ls</a></span><span class="op">(</span>input_params_ls <span class="op">=</span> <span class="va">input_params_ls</span>,
+                                       background_1L_chr <span class="op">=</span> <span class="st">"Our study is entirely fictional and has been created to illustrate TTU package functionality."</span>,
+                                       coi_1L_chr <span class="op">=</span> <span class="st">"None declared."</span>,
+                                       conclusion_1L_chr <span class="op">=</span> <span class="st">"If this study was real, the results would be interesting."</span>,
+                                       ethics_1L_chr <span class="op">=</span> <span class="st">"The study was reviewed and granted approval by Awesome University's Human Research Ethics Committee (1111111.1)."</span>,
+                                       funding_1L_chr <span class="op">=</span> <span class="st">"The study was funded by Generous Benefactor."</span>,
+                                       sample_desc_1L_chr <span class="op">=</span> <span class="st">"The study sample is fake data that pretends to be young people aged 12 to 25 years who attended Australian primary care services for mental health related needs between November 2019 to August 2020."</span>,
+                                       time_btwn_bl_and_fup_1L_chr <span class="op">=</span> <span class="st">"three months"</span>,
+                                       var_nm_change_lup <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>old_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PHQ9"</span>,<span class="st">"GAD7"</span><span class="op">)</span>,
+                                                                          new_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PHQ-9"</span>,
+                                                                                          <span class="st">"GAD-7"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>We can now pass the updated input parameters list to the <code>write_manuscript</code> function. This will produce an initial draft of a scientific manuscript (detailed methods and results, a basic introduction and no discussion), by first downloading an extension to the TTU package (<a href="https://github.com/ready4-dev/ttu_lng_ss" class="uri">https://github.com/ready4-dev/ttu_lng_ss</a>). If (AND ONLY IF), you are sure that you will never develop the manuscript further with a view to future publication, you can add this automatically generated draft to the study dataset by adding <code>write_to_dv_1L_lgl = T</code> to the function call (as below).</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/write_study_outp_ds.html">write_study_outp_ds</a></span><span class="op">(</span>dv_ds_nm_and_url_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"firstbounce"</span>, <span class="co"># Name of dataverse containing dataset</span>
-                          <span class="st">"https://doi.org/10.7910/DVN/JC6PTV"</span><span class="op">)</span>, <span class="co"># Dataset DOI</span>
-                      rprt_lups_ls <span class="op">=</span> <span class="va">rprt_lups_ls</span>,
-                      output_format_ls <span class="op">=</span> <span class="va">output_format_ls</span>,
-                      path_params_ls <span class="op">=</span> <span class="va">path_params_ls</span>,
-                      use_fake_data_1L_lgl <span class="op">=</span> <span class="va">use_fake_data_1L_lgl</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">results_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_manuscript.html">write_manuscript</a></span><span class="op">(</span>input_params_ls <span class="op">=</span> <span class="va">input_params_ls</span>,
+                               write_to_dv_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
+<p>The document exported to the dataset by the preceding call is accessible at: <a href="https://dataverse.harvard.edu/api/access/datafile/4935036" class="uri">https://dataverse.harvard.edu/api/access/datafile/4935036</a> (it is in “.docx” format as we specified “Word” as our desired output format (see earlier in the workflow)). You can override the output format specified in the input parameter list object by using the <code>output_type_1L_chr</code> argument. Note, that this time around we are using the <code>results_ls</code> object as the main input as this object was automatically saved (to the directory path stored in <code>results_ls$path_params_ls$paths_ls$output_data_dir_1L_chr</code>) by the preceding call.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/write_manuscript.html">write_manuscript</a></span><span class="op">(</span>results_ls <span class="op">=</span> <span class="va">results_ls</span>,
+                 write_to_dv_1L_lgl <span class="op">=</span> <span class="cn">T</span>,
+                 output_type_1L_chr <span class="op">=</span> <span class="st">"PDF"</span><span class="op">)</span></code></pre></div>
+<p>The PDF version is available at: <a href="https://dataverse.harvard.edu/api/access/datafile/4935022" class="uri">https://dataverse.harvard.edu/api/access/datafile/4935022</a> .When running the <code>write_manuscript</code> function, you can discover the directory into which the manuscript has been saved locally on your machine by printing the object <code>results_ls$path_params_ls$paths_ls$reports_dir_1L_chr</code>.</p>
+<p>If you wish to develop the manuscript into something you will submit for publication, there are two options for doing so:</p>
+<ul>
+<li><p>If your planned submission format is PDF or LaTeX, edit the markdown files (printing object <code>results_ls$path_params_ls$paths_ls$path_to_ms_mkdn_1L_dir</code> will tell you where these have been saved) and run <code><a href="../reference/write_manuscript.html">write_manuscript(results_ls = results_ls, output_type_1L_chr = "PDF")</a></code>. Both PDF and TeX files are saved as a result of this command.</p></li>
+<li><p>If your planned submission format is Word, you can just edit the word document rendered by the <code>write_manuscript</code> function. This is relatively straightforward, though unlike the PDF output, you will need to manually edit some of the section numbering and table formatting / headings.</p></li>
+</ul>
 </div>
 <div id="purge-dataset-copies" class="section level1">
 <h1 class="hasAnchor">
 <a href="#purge-dataset-copies" class="anchor"></a>Purge dataset copies</h1>
-<p>All remaining local copies (but not the original version) of the study dataset are deleted from the workspace.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<p>As a final step, it is important to delete all local copies (but not the original version) of the study dataset that were produced during the analysis.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/write_to_delete_ds_copies.html">write_to_delete_ds_copies</a></span><span class="op">(</span><span class="va">path_params_ls</span><span class="op">$</span><span class="va">paths_ls</span><span class="op">)</span></code></pre></div>
 
 <!---BLOCK_LANDSCAPE_STOP--->

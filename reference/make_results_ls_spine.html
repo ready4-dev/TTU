@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9284</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9297</span>
       </span>
     </div>
 
@@ -112,7 +112,7 @@
       <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
     </li>
     <li>
-      <a href="../articles/Model_TTU.html">Transfer to Utility Exploratory Analysis Workflow</a>
+      <a href="../articles/Model_TTU.html">Exploratory Analysis Workflow</a>
     </li>
   </ul>
 </li>
@@ -147,11 +147,14 @@
     </div>
 
     <pre class="usage"><span class='fu'>make_results_ls_spine</span><span class='op'>(</span>
-  <span class='va'>output_data_dir_1L_chr</span>,
+  output_format_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  params_ls_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
+  path_params_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>study_descs_ls</span>,
   fn_ls <span class='op'>=</span> <span class='cn'>NULL</span>,
   include_idx_int <span class='op'>=</span> <span class='cn'>NULL</span>,
-  nbr_of_digits_1L_int <span class='op'>=</span> <span class='fl'>2L</span>,
+  nbr_of_digits_1L_int <span class='op'>=</span> <span class='cn'>NULL</span>,
+  output_data_dir_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
   var_nm_change_lup <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
 
@@ -159,8 +162,16 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>output_data_dir_1L_chr</th>
-      <td><p>Output data directory (a character vector of length one)</p></td>
+      <th>output_format_ls</th>
+      <td><p>Output format (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>params_ls_ls</th>
+      <td><p>Params (a list of lists), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>path_params_ls</th>
+      <td><p>Path params (a list), Default: NULL</p></td>
     </tr>
     <tr>
       <th>study_descs_ls</th>
@@ -176,7 +187,11 @@
     </tr>
     <tr>
       <th>nbr_of_digits_1L_int</th>
-      <td><p>Number of digits (an integer vector of length one), Default: 2</p></td>
+      <td><p>Number of digits (an integer vector of length one), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>output_data_dir_1L_chr</th>
+      <td><p>Output data directory (a character vector of length one), Default: NULL</p></td>
     </tr>
     <tr>
       <th>var_nm_change_lup</th>
