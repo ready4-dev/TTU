@@ -61,7 +61,7 @@ We describe the features of our dataset that are most relevant to the analyses w
 
 ```{r echo = TRUE, eval = F }
 ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("k10_int","psych_well_int"),
-                                  candidate_covar_nms_chr = c("d_age"),
+                                  candidate_covar_nms_chr = NA_character_,
                                   cohort_descv_var_nms_chr = c("d_age", "Gender", 
                                                                "d_relation_s","d_sexual_ori_s", 
                                                                "Region", "d_studying_working"),
@@ -100,7 +100,7 @@ If our source dataset does not include a pre-calculated weighted utility variabl
  - also calculate an unweighted score that is a simple sum of all MAUI item question responses (e.g. the last three lines of the example `maui_scoring_fn`).
 
 ```{r eval = F }
-maui_params_ls <- make_maui_params_ls(maui_domains_pfcs_1L_chr = NULL,
+maui_params_ls <- make_maui_params_ls(maui_domains_pfcs_1L_chr = "eq5dq_",
                                       maui_itm_short_nms_chr = c("Mobility", "Self-care", "Activities","Pain","Anxiety"),
                                       maui_scoring_fn = function(data_tb,
                                              maui_item_pfx_1L_chr,
