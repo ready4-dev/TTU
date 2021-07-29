@@ -9,10 +9,12 @@ vignette: >
 
 \blandscape
 <!---BLOCK_LANDSCAPE_START--->
+Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.
 
-The steps in this analysis, reporting and dissemination workflow should only be undertaken once an optimal set of input values have been identified by an [initial exploratory analysis](Model_TTU.html).
+The steps in this reporting workflow should only be undertaken once an optimal set of input values have been identified by an [initial exploratory analysis](Model_TTU.html). Many of the steps in this example are in common with those of the [AQoL-6D vignette](CSP_AQOL6D_TTU.html), and are therefore described with minimal explanation here.
+
 ```{r echo = TRUE, message=FALSE}
-library(magrittr)
+library(eq5d)
 library(TTU)
 ```
 
@@ -21,50 +23,24 @@ library(TTU)
 ## Reporting parameters
 
 ### Bibliograhic data
-We begin by specifying the authorship data we wish to attach to all reports that we generate.
-
-```{r }
-authors_tb <- ready4show::authors_tb
-```
-```{r authorsds, eval = knitr::is_html_output(), echo=F, results='asis'}
-authors_tb %>%
-  ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Authors table",
-                          mkdn_tbl_ref_1L_chr = "tab:authorsds")
-```
 ```{r}
-institutes_tb <- ready4show::institutes_tb
-```
-```{r institutesds, eval = knitr::is_html_output(), echo = F,results='asis'}
-institutes_tb %>%
-  ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Author institutions table",
-                          mkdn_tbl_ref_1L_chr = "tab:institutesds")
-```
-
-We combine the data about authors with other bibliographic information.
-
-```{r}
-header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = authors_tb,
-                                                     institutes_tb = institutes_tb,
-                                                     title_1L_chr = "A hypothetical study using fake data for instructional purposes only",
-                                                     keywords_chr = c("this","is","a","replication","using","fake","data","do", "not","cite"))
+header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = ready4show::authors_tb,
+                                                institutes_tb = ready4show::institutes_tb,
+                                                title_1L_chr = "A hypothetical study using fake data for instructional purposes only",
+                                                keywords_chr = c("this","is","a","replication","using","fake","data","do", "not","cite"))
 ```
 
 ### Report formatting
-We add parameters relating to the desired output format of the reports we will be producing.
-
 ```{r }
 output_format_ls <- make_output_format_ls(manuscript_outp_1L_chr = "Word",
-                                               manuscript_digits_1L_int = 2L,
-                                               supplementary_outp_1L_chr = "PDF",
-                                               supplementary_digits_1L_int = 2L)
+                                          manuscript_digits_1L_int = 2L,
+                                          supplementary_outp_1L_chr = "PDF",
+                                          supplementary_digits_1L_int = 2L)
 ```
 
 ## Data parameters
 
 ### Dataset
-We read in our study dataset (in this case we are using fake data).
 
 ```{r message=FALSE}
 ds_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4750597")) 
@@ -80,48 +56,29 @@ ds_tb %>%
                           mkdn_tbl_ref_1L_chr = "tab:inputds")
 ```
 
-We can note our use of synthetic data by creating an object `use_fake_data_1L_lgl` and setting it to `TRUE`. For real world application - you can skip this step and remove all subsequent references to this variable.
-
-```{r }
-use_fake_data_1L_lgl <-  TRUE
-```
-
-### Data dictionary
-A data dictionary must also be supplied for the dataset. The dictionary must be of class `ready4_dictionary` from the `ready4use` package.
-
-```{r}
-dictionary_tb <- make_eq5d_ds_dict(ds_tb) 
-```
-
-The data dictionary is reproduced below.
-
-```{r dictionary, echo=F, eval = knitr::is_html_output(), results='asis'}
-dictionary_tb %>%
-  ready4show::print_table(output_type_1L_chr = "HTML",
-                          caption_1L_chr = "Data dictionary",
-                          mkdn_tbl_ref_1L_chr = "tab:dictionary")
-```
-
 ### Dataset metadata
 We describe the features of our dataset that are most relevant to the analyses we are planning to undertake. Note all, Multi-Attribute Utility Instrument (MAUI) question variables must start with a common prefix, which needs to be passed to the `maui_item_pfx_1L_chr` argument. The dataset does not need to include variables for total health utility scores (weighted and unweighted), as these variables will be computed during the analysis. However, you can supply the names you wish assigned to these variables once they are computed using the `utl_wtd_var_nm_1L_chr` and `utl_unwtd_var_nm_1L_chr` arguments.
 
-```{r echo = TRUE}
-ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("k10_int","psych_well_int"),#
-                     cohort_descv_var_nms_chr = c("d_age", "Gender", "d_relation_s","d_sexual_ori_s", "Region", "CALD", "d_studying_working"),
-                     dictionary_tb = dictionary_tb, 
-                     id_var_nm_1L_chr = "uid", 
-                     msrmnt_date_var_nm_1L_chr = "data_collection_dtm",
-                     round_var_nm_1L_chr = "Timepoint", 
-                     round_vals_chr = c("BL", "FUP"),
-                     maui_item_pfx_1L_chr = "eq5dq_", 
-                     utl_wtd_var_nm_1L_chr = "EQ5D_total_dbl", 
-                     utl_unwtd_var_nm_1L_chr = "EQ5d_cumulative_dbl")
+```{r echo = TRUE, eval = F }
+ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("k10_int","psych_well_int"),
+                                  candidate_covar_nms_chr = c("d_age"),
+                                  cohort_descv_var_nms_chr = c("d_age", "Gender", 
+                                                               "d_relation_s","d_sexual_ori_s", 
+                                                               "Region", "d_studying_working"),
+                                  dictionary_tb = make_eq5d_ds_dict(ds_tb), 
+                                  id_var_nm_1L_chr = "uid", 
+                                  is_fake_1L_lgl = T,
+                                  msrmnt_date_var_nm_1L_chr = "data_collection_dtm",
+                                  round_var_nm_1L_chr = "Timepoint", 
+                                  round_vals_chr = c("BL", "FUP"),
+                                  maui_item_pfx_1L_chr = "eq5dq_", 
+                                  utl_wtd_var_nm_1L_chr = "EQ5D_total_dbl",
+                                  utl_unwtd_var_nm_1L_chr = "EQ5d_cumulative_dbl")
 ```
 
 ### Candidate predictors metadata
-We create a lookup table with metadata on the dataset variables that we specified in the `candidate_predrs_chr` element of `ds_descvs_ls` as our candidate predictors.
 
-```{r}
+```{r eval = F }
 predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = ds_descvs_ls$candidate_predrs_chr,
                                               long_name_chr = c("Kessler Psychological Distress - 10 Item Total Score",
                                                    "Overall Psychological Wellbeing (Winefield et al. 2012)"),
@@ -137,13 +94,14 @@ predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr =
 ## Analysis parameters
 
 ### Multi-Attribute Utility Instrument (MAUI) parameters
-We also need to provide information specific to the MAUI used to collect the data from which health utility will be derived. The minimum allowable health utility weight for this instrument can be declared using the `utl_min_val_1L_dbl` argument. If our source dataset does not include a pre-calculated weighted utility variable, we must supply a function to calculate this variable using the `maui_scoring_fn` argument. Note if specifying such a function, it must:
+If our source dataset does not include a pre-calculated weighted utility variable, we must supply a function to calculate this variable using the `maui_scoring_fn` argument. Note if specifying such a function, it must:
 
  - include identical arguments as in the below example (including names and order), even if all arguments are not required; and
  - also calculate an unweighted score that is a simple sum of all MAUI item question responses (e.g. the last three lines of the example `maui_scoring_fn`).
 
-```{r}
-maui_params_ls <- make_maui_params_ls(maui_itm_short_nms_chr = c("Mobility", "Self-care", "Activities","Pain","Anxiety"),
+```{r eval = F }
+maui_params_ls <- make_maui_params_ls(maui_domains_pfcs_1L_chr = NULL,
+                                      maui_itm_short_nms_chr = c("Mobility", "Self-care", "Activities","Pain","Anxiety"),
                                       maui_scoring_fn = function(data_tb,
                                              maui_item_pfx_1L_chr,
                                              id_var_nm_1L_chr, 
@@ -159,138 +117,59 @@ maui_params_ls <- make_maui_params_ls(maui_itm_short_nms_chr = c("Mobility", "Se
                       dplyr::mutate(`:=`(!!rlang::sym(utl_unwtd_var_nm_1L_chr),                                          rowSums(dplyr::across(dplyr::starts_with(maui_item_pfx_1L_chr))))) %>%
                       dplyr::filter(!is.na(!!rlang::sym(utl_unwtd_var_nm_1L_chr)))
                     },
-                    utl_min_val_1L_dbl = 0.03)
+                    short_and_long_nm = c("EQ-5D",
+                                          "EuroQol - Five Dimension"))
 ```
 
-## Candidate model types
-We combine a lookup table of our candidate model types with parameters specific to the analyses to be run to compare the performance of each model.
+## Analysis parameters
 
-```{r}
-mdl_smry_ls <- make_mdl_smry_ls(mdl_types_lup = get_cndts_for_mxd_mdls(),
-                                     folds_1L_int = 10L,
-                                     max_nbr_of_boruta_mdl_runs_int = 300L)
+```{r eval = F }
+input_params_ls <- make_input_params(ds_tb,
+                                     ds_descvs_ls = ds_descvs_ls,
+                                     dv_ds_nm_and_url_chr = c("fakes", 
+                                                              "https://doi.org/10.7910/DVN/612HDC"), 
+                                     header_yaml_args_ls = header_yaml_args_ls,
+                                     maui_params_ls = maui_params_ls,
+                                     output_format_ls = output_format_ls,
+                                     predictors_lup = predictors_lup,
+                                     prefd_covars_chr = NA_character_)
+
 ```
 
-We create a summary object that contains the core parameters that will be common to most of the analyses we are planning to run.
-
-```{r echo = TRUE }
-analysis_core_params_ls <- make_analysis_core_params_ls(ds_descvs_ls = ds_descvs_ls,
-                                                             mdl_smry_ls = mdl_smry_ls,
-                                                             output_format_ls = output_format_ls,
-                                                             predictors_lup = predictors_lup,
-                                                             use_fake_data_1L_lgl = use_fake_data_1L_lgl,
-                                                             control_ls = list(adapt_delta = 0.99))
-```
-
-## Path parameters
-We next create an object that specifies the relative locations of the input data and the intended destination for analysis outputs and reports. The default settings of the `make_path_params_ls` function will write all output into a new directory, created one level up from the current working directory.
-
-```{r, warning=F, message=F, eval=F}
-path_params_ls <- make_path_params_ls(use_fake_data_1L_lgl = use_fake_data_1L_lgl,
-                                      write_new_dir_1L_lgl = T)
-```
-
-## Validate parameters
-A list of valid input values for our primary analysis is now constructed, principally using the objects created in the preceding steps. The `make_valid_params_ls_ls` checks the naming conventions used in some variables of interest and where necessary modifies the names of these variables.
-
-```{r eval = F}
-valid_params_ls_ls <- make_valid_params_ls_ls(analysis_core_params_ls,
-                                                   candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
-                                                   ds_tb = ds_tb, 
-                                                   maui_params_ls = maui_params_ls,
-                                                   path_params_ls = path_params_ls,
-                                                   prefd_mdl_types_chr = c("OLS_NTF", "GLM_GSN_LOG", "BET_CLL"))
-```
 
 # Run analysis
-All analytic steps are executed with the following function call, which also creates [a report detailing the program that performs these tasks](https://dataverse.harvard.edu/api/access/datafile/4806541).
-
-```{r echo = TRUE, eval=FALSE}
-write_report(params_ls = valid_params_ls_ls$params_ls,
-                  paths_ls = path_params_ls$paths_ls,
-                  rprt_nm_1L_chr = "AAA_PMRY_ANLYS_MTH",
-                  abstract_args_ls = NULL,
-                  header_yaml_args_ls = header_yaml_args_ls)
+```{r eval = FALSE}
+write_analyses(input_params_ls)
 ```
 
 # Report results
-The following function call authors a [report, summarising all the transfer to utility models](https://dataverse.harvard.edu/api/access/datafile/4826550) and writes it to a local directory along with other supplementary reporting information. 
 ```{r echo = TRUE, eval=FALSE }
-rprt_lups_ls <- write_mdl_smry_rprt(header_yaml_args_ls,
-                         path_params_ls = path_params_ls,
-                         use_fake_data_1L_lgl = use_fake_data_1L_lgl,
-                         output_format_ls = output_format_ls,
-                         use_shareable_mdls_1L_lgl = T)
+input_params_ls <- write_mdl_smry_rprt(input_params_ls,
+                                       use_shareable_mdls_1L_lgl = T)
 ```
 
 # Share results
-We provide details of dataverse dataset(s) to which results will be posted. You will need to supply details for repositories to which you have write permissions - the values supplied in the below call will not work for you. If you do not have write permissions for a dataverse dataset, use `dv_ds_nm_and_url_chr <- NULL`. 
-
-```{r echo = TRUE }
-dv_ds_nm_and_url_chr <- c("fakes", # REPLACE WITH DATAVERSE IN WHICH YOUR DATASET IS LOCATED
-                          "https://doi.org/10.7910/DVN/612HDC") # REPLACE WITH YOUR DATASET'S DOI
-                                 
-```
-
-If details to a valid online data repository have been supplied, the following function call uploads data from which predictions can be made using model coefficients. The uploaded files can be viewed at: https://doi.org/10.7910/DVN/612HDC
-
 ```{r echo = TRUE, eval=FALSE }
-if(!is.null(dv_ds_nm_and_url_chr)){
-  write_study_outp_ds(dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
-                      rprt_lups_ls = rprt_lups_ls,
-                      output_format_ls = output_format_ls,
-                      path_params_ls = path_params_ls,
-                      use_fake_data_1L_lgl = use_fake_data_1L_lgl)
-}
+write_study_outp_ds(input_params_ls)
+```
+The uploaded files can be viewed at: https://doi.org/10.7910/DVN/612HDC
+
+# Create manuscript
+
+```{r eval = F}
+input_params_ls <- make_study_descs_ls(input_params_ls = input_params_ls,
+                                       background_1L_chr = "Our study is entirely fictional and has been created to illustrate the generalisability of TTU package functions.",
+                                       coi_1L_chr = "None declared.",
+                                       conclusion_1L_chr = "If this study was real, the results would be really interesting.",
+                                       ethics_1L_chr = "The study was reviewed and granted approval by Awesome University's Human Research Ethics Committee (2222222.2).",
+                                       funding_1L_chr = "The study was funded by an science enthusiast.",
+                                       sample_desc_1L_chr = "The study sample is fake data that pretends to be young people aged 12 to 25 years who attended Australian primary care services for mental health related needs between November 2019 to August 2020.",
+                                       time_btwn_bl_and_fup_1L_chr = "four months")
 ```
 
-
-```{r echo = FALSE, eval=FALSE }
-# Render Scientific Summary
-# if(!use_fake_data_1L_lgl){
-  # var_nm_change_lup <- tibble::tibble(old_nms_chr = c("k10","psychwell"),
-  #                                     new_nms_chr = c("K10", "Winefield wellbeing"))
-study_descs_ls <- make_study_descs_ls(health_utl_nm_1L_chr = "EQ-5D",
-                                           time_btwn_bl_and_fup_1L_chr = "three months",
-                                           predr_ctgs_ls = list(`psychological distress` = c("k10"),
-                                                                `psychological wellbeing` =  c("psychwell")))
-spine_of_results_ls <- make_results_ls_spine(output_data_dir_1L_chr = path_params_ls$paths_ls$output_data_dir_1L_chr,
-                                                  #var_nm_change_lup = var_nm_change_lup,
-                                                  study_descs_ls = study_descs_ls,
-                                                  nbr_of_digits_1L_int = output_format_ls$manuscript_digits_1L_int)
-cs_ts_ratios_tb = tibble::tibble(predr_nm_chr = c("k10","psychwell"),
-                                 ratios_chr = c(paste0("about ",
-                                                       round(spine_of_results_ls$mdl_coef_ratios_ls$`psychological distress`,2)),
-                                                paste0(round(spine_of_results_ls$mdl_coef_ratios_ls$`psychological wellbeing`,2))
-                                 ))
-# ctgl_vars_regrouping_ls = list('Primary Diagnosis' = list(anxdpr = list(name_1L_chr = "anxiety/depression",
-#                                                                           ctgs_chr = c("Anxiety", "Depression", "Depression and Anxiety"))),
-#                                  'Clinical Stage' = list(early = list(name_1L_chr = "early (prior to first episode of a serious mental disorder) clinical stages",
-#                                                                       ctgs_chr = c("0-1a","1b"))))
-sig_covars_some_predrs_mdls_tb = tibble::tibble(covars_ls = list(c("No other confounding factor")
-                                                                 # ,c("sex at birth"),c("primary diagnosis", "clinical staging","age")
-                                                                 ),
-                                                                 predrs_mdls_ls = list(c("either predictor")#, c("K6"),c("anxiety and depression measurements other than PHQ-9")
-                                                                                       ),
-                                                                 sig_thresh_dbl = c(NA_real_#,0.01,NA_real_
-                                                                                    ),
-                                                                 assn_strgth_chr = c(NA_character_#,NA_character_,"weakly"
-                                                                                     ))
-results_ls <- make_results_ls(spine_of_results_ls,
-                              cs_ts_ratios_tb = cs_ts_ratios_tb,
-                              ctgl_vars_regrouping_ls = NULL,
-                              sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb,
-                              sig_thresh_covars_1L_chr = "0.005")
-saveRDS(results_ls,paste0(path_params_ls$paths_ls$output_data_dir_1L_chr,"/results_ls.RDS"))
-  rmarkdown::render("AQoL_VIH/AQoL_VIH.Rmd",
-                    output_format = NULL,
-                    params = list(figures_in_body_lgl = F,
-                                  output_type_1L_chr = "Word",
-                                  results_ls = results_ls,
-                                  tables_in_body_lgl = F),
-                    output_file = paste0("AQoL_VIH", ".docx"),
-                    output_dir = path_params_ls$paths_ls$reports_dir_1L_chr)
-# }
+```{r eval = F}
+results_ls <- write_manuscript(input_params_ls = input_params_ls,
+                               write_to_dv_1L_lgl = T)
 ```
 
 # Purge dataset copies

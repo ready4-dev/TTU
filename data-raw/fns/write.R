@@ -512,15 +512,20 @@ write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_tota
                 .x, "_", mdl_type_1L_chr)
             saveRDS(model_mdl, paste0(output_dir_1L_chr, "/",
                 mdl_fl_nm_1L_chr, ".RDS"))
-            tibble::tibble(variable = .x, Rsquare = caret::R2(stats::predict(model_mdl, type = predn_type_1L_chr) %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
+            if("summary.betareg" %in% class(summary(model_mdl))){
+              coefficients_mat <- summary(model_mdl)$coefficients$mean
+            }else{
+              coefficients_mat <- summary(model_mdl)$coefficients
+            }
+            tibble::tibble(variable = .x,
+                           Rsquare = caret::R2(stats::predict(model_mdl, type = predn_type_1L_chr) %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
                                                                                                                     tfmn_is_outp_1L_lgl = T),
                                                               data_tb %>%
                                                                 dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr)),
                                                               form = "traditional"),
                            AIC = stats::AIC(model_mdl),
                            BIC = stats::BIC(model_mdl),
-                           Significant = paste(names(which(summary(model_mdl)$coefficients[,
-                  4] < 0.01)), collapse = " "))
+                           Significant = paste(names(which(coefficients_mat[,4] < 0.01)), collapse = " "))
         })
     smry_of_mdls_with_covars_tb <- smry_of_mdls_with_covars_tb %>%
         dplyr::arrange(dplyr::desc(AIC))

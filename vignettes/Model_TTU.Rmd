@@ -1,13 +1,15 @@
 ---
-title: "Transfer to Utility Exploratory Analysis Workflow"
+title: "Exploratory Analysis Workflow"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Transfer to Utility Exploratory Analysis Workflow}
+  %\VignetteIndexEntry{Exploratory Analysis Workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-The steps in this exploratory analysis workflow may need to be performed iteratively, both in order to identify the optimal model types, predictors and covariates to use and modify default values to ensure model convergence. Once you are satisfied that you have identified the optimal set of input values, you can implement the [analysis, reporting and dissemination workflow](CSP_EQ5D_TTU.html) described in another vignette.
+Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.
+
+The steps in this exploratory analysis workflow may need to be performed iteratively, both in order to identify the optimal model types, predictors and covariates to use and modify default values to ensure model convergence. Once you are satisfied that you have identified the optimal set of input values, you can implement the [reporting workflow](CSP_EQ5D_TTU.html) described in another vignette.
 
 ```{r message=FALSE, warning=FALSE}
 library(TTU)
@@ -162,7 +164,7 @@ cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr
 We can override these automated selections and instead incorporate other considerations (possibly based on judgments informed by visual inspection of the plots and the desirability of constraining predictions to a maximum value of one). We do this in the following command, specifying new preferred model types, in descending order of preference.
 
 ```{r}
-cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr <- c("OLS_NTF", "GLM_GSN_LOG", "BET_CLL")
+cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr <- c("OLS_NTF", "BET_CLL")
 ```
 
 ### Use most preferred model to compare all candidate predictors
@@ -196,7 +198,7 @@ Updated versions of each of the models in the previous step (this time with cova
 ```{r}
 cmprsns_ls$mdl_smry_ls$mdls_with_covars_smry_tb %>%
     ready4show::print_table(output_type_1L_chr = "HTML",
-                            caption_1L_chr = "Preferred performance of models with covariate predictors by candidate predictor", 
+                            caption_1L_chr = "Performance of preferred models with covariate predictors by candidate predictor", 
                           use_lbls_as_col_nms_1L_lgl = T)
 ```
 We can now identify which, if any, of the candidate covariates we previously specified are significant predictors in any of the models.
