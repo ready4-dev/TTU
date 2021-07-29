@@ -4,7 +4,12 @@
 \alias{get_mdl_cmprsns}
 \title{Get model comparisons}
 \usage{
-get_mdl_cmprsns(results_ls, describe_1L_lgl = T, mixed_1L_lgl = F)
+get_mdl_cmprsns(
+  results_ls,
+  describe_1L_lgl = T,
+  mixed_1L_lgl = F,
+  as_list_1L_lgl = F
+)
 }
 \arguments{
 \item{results_ls}{Results (a list)}
@@ -12,11 +17,13 @@ get_mdl_cmprsns(results_ls, describe_1L_lgl = T, mixed_1L_lgl = F)
 \item{describe_1L_lgl}{Describe (a logical vector of length one), Default: T}
 
 \item{mixed_1L_lgl}{Mixed (a logical vector of length one), Default: F}
+
+\item{as_list_1L_lgl}{As list (a logical vector of length one), Default: F}
 }
 \value{
-Model comparisons (a character vector of length one)
+Model comparisons (an output object of multiple potential types)
 }
 \description{
-get_mdl_cmprsns() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get model comparisons. Function argument results_ls specifies the where to look for the required object. The function returns Model comparisons (a character vector of length one).
+get_mdl_cmprsns() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get model comparisons. Function argument results_ls specifies the where to look for the required object. The function returns Model comparisons (an output object of multiple potential types).
 }
 \keyword{internal}

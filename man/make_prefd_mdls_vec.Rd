@@ -6,14 +6,14 @@
 \usage{
 make_prefd_mdls_vec(
   smry_of_sngl_predr_mdls_tb,
-  choose_from_pfx_chr = c("GLM", "OLS"),
+  choose_from_pfx_chr = c("BET", "GLM", "OLS"),
   mdl_types_lup = NULL
 )
 }
 \arguments{
 \item{smry_of_sngl_predr_mdls_tb}{Summary of single predictor models (a tibble)}
 
-\item{choose_from_pfx_chr}{Choose from prefix (a character vector), Default: c("GLM", "OLS")}
+\item{choose_from_pfx_chr}{Choose from prefix (a character vector), Default: c("BET", "GLM", "OLS")}
 
 \item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
 }

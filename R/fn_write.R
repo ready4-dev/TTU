@@ -108,9 +108,10 @@ write_main_oupt_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_f
 #' @param input_params_ls Input params (a list), Default: NULL
 #' @param results_ls Results (a list), Default: NULL
 #' @param figures_in_body_lgl Figures in body (a logical vector), Default: NULL
+#' @param output_type_1L_chr Output type (a character vector of length one), Default: NULL
 #' @param tables_in_body_lgl Tables in body (a logical vector), Default: NULL
 #' @param title_1L_chr Title (a character vector of length one), Default: 'Scientific manuscript'
-#' @param version_1L_chr Version (a character vector of length one), Default: '0.1'
+#' @param version_1L_chr Version (a character vector of length one), Default: '0.3'
 #' @param write_to_dv_1L_lgl Write to dataverse (a logical vector of length one), Default: F
 #' @return Results (a list)
 #' @rdname write_manuscript
@@ -122,16 +123,19 @@ write_main_oupt_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_f
 #' @importFrom tibble tibble
 #' @keywords internal
 write_manuscript <- function (abstract_args_ls = NULL, input_params_ls = NULL, results_ls = NULL, 
-    figures_in_body_lgl = NULL, tables_in_body_lgl = NULL, title_1L_chr = "Scientific manuscript", 
-    version_1L_chr = "0.1", write_to_dv_1L_lgl = F) 
+    figures_in_body_lgl = NULL, output_type_1L_chr = NULL, tables_in_body_lgl = NULL, 
+    title_1L_chr = "Scientific manuscript", version_1L_chr = "0.3", 
+    write_to_dv_1L_lgl = F) 
 {
     mkdn_data_dir_1L_chr <- ifelse(!is.null(input_params_ls), 
         input_params_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr, 
         results_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr)
     outp_dir_1L_chr <- ifelse(!is.null(input_params_ls), input_params_ls$path_params_ls$paths_ls$output_data_dir_1L_chr, 
         results_ls$path_params_ls$paths_ls$output_data_dir_1L_chr)
-    output_type_1L_chr <- ifelse(!is.null(input_params_ls), input_params_ls$output_format_ls$manuscript_outp_1L_chr, 
-        results_ls$output_format_ls$manuscript_outp_1L_chr)
+    output_type_1L_chr <- ifelse(!is.null(output_type_1L_chr), 
+        output_type_1L_chr, ifelse(!is.null(input_params_ls), 
+            input_params_ls$output_format_ls$manuscript_outp_1L_chr, 
+            results_ls$output_format_ls$manuscript_outp_1L_chr))
     path_to_ms_mkdn_1L_dir <- paste0(mkdn_data_dir_1L_chr, "/ttu_lng_ss-", 
         version_1L_chr)
     path_to_results_dir_1L_chr <- ifelse(!is.null(input_params_ls), 
@@ -140,7 +144,7 @@ write_manuscript <- function (abstract_args_ls = NULL, input_params_ls = NULL, r
     if (!dir.exists(path_to_ms_mkdn_1L_dir)) {
         temp_fl <- tempfile()
         download.file(paste0("https://github.com/ready4-dev/ttu_lng_ss/archive/refs/tags/v", 
-            version_1L_chr, ".zip", temp_fl))
+            version_1L_chr, ".zip"), temp_fl)
         utils::unzip(temp_fl, exdir = mkdn_data_dir_1L_chr)
         unlink(temp_fl)
     }
@@ -149,6 +153,9 @@ write_manuscript <- function (abstract_args_ls = NULL, input_params_ls = NULL, r
     }
     else {
         header_yaml_args_ls <- results_ls$header_yaml_args_ls
+    }
+    if (is.null(abstract_args_ls)) {
+        abstract_args_ls <- make_abstract_args_ls(results_ls)
     }
     ready4show::write_header_fls(path_to_header_dir_1L_chr = paste0(path_to_ms_mkdn_1L_dir, 
         "/Header"), header_yaml_args_ls = header_yaml_args_ls, 

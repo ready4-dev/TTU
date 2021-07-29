@@ -478,7 +478,7 @@ transform_tb_for_merged_col_1 <- function(df,
 }
 transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr,
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round",
-    round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, scaling_fctr_dbl = 0.01,
+    round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, scaling_fctr_dbl = 1,
     tfmn_1L_chr = "NTF", ungroup_1L_lgl = F)
 {
     if(length(scaling_fctr_dbl)!=length(predr_vars_nms_chr)){

@@ -74,9 +74,10 @@ write_manuscript <- function(abstract_args_ls = NULL,
                              input_params_ls = NULL,
                              results_ls = NULL,
                              figures_in_body_lgl = NULL,
+                             output_type_1L_chr = NULL,
                              tables_in_body_lgl = NULL,
                              title_1L_chr = "Scientific manuscript",
-                             version_1L_chr = "0.1",
+                             version_1L_chr = "0.3",
                              write_to_dv_1L_lgl = F){
   mkdn_data_dir_1L_chr <- ifelse(!is.null(input_params_ls),
                                  input_params_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr,
@@ -84,9 +85,11 @@ write_manuscript <- function(abstract_args_ls = NULL,
   outp_dir_1L_chr <- ifelse(!is.null(input_params_ls),
                             input_params_ls$path_params_ls$paths_ls$output_data_dir_1L_chr,
                             results_ls$path_params_ls$paths_ls$output_data_dir_1L_chr)
-  output_type_1L_chr <- ifelse(!is.null(input_params_ls),
+  output_type_1L_chr <- ifelse(!is.null(output_type_1L_chr),
+                               output_type_1L_chr,
+                               ifelse(!is.null(input_params_ls),
                                input_params_ls$output_format_ls$manuscript_outp_1L_chr,
-                               results_ls$output_format_ls$manuscript_outp_1L_chr)
+                               results_ls$output_format_ls$manuscript_outp_1L_chr))
   path_to_ms_mkdn_1L_dir <- paste0(mkdn_data_dir_1L_chr,"/ttu_lng_ss-",version_1L_chr)
   path_to_results_dir_1L_chr <- ifelse(!is.null(input_params_ls),
                                        input_params_ls$path_params_ls$paths_ls$reports_dir_1L_chr,
@@ -95,8 +98,8 @@ write_manuscript <- function(abstract_args_ls = NULL,
     temp_fl <- tempfile()
     download.file(paste0("https://github.com/ready4-dev/ttu_lng_ss/archive/refs/tags/v",
                          version_1L_chr,
-                         ".zip",
-                         temp_fl))
+                         ".zip"),
+                         temp_fl)
     utils::unzip(temp_fl,
                  exdir = mkdn_data_dir_1L_chr)
     unlink(temp_fl)
@@ -105,7 +108,10 @@ write_manuscript <- function(abstract_args_ls = NULL,
     header_yaml_args_ls <- input_params_ls$header_yaml_args_ls
   }else{
     header_yaml_args_ls <- results_ls$header_yaml_args_ls
-    }
+  }
+  if(is.null(abstract_args_ls)){
+    abstract_args_ls <- make_abstract_args_ls(results_ls)
+  }
   ready4show::write_header_fls(path_to_header_dir_1L_chr = paste0(path_to_ms_mkdn_1L_dir,"/Header"),
                                header_yaml_args_ls = header_yaml_args_ls,
                                abstract_args_ls = abstract_args_ls)

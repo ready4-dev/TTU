@@ -4,10 +4,12 @@
 \alias{make_ten_fold_text}
 \title{Make ten fold text}
 \usage{
-make_ten_fold_text(results_ls)
+make_ten_fold_text(results_ls, for_abstract_1L_lgl = F)
 }
 \arguments{
 \item{results_ls}{Results (a list)}
+
+\item{for_abstract_1L_lgl}{For abstract (a logical vector of length one), Default: F}
 }
 \value{
 Text (a character vector of length one)

@@ -1,3 +1,44 @@
+#' Make abstract arguments
+#' @description make_abstract_args_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make abstract arguments list. The function returns Abstract arguments (a list).
+#' @param results_ls Results (a list)
+#' @param fl_nm_1L_chr File name (a character vector of length one), Default: 'abstract.txt'
+#' @return Abstract arguments (a list)
+#' @rdname make_abstract_args_ls
+#' @export 
+#' @importFrom xfun numbers_to_words
+#' @importFrom Hmisc capitalize
+#' @keywords internal
+make_abstract_args_ls <- function (results_ls, fl_nm_1L_chr = "abstract.txt") 
+{
+    mdl_cmprsns_ls <- get_mdl_cmprsns(results_ls, as_list_1L_lgl = T)
+    abstract_args_ls <- list(abstract_ls = list(Background = get_background_text(results_ls), 
+        Objectives = paste0("We aimed to identify the best transfer to utility (TTU) regression models to predict ", 
+            get_hlth_utl_nm(results_ls, short_nm_1L_lgl = F), 
+            " (", get_hlth_utl_nm(results_ls), ") utility and evaluate the predictive ability of ", 
+            get_nbr_of_predrs(results_ls), " candidate measure", 
+            ifelse(get_nbr_of_predrs(results_ls, as_words_1L_lgl = F) > 
+                1, "s", ""), " of ", get_predr_ctgs(results_ls), 
+            "."), Methods = paste0(results_ls$study_descs_ls$sample_desc_1L_chr, 
+            " Follow-up measurements were ", results_ls$study_descs_ls$time_btwn_bl_and_fup_1L_chr, 
+            " after baseline. ", paste0(length(mdl_cmprsns_ls$OLS) %>% 
+                xfun::numbers_to_words() %>% Hmisc::capitalize()), 
+            " Ordinary Least Squares (OLS) and ", length(mdl_cmprsns_ls$GLM) %>% 
+                xfun::numbers_to_words(), " generalised linear models (GLMs) were explored to identify the best TTU algorithm. ", 
+            " Predictive ability of ", get_nbr_of_predrs(results_ls), 
+            " candidate measure", ifelse(get_nbr_of_predrs(results_ls, 
+                as_words_1L_lgl = F) > 1, "s", ""), " of ", get_predr_ctgs(results_ls), 
+            " were assessed using ten fold cross validation", 
+            ifelse(get_nbr_of_predrs(results_ls, as_words_1L_lgl = F) > 
+                1, " and forest models", ""), ". Linear / generalised linear mixed effect models were then used to construct longitudinal predictive models for ", 
+            get_hlth_utl_nm(results_ls), " change."), Results = paste0(make_ten_fold_text(results_ls, 
+            for_abstract_1L_lgl = T), make_random_forest_text(results_ls, 
+            for_abstract_1L_lgl = T), ". ", make_selected_mdl_text(results_ls, 
+            for_abstract_1L_lgl = T), paste0(" The mean ratio between the within-person and between-person associated coefficients was ", 
+            make_within_between_ratios_text(results_ls), ".")), 
+        Conclusions = get_conclusion_text(results_ls), Data = make_data_availability_text(results_ls)), 
+        fl_nm_1L_chr = fl_nm_1L_chr)
+    return(abstract_args_ls)
+}
 #' Make all model types summary table
 #' @description make_all_mdl_types_smry_tbl() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make all model types summary table. The function returns All model types summary table (a tibble).
 #' @param outp_smry_ls Output summary (a list)
@@ -1751,16 +1792,16 @@ make_predrs_for_best_mdls <- function (outp_smry_ls, old_nms_chr = NULL, new_nms
 #' Make preferred models vector
 #' @description make_prefd_mdls_vec() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make preferred models vector. The function returns Preferred models (a character vector).
 #' @param smry_of_sngl_predr_mdls_tb Summary of single predictor models (a tibble)
-#' @param choose_from_pfx_chr Choose from prefix (a character vector), Default: c("GLM", "OLS")
+#' @param choose_from_pfx_chr Choose from prefix (a character vector), Default: c("BET", "GLM", "OLS")
 #' @param mdl_types_lup Model types (a lookup table), Default: NULL
 #' @return Preferred models (a character vector)
 #' @rdname make_prefd_mdls_vec
 #' @export 
 #' @importFrom utils data
 #' @importFrom dplyr inner_join select rename pull
-#' @importFrom purrr map_chr
-make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr = c("GLM", 
-    "OLS"), mdl_types_lup = NULL) 
+#' @importFrom purrr map_chr map_int map_lgl
+make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr = c("BET", 
+    "GLM", "OLS"), mdl_types_lup = NULL) 
 {
     if (is.null(mdl_types_lup)) 
         utils::data("mdl_types_lup", envir = environment(), package = "TTU")
@@ -1769,6 +1810,11 @@ make_prefd_mdls_vec <- function (smry_of_sngl_predr_mdls_tb, choose_from_pfx_chr
         mdl_types_lup) %>% dplyr::pull(short_name_chr)
     prefd_mdls_chr <- purrr::map_chr(choose_from_pfx_chr, ~ordered_mdl_types_chr[startsWith(ordered_mdl_types_chr, 
         .x)][1])
+    prefd_mdls_chr <- prefd_mdls_chr[order(prefd_mdls_chr %>% 
+        purrr::map_int(~which(ordered_mdl_types_chr == .x)))]
+    prefd_mdls_chr <- prefd_mdls_chr[-max((1:length(prefd_mdls_chr))[prefd_mdls_chr %>% 
+        purrr::map_lgl(~(startsWith(.x, "BET") | startsWith(.x, 
+            "GLM")))])]
     return(prefd_mdls_chr)
 }
 #' Make prmry analysis params
@@ -1831,17 +1877,29 @@ make_psych_predrs_lup <- function ()
 #' Make random forest text
 #' @description make_random_forest_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make random forest text. The function returns Text (a character vector of length one).
 #' @param results_ls Results (a list)
+#' @param for_abstract_1L_lgl For abstract (a logical vector of length one), Default: F
 #' @return Text (a character vector of length one)
 #' @rdname make_random_forest_text
 #' @export 
 
 #' @keywords internal
-make_random_forest_text <- function (results_ls) 
+make_random_forest_text <- function (results_ls, for_abstract_1L_lgl = F) 
 {
-    text_1L_chr <- ifelse(length(results_ls$ttu_cs_ls$rf_seq_dscdng_chr) > 
-        1, paste0("This ", results_ls$ttu_cs_ls$mdl_predrs_and_rf_seqs_cmprsn_1L_chr, 
-        " with the random forest model in which ", results_ls$ttu_cs_ls$rf_seq_dscdng_chr[1], 
-        " was found to be the most 'important' predictor"), "")
+    if (for_abstract_1L_lgl) {
+        text_1L_chr <- ifelse(length(results_ls$ttu_cs_ls$rf_seq_dscdng_chr) > 
+            1, paste0(ifelse(results_ls$ttu_cs_ls$mdl_predrs_and_rf_seqs_cmprsn_1L_chr == 
+            "is consistent", " and the random forest model", 
+            paste0(", while ", results_ls$ttu_cs_ls$rf_seq_dscdng_chr[1], 
+                " was the most 'important' predictor in the random forest model"))), 
+            "")
+    }
+    else {
+        text_1L_chr <- ifelse(length(results_ls$ttu_cs_ls$rf_seq_dscdng_chr) > 
+            1, paste0("This ", results_ls$ttu_cs_ls$mdl_predrs_and_rf_seqs_cmprsn_1L_chr, 
+            " with the random forest model in which ", results_ls$ttu_cs_ls$rf_seq_dscdng_chr[1], 
+            " was found to be the most 'important' predictor"), 
+            "")
+    }
     return(text_1L_chr)
 }
 #' Make ranked predictors
@@ -2158,18 +2216,21 @@ make_scndry_anlys_text <- function (results_ls)
 #' Make selected model text
 #' @description make_selected_mdl_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make selected model text. The function returns Text (a character vector of length one).
 #' @param results_ls Results (a list)
+#' @param for_abstract_1L_lgl For abstract (a logical vector of length one), Default: F
 #' @return Text (a character vector of length one)
 #' @rdname make_selected_mdl_text
 #' @export 
 #' @importFrom stringi stri_replace_last
 #' @keywords internal
-make_selected_mdl_text <- function (results_ls) 
+make_selected_mdl_text <- function (results_ls, for_abstract_1L_lgl = F) 
 {
     length_1L_int <- length(results_ls$ttu_cs_ls$selected_mdls_chr)
-    text_1L_chr <- paste0(ifelse(length_1L_int == 2, "Both ", 
-        ""), results_ls$ttu_cs_ls$selected_mdls_chr %>% paste0(collapse = ", ") %>% 
-        stringi::stri_replace_last(fixed = ",", " and"), ifelse(length_1L_int > 
-        1, " were", " was"), " selected for further evaluation.")
+    text_1L_chr <- paste0(ifelse((length_1L_int == 2 & !for_abstract_1L_lgl), 
+        "Both ", ""), results_ls$ttu_cs_ls$selected_mdls_chr %>% 
+        paste0(collapse = ", ") %>% stringi::stri_replace_last(fixed = ",", 
+        " and"), ifelse(length_1L_int > 1, " were", " was"), 
+        ifelse(for_abstract_1L_lgl, paste0(" the best peforming model", 
+            ifelse(length_1L_int > 1, "s.", ".")), " selected for further evaluation."))
     return(text_1L_chr)
 }
 #' Make shareable
@@ -2591,19 +2652,28 @@ make_study_descs_ls <- function (input_params_ls = NULL, time_btwn_bl_and_fup_1L
 #' Make ten fold text
 #' @description make_ten_fold_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ten fold text. The function returns Text (a character vector of length one).
 #' @param results_ls Results (a list)
+#' @param for_abstract_1L_lgl For abstract (a logical vector of length one), Default: F
 #' @return Text (a character vector of length one)
 #' @rdname make_ten_fold_text
 #' @export 
 
 #' @keywords internal
-make_ten_fold_text <- function (results_ls) 
+make_ten_fold_text <- function (results_ls, for_abstract_1L_lgl = F) 
 {
     mdls_chr <- get_ordered_sngl_csnl_mdls(results_ls)
-    text_1L_chr <- ifelse(length(mdls_chr) > 1, paste0(mdls_chr[1], 
-        " had the highest predictive ability followed by ", get_ordered_sngl_csnl_mdls(results_ls, 
-            select_int = -1, collapse_1L_lgl = T), ". ", ifelse(length(mdls_chr) > 
-            2, paste0(mdls_chr[length(mdls_chr)], " had the least predictive capability."), 
-            "")), paste0("the predictive ability of ", mdls_chr[1]))
+    if (for_abstract_1L_lgl) {
+        text_1L_chr <- ifelse(length(mdls_chr) > 1, paste0(mdls_chr[1], 
+            " had the highest predictive ability in ten fold cross validation"), 
+            "")
+    }
+    else {
+        text_1L_chr <- ifelse(length(mdls_chr) > 1, paste0(mdls_chr[1], 
+            " had the highest predictive ability followed by ", 
+            get_ordered_sngl_csnl_mdls(results_ls, select_int = -1, 
+                collapse_1L_lgl = T), ". ", ifelse(length(mdls_chr) > 
+                2, paste0(mdls_chr[length(mdls_chr)], " had the least predictive capability."), 
+                "")), paste0("the predictive ability of ", mdls_chr[1]))
+    }
     return(text_1L_chr)
 }
 #' Make ten folds table title

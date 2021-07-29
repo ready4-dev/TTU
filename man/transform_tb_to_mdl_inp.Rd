@@ -12,7 +12,7 @@ transform_tb_to_mdl_inp(
   round_var_nm_1L_chr = "round",
   round_bl_val_1L_chr = "Baseline",
   drop_all_msng_1L_lgl = T,
-  scaling_fctr_dbl = 0.01,
+  scaling_fctr_dbl = 1,
   tfmn_1L_chr = "NTF",
   ungroup_1L_lgl = F
 )
@@ -32,7 +32,7 @@ transform_tb_to_mdl_inp(
 
 \item{drop_all_msng_1L_lgl}{Drop all missing (a logical vector of length one), Default: T}
 
-\item{scaling_fctr_dbl}{Scaling factor (a double vector), Default: 0.01}
+\item{scaling_fctr_dbl}{Scaling factor (a double vector), Default: 1}
 
 \item{tfmn_1L_chr}{Transformation (a character vector of length one), Default: 'NTF'}
 

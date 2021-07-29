@@ -558,7 +558,7 @@ transform_tb_for_merged_col_1 <- function (df, output_type_1L_chr = "PDF")
 #' @param round_var_nm_1L_chr Round variable name (a character vector of length one), Default: 'round'
 #' @param round_bl_val_1L_chr Round baseline value (a character vector of length one), Default: 'Baseline'
 #' @param drop_all_msng_1L_lgl Drop all missing (a logical vector of length one), Default: T
-#' @param scaling_fctr_dbl Scaling factor (a double vector), Default: 0.01
+#' @param scaling_fctr_dbl Scaling factor (a double vector), Default: 1
 #' @param tfmn_1L_chr Transformation (a character vector of length one), Default: 'NTF'
 #' @param ungroup_1L_lgl Ungroup (a logical vector of length one), Default: F
 #' @return Transformed for model input (a tibble)
@@ -572,7 +572,7 @@ transform_tb_for_merged_col_1 <- function (df, output_type_1L_chr = "PDF")
 transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, 
-    scaling_fctr_dbl = 0.01, tfmn_1L_chr = "NTF", ungroup_1L_lgl = F) 
+    scaling_fctr_dbl = 1, tfmn_1L_chr = "NTF", ungroup_1L_lgl = F) 
 {
     if (length(scaling_fctr_dbl) != length(predr_vars_nms_chr)) {
         scaling_fctr_dbl <- rep(scaling_fctr_dbl[1], length(predr_vars_nms_chr))

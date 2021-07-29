@@ -158,39 +158,64 @@ get_lngl_ttu_types <- function (results_ls, collapse_1L_lgl = T)
     return(mdl_types_chr)
 }
 #' Get model comparisons
-#' @description get_mdl_cmprsns() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get model comparisons. Function argument results_ls specifies the where to look for the required object. The function returns Model comparisons (a character vector of length one).
+#' @description get_mdl_cmprsns() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get model comparisons. Function argument results_ls specifies the where to look for the required object. The function returns Model comparisons (an output object of multiple potential types).
 #' @param results_ls Results (a list)
 #' @param describe_1L_lgl Describe (a logical vector of length one), Default: T
 #' @param mixed_1L_lgl Mixed (a logical vector of length one), Default: F
-#' @return Model comparisons (a character vector of length one)
+#' @param as_list_1L_lgl As list (a logical vector of length one), Default: F
+#' @return Model comparisons (an output object of multiple potential types)
 #' @rdname get_mdl_cmprsns
 #' @export 
-#' @importFrom purrr map_chr
+#' @importFrom purrr map map_chr
+#' @importFrom stats setNames
 #' @importFrom stringi stri_replace_last_fixed
 #' @keywords internal
-get_mdl_cmprsns <- function (results_ls, describe_1L_lgl = T, mixed_1L_lgl = F) 
+get_mdl_cmprsns <- function (results_ls, describe_1L_lgl = T, mixed_1L_lgl = F, 
+    as_list_1L_lgl = F) 
 {
-    mdl_cmprsns_1L_chr <- paste0(ifelse(!"OLS" %in% results_ls$tables_ls$tenf_sngl_predr_tb$Model, 
-        "", ifelse(describe_1L_lgl, paste0("OLS regression models used ", 
-            results_ls$tables_ls$tenf_sngl_predr_tb$Model[(which(results_ls$tables_ls$tenf_sngl_predr_tb$Model == 
-                "OLS") + 1):(which(results_ls$tables_ls$tenf_sngl_predr_tb$Model == 
-                "GLM") - 1)] %>% unique() %>% purrr::map_chr(~.x %>% 
-                stringi::stri_replace_last_fixed("(", "(measured on a scale of ")) %>% 
-                paste0(collapse = ", ") %>% stringi::stri_replace_last_fixed(",", 
-                " and") %>% tolower(), "."), ifelse(mixed_1L_lgl, 
-            "linear mixed effect models (LMMs)", "ordinary least squares (OLS) regression models"))), 
-        ifelse(!describe_1L_lgl & length(intersect(c("OLS", "GLM"), 
-            results_ls$tables_ls$tenf_sngl_predr_tb$Model)) == 
-            2, " and ", ifelse(describe_1L_lgl, " ", "")), ifelse(!"GLM" %in% 
-            results_ls$tables_ls$tenf_sngl_predr_tb$Model, "", 
-            ifelse(describe_1L_lgl, paste0("GLMs used ", results_ls$tables_ls$tenf_sngl_predr_tb$Model[(which(results_ls$tables_ls$tenf_sngl_predr_tb$Model == 
-                "GLM") + 1):length(results_ls$tables_ls$tenf_sngl_predr_tb$Model)] %>% 
-                unique() %>% purrr::map_chr(~.x %>% stringi::stri_replace_last_fixed("(", 
-                "(measured on a scale of ")) %>% paste0(collapse = ", ") %>% 
-                stringi::stri_replace_last_fixed(",", " and") %>% 
-                tolower()), ifelse(mixed_1L_lgl, "generalised linear mixed effect models (GLMMs)", 
-                "generalised linear models (GLMs)"))))
-    return(mdl_cmprsns_1L_chr)
+    if (as_list_1L_lgl) {
+        mdl_types_chr <- c("OLS", "GLM")[c("OLS", "GLM") %in% 
+            results_ls$tables_ls$tenf_sngl_predr_tb$Model]
+        mdl_cmprsns_ls <- mdl_types_chr %>% purrr::map(~{
+            if (.x == "OLS") {
+                mdls_chr <- results_ls$tables_ls$tenf_sngl_predr_tb$Model[(which(results_ls$tables_ls$tenf_sngl_predr_tb$Model == 
+                  "OLS") + 1):(which(results_ls$tables_ls$tenf_sngl_predr_tb$Model == 
+                  "GLM") - 1)] %>% unique()
+            }
+            if (.x == "GLM") {
+                mdls_chr <- results_ls$tables_ls$tenf_sngl_predr_tb$Model[(which(results_ls$tables_ls$tenf_sngl_predr_tb$Model == 
+                  "GLM") + 1):length(results_ls$tables_ls$tenf_sngl_predr_tb$Model)] %>% 
+                  unique()
+            }
+            mdls_chr
+        }) %>% stats::setNames(mdl_types_chr)
+        mdl_cmprsns_xx <- mdl_cmprsns_ls
+    }
+    else {
+        mdl_cmprsns_1L_chr <- paste0(ifelse(!"OLS" %in% results_ls$tables_ls$tenf_sngl_predr_tb$Model, 
+            "", ifelse(describe_1L_lgl, paste0("OLS regression models used ", 
+                results_ls$tables_ls$tenf_sngl_predr_tb$Model[(which(results_ls$tables_ls$tenf_sngl_predr_tb$Model == 
+                  "OLS") + 1):(which(results_ls$tables_ls$tenf_sngl_predr_tb$Model == 
+                  "GLM") - 1)] %>% unique() %>% purrr::map_chr(~.x %>% 
+                  stringi::stri_replace_last_fixed("(", "(measured on a scale of ")) %>% 
+                  paste0(collapse = ", ") %>% stringi::stri_replace_last_fixed(",", 
+                  " and") %>% tolower(), "."), ifelse(mixed_1L_lgl, 
+                "linear mixed effect models (LMMs)", "ordinary least squares (OLS) regression models"))), 
+            ifelse(!describe_1L_lgl & length(intersect(c("OLS", 
+                "GLM"), results_ls$tables_ls$tenf_sngl_predr_tb$Model)) == 
+                2, " and ", ifelse(describe_1L_lgl, " ", "")), 
+            ifelse(!"GLM" %in% results_ls$tables_ls$tenf_sngl_predr_tb$Model, 
+                "", ifelse(describe_1L_lgl, paste0("GLMs used ", 
+                  results_ls$tables_ls$tenf_sngl_predr_tb$Model[(which(results_ls$tables_ls$tenf_sngl_predr_tb$Model == 
+                    "GLM") + 1):length(results_ls$tables_ls$tenf_sngl_predr_tb$Model)] %>% 
+                    unique() %>% purrr::map_chr(~.x %>% stringi::stri_replace_last_fixed("(", 
+                    "(measured on a scale of ")) %>% paste0(collapse = ", ") %>% 
+                    stringi::stri_replace_last_fixed(",", " and") %>% 
+                    tolower()), ifelse(mixed_1L_lgl, "generalised linear mixed effect models (GLMMs)", 
+                  "generalised linear models (GLMs)"))))
+        mdl_cmprsns_xx <- mdl_cmprsns_1L_chr
+    }
+    return(mdl_cmprsns_xx)
 }
 #' Get model type from name
 #' @description get_mdl_type_from_nm() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get model type from name. Function argument mdl_nm_1L_chr specifies the where to look for the required object. The function returns Model type (a character vector of length one).
