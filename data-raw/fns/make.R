@@ -269,7 +269,7 @@ make_cohort_ls <- function(descv_tbls_ls,
   numeric_vars_chr <- descv_tbls_ls$cohort_desc_tb %>% dplyr::filter(label ==
                                                                        "Median (Q1, Q3)") %>% dplyr::pull(variable)
   ctgl_vars_chr <- unique(descv_tbls_ls$cohort_desc_tb$variable[!descv_tbls_ls$cohort_desc_tb$variable %in% numeric_vars_chr])
-  nbr_by_round_dbl <- paste0(ds_descvs_ls$round_vals_chr,"_val_1_dbl") %>% purrr::map_dbl(~descv_tbls_ls$cohort_desc_tb %>%
+  nbr_by_round_dbl <- paste0(descv_tbls_ls$ds_descvs_ls$round_vals_chr,"_val_1_dbl") %>% purrr::map_dbl(~descv_tbls_ls$cohort_desc_tb %>%
                                                                                          dplyr::filter(variable == ctgl_vars_chr[1]) %>%
                                                                                          dplyr::pull(.x) %>%
                                                                                          as.numeric() %>% purrr::map_dbl(~.x[[1]]) %>% sum())
@@ -279,18 +279,18 @@ make_cohort_ls <- function(descv_tbls_ls,
         dplyr::filter(variable == .x)
       list(bl_min_1L_dbl = var_smry_tb %>%
              dplyr::filter(label == "Min - Max") %>%
-             dplyr::pull(!!rlang::sym(paste0(ds_descvs_ls$round_vals_chr[1],"_val_1_dbl"))) %>%
+             dplyr::pull(!!rlang::sym(paste0(descv_tbls_ls$ds_descvs_ls$round_vals_chr[1],"_val_1_dbl"))) %>%
              as.numeric(),
            bl_max_1L_dbl = var_smry_tb %>%
              dplyr::filter(label == "Min - Max") %>%
-             dplyr::pull(!!rlang::sym(paste0(ds_descvs_ls$round_vals_chr[1],"_val_2_ls"))) %>%
+             dplyr::pull(!!rlang::sym(paste0(descv_tbls_ls$ds_descvs_ls$round_vals_chr[1],"_val_2_ls"))) %>%
              as.numeric(),
            bl_mean_1L_dbl = round(var_smry_tb %>% dplyr::filter(label == "Mean (SD)") %>%
-                                    dplyr::pull(!!rlang::sym(paste0(ds_descvs_ls$round_vals_chr[1],"_val_1_dbl"))) %>%
+                                    dplyr::pull(!!rlang::sym(paste0(descv_tbls_ls$ds_descvs_ls$round_vals_chr[1],"_val_1_dbl"))) %>%
                                     as.numeric(),
                                   nbr_of_digits_1L_int),
            bl_sd_1L_dbl = round(var_smry_tb %>% dplyr::filter(label == "Mean (SD)") %>%
-                                  dplyr::pull(!!rlang::sym(paste0(ds_descvs_ls$round_vals_chr[1],"_val_2_ls"))) %>%
+                                  dplyr::pull(!!rlang::sym(paste0(descv_tbls_ls$ds_descvs_ls$round_vals_chr[1],"_val_2_ls"))) %>%
                                   stringr::str_remove("\\(") %>%
                                   stringr::str_remove("\\)") %>%
                                   as.numeric(),
@@ -348,7 +348,7 @@ make_correlation_text <- function(results_ls){
 make_covar_ttu_tbl_refs <- function(params_ls){
   results_ls <- params_ls$results_ls
   n_mdls_1L_int <- length(results_ls$ttu_lngl_ls$best_mdls_tb$model_type)
-  n_covars_1L_int <- length(results_ls$ttu_lngl_ls$incld_covars_chr)
+  n_covars_1L_int <- length(results_ls$ttu_lngl_ls$incld_covars_chr %>% purrr::discard(is.na))
   text_1L_chr <- paste0(ifelse(n_covars_1L_int < 1,
                                "",
                                paste0(" (see ",
@@ -356,7 +356,7 @@ make_covar_ttu_tbl_refs <- function(params_ls){
                                       "s ",
                                       paste0("\\@ref(tab:coefscovarstype",1:n_mdls_1L_int,")", collapse = ", ") %>%
                                         stringi::stri_replace_last(fixed = ",", " and"),
-                                      ")"
+                                      ")."
                                ))
   )
   return(text_1L_chr)
@@ -583,7 +583,7 @@ make_eq5d_ds_dict <- function(data_tb = make_fake_eq5d_ds(),
                                                                                                            rep("Temporal",2),
                                                                                                            rep("Multi-Attribute Utility Instrument Question",5),
                                                                                                            rep("Multi-Attribute Utility Instrument Score",2),
-                                                                                                           rep("Clinical",2)),
+                                                                                                           c("Psychological distress", "Psychological wellbeing")),
                                                                                            var_desc_chr = c("Unique identifier",
                                                                                                             "Data collection round",
                                                                                                             "Date of data collection",
@@ -592,7 +592,7 @@ make_eq5d_ds_dict <- function(data_tb = make_fake_eq5d_ds(),
                                                                                                             "EQ5D - Usual Activities domain score",
                                                                                                             "EQ5D - Pain / Discomfort domain score",
                                                                                                             "EQ5D - Anxiety / Depression domain score",
-                                                                                                            "EQ5D - total weighted score",
+                                                                                                            "EQ5D",
                                                                                                             "EQ5D - total unweighted score",
                                                                                                             predictors_lup$long_name_chr),
                                                                                            var_type_chr = c("integer",
@@ -777,7 +777,7 @@ make_hlth_utl_and_predrs_ls <- function(outp_smry_ls,
                                   dplyr::filter(label == "Mean (SD)") %>%
                                   ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable",
                                                               match_value_xx = var_nm_1L_chr,
-                                                              target_var_nm_1L_chr = paste0(ds_descvs_ls$round_vals_chr[1],
+                                                              target_var_nm_1L_chr = paste0(descv_tbls_ls$ds_descvs_ls$round_vals_chr[1],
                                                                                             "_val_1_dbl"),
                                                               evaluate_lgl = F) %>%
                                   as.numeric() %>%
@@ -786,7 +786,7 @@ make_hlth_utl_and_predrs_ls <- function(outp_smry_ls,
                                   dplyr::filter(label == "Mean (SD)") %>%
                                   ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable",
                                                               match_value_xx = var_nm_1L_chr,
-                                                              target_var_nm_1L_chr = paste0(ds_descvs_ls$round_vals_chr[1],
+                                                              target_var_nm_1L_chr = paste0(descv_tbls_ls$ds_descvs_ls$round_vals_chr[1],
                                                                                             "_val_2_ls"),
                                                               evaluate_lgl = F) %>%
                                   stringr::str_remove("\\(") %>%
@@ -797,7 +797,7 @@ make_hlth_utl_and_predrs_ls <- function(outp_smry_ls,
                                   dplyr::filter(label == "Mean (SD)") %>%
                                   ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable",
                                                               match_value_xx = var_nm_1L_chr,
-                                                              target_var_nm_1L_chr = paste0(ds_descvs_ls$round_vals_chr[2],
+                                                              target_var_nm_1L_chr = paste0(descv_tbls_ls$ds_descvs_ls$round_vals_chr[2],
                                                                                             "_val_1_dbl"),
                                                               evaluate_lgl = F) %>%
                                   as.numeric() %>%
@@ -806,7 +806,7 @@ make_hlth_utl_and_predrs_ls <- function(outp_smry_ls,
                                   dplyr::filter(label == "Mean (SD)") %>%
                                   ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable",
                                                               match_value_xx = var_nm_1L_chr,
-                                                              target_var_nm_1L_chr = paste0(ds_descvs_ls$round_vals_chr[2],
+                                                              target_var_nm_1L_chr = paste0(descv_tbls_ls$ds_descvs_ls$round_vals_chr[2],
                                                                                             "_val_2_ls"),
                                                               evaluate_lgl = F) %>%
                                   stringr::str_remove("\\(") %>%
@@ -1661,6 +1661,7 @@ make_results_ls <- function(spine_of_results_ls = NULL,
                      candidate_covars_ls = spine_of_results_ls$candidate_covars_ls,
                      candidate_predrs_chr = spine_of_results_ls$candidate_predrs_chr,
                      cohort_ls = make_cohort_ls(descv_tbls_ls,
+                                                #ds_descvs_ls = params_ls_ls$params_ls$ds_descvs_ls,
                                                 ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls,
                                                 nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int),
                      dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,

@@ -117,10 +117,14 @@ print_covar_ttu_tbls <- function (params_ls, caption_1L_chr, table_1L_chr, ref_1
 {
     results_ls <- params_ls$results_ls
     df <- results_ls$tables_ls %>% purrr::pluck(paste0("mdl_type_", 
-        ref_1L_int, "_covar_mdls_tb")) %>% dplyr::mutate(Parameter = Parameter %>% 
-        purrr::map_chr(~stringr::str_replace_all(.x, "_", " ")))
-    df %>% print_lngl_ttu_tbls(caption_1L_chr = caption_1L_chr, 
-        params_ls = params_ls, ref_1L_int = ref_1L_int, table_1L_chr = table_1L_chr)
+        ref_1L_int, "_covar_mdls_tb"))
+    if (!is.null(df)) {
+        df <- df %>% dplyr::mutate(Parameter = Parameter %>% 
+            purrr::map_chr(~stringr::str_replace_all(.x, "_", 
+                " ")))
+        df %>% print_lngl_ttu_tbls(caption_1L_chr = caption_1L_chr, 
+            params_ls = params_ls, ref_1L_int = ref_1L_int, table_1L_chr = table_1L_chr)
+    }
 }
 #' Print indpnt predictors coefficients table
 #' @description print_indpnt_predrs_coefs_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print indpnt predictors coefficients table. The function is called for its side effects and does not return a value.

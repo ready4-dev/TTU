@@ -77,7 +77,7 @@ write_manuscript <- function(abstract_args_ls = NULL,
                              output_type_1L_chr = NULL,
                              tables_in_body_lgl = NULL,
                              title_1L_chr = "Scientific manuscript",
-                             version_1L_chr = "0.3",
+                             version_1L_chr = "0.4",
                              write_to_dv_1L_lgl = F){
   mkdn_data_dir_1L_chr <- ifelse(!is.null(input_params_ls),
                                  input_params_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr,

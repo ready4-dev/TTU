@@ -12,7 +12,7 @@ write_manuscript(
   output_type_1L_chr = NULL,
   tables_in_body_lgl = NULL,
   title_1L_chr = "Scientific manuscript",
-  version_1L_chr = "0.3",
+  version_1L_chr = "0.4",
   write_to_dv_1L_lgl = F
 )
 }
@@ -31,7 +31,7 @@ write_manuscript(
 
 \item{title_1L_chr}{Title (a character vector of length one), Default: 'Scientific manuscript'}
 
-\item{version_1L_chr}{Version (a character vector of length one), Default: '0.3'}
+\item{version_1L_chr}{Version (a character vector of length one), Default: '0.4'}
 
 \item{write_to_dv_1L_lgl}{Write to dataverse (a logical vector of length one), Default: F}
 }

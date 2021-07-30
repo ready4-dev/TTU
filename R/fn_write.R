@@ -111,7 +111,7 @@ write_main_oupt_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_f
 #' @param output_type_1L_chr Output type (a character vector of length one), Default: NULL
 #' @param tables_in_body_lgl Tables in body (a logical vector), Default: NULL
 #' @param title_1L_chr Title (a character vector of length one), Default: 'Scientific manuscript'
-#' @param version_1L_chr Version (a character vector of length one), Default: '0.3'
+#' @param version_1L_chr Version (a character vector of length one), Default: '0.4'
 #' @param write_to_dv_1L_lgl Write to dataverse (a logical vector of length one), Default: F
 #' @return Results (a list)
 #' @rdname write_manuscript
@@ -124,7 +124,7 @@ write_main_oupt_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_f
 #' @keywords internal
 write_manuscript <- function (abstract_args_ls = NULL, input_params_ls = NULL, results_ls = NULL, 
     figures_in_body_lgl = NULL, output_type_1L_chr = NULL, tables_in_body_lgl = NULL, 
-    title_1L_chr = "Scientific manuscript", version_1L_chr = "0.3", 
+    title_1L_chr = "Scientific manuscript", version_1L_chr = "0.4", 
     write_to_dv_1L_lgl = F) 
 {
     mkdn_data_dir_1L_chr <- ifelse(!is.null(input_params_ls), 
