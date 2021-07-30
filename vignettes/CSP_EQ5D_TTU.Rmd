@@ -32,7 +32,7 @@ header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = ready4show::authors
 
 ### Report formatting
 ```{r }
-output_format_ls <- make_output_format_ls(manuscript_outp_1L_chr = "Word",
+output_format_ls <- make_output_format_ls(manuscript_outp_1L_chr = "PDF",
                                           manuscript_digits_1L_int = 2L,
                                           supplementary_outp_1L_chr = "PDF",
                                           supplementary_digits_1L_int = 2L)
@@ -122,9 +122,10 @@ maui_params_ls <- make_maui_params_ls(maui_domains_pfcs_1L_chr = "eq5dq_",
 ```
 
 ## Analysis parameters
-
+Unlike the [AQoL-6D vignette](CSP_AQOL6D_TTU.html), when creating our input parameters list, we need to pass a value to the `control_ls` argument. We discovered this when undertaking the [initial exploratory analysis](Model_TTU.html).
 ```{r eval = F }
 input_params_ls <- make_input_params(ds_tb,
+                                     control_ls = list(adapt_delta = 0.99),
                                      ds_descvs_ls = ds_descvs_ls,
                                      dv_ds_nm_and_url_chr = c("fakes", 
                                                               "https://doi.org/10.7910/DVN/612HDC"), 
@@ -163,7 +164,7 @@ input_params_ls <- make_study_descs_ls(input_params_ls = input_params_ls,
                                        conclusion_1L_chr = "If this study was real, the results would be really interesting.",
                                        ethics_1L_chr = "The study was reviewed and granted approval by Awesome University's Human Research Ethics Committee (2222222.2).",
                                        funding_1L_chr = "The study was funded by an science enthusiast.",
-                                       sample_desc_1L_chr = "The study sample is fake data that pretends to be young people aged 12 to 25 years who attended Australian primary care services for mental health related needs between November 2019 to August 2020.",
+                                       sample_desc_1L_chr = "The study sample is fake data that pretends to be Australian young people aged 12 to 25 years.",
                                        time_btwn_bl_and_fup_1L_chr = "four months")
 ```
 

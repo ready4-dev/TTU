@@ -2085,23 +2085,29 @@ make_results_ls_spine <- function (output_format_ls = NULL, params_ls_ls = NULL,
     mdl_ingredients_ls <- readRDS(paste0(output_data_dir_1L_chr, 
         "/G_Shareable/Ingredients/mdl_ingredients.RDS"))
     if (!is.null(params_ls_ls)) {
-        covar_ctgs_chr <- params_ls_ls$params_ls$candidate_covar_nms_chr %>% 
-            purrr::map_chr(~ready4fun::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb, 
-                match_value_xx = .x, match_var_nm_1L_chr = "var_nm_chr", 
-                target_var_nm_1L_chr = "var_ctg_chr", evaluate_lgl = F)) %>% 
-            unique()
-        candidate_covars_ls <- covar_ctgs_chr %>% purrr::map(~{
-            var_desc_chr <- ready4fun::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb, 
-                match_value_xx = .x, match_var_nm_1L_chr = "var_ctg_chr", 
-                target_var_nm_1L_chr = "var_desc_chr", evaluate_lgl = F)
-            class(var_desc_chr) <- setdiff(class(var_desc_chr), 
-                "labelled")
-            attr(var_desc_chr, "label") <- NULL
-            var_nm_chr <- ready4fun::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb, 
-                match_value_xx = .x, match_var_nm_1L_chr = "var_ctg_chr", 
-                target_var_nm_1L_chr = "var_nm_chr", evaluate_lgl = F)
-            var_desc_chr[var_nm_chr %in% params_ls_ls$params_ls$candidate_covar_nms_chr]
-        }) %>% stats::setNames(covar_ctgs_chr)
+        if (is.null(params_ls_ls$params_ls$candidate_covar_nms_chr) | 
+            is.na(params_ls_ls$params_ls$candidate_covar_nms_chr)) {
+            candidate_covars_ls <- NULL
+        }
+        else {
+            covar_ctgs_chr <- params_ls_ls$params_ls$candidate_covar_nms_chr %>% 
+                purrr::map_chr(~ready4fun::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb, 
+                  match_value_xx = .x, match_var_nm_1L_chr = "var_nm_chr", 
+                  target_var_nm_1L_chr = "var_ctg_chr", evaluate_lgl = F)) %>% 
+                unique()
+            candidate_covars_ls <- covar_ctgs_chr %>% purrr::map(~{
+                var_desc_chr <- ready4fun::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb, 
+                  match_value_xx = .x, match_var_nm_1L_chr = "var_ctg_chr", 
+                  target_var_nm_1L_chr = "var_desc_chr", evaluate_lgl = F)
+                class(var_desc_chr) <- setdiff(class(var_desc_chr), 
+                  "labelled")
+                attr(var_desc_chr, "label") <- NULL
+                var_nm_chr <- ready4fun::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb, 
+                  match_value_xx = .x, match_var_nm_1L_chr = "var_ctg_chr", 
+                  target_var_nm_1L_chr = "var_nm_chr", evaluate_lgl = F)
+                var_desc_chr[var_nm_chr %in% params_ls_ls$params_ls$candidate_covar_nms_chr]
+            }) %>% stats::setNames(covar_ctgs_chr)
+        }
     }
     else {
         candidate_covars_ls <- NULL

@@ -109,12 +109,6 @@ write_manuscript <- function(abstract_args_ls = NULL,
   }else{
     header_yaml_args_ls <- results_ls$header_yaml_args_ls
   }
-  if(is.null(abstract_args_ls)){
-    abstract_args_ls <- make_abstract_args_ls(results_ls)
-  }
-  ready4show::write_header_fls(path_to_header_dir_1L_chr = paste0(path_to_ms_mkdn_1L_dir,"/Header"),
-                               header_yaml_args_ls = header_yaml_args_ls,
-                               abstract_args_ls = abstract_args_ls)
   if(is.null(results_ls)){
     results_ls <- make_results_ls(dv_ds_nm_and_url_chr = input_params_ls$path_params_ls$dv_ds_nm_and_url_chr,
                                   output_format_ls = input_params_ls$output_format_ls,
@@ -124,6 +118,12 @@ write_manuscript <- function(abstract_args_ls = NULL,
                                   var_nm_change_lup = input_params_ls$study_descs_ls$var_nm_change_lup,
                                   version_1L_chr = version_1L_chr)
   }
+  if(is.null(abstract_args_ls)){
+    abstract_args_ls <- make_abstract_args_ls(results_ls)
+  }
+  ready4show::write_header_fls(path_to_header_dir_1L_chr = paste0(path_to_ms_mkdn_1L_dir,"/Header"),
+                               header_yaml_args_ls = header_yaml_args_ls,
+                               abstract_args_ls = abstract_args_ls)
   params_ls <- list(output_type_1L_chr = output_type_1L_chr,
                     results_ls = results_ls)
   if(!is.null(figures_in_body_lgl))
