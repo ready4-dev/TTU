@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9297</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9298</span>
       </span>
     </div>
 
@@ -579,7 +579,7 @@ Not studying or working
 <p>We describe the features of our dataset that are most relevant to the analyses we are planning to undertake. Note all, Multi-Attribute Utility Instrument (MAUI) question variables must start with a common prefix, which needs to be passed to the <code>maui_item_pfx_1L_chr</code> argument. The dataset does not need to include variables for total health utility scores (weighted and unweighted), as these variables will be computed during the analysis. However, you can supply the names you wish assigned to these variables once they are computed using the <code>utl_wtd_var_nm_1L_chr</code> and <code>utl_unwtd_var_nm_1L_chr</code> arguments.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ds_descvs_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_ds_descvs_ls.html">make_ds_descvs_ls</a></span><span class="op">(</span>candidate_predrs_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"k10_int"</span>,<span class="st">"psych_well_int"</span><span class="op">)</span>,
-                                  candidate_covar_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d_age"</span><span class="op">)</span>,
+                                  candidate_covar_nms_chr <span class="op">=</span> <span class="cn">NA_character_</span>,
                                   cohort_descv_var_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d_age"</span>, <span class="st">"Gender"</span>, 
                                                                <span class="st">"d_relation_s"</span>,<span class="st">"d_sexual_ori_s"</span>, 
                                                                <span class="st">"Region"</span>, <span class="st">"d_studying_working"</span><span class="op">)</span>,
@@ -621,7 +621,7 @@ Not studying or working
 <li>also calculate an unweighted score that is a simple sum of all MAUI item question responses (e.g. the last three lines of the example <code>maui_scoring_fn</code>).</li>
 </ul>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">maui_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_maui_params_ls.html">make_maui_params_ls</a></span><span class="op">(</span>maui_domains_pfcs_1L_chr <span class="op">=</span> <span class="cn">NULL</span>,
+<code class="sourceCode R"><span class="va">maui_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_maui_params_ls.html">make_maui_params_ls</a></span><span class="op">(</span>maui_domains_pfcs_1L_chr <span class="op">=</span> <span class="st">"eq5dq_"</span>,
                                       maui_itm_short_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Mobility"</span>, <span class="st">"Self-care"</span>, <span class="st">"Activities"</span>,<span class="st">"Pain"</span>,<span class="st">"Anxiety"</span><span class="op">)</span>,
                                       maui_scoring_fn <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">data_tb</span>,
                                              <span class="va">maui_item_pfx_1L_chr</span>,
