@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9298</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9299</span>
       </span>
     </div>
 
@@ -132,7 +132,7 @@
 <h3 class="hasAnchor">
 <a href="#report-formatting" class="anchor"></a>Report formatting</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">output_format_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_output_format_ls.html">make_output_format_ls</a></span><span class="op">(</span>manuscript_outp_1L_chr <span class="op">=</span> <span class="st">"Word"</span>,
+<code class="sourceCode R"><span class="va">output_format_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_output_format_ls.html">make_output_format_ls</a></span><span class="op">(</span>manuscript_outp_1L_chr <span class="op">=</span> <span class="st">"PDF"</span>,
                                           manuscript_digits_1L_int <span class="op">=</span> <span class="fl">2L</span>,
                                           supplementary_outp_1L_chr <span class="op">=</span> <span class="st">"PDF"</span>,
                                           supplementary_digits_1L_int <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></code></pre></div>
@@ -645,8 +645,10 @@ Not studying or working
 <div id="analysis-parameters-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#analysis-parameters-1" class="anchor"></a>Analysis parameters</h2>
+<p>Unlike the <a href="CSP_AQOL6D_TTU.html">AQoL-6D vignette</a>, when creating our input parameters list, we need to pass a value to the <code>control_ls</code> argument. We discovered this when undertaking the <a href="Model_TTU.html">initial exploratory analysis</a>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">input_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_input_params.html">make_input_params</a></span><span class="op">(</span><span class="va">ds_tb</span>,
+                                     control_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span>,
                                      ds_descvs_ls <span class="op">=</span> <span class="va">ds_descvs_ls</span>,
                                      dv_ds_nm_and_url_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"fakes"</span>, 
                                                               <span class="st">"https://doi.org/10.7910/DVN/612HDC"</span><span class="op">)</span>, 
@@ -687,7 +689,7 @@ Not studying or working
                                        conclusion_1L_chr <span class="op">=</span> <span class="st">"If this study was real, the results would be really interesting."</span>,
                                        ethics_1L_chr <span class="op">=</span> <span class="st">"The study was reviewed and granted approval by Awesome University's Human Research Ethics Committee (2222222.2)."</span>,
                                        funding_1L_chr <span class="op">=</span> <span class="st">"The study was funded by an science enthusiast."</span>,
-                                       sample_desc_1L_chr <span class="op">=</span> <span class="st">"The study sample is fake data that pretends to be young people aged 12 to 25 years who attended Australian primary care services for mental health related needs between November 2019 to August 2020."</span>,
+                                       sample_desc_1L_chr <span class="op">=</span> <span class="st">"The study sample is fake data that pretends to be Australian young people aged 12 to 25 years."</span>,
                                        time_btwn_bl_and_fup_1L_chr <span class="op">=</span> <span class="st">"four months"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">results_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_manuscript.html">write_manuscript</a></span><span class="op">(</span>input_params_ls <span class="op">=</span> <span class="va">input_params_ls</span>,
