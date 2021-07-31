@@ -1323,6 +1323,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @param path_params_ls Path params (a list), Default: NULL
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
 #' @param dv_mdl_desc_1L_chr Dataverse model description (a character vector of length one), Default: 'This is a longitudinal transfer to utility model designed for use with the youthu R package.'
+#' @param header_yaml_args_ls Header yaml arguments (a list), Default: NULL
 #' @param inc_fl_types_chr Include file types (a character vector), Default: '.pdf'
 #' @param purge_data_1L_lgl Purge data (a logical vector of length one), Default: FALSE
 #' @param start_at_int Start at (an integer vector), Default: c(2, 1)
@@ -1341,9 +1342,15 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 write_study_outp_ds <- function (input_params_ls, dv_ds_nm_and_url_chr = NULL, rprt_lups_ls = NULL, 
     output_format_ls = NULL, path_params_ls = NULL, abstract_args_ls = NULL, 
     dv_mdl_desc_1L_chr = "This is a longitudinal transfer to utility model designed for use with the youthu R package.", 
-    inc_fl_types_chr = ".pdf", purge_data_1L_lgl = FALSE, start_at_int = c(2, 
-        1), use_fake_data_1L_lgl = NULL) 
+    header_yaml_args_ls = NULL, inc_fl_types_chr = ".pdf", purge_data_1L_lgl = FALSE, 
+    start_at_int = c(2, 1), use_fake_data_1L_lgl = NULL) 
 {
+    if (missing(header_yaml_args_ls)) {
+        header_yaml_args_ls <- input_params_ls$header_yaml_args_ls
+    }
+    else {
+        warning("The argument header_yaml_args_ls is soft deprecated. We recommend passing the header information as part of the list passed to the input_params_ls argument.")
+    }
     if (missing(path_params_ls)) {
         path_params_ls <- input_params_ls$path_params_ls
     }

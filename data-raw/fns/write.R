@@ -1184,10 +1184,16 @@ write_study_outp_ds <- function(input_params_ls,
                                 path_params_ls = NULL,
                                 abstract_args_ls = NULL,
                                 dv_mdl_desc_1L_chr = "This is a longitudinal transfer to utility model designed for use with the youthu R package.",
+                                header_yaml_args_ls = NULL,
                                 inc_fl_types_chr = ".pdf",
                                 purge_data_1L_lgl = FALSE,
                                 start_at_int = c(2,1),
                                 use_fake_data_1L_lgl = NULL){
+  if(missing(header_yaml_args_ls)){
+    header_yaml_args_ls <- input_params_ls$header_yaml_args_ls
+  }else{
+    warning("The argument header_yaml_args_ls is soft deprecated. We recommend passing the header information as part of the list passed to the input_params_ls argument.")
+  }
   if(missing(path_params_ls)){
     path_params_ls <- input_params_ls$path_params_ls
   }else{
