@@ -2130,13 +2130,13 @@ make_smry_of_ts_mdl_outp <- function (data_tb,
             file.remove(smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)
         saveRDS(mdl_ls, smry_of_ts_mdl_ls$path_to_mdl_ls_1L_chr)
         smry_of_ts_mdl_ls$paths_to_mdl_plts_chr <- write_ts_mdl_plts(mdl_ls,
-                                                                        tfd_data_tb = tfd_data_tb,
-                                                                        depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
-                                                                        mdl_nm_1L_chr = mdl_nm_1L_chr,
-                                                                        path_to_write_to_1L_chr = path_to_write_to_1L_chr,
-                                                                        round_var_nm_1L_chr = round_var_nm_1L_chr,
-                                                                        tfmn_1L_chr = tfmn_1L_chr,
-                                                                        utl_min_val_1L_dbl = utl_min_val_1L_dbl)
+                                                                     tfd_data_tb = tfd_data_tb,
+                                                                     depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+                                                                     mdl_nm_1L_chr = mdl_nm_1L_chr,
+                                                                     path_to_write_to_1L_chr = path_to_write_to_1L_chr,
+                                                                     round_var_nm_1L_chr = round_var_nm_1L_chr,
+                                                                     tfmn_1L_chr = tfmn_1L_chr,
+                                                                     utl_min_val_1L_dbl = utl_min_val_1L_dbl)
     }
     return(smry_of_ts_mdl_ls)
 }

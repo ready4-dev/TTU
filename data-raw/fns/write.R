@@ -1014,6 +1014,16 @@ write_shareable_mdls <- function (outp_smry_ls,
                 ".RDS"))
             saveRDS(model_mdl, paste0(output_dir_chr[3], "/", .x,
                                           ".RDS"))
+            scaling_fctr_dbl <- outp_smry_ls$predr_vars_nms_ls %>%
+              purrr::flatten_chr() %>%
+              unique() %>%
+              purrr::map_dbl(~ ifelse(.x %in% outp_smry_ls$predictors_lup$short_name_chr,
+                                      ready4fun::get_from_lup_obj(outp_smry_ls$predictors_lup,
+                                                                  target_var_nm_1L_chr = "mdl_scaling_dbl",
+                                                                  match_value_xx = .x,
+                                                                  match_var_nm_1L_chr = "short_name_chr",
+                                                                  evaluate_lgl = F),
+                                      1))
             write_ts_mdl_plts(brms_mdl = model_mdl,
                               table_predn_mdl = table_predn_mdl,
                               tfd_data_tb = outp_smry_ls$scored_data_tb %>%
@@ -1021,9 +1031,9 @@ write_shareable_mdls <- function (outp_smry_ls,
                                                         predr_vars_nms_chr = outp_smry_ls$predr_vars_nms_ls %>% purrr::flatten_chr() %>% unique(),
                                                         id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr,
                                                         round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr,
-                                                        round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr),
+                                                        round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr,
+                                                        scaling_fctr_dbl = scaling_fctr_dbl),
                               depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
-                              #is_brms_mdl_1L_lgl = F,
                               mdl_nm_1L_chr = mdl_nm_1L_chr,
                               path_to_write_to_1L_chr = output_dir_chr[3],
                               predn_type_1L_chr = predn_type_1L_chr,

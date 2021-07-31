@@ -1078,7 +1078,7 @@ write_shareable_dir <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable"
 #' @return Output summary (a list)
 #' @rdname write_shareable_mdls
 #' @export 
-#' @importFrom purrr map_chr flatten_chr map map_lgl map_int map2 map2_dfr discard
+#' @importFrom purrr map_chr flatten_chr map map_lgl map_int map2 map_dbl map2_dfr discard
 #' @importFrom stringr str_locate str_remove_all
 #' @importFrom dplyr filter select mutate
 #' @importFrom ready4fun get_from_lup_obj
@@ -1149,14 +1149,20 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
                 "/", .x, ".RDS"))
             saveRDS(model_mdl, paste0(output_dir_chr[3], "/", 
                 .x, ".RDS"))
+            scaling_fctr_dbl <- outp_smry_ls$predr_vars_nms_ls %>% 
+                purrr::flatten_chr() %>% unique() %>% purrr::map_dbl(~ifelse(.x %in% 
+                outp_smry_ls$predictors_lup$short_name_chr, ready4fun::get_from_lup_obj(outp_smry_ls$predictors_lup, 
+                target_var_nm_1L_chr = "mdl_scaling_dbl", match_value_xx = .x, 
+                match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F), 
+                1))
             write_ts_mdl_plts(brms_mdl = model_mdl, table_predn_mdl = table_predn_mdl, 
                 tfd_data_tb = outp_smry_ls$scored_data_tb %>% 
                   transform_tb_to_mdl_inp(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
                     predr_vars_nms_chr = outp_smry_ls$predr_vars_nms_ls %>% 
                       purrr::flatten_chr() %>% unique(), id_var_nm_1L_chr = outp_smry_ls$id_var_nm_1L_chr, 
                     round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr, 
-                    round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr), 
-                depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
+                    round_bl_val_1L_chr = outp_smry_ls$round_bl_val_1L_chr, 
+                    scaling_fctr_dbl = scaling_fctr_dbl), depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
                 mdl_nm_1L_chr = mdl_nm_1L_chr, path_to_write_to_1L_chr = output_dir_chr[3], 
                 predn_type_1L_chr = predn_type_1L_chr, round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr, 
                 sd_dbl = sd_dbl, sfx_1L_chr = " from table", 
