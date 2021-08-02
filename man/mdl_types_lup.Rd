@@ -5,7 +5,7 @@
 \alias{mdl_types_lup}
 \title{Model types lookup table}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 12 rows and 9 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 12 rows and 13 columns.
 }
 \usage{
 mdl_types_lup
@@ -26,6 +26,10 @@ A tibble
 \item{predn_type_chr}{Prediction type (a character vector)}
 \item{tfmn_chr}{Transformation (a character vector)}
 \item{tfmn_for_bnml_lgl}{Transformation for binomial (a logical vector)}
+\item{fixed_acronym_chr}{Fixed acronym (a character vector)}
+\item{mixed_acronym_chr}{Mixed acronym (a character vector)}
+\item{mixed_type_chr}{Mixed type (a character vector)}
+\item{with_chr}{With (a character vector)}
 }
 }
 \keyword{datasets}

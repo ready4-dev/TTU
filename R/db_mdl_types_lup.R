@@ -14,5 +14,9 @@
 #'   \item{predn_type_chr}{Prediction type (a character vector)}
 #'   \item{tfmn_chr}{Transformation (a character vector)}
 #'   \item{tfmn_for_bnml_lgl}{Transformation for binomial (a logical vector)}
+#'   \item{fixed_acronym_chr}{Fixed acronym (a character vector)}
+#'   \item{mixed_acronym_chr}{Mixed acronym (a character vector)}
+#'   \item{mixed_type_chr}{Mixed type (a character vector)}
+#'   \item{with_chr}{With (a character vector)}
 #' }
 "mdl_types_lup"
