@@ -1432,18 +1432,22 @@ write_study_outp_ds <- function (input_params_ls, dv_ds_nm_and_url_chr = NULL, r
 }
 #' Write to delete dataset copies
 #' @description write_to_delete_ds_copies() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write to delete dataset copies. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
-#' @param paths_ls Paths (a list)
+#' @param input_params_ls Input params (a list), Default: NULL
+#' @param paths_ls Paths (a list), Default: NULL
 #' @return NULL
 #' @rdname write_to_delete_ds_copies
 #' @export 
 #' @importFrom purrr map_chr walk
 #' @importFrom here here
-write_to_delete_ds_copies <- function (paths_ls) 
+write_to_delete_ds_copies <- function (input_params_ls = NULL, paths_ls = NULL) 
 {
+    if (is.null(paths_ls)) 
+        paths_ls <- input_params_ls$path_params_ls$paths_ls
     paths_to_outp_chr <- c(paste0(paths_ls$output_data_dir_1L_chr, 
         "/I_ALL_OUTPUT_.RDS"))
-    secondary_refs_int <- 1:2
-    if (!is.null(secondary_refs_int)) {
+    secondary_refs_int <- NULL
+    if (!is.null(input_params_ls$scndry_anlys_params_ls)) {
+        1:length(input_params_ls$scndry_anlys_params_ls)
         paths_to_outp_chr <- c(paths_to_outp_chr, secondary_refs_int %>% 
             purrr::map_chr(~here::here(paths_ls$path_from_top_level_1L_chr, 
                 paths_ls$write_to_dir_nm_1L_chr, paste0("secondary_", 

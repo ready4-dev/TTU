@@ -10,7 +10,17 @@ vignette: >
 \blandscape
 <!---BLOCK_LANDSCAPE_START--->
 
-This vignette is an example of implementing of a reproducible workflow to develop transfer to AQoL-6D health utility models, create and share catalogues of these models and author a scientific summary of the results and methods deployed. This example, should be read in conjunction with [another similar workflow implemented for EQ-5D data and alternative predictors](CSP_EQ5D_TTU.html), which illustrates some additional features. The workflow illustrated in this vignette and its EQ-5D counterpart, is something that should only be undertaken once the optimal set of input parameters have been identified by an [initial exploratory analysis](Model_TTU.html). As with all the vignettes included with the TTU package, this example is illustrated using entirely fake data, so do not use its outputs to inform decision making. For an example of how TTU workflows were applied to real data see https://www.medrxiv.org/content/10.1101/2021.07.07.21260129v2.full .
+This vignette is an example of implementing of a reproducible workflow to:
+
+- develop transfer to utility models to predict AQoL-6D; 
+
+- create and share catalogues of these models; and 
+
+- author a scientific summary of the results and methods deployed. 
+
+This example, should be read in conjunction with [another similar workflow implemented for EQ-5D data and alternative predictors](CSP_EQ5D_TTU.html), which highlights some additional considerations. It is highly recommended that you only implement this reporting workflow for your own projects once you have identified an optimal set of input parameters following an [initial exploratory analysis](Model_TTU.html). The benefits of undertaking such initial exploratory work include identifying where it may be appropriate to override algorithm default selections for preferred model types and covariates and discovering if it is necessary to supply non-default input parameters to address problems in model convergence.
+
+As with all the vignettes included with the TTU package, this example is illustrated using entirely fake data, so do not use its outputs to inform decision making. For an example of how TTU workflows were applied to real data see https://www.medrxiv.org/content/10.1101/2021.07.07.21260129v2.full .
 
 ```{r echo = TRUE, message=FALSE}
 library(TTU)
@@ -124,7 +134,7 @@ ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("K6","PHQ9"),#
 ```
 
 ### Candidate predictors metadata
-We create a lookup table with metadata on the dataset variables that we specified in the `candidate_predrs_chr` element of `ds_descvs_ls` as our candidate predictors, as well as the preferred covariates that we will specify later in the `make_valid_params_ls_ls` function.
+We create a lookup table with metadata on the dataset variables that we specified as our candidate predictors in the `candidate_predrs_chr` element of `ds_descvs_ls`, as well as the preferred covariates that we will specify later in the `make_input_params` function.
 
 ```{r}
 predictors_lup <- make_pt_TTU_predictors_lup(short_name_chr = c(ds_descvs_ls$candidate_predrs_chr, "SOFAS"),
@@ -222,7 +232,7 @@ results_ls <- write_manuscript(input_params_ls = input_params_ls,
                                write_to_dv_1L_lgl = T)
 ```
 
-The document exported to the dataset by the preceding call is accessible at: https://dataverse.harvard.edu/api/access/datafile/4935036 (it is in ".docx" format as we specified "Word" as our desired output format (see earlier in the workflow)). You can override the output format specified in the input parameter list object by using the `output_type_1L_chr` argument. Note, that this time around we are using the `results_ls` object as the main input as this object was automatically saved (to the directory path stored in `results_ls$path_params_ls$paths_ls$output_data_dir_1L_chr`) by the preceding call.
+The document exported to the dataset by the preceding call is accessible at: https://dataverse.harvard.edu/api/access/datafile/4942229 (it is in ".docx" format as we specified "Word" as our desired output format (see earlier in the workflow)). You can override the output format specified in the input parameter list object by using the `output_type_1L_chr` argument. Note, that this time around we are using the `results_ls` object as the main input as this object was automatically saved (to the directory path stored in `results_ls$path_params_ls$paths_ls$output_data_dir_1L_chr`) by the preceding call.
 
 ```{r eval = F}
 write_manuscript(results_ls = results_ls,
@@ -230,7 +240,7 @@ write_manuscript(results_ls = results_ls,
                  output_type_1L_chr = "PDF")
 ```
 
-The PDF version is available at: https://dataverse.harvard.edu/api/access/datafile/4935022 .When running the `write_manuscript` function, you can discover the directory into which the manuscript has been saved locally on your machine by printing the object `results_ls$path_params_ls$paths_ls$reports_dir_1L_chr`.
+The PDF version is available at: https://dataverse.harvard.edu/api/access/datafile/4942228 .When running the `write_manuscript` function, you can discover the directory into which the manuscript has been saved locally on your machine by printing the object `results_ls$path_params_ls$paths_ls$reports_dir_1L_chr`.
 
 If you wish to develop the manuscript into something you will submit for publication, there are two options for doing so:
 
