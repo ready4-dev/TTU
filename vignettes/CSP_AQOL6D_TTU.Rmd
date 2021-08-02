@@ -10,7 +10,7 @@ vignette: >
 \blandscape
 <!---BLOCK_LANDSCAPE_START--->
 
-This vignette is an example of implementing of analysis, reporting and sharing workflow to develop transfer to AQoL-6D health utility models. Some of the initial steps in this example are described in more detail in the [EQ-5D example](CSP_EQ5D_TTU.html). This example uses entirely fake data (so do not use its outputs to inform decision making) but was based on a method that was applied to real data (see https://www.medrxiv.org/content/10.1101/2021.07.07.21260129v2.full).
+This vignette is an example of implementing of a reproducible workflow to develop transfer to AQoL-6D health utility models, create and share catalogues of these models and author a scientific summary of the results and methods deployed. This example, should be read in conjunction with [another similar workflow implemented for EQ-5D data and alternative predictors](CSP_EQ5D_TTU.html), which illustrates some additional features. The workflow illustrated in this vignette and its EQ-5D counterpart, is something that should only be undertaken once the optimal set of input parameters have been identified by an [initial exploratory analysis](Model_TTU.html). As with all the vignettes included with the TTU package, this example is illustrated using entirely fake data, so do not use its outputs to inform decision making. For an example of how TTU workflows were applied to real data see https://www.medrxiv.org/content/10.1101/2021.07.07.21260129v2.full .
 
 ```{r echo = TRUE, message=FALSE}
 library(TTU)

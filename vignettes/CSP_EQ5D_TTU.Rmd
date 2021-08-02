@@ -9,9 +9,7 @@ vignette: >
 
 \blandscape
 <!---BLOCK_LANDSCAPE_START--->
-Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.
-
-The steps in this reporting workflow should only be undertaken once an optimal set of input values have been identified by an [initial exploratory analysis](Model_TTU.html). Many of the steps in this example are in common with those of the [AQoL-6D vignette](CSP_AQOL6D_TTU.html), and are therefore described with minimal explanation here.
+This vignette is an example of implementing of a reproducible workflow to develop transfer to EQ-5D health utility models, create and share catalogues of these models and author a scientific summary of the results and methods deployed. The steps in this reporting workflow should only be undertaken once an optimal set of input values have been identified by an [initial exploratory analysis](Model_TTU.html). Many of the steps in this example are in common with those of the [AQoL-6D vignette](CSP_AQOL6D_TTU.html), and are therefore described with minimal explanation here. Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.
 
 ```{r echo = TRUE, message=FALSE}
 library(eq5d)
