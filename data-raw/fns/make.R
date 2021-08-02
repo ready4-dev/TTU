@@ -923,11 +923,17 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
                                                                         "",
                                                                         paste(" with ", ..1[2])),
                                                          " ",
-                                                         mdl_types_chr %>% purrr::map_chr(~ready4fun::get_from_lup_obj(mdl_types_lup,
-                                                                                     match_var_nm_1L_chr = "short_name_chr",
-                                                                                     match_value_xx = .x,
-                                                                                     target_var_nm_1L_chr = "long_name_chr",
-                                                                                     evaluate_lgl = F)))
+                                                         mdl_types_chr %>% purrr::map_chr(~paste0(ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                                                                                              match_var_nm_1L_chr = "short_name_chr",
+                                                                                                                              match_value_xx = .x,
+                                                                                                                              target_var_nm_1L_chr = "mixed_type_chr",
+                                                                                                                              evaluate_lgl = F),
+                                                                                                  " with ",
+                                                                                                  ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                                                                                              match_var_nm_1L_chr = "short_name_chr",
+                                                                                                                              match_value_xx = .x,
+                                                                                                                              target_var_nm_1L_chr = "with_chr",
+                                                                                                                              evaluate_lgl = F))))
                                   section_ttls_chr <- paste0(section_type_1L_chr, " ", mdl_ttls_chr)
                                   plt_nms_ls <- paths_to_mdl_plts_ls %>% purrr::map2(mdl_ttls_chr,~{
                                     paths_to_mdl_plts_chr <- .x
@@ -1616,14 +1622,21 @@ make_results_ls <- function(spine_of_results_ls = NULL,
   ttu_cs_ls <- make_ttu_cs_ls(spine_of_results_ls$outp_smry_ls,
                              sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb,
                              sig_thresh_covars_1L_chr = sig_thresh_covars_1L_chr)
-  mdl_type_descs_chr <- mdls_smry_tbls_ls$prefd_predr_mdl_smry_tb$Model %>%
+  mdl_types_chr <- mdls_smry_tbls_ls$prefd_predr_mdl_smry_tb$Model %>%
     purrr::map_chr(~get_mdl_type_from_nm(.x)) %>%
-    unique() %>%
-    purrr::map_chr(~ready4fun::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup,
-                                                match_value_xx = .x,
-                                                match_var_nm_1L_chr = "short_name_chr",
-                                                target_var_nm_1L_chr = "long_name_chr",
-                                                evaluate_lgl = F))
+    unique()
+  # %>%
+    # purrr::map_chr(~paste0(ready4fun::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup,
+    #                                             match_value_xx = .x,
+    #                                             match_var_nm_1L_chr = "short_name_chr",
+    #                                             target_var_nm_1L_chr = "mixed_type_chr",
+    #                                             evaluate_lgl = F),
+    #                        " with ",
+    #                        ready4fun::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup,
+    #                                                    match_value_xx = .x,
+    #                                                    match_var_nm_1L_chr = "short_name_chr",
+    #                                                    target_var_nm_1L_chr = "with_chr",
+    #                                                    evaluate_lgl = F)))
   ttu_cs_ls$rf_seq_dscdng_chr <- ttu_cs_ls$rf_seq_dscdng_chr %>%
     purrr::map_chr(~ifelse(.x %in% spine_of_results_ls$var_nm_change_lup$old_nms_chr,
                                                          .x %>%
@@ -1640,15 +1653,25 @@ make_results_ls <- function(spine_of_results_ls = NULL,
                                                          target_var_nm_1L_chr = "new_nms_chr",
                                                          evaluate_lgl = F),
                            .x))
-  ttu_lngl_ls = list(best_mdls_tb = tibble::tibble(model_type = mdl_type_descs_chr %>%
-                                                     purrr::map_chr(~ifelse(startsWith(.x,"Ordinary Least Squares"),"LLM","GLMM")),
-                                                   link_and_tfmn_chr = mdl_type_descs_chr %>%
-                                                     purrr::map_chr(~ifelse(startsWith(.x,"Ordinary Least Squares"),
-                                                                            stringr::str_remove(.x,"Ordinary Least Squares ") %>%
-                                                                              stringr::str_sub(start = 2, end = -2) %>%
-                                                                              tolower(),
-                                                                            stringr::str_remove(.x,"Generalised Linear Mixed Model with ") %>%
-                                                                              stringr::str_remove("Beta Regression Model with "))),
+  ttu_lngl_ls = list(best_mdls_tb = tibble::tibble(model_type = mdl_types_chr %>%
+                                                     purrr::map_chr(~ready4fun::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup,
+                                                                                                 match_value_xx = .x,
+                                                                                                 match_var_nm_1L_chr = "short_name_chr",
+                                                                                                 target_var_nm_1L_chr = "mixed_acronym_chr",
+                                                                                                 evaluate_lgl = F)),
+                                                     # purrr::map_chr(~ifelse(startsWith(.x,"Ordinary Least Squares"),"LLM","GLMM")),
+                                                   link_and_tfmn_chr = mdl_types_chr %>%
+                                                     purrr::map_chr(~ready4fun::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup,
+                                                                                                 match_value_xx = .x,
+                                                                                                 match_var_nm_1L_chr = "short_name_chr",
+                                                                                                 target_var_nm_1L_chr = "with_chr",
+                                                                                                 evaluate_lgl = F)),
+                                                     # purrr::map_chr(~ifelse(startsWith(.x,"Ordinary Least Squares"),
+                                                     #                        stringr::str_remove(.x,"Ordinary Least Squares ") %>%
+                                                     #                          stringr::str_sub(start = 2, end = -2) %>%
+                                                     #                          tolower(),
+                                                     #                        stringr::str_remove(.x,"Generalised Linear Mixed Model with ") %>%
+                                                     #                          stringr::str_remove("Beta Regression Model with "))),
                                                    name_chr = make_predrs_for_best_mdls(spine_of_results_ls$outp_smry_ls,
                                                                                         old_nms_chr = spine_of_results_ls$var_nm_change_lup$old_nms_chr,
                                                                                         new_nms_chr = spine_of_results_ls$var_nm_change_lup$new_nms_chr),
@@ -1661,7 +1684,6 @@ make_results_ls <- function(spine_of_results_ls = NULL,
                      candidate_covars_ls = spine_of_results_ls$candidate_covars_ls,
                      candidate_predrs_chr = spine_of_results_ls$candidate_predrs_chr,
                      cohort_ls = make_cohort_ls(descv_tbls_ls,
-                                                #ds_descvs_ls = params_ls_ls$params_ls$ds_descvs_ls,
                                                 ctgl_vars_regrouping_ls = ctgl_vars_regrouping_ls,
                                                 nbr_of_digits_1L_int = spine_of_results_ls$nbr_of_digits_1L_int),
                      dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
@@ -2254,7 +2276,7 @@ make_ten_folds_tbl_title <- function(results_ls,
 make_tfd_sngl_predr_mdls_tb <- function(outp_smry_ls,
                                         nbr_of_digits_1L_int = 2L,
                                         mdl_pfx_ls = list(OLS = "Ordinary Least Squares ",
-                                                          GLM = c("Generalised Linear Mixed Model with ",
+                                                          GLM = c("Generalised Linear Model with ",
                                                                   "Beta Regression Model with Binomial "))){
   tfd_sngl_predr_mdls_tb <- mdl_pfx_ls %>%
     purrr::map2(names(mdl_pfx_ls),
@@ -2328,14 +2350,17 @@ make_ttu_cs_ls <-  function(outp_smry_ls,
   ttu_cs_ls <- list(best_mdl_types_ls = list(GLM = c("Gaussian distribution and log link"), # LEGACY ISSUE FROM MANUSCRIPT - OTHERWISE UNUSED
                                              OLS = c("no transformation","log transformation", "clog-log transformation")),
                     selected_mdls_chr = mdl_type_descs_chr %>%
-                      purrr::map_chr(~paste0(ifelse(startsWith(.x,"Ordinary Least Squares"),"OLS","GLM"),
+                      purrr::map_chr(~paste0(ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup,
+                                                                         match_var_nm_1L_chr = "short_name_chr",
+                                                                         match_value_xx = .x,
+                                                                         target_var_nm_1L_chr = "fixed_acronym_chr",
+                                                                         evaluate_lgl = F),
                                              " with ",
-                                             ifelse(startsWith(.x,"Ordinary Least Squares"),
-                                                    stringr::str_remove(.x,"Ordinary Least Squares ") %>%
-                                                      stringr::str_sub(start = 2, end = -2) %>%
-                                                      tolower(),
-                                                    stringr::str_remove(.x,"Generalised Linear Mixed Model with ") %>%
-                                                      stringr::str_remove("Beta Regression Model with ")))) ,
+                                             ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup,
+                                                                         match_var_nm_1L_chr = "short_name_chr",
+                                                                         match_value_xx = .x,
+                                                                         target_var_nm_1L_chr = "with_chr",
+                                                                         evaluate_lgl = F))),
                     cs_mdls_predrs_seq_dscdng_chr = outp_smry_ls$smry_of_mdl_sngl_predrs_tb$Predictor,
                     sig_covars_all_predrs_mdls_chr = outp_smry_ls$signt_covars_chr,
                     sig_thresh_covars_1L_chr = sig_thresh_covars_1L_chr,

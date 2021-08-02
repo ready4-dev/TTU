@@ -1085,9 +1085,12 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
             })
             mdl_ttls_chr <- paste0(..1[1], ifelse(is.na(..1[2]), 
                 "", paste(" with ", ..1[2])), " ", mdl_types_chr %>% 
-                purrr::map_chr(~ready4fun::get_from_lup_obj(mdl_types_lup, 
+                purrr::map_chr(~paste0(ready4fun::get_from_lup_obj(mdl_types_lup, 
                   match_var_nm_1L_chr = "short_name_chr", match_value_xx = .x, 
-                  target_var_nm_1L_chr = "long_name_chr", evaluate_lgl = F)))
+                  target_var_nm_1L_chr = "mixed_type_chr", evaluate_lgl = F), 
+                  " with ", ready4fun::get_from_lup_obj(mdl_types_lup, 
+                    match_var_nm_1L_chr = "short_name_chr", match_value_xx = .x, 
+                    target_var_nm_1L_chr = "with_chr", evaluate_lgl = F))))
             section_ttls_chr <- paste0(section_type_1L_chr, " ", 
                 mdl_ttls_chr)
             plt_nms_ls <- paths_to_mdl_plts_ls %>% purrr::map2(mdl_ttls_chr, 
@@ -1953,7 +1956,7 @@ make_ranked_predrs_ls <- function (descv_tbls_ls, old_nms_chr = NULL, new_nms_ch
 #' @rdname make_results_ls
 #' @export 
 #' @importFrom purrr map_lgl map_chr
-#' @importFrom stringr str_detect str_remove str_sub
+#' @importFrom stringr str_detect
 #' @importFrom cowplot save_plot
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom tibble tibble
@@ -1987,11 +1990,8 @@ make_results_ls <- function (spine_of_results_ls = NULL, abstract_args_ls = NULL
     ttu_cs_ls <- make_ttu_cs_ls(spine_of_results_ls$outp_smry_ls, 
         sig_covars_some_predrs_mdls_tb = sig_covars_some_predrs_mdls_tb, 
         sig_thresh_covars_1L_chr = sig_thresh_covars_1L_chr)
-    mdl_type_descs_chr <- mdls_smry_tbls_ls$prefd_predr_mdl_smry_tb$Model %>% 
-        purrr::map_chr(~get_mdl_type_from_nm(.x)) %>% unique() %>% 
-        purrr::map_chr(~ready4fun::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup, 
-            match_value_xx = .x, match_var_nm_1L_chr = "short_name_chr", 
-            target_var_nm_1L_chr = "long_name_chr", evaluate_lgl = F))
+    mdl_types_chr <- mdls_smry_tbls_ls$prefd_predr_mdl_smry_tb$Model %>% 
+        purrr::map_chr(~get_mdl_type_from_nm(.x)) %>% unique()
     ttu_cs_ls$rf_seq_dscdng_chr <- ttu_cs_ls$rf_seq_dscdng_chr %>% 
         purrr::map_chr(~ifelse(.x %in% spine_of_results_ls$var_nm_change_lup$old_nms_chr, 
             .x %>% ready4fun::get_from_lup_obj(data_lookup_tb = spine_of_results_ls$var_nm_change_lup, 
@@ -2002,14 +2002,13 @@ make_results_ls <- function (spine_of_results_ls = NULL, abstract_args_ls = NULL
             .x %>% ready4fun::get_from_lup_obj(data_lookup_tb = spine_of_results_ls$var_nm_change_lup, 
                 match_var_nm_1L_chr = "old_nms_chr", target_var_nm_1L_chr = "new_nms_chr", 
                 evaluate_lgl = F), .x))
-    ttu_lngl_ls = list(best_mdls_tb = tibble::tibble(model_type = mdl_type_descs_chr %>% 
-        purrr::map_chr(~ifelse(startsWith(.x, "Ordinary Least Squares"), 
-            "LLM", "GLMM")), link_and_tfmn_chr = mdl_type_descs_chr %>% 
-        purrr::map_chr(~ifelse(startsWith(.x, "Ordinary Least Squares"), 
-            stringr::str_remove(.x, "Ordinary Least Squares ") %>% 
-                stringr::str_sub(start = 2, end = -2) %>% tolower(), 
-            stringr::str_remove(.x, "Generalised Linear Mixed Model with ") %>% 
-                stringr::str_remove("Beta Regression Model with "))), 
+    ttu_lngl_ls = list(best_mdls_tb = tibble::tibble(model_type = mdl_types_chr %>% 
+        purrr::map_chr(~ready4fun::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup, 
+            match_value_xx = .x, match_var_nm_1L_chr = "short_name_chr", 
+            target_var_nm_1L_chr = "mixed_acronym_chr", evaluate_lgl = F)), 
+        link_and_tfmn_chr = mdl_types_chr %>% purrr::map_chr(~ready4fun::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup, 
+            match_value_xx = .x, match_var_nm_1L_chr = "short_name_chr", 
+            target_var_nm_1L_chr = "with_chr", evaluate_lgl = F)), 
         name_chr = make_predrs_for_best_mdls(spine_of_results_ls$outp_smry_ls, 
             old_nms_chr = spine_of_results_ls$var_nm_change_lup$old_nms_chr, 
             new_nms_chr = spine_of_results_ls$var_nm_change_lup$new_nms_chr), 
@@ -2707,7 +2706,7 @@ make_ten_folds_tbl_title <- function (results_ls, ref_1L_int = 1)
 #' @description make_tfd_sngl_predr_mdls_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make transformed single predictor models tibble. The function returns Transformed single predictor models (a tibble).
 #' @param outp_smry_ls Output summary (a list)
 #' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
-#' @param mdl_pfx_ls Model prefix (a list), Default: list(OLS = "Ordinary Least Squares ", GLM = c("Generalised Linear Mixed Model with ", 
+#' @param mdl_pfx_ls Model prefix (a list), Default: list(OLS = "Ordinary Least Squares ", GLM = c("Generalised Linear Model with ", 
 #'    "Beta Regression Model with Binomial "))
 #' @return Transformed single predictor models (a tibble)
 #' @rdname make_tfd_sngl_predr_mdls_tb
@@ -2718,7 +2717,7 @@ make_ten_folds_tbl_title <- function (results_ls, ref_1L_int = 1)
 #' @importFrom tibble add_case
 #' @keywords internal
 make_tfd_sngl_predr_mdls_tb <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L, mdl_pfx_ls = list(OLS = "Ordinary Least Squares ", 
-    GLM = c("Generalised Linear Mixed Model with ", "Beta Regression Model with Binomial "))) 
+    GLM = c("Generalised Linear Model with ", "Beta Regression Model with Binomial "))) 
 {
     tfd_sngl_predr_mdls_tb <- mdl_pfx_ls %>% purrr::map2(names(mdl_pfx_ls), 
         ~{
@@ -2793,7 +2792,6 @@ make_tfmn_cmprsn_plt <- function (data_tb, depnt_var_nm_1L_chr, dictionary_tb)
 #' @export 
 #' @importFrom purrr map_chr
 #' @importFrom ready4fun get_from_lup_obj
-#' @importFrom stringr str_remove str_sub
 #' @keywords internal
 make_ttu_cs_ls <- function (outp_smry_ls, sig_covars_some_predrs_mdls_tb, sig_thresh_covars_1L_chr) 
 {
@@ -2803,13 +2801,12 @@ make_ttu_cs_ls <- function (outp_smry_ls, sig_covars_some_predrs_mdls_tb, sig_th
             target_var_nm_1L_chr = "long_name_chr", evaluate_lgl = F))
     ttu_cs_ls <- list(best_mdl_types_ls = list(GLM = c("Gaussian distribution and log link"), 
         OLS = c("no transformation", "log transformation", "clog-log transformation")), 
-        selected_mdls_chr = mdl_type_descs_chr %>% purrr::map_chr(~paste0(ifelse(startsWith(.x, 
-            "Ordinary Least Squares"), "OLS", "GLM"), " with ", 
-            ifelse(startsWith(.x, "Ordinary Least Squares"), 
-                stringr::str_remove(.x, "Ordinary Least Squares ") %>% 
-                  stringr::str_sub(start = 2, end = -2) %>% tolower(), 
-                stringr::str_remove(.x, "Generalised Linear Mixed Model with ") %>% 
-                  stringr::str_remove("Beta Regression Model with ")))), 
+        selected_mdls_chr = mdl_type_descs_chr %>% purrr::map_chr(~paste0(ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup, 
+            match_var_nm_1L_chr = "short_name_chr", match_value_xx = .x, 
+            target_var_nm_1L_chr = "fixed_acronym_chr", evaluate_lgl = F), 
+            " with ", ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup, 
+                match_var_nm_1L_chr = "short_name_chr", match_value_xx = .x, 
+                target_var_nm_1L_chr = "with_chr", evaluate_lgl = F))), 
         cs_mdls_predrs_seq_dscdng_chr = outp_smry_ls$smry_of_mdl_sngl_predrs_tb$Predictor, 
         sig_covars_all_predrs_mdls_chr = outp_smry_ls$signt_covars_chr, 
         sig_thresh_covars_1L_chr = sig_thresh_covars_1L_chr, 

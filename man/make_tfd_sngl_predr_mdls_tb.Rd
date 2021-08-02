@@ -8,7 +8,7 @@ make_tfd_sngl_predr_mdls_tb(
   outp_smry_ls,
   nbr_of_digits_1L_int = 2L,
   mdl_pfx_ls = list(OLS = "Ordinary Least Squares ", GLM =
-    c("Generalised Linear Mixed Model with ", "Beta Regression Model with Binomial "))
+    c("Generalised Linear Model with ", "Beta Regression Model with Binomial "))
 )
 }
 \arguments{
@@ -16,7 +16,7 @@ make_tfd_sngl_predr_mdls_tb(
 
 \item{nbr_of_digits_1L_int}{Number of digits (an integer vector of length one), Default: 2}
 
-\item{mdl_pfx_ls}{Model prefix (a list), Default: list(OLS = "Ordinary Least Squares ", GLM = c("Generalised Linear Mixed Model with ",
+\item{mdl_pfx_ls}{Model prefix (a list), Default: list(OLS = "Ordinary Least Squares ", GLM = c("Generalised Linear Model with ",
 "Beta Regression Model with Binomial "))}
 }
 \value{
