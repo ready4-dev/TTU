@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9308</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9309</span>
       </span>
     </div>
 
@@ -146,14 +146,18 @@
     <p>write_to_delete_ds_copies() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write to delete dataset copies. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour</p>
     </div>
 
-    <pre class="usage"><span class='fu'>write_to_delete_ds_copies</span><span class='op'>(</span><span class='va'>paths_ls</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>write_to_delete_ds_copies</span><span class='op'>(</span>input_params_ls <span class='op'>=</span> <span class='cn'>NULL</span>, paths_ls <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>input_params_ls</th>
+      <td><p>Input params (a list), Default: NULL</p></td>
+    </tr>
+    <tr>
       <th>paths_ls</th>
-      <td><p>Paths (a list)</p></td>
+      <td><p>Paths (a list), Default: NULL</p></td>
     </tr>
     </table>
 

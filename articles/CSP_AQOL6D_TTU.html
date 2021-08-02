@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9308</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9309</span>
       </span>
     </div>
 
@@ -108,7 +108,14 @@
     
 
 <!---BLOCK_LANDSCAPE_START--->
-<p>This vignette is an example of implementing of a reproducible workflow to develop transfer to AQoL-6D health utility models, create and share catalogues of these models and author a scientific summary of the results and methods deployed. This example, should be read in conjunction with <a href="CSP_EQ5D_TTU.html">another similar workflow implemented for EQ-5D data and alternative predictors</a>, which illustrates some additional features. The workflow illustrated in this vignette and its EQ-5D counterpart, is something that should only be undertaken once the optimal set of input parameters have been identified by an <a href="Model_TTU.html">initial exploratory analysis</a>. As with all the vignettes included with the TTU package, this example is illustrated using entirely fake data, so do not use its outputs to inform decision making. For an example of how TTU workflows were applied to real data see <a href="https://www.medrxiv.org/content/10.1101/2021.07.07.21260129v2.full" class="uri">https://www.medrxiv.org/content/10.1101/2021.07.07.21260129v2.full</a> .</p>
+<p>This vignette is an example of implementing of a reproducible workflow to:</p>
+<ul>
+<li><p>develop transfer to utility models to predict AQoL-6D;</p></li>
+<li><p>create and share catalogues of these models; and</p></li>
+<li><p>author a scientific summary of the results and methods deployed.</p></li>
+</ul>
+<p>This example, should be read in conjunction with <a href="CSP_EQ5D_TTU.html">another similar workflow implemented for EQ-5D data and alternative predictors</a>, which highlights some additional considerations. It is highly recommended that you only implement this reporting workflow for your own projects once you have identified an optimal set of input parameters following an <a href="Model_TTU.html">initial exploratory analysis</a>. The benefits of undertaking such initial exploratory work include identifying where it may be appropriate to override algorithm default selections for preferred model types and covariates and discovering if it is necessary to supply non-default input parameters to address problems in model convergence.</p>
+<p>As with all the vignettes included with the TTU package, this example is illustrated using entirely fake data, so do not use its outputs to inform decision making. For an example of how TTU workflows were applied to real data see <a href="https://www.medrxiv.org/content/10.1101/2021.07.07.21260129v2.full" class="uri">https://www.medrxiv.org/content/10.1101/2021.07.07.21260129v2.full</a> .</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/TTU/">TTU</a></span><span class="op">)</span></code></pre></div>
 <div id="input-parameters" class="section level1">
@@ -2642,7 +2649,7 @@ numeric
 <div id="candidate-predictors-metadata" class="section level3">
 <h3 class="hasAnchor">
 <a href="#candidate-predictors-metadata" class="anchor"></a>Candidate predictors metadata</h3>
-<p>We create a lookup table with metadata on the dataset variables that we specified in the <code>candidate_predrs_chr</code> element of <code>ds_descvs_ls</code> as our candidate predictors, as well as the preferred covariates that we will specify later in the <code>make_valid_params_ls_ls</code> function.</p>
+<p>We create a lookup table with metadata on the dataset variables that we specified as our candidate predictors in the <code>candidate_predrs_chr</code> element of <code>ds_descvs_ls</code>, as well as the preferred covariates that we will specify later in the <code>make_input_params</code> function.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">predictors_lup</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_pt_TTU_predictors_lup.html">make_pt_TTU_predictors_lup</a></span><span class="op">(</span>short_name_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">ds_descvs_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>, <span class="st">"SOFAS"</span><span class="op">)</span>,
                                               long_name_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"K6 total score"</span>, <span class="st">"PHQ9 total score"</span>, <span class="st">"SOFAS total score"</span><span class="op">)</span>,
@@ -2736,12 +2743,12 @@ numeric
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">results_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_manuscript.html">write_manuscript</a></span><span class="op">(</span>input_params_ls <span class="op">=</span> <span class="va">input_params_ls</span>,
                                write_to_dv_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
-<p>The document exported to the dataset by the preceding call is accessible at: <a href="https://dataverse.harvard.edu/api/access/datafile/4935036" class="uri">https://dataverse.harvard.edu/api/access/datafile/4935036</a> (it is in “.docx” format as we specified “Word” as our desired output format (see earlier in the workflow)). You can override the output format specified in the input parameter list object by using the <code>output_type_1L_chr</code> argument. Note, that this time around we are using the <code>results_ls</code> object as the main input as this object was automatically saved (to the directory path stored in <code>results_ls$path_params_ls$paths_ls$output_data_dir_1L_chr</code>) by the preceding call.</p>
+<p>The document exported to the dataset by the preceding call is accessible at: <a href="https://dataverse.harvard.edu/api/access/datafile/4942229" class="uri">https://dataverse.harvard.edu/api/access/datafile/4942229</a> (it is in “.docx” format as we specified “Word” as our desired output format (see earlier in the workflow)). You can override the output format specified in the input parameter list object by using the <code>output_type_1L_chr</code> argument. Note, that this time around we are using the <code>results_ls</code> object as the main input as this object was automatically saved (to the directory path stored in <code>results_ls$path_params_ls$paths_ls$output_data_dir_1L_chr</code>) by the preceding call.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/write_manuscript.html">write_manuscript</a></span><span class="op">(</span>results_ls <span class="op">=</span> <span class="va">results_ls</span>,
                  write_to_dv_1L_lgl <span class="op">=</span> <span class="cn">T</span>,
                  output_type_1L_chr <span class="op">=</span> <span class="st">"PDF"</span><span class="op">)</span></code></pre></div>
-<p>The PDF version is available at: <a href="https://dataverse.harvard.edu/api/access/datafile/4935022" class="uri">https://dataverse.harvard.edu/api/access/datafile/4935022</a> .When running the <code>write_manuscript</code> function, you can discover the directory into which the manuscript has been saved locally on your machine by printing the object <code>results_ls$path_params_ls$paths_ls$reports_dir_1L_chr</code>.</p>
+<p>The PDF version is available at: <a href="https://dataverse.harvard.edu/api/access/datafile/4942228" class="uri">https://dataverse.harvard.edu/api/access/datafile/4942228</a> .When running the <code>write_manuscript</code> function, you can discover the directory into which the manuscript has been saved locally on your machine by printing the object <code>results_ls$path_params_ls$paths_ls$reports_dir_1L_chr</code>.</p>
 <p>If you wish to develop the manuscript into something you will submit for publication, there are two options for doing so:</p>
 <ul>
 <li><p>If your planned submission format is PDF or LaTeX, edit the markdown files (printing object <code>results_ls$path_params_ls$paths_ls$path_to_ms_mkdn_1L_dir</code> will tell you where these have been saved) and run <code><a href="../reference/write_manuscript.html">write_manuscript(results_ls = results_ls, output_type_1L_chr = "PDF")</a></code>. Both PDF and TeX files are saved as a result of this command.</p></li>

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9308</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9309</span>
       </span>
     </div>
 
@@ -1931,10 +1931,10 @@ k10_int
 <h2 class="hasAnchor">
 <a href="#apply-preferred-model-types-and-predictors-to-longitudinal-data" class="anchor"></a>Apply preferred model types and predictors to longitudinal data</h2>
 <p>The next main step is to use the preferred model types and covariates identified from the preceding analysis of cross-sectional data in longitudinal analysis.</p>
-<div id="longitudinal-modelling" class="section level3">
+<div id="longitudinal-mixed-modelling" class="section level3">
 <h3 class="hasAnchor">
-<a href="#longitudinal-modelling" class="anchor"></a>longitudinal modelling</h3>
-<p>Next we test each of the longitudinal models we specified in the previous step. Note, that in many cases both the <code>prior_ls</code> and <code>control_ls</code> arguments can be set to <code>NULL</code> (which may speed up execution). However, in this example doing so would result in warning messages suggesting a change to the adapt_delta control value (default = 0.8). We have therefore passed a value to the <code>control_ls</code> argument that addresses this issue.</p>
+<a href="#longitudinal-mixed-modelling" class="anchor"></a>Longitudinal mixed modelling</h3>
+<p>Next we create longitudinal and mixed versions of each of the models we specified in the previous step. Note, that in many cases both the <code>prior_ls</code> and <code>control_ls</code> arguments can be set to <code>NULL</code> (which may speed up execution). However, in this example doing so would result in warning messages suggesting a change to the adapt_delta control value (default = 0.8). We have therefore passed a value to the <code>control_ls</code> argument that addresses this issue.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">outp_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_ts_mdls_from_alg_outp.html">write_ts_mdls_from_alg_outp</a></span><span class="op">(</span><span class="va">outp_smry_ls</span>,
                                             predictors_lup <span class="op">=</span> <span class="va">predictors_lup</span> ,
