@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9307</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9308</span>
       </span>
     </div>
 
@@ -149,6 +149,7 @@
     <pre class="usage"><span class='fu'>make_cs_ts_ratios_tb</span><span class='op'>(</span>
   <span class='va'>predr_ctgs_ls</span>,
   <span class='va'>mdl_coef_ratios_ls</span>,
+  candidate_predrs_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
   nbr_of_digits_1L_int <span class='op'>=</span> <span class='fl'>2L</span>,
   fn_ls <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></pre>
@@ -163,6 +164,10 @@
     <tr>
       <th>mdl_coef_ratios_ls</th>
       <td><p>Model coefficient ratios (a list)</p></td>
+    </tr>
+    <tr>
+      <th>candidate_predrs_chr</th>
+      <td><p>Candidate predictors (a character vector), Default: NULL</p></td>
     </tr>
     <tr>
       <th>nbr_of_digits_1L_int</th>
