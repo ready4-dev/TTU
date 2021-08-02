@@ -170,7 +170,7 @@ pkg_dss_tb <- tibble::tibble(short_name_chr = c("OLS_NTF",
                   purrr::map_chr(~ifelse(startsWith(.x,"Ordinary Least Squares"),
                                          stringr::str_remove(.x,"Ordinary Least Squares ") %>%
                                            stringr::str_sub(start = 2, end = -2),
-                                         stringr::str_remove(.x,"Generalised Linear Mixed Model with ") %>%
+                                         stringr::str_remove(.x,"Generalised Linear Model with ") %>%
                                            stringr::str_remove("Beta Regression Model with ")))) %>%
   ready4fun::write_and_doc_ds(db_1L_chr = "mdl_types_lup",
                               title_1L_chr = "Model types lookup table",
