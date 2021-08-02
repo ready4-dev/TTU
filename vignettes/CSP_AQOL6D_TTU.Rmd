@@ -23,8 +23,6 @@ library(TTU)
 ### Bibliograhic data
 We begin by specifying the authorship and other bibliographic data that we wish to attach to all reports that we generate.
 
-We begin by specifying the authorship data we wish to attach to all reports that we generate.
-
 ```{r }
 authors_tb <- ready4show::authors_tb
 ```

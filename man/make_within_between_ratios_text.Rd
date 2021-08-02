@@ -4,10 +4,12 @@
 \alias{make_within_between_ratios_text}
 \title{Make within between ratios text}
 \usage{
-make_within_between_ratios_text(results_ls)
+make_within_between_ratios_text(results_ls, exclude_covars_1L_lgl = F)
 }
 \arguments{
 \item{results_ls}{Results (a list)}
+
+\item{exclude_covars_1L_lgl}{Exclude covariates (a logical vector of length one), Default: F}
 }
 \value{
 Text (a character vector of length one)

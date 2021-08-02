@@ -7,6 +7,7 @@
 make_cs_ts_ratios_tb(
   predr_ctgs_ls,
   mdl_coef_ratios_ls,
+  candidate_predrs_chr = NULL,
   nbr_of_digits_1L_int = 2L,
   fn_ls = NULL
 )
@@ -15,6 +16,8 @@ make_cs_ts_ratios_tb(
 \item{predr_ctgs_ls}{Predictor category categoriess (a list)}
 
 \item{mdl_coef_ratios_ls}{Model coefficient ratios (a list)}
+
+\item{candidate_predrs_chr}{Candidate predictors (a character vector), Default: NULL}
 
 \item{nbr_of_digits_1L_int}{Number of digits (an integer vector of length one), Default: 2}
 

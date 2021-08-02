@@ -40,7 +40,8 @@ make_abstract_args_ls <- function(results_ls,
                                                                ". ",
                                                                make_selected_mdl_text(results_ls, for_abstract_1L_lgl = T),
                                                                paste0(" The mean ratio between the within-person and between-person associated coefficients was ",
-                                                                      make_within_between_ratios_text(results_ls),
+                                                                      make_within_between_ratios_text(results_ls,
+                                                                                                      exclude_covars_1L_lgl = T),
                                                                       ".")),
                                               Conclusions = get_conclusion_text(results_ls),
                                               Data = make_data_availability_text(results_ls)),
@@ -446,11 +447,15 @@ make_covar_ttu_tbl_title <- function(results_ls,
 }
 make_cs_ts_ratios_tb <- function(predr_ctgs_ls,
                                  mdl_coef_ratios_ls,
+                                 candidate_predrs_chr = NULL,
                                  nbr_of_digits_1L_int = 2L,
                                  fn_ls = NULL){
   if(is.null(fn_ls))
     fn_ls <- purrr::map(1:length(predr_ctgs_ls),
                         ~ make_mdl_coef_range_text)
+  if(is.null(candidate_predrs_chr)){
+    candidate_predrs_chr <- predr_ctgs_ls %>% purrr::flatten_chr()
+  }
   cs_ts_ratios_tb <- 1:length(predr_ctgs_ls) %>%
     purrr::map_dfr(
            ~ {
@@ -474,7 +479,9 @@ make_cs_ts_ratios_tb <- function(predr_ctgs_ls,
                                                        " or over",
                                                        ifelse(identical(max,fn_ls %>% purrr::pluck(.x)),
                                                               " or under",
-                                                              ""))))
+                                                              "")))),
+                            contains_cndt_predr_lgl = predr_ctgs_ls[[.x]] %>%
+                              purrr::map_lgl(~!identical(intersect(.x, candidate_predrs_chr), character(0))) %>% unname()
                             )
              })
   return(cs_ts_ratios_tb)
@@ -1384,7 +1391,8 @@ make_predr_ctgs_ls <- function(outp_smry_ls,
   predr_ctgs_ls <- categories_chr %>% purrr::map(~outp_smry_ls$dictionary_tb %>%
                                                    ready4use::remove_labels_from_ds() %>%
                                                    dplyr::filter(var_ctg_chr == .x) %>%
-                                                   dplyr::pull(var_nm_chr)) %>%
+                                                   dplyr::pull(var_nm_chr) %>%
+                                                   intersect(predictors_chr)) %>%
     stats::setNames(categories_chr)
   if(!is.null(include_idx_int)){
     predr_ctgs_ls <- include_idx_int %>%
@@ -1751,7 +1759,7 @@ make_results_ls_spine <-  function(output_format_ls = NULL,
   mdl_ingredients_ls <- readRDS(paste0(output_data_dir_1L_chr,
                                        "/G_Shareable/Ingredients/mdl_ingredients.RDS"))
   if(!is.null(params_ls_ls)){
-    if(is.null(params_ls_ls$params_ls$candidate_covar_nms_chr) | is.na(params_ls_ls$params_ls$candidate_covar_nms_chr)){
+    if(is.null(params_ls_ls$params_ls$candidate_covar_nms_chr) | is.na(params_ls_ls$params_ls$candidate_covar_nms_chr[1])){
       candidate_covars_ls <- NULL
     }else{
       covar_ctgs_chr <- params_ls_ls$params_ls$candidate_covar_nms_chr %>%
@@ -1793,6 +1801,7 @@ make_results_ls_spine <-  function(output_format_ls = NULL,
                                       mdls_tb = mdls_smry_tbls_ls$covar_mdls_tb)
   cs_ts_ratios_tb <- make_cs_ts_ratios_tb(predr_ctgs_ls = study_descs_ls$predr_ctgs_ls,
                                           mdl_coef_ratios_ls = mdl_coef_ratios_ls,
+                                          candidate_predrs_chr = params_ls_ls$params_ls$ds_descvs_ls$candidate_predrs_chr,
                                           fn_ls = fn_ls,
                                           nbr_of_digits_1L_int = nbr_of_digits_1L_int)
   spine_of_results_ls <- list(candidate_covars_ls = candidate_covars_ls,
@@ -2341,15 +2350,15 @@ make_tfmn_cmprsn_plt <-  function(data_tb,
 make_ttu_cs_ls <-  function(outp_smry_ls,
                             sig_covars_some_predrs_mdls_tb,
                             sig_thresh_covars_1L_chr){
-  mdl_type_descs_chr <- outp_smry_ls$prefd_mdl_types_chr %>%
-    purrr::map_chr(~ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup,
-                                                match_var_nm_1L_chr = "short_name_chr",
-                                                match_value_xx = .x,
-                                                target_var_nm_1L_chr = "long_name_chr",
-                                                evaluate_lgl = F))
+  # mdl_type_descs_chr <- outp_smry_ls$prefd_mdl_types_chr %>%
+  #   purrr::map_chr(~ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup,
+  #                                               match_var_nm_1L_chr = "short_name_chr",
+  #                                               match_value_xx = .x,
+  #                                               target_var_nm_1L_chr = "long_name_chr",
+  #                                               evaluate_lgl = F))
   ttu_cs_ls <- list(best_mdl_types_ls = list(GLM = c("Gaussian distribution and log link"), # LEGACY ISSUE FROM MANUSCRIPT - OTHERWISE UNUSED
                                              OLS = c("no transformation","log transformation", "clog-log transformation")),
-                    selected_mdls_chr = mdl_type_descs_chr %>%
+                    selected_mdls_chr = outp_smry_ls$prefd_mdl_types_chr %>%
                       purrr::map_chr(~paste0(ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup,
                                                                          match_var_nm_1L_chr = "short_name_chr",
                                                                          match_value_xx = .x,
@@ -2438,8 +2447,13 @@ make_valid_params_ls_ls <- function(analysis_core_params_ls,
   valid_params_ls_ls$path_params_ls <- path_params_ls
   return(valid_params_ls_ls)
 }
-make_within_between_ratios_text <- function(results_ls){
-  text_1L_chr <- results_ls$ttu_lngl_ls$cs_ts_ratios_tb %>%
+make_within_between_ratios_text <- function(results_ls,
+                                            exclude_covars_1L_lgl = F){
+  tb <- results_ls$ttu_lngl_ls$cs_ts_ratios_tb
+  if(exclude_covars_1L_lgl)
+    tb <- tb %>%
+      dplyr::filter(contains_cndt_predr_lgl)
+  text_1L_chr <- tb %>%
     purrr::pmap_chr(~paste0(..2, " for ", ..1)) %>%
     paste0(collapse = ", ") %>%
     stringi::stri_replace_last(fixed = ",", " and")
