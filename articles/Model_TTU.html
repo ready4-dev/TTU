@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9303</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9307</span>
       </span>
     </div>
 
@@ -1097,6 +1097,18 @@ tfmn_chr
 <th style="text-align:left;">
 tfmn_for_bnml_lgl
 </th>
+<th style="text-align:right;">
+fixed_acronym_chr
+</th>
+<th style="text-align:right;">
+mixed_acronym_chr
+</th>
+<th style="text-align:right;">
+mixed_type_chr
+</th>
+<th style="text-align:right;">
+with_chr
+</th>
 </tr></thead>
 <tbody>
 <tr>
@@ -1104,7 +1116,7 @@ tfmn_for_bnml_lgl
 OLS_NTF
 </td>
 <td style="text-align:right;">
-Ordinary Least Squares (No transformation)
+Ordinary Least Squares (no transformation)
 </td>
 <td style="text-align:right;">
 NA
@@ -1127,13 +1139,25 @@ NTF
 <td style="text-align:left;">
 FALSE
 </td>
+<td style="text-align:right;">
+OLS
+</td>
+<td style="text-align:right;">
+LMM
+</td>
+<td style="text-align:right;">
+linear mixed model
+</td>
+<td style="text-align:right;">
+no transformation
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
 OLS_LOG
 </td>
 <td style="text-align:right;">
-Ordinary Least Squares (Log transformation)
+Ordinary Least Squares (log transformation)
 </td>
 <td style="text-align:right;">
 NA
@@ -1156,13 +1180,25 @@ LOG
 <td style="text-align:left;">
 FALSE
 </td>
+<td style="text-align:right;">
+OLS
+</td>
+<td style="text-align:right;">
+LMM
+</td>
+<td style="text-align:right;">
+linear mixed model
+</td>
+<td style="text-align:right;">
+log transformation
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
 OLS_LOGIT
 </td>
 <td style="text-align:right;">
-Ordinary Least Squares (Logit transformation)
+Ordinary Least Squares (logit transformation)
 </td>
 <td style="text-align:right;">
 NA
@@ -1185,13 +1221,25 @@ LOGIT
 <td style="text-align:left;">
 FALSE
 </td>
+<td style="text-align:right;">
+OLS
+</td>
+<td style="text-align:right;">
+LMM
+</td>
+<td style="text-align:right;">
+linear mixed model
+</td>
+<td style="text-align:right;">
+logit transformation
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
 OLS_LOGLOG
 </td>
 <td style="text-align:right;">
-Ordinary Least Squares (Log Log transformation)
+Ordinary Least Squares (log log transformation)
 </td>
 <td style="text-align:right;">
 NA
@@ -1214,13 +1262,25 @@ LOGLOG
 <td style="text-align:left;">
 FALSE
 </td>
+<td style="text-align:right;">
+OLS
+</td>
+<td style="text-align:right;">
+LMM
+</td>
+<td style="text-align:right;">
+linear mixed model
+</td>
+<td style="text-align:right;">
+log log transformation
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
 OLS_CLL
 </td>
 <td style="text-align:right;">
-Ordinary Least Squares (Complementary Log Log transformation)
+Ordinary Least Squares (complementary log log transformation)
 </td>
 <td style="text-align:right;">
 NA
@@ -1243,13 +1303,25 @@ CLL
 <td style="text-align:left;">
 FALSE
 </td>
+<td style="text-align:right;">
+OLS
+</td>
+<td style="text-align:right;">
+LMM
+</td>
+<td style="text-align:right;">
+linear mixed model
+</td>
+<td style="text-align:right;">
+complementary log log transformation
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
 GLM_GSN_LOG
 </td>
 <td style="text-align:right;">
-Generalised Linear Mixed Model with Gaussian distribution and log link
+Generalised Linear Model with Gaussian distribution and log link
 </td>
 <td style="text-align:right;">
 NA
@@ -1271,6 +1343,18 @@ NTF
 </td>
 <td style="text-align:left;">
 FALSE
+</td>
+<td style="text-align:right;">
+GLM
+</td>
+<td style="text-align:right;">
+GLMM
+</td>
+<td style="text-align:right;">
+generalised linear mixed model
+</td>
+<td style="text-align:right;">
+Gaussian distribution and log link
 </td>
 </tr>
 <tr>
@@ -1301,6 +1385,18 @@ NTF
 <td style="text-align:left;">
 FALSE
 </td>
+<td style="text-align:right;">
+GLM
+</td>
+<td style="text-align:right;">
+GLMM
+</td>
+<td style="text-align:right;">
+generalised linear mixed model
+</td>
+<td style="text-align:right;">
+Binomial distribution and logit link
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1329,6 +1425,18 @@ NTF
 </td>
 <td style="text-align:left;">
 FALSE
+</td>
+<td style="text-align:right;">
+GLM
+</td>
+<td style="text-align:right;">
+GLMM
+</td>
+<td style="text-align:right;">
+generalised linear mixed model
+</td>
+<td style="text-align:right;">
+Binomial distribution and complementary log log link
 </td>
 </tr>
 </tbody>
@@ -1430,7 +1538,7 @@ Beta Regression Model with Binomial distribution and complementary log log link
 </tr>
 <tr>
 <td style="text-align:left;">
-Ordinary Least Squares (No transformation)
+Ordinary Least Squares (no transformation)
 </td>
 <td style="text-align:right;">
 0.4079463
@@ -1453,7 +1561,7 @@ Ordinary Least Squares (No transformation)
 </tr>
 <tr>
 <td style="text-align:left;">
-Ordinary Least Squares (Complementary Log Log transformation)
+Ordinary Least Squares (complementary log log transformation)
 </td>
 <td style="text-align:right;">
 0.3995892
@@ -1476,7 +1584,7 @@ Ordinary Least Squares (Complementary Log Log transformation)
 </tr>
 <tr>
 <td style="text-align:left;">
-Generalised Linear Mixed Model with Gaussian distribution and log link
+Generalised Linear Model with Gaussian distribution and log link
 </td>
 <td style="text-align:right;">
 0.3887797
@@ -1499,7 +1607,7 @@ Generalised Linear Mixed Model with Gaussian distribution and log link
 </tr>
 <tr>
 <td style="text-align:left;">
-Ordinary Least Squares (Log transformation)
+Ordinary Least Squares (log transformation)
 </td>
 <td style="text-align:right;">
 0.3667240
@@ -1522,7 +1630,7 @@ Ordinary Least Squares (Log transformation)
 </tr>
 <tr>
 <td style="text-align:left;">
-Ordinary Least Squares (Logit transformation)
+Ordinary Least Squares (logit transformation)
 </td>
 <td style="text-align:right;">
 0.3604047
@@ -1545,7 +1653,7 @@ Ordinary Least Squares (Logit transformation)
 </tr>
 <tr>
 <td style="text-align:left;">
-Ordinary Least Squares (Log Log transformation)
+Ordinary Least Squares (log log transformation)
 </td>
 <td style="text-align:right;">
 0.3473261
@@ -1592,7 +1700,7 @@ Ordinary Least Squares (Log Log transformation)
                                             mdl_smry_ls <span class="op">=</span> <span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span>,
                                             output_data_dir_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>,
                                             seed_1L_int <span class="op">=</span> <span class="va">seed_1L_int</span><span class="op">)</span></code></pre></div>
-<p>Now, we compare the performance of single predictor models of our preferred model type (in our case, a Ordinary Least Squares (No transformation)) for each candidate predictor. The call to the <code class="sourceCode r">write_predr_and_covars_cmprsn</code> function saved the tested models along with model plots in the “B_Candidate_Predrs_Cmprsn” sub-directory of “Output”. These results are also viewable as a table.</p>
+<p>Now, we compare the performance of single predictor models of our preferred model type (in our case, a Ordinary Least Squares (no transformation)) for each candidate predictor. The call to the <code class="sourceCode r">write_predr_and_covars_cmprsn</code> function saved the tested models along with model plots in the “B_Candidate_Predrs_Cmprsn” sub-directory of “Output”. These results are also viewable as a table.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span><span class="op">$</span><span class="va">predr_cmprsn_tb</span> <span class="op">%&gt;%</span>
     <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/print_table.html">print_table</a></span><span class="op">(</span>output_type_1L_chr <span class="op">=</span> <span class="st">"HTML"</span>,
