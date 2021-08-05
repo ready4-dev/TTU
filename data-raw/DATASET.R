@@ -342,8 +342,8 @@ ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
 #                                          desc_1L_chr = "Prototypes lookup table")
 # }
 # devtools::build_vignettes()
-ready4fun::write_links_for_website(user_manual_url_1L_chr = "https://github.com/ready4-dev/TTU/files/6277705/TTU_user_0.0.0.9133.pdf",
-                                   developer_manual_url_1L_chr = "https://github.com/ready4-dev/TTU/files/6277710/TTU_developer_0.0.0.9133.pdf",
+ready4fun::write_links_for_website(user_manual_url_1L_chr = "https://github.com/ready4-dev/TTU/files/6936649/TTU_0.0.0.9311_user.pdf",
+                                   developer_manual_url_1L_chr = "https://github.com/ready4-dev/TTU/releases/download/v0.9311/TTU_0.0.0.9311_developer.pdf",
                                    project_website_url_1L_chr = "https://www.ready4-dev.com/")
 ##
 ##
