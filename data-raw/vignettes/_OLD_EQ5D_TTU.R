@@ -34,7 +34,7 @@ path_params_ls <- list(path_from_top_level_1L_chr = normalizePath("../") %>% str
                   path_to_current_1L_chr = normalizePath(".") %>% strsplit("\\\\") %>% purrr::pluck(1) %>% tail(1))
 
 ## ----echo = TRUE--------------------------------------------------------------
-ds_descvs_ls <- list(candidate_predrs_chr = c("k10_int","psych_well_int"),
+ds_descvs_ls <- list(candidate_predrs_chr = c("K10_int","Psych_well_int"),
                      cohort_descv_var_nms_chr = c("d_age", "Gender", "d_relation_s","d_sexual_ori_s", "Region", "CALD", "d_studying_working"),
                      dictionary_tb = TTU::make_eq5d_ds_dict(ds_tb), 
                      id_var_nm_1L_chr = "uid", 

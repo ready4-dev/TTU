@@ -159,21 +159,21 @@ transform_ds_to_predn_ds <- function(data_tb,
                                                       tfmn_1L_chr = tfmn_1L_chr)
   return(data_tb)
 }
-transform_ds_with_rename_lup <- function(ds_tb,
-                                         rename_lup,
-                                         target_var_nms_chr = NULL){
-  if(is.null(target_var_nms_chr))
-    target_var_nms_chr <- intersect(names(ds_tb),rename_lup$old_nms_chr)
-  tfmd_ds_tb <- dplyr::rename_with(ds_tb,
-                                   .cols = target_var_nms_chr,
-                                   ~ ready4fun::get_from_lup_obj(rename_lup,
-                                                                 match_value_xx = .x,
-                                                                 match_var_nm_1L_chr = "old_nms_chr",
-                                                                 target_var_nm_1L_chr = "new_nms_chr",
-                                                                 evaluate_lgl = F))
-  return(tfmd_ds_tb)
-
-}
+# transform_ds_with_rename_lup <- function(ds_tb,
+#                                          rename_lup,
+#                                          target_var_nms_chr = NULL){
+#   if(is.null(target_var_nms_chr))
+#     target_var_nms_chr <- intersect(names(ds_tb),rename_lup$old_nms_chr)
+#   tfmd_ds_tb <- dplyr::rename_with(ds_tb,
+#                                    .cols = target_var_nms_chr,
+#                                    ~ ready4fun::get_from_lup_obj(rename_lup,
+#                                                                  match_value_xx = .x,
+#                                                                  match_var_nm_1L_chr = "old_nms_chr",
+#                                                                  target_var_nm_1L_chr = "new_nms_chr",
+#                                                                  evaluate_lgl = F))
+#   return(tfmd_ds_tb)
+#
+# }
 transform_mdl_vars_with_clss <- function(ds_tb,
                                          predictors_lup = NULL,
                                          prototype_lup = NULL,
@@ -256,7 +256,7 @@ transform_params_ls_to_valid <- function(params_ls,
                                new_nms_chr = make.unique(c(unchanged_var_nms_chr,
                                                            valid_var_nms_chr), sep="V")) %>%
     dplyr::filter(!old_nms_chr %in% unchanged_var_nms_chr)
-  params_ls$ds_tb <- transform_ds_with_rename_lup(params_ls$ds_tb,
+  params_ls$ds_tb <- youthvars::transform_ds_with_rename_lup(params_ls$ds_tb,
                                                   rename_lup = rename_lup,
                                                   target_var_nms_chr = target_var_nms_chr)
     # dplyr::rename_with(params_ls$ds_tb,
@@ -466,16 +466,16 @@ transform_rprt_lup <- function(rprt_lup,
   }
   return(rprt_lup)
 }
-transform_tb_for_merged_col_1 <- function(df,
-                                          output_type_1L_chr = "PDF"){
-  df[[1]] <- as.character(df[[1]])
-  rle.lengths <- rle(df[[1]])$lengths
-  first <- !duplicated(df[[1]])
-  df[[1]][!first] <- ""
-  if(output_type_1L_chr == "PDF")
-    df[[1]][first] <- paste0("\\midrule\\multirow{", rle.lengths, "}{*}{\\textbf{", df[[1]][first], "}}")
-  return(df)
-}
+# transform_tb_for_merged_col_1 <- function(df,
+#                                           output_type_1L_chr = "PDF"){
+#   df[[1]] <- as.character(df[[1]])
+#   rle.lengths <- rle(df[[1]])$lengths
+#   first <- !duplicated(df[[1]])
+#   df[[1]][!first] <- ""
+#   if(output_type_1L_chr == "PDF")
+#     df[[1]][first] <- paste0("\\midrule\\multirow{", rle.lengths, "}{*}{\\textbf{", df[[1]][first], "}}")
+#   return(df)
+# }
 transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr,
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round",
     round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, scaling_fctr_dbl = 1,

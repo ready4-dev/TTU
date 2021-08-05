@@ -10,7 +10,7 @@ data_tb <- data_tb%>%
 data_tb %>% add_utl_predn_to_new_ds(ingredients_ls = ingredients_ls,
                         mdl_nm_1L_chr = mdl_nms_chr[3],
                         new_data_is_1L_chr = "Simulated",
-                        predr_vars_nms_chr = c(k10 = "k10_int"),
+                        predr_vars_nms_chr = c(k10 = "K10_int"),
                         round_var_nm_1L_chr = "Timepoint",
                         round_bl_val_1L_chr = "BL")
 # FOR YOUTHU

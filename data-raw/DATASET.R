@@ -260,12 +260,12 @@ ready4fun::write_and_doc_fn_fls(fns_dmt_tb,
                                 update_pkgdown_1L_lgl = T)
 ##
 ## PART FOUR
-data("prototype_lup")
-if(!identical(prototype_lup,ready4fun::get_rds_from_dv("prototype_lup"))){
-  prototype_lup %>%
-    ready4use::write_paired_ds_fls_to_dv(fl_nm_1L_chr = "prototype_lup",
-                                         desc_1L_chr = "Prototypes lookup table")
-}
+# data("prototype_lup")
+# if(!identical(prototype_lup,ready4fun::get_rds_from_dv("prototype_lup"))){
+#   prototype_lup %>%
+#     ready4use::write_paired_ds_fls_to_dv(fl_nm_1L_chr = "prototype_lup",
+#                                          desc_1L_chr = "Prototypes lookup table")
+# }
 # devtools::build_vignettes()
 ready4fun::write_links_for_website(user_manual_url_1L_chr = "https://github.com/ready4-dev/TTU/files/6277705/TTU_user_0.0.0.9133.pdf",
                                    developer_manual_url_1L_chr = "https://github.com/ready4-dev/TTU/files/6277710/TTU_developer_0.0.0.9133.pdf",

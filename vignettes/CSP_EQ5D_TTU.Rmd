@@ -9,7 +9,15 @@ vignette: >
 
 \blandscape
 <!---BLOCK_LANDSCAPE_START--->
-This vignette is an example of implementing of a reproducible workflow to develop transfer to EQ-5D health utility models, create and share catalogues of these models and author a scientific summary of the results and methods deployed. The steps in this reporting workflow should only be undertaken once an optimal set of input values have been identified by an [initial exploratory analysis](Model_TTU.html). Many of the steps in this example are in common with those of the [AQoL-6D vignette](CSP_AQOL6D_TTU.html), and are therefore described with minimal explanation here. Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.
+This vignette is an example of implementing of a reproducible workflow to:
+
+- develop transfer to utility models to predict EQ-5D; 
+
+- create and share catalogues of these models; and 
+
+- author a scientific summary of the results and methods deployed. 
+
+The steps in this reporting workflow should only be undertaken once an optimal set of input values have been identified by an [initial exploratory analysis](Model_TTU.html). Many of the steps in this example are in common with those of the [AQoL-6D vignette](CSP_AQOL6D_TTU.html), and are therefore described with minimal explanation here. Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.
 
 ```{r echo = TRUE, message=FALSE}
 library(eq5d)
@@ -89,8 +97,6 @@ predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr =
                                               covariate_lgl = F))
 ```
 
-## Analysis parameters
-
 ### Multi-Attribute Utility Instrument (MAUI) parameters
 If our source dataset does not include a pre-calculated weighted utility variable, we must supply a function to calculate this variable using the `maui_scoring_fn` argument. Note if specifying such a function, it must:
 
@@ -136,18 +142,20 @@ input_params_ls <- make_input_params(ds_tb,
 
 ```
 
-# Run analysis
+# Analyse, Report and Share 
+
+## Run analysis
 ```{r eval = FALSE}
 write_analyses(input_params_ls)
 ```
 
-# Report results
+## Report results
 ```{r echo = TRUE, eval=FALSE }
 input_params_ls <- write_mdl_smry_rprt(input_params_ls,
                                        use_shareable_mdls_1L_lgl = T)
 ```
 
-# Share results
+## Share results
 ```{r echo = TRUE, eval=FALSE }
 write_study_outp_ds(input_params_ls)
 ```
@@ -155,6 +163,7 @@ The uploaded files can be viewed at: https://doi.org/10.7910/DVN/612HDC
 
 # Create manuscript
 
+## Create study metadata
 ```{r eval = F}
 input_params_ls <- make_study_descs_ls(input_params_ls = input_params_ls,
                                        background_1L_chr = "Our study is entirely fictional and has been created to illustrate the generalisability of TTU package functions.",
@@ -166,6 +175,7 @@ input_params_ls <- make_study_descs_ls(input_params_ls = input_params_ls,
                                        time_btwn_bl_and_fup_1L_chr = "four months")
 ```
 
+## Render auto-generated first-draft
 When rendering the draft manuscript, we have opted in this example to also upload it to our dataset (`write_to_dv_1L_lgl = T`). This is not recommended if you plan to further develop the draft into an article for publication.
 
 ```{r eval = F}

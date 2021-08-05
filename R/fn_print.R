@@ -24,10 +24,13 @@ print_all_plts_for_mdl_set <- function (output_ls, start_from_1L_int = 0L)
 #' @return NULL
 #' @rdname print_cohort_table
 #' @export 
-#' @importFrom dplyr mutate_all
+#' @importFrom dplyr mutate mutate_all
+#' @importFrom purrr map_chr
+#' @importFrom Hmisc capitalize
 #' @importFrom stringr str_replace
 #' @importFrom kableExtra kbl kable_styling column_spec add_header_above collapse_rows
 #' @importFrom knitr opts_current
+#' @importFrom youthvars transform_tb_for_merged_col_1
 #' @importFrom ready4show print_table
 #' @keywords internal
 print_cohort_table <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr) 
@@ -35,6 +38,7 @@ print_cohort_table <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
     results_ls <- params_ls$results_ls
     df <- results_ls$tables_ls$participant_descs
     df$variable <- gsub("\\s*\\([^\\)]+\\)", "", df$variable)
+    df <- df %>% dplyr::mutate(variable = variable %>% purrr::map_chr(~Hmisc::capitalize(.x)))
     if (params_ls$output_type_1L_chr == "PDF") {
         df <- df %>% dplyr::mutate_all(~stringr::str_replace(.x, 
             "%", "\\\\%") %>% stringr::str_replace(",", "\\\\,"))
@@ -50,7 +54,7 @@ print_cohort_table <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
             " ", Baseline = 2, `Follow-Up` = 2)) %>% kableExtra::collapse_rows(columns = 1)
     }
     else {
-        df <- df %>% transform_tb_for_merged_col_1(output_type_1L_chr = params_ls$output_type_1L_chr)
+        df <- df %>% youthvars::transform_tb_for_merged_col_1(output_type_1L_chr = params_ls$output_type_1L_chr)
         add_to_row_ls <- make_bl_fup_add_to_row_ls(df, n_at_bl_1L_int = results_ls$cohort_ls$n_inc_1L_dbl, 
             n_at_fup_1L_int = results_ls$cohort_ls$n_fup_1L_dbl)
         df %>% ready4show::print_table(output_type_1L_chr = params_ls$output_type_1L_chr, 
@@ -73,6 +77,7 @@ print_cohort_table <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
 #' @importFrom stringr str_remove_all
 #' @importFrom kableExtra kbl kable_styling column_spec add_header_above collapse_rows
 #' @importFrom knitr opts_current
+#' @importFrom youthvars transform_tb_for_merged_col_1
 #' @importFrom ready4show print_table
 #' @keywords internal
 print_corls_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr) 
@@ -80,7 +85,7 @@ print_corls_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
     results_ls <- params_ls$results_ls
     tb <- results_ls$tables_ls$pred_dist_and_cors
     tb <- tb %>% dplyr::mutate(label = label %>% purrr::map_chr(~stringr::str_remove_all(.x, 
-        " \\(Weighted total\\)")))
+        " \\(weighted total\\)")))
     if (params_ls$output_type_1L_chr == "PDF") {
         names(tb) <- c("", "", "(N =", paste0(results_ls$cohort_ls$n_inc_1L_dbl, 
             ")"), "(N =", paste0(results_ls$cohort_ls$n_fup_1L_dbl, 
@@ -92,7 +97,7 @@ print_corls_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
             " ", Baseline = 2, `Follow-Up` = 2, " ")) %>% kableExtra::collapse_rows(columns = 1)
     }
     else {
-        tb <- tb %>% transform_tb_for_merged_col_1(output_type_1L_chr = params_ls$output_type_1L_chr)
+        tb <- tb %>% youthvars::transform_tb_for_merged_col_1(output_type_1L_chr = params_ls$output_type_1L_chr)
         tb %>% ready4show::print_table(output_type_1L_chr = params_ls$output_type_1L_chr, 
             caption_1L_chr = caption_1L_chr, mkdn_tbl_ref_1L_chr = mkdn_tbl_ref_1L_chr, 
             use_rdocx_1L_lgl = ifelse(params_ls$output_type_1L_chr == 

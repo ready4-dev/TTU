@@ -129,3 +129,11 @@
 ^data-raw/vignettes/_Reporting_Params\.Rmd$
 ^data-raw/fns/rename\.R$
 ^data-raw/vignettes/_Adding_Predictions_To_DS\.R$
+^data-raw/inst/Project/CSP/CSP\.pdf$
+^data-raw/inst/Project/CSP/CSP\.Rmd$
+^data-raw/inst/Project/CSP/Filters/author-info-blocks\.lua$
+^data-raw/inst/Project/CSP/Filters/pagebreaks\.lua$
+^data-raw/inst/Project/CSP/Filters/scholarly-metadata\.lua$
+^data-raw/inst/Project/CSP/Header/abstract\.txt$
+^data-raw/inst/Project/CSP/Header/header_common\.yaml$
+^data-raw/inst/Project/CSP/preamble\.tex$

@@ -767,9 +767,9 @@ make_fake_eq5d_ds <- function (country_1L_chr = "UK", version_1L_chr = "5L", typ
         stats::setNames(.x)) %>% purrr::flatten_dfr() %>% tidyr::expand(MO, 
         SC, UA, PD, AD) %>% dplyr::mutate(total_eq5d = eq5d::eq5d(., 
         country = country_1L_chr, version = version_1L_chr, type = type_1L_chr))
-    k10_lup_tb <- tibble::tibble(k10_int = (9.5 + rexp(sample_from_1L_int, 
+    k10_lup_tb <- tibble::tibble(K10_int = (9.5 + rexp(sample_from_1L_int, 
         rate = 0.18)) %>% purrr::map_int(~as.integer(min(max(.x, 
-        10), 50))), pred_eq5d_dbl = purrr::map2_dbl(k10_int, 
+        10), 50))), pred_eq5d_dbl = purrr::map2_dbl(K10_int, 
         rnorm(sample_from_1L_int, 0, 0.075), ~predict_utl_from_k10(.x, 
             eq5d_error_1L_dbl = .y)[2]), match_idx_int = purrr::map_int(pred_eq5d_dbl, 
         ~which.min(abs(data_tb$total_eq5d - .x))))
@@ -787,11 +787,11 @@ make_fake_eq5d_ds <- function (country_1L_chr = "UK", version_1L_chr = "5L", typ
         length(bl_uids_chr)), 0))
     data_tb <- data_tb %>% dplyr::filter(uid %in% bl_uids_chr) %>% 
         dplyr::filter(Timepoint == "BL" | uid %in% fup_uids_chr)
-    data_tb <- data_tb %>% dplyr::mutate(psych_well_int = faux::rnorm_pre(k10_int, 
+    data_tb <- data_tb %>% dplyr::mutate(Psych_well_int = faux::rnorm_pre(K10_int, 
         mu = 69.9, sd = 9.9, r = -0.56) %>% round(0) %>% purrr::map_int(~min(.x, 
         90) %>% max(18) %>% as.integer()))
     data_tb <- data_tb %>% dplyr::select(uid, Timepoint, MO, 
-        SC, UA, PD, AD, k10_int, psych_well_int)
+        SC, UA, PD, AD, K10_int, Psych_well_int)
     data("replication_popl_tb", package = "youthvars", envir = environment())
     demog_data_tb <- replication_popl_tb %>% youthvars::transform_raw_ds_for_analysis() %>% 
         dplyr::filter(round == "Baseline") %>% dplyr::mutate(uid = 1:dplyr::n()) %>% 
@@ -1879,8 +1879,8 @@ make_prmry_analysis_params_ls <- function (analysis_core_params_ls, candidate_co
 #' @keywords internal
 make_psych_predrs_lup <- function () 
 {
-    predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = c("k10_int", 
-        "psych_well_int"), long_name_chr = c("Kessler Psychological Distress - 10 Item Total Score", 
+    predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = c("K10_int", 
+        "Psych_well_int"), long_name_chr = c("Kessler Psychological Distress - 10 Item Total Score", 
         "Overall Wellbeing Measure (Winefield et al. 2012)"), 
         min_val_dbl = c(10, 18), max_val_dbl = c(50, 90), class_chr = "integer", 
         increment_dbl = 1, class_fn_chr = "integer", mdl_scaling_dbl = 0.01, 

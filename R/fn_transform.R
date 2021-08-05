@@ -206,27 +206,6 @@ transform_ds_to_predn_ds <- function (data_tb, predr_vars_nms_chr, tfmn_1L_chr, 
                 evaluate_lgl = F)), ungroup_1L_lgl = T, tfmn_1L_chr = tfmn_1L_chr)
     return(data_tb)
 }
-#' Transform dataset with rename
-#' @description transform_ds_with_rename_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dataset with rename lookup table. Function argument ds_tb specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns Tfmd dataset (a tibble).
-#' @param ds_tb Dataset (a tibble)
-#' @param rename_lup Rename (a lookup table)
-#' @param target_var_nms_chr Target variable names (a character vector), Default: NULL
-#' @return Tfmd dataset (a tibble)
-#' @rdname transform_ds_with_rename_lup
-#' @export 
-#' @importFrom dplyr rename_with
-#' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
-transform_ds_with_rename_lup <- function (ds_tb, rename_lup, target_var_nms_chr = NULL) 
-{
-    if (is.null(target_var_nms_chr)) 
-        target_var_nms_chr <- intersect(names(ds_tb), rename_lup$old_nms_chr)
-    tfmd_ds_tb <- dplyr::rename_with(ds_tb, .cols = target_var_nms_chr, 
-        ~ready4fun::get_from_lup_obj(rename_lup, match_value_xx = .x, 
-            match_var_nm_1L_chr = "old_nms_chr", target_var_nm_1L_chr = "new_nms_chr", 
-            evaluate_lgl = F))
-    return(tfmd_ds_tb)
-}
 #' Transform model variables with classes
 #' @description transform_mdl_vars_with_clss() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform model variables with classes. Function argument ds_tb specifies the object to be updated. Argument predictors_lup provides the object to be updated. The function returns Transformed dataset (a tibble).
 #' @param ds_tb Dataset (a tibble)
@@ -372,6 +351,7 @@ transform_params_ls_from_lup <- function (params_ls, rename_lup)
 #' @importFrom stringi stri_replace_last_fixed stri_replace_all_fixed
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter
+#' @importFrom youthvars transform_ds_with_rename_lup
 #' @keywords internal
 transform_params_ls_to_valid <- function (params_ls, scndry_analysis_extra_vars_chr = NA_character_) 
 {
@@ -387,7 +367,7 @@ transform_params_ls_to_valid <- function (params_ls, scndry_analysis_extra_vars_
         target_var_nms_chr), new_nms_chr = make.unique(c(unchanged_var_nms_chr, 
         valid_var_nms_chr), sep = "V")) %>% dplyr::filter(!old_nms_chr %in% 
         unchanged_var_nms_chr)
-    params_ls$ds_tb <- transform_ds_with_rename_lup(params_ls$ds_tb, 
+    params_ls$ds_tb <- youthvars::transform_ds_with_rename_lup(params_ls$ds_tb, 
         rename_lup = rename_lup, target_var_nms_chr = target_var_nms_chr)
     params_ls$ds_descvs_ls$dictionary_tb <- params_ls$ds_descvs_ls$dictionary_tb %>% 
         transform_dict_with_rename_lup(rename_lup = rename_lup)
@@ -528,26 +508,6 @@ transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharin
             rprt_nms_chr))
     }
     return(rprt_lup)
-}
-#' Transform tibble for merged column 1
-#' @description transform_tb_for_merged_col_1() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble for merged column 1. Function argument df specifies the object to be updated. Argument output_type_1L_chr provides the object to be updated. The function returns Data.frame (a data.frame).
-#' @param df Data.frame (a data.frame)
-#' @param output_type_1L_chr Output type (a character vector of length one), Default: 'PDF'
-#' @return Data.frame (a data.frame)
-#' @rdname transform_tb_for_merged_col_1
-#' @export 
-
-#' @keywords internal
-transform_tb_for_merged_col_1 <- function (df, output_type_1L_chr = "PDF") 
-{
-    df[[1]] <- as.character(df[[1]])
-    rle.lengths <- rle(df[[1]])$lengths
-    first <- !duplicated(df[[1]])
-    df[[1]][!first] <- ""
-    if (output_type_1L_chr == "PDF") 
-        df[[1]][first] <- paste0("\\midrule\\multirow{", rle.lengths, 
-            "}{*}{\\textbf{", df[[1]][first], "}}")
-    return(df)
 }
 #' Transform tibble to model input
 #' @description transform_tb_to_mdl_inp() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform tibble to model input. Function argument data_tb specifies the object to be updated. Argument depnt_var_nm_1L_chr provides the object to be updated. The function returns Transformed for model input (a tibble).

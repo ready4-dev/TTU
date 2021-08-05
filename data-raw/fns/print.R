@@ -13,6 +13,9 @@ print_cohort_table <- function(params_ls,
   results_ls <- params_ls$results_ls
   df <- results_ls$tables_ls$participant_descs
   df$variable <- gsub("\\s*\\([^\\)]+\\)","",df$variable)
+  df <- df %>%
+    dplyr::mutate(variable = variable %>%
+                    purrr::map_chr(~Hmisc::capitalize(.x)))
   if(params_ls$output_type_1L_chr == "PDF"){
     df <- df %>%
       dplyr::mutate_all(~ stringr::str_replace(.x,"%","\\\\%") %>%
@@ -32,7 +35,7 @@ print_cohort_table <- function(params_ls,
       kableExtra::add_header_above(c(" ", " ", "Baseline" = 2, "Follow-Up" = 2)) %>%
       kableExtra::collapse_rows(columns = 1)
   }else{
-    df <- df %>% transform_tb_for_merged_col_1(output_type_1L_chr = params_ls$output_type_1L_chr)
+    df <- df %>% youthvars::transform_tb_for_merged_col_1(output_type_1L_chr = params_ls$output_type_1L_chr)
     add_to_row_ls <- make_bl_fup_add_to_row_ls(df,
                                                n_at_bl_1L_int = results_ls$cohort_ls$n_inc_1L_dbl,
                                                n_at_fup_1L_int = results_ls$cohort_ls$n_fup_1L_dbl)
@@ -52,7 +55,7 @@ print_corls_tbl <- function(params_ls,
   tb <- results_ls$tables_ls$pred_dist_and_cors
   tb <- tb %>%
     dplyr::mutate(label = label %>%
-                    purrr::map_chr(~stringr::str_remove_all(.x," \\(Weighted total\\)")))
+                    purrr::map_chr(~stringr::str_remove_all(.x," \\(weighted total\\)")))
   if(params_ls$output_type_1L_chr == "PDF"){
     names(tb) <- c("","",
                    "(N =",
@@ -70,7 +73,7 @@ print_corls_tbl <- function(params_ls,
       kableExtra::collapse_rows(columns = 1)
   }else{
     tb <- tb %>%
-      transform_tb_for_merged_col_1(output_type_1L_chr = params_ls$output_type_1L_chr)
+      youthvars::transform_tb_for_merged_col_1(output_type_1L_chr = params_ls$output_type_1L_chr)
     tb %>%
       ready4show::print_table(output_type_1L_chr = params_ls$output_type_1L_chr,
                               caption_1L_chr = caption_1L_chr,
