@@ -48,6 +48,15 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
                                                                      "_", "BOXCOX"), height_1L_dbl = height_1L_dbl, width_1L_dbl = width_1L_dbl)
   return(path_to_plot_1L_chr)
 }
+write_csp_output <- function(path_to_CSP_1L_chr){
+  path_to_r_script_1L_chr <- stringr::str_sub(path_to_CSP_1L_chr,end=-3)
+  knitr::purl(path_to_CSP_1L_chr,
+              path_to_r_script_1L_chr)
+  readLines(path_to_r_script_1L_chr)[readLines(path_to_r_script_1L_chr) != "knitr::opts_chunk$set(eval = F)"] %>%
+    writeLines(con = path_to_r_script_1L_chr)
+  source(path_to_r_script_1L_chr, local=TRUE)
+  return(results_ls)
+}
 write_main_oupt_dir <- function(params_ls = NULL,
                                 use_fake_data_1L_lgl = F,
                                 R_fl_nm_1L_chr = "aaaaaaaaaa.txt"){
@@ -769,6 +778,19 @@ write_report <- function(params_ls,
                   rltv_path_to_data_dir_1L_chr = "../Output",
                   nm_of_mkdn_dir_1L_chr = "Markdown")
   rlang::exec(ready4show::write_rprt_from_tmpl,!!!args_ls)
+}
+write_reporting_dir <- function(path_to_write_to_1L_chr = getwd(),
+                                new_dir_nm_1L_chr = "TTU_Project",
+                                overwrite_1L_lgl = FALSE){
+  path_to_prjt_dir_1L_chr <- paste0(path_to_write_to_1L_chr,"/",new_dir_nm_1L_chr)
+  if(!dir.exists(path_to_prjt_dir_1L_chr))
+    dir.create(path_to_prjt_dir_1L_chr)
+  path_to_RMD_dir_1L_chr <- system.file("Project/CSP", package = "TTU")
+  file.copy(path_to_RMD_dir_1L_chr, path_to_prjt_dir_1L_chr,
+            recursive = T, overwrite = overwrite_1L_lgl)
+  path_to_CSP_1L_chr <- paste0(path_to_prjt_dir_1L_chr,
+                               "/CSP/CSP.Rmd")
+  return(path_to_CSP_1L_chr)
 }
 write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                                  paths_ls,

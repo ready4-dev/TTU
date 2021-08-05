@@ -11,15 +11,15 @@ output:
 subtitle: "Methods Report 1: Complete Study Program"
 ---
 <!-- This is a template that you can adapt to use the reporting workflow tools of the TTU package. You should review the vignettes at https://ready4-dev.github.io/TTU/index.html to better understand each step. -->
+
 <!---Do not modify this block. The code blocks in this document are not to be run when knitting this document.--->
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(eval = F)
 ```
-
 \blandscape
 <!---BLOCK_LANDSCAPE_START--->
 
-```{r echo = TRUE, message=FALSE}
+```{r message=FALSE}
 library(TTU)
 ```
 
@@ -29,7 +29,7 @@ library(TTU)
 
 ### Bibliograhic data
 <!-- Un-comment and edit the code chunk below with details on your authorship team. -->
-```{r }
+```{r}
 # authors_tb <- ready4show::ready4_authors_lup() %>%
 #   tibble::add_case(first_nm_chr = "Alejandra",
 #                    middle_nm_chr = "Rocio",
@@ -66,7 +66,7 @@ library(TTU)
 
 ### Report formatting
 <!-- Un-comment and edit the code chunk below with details on the desired output formats for the scientific manuscript and supplementary reports and the number of digits of decimal extension that will be used when reporting numbers. -->
-```{r }
+```{r}
 # output_format_ls <- make_output_format_ls(manuscript_outp_1L_chr = "Word",
 #                                           manuscript_digits_1L_int = 2L,
 #                                           supplementary_outp_1L_chr = "PDF",
@@ -90,7 +90,7 @@ library(TTU)
 
 ### Dataset metadata
 <!-- Un-comment and edit the code chunk below, to specify the relevant meta-data for your dataset. -->
-```{r echo = TRUE}
+```{r}
 # ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("K6","PHQ9"),
 #                                   candidate_covar_nms_chr = c("d_age", "SOFAS",
 #                                                               "c_p_diag_s",
@@ -157,7 +157,7 @@ library(TTU)
 #                                                    prefd_covars_chr = NA_character_)
 ```
 <!-- Un-comment and edit the code chunk below to define the final input paramters list. Note, you will need to supply values relating to a dataverse that you control to the dv_ds_nm_and_url_chr argument, or else assign a NULL value to this argument. -->
-```{r eval = F }
+```{r}
 # input_params_ls <- make_input_params(ds_tb,
 #                                      ds_descvs_ls = ds_descvs_ls,
 #                                      dv_ds_nm_and_url_chr = c("fakes", 
@@ -174,18 +174,18 @@ library(TTU)
 # Analyse, Report and Share
 
 ## Run analysis
-```{r eval=FALSE}
+```{r}
 write_analyses(input_params_ls)
 ```
 
 ## Report results
-```{r echo = TRUE, eval=FALSE }
+```{r}
 input_params_ls <- write_mdl_smry_rprt(input_params_ls,
                                        use_shareable_mdls_1L_lgl = T)
 ```
 
 ## Share results
-```{r echo = TRUE, eval=FALSE }
+```{r}
 write_study_outp_ds(input_params_ls)
 ```
 
@@ -193,7 +193,7 @@ write_study_outp_ds(input_params_ls)
 
 ## Create study metadata
 <!-- Un-comment and edit the code chunk below as appropriate. You will need to supply values relating to a dataverse you control to the dv_ds_nm_and_url_chr argument, or else assign a NULL value to this argument. -->
-```{r eval = F}
+```{r}
 # input_params_ls <- make_study_descs_ls(input_params_ls = input_params_ls,
 #                                        background_1L_chr = "Our study is entirely fictional and has been created to illustrate TTU package functionality.",
 #                                        coi_1L_chr = "None declared.",
@@ -209,12 +209,12 @@ write_study_outp_ds(input_params_ls)
 
 ## Render auto-generated first-draft
 <!-- Note, if you are not planning on developing the auto-generated scientific summary further with a view to future publication, you can add write_to_dv_1L_lgl = T to the following call, which will save the auto-generated manuscript to your dataverse dataset. -->
-```{r eval = F}
+```{r}
 results_ls <- write_manuscript(input_params_ls = input_params_ls)
 ```
 
 # Purge dataset copies
-```{r echo = TRUE, eval=FALSE }
+```{r}
 write_to_delete_ds_copies(path_params_ls$paths_ls)
 ```
 

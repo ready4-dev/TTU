@@ -1,3 +1,11 @@
+home:
+  links:
+  - text: User manual (PDF)
+    href: https://github.com/ready4-dev/TTU/files/6277705/TTU_user_0.0.0.9133.pdf
+  - text: Developer version of usual manual (PDF)
+    href: https://github.com/ready4-dev/TTU/files/6277710/TTU_developer_0.0.0.9133.pdf
+  - text: Project website
+    href: https://www.ready4-dev.com/
 development:
   mode: auto
 reference:
@@ -16,25 +24,98 @@ reference:
 - title: "Functions"
 - contents:
   - add_utility_predn_to_ds
+  - get_background_text
   - get_cndts_for_mxd_mdls
+  - get_conclusion_text
+  - get_covar_ctgs
+  - get_covars_by_ctg
+  - get_hlth_utl_nm
+  - get_hlth_utl_stat
+  - get_link_from_tfmn
+  - get_lngl_ttu_types
+  - get_mdl_cmprsns
+  - get_mdl_type_from_nm
+  - get_mdls_with_signft_covars
+  - get_nbr_of_predrs
+  - get_nbr_of_predrs_by_ctg
+  - get_nbr_of_scndry_analyses
+  - get_ordered_sngl_csnl_mdls
+  - get_popl_descvs
+  - get_predr_ctgs
+  - get_predrs_by_ctg
+  - get_prefd_mdl_predrs
+  - get_scndry_anlys_descs
+  - get_selected_mixed_mdls
   - get_signft_covars
+  - make_abstract_args_ls
   - make_analysis_ds_smry_ls
+  - make_cmpst_sctr_and_dnsty_plt
+  - make_cndt_predr_text
+  - make_coi_text
+  - make_correlation_text
+  - make_covar_ttu_tbl_refs
+  - make_covar_ttu_tbl_title
+  - make_covariates_text
+  - make_data_availability_text
+  - make_dnsty_and_sctr_plt_title
+  - make_ds_descvs_ls
+  - make_ds_smry_ls
+  - make_eq5d_ds_dict
+  - make_ethics_text
   - make_fake_eq5d_ds
   - make_fake_ts_data
-  - make_mdl_nms_ls
+  - make_funding_text
+  - make_header_yaml_args_ls
+  - make_indpnt_predrs_lngl_tbl_title
+  - make_indpnt_predrs_lngl_tbls_ref
+  - make_input_params
+  - make_knit_pars_ls
+  - make_lngl_ttu_r2_text
+  - make_lngl_ttu_with_covars_text
+  - make_maui_params_ls
+  - make_mdl
+  - make_mdl_coef_range_text
+  - make_mdl_desc_lines
+  - make_nbr_at_fup_text
+  - make_nbr_included_text
+  - make_output_format_ls
+  - make_path_params_ls
   - make_predr_vals
   - make_predr_vars_nms_ls
+  - make_predrs_for_best_mdls
   - make_prefd_mdls_vec
+  - make_random_forest_text
   - make_results_ls
-  - make_results_ls_spine
+  - make_scaling_text
+  - make_scndry_anlys_params
+  - make_scndry_anlys_text
+  - make_selected_mdl_text
+  - make_shareable_mdl
   - make_study_descs_ls
+  - make_ten_fold_text
+  - make_ten_folds_tbl_title
+  - make_tfmn_cmprsn_plt
+  - make_within_between_ratios_text
   - predict_utility
+  - print_all_plts_for_mdl_set
+  - print_cohort_table
+  - print_corls_tbl
+  - print_covar_ttu_tbls
+  - print_indpnt_predrs_coefs_tbl
+  - print_indpnt_predrs_lngl_mdl_coefs
+  - print_lngl_ttu_tbls
+  - print_ten_folds_tbl
+  - print_ts_mdl_plts
   - reorder_cndt_predrs_chr
+  - transform_data_tb_for_cmprsn
+  - transform_ds_for_mdlng
+  - transform_ds_to_predn_ds
   - transform_mdl_vars_with_clss
-  - transform_paths_ls_for_scndry
-  - transform_rprt_lup
   - transform_tb_to_mdl_inp
+  - write_analyses
+  - write_csp_output
   - write_main_oupt_dir
+  - write_manuscript
   - write_mdl_cmprsn
   - write_mdl_type_covars_mdls
   - write_mdl_type_multi_outps
@@ -42,8 +123,7 @@ reference:
   - write_predr_and_covars_cmprsn
   - write_predr_cmprsn_outps
   - write_report
-  - write_rprt_with_rcrd
-  - write_scndry_analysis
+  - write_reporting_dir
   - write_shareable_mdls
   - write_sngl_predr_multi_mdls_outps
   - write_to_delete_ds_copies

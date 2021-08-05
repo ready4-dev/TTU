@@ -23,4 +23,3 @@ print_ten_folds_tbl(
 \description{
 print_ten_folds_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print ten folds table. The function is called for its side effects and does not return a value.
 }
-\keyword{internal}

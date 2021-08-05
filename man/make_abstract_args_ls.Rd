@@ -17,4 +17,3 @@ Abstract arguments (a list)
 \description{
 make_abstract_args_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make abstract arguments list. The function returns Abstract arguments (a list).
 }
-\keyword{internal}

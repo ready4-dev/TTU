@@ -17,4 +17,3 @@ Predictor category categoriess (a character vector)
 \description{
 get_predr_ctgs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get predictor category categoriess. Function argument results_ls specifies the where to look for the required object. The function returns Predictor category categoriess (a character vector).
 }
-\keyword{internal}

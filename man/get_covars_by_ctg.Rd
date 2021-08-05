@@ -17,4 +17,3 @@ Covariates by category categories (a list)
 \description{
 get_covars_by_ctg() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get covariates by category categories. Function argument results_ls specifies the where to look for the required object. The function returns Covariates by category categories (a list).
 }
-\keyword{internal}

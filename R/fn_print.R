@@ -6,7 +6,6 @@
 #' @rdname print_all_plts_for_mdl_set
 #' @export 
 #' @importFrom purrr flatten walk
-#' @keywords internal
 print_all_plts_for_mdl_set <- function (output_ls, start_from_1L_int = 0L) 
 {
     label_refs_mat <- paste0("lab", 1:(output_ls %>% purrr::flatten() %>% 
@@ -32,7 +31,6 @@ print_all_plts_for_mdl_set <- function (output_ls, start_from_1L_int = 0L)
 #' @importFrom knitr opts_current
 #' @importFrom youthvars transform_tb_for_merged_col_1
 #' @importFrom ready4show print_table
-#' @keywords internal
 print_cohort_table <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr) 
 {
     results_ls <- params_ls$results_ls
@@ -79,7 +77,6 @@ print_cohort_table <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
 #' @importFrom knitr opts_current
 #' @importFrom youthvars transform_tb_for_merged_col_1
 #' @importFrom ready4show print_table
-#' @keywords internal
 print_corls_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr) 
 {
     results_ls <- params_ls$results_ls
@@ -117,7 +114,6 @@ print_corls_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
 #' @importFrom purrr pluck map_chr
 #' @importFrom dplyr mutate
 #' @importFrom stringr str_replace_all
-#' @keywords internal
 print_covar_ttu_tbls <- function (params_ls, caption_1L_chr, table_1L_chr, ref_1L_int = 1) 
 {
     results_ls <- params_ls$results_ls
@@ -142,7 +138,6 @@ print_covar_ttu_tbls <- function (params_ls, caption_1L_chr, table_1L_chr, ref_1
 #' @importFrom stringr str_replace_all
 #' @importFrom purrr map_chr
 #' @importFrom ready4show print_table
-#' @keywords internal
 print_indpnt_predrs_coefs_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr) 
 {
     results_ls <- params_ls$results_ls
@@ -183,7 +178,6 @@ print_indpnt_predrs_coefs_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_r
 #' @importFrom purrr pluck keep
 #' @importFrom dplyr select rename_with
 #' @importFrom stringr str_remove
-#' @keywords internal
 print_indpnt_predrs_lngl_mdl_coefs <- function (params_ls, caption_1L_chr, ref_1L_int = 1, table_1L_chr) 
 {
     results_ls <- params_ls$results_ls
@@ -211,7 +205,6 @@ print_indpnt_predrs_lngl_mdl_coefs <- function (params_ls, caption_1L_chr, ref_1
 #' @importFrom knitr opts_current
 #' @importFrom purrr map_chr
 #' @importFrom ready4show print_table
-#' @keywords internal
 print_lngl_ttu_tbls <- function (table_df, params_ls, caption_1L_chr, table_1L_chr, 
     ref_1L_int = 1) 
 {
@@ -249,7 +242,6 @@ print_lngl_ttu_tbls <- function (table_df, params_ls, caption_1L_chr, table_1L_c
 #' @importFrom stringr str_replace_all
 #' @importFrom purrr map_chr
 #' @importFrom ready4show print_table
-#' @keywords internal
 print_ten_folds_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr, ref_1L_int = 1) 
 {
     results_ls <- params_ls$results_ls
@@ -297,7 +289,6 @@ print_ten_folds_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr,
 #' @rdname print_ts_mdl_plts
 #' @export 
 #' @importFrom purrr pwalk
-#' @keywords internal
 print_ts_mdl_plts <- function (paths_to_plts_chr, title_1L_chr, label_refs_chr, mdl_smry_ls) 
 {
     cat("\n")

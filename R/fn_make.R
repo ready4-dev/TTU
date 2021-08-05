@@ -7,7 +7,6 @@
 #' @export 
 #' @importFrom xfun numbers_to_words
 #' @importFrom Hmisc capitalize
-#' @keywords internal
 make_abstract_args_ls <- function (results_ls, fl_nm_1L_chr = "abstract.txt") 
 {
     mdl_cmprsns_ls <- get_mdl_cmprsns(results_ls, as_list_1L_lgl = T)
@@ -272,7 +271,6 @@ make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, popl_1L_chr, fam_1L
 #' @importFrom purrr discard map_lgl map
 #' @importFrom stringr str_detect
 #' @importFrom cowplot ggdraw draw_image plot_grid
-#' @keywords internal
 make_cmpst_sctr_and_dnsty_plt <- function (outp_smry_ls, output_data_dir_1L_chr, predr_var_nms_chr, 
     labels_chr = c("A", "B", "C", "D"), label_x_1L_dbl = 0.1, 
     label_y_1L_dbl = 0.9, label_size_1L_dbl = 22) 
@@ -297,7 +295,6 @@ make_cmpst_sctr_and_dnsty_plt <- function (outp_smry_ls, output_data_dir_1L_chr,
 #' @rdname make_cndt_predr_text
 #' @export 
 #' @importFrom Hmisc capitalize
-#' @keywords internal
 make_cndt_predr_text <- function (results_ls, type_1L_chr = "description") 
 {
     nbr_of_predrs_1L_int <- get_nbr_of_predrs(results_ls, as_words_1L_lgl = F)
@@ -388,7 +385,6 @@ make_cohort_ls <- function (descv_tbls_ls, ctgl_vars_regrouping_ls = NULL, nbr_o
 #' @rdname make_coi_text
 #' @export 
 
-#' @keywords internal
 make_coi_text <- function (results_ls) 
 {
     text_1L_chr <- ifelse(is.null(results_ls$study_descs_ls$coi_1L_chr), 
@@ -402,7 +398,6 @@ make_coi_text <- function (results_ls)
 #' @rdname make_correlation_text
 #' @export 
 
-#' @keywords internal
 make_correlation_text <- function (results_ls) 
 {
     correlation_text_1L_chr <- ifelse(length(results_ls$hlth_utl_and_predrs_ls$cor_seq_dscdng_chr) < 
@@ -425,7 +420,6 @@ make_correlation_text <- function (results_ls)
 #' @export 
 #' @importFrom purrr discard
 #' @importFrom stringi stri_replace_last
-#' @keywords internal
 make_covar_ttu_tbl_refs <- function (params_ls) 
 {
     results_ls <- params_ls$results_ls
@@ -447,7 +441,6 @@ make_covar_ttu_tbl_refs <- function (params_ls)
 #' @rdname make_covar_ttu_tbl_title
 #' @export 
 #' @importFrom stringi stri_replace_last
-#' @keywords internal
 make_covar_ttu_tbl_title <- function (results_ls, ref_1L_int = 1) 
 {
     title_1L_chr <- paste0("Estimated coefficients from longitudinal TTU models based on individual candidate predictors with ", 
@@ -467,7 +460,6 @@ make_covar_ttu_tbl_title <- function (results_ls, ref_1L_int = 1)
 #' @importFrom stringi stri_replace_last
 #' @importFrom purrr map_chr map_lgl map flatten_chr map2_chr
 #' @importFrom stringr str_detect
-#' @keywords internal
 make_covariates_text <- function (results_ls) 
 {
     if (!is.null(results_ls$candidate_covars_ls)) {
@@ -592,7 +584,6 @@ make_cs_ts_ratios_tb <- function (predr_ctgs_ls, mdl_coef_ratios_ls, candidate_p
 #' @rdname make_data_availability_text
 #' @export 
 
-#' @keywords internal
 make_data_availability_text <- function (results_ls) 
 {
     text_1L_chr <- ifelse(is.null(results_ls$dv_ds_nm_and_url_chr), 
@@ -608,7 +599,6 @@ make_data_availability_text <- function (results_ls)
 #' @export 
 #' @importFrom stringi stri_replace_last
 #' @importFrom purrr pmap_chr pluck
-#' @keywords internal
 make_dnsty_and_sctr_plt_title <- function (results_ls) 
 {
     title_1L_chr <- paste0("Comparison of observed and predicted ", 
@@ -646,7 +636,6 @@ make_dnsty_and_sctr_plt_title <- function (results_ls)
 #' @rdname make_ds_descvs_ls
 #' @export 
 
-#' @keywords internal
 make_ds_descvs_ls <- function (candidate_predrs_chr, cohort_descv_var_nms_chr, dictionary_tb, 
     id_var_nm_1L_chr, msrmnt_date_var_nm_1L_chr, round_var_nm_1L_chr, 
     round_vals_chr, maui_item_pfx_1L_chr, utl_wtd_var_nm_1L_chr = "wtd_utl_dbl", 
@@ -676,7 +665,6 @@ make_ds_descvs_ls <- function (candidate_predrs_chr, cohort_descv_var_nms_chr, d
 #' @rdname make_ds_smry_ls
 #' @export 
 
-#' @keywords internal
 make_ds_smry_ls <- function (candidate_predrs_chr, candidate_covar_nms_chr, depnt_var_nm_1L_chr, 
     dictionary_tb, id_var_nm_1L_chr, round_var_nm_1L_chr, round_bl_val_1L_chr, 
     predictors_lup) 
@@ -698,7 +686,6 @@ make_ds_smry_ls <- function (candidate_predrs_chr, candidate_covar_nms_chr, depn
 #' @importFrom youthvars make_tfd_repln_ds_dict_r3 make_final_rpln_ds_dict
 #' @importFrom dplyr filter arrange
 #' @importFrom ready4use make_pt_ready4_dictionary
-#' @keywords internal
 make_eq5d_ds_dict <- function (data_tb = make_fake_eq5d_ds(), predictors_lup = make_psych_predrs_lup()) 
 {
     dictionary_tb <- youthvars::make_tfd_repln_ds_dict_r3() %>% 
@@ -726,7 +713,6 @@ make_eq5d_ds_dict <- function (data_tb = make_fake_eq5d_ds(), predictors_lup = m
 #' @rdname make_ethics_text
 #' @export 
 
-#' @keywords internal
 make_ethics_text <- function (results_ls) 
 {
     text_1L_chr <- ifelse(is.null(results_ls$study_descs_ls$ethics_1L_chr), 
@@ -873,7 +859,6 @@ make_folds_ls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", folds_1
 #' @rdname make_funding_text
 #' @export 
 
-#' @keywords internal
 make_funding_text <- function (results_ls) 
 {
     text_1L_chr <- ifelse(is.null(results_ls$study_descs_ls$funding_1L_chr), 
@@ -892,7 +877,6 @@ make_funding_text <- function (results_ls)
 #' @rdname make_header_yaml_args_ls
 #' @export 
 
-#' @keywords internal
 make_header_yaml_args_ls <- function (authors_tb, institutes_tb, title_1L_chr, keywords_chr, 
     fl_nm_1L_chr = "header_common.yaml", use_fake_data_1L_lgl = F) 
 {
@@ -965,7 +949,6 @@ make_hlth_utl_and_predrs_ls <- function (outp_smry_ls, descv_tbls_ls, nbr_of_dig
 #' @rdname make_indpnt_predrs_lngl_tbl_title
 #' @export 
 
-#' @keywords internal
 make_indpnt_predrs_lngl_tbl_title <- function (results_ls, ref_1L_int = 1) 
 {
     title_1L_chr <- paste0("Estimated coefficients for single predictor longitudinal TTU models using ", 
@@ -981,7 +964,6 @@ make_indpnt_predrs_lngl_tbl_title <- function (results_ls, ref_1L_int = 1)
 #' @rdname make_indpnt_predrs_lngl_tbls_ref
 #' @export 
 #' @importFrom stringi stri_replace_last
-#' @keywords internal
 make_indpnt_predrs_lngl_tbls_ref <- function (params_ls) 
 {
     results_ls <- params_ls$results_ls
@@ -1016,7 +998,6 @@ make_indpnt_predrs_lngl_tbls_ref <- function (params_ls)
 #' @rdname make_input_params
 #' @export 
 
-#' @keywords internal
 make_input_params <- function (ds_tb, ds_descvs_ls, header_yaml_args_ls, maui_params_ls, 
     predictors_lup, control_ls = NULL, dv_ds_nm_and_url_chr = NULL, 
     iters_1L_int = 4000L, mdl_smry_ls = make_mdl_smry_ls(), output_format_ls = make_output_format_ls(), 
@@ -1055,7 +1036,6 @@ make_input_params <- function (ds_tb, ds_descvs_ls, header_yaml_args_ls, maui_pa
 #' @importFrom stringr str_detect
 #' @importFrom stats setNames
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, predr_vars_nms_ls, 
     output_type_1L_chr = "HTML", mdl_types_lup = NULL, plt_types_lup = NULL, 
     plt_types_chr = NA_character_, section_type_1L_chr = "#") 
@@ -1144,7 +1124,6 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
 #' @importFrom purrr map_dbl pmap_chr
 #' @importFrom dplyr filter pull
 #' @importFrom rlang sym
-#' @keywords internal
 make_lngl_ttu_r2_text <- function (results_ls, part_int = 1) 
 {
     if (1 %in% part_int) {
@@ -1196,7 +1175,6 @@ make_lngl_ttu_r2_text <- function (results_ls, part_int = 1)
 #' @rdname make_lngl_ttu_with_covars_text
 #' @export 
 #' @importFrom stringi stri_replace_last
-#' @keywords internal
 make_lngl_ttu_with_covars_text <- function (results_ls) 
 {
     text_1L_chr <- ifelse((is.na(results_ls$ttu_lngl_ls$incld_covars_chr) | 
@@ -1223,7 +1201,6 @@ make_lngl_ttu_with_covars_text <- function (results_ls)
 #' @export 
 #' @importFrom dplyr mutate across starts_with filter
 #' @importFrom rlang sym
-#' @keywords internal
 make_maui_params_ls <- function (maui_itm_short_nms_chr, maui_domains_pfcs_1L_chr = NULL, 
     maui_scoring_fn = NULL, short_and_long_nm = NULL, utl_min_val_1L_dbl = -1) 
 {
@@ -1258,7 +1235,6 @@ make_maui_params_ls <- function (maui_itm_short_nms_chr, maui_domains_pfcs_1L_ch
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom stringi stri_locate_last_fixed
 #' @importFrom stringr str_sub
-#' @keywords internal
 make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr = "NTF", 
     predr_var_nm_1L_chr, covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF", 
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NULL) 
@@ -1307,7 +1283,6 @@ make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr 
 #' @rdname make_mdl_coef_range_text
 #' @export 
 
-#' @keywords internal
 make_mdl_coef_range_text <- function (coef_ratios_dbl, nbr_of_digits_1L_int = 2L) 
 {
     if (length(coef_ratios_dbl) == 1) {
@@ -1374,7 +1349,6 @@ make_mdl_coef_ratio_ls <- function (mdl_ingredients_ls, predr_ctgs_ls = NULL)
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_remove
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 make_mdl_desc_lines <- function (outp_smry_ls, mdl_nm_1L_chr, output_type_1L_chr = "PDF") 
 {
     mdl_smry_tb <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Model == 
@@ -1416,6 +1390,7 @@ make_mdl_desc_lines <- function (outp_smry_ls, mdl_nm_1L_chr, output_type_1L_chr
 #' @rdname make_mdl_nms_ls
 #' @export 
 #' @importFrom purrr map2
+#' @keywords internal
 make_mdl_nms_ls <- function (predr_vars_nms_ls, mdl_types_chr) 
 {
     mdl_nms_ls <- purrr::map2(predr_vars_nms_ls, make_unique_ls_elmt_idx_int(predr_vars_nms_ls), 
@@ -1549,7 +1524,6 @@ make_mdls_smry_tbls_ls <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L)
 #' @rdname make_nbr_at_fup_text
 #' @export 
 
-#' @keywords internal
 make_nbr_at_fup_text <- function (results_ls) 
 {
     nbr_at_fup_1L_chr <- paste0("There were ", results_ls$cohort_ls$n_fup_1L_dbl, 
@@ -1566,7 +1540,6 @@ make_nbr_at_fup_text <- function (results_ls)
 #' @rdname make_nbr_included_text
 #' @export 
 
-#' @keywords internal
 make_nbr_included_text <- function (results_ls) 
 {
     paste0(ifelse(results_ls$cohort_ls$n_inc_1L_dbl == results_ls$cohort_ls$n_all_1l_dbl, 
@@ -1584,7 +1557,6 @@ make_nbr_included_text <- function (results_ls)
 #' @rdname make_output_format_ls
 #' @export 
 
-#' @keywords internal
 make_output_format_ls <- function (manuscript_outp_1L_chr = "Word", manuscript_digits_1L_int = 2L, 
     supplementary_outp_1L_chr = "PDF", supplementary_digits_1L_int = 2L) 
 {
@@ -1607,7 +1579,6 @@ make_output_format_ls <- function (manuscript_outp_1L_chr = "Word", manuscript_d
 #' @rdname make_path_params_ls
 #' @export 
 #' @importFrom purrr pluck
-#' @keywords internal
 make_path_params_ls <- function (path_to_data_from_top_level_chr = NULL, path_from_top_level_1L_chr = NULL, 
     path_to_current_1L_chr = NULL, dv_ds_nm_and_url_chr = NULL, 
     write_new_dir_1L_lgl = F, use_fake_data_1L_lgl = F, R_fl_nm_1L_chr = "aaaaaaaaaa.txt") 
@@ -1774,7 +1745,6 @@ make_predr_vars_nms_ls <- function (main_predrs_chr, covars_ls, existing_predrs_
 #' @importFrom dplyr filter arrange desc pull
 #' @importFrom purrr map flatten_chr map_lgl map2_chr
 #' @importFrom stringr str_remove
-#' @keywords internal
 make_predrs_for_best_mdls <- function (outp_smry_ls, old_nms_chr = NULL, new_nms_chr = NULL) 
 {
     ordered_mdl_nms_chr <- outp_smry_ls$mdls_smry_tb %>% dplyr::filter(Parameter == 
@@ -1895,7 +1865,6 @@ make_psych_predrs_lup <- function ()
 #' @rdname make_random_forest_text
 #' @export 
 
-#' @keywords internal
 make_random_forest_text <- function (results_ls, for_abstract_1L_lgl = F) 
 {
     if (for_abstract_1L_lgl) {
@@ -2071,6 +2040,7 @@ make_results_ls <- function (spine_of_results_ls = NULL, abstract_args_ls = NULL
 #' @importFrom purrr map_chr map
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom stats setNames
+#' @keywords internal
 make_results_ls_spine <- function (output_format_ls = NULL, params_ls_ls = NULL, path_params_ls = NULL, 
     study_descs_ls, fn_ls = NULL, include_idx_int = NULL, nbr_of_digits_1L_int = NULL, 
     output_data_dir_1L_chr = NULL, var_nm_change_lup = NULL) 
@@ -2151,7 +2121,6 @@ make_results_ls_spine <- function (output_format_ls = NULL, params_ls_ls = NULL,
 #' @importFrom stringr str_remove str_replace_all
 #' @importFrom dplyr filter pull
 #' @importFrom stringi stri_replace_last
-#' @keywords internal
 make_scaling_text <- function (results_ls, table_1L_chr = "cfscl") 
 {
     if (startsWith(table_1L_chr, "cfscl")) {
@@ -2194,7 +2163,6 @@ make_scaling_text <- function (results_ls, table_1L_chr = "cfscl")
 #' @rdname make_scndry_anlys_params
 #' @export 
 #' @importFrom stats setNames
-#' @keywords internal
 make_scndry_anlys_params <- function (scndry_anlys_params_ls = NULL, candidate_covar_nms_chr = NULL, 
     candidate_predrs_chr = NULL, predictors_lup = NULL, prefd_covars_chr = NA_character_) 
 {
@@ -2218,7 +2186,6 @@ make_scndry_anlys_params <- function (scndry_anlys_params_ls = NULL, candidate_c
 #' @rdname make_scndry_anlys_text
 #' @export 
 
-#' @keywords internal
 make_scndry_anlys_text <- function (results_ls) 
 {
     text_1L_chr <- ifelse(get_nbr_of_scndry_analyses(results_ls, 
@@ -2236,7 +2203,6 @@ make_scndry_anlys_text <- function (results_ls)
 #' @rdname make_selected_mdl_text
 #' @export 
 #' @importFrom stringi stri_replace_last
-#' @keywords internal
 make_selected_mdl_text <- function (results_ls, for_abstract_1L_lgl = F) 
 {
     length_1L_int <- length(results_ls$ttu_cs_ls$selected_mdls_chr)
@@ -2271,7 +2237,6 @@ make_selected_mdl_text <- function (results_ls, for_abstract_1L_lgl = F)
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_replace_all
 #' @importFrom assertthat assert_that
-#' @keywords internal
 make_shareable_mdl <- function (fake_ds_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "utl_total_w", 
     id_var_nm_1L_chr = "fkClientID", tfmn_1L_chr = "CLL", mdl_type_1L_chr = "OLS_CLL", 
     mdl_types_lup = NULL, control_1L_chr = NA_character_, start_1L_chr = NA_character_, 
@@ -2672,7 +2637,6 @@ make_study_descs_ls <- function (input_params_ls = NULL, time_btwn_bl_and_fup_1L
 #' @rdname make_ten_fold_text
 #' @export 
 
-#' @keywords internal
 make_ten_fold_text <- function (results_ls, for_abstract_1L_lgl = F) 
 {
     mdls_chr <- get_ordered_sngl_csnl_mdls(results_ls)
@@ -2699,7 +2663,6 @@ make_ten_fold_text <- function (results_ls, for_abstract_1L_lgl = F)
 #' @rdname make_ten_folds_tbl_title
 #' @export 
 #' @importFrom stringi stri_replace_last
-#' @keywords internal
 make_ten_folds_tbl_title <- function (results_ls, ref_1L_int = 1) 
 {
     title_1L_chr <- ifelse(ref_1L_int == 1, paste0("10-fold cross-validated model fitting index for different ", 
@@ -2764,7 +2727,6 @@ make_tfd_sngl_predr_mdls_tb <- function (outp_smry_ls, nbr_of_digits_1L_int = 2L
 #' @importFrom ggalt geom_bkde
 #' @importFrom viridis scale_fill_viridis
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 make_tfmn_cmprsn_plt <- function (data_tb, depnt_var_nm_1L_chr, dictionary_tb) 
 {
     tfmn_cmprsn_plt <- tidyr::gather(data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(paste0(depnt_var_nm_1L_chr, 
@@ -2925,7 +2887,6 @@ make_valid_params_ls_ls <- function (analysis_core_params_ls, ds_tb, path_params
 #' @importFrom dplyr filter
 #' @importFrom purrr pmap_chr
 #' @importFrom stringi stri_replace_last
-#' @keywords internal
 make_within_between_ratios_text <- function (results_ls, exclude_covars_1L_lgl = F) 
 {
     tb <- results_ls$ttu_lngl_ls$cs_ts_ratios_tb

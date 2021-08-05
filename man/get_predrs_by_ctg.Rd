@@ -26,4 +26,3 @@ Predictors by category categories (a list)
 \description{
 get_predrs_by_ctg() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get predictors by category categories. Function argument results_ls specifies the where to look for the required object. The function returns Predictors by category categories (a list).
 }
-\keyword{internal}

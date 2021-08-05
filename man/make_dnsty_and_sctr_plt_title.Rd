@@ -15,4 +15,3 @@ Title (a character vector of length one)
 \description{
 make_dnsty_and_sctr_plt_title() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make dnsty and scatter plot title. The function returns Title (a character vector of length one).
 }
-\keyword{internal}

@@ -17,4 +17,3 @@ Health utility name (a character vector of length one)
 \description{
 get_hlth_utl_nm() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get health utility name. Function argument results_ls specifies the where to look for the required object. The function returns Health utility name (a character vector of length one).
 }
-\keyword{internal}

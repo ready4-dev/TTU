@@ -32,4 +32,3 @@ Header yaml arguments (a list)
 \description{
 make_header_yaml_args_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make header yaml arguments list. The function returns Header yaml arguments (a list).
 }
-\keyword{internal}

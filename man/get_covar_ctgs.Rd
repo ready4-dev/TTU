@@ -17,4 +17,3 @@ Covariate category categoriess (a character vector)
 \description{
 get_covar_ctgs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get covariate category categoriess. Function argument results_ls specifies the where to look for the required object. The function returns Covariate category categoriess (a character vector).
 }
-\keyword{internal}

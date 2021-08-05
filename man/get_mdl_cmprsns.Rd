@@ -26,4 +26,3 @@ Model comparisons (an output object of multiple potential types)
 \description{
 get_mdl_cmprsns() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get model comparisons. Function argument results_ls specifies the where to look for the required object. The function returns Model comparisons (an output object of multiple potential types).
 }
-\keyword{internal}

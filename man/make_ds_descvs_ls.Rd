@@ -50,4 +50,3 @@ Dataset descriptives (a list)
 \description{
 make_ds_descvs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make dataset descriptives list. The function returns Dataset descriptives (a list).
 }
-\keyword{internal}

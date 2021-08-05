@@ -15,4 +15,3 @@ Text (a character vector of length one)
 \description{
 make_data_availability_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make data availability text. The function returns Text (a character vector of length one).
 }
-\keyword{internal}

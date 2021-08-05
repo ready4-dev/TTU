@@ -16,4 +16,3 @@ print_corls_tbl(params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
 \description{
 print_corls_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print corls table. The function is called for its side effects and does not return a value.
 }
-\keyword{internal}

@@ -17,4 +17,3 @@ Coefficient range text (a character vector)
 \description{
 make_mdl_coef_range_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make model coefficient range text. The function returns Coefficient range text (a character vector).
 }
-\keyword{internal}

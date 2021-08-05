@@ -17,4 +17,3 @@ Health utility statistic (a character vector of length one)
 \description{
 get_hlth_utl_stat() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get health utility statistic. Function argument results_ls specifies the where to look for the required object. The function returns Health utility statistic (a character vector of length one).
 }
-\keyword{internal}

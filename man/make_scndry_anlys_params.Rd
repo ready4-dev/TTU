@@ -29,4 +29,3 @@ New params (a list)
 \description{
 make_scndry_anlys_params() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make scndry anlys params. The function returns New params (a list).
 }
-\keyword{internal}

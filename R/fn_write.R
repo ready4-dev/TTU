@@ -7,7 +7,6 @@
 #' @rdname write_analyses
 #' @export 
 #' @importFrom purrr walk pluck
-#' @keywords internal
 write_analyses <- function (input_params_ls, abstract_args_ls = NULL, start_at_int = c(2, 
     1)) 
 {
@@ -74,6 +73,24 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
             "_", "BOXCOX"), height_1L_dbl = height_1L_dbl, width_1L_dbl = width_1L_dbl)
     return(path_to_plot_1L_chr)
 }
+#' Write csp output
+#' @description write_csp_output() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write csp output. The function returns Results (a list).
+#' @param path_to_CSP_1L_chr Path to CSP (a character vector of length one)
+#' @return Results (a list)
+#' @rdname write_csp_output
+#' @export 
+#' @importFrom stringr str_sub
+#' @importFrom knitr purl
+write_csp_output <- function (path_to_CSP_1L_chr) 
+{
+    path_to_r_script_1L_chr <- stringr::str_sub(path_to_CSP_1L_chr, 
+        end = -3)
+    knitr::purl(path_to_CSP_1L_chr, path_to_r_script_1L_chr)
+    readLines(path_to_r_script_1L_chr)[readLines(path_to_r_script_1L_chr) != 
+        "knitr::opts_chunk$set(eval = F)"] %>% writeLines(con = path_to_r_script_1L_chr)
+    source(path_to_r_script_1L_chr, local = TRUE)
+    return(results_ls)
+}
 #' Write main oupt directory
 #' @description write_main_oupt_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write main oupt directory. The function returns Paths (a list).
 #' @param params_ls Params (a list), Default: NULL
@@ -121,7 +138,6 @@ write_main_oupt_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_f
 #' @importFrom rmarkdown render
 #' @importFrom ready4use write_fls_to_dv_ds
 #' @importFrom tibble tibble
-#' @keywords internal
 write_manuscript <- function (abstract_args_ls = NULL, input_params_ls = NULL, results_ls = NULL, 
     figures_in_body_lgl = NULL, output_type_1L_chr = NULL, tables_in_body_lgl = NULL, 
     title_1L_chr = "Scientific manuscript", version_1L_chr = "0.4", 
@@ -900,6 +916,28 @@ write_report <- function (params_ls, paths_ls, rprt_nm_1L_chr, abstract_args_ls 
         rltv_path_to_data_dir_1L_chr = "../Output", nm_of_mkdn_dir_1L_chr = "Markdown")
     rlang::exec(ready4show::write_rprt_from_tmpl, !!!args_ls)
 }
+#' Write reporting directory
+#' @description write_reporting_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write reporting directory. The function returns Path to CSP (a character vector of length one).
+#' @param path_to_write_to_1L_chr Path to write to (a character vector of length one), Default: getwd()
+#' @param new_dir_nm_1L_chr New directory name (a character vector of length one), Default: 'TTU_Project'
+#' @param overwrite_1L_lgl Overwrite (a logical vector of length one), Default: FALSE
+#' @return Path to CSP (a character vector of length one)
+#' @rdname write_reporting_dir
+#' @export 
+
+write_reporting_dir <- function (path_to_write_to_1L_chr = getwd(), new_dir_nm_1L_chr = "TTU_Project", 
+    overwrite_1L_lgl = FALSE) 
+{
+    path_to_prjt_dir_1L_chr <- paste0(path_to_write_to_1L_chr, 
+        "/", new_dir_nm_1L_chr)
+    if (!dir.exists(path_to_prjt_dir_1L_chr)) 
+        dir.create(path_to_prjt_dir_1L_chr)
+    path_to_RMD_dir_1L_chr <- system.file("Project/CSP", package = "TTU")
+    file.copy(path_to_RMD_dir_1L_chr, path_to_prjt_dir_1L_chr, 
+        recursive = T, overwrite = overwrite_1L_lgl)
+    path_to_CSP_1L_chr <- paste0(path_to_prjt_dir_1L_chr, "/CSP/CSP.Rmd")
+    return(path_to_CSP_1L_chr)
+}
 #' Write report with rcrd
 #' @description write_rprt_with_rcrd() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write report with rcrd. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param path_to_outp_fl_1L_chr Path to output file (a character vector of length one)
@@ -921,6 +959,7 @@ write_report <- function (params_ls, paths_ls, rprt_nm_1L_chr, abstract_args_ls 
 #' @rdname write_rprt_with_rcrd
 #' @export 
 #' @importFrom ready4fun get_from_lup_obj
+#' @keywords internal
 write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_args_ls = NULL, 
     rprt_lup = NULL, use_fake_data_1L_lgl = F, rprt_nm_1L_chr = "AAA_TTU_MDL_CTG", 
     rcrd_nm_1L_chr = "AAA_RPRT_WRTNG_MTH", reference_1L_int = NULL, 
@@ -976,6 +1015,7 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_
 #' @importFrom purrr map_chr pluck
 #' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr filter
+#' @keywords internal
 write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, candidate_covar_nms_chr, 
     candidate_predrs_chr = NULL, header_yaml_args_ls, path_params_ls, 
     prefd_covars_chr = NA_character_, reference_1L_int, start_at_int = c(2, 

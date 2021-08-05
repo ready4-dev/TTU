@@ -17,4 +17,3 @@ Link (a character vector of length one)
 \description{
 get_link_from_tfmn() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get link from transformation. Function argument tfmn_1L_chr specifies the where to look for the required object. The function returns Link (a character vector of length one).
 }
-\keyword{internal}

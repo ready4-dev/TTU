@@ -17,4 +17,3 @@ Models with significant covariates (a list)
 \description{
 get_mdls_with_signft_covars() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get models with significant covariates. Function argument outp_smry_ls specifies the where to look for the required object. The function returns Models with significant covariates (a list).
 }
-\keyword{internal}

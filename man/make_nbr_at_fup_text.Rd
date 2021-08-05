@@ -15,4 +15,3 @@ Number at follow-up (a character vector of length one)
 \description{
 make_nbr_at_fup_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make number at follow-up text. The function returns Number at follow-up (a character vector of length one).
 }
-\keyword{internal}

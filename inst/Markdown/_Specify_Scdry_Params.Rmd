@@ -17,7 +17,7 @@ data_tb <- outp_smry_ls$scored_data_tb
 ## Modify parameters from primary analysis
 ```{r eval = !is.null(params_ls$rename_lup), echo = !is.null(params_ls$rename_lup)}
 data_tb <- data_tb %>%
-  transform_ds_with_rename_lup(rename_lup = params_ls$rename_lup)
+  youthvars::transform_ds_with_rename_lup(rename_lup = params_ls$rename_lup)
 ```
 
 ```{r}

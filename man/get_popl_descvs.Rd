@@ -15,4 +15,3 @@ Population descriptives (a character vector of length one)
 \description{
 get_popl_descvs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get population descriptives. Function argument results_ls specifies the where to look for the required object. The function returns Population descriptives (a character vector of length one).
 }
-\keyword{internal}

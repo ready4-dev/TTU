@@ -45,7 +45,6 @@ transform_chr_digit_pairs <- function (digit_pairs_chr, nbr_of_digits_1L_int = 2
 #' @export 
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
-#' @keywords internal
 transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_chr = "utl_total_w", 
     source_data_nm_1L_chr = "Original", new_data_is_1L_chr = "Predicted", 
     predn_type_1L_chr = NULL, family_1L_chr = NA_character_, 
@@ -155,7 +154,6 @@ transform_ds_for_all_cmprsn_plts <- function (tfd_data_tb, model_mdl, depnt_var_
 #' @importFrom tidyr drop_na
 #' @importFrom rlang syms
 #' @importFrom dplyr select
-#' @keywords internal
 transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_var_nm_1L_chr, 
     covar_var_nms_chr = NA_character_) 
 {
@@ -182,7 +180,6 @@ transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w"
 #' @importFrom rlang sym exec
 #' @importFrom purrr reduce map_dbl
 #' @importFrom ready4fun get_from_lup_obj
-#' @keywords internal
 transform_ds_to_predn_ds <- function (data_tb, predr_vars_nms_chr, tfmn_1L_chr, depnt_var_nm_1L_chr, 
     id_var_nm_1L_chr, round_var_nm_1L_chr, round_bl_val_1L_chr, 
     predictors_lup) 
@@ -387,6 +384,7 @@ transform_params_ls_to_valid <- function (params_ls, scndry_analysis_extra_vars_
 #' @rdname transform_paths_ls_for_scndry
 #' @export 
 #' @importFrom stringr str_sub
+#' @keywords internal
 transform_paths_ls_for_scndry <- function (paths_ls, reference_1L_int = 1, remove_prmry_1L_lgl = F, 
     remove_mkdn_1L_lgl = F) 
 {
@@ -466,6 +464,7 @@ transform_predr_nm_part_of_phrases <- function (phrases_chr, old_nms_chr = NULL,
 #' @export 
 #' @importFrom tibble add_case
 #' @importFrom dplyr filter mutate case_when
+#' @keywords internal
 transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharing_rprt_1L_lgl = F, 
     start_at_int = NULL, reference_1L_int = NULL) 
 {

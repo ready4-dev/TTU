@@ -17,4 +17,3 @@ Title (a character vector of length one)
 \description{
 make_ten_folds_tbl_title() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ten folds table title. The function returns Title (a character vector of length one).
 }
-\keyword{internal}

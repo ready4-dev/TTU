@@ -16,4 +16,3 @@ print_cohort_table(params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
 \description{
 print_cohort_table() is a Print function that prints output to console Specifically, this function implements an algorithm to print cohort table. The function is called for its side effects and does not return a value.
 }
-\keyword{internal}
