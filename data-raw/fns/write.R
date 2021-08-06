@@ -48,7 +48,9 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
                                                                      "_", "BOXCOX"), height_1L_dbl = height_1L_dbl, width_1L_dbl = width_1L_dbl)
   return(path_to_plot_1L_chr)
 }
-write_csp_output <- function(path_to_CSP_1L_chr){
+write_csp_output <- function(path_to_CSP_1L_chr,
+                             dv_ds_doi_1L_chr = NULL,
+                             execute_1L_lgl = T){
   readLines(path_to_CSP_1L_chr) %>%
     purrr::map_chr(~ifelse(.x == "knitr::opts_chunk$set(eval = F)",
                            "knitr::opts_chunk$set(eval = T)",
@@ -62,11 +64,19 @@ write_csp_output <- function(path_to_CSP_1L_chr){
                            "knitr::opts_chunk$set(eval = F)",
                            .x)) %>%
     writeLines(con = path_to_CSP_1L_chr)
-  old_wd_1L_chr <- getwd()
-  path_info_ls <- DescTools::SplitPath(path_to_r_script_1L_chr)
-  setwd(path_info_ls$dirname)
-  source(path_info_ls$fullfilename)
-  setwd(old_wd_1L_chr)
+  if(execute_1L_lgl){
+    old_wd_1L_chr <- getwd()
+    path_info_ls <- DescTools::SplitPath(path_to_r_script_1L_chr)
+    setwd(path_info_ls$dirname)
+    source(path_info_ls$fullfilename)
+    setwd(old_wd_1L_chr)
+  }
+  rmarkdown::render(path_to_CSP_1L_chr)
+  if(!is.null(dv_ds_doi_1L_chr)){
+    dataverse::add_dataset_file(paste0(stringr::str_sub(path_to_CSP_1L_chr, end=-4),"pdf"),
+                                dataset = dv_ds_doi_1L_chr,
+                                description = "Methods Report 1: Complete Study Program")
+  }
 }
 write_main_oupt_dir <- function(params_ls = NULL,
                                 use_fake_data_1L_lgl = F,
@@ -97,7 +107,7 @@ write_manuscript <- function(abstract_args_ls = NULL,
                              output_type_1L_chr = NULL,
                              tables_in_body_lgl = NULL,
                              title_1L_chr = "Scientific manuscript",
-                             version_1L_chr = "0.4",
+                             version_1L_chr = "0.5",
                              write_to_dv_1L_lgl = F){
   mkdn_data_dir_1L_chr <- ifelse(!is.null(input_params_ls),
                                  input_params_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr,

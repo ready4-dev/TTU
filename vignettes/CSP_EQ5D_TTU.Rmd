@@ -186,7 +186,7 @@ results_ls <- write_manuscript(input_params_ls = input_params_ls,
                                write_to_dv_1L_lgl = T)
 ```
 
-The draft manuscript created by the previous call is available at: https://dataverse.harvard.edu/api/access/datafile/4942297 .
+The draft manuscript created by the previous call is available at: https://dataverse.harvard.edu/api/access/datafile/4957805 .
 
 # Purge dataset copies
 All remaining local copies (but not the original version) of the study dataset are deleted from the workspace.

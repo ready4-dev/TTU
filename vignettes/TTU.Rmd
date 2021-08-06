@@ -29,9 +29,37 @@ Furthermore, TTU package workflows support sharing of results to an online repos
  - a dataverse API key and stored the API key and server values in your local environment (to see how to do this, visit: https://github.com/IQSS/dataverse-client-r )
  - an empty dataset for each project you undertake with TTU (steps 1-3 and 5 in https://guides.dataverse.org/en/5.5/user/dataset-management.html#adding-a-new-dataset)
 
-## Workflow vignettes
-The following vignettes demonstrate the two main workflows supported by the TTU package:
+## Workflow 
+The workflow that TTU supports has two main parts.
+
+Part one is to undertake and exploratory analysis in order to finalise the input parameters that you will use in your study. The following vignette illustrates this workflow:
 
 - [Exploratory workflow (General population - EQ5D example)](Model_TTU.html)
+
+When you have determined the inputs that you will be using, you can implement the reporting workflow, which involves the following steps.
+
+## Create project workspace
+
+The following command will create a project directory in the location and with the name of your choosing. 
+```{r eval = F}
+path_to_CSP_1L_chr <- write_reporting_dir(path_to_write_to_1L_chr = "../Temp tests of output",
+                                          new_dir_nm_1L_chr = "AQoL-6D_Vignette")
+```
+
+## Edit template program
+The preceding command will have created a template RMD file for you to edit in the CSP sub-directory of your project directory. That template file will look like this: https://github.com/ready4-dev/TTU/blob/master/inst/Project/CSP/CSP.Rmd
+
+Edit the file with the information relevant to your study. Two vignettes that illustrate the workflow functions that you will be using are:
+
 - [Reporting workflow (General population - EQ5D example)](CSP_EQ5D_TTU.html)
 - [Reporting workflow (Clinical population - AQoL6D example)](CSP_AQOL6D_TTU.html)
+
+## Run and share program
+Once you are ready to run your analysis, use the `write_csp_output` function. The `write_csp_output` function is required as simply knitting the RMD document you edited will not work as intended (although you can run chunks interactively if you prefer). Another advantage of `write_csp_output` is that if you provide details of your dataverse dataset (which will be different to the value in the below example), it will save a PDF copy of your workflow program in that dataset.
+
+```{r}
+write_csp_output(path_to_CSP_1L_chr,
+                 dv_ds_doi_1L_chr = "https://doi.org/10.7910/DVN/D74QMP",
+                 execute_1L_lgl = F)
+```
+

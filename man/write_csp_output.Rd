@@ -4,10 +4,18 @@
 \alias{write_csp_output}
 \title{Write csp output}
 \usage{
-write_csp_output(path_to_CSP_1L_chr)
+write_csp_output(
+  path_to_CSP_1L_chr,
+  dv_ds_doi_1L_chr = NULL,
+  execute_1L_lgl = T
+)
 }
 \arguments{
 \item{path_to_CSP_1L_chr}{Path to CSP (a character vector of length one)}
+
+\item{dv_ds_doi_1L_chr}{Dataverse dataset doi (a character vector of length one), Default: NULL}
+
+\item{execute_1L_lgl}{Execute (a logical vector of length one), Default: T}
 }
 \description{
 write_csp_output() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write csp output. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
