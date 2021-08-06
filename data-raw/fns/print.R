@@ -92,6 +92,8 @@ print_covar_ttu_tbls <- function(params_ls,
     purrr::pluck(paste0("mdl_type_",ref_1L_int,"_covar_mdls_tb"))
   if(!is.null(df)){
     df <- df %>%
+      transform_nms_in_mdl_tbl(col_nm_1L_chr = "Parameter",
+                               var_nm_change_lup = results_ls$var_nm_change_lup) %>%
       dplyr::mutate(Parameter = Parameter %>% purrr::map_chr(~stringr::str_replace_all(.x,"_"," ")))
     df %>%
       print_lngl_ttu_tbls(caption_1L_chr = caption_1L_chr,
@@ -104,7 +106,9 @@ print_indpnt_predrs_coefs_tbl <- function(params_ls,
                                           caption_1L_chr,
                                           mkdn_tbl_ref_1L_chr){
   results_ls <- params_ls$results_ls
-  tb <- results_ls$tables_ls$ind_preds_coefs_tbl
+  tb <- results_ls$tables_ls$ind_preds_coefs_tbl %>%
+    transform_nms_in_mdl_tbl(col_nm_1L_chr = "Parameter",
+                             var_nm_change_lup = results_ls$var_nm_change_lup)
   add_to_row_ls <- list()
   add_to_row_ls$pos <- list(-1, 0, nrow(tb))
   add_to_row_ls$command <- c(paste0("\\toprule \n",
@@ -204,11 +208,12 @@ print_ten_folds_tbl <- function(params_ls,
     df <- results_ls$tables_ls$tenf_sngl_predr_tb %>%
       dplyr::mutate(Model = gsub('"', '', Model)) %>%
       dplyr::mutate(dplyr::across(.cols = dplyr::everything(), ~ .x %>%
-                                    stringr::str_replace_all("  NA", NA_character_)))
+                                    stringr::str_replace_all("  NA", NA_character_)))  %>%
+      dplyr::mutate(Model = Model %>% purrr::map_chr(~Hmisc::capitalize(.x)))
   }else{
     df <- results_ls$tables_ls$tenf_prefd_mdl_tb
+    df$Predictor <- df$Predictor %>% transform_names(rename_lup = results_ls$var_nm_change_lup)
   }
-  #df <- df
   if(params_ls$output_type_1L_chr == "PDF"){
     add_to_row_ls <- list()
     add_to_row_ls$pos <- list(0,0,0,nrow(df))

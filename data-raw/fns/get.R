@@ -17,7 +17,8 @@ get_cndts_for_mxd_mdls <- function(mdl_types_lup = NULL){
 get_covars_by_ctg <-  function(results_ls,
                                collapse_1L_lgl = F){
   covars_by_ctg_ls <- results_ls$candidate_covars_ls %>%
-    purrr::map( ~ .x %>% tolower()) %>%
+    purrr::map( ~ .x #%>% tolower()
+                ) %>%
     stats::setNames(get_covar_ctgs(results_ls,
                                    collapse_1L_lgl = F))
   if(collapse_1L_lgl){
@@ -226,7 +227,11 @@ get_ordered_sngl_csnl_mdls <- function(results_ls,
   return(ordered_sngl_csnl_mdls_chr)
 }
 get_popl_descvs <- function(results_ls){
-  popl_descvs_1L_chr <- results_ls$tables_ls$participant_descs$variable %>% unique() %>% tolower()  %>% paste0(collapse = ", ") %>% stringi::stri_replace_last_fixed(","," and")
+  popl_descvs_1L_chr <- results_ls$tables_ls$participant_descs$variable %>%
+    unique() %>%
+    # tolower()  %>%
+    paste0(collapse = ", ") %>%
+    stringi::stri_replace_last_fixed(","," and")
   return(popl_descvs_1L_chr)
 }
 get_predrs_by_ctg <-  function(results_ls,

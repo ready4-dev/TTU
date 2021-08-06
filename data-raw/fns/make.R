@@ -226,7 +226,15 @@ make_cmpst_sctr_and_dnsty_plt <- function(outp_smry_ls,
                                           label_y_1L_dbl = 0.9,
                                           label_size_1L_dbl = 22){
   filtered_paths_chr <- outp_smry_ls$file_paths_chr %>% purrr::discard(~endsWith(.x,"_sim_sctr.png")|endsWith(.x,"_sim_dnst.png")|endsWith(.x,"_cnstrd_sctr_plt.png")|endsWith(.x,"_cnstrd_dnst.png"))
-  plot_ls <- paste0(output_data_dir_1L_chr,"/",filtered_paths_chr[filtered_paths_chr %>% purrr::map_lgl(~stringr::str_detect(.x,paste0(predr_var_nms_chr,"_1")) & (stringr::str_detect(.x,"_dnst.png") | stringr::str_detect(.x,"_sctr_plt.png")))])  %>% purrr::map(~cowplot::ggdraw() + cowplot::draw_image(.x))
+  filtered_paths_chr <- paste0(output_data_dir_1L_chr,"/",filtered_paths_chr[filtered_paths_chr %>% purrr::map_lgl(~stringr::str_detect(.x,paste0(predr_var_nms_chr,"_1")) & (stringr::str_detect(.x,"_dnst.png") | stringr::str_detect(.x,"_sctr_plt.png")))])
+  mdl_types_chr <- filtered_paths_chr %>% purrr::map_chr(~DescTools::SplitPath(.x)$filename %>%
+                                          stringr::str_remove("_dnst") %>%
+                                          stringr::str_remove("_sctr_plt") %>%
+                                          get_mdl_type_from_nm())
+ordered_paths_chr <- outp_smry_ls$prefd_mdl_types_chr %>%
+  purrr::map(~filtered_paths_chr[which(mdl_types_chr==.x)]) %>%
+  purrr::flatten_chr()
+  plot_ls <- ordered_paths_chr %>% purrr::map(~cowplot::ggdraw() + cowplot::draw_image(.x))
   composite_plt <- cowplot::plot_grid(plot_ls[[1]],plot_ls[[2]],plot_ls[[3]],plot_ls[[4]],nrow = 2, labels = labels_chr, label_x = label_x_1L_dbl,label_y = label_y_1L_dbl, label_size = label_size_1L_dbl)
 }
 make_cndt_predr_text <- function(results_ls,
@@ -518,7 +526,7 @@ make_dnsty_and_sctr_plt_title <- function(results_ls){
                          ifelse(nrow(results_ls$ttu_lngl_ls$best_mdls_tb)>1,
                                 paste0(results_ls$ttu_lngl_ls$best_mdls_tb %>%
                                          purrr::pmap_chr(~paste0(..1,
-                                                                 "(",
+                                                                 " (",
                                                                  ..2,
                                                                  ")")) %>%
                                          purrr::pluck(2),
@@ -1633,18 +1641,6 @@ make_results_ls <- function(spine_of_results_ls = NULL,
   mdl_types_chr <- mdls_smry_tbls_ls$prefd_predr_mdl_smry_tb$Model %>%
     purrr::map_chr(~get_mdl_type_from_nm(.x)) %>%
     unique()
-  # %>%
-    # purrr::map_chr(~paste0(ready4fun::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup,
-    #                                             match_value_xx = .x,
-    #                                             match_var_nm_1L_chr = "short_name_chr",
-    #                                             target_var_nm_1L_chr = "mixed_type_chr",
-    #                                             evaluate_lgl = F),
-    #                        " with ",
-    #                        ready4fun::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup,
-    #                                                    match_value_xx = .x,
-    #                                                    match_var_nm_1L_chr = "short_name_chr",
-    #                                                    target_var_nm_1L_chr = "with_chr",
-    #                                                    evaluate_lgl = F)))
   ttu_cs_ls$rf_seq_dscdng_chr <- ttu_cs_ls$rf_seq_dscdng_chr %>%
     purrr::map_chr(~ifelse(.x %in% spine_of_results_ls$var_nm_change_lup$old_nms_chr,
                                                          .x %>%
@@ -1667,19 +1663,12 @@ make_results_ls <- function(spine_of_results_ls = NULL,
                                                                                                  match_var_nm_1L_chr = "short_name_chr",
                                                                                                  target_var_nm_1L_chr = "mixed_acronym_chr",
                                                                                                  evaluate_lgl = F)),
-                                                     # purrr::map_chr(~ifelse(startsWith(.x,"Ordinary Least Squares"),"LLM","GLMM")),
                                                    link_and_tfmn_chr = mdl_types_chr %>%
                                                      purrr::map_chr(~ready4fun::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup,
                                                                                                  match_value_xx = .x,
                                                                                                  match_var_nm_1L_chr = "short_name_chr",
                                                                                                  target_var_nm_1L_chr = "with_chr",
                                                                                                  evaluate_lgl = F)),
-                                                     # purrr::map_chr(~ifelse(startsWith(.x,"Ordinary Least Squares"),
-                                                     #                        stringr::str_remove(.x,"Ordinary Least Squares ") %>%
-                                                     #                          stringr::str_sub(start = 2, end = -2) %>%
-                                                     #                          tolower(),
-                                                     #                        stringr::str_remove(.x,"Generalised Linear Mixed Model with ") %>%
-                                                     #                          stringr::str_remove("Beta Regression Model with "))),
                                                    name_chr = make_predrs_for_best_mdls(spine_of_results_ls$outp_smry_ls,
                                                                                         old_nms_chr = spine_of_results_ls$var_nm_change_lup$old_nms_chr,
                                                                                         new_nms_chr = spine_of_results_ls$var_nm_change_lup$new_nms_chr),
@@ -1837,13 +1826,13 @@ make_scaling_text <- function(results_ls,
   text_1L_chr <- ifelse(all(scaling_dbl==1),
                         "",
                         paste0("Note: ",
-
                                scaling_dbl %>%
                                  purrr::map_chr(~ {
                                    scaled_predrs_chr <- predrs_lup %>%
                                      dplyr::filter(mdl_scaling_dbl == .x) %>%
                                      dplyr::pull(short_name_chr) %>%
-                                     sort()
+                                     sort() %>%
+                                     transform_names(rename_lup = results_ls$var_nm_change_lup)
                                    ifelse(.x ==1,
                                           "",
                                           paste0("The ",

@@ -40,7 +40,7 @@ authors_tb <- ready4show::ready4_authors_lup() %>%
                    last_nm_chr = "Scienceace",
                    title_chr = "Dr",
                    qualifications_chr = "MD, PhD",
-                   institute_chr = "Insitute_A, Institute_B",
+                   institute_chr = "Institute_A, Institute_B",
                    sequence_int = 1,
                    is_corresponding_lgl = T,
                    email_chr = "fake_email@fake_institute.com") %>%
@@ -49,7 +49,7 @@ authors_tb <- ready4show::ready4_authors_lup() %>%
                    last_nm_chr = "Researchchamp",
                    title_chr = "Prof",
                    qualifications_chr = "MSc, PhD",
-                   institute_chr = "Insitute_C, Institute_B",
+                   institute_chr = "Institute_C, Institute_B",
                    sequence_int = 2,
                    email_chr = "fake_email@fake_institute.com")
   
@@ -284,7 +284,7 @@ If you wish to develop the manuscript into something you will submit for publica
 As a final step, it is important to delete all local copies (but not the original version) of the study dataset that were produced during the analysis.
 
 ```{r echo = TRUE, eval=FALSE }
-write_to_delete_ds_copies(path_params_ls$paths_ls)
+write_to_delete_ds_copies(results_ls)
 ```
 
 \elandscape

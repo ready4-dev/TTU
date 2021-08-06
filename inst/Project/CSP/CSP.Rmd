@@ -67,7 +67,7 @@ library(TTU)
 ### Report formatting
 <!-- Un-comment and edit the code chunk below with details on the desired output formats for the scientific manuscript and supplementary reports and the number of digits of decimal extension that will be used when reporting numbers. -->
 ```{r}
-# output_format_ls <- make_output_format_ls(manuscript_outp_1L_chr = "Word",
+# output_format_ls <- make_output_format_ls(manuscript_outp_1L_chr = "PDF",
 #                                           manuscript_digits_1L_int = 2L,
 #                                           supplementary_outp_1L_chr = "PDF",
 #                                           supplementary_digits_1L_int = 2L)
@@ -215,7 +215,7 @@ results_ls <- write_manuscript(input_params_ls = input_params_ls)
 
 # Purge dataset copies
 ```{r}
-write_to_delete_ds_copies(path_params_ls$paths_ls)
+write_to_delete_ds_copies(results_ls)
 ```
 
 \elandscape

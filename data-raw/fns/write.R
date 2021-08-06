@@ -54,8 +54,7 @@ write_csp_output <- function(path_to_CSP_1L_chr){
               path_to_r_script_1L_chr)
   readLines(path_to_r_script_1L_chr)[readLines(path_to_r_script_1L_chr) != "knitr::opts_chunk$set(eval = F)"] %>%
     writeLines(con = path_to_r_script_1L_chr)
-  source(path_to_r_script_1L_chr, local=TRUE)
-  return(results_ls)
+  source(path_to_r_script_1L_chr)
 }
 write_main_oupt_dir <- function(params_ls = NULL,
                                 use_fake_data_1L_lgl = F,

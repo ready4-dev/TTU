@@ -189,7 +189,7 @@ The draft manuscript created by the previous call is available at: https://datav
 All remaining local copies (but not the original version) of the study dataset are deleted from the workspace.
 
 ```{r echo = TRUE, eval=FALSE }
-write_to_delete_ds_copies(input_params_ls)
+write_to_delete_ds_copies(results_ls)
 ```
 
 \elandscape

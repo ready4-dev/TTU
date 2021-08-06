@@ -268,8 +268,9 @@ make_brms_mdl_smry_tbl <- function (smry_mdl_ls, grp_1L_chr, popl_1L_chr, fam_1L
 #' @return NULL
 #' @rdname make_cmpst_sctr_and_dnsty_plt
 #' @export 
-#' @importFrom purrr discard map_lgl map
-#' @importFrom stringr str_detect
+#' @importFrom purrr discard map_lgl map_chr map flatten_chr
+#' @importFrom stringr str_detect str_remove
+#' @importFrom DescTools SplitPath
 #' @importFrom cowplot ggdraw draw_image plot_grid
 make_cmpst_sctr_and_dnsty_plt <- function (outp_smry_ls, output_data_dir_1L_chr, predr_var_nms_chr, 
     labels_chr = c("A", "B", "C", "D"), label_x_1L_dbl = 0.1, 
@@ -278,11 +279,18 @@ make_cmpst_sctr_and_dnsty_plt <- function (outp_smry_ls, output_data_dir_1L_chr,
     filtered_paths_chr <- outp_smry_ls$file_paths_chr %>% purrr::discard(~endsWith(.x, 
         "_sim_sctr.png") | endsWith(.x, "_sim_dnst.png") | endsWith(.x, 
         "_cnstrd_sctr_plt.png") | endsWith(.x, "_cnstrd_dnst.png"))
-    plot_ls <- paste0(output_data_dir_1L_chr, "/", filtered_paths_chr[filtered_paths_chr %>% 
-        purrr::map_lgl(~stringr::str_detect(.x, paste0(predr_var_nms_chr, 
-            "_1")) & (stringr::str_detect(.x, "_dnst.png") | 
-            stringr::str_detect(.x, "_sctr_plt.png")))]) %>% 
-        purrr::map(~cowplot::ggdraw() + cowplot::draw_image(.x))
+    filtered_paths_chr <- paste0(output_data_dir_1L_chr, "/", 
+        filtered_paths_chr[filtered_paths_chr %>% purrr::map_lgl(~stringr::str_detect(.x, 
+            paste0(predr_var_nms_chr, "_1")) & (stringr::str_detect(.x, 
+            "_dnst.png") | stringr::str_detect(.x, "_sctr_plt.png")))])
+    mdl_types_chr <- filtered_paths_chr %>% purrr::map_chr(~DescTools::SplitPath(.x)$filename %>% 
+        stringr::str_remove("_dnst") %>% stringr::str_remove("_sctr_plt") %>% 
+        get_mdl_type_from_nm())
+    ordered_paths_chr <- outp_smry_ls$prefd_mdl_types_chr %>% 
+        purrr::map(~filtered_paths_chr[which(mdl_types_chr == 
+            .x)]) %>% purrr::flatten_chr()
+    plot_ls <- ordered_paths_chr %>% purrr::map(~cowplot::ggdraw() + 
+        cowplot::draw_image(.x))
     composite_plt <- cowplot::plot_grid(plot_ls[[1]], plot_ls[[2]], 
         plot_ls[[3]], plot_ls[[4]], nrow = 2, labels = labels_chr, 
         label_x = label_x_1L_dbl, label_y = label_y_1L_dbl, label_size = label_size_1L_dbl)
@@ -612,7 +620,7 @@ make_dnsty_and_sctr_plt_title <- function (results_ls)
             " (", ..2, ")")) %>% purrr::pluck(1), ") (C) Density plots of observed and predicted utility scores (", 
         ifelse(nrow(results_ls$ttu_lngl_ls$best_mdls_tb) > 1, 
             paste0(results_ls$ttu_lngl_ls$best_mdls_tb %>% purrr::pmap_chr(~paste0(..1, 
-                "(", ..2, ")")) %>% purrr::pluck(2), ") (D) Scatter plots of observed and predicted utility scores by timepoint (", 
+                " (", ..2, ")")) %>% purrr::pluck(2), ") (D) Scatter plots of observed and predicted utility scores by timepoint (", 
                 results_ls$ttu_lngl_ls$best_mdls_tb %>% purrr::pmap_chr(~paste0(..1, 
                   " (", ..2, ")")) %>% purrr::pluck(2), ")"), 
             ""))
@@ -2143,7 +2151,8 @@ make_scaling_text <- function (results_ls, table_1L_chr = "cfscl")
     text_1L_chr <- ifelse(all(scaling_dbl == 1), "", paste0("Note: ", 
         scaling_dbl %>% purrr::map_chr(~{
             scaled_predrs_chr <- predrs_lup %>% dplyr::filter(mdl_scaling_dbl == 
-                .x) %>% dplyr::pull(short_name_chr) %>% sort()
+                .x) %>% dplyr::pull(short_name_chr) %>% sort() %>% 
+                transform_names(rename_lup = results_ls$var_nm_change_lup)
             ifelse(.x == 1, "", paste0("The ", scaled_predrs_chr %>% 
                 paste0(collapse = ", ") %>% stringi::stri_replace_last(fixed = ",", 
                 " and"), " parameter", ifelse(length(scaled_predrs_chr) == 

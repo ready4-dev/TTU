@@ -74,9 +74,9 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
     return(path_to_plot_1L_chr)
 }
 #' Write csp output
-#' @description write_csp_output() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write csp output. The function returns Results (a list).
+#' @description write_csp_output() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write csp output. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param path_to_CSP_1L_chr Path to CSP (a character vector of length one)
-#' @return Results (a list)
+#' @return NULL
 #' @rdname write_csp_output
 #' @export 
 #' @importFrom stringr str_sub
@@ -88,8 +88,7 @@ write_csp_output <- function (path_to_CSP_1L_chr)
     knitr::purl(path_to_CSP_1L_chr, path_to_r_script_1L_chr)
     readLines(path_to_r_script_1L_chr)[readLines(path_to_r_script_1L_chr) != 
         "knitr::opts_chunk$set(eval = F)"] %>% writeLines(con = path_to_r_script_1L_chr)
-    source(path_to_r_script_1L_chr, local = TRUE)
-    return(results_ls)
+    source(path_to_r_script_1L_chr)
 }
 #' Write main oupt directory
 #' @description write_main_oupt_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write main oupt directory. The function returns Paths (a list).

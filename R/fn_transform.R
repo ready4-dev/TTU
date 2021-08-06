@@ -285,6 +285,42 @@ transform_names <- function (names_chr, rename_lup, invert_1L_lgl = F)
         .x))
     return(new_names_chr)
 }
+#' Transform names in model table
+#' @description transform_nms_in_mdl_tbl() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform names in model table. Function argument mdl_tbl_tb specifies the object to be updated. Argument col_nm_1L_chr provides the object to be updated. The function returns Tfmd model table (a tibble).
+#' @param mdl_tbl_tb Model table (a tibble)
+#' @param col_nm_1L_chr Column name (a character vector of length one), Default: 'Parameter'
+#' @param var_nm_change_lup Variable name change (a lookup table), Default: NULL
+#' @return Tfmd model table (a tibble)
+#' @rdname transform_nms_in_mdl_tbl
+#' @export 
+#' @importFrom dplyr mutate case_when
+#' @importFrom rlang sym
+#' @importFrom purrr map_lgl map_chr pluck
+#' @importFrom stringi stri_locate_first_fixed
+#' @importFrom stringr str_sub
+#' @keywords internal
+transform_nms_in_mdl_tbl <- function (mdl_tbl_tb, col_nm_1L_chr = "Parameter", var_nm_change_lup = NULL) 
+{
+    if (is.null(var_nm_change_lup)) {
+        tfmd_mdl_tbl_tb <- mdl_tbl_tb
+    }
+    else {
+        tfmd_mdl_tbl_tb <- mdl_tbl_tb %>% dplyr::mutate(`:=`(!!rlang::sym(col_nm_1L_chr), 
+            dplyr::case_when(!!rlang::sym(col_nm_1L_chr) %>% 
+                purrr::map_lgl(~(endsWith(.x, " model") | endsWith(.x, 
+                  " baseline") | endsWith(.x, " change"))) ~ 
+                !!rlang::sym(col_nm_1L_chr) %>% purrr::map_chr(~{
+                  sfx_starts_1L_int <- stringi::stri_locate_first_fixed(.x, 
+                    " ")[[1, 1]]
+                  paste0(stringr::str_sub(.x, end = (sfx_starts_1L_int - 
+                    1)) %>% strsplit("_") %>% purrr::pluck(1) %>% 
+                    transform_names(rename_lup = var_nm_change_lup) %>% 
+                    paste0(collapse = "_"), stringr::str_sub(.x, 
+                    start = sfx_starts_1L_int))
+                }), T ~ !!rlang::sym(col_nm_1L_chr))))
+    }
+    return(tfmd_mdl_tbl_tb)
+}
 #' Transform params list from
 #' @description transform_params_ls_from_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform params list from lookup table. Function argument params_ls specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns Params (a list).
 #' @param params_ls Params (a list)

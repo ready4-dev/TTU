@@ -239,6 +239,26 @@ transform_names <- function(names_chr,
                            .x))
   return(new_names_chr)
 }
+transform_nms_in_mdl_tbl <- function(mdl_tbl_tb,
+                                     col_nm_1L_chr = "Parameter",
+                                     var_nm_change_lup = NULL){
+  if(is.null(var_nm_change_lup)){
+    tfmd_mdl_tbl_tb <-  mdl_tbl_tb
+  }else{
+    tfmd_mdl_tbl_tb <-  mdl_tbl_tb %>%
+      dplyr::mutate(!!rlang::sym(col_nm_1L_chr) := dplyr::case_when(!!rlang::sym(col_nm_1L_chr) %>%
+                                                                      purrr::map_lgl(~(endsWith(.x," model") | endsWith(.x," baseline") | endsWith(.x," change"))) ~ !!rlang::sym(col_nm_1L_chr) %>% purrr::map_chr(~{
+                                                                        sfx_starts_1L_int <- stringi::stri_locate_first_fixed(.x," ")[[1,1]]
+                                                                        paste0(stringr::str_sub(.x,end=(sfx_starts_1L_int-1)) %>%
+                                                                                 strsplit("_") %>%
+                                                                                 purrr::pluck(1) %>%
+                                                                                 transform_names(rename_lup = var_nm_change_lup) %>%
+                                                                                 paste0(collapse = "_"),
+                                                                               stringr::str_sub(.x,start=sfx_starts_1L_int))}),
+                                                                    T ~ !!rlang::sym(col_nm_1L_chr)))
+  }
+ return(tfmd_mdl_tbl_tb)
+}
 transform_params_ls_to_valid <- function(params_ls,
                                          scndry_analysis_extra_vars_chr = NA_character_){
   target_var_nms_chr <- c(params_ls$ds_descvs_ls$candidate_predrs_chr,

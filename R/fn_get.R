@@ -69,9 +69,8 @@ get_covar_ctgs <- function (results_ls, collapse_1L_lgl = T)
 #' @importFrom Hmisc capitalize
 get_covars_by_ctg <- function (results_ls, collapse_1L_lgl = F) 
 {
-    covars_by_ctg_ls <- results_ls$candidate_covars_ls %>% purrr::map(~.x %>% 
-        tolower()) %>% stats::setNames(get_covar_ctgs(results_ls, 
-        collapse_1L_lgl = F))
+    covars_by_ctg_ls <- results_ls$candidate_covars_ls %>% purrr::map(~.x) %>% 
+        stats::setNames(get_covar_ctgs(results_ls, collapse_1L_lgl = F))
     if (collapse_1L_lgl) {
         covars_by_ctg_ls <- covars_by_ctg_ls %>% purrr::map2(names(covars_by_ctg_ls), 
             ~{
@@ -350,8 +349,8 @@ get_ordered_sngl_csnl_mdls <- function (results_ls, select_int = NULL, collapse_
 get_popl_descvs <- function (results_ls) 
 {
     popl_descvs_1L_chr <- results_ls$tables_ls$participant_descs$variable %>% 
-        unique() %>% tolower() %>% paste0(collapse = ", ") %>% 
-        stringi::stri_replace_last_fixed(",", " and")
+        unique() %>% paste0(collapse = ", ") %>% stringi::stri_replace_last_fixed(",", 
+        " and")
     return(popl_descvs_1L_chr)
 }
 #' Get predictor category categoriess

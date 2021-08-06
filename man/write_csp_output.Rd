@@ -9,9 +9,6 @@ write_csp_output(path_to_CSP_1L_chr)
 \arguments{
 \item{path_to_CSP_1L_chr}{Path to CSP (a character vector of length one)}
 }
-\value{
-Results (a list)
-}
 \description{
-write_csp_output() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write csp output. The function returns Results (a list).
+write_csp_output() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write csp output. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 }
