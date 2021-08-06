@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Make covariate ttu table title — make_covar_ttu_tbl_title • TTU</title>
+<title>Transform names in model table — transform_nms_in_mdl_tbl • TTU</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Make covariate ttu table title — make_covar_ttu_tbl_title" />
-<meta property="og:description" content="make_covar_ttu_tbl_title() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make covariate ttu table title. The function returns Title (a character vector of length one)." />
+<meta property="og:title" content="Transform names in model table — transform_nms_in_mdl_tbl" />
+<meta property="og:description" content="transform_nms_in_mdl_tbl() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform names in model table. Function argument mdl_tbl_tb specifies the object to be updated. Argument col_nm_1L_chr provides the object to be updated. The function returns Tfmd model table (a tibble)." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -137,33 +137,41 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Make covariate ttu table title</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_make.R'><code>R/fn_make.R</code></a></small>
-    <div class="hidden name"><code>make_covar_ttu_tbl_title.Rd</code></div>
+    <h1>Transform names in model table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ready4-dev/TTU/blob/master/R/fn_transform.R'><code>R/fn_transform.R</code></a></small>
+    <div class="hidden name"><code>transform_nms_in_mdl_tbl.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>make_covar_ttu_tbl_title() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make covariate ttu table title. The function returns Title (a character vector of length one).</p>
+    <p>transform_nms_in_mdl_tbl() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform names in model table. Function argument mdl_tbl_tb specifies the object to be updated. Argument col_nm_1L_chr provides the object to be updated. The function returns Tfmd model table (a tibble).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>make_covar_ttu_tbl_title</span><span class='op'>(</span><span class='va'>results_ls</span>, ref_1L_int <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>transform_nms_in_mdl_tbl</span><span class='op'>(</span>
+  <span class='va'>mdl_tbl_tb</span>,
+  col_nm_1L_chr <span class='op'>=</span> <span class='st'>"Parameter"</span>,
+  var_nm_change_lup <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>results_ls</th>
-      <td><p>Results (a list)</p></td>
+      <th>mdl_tbl_tb</th>
+      <td><p>Model table (a tibble)</p></td>
     </tr>
     <tr>
-      <th>ref_1L_int</th>
-      <td><p>Reference (an integer vector of length one), Default: 1</p></td>
+      <th>col_nm_1L_chr</th>
+      <td><p>Column name (a character vector of length one), Default: 'Parameter'</p></td>
+    </tr>
+    <tr>
+      <th>var_nm_change_lup</th>
+      <td><p>Variable name change (a lookup table), Default: NULL</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Title (a character vector of length one)</p>
+    <p>Tfmd model table (a tibble)</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
