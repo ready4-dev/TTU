@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9312</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9313</span>
       </span>
     </div>
 
@@ -110,11 +110,11 @@
 <!---BLOCK_LANDSCAPE_START--->
 <p>This vignette is an example of implementing of a reproducible workflow to:</p>
 <ul>
-<li><p>develop transfer to utility models to predict AQoL-6D;</p></li>
+<li><p>develop transfer to utility models to predict AQoL-6D in a clinical mental health sample;</p></li>
 <li><p>create and share catalogues of these models; and</p></li>
 <li><p>author a scientific summary of the results and methods deployed.</p></li>
 </ul>
-<p>This example, should be read in conjunction with <a href="CSP_EQ5D_TTU.html">another similar workflow implemented for EQ-5D data and alternative predictors</a>, which highlights some additional considerations. It is highly recommended that you only implement this reporting workflow for your own projects once you have identified an optimal set of input parameters following an <a href="Model_TTU.html">initial exploratory analysis</a>. The benefits of undertaking such initial exploratory work include identifying where it may be appropriate to override algorithm default selections for preferred model types and covariates and discovering if it is necessary to supply non-default input parameters to address problems in model convergence.</p>
+<p>This example, should be read in conjunction with <a href="CSP_EQ5D_TTU.html">the vignette illustrating a reporting workflow implemented for developing an EQ-5D TTU using alternative predictors</a>, which highlights some additional considerations. It is highly recommended that you only implement this reporting workflow for your own projects once you have identified an optimal set of input parameters following an <a href="Model_TTU.html">initial exploratory analysis</a>. The benefits of undertaking such initial exploratory work include identifying where it may be appropriate to override algorithm default selections for preferred model types and covariates and discovering if it is necessary to supply non-default input parameters to address problems in model convergence.</p>
 <p>As with all the vignettes included with the TTU package, this example is illustrated using entirely fake data, so do not use its outputs to inform decision making. For an example of how TTU workflows were applied to real data see <a href="https://www.medrxiv.org/content/10.1101/2021.07.07.21260129v2.full" class="uri">https://www.medrxiv.org/content/10.1101/2021.07.07.21260129v2.full</a> .</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/TTU/">TTU</a></span><span class="op">)</span></code></pre></div>
@@ -164,7 +164,7 @@
 <a href="#report-formatting" class="anchor"></a>Report formatting</h3>
 <p>We add parameters relating to the desired output format of the reports we will be producing.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">output_format_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_output_format_ls.html">make_output_format_ls</a></span><span class="op">(</span>manuscript_outp_1L_chr <span class="op">=</span> <span class="st">"Word"</span>,
+<code class="sourceCode R"><span class="va">output_format_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_output_format_ls.html">make_output_format_ls</a></span><span class="op">(</span>manuscript_outp_1L_chr <span class="op">=</span> <span class="st">"PDF"</span>,
                                           manuscript_digits_1L_int <span class="op">=</span> <span class="fl">2L</span>,
                                           supplementary_outp_1L_chr <span class="op">=</span> <span class="st">"PDF"</span>,
                                           supplementary_digits_1L_int <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></code></pre></div>
@@ -1456,21 +1456,20 @@ integer
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">results_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_manuscript.html">write_manuscript</a></span><span class="op">(</span>input_params_ls <span class="op">=</span> <span class="va">input_params_ls</span>,
                                write_to_dv_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
-<p>The document exported to the dataset by the preceding call is accessible at: <a href="https://dataverse.harvard.edu/api/access/datafile/4942229" class="uri">https://dataverse.harvard.edu/api/access/datafile/4942229</a> (it is in “.docx” format as we specified “Word” as our desired output format (see earlier in the workflow)). You can override the output format specified in the input parameter list object by using the <code>output_type_1L_chr</code> argument. Note, that this time around we are using the <code>results_ls</code> object as the main input as this object was automatically saved (to the directory path stored in <code>results_ls$path_params_ls$paths_ls$output_data_dir_1L_chr</code>) by the preceding call.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/write_manuscript.html">write_manuscript</a></span><span class="op">(</span>results_ls <span class="op">=</span> <span class="va">results_ls</span>,
-                 write_to_dv_1L_lgl <span class="op">=</span> <span class="cn">T</span>,
-                 output_type_1L_chr <span class="op">=</span> <span class="st">"PDF"</span><span class="op">)</span></code></pre></div>
-<p>The PDF version is available at: <a href="https://dataverse.harvard.edu/api/access/datafile/4942228" class="uri">https://dataverse.harvard.edu/api/access/datafile/4942228</a> . A local version will automatically be saved on your machine and you can discover where this is by printing the object <code>results_ls$path_params_ls$paths_ls$reports_dir_1L_chr</code>.</p>
+<p>The manuscript exported to the dataset by the preceding call is accessible at: <a href="https://dataverse.harvard.edu/api/access/datafile/4957407" class="uri">https://dataverse.harvard.edu/api/access/datafile/4957407</a> . A local version will also automatically be saved on your machine and you can discover where this is by printing the object <code>results_ls$path_params_ls$paths_ls$reports_dir_1L_chr</code>.</p>
+<p>You can override the output format specified in the input parameter list object by using the <code>output_type_1L_chr</code> argument. Note, that this time around we are using the <code>results_ls</code> object as the main input as this object was automatically saved (to the directory path stored in <code>results_ls$path_params_ls$paths_ls$output_data_dir_1L_chr</code>) by the preceding call.</p>
 </div>
 <div id="modify-for-publication" class="section level2">
 <h2 class="hasAnchor">
 <a href="#modify-for-publication" class="anchor"></a>Modify for publication</h2>
 <p>If you wish to develop the manuscript into something you will submit for publication, there are two options for doing so:</p>
 <ul>
-<li><p>If your planned submission format is PDF or LaTeX, edit the markdown files (printing object <code>results_ls$path_params_ls$paths_ls$path_to_ms_mkdn_1L_dir</code> will tell you where these have been saved) and run <code><a href="../reference/write_manuscript.html">write_manuscript(results_ls = results_ls, output_type_1L_chr = "PDF")</a></code>. Both PDF and TeX files are saved as a result of this command.</p></li>
-<li><p>If your planned submission format is Word, you can just edit the word document rendered by the <code>write_manuscript</code> function. This is relatively straightforward, though unlike the PDF output, you will need to manually edit some of the section numbering and table formatting / headings.</p></li>
+<li><p>If your planned submission format is PDF or LaTeX, edit the markdown files (printing object <code>results_ls$path_params_ls$paths_ls$path_to_ms_mkdn_1L_dir</code> will tell you where these have been saved) and then run <code><a href="../reference/write_manuscript.html">write_manuscript(results_ls = results_ls, output_type_1L_chr = "PDF")</a></code>. Both PDF and TeX files are saved as a result of this command. Note this call to <code>write_manuscript</code> includes a <code>results_ls = results_ls</code> argument instead of using the <code>input_params_ls</code> argument. That is because, by default a <code>results_ls</code> object is saved to a local directory and can thus be retrieved later for use in a new session.</p></li>
+<li><p>If your planned submission format is Word, you can just edit the word document rendered by the <code>write_manuscript</code> function. This is relatively straightforward, though unlike the PDF output, you will need to manually edit some of the section numbering and table formatting / headings. If you did not specify “Word” as your intended manuscript output format, you can render a Word version with the following command:</p></li>
 </ul>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/write_manuscript.html">write_manuscript</a></span><span class="op">(</span>results_ls <span class="op">=</span> <span class="va">results_ls</span>,
+                 output_type_1L_chr <span class="op">=</span> <span class="st">"Word"</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="purge-dataset-copies" class="section level1">
