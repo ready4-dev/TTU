@@ -57,7 +57,7 @@ Edit the file with the information relevant to your study. Two vignettes that il
 ## Run and share program
 Once you are ready to run your analysis, use the `write_csp_output` function. The `write_csp_output` function is required as simply knitting the RMD document you edited will not work as intended (although you can run chunks interactively if you prefer). Another advantage of `write_csp_output` is that if you provide details of your dataverse dataset (which will be different to the value in the below example), it will save a PDF copy of your workflow program in that dataset.
 
-```{r}
+```{r eval = F}
 write_csp_output(path_to_CSP_1L_chr,
                  dv_ds_doi_1L_chr = "https://doi.org/10.7910/DVN/D74QMP",
                  execute_1L_lgl = F)
