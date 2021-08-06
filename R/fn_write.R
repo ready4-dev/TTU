@@ -79,16 +79,26 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
 #' @return NULL
 #' @rdname write_csp_output
 #' @export 
+#' @importFrom purrr map_chr
 #' @importFrom stringr str_sub
 #' @importFrom knitr purl
+#' @importFrom DescTools SplitPath
 write_csp_output <- function (path_to_CSP_1L_chr) 
 {
+    readLines(path_to_CSP_1L_chr) %>% purrr::map_chr(~ifelse(.x == 
+        "knitr::opts_chunk$set(eval = F)", "knitr::opts_chunk$set(eval = T)", 
+        .x)) %>% writeLines(con = path_to_CSP_1L_chr)
     path_to_r_script_1L_chr <- stringr::str_sub(path_to_CSP_1L_chr, 
         end = -3)
     knitr::purl(path_to_CSP_1L_chr, path_to_r_script_1L_chr)
-    readLines(path_to_r_script_1L_chr)[readLines(path_to_r_script_1L_chr) != 
-        "knitr::opts_chunk$set(eval = F)"] %>% writeLines(con = path_to_r_script_1L_chr)
-    source(path_to_r_script_1L_chr)
+    readLines(path_to_CSP_1L_chr) %>% purrr::map_chr(~ifelse(.x == 
+        "knitr::opts_chunk$set(eval = T)", "knitr::opts_chunk$set(eval = F)", 
+        .x)) %>% writeLines(con = path_to_CSP_1L_chr)
+    old_wd_1L_chr <- getwd()
+    path_info_ls <- DescTools::SplitPath(path_to_r_script_1L_chr)
+    setwd(path_info_ls$dirname)
+    source(path_info_ls$fullfilename)
+    setwd(old_wd_1L_chr)
 }
 #' Write main oupt directory
 #' @description write_main_oupt_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write main oupt directory. The function returns Paths (a list).

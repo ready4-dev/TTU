@@ -11,13 +11,13 @@ vignette: >
 <!---BLOCK_LANDSCAPE_START--->
 This vignette is an example of implementing of a reproducible workflow to:
 
-- develop transfer to utility models to predict EQ-5D; 
+- develop transfer to utility models to predict EQ-5D in a community sample; 
 
 - create and share catalogues of these models; and 
 
 - author a scientific summary of the results and methods deployed. 
 
-The steps in this reporting workflow should only be undertaken once an optimal set of input values have been identified by an [initial exploratory analysis](Model_TTU.html). Many of the steps in this example are in common with those of the [AQoL-6D vignette](CSP_AQOL6D_TTU.html), and are therefore described with minimal explanation here. Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.
+The steps in this reporting workflow should only be undertaken once an optimal set of input values have been identified by an [initial exploratory analysis](Model_TTU.html). Most of the steps in this example are described with minimal explanation here as they are discussed in more detail in the [AQoL-6D TTU reporting workflow vignette](CSP_AQOL6D_TTU.html), and . Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.
 
 ```{r echo = TRUE, message=FALSE}
 library(eq5d)
@@ -47,9 +47,12 @@ output_format_ls <- make_output_format_ls(manuscript_outp_1L_chr = "PDF",
 ## Data parameters
 
 ### Dataset
+Note in this example we modify the variable names of our candidate predictors to ensure they are capitalised, as we wish for these variable names to be capitalised in the final report.
 
 ```{r message=FALSE}
-ds_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4750597")) 
+ds_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4750597")) %>%
+  dplyr::rename(K10_int = k10_int,
+                Psych_well_int = psych_well_int) 
 ```
 
 The first few records of the dataset are as follows.

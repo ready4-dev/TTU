@@ -36,7 +36,7 @@ library(TTU)
 #                    last_nm_chr = "Scienceace",
 #                    title_chr = "Dr",
 #                    qualifications_chr = "MD, PhD",
-#                    institute_chr = "Insitute_A, Institute_B",
+#                    institute_chr = "Institute_A, Institute_B",
 #                    sequence_int = 1,
 #                    is_corresponding_lgl = T,
 #                    email_chr = "fake_email@fake_institute.com") %>%
@@ -45,7 +45,7 @@ library(TTU)
 #                    last_nm_chr = "Researchchamp",
 #                    title_chr = "Prof",
 #                    qualifications_chr = "MSc, PhD",
-#                    institute_chr = "Insitute_C, Institute_B",
+#                    institute_chr = "Institute_C, Institute_B",
 #                    sequence_int = 2,
 #                    email_chr = "fake_email@fake_institute.com")
 ```
@@ -156,7 +156,7 @@ library(TTU)
 # scndry_anlys_params_ls <- make_scndry_anlys_params(candidate_predrs_chr = c("SOFAS"),
 #                                                    prefd_covars_chr = NA_character_)
 ```
-<!-- Un-comment and edit the code chunk below to define the final input paramters list. Note, you will need to supply values relating to a dataverse that you control to the dv_ds_nm_and_url_chr argument, or else assign a NULL value to this argument. -->
+<!-- Un-comment and edit the code chunk below to define the final input paramters list. Note, you will need to supply values relating to a dataverse that you control to the dv_ds_nm_and_url_chr argument, or else assign a NULL value to this argument. If you are not running a secondary analysis, omit the scndry_anlys_params_ls argument or set it to NULL. -->
 ```{r}
 # input_params_ls <- make_input_params(ds_tb,
 #                                      ds_descvs_ls = ds_descvs_ls,

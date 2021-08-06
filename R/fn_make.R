@@ -1163,16 +1163,17 @@ make_lngl_ttu_r2_text <- function (results_ls, part_int = 1)
         mdl_r2_maxs_dbl <- mdl_r2_var_nms_chr %>% purrr::map_dbl(~results_ls$tables_ls$ind_preds_coefs_tbl %>% 
             dplyr::filter(!is.na(!!rlang::sym(.x))) %>% dplyr::pull(!!rlang::sym(.x)) %>% 
             as.numeric() %>% max())
-        text_1L_chr <- paste0(text_1L_chr, ifelse(1 %in% part_int, 
-            ". ", ""), list(mdl_types_chr, mdl_r2_mins_dbl, mdl_r2_maxs_dbl, 
-            1:length(mdl_types_chr)) %>% purrr::pmap_chr(~paste0(ifelse(..4 == 
+        part_2_main_1L_chr <- list(mdl_types_chr, mdl_r2_mins_dbl, 
+            mdl_r2_maxs_dbl, 1:length(mdl_types_chr)) %>% purrr::pmap_chr(~paste0(ifelse(..4 == 
             1, "R^2^ was ", ""), ifelse(length(results_ls$candidate_predrs_chr) == 
             1, paste0(, ..2, " for the "), paste0(ifelse(..2 == 
             ..3, paste0("", ..2), paste0("between ", ..2, " and ", 
             ..3, " for all ")))), ..1, ifelse(length(results_ls$candidate_predrs_chr) == 
             1, paste0(""), paste0("s")))) %>% paste0(collapse = ", ") %>% 
-            stringi::stri_replace_last(fixed = ",", " and"), 
-            ".")
+            stringi::stri_replace_last(fixed = ",", " and")
+        text_1L_chr <- paste0(text_1L_chr, ifelse(1 %in% part_int, 
+            ". ", ""), part_2_main_1L_chr, ifelse(part_2_main_1L_chr == 
+            "", "", "."))
     }
     return(text_1L_chr)
 }
