@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9313</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9315</span>
       </span>
     </div>
 
@@ -1462,21 +1462,14 @@ integer
 <div id="modify-for-publication" class="section level2">
 <h2 class="hasAnchor">
 <a href="#modify-for-publication" class="anchor"></a>Modify for publication</h2>
-<p>If you wish to develop the manuscript into something you will submit for publication, there are two options for doing so:</p>
-<ul>
-<li><p>If your planned submission format is PDF or LaTeX, edit the markdown files (printing object <code>results_ls$path_params_ls$paths_ls$path_to_ms_mkdn_1L_dir</code> will tell you where these have been saved) and then run <code><a href="../reference/write_manuscript.html">write_manuscript(results_ls = results_ls, output_type_1L_chr = "PDF")</a></code>. Both PDF and TeX files are saved as a result of this command. Note this call to <code>write_manuscript</code> includes a <code>results_ls = results_ls</code> argument instead of using the <code>input_params_ls</code> argument. That is because, by default a <code>results_ls</code> object is saved to a local directory and can thus be retrieved later for use in a new session.</p></li>
-<li><p>If your planned submission format is Word, you can just edit the word document rendered by the <code>write_manuscript</code> function. This is relatively straightforward, though unlike the PDF output, you will need to manually edit some of the section numbering and table formatting / headings. If you did not specify “Word” as your intended manuscript output format, you can render a Word version with the following command:</p></li>
-</ul>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/write_manuscript.html">write_manuscript</a></span><span class="op">(</span>results_ls <span class="op">=</span> <span class="va">results_ls</span>,
-                 output_type_1L_chr <span class="op">=</span> <span class="st">"Word"</span><span class="op">)</span></code></pre></div>
+<p>If you wish to develop the manuscript into something you will submit for publication, consult <a href="https://github.com/ready4-dev/ttu_lng_ss" class="uri">https://github.com/ready4-dev/ttu_lng_ss</a> for guidance.</p>
 </div>
 </div>
 <div id="purge-dataset-copies" class="section level1">
 <h1 class="hasAnchor">
 <a href="#purge-dataset-copies" class="anchor"></a>Purge dataset copies</h1>
 <p>As a final step, it is important to delete all local copies (but not the original version) of the study dataset that were produced during the analysis.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/write_to_delete_ds_copies.html">write_to_delete_ds_copies</a></span><span class="op">(</span><span class="va">results_ls</span><span class="op">)</span></code></pre></div>
 
 <!---BLOCK_LANDSCAPE_STOP--->

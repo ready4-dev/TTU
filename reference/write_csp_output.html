@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9313</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9315</span>
       </span>
     </div>
 
@@ -146,7 +146,11 @@
     <p>write_csp_output() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write csp output. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour</p>
     </div>
 
-    <pre class="usage"><span class='fu'>write_csp_output</span><span class='op'>(</span><span class='va'>path_to_CSP_1L_chr</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>write_csp_output</span><span class='op'>(</span>
+  <span class='va'>path_to_CSP_1L_chr</span>,
+  dv_ds_doi_1L_chr <span class='op'>=</span> <span class='cn'>NULL</span>,
+  execute_1L_lgl <span class='op'>=</span> <span class='cn'>T</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,6 +158,14 @@
     <tr>
       <th>path_to_CSP_1L_chr</th>
       <td><p>Path to CSP (a character vector of length one)</p></td>
+    </tr>
+    <tr>
+      <th>dv_ds_doi_1L_chr</th>
+      <td><p>Dataverse dataset doi (a character vector of length one), Default: NULL</p></td>
+    </tr>
+    <tr>
+      <th>execute_1L_lgl</th>
+      <td><p>Execute (a logical vector of length one), Default: T</p></td>
     </tr>
     </table>
 
