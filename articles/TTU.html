@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9315</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9316</span>
       </span>
     </div>
 
@@ -142,18 +142,17 @@
 <li><a href="Model_TTU.html">Exploratory workflow (General population - EQ5D example)</a></li>
 </ul>
 <p>When you have determined the inputs that you will be using, you can implement the reporting workflow, which involves the following steps.</p>
-</div>
-<div id="create-project-workspace" class="section level2">
-<h2 class="hasAnchor">
-<a href="#create-project-workspace" class="anchor"></a>Create project workspace</h2>
+<div id="create-project-workspace" class="section level3">
+<h3 class="hasAnchor">
+<a href="#create-project-workspace" class="anchor"></a>Create project workspace</h3>
 <p>The following command will create a project directory in the location and with the name of your choosing.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">path_to_CSP_1L_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_reporting_dir.html">write_reporting_dir</a></span><span class="op">(</span>path_to_write_to_1L_chr <span class="op">=</span> <span class="st">"../Temp tests of output"</span>,
                                           new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"AQoL-6D_Vignette"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="edit-template-program" class="section level2">
-<h2 class="hasAnchor">
-<a href="#edit-template-program" class="anchor"></a>Edit template program</h2>
+<div id="edit-template-program" class="section level3">
+<h3 class="hasAnchor">
+<a href="#edit-template-program" class="anchor"></a>Edit template program</h3>
 <p>The preceding command will have created a template RMD file for you to edit in the CSP sub-directory of your project directory. That template file will look like this: <a href="https://github.com/ready4-dev/TTU/blob/master/inst/Project/CSP/CSP.Rmd" class="uri">https://github.com/ready4-dev/TTU/blob/master/inst/Project/CSP/CSP.Rmd</a></p>
 <p>Edit the file with the information relevant to your study. Two vignettes that illustrate the workflow functions that you will be using are:</p>
 <ul>
@@ -161,14 +160,15 @@
 <li><a href="CSP_AQOL6D_TTU.html">Reporting workflow (Clinical population - AQoL6D example)</a></li>
 </ul>
 </div>
-<div id="run-and-share-program" class="section level2">
-<h2 class="hasAnchor">
-<a href="#run-and-share-program" class="anchor"></a>Run and share program</h2>
+<div id="run-and-share-program" class="section level3">
+<h3 class="hasAnchor">
+<a href="#run-and-share-program" class="anchor"></a>Run and share program</h3>
 <p>Once you are ready to run your analysis, use the <code>write_csp_output</code> function. The <code>write_csp_output</code> function is required as simply knitting the RMD document you edited will not work as intended (although you can run chunks interactively if you prefer). Another advantage of <code>write_csp_output</code> is that if you provide details of your dataverse dataset (which will be different to the value in the below example), it will save a PDF copy of your workflow program in that dataset.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/write_csp_output.html">write_csp_output</a></span><span class="op">(</span><span class="va">path_to_CSP_1L_chr</span>,
                  dv_ds_doi_1L_chr <span class="op">=</span> <span class="st">"https://doi.org/10.7910/DVN/D74QMP"</span>,
                  execute_1L_lgl <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
+</div>
 </div>
   </div>
 

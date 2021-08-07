@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9315</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9316</span>
       </span>
     </div>
 
@@ -149,11 +149,8 @@
 <div id="dataset" class="section level3">
 <h3 class="hasAnchor">
 <a href="#dataset" class="anchor"></a>Dataset</h3>
-<p>Note in this example we modify the variable names of our candidate predictors to ensure they are capitalised, as we wish for these variable names to be capitalised in the final report.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ds_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span><span class="op">(</span><span class="st">"https://dataverse.harvard.edu/api/access/datafile/4750597"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>K10_int <span class="op">=</span> <span class="va">k10_int</span>,
-                Psych_well_int <span class="op">=</span> <span class="va">psych_well_int</span><span class="op">)</span> </code></pre></div>
+<code class="sourceCode R"><span class="va">ds_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span><span class="op">(</span><span class="st">"https://dataverse.harvard.edu/api/access/datafile/4959218"</span><span class="op">)</span><span class="op">)</span> </code></pre></div>
 <p>The first few records of the dataset are as follows.</p>
 <table class="table  lightable-paper lightable-hover">
 <caption>
@@ -581,17 +578,23 @@ Not studying or working
 </tr></tfoot>
 </table>
 </div>
+<div id="data-dictionary" class="section level3">
+<h3 class="hasAnchor">
+<a href="#data-dictionary" class="anchor"></a>Data dictionary</h3>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">dictionary_tb</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span><span class="op">(</span><span class="st">"https://dataverse.harvard.edu/api/access/datafile/4959217"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+</div>
 <div id="dataset-metadata" class="section level3">
 <h3 class="hasAnchor">
 <a href="#dataset-metadata" class="anchor"></a>Dataset metadata</h3>
 <p>We describe the features of our dataset that are most relevant to the analyses we are planning to undertake. Note all, Multi-Attribute Utility Instrument (MAUI) question variables must start with a common prefix, which needs to be passed to the <code>maui_item_pfx_1L_chr</code> argument. The dataset does not need to include variables for total health utility scores (weighted and unweighted), as these variables will be computed during the analysis. However, you can supply the names you wish assigned to these variables once they are computed using the <code>utl_wtd_var_nm_1L_chr</code> and <code>utl_unwtd_var_nm_1L_chr</code> arguments.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ds_descvs_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_ds_descvs_ls.html">make_ds_descvs_ls</a></span><span class="op">(</span>candidate_predrs_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"k10_int"</span>,<span class="st">"psych_well_int"</span><span class="op">)</span>,
                                   candidate_covar_nms_chr <span class="op">=</span> <span class="cn">NA_character_</span>,
                                   cohort_descv_var_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"d_age"</span>, <span class="st">"Gender"</span>, 
                                                                <span class="st">"d_relation_s"</span>,<span class="st">"d_sexual_ori_s"</span>, 
                                                                <span class="st">"Region"</span>, <span class="st">"d_studying_working"</span><span class="op">)</span>,
-                                  dictionary_tb <span class="op">=</span> <span class="fu"><a href="../reference/make_eq5d_ds_dict.html">make_eq5d_ds_dict</a></span><span class="op">(</span><span class="va">ds_tb</span><span class="op">)</span>, 
+                                  dictionary_tb <span class="op">=</span> <span class="va">dictionary_tb</span>, 
                                   id_var_nm_1L_chr <span class="op">=</span> <span class="st">"uid"</span>, 
                                   is_fake_1L_lgl <span class="op">=</span> <span class="cn">T</span>,
                                   msrmnt_date_var_nm_1L_chr <span class="op">=</span> <span class="st">"data_collection_dtm"</span>,
@@ -604,7 +607,7 @@ Not studying or working
 <div id="candidate-predictors-metadata" class="section level3">
 <h3 class="hasAnchor">
 <a href="#candidate-predictors-metadata" class="anchor"></a>Candidate predictors metadata</h3>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">predictors_lup</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TTU_predictors_lup.html">TTU_predictors_lup</a></span><span class="op">(</span><span class="fu"><a href="../reference/make_pt_TTU_predictors_lup.html">make_pt_TTU_predictors_lup</a></span><span class="op">(</span>short_name_chr <span class="op">=</span> <span class="va">ds_descvs_ls</span><span class="op">$</span><span class="va">candidate_predrs_chr</span>,
                                               long_name_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Kessler Psychological Distress - 10 Item Total Score"</span>,
                                                    <span class="st">"Overall Psychological Wellbeing (Winefield et al. 2012)"</span><span class="op">)</span>,
@@ -624,7 +627,7 @@ Not studying or working
 <li>include identical arguments as in the below example (including names and order), even if all arguments are not required; and</li>
 <li>also calculate an unweighted score that is a simple sum of all MAUI item question responses (e.g. the last three lines of the example <code>maui_scoring_fn</code>).</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">maui_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_maui_params_ls.html">make_maui_params_ls</a></span><span class="op">(</span>maui_domains_pfcs_1L_chr <span class="op">=</span> <span class="st">"eq5dq_"</span>,
                                       maui_itm_short_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Mobility"</span>, <span class="st">"Self-care"</span>, <span class="st">"Activities"</span>,<span class="st">"Pain"</span>,<span class="st">"Anxiety"</span><span class="op">)</span>,
                                       maui_scoring_fn <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">data_tb</span>,
@@ -650,7 +653,7 @@ Not studying or working
 <h2 class="hasAnchor">
 <a href="#analysis-parameters" class="anchor"></a>Analysis parameters</h2>
 <p>Unlike the <a href="CSP_AQOL6D_TTU.html">AQoL-6D vignette</a>, when creating our input parameters list, we need to pass a value to the <code>control_ls</code> argument. We discovered this when undertaking the <a href="Model_TTU.html">initial exploratory analysis</a>.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">input_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_input_params.html">make_input_params</a></span><span class="op">(</span><span class="va">ds_tb</span>,
                                      control_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>adapt_delta <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span>,
                                      ds_descvs_ls <span class="op">=</span> <span class="va">ds_descvs_ls</span>,
@@ -669,20 +672,20 @@ Not studying or working
 <div id="run-analysis" class="section level2">
 <h2 class="hasAnchor">
 <a href="#run-analysis" class="anchor"></a>Run analysis</h2>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/write_analyses.html">write_analyses</a></span><span class="op">(</span><span class="va">input_params_ls</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="report-results" class="section level2">
 <h2 class="hasAnchor">
 <a href="#report-results" class="anchor"></a>Report results</h2>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">input_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_smry_rprt.html">write_mdl_smry_rprt</a></span><span class="op">(</span><span class="va">input_params_ls</span>,
                                        use_shareable_mdls_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="share-results" class="section level2">
 <h2 class="hasAnchor">
 <a href="#share-results" class="anchor"></a>Share results</h2>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/write_study_outp_ds.html">write_study_outp_ds</a></span><span class="op">(</span><span class="va">input_params_ls</span><span class="op">)</span></code></pre></div>
 <p>The uploaded files can be viewed at: <a href="https://doi.org/10.7910/DVN/612HDC" class="uri">https://doi.org/10.7910/DVN/612HDC</a></p>
 </div>
@@ -693,7 +696,7 @@ Not studying or working
 <div id="create-study-metadata" class="section level2">
 <h2 class="hasAnchor">
 <a href="#create-study-metadata" class="anchor"></a>Create study metadata</h2>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">input_params_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_study_descs_ls.html">make_study_descs_ls</a></span><span class="op">(</span>input_params_ls <span class="op">=</span> <span class="va">input_params_ls</span>,
                                        background_1L_chr <span class="op">=</span> <span class="st">"Our study is entirely fictional and has been created to illustrate the generalisability of TTU package functions."</span>,
                                        coi_1L_chr <span class="op">=</span> <span class="st">"None declared."</span>,
@@ -707,7 +710,7 @@ Not studying or working
 <h2 class="hasAnchor">
 <a href="#render-auto-generated-first-draft" class="anchor"></a>Render auto-generated first-draft</h2>
 <p>When rendering the draft manuscript, we have opted in this example to also upload it to our dataset (<code>write_to_dv_1L_lgl = T</code>). This is not recommended if you plan to further develop the draft into an article for publication.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">results_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_manuscript.html">write_manuscript</a></span><span class="op">(</span>input_params_ls <span class="op">=</span> <span class="va">input_params_ls</span>,
                                write_to_dv_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></code></pre></div>
 <p>The draft manuscript created by the previous call is available at: <a href="https://dataverse.harvard.edu/api/access/datafile/4957805" class="uri">https://dataverse.harvard.edu/api/access/datafile/4957805</a> .</p>
@@ -717,7 +720,7 @@ Not studying or working
 <h1 class="hasAnchor">
 <a href="#purge-dataset-copies" class="anchor"></a>Purge dataset copies</h1>
 <p>All remaining local copies (but not the original version) of the study dataset are deleted from the workspace.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/write_to_delete_ds_copies.html">write_to_delete_ds_copies</a></span><span class="op">(</span><span class="va">results_ls</span><span class="op">)</span></code></pre></div>
 
 <!---BLOCK_LANDSCAPE_STOP--->

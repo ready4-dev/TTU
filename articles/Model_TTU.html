@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9315</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9316</span>
       </span>
     </div>
 
@@ -127,7 +127,7 @@
 <a href="#import-and-describe-data" class="anchor"></a>Import and describe data</h2>
 <p>We import our data - in this example we are using fake data.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span><span class="op">(</span><span class="st">"https://dataverse.harvard.edu/api/access/datafile/4750597"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">ds_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span><span class="op">(</span><span class="st">"https://dataverse.harvard.edu/api/access/datafile/4959218"</span><span class="op">)</span><span class="op">)</span> </code></pre></div>
 <p>The dataset we are using has 1786 records on 1068 study participants. The first six records are reproduced below.</p>
 <table class="table  lightable-paper lightable-hover">
 <caption>
@@ -186,10 +186,10 @@ eq5dq_PD
 eq5dq_AD
 </th>
 <th style="text-align:right;">
-k10_int
+K10_int
 </th>
 <th style="text-align:left;">
-psych_well_int
+Psych_well_int
 </th>
 </tr></thead>
 <tbody>
@@ -556,7 +556,7 @@ Not studying or working
 </table>
 <p>We next create a lookup table summarising key information about the variables from our dataset that we will explore as candidate predictors in our models. The predictors lookup table must be of the <code>TTU_predictors_lup</code> class.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">predictors_lup</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TTU_predictors_lup.html">TTU_predictors_lup</a></span><span class="op">(</span><span class="fu"><a href="../reference/make_pt_TTU_predictors_lup.html">make_pt_TTU_predictors_lup</a></span><span class="op">(</span>short_name_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"k10_int"</span>,<span class="st">"psych_well_int"</span><span class="op">)</span>,
+<code class="sourceCode R"><span class="va">predictors_lup</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TTU_predictors_lup.html">TTU_predictors_lup</a></span><span class="op">(</span><span class="fu"><a href="../reference/make_pt_TTU_predictors_lup.html">make_pt_TTU_predictors_lup</a></span><span class="op">(</span>short_name_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"K10_int"</span>,<span class="st">"Psych_well_int"</span><span class="op">)</span>,
                                               long_name_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Kessler Psychological Distress - 10 Item Total Score"</span>,
                                                    <span class="st">"Overall Wellbeing Measure (Winefield et al. 2012)"</span><span class="op">)</span>,
                                               min_val_dbl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>,<span class="fl">18</span><span class="op">)</span>,
@@ -568,8 +568,7 @@ Not studying or working
                                               covariate_lgl <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>We also require a data dictionary for our input dataset. The dictionary must be of the <code><a href="https://ready4-dev.github.io/ready4use/reference/ready4_dictionary.html">ready4use::ready4_dictionary</a></code> class. In the example below we are using an existing dictionary.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">dictionary_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_eq5d_ds_dict.html">make_eq5d_ds_dict</a></span><span class="op">(</span><span class="va">data_tb</span>,
-                                   predictors_lup <span class="op">=</span> <span class="va">predictors_lup</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">dictionary_tb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/connections.html">url</a></span><span class="op">(</span><span class="st">"https://dataverse.harvard.edu/api/access/datafile/4959217"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="score-utility-and-summarise-meta-data" class="section level2">
 <h2 class="hasAnchor">
@@ -577,14 +576,14 @@ Not studying or working
 <p>We now convert study participant responses to the EQ-5D questionnaire to health utility scores. We do this using the <code>eq5d</code> package.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/fragla/eq5d">eq5d</a></span><span class="op">)</span>
-<span class="va">data_tb</span> <span class="op">&lt;-</span> <span class="va">data_tb</span> <span class="op">%&gt;%</span> 
+<span class="va">ds_tb</span> <span class="op">&lt;-</span> <span class="va">ds_tb</span> <span class="op">%&gt;%</span> 
         <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename_with</a></span><span class="op">(</span><span class="op">~</span><span class="fu">stringr</span><span class="fu">::</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace</a></span><span class="op">(</span><span class="va">.x</span>,<span class="st">"eq5dq_"</span>,<span class="st">""</span><span class="op">)</span>,<span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"eq5dq_"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu">`:=`</span><span class="op">(</span><span class="va">EQ5D_total_dbl</span>, 
                      <span class="fu">eq5d</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/eq5d/man/eq5d.html">eq5d</a></span><span class="op">(</span><span class="va">.</span>, country<span class="op">=</span><span class="st">"UK"</span>, version <span class="op">=</span> <span class="st">"5L"</span>, type <span class="op">=</span> <span class="st">"CW"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
     <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename_with</a></span><span class="op">(</span><span class="op">~</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"eq5dq_"</span>,<span class="va">.x</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"MO"</span>,<span class="st">"SC"</span>,<span class="st">"UA"</span>,<span class="st">"PD"</span>,<span class="st">"AD"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>We can label dataset variables using descriptions from the data dictionary.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">data_tb</span> <span class="op">&lt;-</span> <span class="va">data_tb</span> <span class="op">%&gt;%</span>
+<code class="sourceCode R"><span class="va">ds_tb</span> <span class="op">&lt;-</span> <span class="va">ds_tb</span> <span class="op">%&gt;%</span>
   <span class="fu">ready4use</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4use/reference/add_labels_from_dictionary.html">add_labels_from_dictionary</a></span><span class="op">(</span>dictionary_tb <span class="op">=</span> <span class="va">dictionary_tb</span>,
                                         remove_old_lbls_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span> </code></pre></div>
 <p>The first six records of the scored and labelled dataset are reproduced below.</p>
@@ -1451,7 +1450,7 @@ Binomial distribution and complementary log log link
 <code class="sourceCode R"><span class="va">mdl_smry_ls</span> <span class="op">&lt;-</span> <span class="va">mdl_types_lup</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="../reference/make_mdl_smry_ls.html">make_mdl_smry_ls</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cmprsns_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_cmprsn.html">write_mdl_cmprsn</a></span><span class="op">(</span>scored_data_tb <span class="op">=</span> <span class="va">data_tb</span>,
+<code class="sourceCode R"><span class="va">cmprsns_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdl_cmprsn.html">write_mdl_cmprsn</a></span><span class="op">(</span>scored_data_tb <span class="op">=</span> <span class="va">ds_tb</span>,
                                 ds_smry_ls <span class="op">=</span> <span class="va">ds_smry_ls</span>,
                                 mdl_smry_ls <span class="op">=</span> <span class="va">mdl_smry_ls</span>,
                                 output_data_dir_1L_chr <span class="op">=</span> <span class="va">path_to_write_to_1L_chr</span>,
@@ -1694,7 +1693,7 @@ Ordinary Least Squares (log log transformation)
 <a href="#use-most-preferred-model-to-compare-all-candidate-predictors" class="anchor"></a>Use most preferred model to compare all candidate predictors</h3>
 <p>We can now compare all of our candidate predictors (with and without candidate covariates) using the most preferred model type.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cmprsns_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_predr_and_covars_cmprsn.html">write_predr_and_covars_cmprsn</a></span><span class="op">(</span>scored_data_tb <span class="op">=</span> <span class="va">data_tb</span>,
+<code class="sourceCode R"><span class="va">cmprsns_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_predr_and_covars_cmprsn.html">write_predr_and_covars_cmprsn</a></span><span class="op">(</span>scored_data_tb <span class="op">=</span> <span class="va">ds_tb</span>,
                                             bl_tb <span class="op">=</span> <span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">bl_tb</span>,
                                             ds_smry_ls <span class="op">=</span> <span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">ds_smry_ls</span>,
                                             mdl_smry_ls <span class="op">=</span> <span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span>,
@@ -1723,7 +1722,7 @@ IncNodePurity
 <tbody>
 <tr>
 <td style="text-align:left;">
-k10_int
+K10_int
 </td>
 <td style="text-align:right;">
 0.0065171
@@ -1734,7 +1733,7 @@ k10_int
 </tr>
 <tr>
 <td style="text-align:left;">
-psych_well_int
+Psych_well_int
 </td>
 <td style="text-align:right;">
 0.0010166
@@ -1785,7 +1784,7 @@ MAEP
 <tbody>
 <tr>
 <td style="text-align:left;">
-k10_int
+K10_int
 </td>
 <td style="text-align:right;">
 0.4079463
@@ -1808,7 +1807,7 @@ k10_int
 </tr>
 <tr>
 <td style="text-align:left;">
-psych_well_int
+Psych_well_int
 </td>
 <td style="text-align:right;">
 0.1322580
@@ -1866,7 +1865,7 @@ Significant
 <tbody>
 <tr>
 <td style="text-align:left;">
-psych_well_int
+Psych_well_int
 </td>
 <td style="text-align:right;">
 0.1533129
@@ -1878,12 +1877,12 @@ psych_well_int
 -1843.836
 </td>
 <td style="text-align:left;">
-(Intercept) psych_well_int
+(Intercept) Psych_well_int
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-k10_int
+K10_int
 </td>
 <td style="text-align:right;">
 0.4189650
@@ -1895,7 +1894,7 @@ k10_int
 -2212.826
 </td>
 <td style="text-align:left;">
-(Intercept) k10_int
+(Intercept) K10_int
 </td>
 </tr>
 </tbody>
@@ -1918,7 +1917,7 @@ k10_int
 <a href="#test-preferred-model-with-preferred-covariates-for-each-candidate-predictor" class="anchor"></a>Test preferred model with preferred covariates for each candidate predictor</h3>
 <p>We now conclude our model testing by rerunning the previous step, except confining our covariates to those we prefer.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">outp_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdls_with_covars_cmprsn.html">write_mdls_with_covars_cmprsn</a></span><span class="op">(</span>scored_data_tb <span class="op">=</span> <span class="va">data_tb</span>,
+<code class="sourceCode R"><span class="va">outp_smry_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_mdls_with_covars_cmprsn.html">write_mdls_with_covars_cmprsn</a></span><span class="op">(</span>scored_data_tb <span class="op">=</span> <span class="va">ds_tb</span>,
                                            bl_tb <span class="op">=</span> <span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">bl_tb</span>,
                                            ds_smry_ls <span class="op">=</span> <span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">ds_smry_ls</span>,
                                            mdl_smry_ls <span class="op">=</span> <span class="va">cmprsns_ls</span><span class="op">$</span><span class="va">mdl_smry_ls</span>,
