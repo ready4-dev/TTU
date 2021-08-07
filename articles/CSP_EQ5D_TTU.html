@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9316</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9317</span>
       </span>
     </div>
 
@@ -114,7 +114,7 @@
 <li><p>create and share catalogues of these models; and</p></li>
 <li><p>author a scientific summary of the results and methods deployed.</p></li>
 </ul>
-<p>The steps in this reporting workflow should only be undertaken once an optimal set of input values have been identified by an <a href="Model_TTU.html">initial exploratory analysis</a>. Most of the steps in this example are described with minimal explanation here as they are discussed in more detail in the <a href="CSP_AQOL6D_TTU.html">AQoL-6D TTU reporting workflow vignette</a>, and . Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.</p>
+<p>The steps in this reporting workflow should only be undertaken once an optimal set of input values have been identified by an <a href="Model_TTU.html">initial exploratory analysis</a>. Most of the steps in this example are described with minimal explanation here as they are discussed in more detail in the <a href="CSP_AQOL6D_TTU.html">AQoL-6D TTU reporting workflow vignette</a>. Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/fragla/eq5d">eq5d</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/TTU/">TTU</a></span><span class="op">)</span></code></pre></div>
@@ -587,7 +587,6 @@ Not studying or working
 <div id="dataset-metadata" class="section level3">
 <h3 class="hasAnchor">
 <a href="#dataset-metadata" class="anchor"></a>Dataset metadata</h3>
-<p>We describe the features of our dataset that are most relevant to the analyses we are planning to undertake. Note all, Multi-Attribute Utility Instrument (MAUI) question variables must start with a common prefix, which needs to be passed to the <code>maui_item_pfx_1L_chr</code> argument. The dataset does not need to include variables for total health utility scores (weighted and unweighted), as these variables will be computed during the analysis. However, you can supply the names you wish assigned to these variables once they are computed using the <code>utl_wtd_var_nm_1L_chr</code> and <code>utl_unwtd_var_nm_1L_chr</code> arguments.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">ds_descvs_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/make_ds_descvs_ls.html">make_ds_descvs_ls</a></span><span class="op">(</span>candidate_predrs_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"k10_int"</span>,<span class="st">"psych_well_int"</span><span class="op">)</span>,
                                   candidate_covar_nms_chr <span class="op">=</span> <span class="cn">NA_character_</span>,
