@@ -626,7 +626,6 @@ make_ethics_text <- function(results_ls){
                         results_ls$study_descs_ls$ethics_1L_chr)
   return(text_1L_chr)
 }
-
 make_fake_eq5d_ds <- function(country_1L_chr = "UK",
                               version_1L_chr = "5L",
                               type_1L_chr = "CW",

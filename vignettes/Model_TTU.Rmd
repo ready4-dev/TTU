@@ -34,13 +34,13 @@ dir.create(path_to_write_to_1L_chr)
 We import our data - in this example we are using fake data.
 
 ```{r message=FALSE}
-data_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4750597"))
+ds_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4959218")) 
 ```
 
-The dataset we are using has `r nrow(data_tb)` records on `r length(data_tb$uid %>% unique())` study participants. The first six records are reproduced below.
+The dataset we are using has `r nrow(ds_tb)` records on `r length(ds_tb$uid %>% unique())` study participants. The first six records are reproduced below.
 
 ```{r inputds, echo=F, eval = knitr::is_html_output(), results='asis'}
-data_tb %>%
+ds_tb %>%
     head() %>%
   ready4show::print_table(output_type_1L_chr = "HTML",
                           caption_1L_chr = "Input dataset",
@@ -50,7 +50,7 @@ data_tb %>%
 We next create a lookup table summarising key information about the variables from our dataset that we will explore as candidate predictors in our models. The predictors lookup table must be of the `TTU_predictors_lup` class.
 
 ```{r}
-predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = c("k10_int","psych_well_int"),
+predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = c("K10_int","Psych_well_int"),
                                               long_name_chr = c("Kessler Psychological Distress - 10 Item Total Score",
                                                    "Overall Wellbeing Measure (Winefield et al. 2012)"),
                                               min_val_dbl = c(10,18),
@@ -65,8 +65,7 @@ predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr =
 We also require a data dictionary for our input dataset. The dictionary must be of the `ready4use::ready4_dictionary` class. In the example below we are using an existing dictionary.
 
 ```{r}
-dictionary_tb <- make_eq5d_ds_dict(data_tb,
-                                   predictors_lup = predictors_lup)
+dictionary_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4959217"))
 ```
 
 ## Score utility and summarise meta-data
@@ -74,7 +73,7 @@ We now convert study participant responses to the EQ-5D questionnaire to health 
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 library(eq5d)
-data_tb <- data_tb %>% 
+ds_tb <- ds_tb %>% 
         dplyr::rename_with(~stringr::str_replace(.x,"eq5dq_",""),dplyr::starts_with("eq5dq_")) %>%
   dplyr::mutate(`:=`(EQ5D_total_dbl, 
                      eq5d::eq5d(., country="UK", version = "5L", type = "CW"))) %>%
@@ -84,7 +83,7 @@ data_tb <- data_tb %>%
 We can label dataset variables using descriptions from the data dictionary.
 
 ```{r}
-data_tb <- data_tb %>%
+ds_tb <- ds_tb %>%
   ready4use::add_labels_from_dictionary(dictionary_tb = dictionary_tb,
                                         remove_old_lbls_1L_lgl = T) 
 ```
@@ -92,7 +91,7 @@ data_tb <- data_tb %>%
 The first six records of the scored and labelled dataset are reproduced below.
 
 ```{r scoredds, eval = knitr::is_html_output(), echo=F,results='asis'}
-data_tb %>%
+ds_tb %>%
     head() %>%
   ready4show::print_table(output_type_1L_chr = "HTML",
                           caption_1L_chr = "Scored and labelled dataset",
@@ -140,7 +139,7 @@ mdl_smry_ls <- mdl_types_lup %>%
 ```
 
 ```{r warning=F, message=F}
-cmprsns_ls <- write_mdl_cmprsn(scored_data_tb = data_tb,
+cmprsns_ls <- write_mdl_cmprsn(scored_data_tb = ds_tb,
                                 ds_smry_ls = ds_smry_ls,
                                 mdl_smry_ls = mdl_smry_ls,
                                 output_data_dir_1L_chr = path_to_write_to_1L_chr,
@@ -171,7 +170,7 @@ cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr <- c("OLS_NTF", "BET_CLL")
 We can now compare all of our candidate predictors (with and without candidate covariates) using the most preferred model type.
 
 ```{r message=FALSE, results='hide', warning=FALSE}
-cmprsns_ls <- write_predr_and_covars_cmprsn(scored_data_tb = data_tb,
+cmprsns_ls <- write_predr_and_covars_cmprsn(scored_data_tb = ds_tb,
                                             bl_tb = cmprsns_ls$bl_tb,
                                             ds_smry_ls = cmprsns_ls$ds_smry_ls,
                                             mdl_smry_ls = cmprsns_ls$mdl_smry_ls,
@@ -216,7 +215,7 @@ We can override the covariates to select, potentially because we want to select 
 We now conclude our model testing by rerunning the previous step, except confining our covariates to those we prefer.
 
 ```{r message=FALSE, results='hide', warning=FALSE, fig.show ='hide'}
-outp_smry_ls <- write_mdls_with_covars_cmprsn(scored_data_tb = data_tb,
+outp_smry_ls <- write_mdls_with_covars_cmprsn(scored_data_tb = ds_tb,
                                            bl_tb = cmprsns_ls$bl_tb,
                                            ds_smry_ls = cmprsns_ls$ds_smry_ls,
                                            mdl_smry_ls = cmprsns_ls$mdl_smry_ls,

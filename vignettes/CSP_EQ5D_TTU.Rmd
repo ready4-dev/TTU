@@ -47,12 +47,9 @@ output_format_ls <- make_output_format_ls(manuscript_outp_1L_chr = "PDF",
 ## Data parameters
 
 ### Dataset
-Note in this example we modify the variable names of our candidate predictors to ensure they are capitalised, as we wish for these variable names to be capitalised in the final report.
 
 ```{r message=FALSE}
-ds_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4750597")) %>%
-  dplyr::rename(K10_int = k10_int,
-                Psych_well_int = psych_well_int) 
+ds_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4959218")) 
 ```
 
 The first few records of the dataset are as follows.
@@ -64,6 +61,11 @@ ds_tb %>%
                           caption_1L_chr = "Input dataset",
                           mkdn_tbl_ref_1L_chr = "tab:inputds")
 ```
+### Data dictionary
+
+```{r}
+dictionary_tb = readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4959217"))
+```
 
 ### Dataset metadata
 We describe the features of our dataset that are most relevant to the analyses we are planning to undertake. Note all, Multi-Attribute Utility Instrument (MAUI) question variables must start with a common prefix, which needs to be passed to the `maui_item_pfx_1L_chr` argument. The dataset does not need to include variables for total health utility scores (weighted and unweighted), as these variables will be computed during the analysis. However, you can supply the names you wish assigned to these variables once they are computed using the `utl_wtd_var_nm_1L_chr` and `utl_unwtd_var_nm_1L_chr` arguments.
@@ -74,7 +76,7 @@ ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("k10_int","psych_well
                                   cohort_descv_var_nms_chr = c("d_age", "Gender", 
                                                                "d_relation_s","d_sexual_ori_s", 
                                                                "Region", "d_studying_working"),
-                                  dictionary_tb = make_eq5d_ds_dict(ds_tb), 
+                                  dictionary_tb = dictionary_tb, 
                                   id_var_nm_1L_chr = "uid", 
                                   is_fake_1L_lgl = T,
                                   msrmnt_date_var_nm_1L_chr = "data_collection_dtm",
