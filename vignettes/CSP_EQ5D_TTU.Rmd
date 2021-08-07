@@ -17,7 +17,7 @@ This vignette is an example of implementing of a reproducible workflow to:
 
 - author a scientific summary of the results and methods deployed. 
 
-The steps in this reporting workflow should only be undertaken once an optimal set of input values have been identified by an [initial exploratory analysis](Model_TTU.html). Most of the steps in this example are described with minimal explanation here as they are discussed in more detail in the [AQoL-6D TTU reporting workflow vignette](CSP_AQOL6D_TTU.html), and . Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.
+The steps in this reporting workflow should only be undertaken once an optimal set of input values have been identified by an [initial exploratory analysis](Model_TTU.html). Most of the steps in this example are described with minimal explanation here as they are discussed in more detail in the [AQoL-6D TTU reporting workflow vignette](CSP_AQOL6D_TTU.html). Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.
 
 ```{r echo = TRUE, message=FALSE}
 library(eq5d)
@@ -68,7 +68,6 @@ dictionary_tb = readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4
 ```
 
 ### Dataset metadata
-We describe the features of our dataset that are most relevant to the analyses we are planning to undertake. Note all, Multi-Attribute Utility Instrument (MAUI) question variables must start with a common prefix, which needs to be passed to the `maui_item_pfx_1L_chr` argument. The dataset does not need to include variables for total health utility scores (weighted and unweighted), as these variables will be computed during the analysis. However, you can supply the names you wish assigned to these variables once they are computed using the `utl_wtd_var_nm_1L_chr` and `utl_unwtd_var_nm_1L_chr` arguments.
 
 ```{r echo = TRUE, eval = F }
 ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("k10_int","psych_well_int"),
