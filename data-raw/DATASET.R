@@ -254,17 +254,5 @@ x_ready4use_manifest <- ready4use::make_pt_ready4use_manifest(x_ready4fun_manife
                                                               pkg_ds_ls_ls = datasets_ls) %>%
   ready4use::ready4use_manifest()
 x_xx <- ready4::author(x_ready4use_manifest)
-
-# usethis::use_package("betareg")
-# usethis::use_package("eq5d")
-# usethis::use_package("ggfortify")
-# usethis::use_dev_package("cmdstanr")
-# usethis::use_package("knitrBootstrap")
 # usethis::use_package("readr")
-# usethis::use_package("rmarkdown",type = "Suggests")
-# usethis::use_dev_package("ready4show")
-# usethis::use_dev_package("ready4use")
-# usethis::use_dev_package("youthvars")
-#usethis::use_package("knitr", type = "suggests")
-#usethis::use_package("rgl")
-#
+# usethis::use_package("rgl")
