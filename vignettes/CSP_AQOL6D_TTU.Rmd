@@ -31,10 +31,10 @@ library(TTU)
 ## Reporting parameters
 
 ### Bibliograhic data
-We begin by specifying the authorship and other bibliographic data that we wish to attach to all reports that we generate. We use the `ready4_authors_lup` and `ready4_institutes_lup` classes of the [ready4show](https://ready4-dev.github.io/ready4show/) package to do this.
+We begin by specifying the authorship and other bibliographic data that we wish to attach to all reports that we generate. We use the `ready4show_authors` and `ready4show_institutes` classes of the [ready4show](https://ready4-dev.github.io/ready4show/) package to do this.
 
 ```{r }
-authors_tb <- ready4show::ready4_authors_lup() %>%
+authors_tb <- ready4show::ready4show_authors() %>%
   tibble::add_case(first_nm_chr = "Alejandra",
                    middle_nm_chr = "Rocio",
                    last_nm_chr = "Scienceace",
@@ -55,7 +55,7 @@ authors_tb <- ready4show::ready4_authors_lup() %>%
   
 ```
 ```{r}
-institutes_tb <- ready4show::ready4_institutes_lup() %>%
+institutes_tb <- ready4show::ready4show_institutes() %>%
   tibble::add_case(short_name_chr = "Institute_A", long_name_chr = "Awesome University, Shanghai") %>%
   tibble::add_case(short_name_chr = "Institute_B", long_name_chr = "August Institution, London") %>%
   tibble::add_case(short_name_chr = "Institute_C", long_name_chr = "Highly Ranked Uni, Montreal")
@@ -104,7 +104,7 @@ ds_tb %>%
 A data dictionary must also be supplied for the dataset. The dictionary must be of class `ready4_dictionary` from the [ready4use](https://ready4-dev.github.io/ready4use/) package. In this case, we are using a pre-existing dictionary.
 
 ```{r}
-dictionary_tb <- youthvars::make_final_rpln_ds_dict()
+dictionary_tb <- youthvars::make_final_repln_ds_dict()
 ```
 
 The first few records of the data dictionary are reproduced below.
@@ -164,7 +164,7 @@ predictors_lup <- make_pt_TTU_predictors_lup(short_name_chr = c(ds_descvs_ls$can
 We also need to provide information specific to the MAUI used to collect the data from which health utility will be derived. The minimum allowable health utility weight for this instrument can be declared using the `utl_min_val_1L_dbl` argument.
 
 ```{r}
-maui_params_ls <- make_maui_params_ls(maui_domains_pfcs_1L_chr = "vD",
+maui_params_ls <- make_maui_params_ls(maui_domains_pfxs_1L_chr = "vD",
                                       maui_itm_short_nms_chr = c("Household tasks",
                                                                  "Getting around","Morbility",
                                                                  "Self care","Enjoy close rels",

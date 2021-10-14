@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_smry_of_brm_mdl}
 \alias{make_smry_of_brm_mdl}
-\title{Make summary of bayesian regression model}
+\title{Make summary of bayesian regression model model}
 \usage{
 make_smry_of_brm_mdl(
   mdl_ls,

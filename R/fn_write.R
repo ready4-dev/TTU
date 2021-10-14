@@ -1,6 +1,6 @@
 #' Write analyses
 #' @description write_analyses() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write analyses. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
-#' @param input_params_ls Input params (a list)
+#' @param input_params_ls Input parameters (a list)
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
 #' @param start_at_int Start at (an integer vector), Default: c(2, 1)
 #' @return NULL
@@ -73,10 +73,10 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
             "_", "BOXCOX"), height_1L_dbl = height_1L_dbl, width_1L_dbl = width_1L_dbl)
     return(path_to_plot_1L_chr)
 }
-#' Write csp output
-#' @description write_csp_output() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write csp output. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
-#' @param path_to_CSP_1L_chr Path to CSP (a character vector of length one)
-#' @param dv_ds_doi_1L_chr Dataverse dataset doi (a character vector of length one), Default: NULL
+#' Write complete study program output
+#' @description write_csp_output() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write complete study program output. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' @param path_to_csp_1L_chr Path to complete study program (a character vector of length one)
+#' @param dv_ds_doi_1L_chr Dataverse dataset digital object identifier (a character vector of length one), Default: NULL
 #' @param execute_1L_lgl Execute (a logical vector of length one), Default: T
 #' @return NULL
 #' @rdname write_csp_output
@@ -87,17 +87,17 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
 #' @importFrom DescTools SplitPath
 #' @importFrom rmarkdown render
 #' @importFrom dataverse add_dataset_file
-write_csp_output <- function (path_to_CSP_1L_chr, dv_ds_doi_1L_chr = NULL, execute_1L_lgl = T) 
+write_csp_output <- function (path_to_csp_1L_chr, dv_ds_doi_1L_chr = NULL, execute_1L_lgl = T) 
 {
-    readLines(path_to_CSP_1L_chr) %>% purrr::map_chr(~ifelse(.x == 
+    readLines(path_to_csp_1L_chr) %>% purrr::map_chr(~ifelse(.x == 
         "knitr::opts_chunk$set(eval = F)", "knitr::opts_chunk$set(eval = T)", 
-        .x)) %>% writeLines(con = path_to_CSP_1L_chr)
-    path_to_r_script_1L_chr <- stringr::str_sub(path_to_CSP_1L_chr, 
+        .x)) %>% writeLines(con = path_to_csp_1L_chr)
+    path_to_r_script_1L_chr <- stringr::str_sub(path_to_csp_1L_chr, 
         end = -3)
-    knitr::purl(path_to_CSP_1L_chr, path_to_r_script_1L_chr)
-    readLines(path_to_CSP_1L_chr) %>% purrr::map_chr(~ifelse(.x == 
+    knitr::purl(path_to_csp_1L_chr, path_to_r_script_1L_chr)
+    readLines(path_to_csp_1L_chr) %>% purrr::map_chr(~ifelse(.x == 
         "knitr::opts_chunk$set(eval = T)", "knitr::opts_chunk$set(eval = F)", 
-        .x)) %>% writeLines(con = path_to_CSP_1L_chr)
+        .x)) %>% writeLines(con = path_to_csp_1L_chr)
     if (execute_1L_lgl) {
         old_wd_1L_chr <- getwd()
         path_info_ls <- DescTools::SplitPath(path_to_r_script_1L_chr)
@@ -105,25 +105,25 @@ write_csp_output <- function (path_to_CSP_1L_chr, dv_ds_doi_1L_chr = NULL, execu
         source(path_info_ls$fullfilename)
         setwd(old_wd_1L_chr)
     }
-    rmarkdown::render(path_to_CSP_1L_chr)
+    rmarkdown::render(path_to_csp_1L_chr)
     if (!is.null(dv_ds_doi_1L_chr)) {
-        dataverse::add_dataset_file(paste0(stringr::str_sub(path_to_CSP_1L_chr, 
+        dataverse::add_dataset_file(paste0(stringr::str_sub(path_to_csp_1L_chr, 
             end = -4), "pdf"), dataset = dv_ds_doi_1L_chr, description = "Methods Report 1: Complete Study Program")
     }
 }
-#' Write main oupt directory
-#' @description write_main_oupt_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write main oupt directory. The function returns Paths (a list).
-#' @param params_ls Params (a list), Default: NULL
+#' Write main output directory
+#' @description write_main_outp_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write main output directory. The function returns Paths (a list).
+#' @param params_ls Parameters (a list), Default: NULL
 #' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: F
 #' @param R_fl_nm_1L_chr R file name (a character vector of length one), Default: 'aaaaaaaaaa.txt'
 #' @return Paths (a list)
-#' @rdname write_main_oupt_dir
+#' @rdname write_main_outp_dir
 #' @export 
 #' @importFrom purrr pluck
 #' @importFrom ready4show make_paths_ls
 #' @importFrom here i_am here
 #' @importFrom youthvars write_all_outp_dirs
-write_main_oupt_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_fl_nm_1L_chr = "aaaaaaaaaa.txt") 
+write_main_outp_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_fl_nm_1L_chr = "aaaaaaaaaa.txt") 
 {
     file.create(R_fl_nm_1L_chr)
     R_fl_nm_1L_chr <- list.files() %>% purrr::pluck(1)
@@ -142,7 +142,7 @@ write_main_oupt_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_f
 #' Write manuscript
 #' @description write_manuscript() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write manuscript. The function returns Results (a list).
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
-#' @param input_params_ls Input params (a list), Default: NULL
+#' @param input_params_ls Input parameters (a list), Default: NULL
 #' @param results_ls Results (a list), Default: NULL
 #' @param figures_in_body_lgl Figures in body (a logical vector), Default: NULL
 #' @param output_type_1L_chr Output type (a character vector of length one), Default: NULL
@@ -178,11 +178,11 @@ write_manuscript <- function (abstract_args_ls = NULL, input_params_ls = NULL, r
         input_params_ls$path_params_ls$paths_ls$reports_dir_1L_chr, 
         results_ls$path_params_ls$paths_ls$reports_dir_1L_chr)
     if (!dir.exists(path_to_ms_mkdn_1L_dir)) {
-        temp_fl <- tempfile()
+        tmp_fl <- tempfile()
         download.file(paste0("https://github.com/ready4-dev/ttu_lng_ss/archive/refs/tags/v", 
-            version_1L_chr, ".zip"), temp_fl)
-        utils::unzip(temp_fl, exdir = mkdn_data_dir_1L_chr)
-        unlink(temp_fl)
+            version_1L_chr, ".zip"), tmp_fl)
+        utils::unzip(tmp_fl, exdir = mkdn_data_dir_1L_chr)
+        unlink(tmp_fl)
     }
     if (!is.null(input_params_ls)) {
         header_yaml_args_ls <- input_params_ls$header_yaml_args_ls
@@ -254,7 +254,7 @@ write_mdl_cmprsn <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, output_da
     bl_tb <- youthvars::transform_ds_for_tstng(scored_data_tb, 
         depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr, 
         candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr, 
-        dep_var_max_val_1L_dbl = 0.999, round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr, 
+        depnt_var_max_val_1L_dbl = 0.999, round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr, 
         round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
     ds_smry_ls$candidate_predrs_chr <- reorder_cndt_predrs_chr(ds_smry_ls$candidate_predrs_chr, 
         data_tb = bl_tb, depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr)
@@ -347,21 +347,21 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
             width_1L_dbl = ..4[2]))
 }
 #' Write model summary report
-#' @description write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Input params (a list).
-#' @param input_params_ls Input params (a list), Default: NULL
+#' @description write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Input parameters (a list).
+#' @param input_params_ls Input parameters (a list), Default: NULL
 #' @param header_yaml_args_ls Header yaml arguments (a list), Default: NULL
-#' @param path_params_ls Path params (a list), Default: NULL
+#' @param path_params_ls Path parameters (a list), Default: NULL
 #' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: FALSE
 #' @param output_format_ls Output format (a list), Default: NULL
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
 #' @param dv_ds_nm_and_url_chr Dataverse dataset name and url (a character vector), Default: NULL
 #' @param reference_int Reference (an integer vector), Default: 0
 #' @param rprt_lup Report (a lookup table), Default: NULL
-#' @param rcrd_nm_1L_chr Rcrd name (a character vector of length one), Default: 'AAA_RPRT_WRTNG_MTH'
+#' @param rcrd_nm_1L_chr Record name (a character vector of length one), Default: 'AAA_RPRT_WRTNG_MTH'
 #' @param rprt_nm_1L_chr Report name (a character vector of length one), Default: 'AAA_TTU_MDL_CTG'
 #' @param start_at_int Start at (an integer vector), Default: c(2, 1)
 #' @param use_shareable_mdls_1L_lgl Use shareable models (a logical vector of length one), Default: F
-#' @return Input params (a list)
+#' @return Input parameters (a list)
 #' @rdname write_mdl_smry_rprt
 #' @export 
 #' @importFrom purrr map pluck map_lgl map_chr reduce
@@ -546,7 +546,7 @@ write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_tota
     tfmn_1L_chr <- arg_vals_chr[3]
     if (is.na(predn_type_1L_chr)) 
         predn_type_1L_chr <- NULL
-    data_tb <- data_tb %>% add_tfmd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+    data_tb <- data_tb %>% add_tfd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
         tfmn_1L_chr = tfmn_1L_chr)
     output_dir_1L_chr <- output_dir_1L_chr <- write_new_outp_dir(path_to_write_to_1L_chr, 
         new_dir_nm_1L_chr = new_dir_nm_1L_chr)
@@ -568,7 +568,7 @@ write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_tota
                 coefficients_mat <- summary(model_mdl)$coefficients
             }
             tibble::tibble(variable = .x, Rsquare = caret::R2(stats::predict(model_mdl, 
-                type = predn_type_1L_chr) %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, 
+                type = predn_type_1L_chr) %>% calculate_depnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, 
                 tfmn_is_outp_1L_lgl = T), data_tb %>% dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr)), 
                 form = "traditional"), AIC = stats::AIC(model_mdl), 
                 BIC = stats::BIC(model_mdl), Significant = paste(names(which(coefficients_mat[, 
@@ -688,7 +688,7 @@ write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_
     tfmn_for_bnml_1L_lgl <- ready4fun::get_from_lup_obj(mdl_types_lup, 
         match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
         target_var_nm_1L_chr = "tfmn_for_bnml_lgl", evaluate_lgl = F)
-    data_tb <- data_tb %>% add_tfmd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+    data_tb <- data_tb %>% add_tfd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
         tfmn_1L_chr = tfmn_1L_chr)
     model_mdl <- make_mdl(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
         tfmn_1L_chr = tfmn_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr, 
@@ -729,7 +729,6 @@ write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_
 #' @return Output summary (a list)
 #' @rdname write_mdls_with_covars_cmprsn
 #' @export 
-
 write_mdls_with_covars_cmprsn <- function (scored_data_tb, bl_tb, ds_smry_ls, mdl_smry_ls, output_data_dir_1L_chr, 
     seed_1L_int = 1234, session_data_ls = NULL) 
 {
@@ -768,7 +767,6 @@ write_mdls_with_covars_cmprsn <- function (scored_data_tb, bl_tb, ds_smry_ls, md
 #' @return Output directory (a character vector of length one)
 #' @rdname write_new_outp_dir
 #' @export 
-
 #' @keywords internal
 write_new_outp_dir <- function (path_to_write_to_1L_chr, new_dir_nm_1L_chr) 
 {
@@ -834,7 +832,6 @@ write_predr_and_covars_cmprsn <- function (scored_data_tb, bl_tb, ds_smry_ls, md
 #' @return Output summary (a list)
 #' @rdname write_predr_and_mdl_tstng_results
 #' @export 
-
 #' @keywords internal
 write_predr_and_mdl_tstng_results <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, session_data_ls, 
     output_data_dir_1L_chr, seed_1L_int = 1234) 
@@ -909,7 +906,7 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_
 }
 #' Write report
 #' @description write_report() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write report. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
-#' @param params_ls Params (a list)
+#' @param params_ls Parameters (a list)
 #' @param paths_ls Paths (a list)
 #' @param rprt_nm_1L_chr Report name (a character vector of length one)
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
@@ -937,14 +934,13 @@ write_report <- function (params_ls, paths_ls, rprt_nm_1L_chr, abstract_args_ls 
     rlang::exec(ready4show::write_rprt_from_tmpl, !!!args_ls)
 }
 #' Write reporting directory
-#' @description write_reporting_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write reporting directory. The function returns Path to CSP (a character vector of length one).
+#' @description write_reporting_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write reporting directory. The function returns Path to complete study program (a character vector of length one).
 #' @param path_to_write_to_1L_chr Path to write to (a character vector of length one), Default: getwd()
 #' @param new_dir_nm_1L_chr New directory name (a character vector of length one), Default: 'TTU_Project'
 #' @param overwrite_1L_lgl Overwrite (a logical vector of length one), Default: FALSE
-#' @return Path to CSP (a character vector of length one)
+#' @return Path to complete study program (a character vector of length one)
 #' @rdname write_reporting_dir
 #' @export 
-
 write_reporting_dir <- function (path_to_write_to_1L_chr = getwd(), new_dir_nm_1L_chr = "TTU_Project", 
     overwrite_1L_lgl = FALSE) 
 {
@@ -955,18 +951,18 @@ write_reporting_dir <- function (path_to_write_to_1L_chr = getwd(), new_dir_nm_1
     path_to_RMD_dir_1L_chr <- system.file("Project/CSP", package = "TTU")
     file.copy(path_to_RMD_dir_1L_chr, path_to_prjt_dir_1L_chr, 
         recursive = T, overwrite = overwrite_1L_lgl)
-    path_to_CSP_1L_chr <- paste0(path_to_prjt_dir_1L_chr, "/CSP/CSP.Rmd")
-    return(path_to_CSP_1L_chr)
+    path_to_csp_1L_chr <- paste0(path_to_prjt_dir_1L_chr, "/CSP/CSP.Rmd")
+    return(path_to_csp_1L_chr)
 }
-#' Write report with rcrd
-#' @description write_rprt_with_rcrd() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write report with rcrd. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' Write report with record
+#' @description write_rprt_with_rcrd() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write report with record. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param path_to_outp_fl_1L_chr Path to output file (a character vector of length one)
 #' @param paths_ls Paths (a list)
 #' @param header_yaml_args_ls Header yaml arguments (a list), Default: NULL
 #' @param rprt_lup Report (a lookup table), Default: NULL
 #' @param use_fake_data_1L_lgl Use fake data (a logical vector of length one), Default: F
 #' @param rprt_nm_1L_chr Report name (a character vector of length one), Default: 'AAA_TTU_MDL_CTG'
-#' @param rcrd_nm_1L_chr Rcrd name (a character vector of length one), Default: 'AAA_RPRT_WRTNG_MTH'
+#' @param rcrd_nm_1L_chr Record name (a character vector of length one), Default: 'AAA_RPRT_WRTNG_MTH'
 #' @param reference_1L_int Reference (an integer vector of length one), Default: NULL
 #' @param start_at_int Start at (an integer vector), Default: c(2, 1)
 #' @param output_type_1L_chr Output type (a character vector of length one), Default: 'PDF'
@@ -974,7 +970,7 @@ write_reporting_dir <- function (path_to_write_to_1L_chr = getwd(), new_dir_nm_1
 #' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
 #' @param main_rprt_append_ls Main report append (a list), Default: NULL
-#' @param rcrd_rprt_append_ls Rcrd report append (a list), Default: NULL
+#' @param rcrd_rprt_append_ls Record report append (a list), Default: NULL
 #' @return NULL
 #' @rdname write_rprt_with_rcrd
 #' @export 
@@ -1016,14 +1012,14 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_
         rprt_nm_1L_chr = rprt_nm_1L_chr, abstract_args_ls = abstract_args_ls, 
         header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
 }
-#' Write scndry analysis
-#' @description write_scndry_analysis() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scndry analysis. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+#' Write secondary analysis
+#' @description write_scndry_analysis() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write secondary analysis. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 #' @param predictors_lup Predictors (a lookup table), Default: NULL
-#' @param valid_params_ls_ls Valid params (a list of lists)
+#' @param valid_params_ls_ls Valid parameters (a list of lists)
 #' @param candidate_covar_nms_chr Candidate covariate names (a character vector)
 #' @param candidate_predrs_chr Candidate predictors (a character vector), Default: NULL
 #' @param header_yaml_args_ls Header yaml arguments (a list)
-#' @param path_params_ls Path params (a list)
+#' @param path_params_ls Path parameters (a list)
 #' @param prefd_covars_chr Preferred covariates (a character vector), Default: 'NA'
 #' @param reference_1L_int Reference (an integer vector of length one)
 #' @param start_at_int Start at (an integer vector), Default: c(2, 1)
@@ -1094,8 +1090,8 @@ write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, ca
         rprt_nm_1L_chr = rprt_nm_1L_chr, abstract_args_ls = abstract_args_ls, 
         header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
 }
-#' Write scndry analysis directory
-#' @description write_scndry_analysis_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scndry analysis directory. The function returns Paths (a list).
+#' Write secondary analysis directory
+#' @description write_scndry_analysis_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write secondary analysis directory. The function returns Paths (a list).
 #' @param paths_ls Paths (a list)
 #' @param reference_1L_int Reference (an integer vector of length one), Default: 1
 #' @return Paths (a list)
@@ -1170,7 +1166,7 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
     rank_idcs_int <- purrr::map_int(sorted_mdl_nms_chr, ~which(ranked_mdl_nms_chr == 
         .x))
     incld_mdl_paths_chr <- incld_mdl_paths_chr[order(rank_idcs_int)]
-    fake_ds_tb <- make_fake_ts_data(outp_smry_ls, dep_vars_are_NA_1L_lgl = F)
+    fake_ds_tb <- make_fake_ts_data(outp_smry_ls, depnt_vars_are_NA_1L_lgl = F)
     mdl_types_lup <- outp_smry_ls$mdl_types_lup
     shareable_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>% 
         purrr::map2(incld_mdl_paths_chr, ~{
@@ -1195,8 +1191,8 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
             sd_dbl <- mdl_smry_tb %>% dplyr::filter(Parameter == 
                 "SD (Intercept)") %>% dplyr::select(Estimate, 
                 SE) %>% t() %>% as.vector()
-            mdl_fake_ds_tb <- fake_ds_tb %>% add_tfmd_var_to_ds(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
-                tfmn_1L_chr = tfmn_1L_chr, dep_var_max_val_1L_dbl = 0.999) %>% 
+            mdl_fake_ds_tb <- fake_ds_tb %>% add_tfd_var_to_ds(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr, 
+                tfmn_1L_chr = tfmn_1L_chr, depnt_var_max_val_1L_dbl = 0.999) %>% 
                 dplyr::select(names(model_mdl$data))
             model_mdl$data <- mdl_fake_ds_tb
             table_predn_mdl <- make_shareable_mdl(fake_ds_tb = mdl_fake_ds_tb, 
@@ -1281,10 +1277,11 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
 #' @rdname write_shareable_mdls_to_dv
 #' @export 
 #' @importFrom tibble tibble
-#' @importFrom ready4use write_fls_to_dv_ds get_fl_id_from_dv_ls
+#' @importFrom ready4use write_fls_to_dv_ds
 #' @importFrom dataverse get_dataset
 #' @importFrom dplyr mutate
 #' @importFrom purrr map_int
+#' @importFrom ready4fun get_fl_id_from_dv_ls
 #' @keywords internal
 write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "", 
     share_ingredients_1L_lgl = T, output_dir_chr = NA_character_) 
@@ -1308,7 +1305,7 @@ write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Sha
     if (!share_ingredients_1L_lgl) {
         ds_ls <- dataverse::get_dataset(outp_smry_ls$dv_ls$ds_url_1L_chr)
         shareable_mdls_tb <- shareable_mdls_tb %>% dplyr::mutate(dv_nm_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
-            fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ready4use::get_fl_id_from_dv_ls(ds_ls, 
+            fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ready4fun::get_fl_id_from_dv_ls(ds_ls, 
                 fl_nm_1L_chr = paste0(.x, ".RDS")) %>% as.integer()))
     }
     return(shareable_mdls_tb)
@@ -1376,11 +1373,11 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 }
 #' Write study output dataset
 #' @description write_study_outp_ds() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write study output dataset. The function returns Dataverse dataset name and url (a character vector).
-#' @param input_params_ls Input params (a list)
+#' @param input_params_ls Input parameters (a list)
 #' @param dv_ds_nm_and_url_chr Dataverse dataset name and url (a character vector), Default: NULL
-#' @param rprt_lups_ls Report lups (a list), Default: NULL
+#' @param rprt_lups_ls Report lookup tables (a list), Default: NULL
 #' @param output_format_ls Output format (a list), Default: NULL
-#' @param path_params_ls Path params (a list), Default: NULL
+#' @param path_params_ls Path parameters (a list), Default: NULL
 #' @param abstract_args_ls Abstract arguments (a list), Default: NULL
 #' @param dv_mdl_desc_1L_chr Dataverse model description (a character vector of length one), Default: 'This is a longitudinal transfer to utility model designed for use with the youthu R package.'
 #' @param header_yaml_args_ls Header yaml arguments (a list), Default: NULL
@@ -1492,7 +1489,7 @@ write_study_outp_ds <- function (input_params_ls, dv_ds_nm_and_url_chr = NULL, r
 }
 #' Write to delete dataset copies
 #' @description write_to_delete_ds_copies() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write to delete dataset copies. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
-#' @param input_params_ls Input params (a list), Default: NULL
+#' @param input_params_ls Input parameters (a list), Default: NULL
 #' @param paths_ls Paths (a list), Default: NULL
 #' @return NULL
 #' @rdname write_to_delete_ds_copies
@@ -1712,7 +1709,6 @@ write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_v
 #' @return Output summary (a list)
 #' @rdname write_ts_mdls_from_alg_outp
 #' @export 
-
 write_ts_mdls_from_alg_outp <- function (outp_smry_ls, predictors_lup, utl_min_val_1L_dbl = -1, 
     backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L, 
     new_dir_nm_1L_chr = "F_TS_Mdls", prior_ls = NULL, control_ls = NULL) 

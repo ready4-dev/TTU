@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_ds_smry_ls}
 \alias{make_ds_smry_ls}
-\title{Make dataset summary}
+\title{Make dataset summary list}
 \usage{
 make_ds_smry_ls(
   candidate_predrs_chr,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_header_yaml_args_ls}
 \alias{make_header_yaml_args_ls}
-\title{Make header yaml arguments}
+\title{Make header yaml arguments list}
 \usage{
 make_header_yaml_args_ls(
   authors_tb,

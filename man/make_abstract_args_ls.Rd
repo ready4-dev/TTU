@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_abstract_args_ls}
 \alias{make_abstract_args_ls}
-\title{Make abstract arguments}
+\title{Make abstract arguments list}
 \usage{
 make_abstract_args_ls(results_ls, fl_nm_1L_chr = "abstract.txt")
 }

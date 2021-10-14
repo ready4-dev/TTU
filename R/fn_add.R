@@ -1,4 +1,4 @@
-#' Add preferred predictor variable to model summary
+#' Add preferred predictor variable to model summary list
 #' @description add_prefd_predr_var_to_mdl_smry_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add preferred predictor variable to model summary list. Function argument mdl_smry_ls specifies the object to be updated. The function returns Model summary (a list).
 #' @param mdl_smry_ls Model summary (a list)
 #' @param ds_smry_ls Dataset summary (a list)
@@ -18,27 +18,27 @@ add_prefd_predr_var_to_mdl_smry_ls <- function (mdl_smry_ls, ds_smry_ls)
         candidate_predrs_lup = ds_smry_ls$predictors_lup)
     return(mdl_smry_ls)
 }
-#' Add tfmd variable to dataset
-#' @description add_tfmd_var_to_ds() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add tfmd variable to dataset. Function argument data_tb specifies the object to be updated. The function returns Data (a tibble).
+#' Add transformed variable to dataset
+#' @description add_tfd_var_to_ds() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add transformed variable to dataset. Function argument data_tb specifies the object to be updated. The function returns Data (a tibble).
 #' @param data_tb Data (a tibble)
 #' @param depnt_var_nm_1L_chr Dependent variable name (a character vector of length one)
 #' @param tfmn_1L_chr Transformation (a character vector of length one)
-#' @param dep_var_max_val_1L_dbl Dep variable maximum value (a double vector of length one), Default: NULL
+#' @param depnt_var_max_val_1L_dbl Dependent variable maximum value (a double vector of length one), Default: NULL
 #' @return Data (a tibble)
-#' @rdname add_tfmd_var_to_ds
+#' @rdname add_tfd_var_to_ds
 #' @export 
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
 #' @keywords internal
-add_tfmd_var_to_ds <- function (data_tb, depnt_var_nm_1L_chr, tfmn_1L_chr, dep_var_max_val_1L_dbl = NULL) 
+add_tfd_var_to_ds <- function (data_tb, depnt_var_nm_1L_chr, tfmn_1L_chr, depnt_var_max_val_1L_dbl = NULL) 
 {
     data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr, 
         tfmn_1L_chr = tfmn_1L_chr)), !!rlang::sym(depnt_var_nm_1L_chr) %>% 
-        calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, tfmn_is_outp_1L_lgl = F, 
-            dep_var_max_val_1L_dbl = dep_var_max_val_1L_dbl)))
+        calculate_depnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr, tfmn_is_outp_1L_lgl = F, 
+            depnt_var_max_val_1L_dbl = depnt_var_max_val_1L_dbl)))
     return(data_tb)
 }
-#' Add unique identifiers to tibbles
+#' Add unique identifiers to tibbles list
 #' @description add_uids_to_tbs_ls() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add unique identifiers to tibbles list. Function argument tbs_ls specifies the object to be updated. The function returns Tibbles (a list).
 #' @param tbs_ls Tibbles (a list)
 #' @param prefix_1L_chr Prefix (a character vector of length one)
@@ -96,10 +96,10 @@ add_utility_predn_to_ds <- function (data_tb, model_mdl, tfmn_1L_chr, depnt_var_
     predn_type_1L_chr = NULL, predr_vars_nms_chr = NULL, rmv_tfd_depnt_var_1L_lgl = F, 
     sd_dbl = NA_real_, utl_cls_fn = NULL, utl_min_val_1L_dbl = -1) 
 {
-    dep_vars_chr <- c(depnt_var_nm_1L_chr, transform_depnt_var_nm(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+    depnt_vars_chr <- c(depnt_var_nm_1L_chr, transform_depnt_var_nm(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
         tfmn_1L_chr = tfmn_1L_chr)) %>% unique()
-    data_tb <- purrr::reduce(dep_vars_chr, .init = data_tb, ~dplyr::mutate(.x, 
-        `:=`(!!rlang::sym(.y), NA_real_)))
+    data_tb <- purrr::reduce(depnt_vars_chr, .init = data_tb, 
+        ~dplyr::mutate(.x, `:=`(!!rlang::sym(.y), NA_real_)))
     predictions_dbl <- predict_utility(data_tb = data_tb, tfmn_1L_chr = tfmn_1L_chr, 
         model_mdl = model_mdl, force_min_max_1L_lgl = force_min_max_1L_lgl, 
         utl_min_val_1L_dbl = utl_min_val_1L_dbl, impute_1L_lgl = impute_1L_lgl, 
@@ -113,7 +113,7 @@ add_utility_predn_to_ds <- function (data_tb, model_mdl, tfmn_1L_chr, depnt_var_
             ~paste0(.x, c("_baseline", "_change"))) %>% purrr::flatten_chr()))
     }
     if (rmv_tfd_depnt_var_1L_lgl) {
-        data_tb <- data_tb %>% dplyr::select(-tidyselect::all_of(dep_vars_chr[dep_vars_chr != 
+        data_tb <- data_tb %>% dplyr::select(-tidyselect::all_of(depnt_vars_chr[depnt_vars_chr != 
             depnt_var_nm_1L_chr]))
     }
     return(data_tb)
@@ -193,7 +193,7 @@ add_utl_predn_to_new_ds <- function (data_tb, ingredients_ls, mdl_nm_1L_chr, ana
         updated_tb <- rename_from_nmd_vec(updated_tb, nmd_vec_chr = predr_vars_nms_chr, 
             vec_nms_as_new_1L_lgl = F)
     }
-    names_to_incl_chr <- c(names(updated_tb), setdiff(names(data_tb), 
+    names_to_inc_chr <- c(names(updated_tb), setdiff(names(data_tb), 
         names(updated_tb)))
     rename_tb <- make_uid_rename_lup(data_tb, id_var_nm_1L_chr = id_var_nm_1L_chr)
     updated_tb <- dplyr::left_join(data_tb %>% dplyr::select(tidyselect::all_of(original_ds_vars_chr)) %>% 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_predict.R
 \name{predict_shrble_betareg}
 \alias{predict_shrble_betareg}
-\title{Predict shrble betareg}
+\title{Predict shareable betareg}
 \usage{
 predict_shrble_betareg(
   object,
@@ -17,7 +17,7 @@ predict_shrble_betareg(
 \arguments{
 \item{object}{PARAM_DESCRIPTION}
 
-\item{newdata}{PARAM_DESCRIPTION, Default: NULL}
+\item{newdata}{New dataset (for prediction) (a new dataset (for prediction)), Default: NULL}
 
 \item{type}{PARAM_DESCRIPTION, Default: c("response", "link", "precision", "variance", "quantile")}
 
@@ -27,9 +27,9 @@ predict_shrble_betareg(
 
 \item{sd_1L_dbl}{Standard deviation (a double vector of length one)}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments (an additional arguments)}
 }
 \description{
-predict_shrble_betareg() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict shrble betareg. The function is called for its side effects and does not return a value.
+predict_shrble_betareg() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict shareable betareg. The function is called for its side effects and does not return a value.
 }
 \keyword{internal}

@@ -4,12 +4,12 @@
 \alias{make_fake_ts_data}
 \title{Make fake time series data}
 \usage{
-make_fake_ts_data(outp_smry_ls, dep_vars_are_NA_1L_lgl = T)
+make_fake_ts_data(outp_smry_ls, depnt_vars_are_NA_1L_lgl = T)
 }
 \arguments{
 \item{outp_smry_ls}{Output summary (a list)}
 
-\item{dep_vars_are_NA_1L_lgl}{Dep variables are NA (a logical vector of length one), Default: T}
+\item{depnt_vars_are_NA_1L_lgl}{Dependent variables are NA (a logical vector of length one), Default: T}
 }
 \value{
 Fk data (a tibble)

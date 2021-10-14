@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_predict.R
 \name{predict_from_shareable_mdl}
 \alias{predict_from_shareable_mdl}
-\title{Predict from shareable}
+\title{Predict from shareable model}
 \usage{
 predict_from_shareable_mdl(
   model_mdl,

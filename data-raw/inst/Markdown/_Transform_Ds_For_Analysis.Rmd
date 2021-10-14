@@ -12,7 +12,7 @@ data_tb <- data_tb %>%
   youthvars::add_interval_var(id_var_nm_1L_chr = ds_descvs_ls$id_var_nm_1L_chr,
                               msrmnt_date_var_nm_1L_chr = ifelse(!is.null(ds_descvs_ls$msrmnt_date_var_nm_1L_chr),ds_descvs_ls$msrmnt_date_var_nm_1L_chr,"d_interview_date")) %>%
   youthvars::add_participation_var(id_var_nm_1L_chr = ds_descvs_ls$id_var_nm_1L_chr,
-                        fup_round_nmbr_1L_int = length(ds_descvs_ls$round_vals_chr))
+                        fup_round_nbr_1L_int = length(ds_descvs_ls$round_vals_chr))
 
 ```
 
@@ -20,6 +20,6 @@ Add details of the new variables to the data dictionary.
 
 ```{r}
 ds_descvs_ls$dictionary_tb <- ds_descvs_ls$dictionary_tb %>%
-  youthvars::make_final_rpln_ds_dict(utl_unwtd_var_nm_1L_chr = ds_descvs_ls$utl_unwtd_var_nm_1L_chr)
+  youthvars::make_final_repln_ds_dict(utl_unwtd_var_nm_1L_chr = ds_descvs_ls$utl_unwtd_var_nm_1L_chr)
 ```
 

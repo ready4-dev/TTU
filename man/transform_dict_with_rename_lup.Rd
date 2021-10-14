@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_transform.R
 \name{transform_dict_with_rename_lup}
 \alias{transform_dict_with_rename_lup}
-\title{Transform dictionary with rename}
+\title{Transform dictionary with rename lookup table}
 \usage{
 transform_dict_with_rename_lup(dictionary_tb, rename_lup)
 }
@@ -12,9 +12,9 @@ transform_dict_with_rename_lup(dictionary_tb, rename_lup)
 \item{rename_lup}{Rename (a lookup table)}
 }
 \value{
-Tfmd dictionary (a tibble)
+Transformed dictionary (a tibble)
 }
 \description{
-transform_dict_with_rename_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dictionary with rename lookup table. Function argument dictionary_tb specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns Tfmd dictionary (a tibble).
+transform_dict_with_rename_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dictionary with rename lookup table. Function argument dictionary_tb specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns Transformed dictionary (a tibble).
 }
 \keyword{internal}

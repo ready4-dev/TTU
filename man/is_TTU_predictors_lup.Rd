@@ -2,7 +2,7 @@
 % Please edit documentation in R/C3_TTU_predictors_lup.R
 \name{is_TTU_predictors_lup}
 \alias{is_TTU_predictors_lup}
-\title{Is TTU S3 class for candidate predictors lookup table}
+\title{Is TTU predictors lookup table TTU S3 class for candidate predictors lookup table}
 \usage{
 is_TTU_predictors_lup(x)
 }

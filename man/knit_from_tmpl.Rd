@@ -7,7 +7,7 @@
 knit_from_tmpl(params_to_expand_ls, path_to_tmpl_1L_chr)
 }
 \arguments{
-\item{params_to_expand_ls}{Params to expand (a list)}
+\item{params_to_expand_ls}{Parameters to expand (a list)}
 
 \item{path_to_tmpl_1L_chr}{Path to template (a character vector of length one)}
 }

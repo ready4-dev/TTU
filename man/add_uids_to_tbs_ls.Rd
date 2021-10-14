@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_add.R
 \name{add_uids_to_tbs_ls}
 \alias{add_uids_to_tbs_ls}
-\title{Add unique identifiers to tibbles}
+\title{Add unique identifiers to tibbles list}
 \usage{
 add_uids_to_tbs_ls(tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkClientID")
 }

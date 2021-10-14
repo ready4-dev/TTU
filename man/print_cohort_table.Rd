@@ -7,7 +7,7 @@
 print_cohort_table(params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
 }
 \arguments{
-\item{params_ls}{Params (a list)}
+\item{params_ls}{Parameters (a list)}
 
 \item{caption_1L_chr}{Caption (a character vector of length one)}
 

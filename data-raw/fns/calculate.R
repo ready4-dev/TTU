@@ -1,30 +1,30 @@
-calculate_dpnt_var_tfmn <- function (dep_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_is_outp_1L_lgl = F, dep_var_max_val_1L_dbl = NULL)
+calculate_depnt_var_tfmn <- function (depnt_var_val_dbl, tfmn_1L_chr = "NTF", tfmn_is_outp_1L_lgl = F, depnt_var_max_val_1L_dbl = NULL)
 {
-  if(!is.null(dep_var_max_val_1L_dbl)){
-    dep_var_val_dbl <- dep_var_val_dbl %>% purrr::map_dbl(~min(.x,dep_var_max_val_1L_dbl))
+  if(!is.null(depnt_var_max_val_1L_dbl)){
+    depnt_var_val_dbl <- depnt_var_val_dbl %>% purrr::map_dbl(~min(.x,depnt_var_max_val_1L_dbl))
   }
-    tfd_dep_var_val_dbl <- dep_var_val_dbl
+    tfd_depnt_var_val_dbl <- depnt_var_val_dbl
     if (tfmn_1L_chr == "LOG") {
         if (tfmn_is_outp_1L_lgl)
-            tfd_dep_var_val_dbl <- exp(dep_var_val_dbl)
-        else tfd_dep_var_val_dbl <- log(dep_var_val_dbl)
+            tfd_depnt_var_val_dbl <- exp(depnt_var_val_dbl)
+        else tfd_depnt_var_val_dbl <- log(depnt_var_val_dbl)
     }
     if (tfmn_1L_chr == "LOGIT") {
         if (tfmn_is_outp_1L_lgl)
-            tfd_dep_var_val_dbl <- boot::inv.logit(dep_var_val_dbl)
-        else tfd_dep_var_val_dbl <- psych::logit(dep_var_val_dbl)
+            tfd_depnt_var_val_dbl <- boot::inv.logit(depnt_var_val_dbl)
+        else tfd_depnt_var_val_dbl <- psych::logit(depnt_var_val_dbl)
     }
     if (tfmn_1L_chr == "LOGLOG") {
         if (tfmn_is_outp_1L_lgl)
-            tfd_dep_var_val_dbl <- exp(-exp(-dep_var_val_dbl))
-        else tfd_dep_var_val_dbl <- -log(-log(dep_var_val_dbl))
+            tfd_depnt_var_val_dbl <- exp(-exp(-depnt_var_val_dbl))
+        else tfd_depnt_var_val_dbl <- -log(-log(depnt_var_val_dbl))
     }
     if (tfmn_1L_chr == "CLL") {
         if (tfmn_is_outp_1L_lgl)
-            tfd_dep_var_val_dbl <- 1 - exp(-exp(dep_var_val_dbl))
-        else tfd_dep_var_val_dbl <- log(-log(1 - dep_var_val_dbl))
+            tfd_depnt_var_val_dbl <- 1 - exp(-exp(depnt_var_val_dbl))
+        else tfd_depnt_var_val_dbl <- log(-log(1 - depnt_var_val_dbl))
     }
-    return(tfd_dep_var_val_dbl)
+    return(tfd_depnt_var_val_dbl)
 }
 calculate_rmse <- function (y_dbl, yhat_dbl)
 {

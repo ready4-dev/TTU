@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_ttu_cs_ls}
 \alias{make_ttu_cs_ls}
-\title{Make ttu cs}
+\title{Make transfer to utility algorithm cross-section list}
 \usage{
 make_ttu_cs_ls(
   outp_smry_ls,
@@ -18,9 +18,9 @@ make_ttu_cs_ls(
 \item{sig_thresh_covars_1L_chr}{Sig thresh covariates (a character vector of length one)}
 }
 \value{
-Ttu cs (a list)
+Transfer to utility algorithm cross-section (a list)
 }
 \description{
-make_ttu_cs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make ttu cs list. The function returns Ttu cs (a list).
+make_ttu_cs_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make transfer to utility algorithm cross-section list. The function returns Transfer to utility algorithm cross-section (a list).
 }
 \keyword{internal}

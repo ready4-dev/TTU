@@ -11,7 +11,7 @@ write_analyses(
 )
 }
 \arguments{
-\item{input_params_ls}{Input params (a list)}
+\item{input_params_ls}{Input parameters (a list)}
 
 \item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
 

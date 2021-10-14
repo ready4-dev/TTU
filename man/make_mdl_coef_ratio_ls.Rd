@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_mdl_coef_ratio_ls}
 \alias{make_mdl_coef_ratio_ls}
-\title{Make model coefficient ratio}
+\title{Make model coefficient ratio list}
 \usage{
 make_mdl_coef_ratio_ls(mdl_ingredients_ls, predr_ctgs_ls = NULL)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_sngl_mdl_smry_tb}
 \alias{make_sngl_mdl_smry_tb}
-\title{Make single model summary}
+\title{Make single model summary tibble}
 \usage{
 make_sngl_mdl_smry_tb(
   mdls_tb,

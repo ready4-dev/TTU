@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_print.R
 \name{print_indpnt_predrs_lngl_mdl_coefs}
 \alias{print_indpnt_predrs_lngl_mdl_coefs}
-\title{Print indpnt predictors lngl model coefficients}
+\title{Print independent predictors longitudinal model coefficients}
 \usage{
 print_indpnt_predrs_lngl_mdl_coefs(
   params_ls,
@@ -12,7 +12,7 @@ print_indpnt_predrs_lngl_mdl_coefs(
 )
 }
 \arguments{
-\item{params_ls}{Params (a list)}
+\item{params_ls}{Parameters (a list)}
 
 \item{caption_1L_chr}{Caption (a character vector of length one)}
 
@@ -21,5 +21,5 @@ print_indpnt_predrs_lngl_mdl_coefs(
 \item{table_1L_chr}{Table (a character vector of length one)}
 }
 \description{
-print_indpnt_predrs_lngl_mdl_coefs() is a Print function that prints output to console Specifically, this function implements an algorithm to print indpnt predictors lngl model coefficients. The function is called for its side effects and does not return a value.
+print_indpnt_predrs_lngl_mdl_coefs() is a Print function that prints output to console Specifically, this function implements an algorithm to print independent predictors longitudinal model coefficients. The function is called for its side effects and does not return a value.
 }

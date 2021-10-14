@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_get.R
 \name{get_scndry_anlys_descs}
 \alias{get_scndry_anlys_descs}
-\title{Get scndry anlys descriptions}
+\title{Get secondary analysis descriptions}
 \usage{
 get_scndry_anlys_descs(results_ls)
 }
@@ -10,8 +10,8 @@ get_scndry_anlys_descs(results_ls)
 \item{results_ls}{Results (a list)}
 }
 \value{
-Scndry anlys descriptions (a character vector)
+Secondary analysis descriptions (a character vector)
 }
 \description{
-get_scndry_anlys_descs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get scndry anlys descriptions. Function argument results_ls specifies the where to look for the required object. The function returns Scndry anlys descriptions (a character vector).
+get_scndry_anlys_descs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get secondary analysis descriptions. Function argument results_ls specifies the where to look for the required object. The function returns Secondary analysis descriptions (a character vector).
 }

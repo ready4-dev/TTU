@@ -4,16 +4,15 @@
 #' @return Text (a character vector of length one)
 #' @rdname get_background_text
 #' @export 
-
 get_background_text <- function (results_ls) 
 {
     text_1L_chr <- results_ls$study_descs_ls$background_1L_chr
     return(text_1L_chr)
 }
-#' Get candidates for mxd models
-#' @description get_cndts_for_mxd_mdls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get candidates for mxd models. Function argument mdl_types_lup specifies the where to look for the required object. The function returns Candidates for mxd models (a lookup table).
+#' Get candidates for mixed models
+#' @description get_cndts_for_mxd_mdls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get candidates for mixed models. Function argument mdl_types_lup specifies the where to look for the required object. The function returns Candidates for mixed models (a lookup table).
 #' @param mdl_types_lup Model types (a lookup table), Default: NULL
-#' @return Candidates for mxd models (a lookup table)
+#' @return Candidates for mixed models (a lookup table)
 #' @rdname get_cndts_for_mxd_mdls
 #' @export 
 #' @importFrom utils data
@@ -32,7 +31,6 @@ get_cndts_for_mxd_mdls <- function (mdl_types_lup = NULL)
 #' @return Text (a character vector of length one)
 #' @rdname get_conclusion_text
 #' @export 
-
 get_conclusion_text <- function (results_ls) 
 {
     text_1L_chr <- results_ls$study_descs_ls$conclusion_1L_chr
@@ -90,7 +88,6 @@ get_covars_by_ctg <- function (results_ls, collapse_1L_lgl = F)
 #' @return Health utility name (a character vector of length one)
 #' @rdname get_hlth_utl_nm
 #' @export 
-
 get_hlth_utl_nm <- function (results_ls, short_nm_1L_lgl = T) 
 {
     health_utl_nm_1L_chr <- ifelse(short_nm_1L_lgl, results_ls$study_descs_ls$health_utl_nm_1L_chr, 
@@ -104,7 +101,6 @@ get_hlth_utl_nm <- function (results_ls, short_nm_1L_lgl = T)
 #' @return Health utility statistic (a character vector of length one)
 #' @rdname get_hlth_utl_stat
 #' @export 
-
 get_hlth_utl_stat <- function (results_ls, stat_1L_chr = "bl_mean") 
 {
     hlth_utl_stat_1L_chr <- switch(stat_1L_chr, bl_mean = results_ls$hlth_utl_and_predrs_ls$bl_hu_mean_1L_dbl, 
@@ -116,11 +112,10 @@ get_hlth_utl_stat <- function (results_ls, stat_1L_chr = "bl_mean")
 #' Get link from transformation
 #' @description get_link_from_tfmn() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get link from transformation. Function argument tfmn_1L_chr specifies the where to look for the required object. The function returns Link (a character vector of length one).
 #' @param tfmn_1L_chr Transformation (a character vector of length one)
-#' @param is_OLS_1L_lgl Is OLS (a logical vector of length one), Default: F
+#' @param is_OLS_1L_lgl Is ordinary least squares (a logical vector of length one), Default: F
 #' @return Link (a character vector of length one)
 #' @rdname get_link_from_tfmn
 #' @export 
-
 get_link_from_tfmn <- function (tfmn_1L_chr, is_OLS_1L_lgl = F) 
 {
     link_1L_chr <- ifelse(is_OLS_1L_lgl, "identity", ifelse(tfmn_1L_chr == 
@@ -131,8 +126,8 @@ get_link_from_tfmn <- function (tfmn_1L_chr, is_OLS_1L_lgl = F)
         stop("Link cannot be identified - incorrect transformation argument tfmn_1L_chr")
     return(link_1L_chr)
 }
-#' Get lngl ttu types
-#' @description get_lngl_ttu_types() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get lngl ttu types. Function argument results_ls specifies the where to look for the required object. The function returns Model types (a character vector).
+#' Get longitudinal transfer to utility algorithm types
+#' @description get_lngl_ttu_types() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get longitudinal transfer to utility algorithm types. Function argument results_ls specifies the where to look for the required object. The function returns Model types (a character vector).
 #' @param results_ls Results (a list)
 #' @param collapse_1L_lgl Collapse (a logical vector of length one), Default: T
 #' @return Model types (a character vector)
@@ -229,7 +224,7 @@ get_mdl_type_from_nm <- function (mdl_nm_1L_chr, mdl_types_lup = NULL)
 #' Get models with significant covariates
 #' @description get_mdls_with_signft_covars() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get models with significant covariates. Function argument outp_smry_ls specifies the where to look for the required object. The function returns Models with significant covariates (a list).
 #' @param outp_smry_ls Output summary (a list)
-#' @param params_ls_ls Params (a list of lists)
+#' @param params_ls_ls Parameters (a list of lists)
 #' @return Models with significant covariates (a list)
 #' @rdname get_mdls_with_signft_covars
 #' @export 
@@ -293,12 +288,12 @@ get_nbr_of_predrs_by_ctg <- function (results_ls)
         " and") %>% tolower()
     return(predrs_by_ctg_1L_chr)
 }
-#' Get number of scndry analyses
-#' @description get_nbr_of_scndry_analyses() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get number of scndry analyses. Function argument results_ls specifies the where to look for the required object. The function returns Number of scndry analyses length one (an output object of multiple potential types).
+#' Get number of secondary analyses
+#' @description get_nbr_of_scndry_analyses() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get number of secondary analyses. Function argument results_ls specifies the where to look for the required object. The function returns Number of secondary analyses length one (an output object of multiple potential types).
 #' @param results_ls Results (a list)
 #' @param as_words_1L_lgl As words (a logical vector of length one), Default: T
 #' @param capitalise_1L_lgl Capitalise (a logical vector of length one), Default: T
-#' @return Number of scndry analyses length one (an output object of multiple potential types)
+#' @return Number of secondary analyses length one (an output object of multiple potential types)
 #' @rdname get_nbr_of_scndry_analyses
 #' @export 
 #' @importFrom xfun numbers_to_words
@@ -317,12 +312,12 @@ get_nbr_of_scndry_analyses <- function (results_ls, as_words_1L_lgl = T, capital
     }
     return(nbr_of_scndry_analyses_1L_xx)
 }
-#' Get ordered single csnl models
-#' @description get_ordered_sngl_csnl_mdls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get ordered single csnl models. Function argument results_ls specifies the where to look for the required object. The function returns Ordered single csnl models (a character vector).
+#' Get ordered single cross-sectional models
+#' @description get_ordered_sngl_csnl_mdls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get ordered single cross-sectional models. Function argument results_ls specifies the where to look for the required object. The function returns Ordered single cross-sectional models (a character vector).
 #' @param results_ls Results (a list)
 #' @param select_int Select (an integer vector), Default: NULL
 #' @param collapse_1L_lgl Collapse (a logical vector of length one), Default: F
-#' @return Ordered single csnl models (a character vector)
+#' @return Ordered single cross-sectional models (a character vector)
 #' @rdname get_ordered_sngl_csnl_mdls
 #' @export 
 #' @importFrom stringi stri_replace_last
@@ -462,10 +457,10 @@ get_random_intercept <- function (mdls_smry_tb, mdl_nm_1L_chr, deterministic_1L_
             evaluate_lgl = F)))
     return(sd_dbl)
 }
-#' Get scndry anlys descriptions
-#' @description get_scndry_anlys_descs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get scndry anlys descriptions. Function argument results_ls specifies the where to look for the required object. The function returns Scndry anlys descriptions (a character vector).
+#' Get secondary analysis descriptions
+#' @description get_scndry_anlys_descs() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get secondary analysis descriptions. Function argument results_ls specifies the where to look for the required object. The function returns Secondary analysis descriptions (a character vector).
 #' @param results_ls Results (a list)
-#' @return Scndry anlys descriptions (a character vector)
+#' @return Secondary analysis descriptions (a character vector)
 #' @rdname get_scndry_anlys_descs
 #' @export 
 #' @importFrom purrr map_chr pluck
@@ -537,7 +532,7 @@ get_signft_covars <- function (mdls_with_covars_smry_tb, covar_var_nms_chr)
         signt_covars_chr <- NA_character_
     return(signt_covars_chr)
 }
-#' Get table prediction
+#' Get table prediction model
 #' @description get_table_predn_mdl() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get table prediction model. Function argument mdl_nm_1L_chr specifies the where to look for the required object. The function returns Table prediction (a model).
 #' @param mdl_nm_1L_chr Model name (a character vector of length one)
 #' @param ingredients_ls Ingredients (a list)
@@ -566,7 +561,7 @@ get_table_predn_mdl <- function (mdl_nm_1L_chr, ingredients_ls, analysis_1L_chr 
         fake_ds_tb <- ingredients_ls %>% purrr::pluck(reference_1L_chr) %>% 
             purrr::pluck("fake_ds_tb")
     }
-    fake_ds_tb <- fake_ds_tb %>% add_tfmd_var_to_ds(depnt_var_nm_1L_chr = ingredients_ls$depnt_var_nm_1L_chr, 
+    fake_ds_tb <- fake_ds_tb %>% add_tfd_var_to_ds(depnt_var_nm_1L_chr = ingredients_ls$depnt_var_nm_1L_chr, 
         tfmn_1L_chr = tfmn_1L_chr)
     table_predn_mdl <- make_shareable_mdl(fake_ds_tb = fake_ds_tb, 
         mdl_smry_tb = ingredients_ls$mdls_smry_tb %>% dplyr::filter(Model == 

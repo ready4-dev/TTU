@@ -7,7 +7,7 @@
 write_to_delete_ds_copies(input_params_ls = NULL, paths_ls = NULL)
 }
 \arguments{
-\item{input_params_ls}{Input params (a list), Default: NULL}
+\item{input_params_ls}{Input parameters (a list), Default: NULL}
 
 \item{paths_ls}{Paths (a list), Default: NULL}
 }

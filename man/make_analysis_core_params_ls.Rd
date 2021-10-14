@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_analysis_core_params_ls}
 \alias{make_analysis_core_params_ls}
-\title{Make analysis core params}
+\title{Make analysis core parameters list}
 \usage{
 make_analysis_core_params_ls(
   ds_descvs_ls,
@@ -45,9 +45,9 @@ make_analysis_core_params_ls(
 \item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one), Default: NULL}
 }
 \value{
-Analysis core params (a list)
+Analysis core parameters (a list)
 }
 \description{
-make_analysis_core_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make analysis core params list. The function returns Analysis core params (a list).
+make_analysis_core_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make analysis core parameters list. The function returns Analysis core parameters (a list).
 }
 \keyword{internal}

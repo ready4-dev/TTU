@@ -2,19 +2,19 @@
 % Please edit documentation in R/fn_transform.R
 \name{transform_params_ls_from_lup}
 \alias{transform_params_ls_from_lup}
-\title{Transform params list from}
+\title{Transform parameters list from lookup table}
 \usage{
 transform_params_ls_from_lup(params_ls, rename_lup)
 }
 \arguments{
-\item{params_ls}{Params (a list)}
+\item{params_ls}{Parameters (a list)}
 
 \item{rename_lup}{Rename (a lookup table)}
 }
 \value{
-Params (a list)
+Parameters (a list)
 }
 \description{
-transform_params_ls_from_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform params list from lookup table. Function argument params_ls specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns Params (a list).
+transform_params_ls_from_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform parameters list from lookup table. Function argument params_ls specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns Parameters (a list).
 }
 \keyword{internal}

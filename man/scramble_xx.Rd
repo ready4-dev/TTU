@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_scramble.R
 \name{scramble_xx}
 \alias{scramble_xx}
-\title{Scramble}
+\title{Scramble output object of multiple potential types}
 \usage{
 scramble_xx(vector_xx)
 }

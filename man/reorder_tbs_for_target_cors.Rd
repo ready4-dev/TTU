@@ -8,7 +8,7 @@ reorder_tbs_for_target_cors(
   tbs_ls,
   cor_dbl,
   cor_var_chr,
-  id_var_to_rm_1L_chr = NA_character_
+  id_var_to_rmv_1L_chr = NA_character_
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ reorder_tbs_for_target_cors(
 
 \item{cor_var_chr}{Correlation variable (a character vector)}
 
-\item{id_var_to_rm_1L_chr}{Identity variable to rm (a character vector of length one), Default: 'NA'}
+\item{id_var_to_rmv_1L_chr}{Identity variable to remove (a character vector of length one), Default: 'NA'}
 }
 \value{
 Tibbles (a list)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_analysis_ds_smry_ls}
 \alias{make_analysis_ds_smry_ls}
-\title{Make analysis dataset summary}
+\title{Make analysis dataset summary list}
 \usage{
 make_analysis_ds_smry_ls(ds_descvs_ls, candidate_covar_nms_chr, predictors_lup)
 }

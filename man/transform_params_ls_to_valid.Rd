@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_transform.R
 \name{transform_params_ls_to_valid}
 \alias{transform_params_ls_to_valid}
-\title{Transform params list to valid}
+\title{Transform parameters list to valid}
 \usage{
 transform_params_ls_to_valid(
   params_ls,
@@ -10,14 +10,14 @@ transform_params_ls_to_valid(
 )
 }
 \arguments{
-\item{params_ls}{Params (a list)}
+\item{params_ls}{Parameters (a list)}
 
-\item{scndry_analysis_extra_vars_chr}{Scndry analysis extra variables (a character vector), Default: 'NA'}
+\item{scndry_analysis_extra_vars_chr}{Secondary analysis extra variables (a character vector), Default: 'NA'}
 }
 \value{
-Valid params (a list of lists)
+Valid parameters (a list of lists)
 }
 \description{
-transform_params_ls_to_valid() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform params list to valid. Function argument params_ls specifies the object to be updated. Argument scndry_analysis_extra_vars_chr provides the object to be updated. The function returns Valid params (a list of lists).
+transform_params_ls_to_valid() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform parameters list to valid. Function argument params_ls specifies the object to be updated. Argument scndry_analysis_extra_vars_chr provides the object to be updated. The function returns Valid parameters (a list of lists).
 }
 \keyword{internal}

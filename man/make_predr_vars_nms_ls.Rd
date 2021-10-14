@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_predr_vars_nms_ls}
 \alias{make_predr_vars_nms_ls}
-\title{Make predictor variables names}
+\title{Make predictor variables names list}
 \usage{
 make_predr_vars_nms_ls(main_predrs_chr, covars_ls, existing_predrs_ls = NULL)
 }

@@ -9,7 +9,7 @@ get_mdls_with_signft_covars(outp_smry_ls, params_ls_ls)
 \arguments{
 \item{outp_smry_ls}{Output summary (a list)}
 
-\item{params_ls_ls}{Params (a list of lists)}
+\item{params_ls_ls}{Parameters (a list of lists)}
 }
 \value{
 Models with significant covariates (a list)

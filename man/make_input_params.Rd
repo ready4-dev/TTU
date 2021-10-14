@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_input_params}
 \alias{make_input_params}
-\title{Make input params}
+\title{Make input parameters}
 \usage{
 make_input_params(
   ds_tb,
@@ -31,7 +31,7 @@ make_input_params(
 
 \item{header_yaml_args_ls}{Header yaml arguments (a list)}
 
-\item{maui_params_ls}{Maui params (a list)}
+\item{maui_params_ls}{Multi-attribute utility instrument parameters (a list)}
 
 \item{predictors_lup}{Predictors (a lookup table)}
 
@@ -45,7 +45,7 @@ make_input_params(
 
 \item{output_format_ls}{Output format (a list), Default: make_output_format_ls()}
 
-\item{path_params_ls}{Path params (a list), Default: NULL}
+\item{path_params_ls}{Path parameters (a list), Default: NULL}
 
 \item{prefd_covars_chr}{Preferred covariates (a character vector), Default: NULL}
 
@@ -55,13 +55,13 @@ make_input_params(
 
 \item{seed_1L_int}{Seed (an integer vector of length one), Default: 12345}
 
-\item{scndry_anlys_params_ls}{Scndry anlys params (a list), Default: NULL}
+\item{scndry_anlys_params_ls}{Secondary analysis parameters (a list), Default: NULL}
 
 \item{write_new_dir_1L_lgl}{Write new directory (a logical vector of length one), Default: T}
 }
 \value{
-Params (a list of lists)
+Parameters (a list of lists)
 }
 \description{
-make_input_params() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make input params. The function returns Params (a list of lists).
+make_input_params() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make input parameters. The function returns Parameters (a list of lists).
 }

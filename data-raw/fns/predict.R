@@ -3,7 +3,7 @@ predict_from_shareable_mdl <- function(model_mdl,
                                        predn_type_1L_chr = "response",
                                        sd_dbl,
                                        deterministic_1L_lgl = T){
-  pred_fn <- ifelse(inherits(model_mdl, "betareg"),
+  predd_fn <- ifelse(inherits(model_mdl, "betareg"),
                     predict_shrble_betareg,
                     ifelse(inherits(model_mdl,"glm"),
                     predict_shrble_glm,
@@ -18,7 +18,7 @@ predict_from_shareable_mdl <- function(model_mdl,
                                          sd = ifelse(deterministic_1L_lgl,
                                                      0,
                                                      sd_dbl[2]))))
-  new_data_dbl <- rlang::exec(pred_fn,!!!args_ls)
+  new_data_dbl <- rlang::exec(predd_fn,!!!args_ls)
   return(new_data_dbl)
 }
 predict_shrble_betareg <- function(object, newdata = NULL, # EDIT OF predict.betareg
@@ -444,7 +444,7 @@ predict_uncnstrd_utl <- function(data_tb, model_mdl,
   if(is.matrix(new_data_dbl))
     new_data_dbl <- new_data_dbl[, 1]
   new_data_dbl <- new_data_dbl %>% # Make CNDL ON BRMS???
-    calculate_dpnt_var_tfmn(tfmn_1L_chr = ifelse(tfmn_for_bnml_1L_lgl & new_data_is_1L_chr == "Simulated",
+    calculate_depnt_var_tfmn(tfmn_1L_chr = ifelse(tfmn_for_bnml_1L_lgl & new_data_is_1L_chr == "Simulated",
                                                  ifelse(family_1L_chr == "quasibinomial(log)",
                                                         "LOG",
                                                         ifelse(family_1L_chr == "quasibinomial(logit)",

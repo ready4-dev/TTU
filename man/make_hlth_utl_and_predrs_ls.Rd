@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_hlth_utl_and_predrs_ls}
 \alias{make_hlth_utl_and_predrs_ls}
-\title{Make health utility and predictors}
+\title{Make health utility and predictors list}
 \usage{
 make_hlth_utl_and_predrs_ls(
   outp_smry_ls,

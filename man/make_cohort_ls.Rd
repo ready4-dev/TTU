@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_cohort_ls}
 \alias{make_cohort_ls}
-\title{Make cohort}
+\title{Make cohort list}
 \usage{
 make_cohort_ls(
   descv_tbls_ls,
@@ -13,7 +13,7 @@ make_cohort_ls(
 \arguments{
 \item{descv_tbls_ls}{Descriptive tables (a list)}
 
-\item{ctgl_vars_regrouping_ls}{Ctgl variables regrouping (a list), Default: NULL}
+\item{ctgl_vars_regrouping_ls}{Categorical variables regrouping (a list), Default: NULL}
 
 \item{nbr_of_digits_1L_int}{Number of digits (an integer vector of length one), Default: 2}
 }

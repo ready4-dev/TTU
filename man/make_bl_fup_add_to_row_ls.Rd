@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_bl_fup_add_to_row_ls}
 \alias{make_bl_fup_add_to_row_ls}
-\title{Make baseline follow-up add to row}
+\title{Make baseline follow-up add to row list}
 \usage{
 make_bl_fup_add_to_row_ls(df, n_at_bl_1L_int, n_at_fup_1L_int)
 }

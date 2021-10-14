@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_ranked_predrs_ls}
 \alias{make_ranked_predrs_ls}
-\title{Make ranked predictors}
+\title{Make ranked predictors list}
 \usage{
 make_ranked_predrs_ls(descv_tbls_ls, old_nms_chr = NULL, new_nms_chr = NULL)
 }

@@ -11,6 +11,6 @@
 #'   \item{pkg_dirs_chr}{Package directories (a character vector)}
 #'   \item{packages_chr}{Packages (a character vector)}
 #'   \item{nms_of_rmd_chr}{Names of Markdown (a character vector)}
-#'   \item{rltv_paths_to_outpt_yaml_chr}{Relative paths to outpt yaml (a character vector)}
+#'   \item{rltv_paths_to_outp_yaml_chr}{Relative paths to output yaml (a character vector)}
 #' }
 "rprt_lup"

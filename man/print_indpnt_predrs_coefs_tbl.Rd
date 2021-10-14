@@ -2,17 +2,17 @@
 % Please edit documentation in R/fn_print.R
 \name{print_indpnt_predrs_coefs_tbl}
 \alias{print_indpnt_predrs_coefs_tbl}
-\title{Print indpnt predictors coefficients table}
+\title{Print independent predictors coefficients table}
 \usage{
 print_indpnt_predrs_coefs_tbl(params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
 }
 \arguments{
-\item{params_ls}{Params (a list)}
+\item{params_ls}{Parameters (a list)}
 
 \item{caption_1L_chr}{Caption (a character vector of length one)}
 
 \item{mkdn_tbl_ref_1L_chr}{Markdown table reference (a character vector of length one)}
 }
 \description{
-print_indpnt_predrs_coefs_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print indpnt predictors coefficients table. The function is called for its side effects and does not return a value.
+print_indpnt_predrs_coefs_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print independent predictors coefficients table. The function is called for its side effects and does not return a value.
 }

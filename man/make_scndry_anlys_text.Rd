@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_scndry_anlys_text}
 \alias{make_scndry_anlys_text}
-\title{Make scndry anlys text}
+\title{Make secondary analysis text}
 \usage{
 make_scndry_anlys_text(results_ls)
 }
@@ -13,5 +13,5 @@ make_scndry_anlys_text(results_ls)
 Text (a character vector of length one)
 }
 \description{
-make_scndry_anlys_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make scndry anlys text. The function returns Text (a character vector of length one).
+make_scndry_anlys_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make secondary analysis text. The function returns Text (a character vector of length one).
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_predict.R
 \name{predict_utl_from_k10}
 \alias{predict_utl_from_k10}
-\title{Predict utility from k10}
+\title{Predict utility from K10}
 \usage{
 predict_utl_from_k10(
   k10_1L_dbl,
@@ -17,17 +17,17 @@ predict_utl_from_k10(
 \arguments{
 \item{k10_1L_dbl}{K10 (a double vector of length one)}
 
-\item{b0_aqol_mdl_1L_dbl}{B0 Assessment of Quality of Life model (a double vector of length one), Default: 0.204665}
+\item{b0_aqol_mdl_1L_dbl}{Regression model intercept Assessment of Quality of Life model (a double vector of length one), Default: 0.204665}
 
-\item{b1_aqol_mdl_1L_dbl}{B1 Assessment of Quality of Life model (a double vector of length one), Default: -3.617134}
+\item{b1_aqol_mdl_1L_dbl}{Regression model coefficient Assessment of Quality of Life model (a double vector of length one), Default: -3.617134}
 
-\item{b0_eq5d_mdl_1L_dbl}{B0 eq5d model (a double vector of length one), Default: 0.8644649}
+\item{b0_eq5d_mdl_1L_dbl}{Regression model intercept EQ5D model (a double vector of length one), Default: 0.8644649}
 
-\item{b1_eq5d_mdl_1L_dbl}{B1 eq5d model (a double vector of length one), Default: -2.926161}
+\item{b1_eq5d_mdl_1L_dbl}{Regression model coefficient EQ5D model (a double vector of length one), Default: -2.926161}
 
 \item{aqol_error_1L_dbl}{Assessment of Quality of Life error (a double vector of length one), Default: 0}
 
-\item{eq5d_error_1L_dbl}{Eq5d error (a double vector of length one), Default: 0}
+\item{eq5d_error_1L_dbl}{EQ5D error (a double vector of length one), Default: 0}
 }
 \value{
 NA ()

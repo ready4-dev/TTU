@@ -7,7 +7,7 @@
 knit_mdl_rprt(knit_pars_ls, path_to_mdl_rprt_tmpl_1L_chr)
 }
 \arguments{
-\item{knit_pars_ls}{Knit parameters (a list)}
+\item{knit_pars_ls}{Knit pars (a list)}
 
 \item{path_to_mdl_rprt_tmpl_1L_chr}{Path to model report template (a character vector of length one)}
 }

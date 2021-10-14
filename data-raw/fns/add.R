@@ -7,15 +7,15 @@ add_prefd_predr_var_to_mdl_smry_ls <- function(mdl_smry_ls,
                                                 candidate_predrs_lup = ds_smry_ls$predictors_lup)
   return(mdl_smry_ls)
 }
-add_tfmd_var_to_ds <- function(data_tb,
+add_tfd_var_to_ds <- function(data_tb,
                                depnt_var_nm_1L_chr,
                                tfmn_1L_chr,
-                               dep_var_max_val_1L_dbl = NULL){
+                               depnt_var_max_val_1L_dbl = NULL){
   data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(transform_depnt_var_nm(depnt_var_nm_1L_chr,
                                                                                 tfmn_1L_chr = tfmn_1L_chr)), !!rlang::sym(depnt_var_nm_1L_chr) %>%
-                                              calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
+                                              calculate_depnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
                                                                       tfmn_is_outp_1L_lgl = F,
-                                                                      dep_var_max_val_1L_dbl = dep_var_max_val_1L_dbl)))
+                                                                      depnt_var_max_val_1L_dbl = depnt_var_max_val_1L_dbl)))
   return(data_tb)
 }
 add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkClientID")
@@ -113,7 +113,7 @@ add_utl_predn_to_new_ds <- function(data_tb,
                                       nmd_vec_chr = predr_vars_nms_chr,
                                       vec_nms_as_new_1L_lgl = F)
   }
-  names_to_incl_chr <- c(names(updated_tb),
+  names_to_inc_chr <- c(names(updated_tb),
                          setdiff(names(data_tb),
                                  names(updated_tb)))
   rename_tb <- make_uid_rename_lup(data_tb,
@@ -144,9 +144,9 @@ add_utility_predn_to_ds <- function (data_tb,
                                      utl_cls_fn = NULL,
                                      utl_min_val_1L_dbl = -1)
 {
-    dep_vars_chr <- c(depnt_var_nm_1L_chr, transform_depnt_var_nm(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+    depnt_vars_chr <- c(depnt_var_nm_1L_chr, transform_depnt_var_nm(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         tfmn_1L_chr = tfmn_1L_chr)) %>% unique()
-    data_tb <- purrr::reduce(dep_vars_chr, .init = data_tb, ~dplyr::mutate(.x,
+    data_tb <- purrr::reduce(depnt_vars_chr, .init = data_tb, ~dplyr::mutate(.x,
                                                                            !!rlang::sym(.y):= NA_real_))
     predictions_dbl <- predict_utility(data_tb = data_tb, tfmn_1L_chr = tfmn_1L_chr,
                                        model_mdl = model_mdl,
@@ -165,7 +165,7 @@ add_utility_predn_to_ds <- function (data_tb,
                                              purrr::flatten_chr()))
     }
     if(rmv_tfd_depnt_var_1L_lgl){
-      data_tb <- data_tb %>% dplyr::select(-tidyselect::all_of(dep_vars_chr[dep_vars_chr!=depnt_var_nm_1L_chr]))
+      data_tb <- data_tb %>% dplyr::select(-tidyselect::all_of(depnt_vars_chr[depnt_vars_chr!=depnt_var_nm_1L_chr]))
     }
     return(data_tb)
 }

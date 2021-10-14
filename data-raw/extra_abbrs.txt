@@ -2,12 +2,12 @@
 Change
 add_cors_and_uts_to_aqol6d_tbs_ls to add_cors_and_utls_to_aqol6d_tbs_ls
 aqol_items_props_tbs_ls to aqol_items_prpns_tbs_ls
-calculate_dep_var_tfmn to calculate_dpnt_var_tfmn 
+calculate_depnt_var_tfmn to calculate_dpnt_var_tfmn 
 cat_chr to ctg_chr # check
 data_tbl to data_tbl_tb or data_tb # Be careful
-dep_var_desc_1L_chr to depnt_var_desc_1L_chr
+depnt_var_desc_1L_chr to depnt_var_desc_1L_chr
 drop_bl_date_var_IL_lgl to drop_bl_date_var_1L_lgl
-make_item_wrst_wghts_ls_ls to make_item_wrst_wts_ls_ls
+make_item_wrst_wts_ls_ls to make_item_wrst_wts_ls_ls
 make_smry_of_mdl to make_smry_of_mdl_outp
 make_smry_of_ts_mdl make_smry_of_ts_mdl_outp
 make_vec_with_sum_of_int to make_vec_with_sum_of_int_val
@@ -19,7 +19,7 @@ pop_1L_chr to popl_1L_chr
 pred_type_1L_chr to predn_type_1L_chr
 raw_props_tbs_ls to raw_prpns_tbs_ls
 remove_all_mssng_1L_lgl to remove_all_msng_1L_lgl
-transform_dep_var_nm to transform_depnt_var_nm
+transform_depnt_var_nm to transform_depnt_var_nm
 
 ##
 complete_props_tbs_ls to complete_prpns_tbs_ls

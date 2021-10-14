@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_print.R
 \name{print_lngl_ttu_tbls}
 \alias{print_lngl_ttu_tbls}
-\title{Print lngl ttu tables}
+\title{Print longitudinal transfer to utility algorithm tables}
 \usage{
 print_lngl_ttu_tbls(
   table_df,
@@ -15,7 +15,7 @@ print_lngl_ttu_tbls(
 \arguments{
 \item{table_df}{Table (a data.frame)}
 
-\item{params_ls}{Params (a list)}
+\item{params_ls}{Parameters (a list)}
 
 \item{caption_1L_chr}{Caption (a character vector of length one)}
 
@@ -24,5 +24,5 @@ print_lngl_ttu_tbls(
 \item{ref_1L_int}{Reference (an integer vector of length one), Default: 1}
 }
 \description{
-print_lngl_ttu_tbls() is a Print function that prints output to console Specifically, this function implements an algorithm to print lngl ttu tables. The function is called for its side effects and does not return a value.
+print_lngl_ttu_tbls() is a Print function that prints output to console Specifically, this function implements an algorithm to print longitudinal transfer to utility algorithm tables. The function is called for its side effects and does not return a value.
 }

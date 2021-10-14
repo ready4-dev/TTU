@@ -72,7 +72,6 @@ transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_ch
 #' @return Transformed dependent variable name (a character vector of length one)
 #' @rdname transform_depnt_var_nm
 #' @export 
-
 #' @keywords internal
 transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF") 
 {
@@ -80,11 +79,11 @@ transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF")
         "NTF", "", paste0("_", tfmn_1L_chr)))
     return(tfd_depnt_var_nm_1L_chr)
 }
-#' Transform dictionary with rename
-#' @description transform_dict_with_rename_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dictionary with rename lookup table. Function argument dictionary_tb specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns Tfmd dictionary (a tibble).
+#' Transform dictionary with rename lookup table
+#' @description transform_dict_with_rename_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dictionary with rename lookup table. Function argument dictionary_tb specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns Transformed dictionary (a tibble).
 #' @param dictionary_tb Dictionary (a tibble)
 #' @param rename_lup Rename (a lookup table)
-#' @return Tfmd dictionary (a tibble)
+#' @return Transformed dictionary (a tibble)
 #' @rdname transform_dict_with_rename_lup
 #' @export 
 #' @importFrom Hmisc label
@@ -95,13 +94,13 @@ transform_depnt_var_nm <- function (depnt_var_nm_1L_chr, tfmn_1L_chr = "NTF")
 transform_dict_with_rename_lup <- function (dictionary_tb, rename_lup) 
 {
     var_lbl_1L_chr <- Hmisc::label(dictionary_tb$var_nm_chr)
-    tfmd_dictionary_tb <- dictionary_tb %>% dplyr::mutate(var_nm_chr = var_nm_chr %>% 
+    tfd_dictionary_tb <- dictionary_tb %>% dplyr::mutate(var_nm_chr = var_nm_chr %>% 
         purrr::map_chr(~ifelse(.x %in% rename_lup$old_nms_chr, 
             ready4fun::get_from_lup_obj(rename_lup, match_value_xx = .x, 
                 match_var_nm_1L_chr = "old_nms_chr", target_var_nm_1L_chr = "new_nms_chr", 
                 evaluate_lgl = F), .x)))
-    Hmisc::label(tfmd_dictionary_tb[["var_nm_chr"]]) <- var_lbl_1L_chr
-    return(tfmd_dictionary_tb)
+    Hmisc::label(tfd_dictionary_tb[["var_nm_chr"]]) <- var_lbl_1L_chr
+    return(tfd_dictionary_tb)
 }
 #' Transform dataset for all comparison plots
 #' @description transform_ds_for_all_cmprsn_plts() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform dataset for all comparison plots. Function argument tfd_data_tb specifies the object to be updated. Argument model_mdl provides the object to be updated. The function returns Transformed data (a tibble).
@@ -286,11 +285,11 @@ transform_names <- function (names_chr, rename_lup, invert_1L_lgl = F)
     return(new_names_chr)
 }
 #' Transform names in model table
-#' @description transform_nms_in_mdl_tbl() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform names in model table. Function argument mdl_tbl_tb specifies the object to be updated. Argument col_nm_1L_chr provides the object to be updated. The function returns Tfmd model table (a tibble).
+#' @description transform_nms_in_mdl_tbl() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform names in model table. Function argument mdl_tbl_tb specifies the object to be updated. Argument col_nm_1L_chr provides the object to be updated. The function returns Transformed model table (a tibble).
 #' @param mdl_tbl_tb Model table (a tibble)
 #' @param col_nm_1L_chr Column name (a character vector of length one), Default: 'Parameter'
 #' @param var_nm_change_lup Variable name change (a lookup table), Default: NULL
-#' @return Tfmd model table (a tibble)
+#' @return Transformed model table (a tibble)
 #' @rdname transform_nms_in_mdl_tbl
 #' @export 
 #' @importFrom dplyr mutate case_when
@@ -302,10 +301,10 @@ transform_names <- function (names_chr, rename_lup, invert_1L_lgl = F)
 transform_nms_in_mdl_tbl <- function (mdl_tbl_tb, col_nm_1L_chr = "Parameter", var_nm_change_lup = NULL) 
 {
     if (is.null(var_nm_change_lup)) {
-        tfmd_mdl_tbl_tb <- mdl_tbl_tb
+        tfd_mdl_tbl_tb <- mdl_tbl_tb
     }
     else {
-        tfmd_mdl_tbl_tb <- mdl_tbl_tb %>% dplyr::mutate(`:=`(!!rlang::sym(col_nm_1L_chr), 
+        tfd_mdl_tbl_tb <- mdl_tbl_tb %>% dplyr::mutate(`:=`(!!rlang::sym(col_nm_1L_chr), 
             dplyr::case_when(!!rlang::sym(col_nm_1L_chr) %>% 
                 purrr::map_lgl(~(endsWith(.x, " model") | endsWith(.x, 
                   " baseline") | endsWith(.x, " change"))) ~ 
@@ -319,13 +318,13 @@ transform_nms_in_mdl_tbl <- function (mdl_tbl_tb, col_nm_1L_chr = "Parameter", v
                     start = sfx_starts_1L_int))
                 }), T ~ !!rlang::sym(col_nm_1L_chr))))
     }
-    return(tfmd_mdl_tbl_tb)
+    return(tfd_mdl_tbl_tb)
 }
-#' Transform params list from
-#' @description transform_params_ls_from_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform params list from lookup table. Function argument params_ls specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns Params (a list).
-#' @param params_ls Params (a list)
+#' Transform parameters list from lookup table
+#' @description transform_params_ls_from_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform parameters list from lookup table. Function argument params_ls specifies the object to be updated. Argument rename_lup provides the object to be updated. The function returns Parameters (a list).
+#' @param params_ls Parameters (a list)
 #' @param rename_lup Rename (a lookup table)
-#' @return Params (a list)
+#' @return Parameters (a list)
 #' @rdname transform_params_ls_from_lup
 #' @export 
 #' @importFrom purrr map_chr
@@ -373,11 +372,11 @@ transform_params_ls_from_lup <- function (params_ls, rename_lup)
     }
     return(params_ls)
 }
-#' Transform params list to valid
-#' @description transform_params_ls_to_valid() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform params list to valid. Function argument params_ls specifies the object to be updated. Argument scndry_analysis_extra_vars_chr provides the object to be updated. The function returns Valid params (a list of lists).
-#' @param params_ls Params (a list)
-#' @param scndry_analysis_extra_vars_chr Scndry analysis extra variables (a character vector), Default: 'NA'
-#' @return Valid params (a list of lists)
+#' Transform parameters list to valid
+#' @description transform_params_ls_to_valid() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform parameters list to valid. Function argument params_ls specifies the object to be updated. Argument scndry_analysis_extra_vars_chr provides the object to be updated. The function returns Valid parameters (a list of lists).
+#' @param params_ls Parameters (a list)
+#' @param scndry_analysis_extra_vars_chr Secondary analysis extra variables (a character vector), Default: 'NA'
+#' @return Valid parameters (a list of lists)
 #' @rdname transform_params_ls_to_valid
 #' @export 
 #' @importFrom purrr discard
@@ -410,11 +409,11 @@ transform_params_ls_to_valid <- function (params_ls, scndry_analysis_extra_vars_
         rename_lup = rename_lup)
     return(valid_params_ls_ls)
 }
-#' Transform paths list for scndry
-#' @description transform_paths_ls_for_scndry() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform paths list for scndry. Function argument paths_ls specifies the object to be updated. Argument reference_1L_int provides the object to be updated. The function returns Paths (a list).
+#' Transform paths list for secondary
+#' @description transform_paths_ls_for_scndry() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform paths list for secondary. Function argument paths_ls specifies the object to be updated. Argument reference_1L_int provides the object to be updated. The function returns Paths (a list).
 #' @param paths_ls Paths (a list)
 #' @param reference_1L_int Reference (an integer vector of length one), Default: 1
-#' @param remove_prmry_1L_lgl Remove prmry (a logical vector of length one), Default: F
+#' @param remove_prmry_1L_lgl Remove primary (a logical vector of length one), Default: F
 #' @param remove_mkdn_1L_lgl Remove markdown (a logical vector of length one), Default: F
 #' @return Paths (a list)
 #' @rdname transform_paths_ls_for_scndry
@@ -437,21 +436,20 @@ transform_paths_ls_for_scndry <- function (paths_ls, reference_1L_int = 1, remov
     return(paths_ls)
 }
 #' Transform predicted variable name
-#' @description transform_predd_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform predicted variable name. Function argument new_data_is_1L_chr specifies the object to be updated. Argument sfx_1L_chr provides the object to be updated. The function returns Tfmd predicted variable name (a character vector of length one).
+#' @description transform_predd_var_nm() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform predicted variable name. Function argument new_data_is_1L_chr specifies the object to be updated. Argument sfx_1L_chr provides the object to be updated. The function returns Transformed predicted variable name (a character vector of length one).
 #' @param new_data_is_1L_chr New data is (a character vector of length one)
 #' @param sfx_1L_chr Suffix (a character vector of length one), Default: ''
 #' @param utl_min_val_1L_dbl Utility minimum value (a double vector of length one), Default: NA
-#' @return Tfmd predicted variable name (a character vector of length one)
+#' @return Transformed predicted variable name (a character vector of length one)
 #' @rdname transform_predd_var_nm
 #' @export 
-
 #' @keywords internal
 transform_predd_var_nm <- function (new_data_is_1L_chr, sfx_1L_chr = "", utl_min_val_1L_dbl = NA_real_) 
 {
-    tfmd_predd_var_nm_1L_chr <- paste0(new_data_is_1L_chr, sfx_1L_chr, 
+    tfd_predd_var_nm_1L_chr <- paste0(new_data_is_1L_chr, sfx_1L_chr, 
         ifelse(!is.na(utl_min_val_1L_dbl), " (constrained)", 
             ""))
-    return(tfmd_predd_var_nm_1L_chr)
+    return(tfd_predd_var_nm_1L_chr)
 }
 #' Transform predictor name part of phrases
 #' @description transform_predr_nm_part_of_phrases() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform predictor name part of phrases. Function argument phrases_chr specifies the object to be updated. Argument old_nms_chr provides the object to be updated. The function returns Transformed phrases (a character vector).
@@ -488,10 +486,10 @@ transform_predr_nm_part_of_phrases <- function (phrases_chr, old_nms_chr = NULL,
     }
     return(tfd_phrases_chr)
 }
-#' Transform report
+#' Transform report lookup table
 #' @description transform_rprt_lup() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform report lookup table. Function argument rprt_lup specifies the object to be updated. Argument add_suplry_rprt_1L_lgl provides the object to be updated. The function returns Report (a lookup table).
 #' @param rprt_lup Report (a lookup table)
-#' @param add_suplry_rprt_1L_lgl Add suplry report (a logical vector of length one), Default: T
+#' @param add_suplry_rprt_1L_lgl Add supplementary report (a logical vector of length one), Default: T
 #' @param add_sharing_rprt_1L_lgl Add sharing report (a logical vector of length one), Default: F
 #' @param start_at_int Start at (an integer vector), Default: NULL
 #' @param reference_1L_int Reference (an integer vector of length one), Default: NULL
@@ -586,8 +584,8 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
                     round_bl_val_1L_chr, 0, (. - dplyr::lag(.)) * 
                     scaling_fctr_dbl[idx_1L_int]))))
         })
-    tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% add_tfmd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
-        tfmn_1L_chr = tfmn_1L_chr, dep_var_max_val_1L_dbl = 0.999)
+    tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% add_tfd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+        tfmn_1L_chr = tfmn_1L_chr, depnt_var_max_val_1L_dbl = 0.999)
     if (drop_all_msng_1L_lgl) {
         tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% stats::na.omit()
     }
@@ -597,8 +595,8 @@ transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w
     tfd_for_mdl_inp_tb <- tfd_for_mdl_inp_tb %>% transform_uid_var(id_var_nm_1L_chr = id_var_nm_1L_chr)
     return(tfd_for_mdl_inp_tb)
 }
-#' Transform table to rnd variables
-#' @description transform_tbl_to_rnd_vars() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform table to rnd variables. Function argument ds_tb specifies the object to be updated. Argument nbr_of_digits_1L_int provides the object to be updated. The function returns Transformed dataset (a tibble).
+#' Transform table to round variables
+#' @description transform_tbl_to_rnd_vars() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform table to round variables. Function argument ds_tb specifies the object to be updated. Argument nbr_of_digits_1L_int provides the object to be updated. The function returns Transformed dataset (a tibble).
 #' @param ds_tb Dataset (a tibble)
 #' @param nbr_of_digits_1L_int Number of digits (an integer vector of length one), Default: 2
 #' @return Transformed dataset (a tibble)
@@ -623,7 +621,6 @@ transform_tbl_to_rnd_vars <- function (ds_tb, nbr_of_digits_1L_int = 2L)
 #' @return Timepoint values (a character vector)
 #' @rdname transform_timepoint_vals
 #' @export 
-
 #' @keywords internal
 transform_timepoint_vals <- function (timepoint_vals_chr, timepoint_levels_chr, bl_val_1L_chr) 
 {
@@ -668,12 +665,12 @@ transform_ts_mdl_data <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_t
     return(cnfdl_mdl_ls)
 }
 #' Transform unique identifier variable
-#' @description transform_uid_var() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform unique identifier variable. Function argument data_tb specifies the object to be updated. Argument id_var_nm_1L_chr provides the object to be updated. The function returns Tfmd data (a tibble).
+#' @description transform_uid_var() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform unique identifier variable. Function argument data_tb specifies the object to be updated. Argument id_var_nm_1L_chr provides the object to be updated. The function returns Transformed data (a tibble).
 #' @param data_tb Data (a tibble)
 #' @param id_var_nm_1L_chr Identity variable name (a character vector of length one)
 #' @param rename_tb Rename (a tibble), Default: NULL
 #' @param old_new_chr Old new (a character vector), Default: c("old_id_xx", "new_id_int")
-#' @return Tfmd data (a tibble)
+#' @return Transformed data (a tibble)
 #' @rdname transform_uid_var
 #' @export 
 #' @importFrom dplyr pull mutate
@@ -692,14 +689,14 @@ transform_uid_var <- function (data_tb, id_var_nm_1L_chr, rename_tb = NULL, old_
             purrr::flatten_chr, ifelse("integer" %in% class(rename_tb %>% 
                 dplyr::pull(old_new_chr[2])), purrr::flatten_int, 
                 purrr::flatten_dbl))
-        tfmd_data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(id_var_nm_1L_chr), 
+        tfd_data_tb <- data_tb %>% dplyr::mutate(`:=`(!!rlang::sym(id_var_nm_1L_chr), 
             !!rlang::sym(id_var_nm_1L_chr) %>% purrr::map(~ready4fun::get_from_lup_obj(rename_tb, 
                 match_value_xx = .x, match_var_nm_1L_chr = old_new_chr[1], 
                 target_var_nm_1L_chr = old_new_chr[2], evaluate_lgl = F)) %>% 
                 fn()))
     }
     else {
-        tfmd_data_tb <- data_tb
+        tfd_data_tb <- data_tb
     }
-    return(tfmd_data_tb)
+    return(tfd_data_tb)
 }

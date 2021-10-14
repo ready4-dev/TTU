@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_get.R
 \name{get_cndts_for_mxd_mdls}
 \alias{get_cndts_for_mxd_mdls}
-\title{Get candidates for mxd models}
+\title{Get candidates for mixed models}
 \usage{
 get_cndts_for_mxd_mdls(mdl_types_lup = NULL)
 }
@@ -10,8 +10,8 @@ get_cndts_for_mxd_mdls(mdl_types_lup = NULL)
 \item{mdl_types_lup}{Model types (a lookup table), Default: NULL}
 }
 \value{
-Candidates for mxd models (a lookup table)
+Candidates for mixed models (a lookup table)
 }
 \description{
-get_cndts_for_mxd_mdls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get candidates for mxd models. Function argument mdl_types_lup specifies the where to look for the required object. The function returns Candidates for mxd models (a lookup table).
+get_cndts_for_mxd_mdls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get candidates for mixed models. Function argument mdl_types_lup specifies the where to look for the required object. The function returns Candidates for mixed models (a lookup table).
 }

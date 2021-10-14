@@ -17,7 +17,7 @@ print_all_plts_for_mdl_set <- function (output_ls, start_from_1L_int = 0L)
 }
 #' Print cohort table
 #' @description print_cohort_table() is a Print function that prints output to console Specifically, this function implements an algorithm to print cohort table. The function is called for its side effects and does not return a value.
-#' @param params_ls Params (a list)
+#' @param params_ls Parameters (a list)
 #' @param caption_1L_chr Caption (a character vector of length one)
 #' @param mkdn_tbl_ref_1L_chr Markdown table reference (a character vector of length one)
 #' @return NULL
@@ -62,13 +62,13 @@ print_cohort_table <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
             sanitize_fn = force)
     }
 }
-#' Print corls table
-#' @description print_corls_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print corls table. The function is called for its side effects and does not return a value.
-#' @param params_ls Params (a list)
+#' Print correlations table
+#' @description print_cors_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print correlations table. The function is called for its side effects and does not return a value.
+#' @param params_ls Parameters (a list)
 #' @param caption_1L_chr Caption (a character vector of length one)
 #' @param mkdn_tbl_ref_1L_chr Markdown table reference (a character vector of length one)
 #' @return NULL
-#' @rdname print_corls_tbl
+#' @rdname print_cors_tbl
 #' @export 
 #' @importFrom dplyr mutate
 #' @importFrom purrr map_chr
@@ -77,10 +77,10 @@ print_cohort_table <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
 #' @importFrom knitr opts_current
 #' @importFrom youthvars transform_tb_for_merged_col_1
 #' @importFrom ready4show print_table
-print_corls_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr) 
+print_cors_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr) 
 {
     results_ls <- params_ls$results_ls
-    tb <- results_ls$tables_ls$pred_dist_and_cors
+    tb <- results_ls$tables_ls$predd_dist_and_cors
     tb <- tb %>% dplyr::mutate(label = label %>% purrr::map_chr(~stringr::str_remove_all(.x, 
         " \\(weighted total\\)")))
     if (params_ls$output_type_1L_chr == "PDF") {
@@ -102,9 +102,9 @@ print_corls_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
             sanitize_fn = force)
     }
 }
-#' Print covariate ttu tables
-#' @description print_covar_ttu_tbls() is a Print function that prints output to console Specifically, this function implements an algorithm to print covariate ttu tables. The function is called for its side effects and does not return a value.
-#' @param params_ls Params (a list)
+#' Print covariate transfer to utility algorithm tables
+#' @description print_covar_ttu_tbls() is a Print function that prints output to console Specifically, this function implements an algorithm to print covariate transfer to utility algorithm tables. The function is called for its side effects and does not return a value.
+#' @param params_ls Parameters (a list)
 #' @param caption_1L_chr Caption (a character vector of length one)
 #' @param table_1L_chr Table (a character vector of length one)
 #' @param ref_1L_int Reference (an integer vector of length one), Default: 1
@@ -128,9 +128,9 @@ print_covar_ttu_tbls <- function (params_ls, caption_1L_chr, table_1L_chr, ref_1
             params_ls = params_ls, ref_1L_int = ref_1L_int, table_1L_chr = table_1L_chr)
     }
 }
-#' Print indpnt predictors coefficients table
-#' @description print_indpnt_predrs_coefs_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print indpnt predictors coefficients table. The function is called for its side effects and does not return a value.
-#' @param params_ls Params (a list)
+#' Print independent predictors coefficients table
+#' @description print_indpnt_predrs_coefs_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print independent predictors coefficients table. The function is called for its side effects and does not return a value.
+#' @param params_ls Parameters (a list)
 #' @param caption_1L_chr Caption (a character vector of length one)
 #' @param mkdn_tbl_ref_1L_chr Markdown table reference (a character vector of length one)
 #' @return NULL
@@ -168,9 +168,9 @@ print_indpnt_predrs_coefs_tbl <- function (params_ls, caption_1L_chr, mkdn_tbl_r
             "Word", T, F), add_to_row_ls = add_to_row_ls, footnotes_chr = make_scaling_text(results_ls), 
         sanitize_fn = force)
 }
-#' Print indpnt predictors lngl model coefficients
-#' @description print_indpnt_predrs_lngl_mdl_coefs() is a Print function that prints output to console Specifically, this function implements an algorithm to print indpnt predictors lngl model coefficients. The function is called for its side effects and does not return a value.
-#' @param params_ls Params (a list)
+#' Print independent predictors longitudinal model coefficients
+#' @description print_indpnt_predrs_lngl_mdl_coefs() is a Print function that prints output to console Specifically, this function implements an algorithm to print independent predictors longitudinal model coefficients. The function is called for its side effects and does not return a value.
+#' @param params_ls Parameters (a list)
 #' @param caption_1L_chr Caption (a character vector of length one)
 #' @param ref_1L_int Reference (an integer vector of length one), Default: 1
 #' @param table_1L_chr Table (a character vector of length one)
@@ -194,10 +194,10 @@ print_indpnt_predrs_lngl_mdl_coefs <- function (params_ls, caption_1L_chr, ref_1
     tb %>% print_lngl_ttu_tbls(caption_1L_chr = caption_1L_chr, 
         params_ls = params_ls, ref_1L_int = ref_1L_int, table_1L_chr = table_1L_chr)
 }
-#' Print lngl ttu tables
-#' @description print_lngl_ttu_tbls() is a Print function that prints output to console Specifically, this function implements an algorithm to print lngl ttu tables. The function is called for its side effects and does not return a value.
+#' Print longitudinal transfer to utility algorithm tables
+#' @description print_lngl_ttu_tbls() is a Print function that prints output to console Specifically, this function implements an algorithm to print longitudinal transfer to utility algorithm tables. The function is called for its side effects and does not return a value.
 #' @param table_df Table (a data.frame)
-#' @param params_ls Params (a list)
+#' @param params_ls Parameters (a list)
 #' @param caption_1L_chr Caption (a character vector of length one)
 #' @param table_1L_chr Table (a character vector of length one)
 #' @param ref_1L_int Reference (an integer vector of length one), Default: 1
@@ -233,7 +233,7 @@ print_lngl_ttu_tbls <- function (table_df, params_ls, caption_1L_chr, table_1L_c
 }
 #' Print ten folds table
 #' @description print_ten_folds_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print ten folds table. The function is called for its side effects and does not return a value.
-#' @param params_ls Params (a list)
+#' @param params_ls Parameters (a list)
 #' @param caption_1L_chr Caption (a character vector of length one)
 #' @param mkdn_tbl_ref_1L_chr Markdown table reference (a character vector of length one)
 #' @param ref_1L_int Reference (an integer vector of length one), Default: 1

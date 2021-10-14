@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_predict.R
 \name{predict_uncnstrd_utl}
 \alias{predict_uncnstrd_utl}
-\title{Predict uncnstrd utility}
+\title{Predict unconstrained utility}
 \usage{
 predict_uncnstrd_utl(
   data_tb,
@@ -45,6 +45,6 @@ predict_uncnstrd_utl(
 New data (a double vector)
 }
 \description{
-predict_uncnstrd_utl() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict uncnstrd utility. The function returns New data (a double vector).
+predict_uncnstrd_utl() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict unconstrained utility. The function returns New data (a double vector).
 }
 \keyword{internal}

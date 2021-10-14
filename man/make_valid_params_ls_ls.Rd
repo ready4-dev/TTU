@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_valid_params_ls_ls}
 \alias{make_valid_params_ls_ls}
-\title{Make valid params}
+\title{Make valid parameters list list}
 \usage{
 make_valid_params_ls_ls(
   analysis_core_params_ls,
@@ -19,13 +19,13 @@ make_valid_params_ls_ls(
 )
 }
 \arguments{
-\item{analysis_core_params_ls}{Analysis core params (a list)}
+\item{analysis_core_params_ls}{Analysis core parameters (a list)}
 
 \item{ds_tb}{Dataset (a tibble)}
 
-\item{path_params_ls}{Path params (a list)}
+\item{path_params_ls}{Path parameters (a list)}
 
-\item{maui_params_ls}{Maui params (a list)}
+\item{maui_params_ls}{Multi-attribute utility instrument parameters (a list)}
 
 \item{candidate_covar_nms_chr}{Candidate covariate names (a character vector), Default: 'NA'}
 
@@ -35,16 +35,16 @@ make_valid_params_ls_ls(
 
 \item{raw_ds_tfmn_fn}{Raw dataset transformation (a function), Default: NULL}
 
-\item{scndry_analysis_extra_vars_chr}{Scndry analysis extra variables (a character vector), Default: 'NA'}
+\item{scndry_analysis_extra_vars_chr}{Secondary analysis extra variables (a character vector), Default: 'NA'}
 
 \item{subtitle_1L_chr}{Subtitle (a character vector of length one), Default: 'Methods Report 1: Analysis Program (Primary Analysis)'}
 
 \item{utl_class_fn_1L_chr}{Utility class function (a character vector of length one), Default: 'as.numeric'}
 }
 \value{
-Valid params (a list of lists)
+Valid parameters (a list of lists)
 }
 \description{
-make_valid_params_ls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make valid params list list. The function returns Valid params (a list of lists).
+make_valid_params_ls_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make valid parameters list list. The function returns Valid parameters (a list of lists).
 }
 \keyword{internal}

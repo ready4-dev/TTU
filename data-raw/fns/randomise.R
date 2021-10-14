@@ -1,4 +1,4 @@
-randomise_changes_in_fct_levs <- function (vector_fct, prob_unchanged_dbl)
+randomise_changes_in_fct_lvls <- function (vector_fct, prob_unchanged_dbl)
 {
     labels_chr <- levels(vector_fct)
     levels_dbl <- 1:length(labels_chr)

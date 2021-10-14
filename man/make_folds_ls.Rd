@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_folds_ls}
 \alias{make_folds_ls}
-\title{Make folds}
+\title{Make folds list}
 \usage{
 make_folds_ls(data_tb, depnt_var_nm_1L_chr = "utl_total_w", folds_1L_int = 10L)
 }

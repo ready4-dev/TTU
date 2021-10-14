@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_mdl_smry_ls}
 \alias{make_mdl_smry_ls}
-\title{Make model summary}
+\title{Make model summary list}
 \usage{
 make_mdl_smry_ls(
   mdl_types_lup = get_cndts_for_mxd_mdls(),

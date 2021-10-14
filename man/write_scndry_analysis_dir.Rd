@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_write.R
 \name{write_scndry_analysis_dir}
 \alias{write_scndry_analysis_dir}
-\title{Write scndry analysis directory}
+\title{Write secondary analysis directory}
 \usage{
 write_scndry_analysis_dir(paths_ls, reference_1L_int = 1)
 }
@@ -15,6 +15,6 @@ write_scndry_analysis_dir(paths_ls, reference_1L_int = 1)
 Paths (a list)
 }
 \description{
-write_scndry_analysis_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scndry analysis directory. The function returns Paths (a list).
+write_scndry_analysis_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write secondary analysis directory. The function returns Paths (a list).
 }
 \keyword{internal}

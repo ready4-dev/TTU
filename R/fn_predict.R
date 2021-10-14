@@ -1,4 +1,4 @@
-#' Predict from shareable
+#' Predict from shareable model
 #' @description predict_from_shareable_mdl() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict from shareable model. The function returns New data (a double vector).
 #' @param model_mdl Model (a model)
 #' @param data_tb Data (a tibble)
@@ -13,28 +13,27 @@
 predict_from_shareable_mdl <- function (model_mdl, data_tb, predn_type_1L_chr = "response", 
     sd_dbl, deterministic_1L_lgl = T) 
 {
-    pred_fn <- ifelse(inherits(model_mdl, "betareg"), predict_shrble_betareg, 
+    predd_fn <- ifelse(inherits(model_mdl, "betareg"), predict_shrble_betareg, 
         ifelse(inherits(model_mdl, "glm"), predict_shrble_glm, 
             predict_shrble_lm))
     args_ls <- list(object = model_mdl, newdata = data_tb, type = predn_type_1L_chr, 
         sd_1L_dbl = max(0, rnorm(1, mean = sd_dbl[1], sd = ifelse(deterministic_1L_lgl, 
             0, sd_dbl[2]))))
-    new_data_dbl <- rlang::exec(pred_fn, !!!args_ls)
+    new_data_dbl <- rlang::exec(predd_fn, !!!args_ls)
     return(new_data_dbl)
 }
-#' Predict shrble betareg
-#' @description predict_shrble_betareg() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict shrble betareg. The function is called for its side effects and does not return a value.
+#' Predict shareable betareg
+#' @description predict_shrble_betareg() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict shareable betareg. The function is called for its side effects and does not return a value.
 #' @param object PARAM_DESCRIPTION
-#' @param newdata PARAM_DESCRIPTION, Default: NULL
+#' @param newdata New dataset (for prediction) (a new dataset (for prediction)), Default: NULL
 #' @param type PARAM_DESCRIPTION, Default: c("response", "link", "precision", "variance", "quantile")
 #' @param na.action PARAM_DESCRIPTION, Default: na.pass
 #' @param at PARAM_DESCRIPTION, Default: 0.5
 #' @param sd_1L_dbl Standard deviation (a double vector of length one)
-#' @param ... Additional arguments
+#' @param ... Additional arguments (an additional arguments)
 #' @return NULL
 #' @rdname predict_shrble_betareg
 #' @export 
-
 #' @keywords internal
 predict_shrble_betareg <- function (object, newdata = NULL, type = c("response", "link", 
     "precision", "variance", "quantile"), na.action = na.pass, 
@@ -148,21 +147,20 @@ predict_shrble_betareg <- function (object, newdata = NULL, type = c("response",
         return(rval)
     }
 }
-#' Predict shrble glm
-#' @description predict_shrble_glm() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict shrble glm. The function is called for its side effects and does not return a value.
+#' Predict shareable generalised linear model
+#' @description predict_shrble_glm() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict shareable generalised linear model. The function is called for its side effects and does not return a value.
 #' @param object PARAM_DESCRIPTION
-#' @param newdata PARAM_DESCRIPTION, Default: NULL
+#' @param newdata New dataset (for prediction) (a new dataset (for prediction)), Default: NULL
 #' @param type PARAM_DESCRIPTION, Default: c("link", "response", "terms")
 #' @param se.fit PARAM_DESCRIPTION, Default: FALSE
 #' @param dispersion PARAM_DESCRIPTION, Default: NULL
 #' @param terms PARAM_DESCRIPTION, Default: NULL
 #' @param na.action PARAM_DESCRIPTION, Default: na.pass
 #' @param sd_1L_dbl Standard deviation (a double vector of length one)
-#' @param ... Additional arguments
+#' @param ... Additional arguments (an additional arguments)
 #' @return NULL
 #' @rdname predict_shrble_glm
 #' @export 
-
 #' @keywords internal
 predict_shrble_glm <- function (object, newdata = NULL, type = c("link", "response", 
     "terms"), se.fit = FALSE, dispersion = NULL, terms = NULL, 
@@ -216,10 +214,10 @@ predict_shrble_glm <- function (object, newdata = NULL, type = c("link", "respon
     }
     pred
 }
-#' Predict shrble linear model
-#' @description predict_shrble_lm() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict shrble linear model. The function is called for its side effects and does not return a value.
+#' Predict shareable linear model
+#' @description predict_shrble_lm() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict shareable linear model. The function is called for its side effects and does not return a value.
 #' @param object PARAM_DESCRIPTION
-#' @param newdata PARAM_DESCRIPTION
+#' @param newdata New dataset (for prediction) (a new dataset (for prediction))
 #' @param se.fit PARAM_DESCRIPTION, Default: FALSE
 #' @param scale PARAM_DESCRIPTION, Default: NULL
 #' @param df Data.frame (a data.frame), Default: Inf
@@ -231,11 +229,10 @@ predict_shrble_glm <- function (object, newdata = NULL, type = c("link", "respon
 #' @param pred.var PARAM_DESCRIPTION, Default: res.var/weights
 #' @param weights PARAM_DESCRIPTION, Default: 1
 #' @param sd_1L_dbl Standard deviation (a double vector of length one)
-#' @param ... Additional arguments
+#' @param ... Additional arguments (an additional arguments)
 #' @return NULL
 #' @rdname predict_shrble_lm
 #' @export 
-
 #' @keywords internal
 predict_shrble_lm <- function (object, newdata, se.fit = FALSE, scale = NULL, df = Inf, 
     interval = c("none", "confidence", "prediction"), level = 0.95, 
@@ -421,8 +418,8 @@ predict_shrble_lm <- function (object, newdata, se.fit = FALSE, scale = NULL, df
         list(fit = predictor, se.fit = se, df = df, residual.scale = sqrt(res.var))
     else predictor
 }
-#' Predict uncnstrd utility
-#' @description predict_uncnstrd_utl() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict uncnstrd utility. The function returns New data (a double vector).
+#' Predict unconstrained utility
+#' @description predict_uncnstrd_utl() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict unconstrained utility. The function returns New data (a double vector).
 #' @param data_tb Data (a tibble)
 #' @param model_mdl Model (a model)
 #' @param new_data_is_1L_chr New data is (a character vector of length one), Default: 'Predicted'
@@ -490,7 +487,7 @@ predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Pred
     }
     if (is.matrix(new_data_dbl)) 
         new_data_dbl <- new_data_dbl[, 1]
-    new_data_dbl <- new_data_dbl %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = ifelse(tfmn_for_bnml_1L_lgl & 
+    new_data_dbl <- new_data_dbl %>% calculate_depnt_var_tfmn(tfmn_1L_chr = ifelse(tfmn_for_bnml_1L_lgl & 
         new_data_is_1L_chr == "Simulated", ifelse(family_1L_chr == 
         "quasibinomial(log)", "LOG", ifelse(family_1L_chr == 
         "quasibinomial(logit)", "LOGIT", ifelse(family_1L_chr == 
@@ -542,19 +539,18 @@ predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", model_mdl, force_min_
     }
     return(predd_utl_dbl)
 }
-#' Predict utility from k10
+#' Predict utility from K10
 #' @description predict_utl_from_k10() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict utility from k10. The function is called for its side effects and does not return a value.
 #' @param k10_1L_dbl K10 (a double vector of length one)
-#' @param b0_aqol_mdl_1L_dbl B0 Assessment of Quality of Life model (a double vector of length one), Default: 0.204665
-#' @param b1_aqol_mdl_1L_dbl B1 Assessment of Quality of Life model (a double vector of length one), Default: -3.617134
-#' @param b0_eq5d_mdl_1L_dbl B0 eq5d model (a double vector of length one), Default: 0.8644649
-#' @param b1_eq5d_mdl_1L_dbl B1 eq5d model (a double vector of length one), Default: -2.926161
+#' @param b0_aqol_mdl_1L_dbl Regression model intercept Assessment of Quality of Life model (a double vector of length one), Default: 0.204665
+#' @param b1_aqol_mdl_1L_dbl Regression model coefficient Assessment of Quality of Life model (a double vector of length one), Default: -3.617134
+#' @param b0_eq5d_mdl_1L_dbl Regression model intercept EQ5D model (a double vector of length one), Default: 0.8644649
+#' @param b1_eq5d_mdl_1L_dbl Regression model coefficient EQ5D model (a double vector of length one), Default: -2.926161
 #' @param aqol_error_1L_dbl Assessment of Quality of Life error (a double vector of length one), Default: 0
-#' @param eq5d_error_1L_dbl Eq5d error (a double vector of length one), Default: 0
+#' @param eq5d_error_1L_dbl EQ5D error (a double vector of length one), Default: 0
 #' @return NA ()
 #' @rdname predict_utl_from_k10
 #' @export 
-
 #' @keywords internal
 predict_utl_from_k10 <- function (k10_1L_dbl, b0_aqol_mdl_1L_dbl = 0.204665, b1_aqol_mdl_1L_dbl = -3.617134, 
     b0_eq5d_mdl_1L_dbl = 0.8644649, b1_eq5d_mdl_1L_dbl = -2.926161, 

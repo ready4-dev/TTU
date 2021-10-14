@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_fake_eq5d_ds}
 \alias{make_fake_eq5d_ds}
-\title{Make fake eq5d dataset}
+\title{Make fake EQ5D dataset}
 \usage{
 make_fake_eq5d_ds(
   country_1L_chr = "UK",

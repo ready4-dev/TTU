@@ -2,30 +2,30 @@
 % Please edit documentation in R/fn_make.R
 \name{make_maui_params_ls}
 \alias{make_maui_params_ls}
-\title{Make maui params}
+\title{Make multi-attribute utility instrument parameters list}
 \usage{
 make_maui_params_ls(
   maui_itm_short_nms_chr,
-  maui_domains_pfcs_1L_chr = NULL,
+  maui_domains_pfxs_1L_chr = NULL,
   maui_scoring_fn = NULL,
   short_and_long_nm = NULL,
   utl_min_val_1L_dbl = -1
 )
 }
 \arguments{
-\item{maui_itm_short_nms_chr}{Maui item short names (a character vector)}
+\item{maui_itm_short_nms_chr}{Multi-attribute utility instrument item short names (a character vector)}
 
-\item{maui_domains_pfcs_1L_chr}{Maui domains pfcs (a character vector of length one), Default: NULL}
+\item{maui_domains_pfxs_1L_chr}{Multi-attribute utility instrument domains prefixes (a character vector of length one), Default: NULL}
 
-\item{maui_scoring_fn}{Maui scoring (a function), Default: NULL}
+\item{maui_scoring_fn}{Multi-attribute utility instrument scoring (a function), Default: NULL}
 
 \item{short_and_long_nm}{PARAM_DESCRIPTION, Default: NULL}
 
 \item{utl_min_val_1L_dbl}{Utility minimum value (a double vector of length one), Default: -1}
 }
 \value{
-Maui params (a list)
+Multi-attribute utility instrument parameters (a list)
 }
 \description{
-make_maui_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make maui params list. The function returns Maui params (a list).
+make_maui_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make multi-attribute utility instrument parameters list. The function returns Multi-attribute utility instrument parameters (a list).
 }

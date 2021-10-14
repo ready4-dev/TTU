@@ -48,22 +48,22 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
                                                                      "_", "BOXCOX"), height_1L_dbl = height_1L_dbl, width_1L_dbl = width_1L_dbl)
   return(path_to_plot_1L_chr)
 }
-write_csp_output <- function(path_to_CSP_1L_chr,
+write_csp_output <- function(path_to_csp_1L_chr,
                              dv_ds_doi_1L_chr = NULL,
                              execute_1L_lgl = T){
-  readLines(path_to_CSP_1L_chr) %>%
+  readLines(path_to_csp_1L_chr) %>%
     purrr::map_chr(~ifelse(.x == "knitr::opts_chunk$set(eval = F)",
                            "knitr::opts_chunk$set(eval = T)",
                            .x)) %>%
-  writeLines(con = path_to_CSP_1L_chr)
-  path_to_r_script_1L_chr <- stringr::str_sub(path_to_CSP_1L_chr,end=-3)
-  knitr::purl(path_to_CSP_1L_chr,
+  writeLines(con = path_to_csp_1L_chr)
+  path_to_r_script_1L_chr <- stringr::str_sub(path_to_csp_1L_chr,end=-3)
+  knitr::purl(path_to_csp_1L_chr,
               path_to_r_script_1L_chr)
-  readLines(path_to_CSP_1L_chr) %>%
+  readLines(path_to_csp_1L_chr) %>%
     purrr::map_chr(~ifelse(.x == "knitr::opts_chunk$set(eval = T)",
                            "knitr::opts_chunk$set(eval = F)",
                            .x)) %>%
-    writeLines(con = path_to_CSP_1L_chr)
+    writeLines(con = path_to_csp_1L_chr)
   if(execute_1L_lgl){
     old_wd_1L_chr <- getwd()
     path_info_ls <- DescTools::SplitPath(path_to_r_script_1L_chr)
@@ -71,14 +71,14 @@ write_csp_output <- function(path_to_CSP_1L_chr,
     source(path_info_ls$fullfilename)
     setwd(old_wd_1L_chr)
   }
-  rmarkdown::render(path_to_CSP_1L_chr)
+  rmarkdown::render(path_to_csp_1L_chr)
   if(!is.null(dv_ds_doi_1L_chr)){
-    dataverse::add_dataset_file(paste0(stringr::str_sub(path_to_CSP_1L_chr, end=-4),"pdf"),
+    dataverse::add_dataset_file(paste0(stringr::str_sub(path_to_csp_1L_chr, end=-4),"pdf"),
                                 dataset = dv_ds_doi_1L_chr,
                                 description = "Methods Report 1: Complete Study Program")
   }
 }
-write_main_oupt_dir <- function(params_ls = NULL,
+write_main_outp_dir <- function(params_ls = NULL,
                                 use_fake_data_1L_lgl = F,
                                 R_fl_nm_1L_chr = "aaaaaaaaaa.txt"){
   file.create(R_fl_nm_1L_chr)
@@ -125,14 +125,14 @@ write_manuscript <- function(abstract_args_ls = NULL,
                                        input_params_ls$path_params_ls$paths_ls$reports_dir_1L_chr,
                                        results_ls$path_params_ls$paths_ls$reports_dir_1L_chr)
   if(!dir.exists(path_to_ms_mkdn_1L_dir)){
-    temp_fl <- tempfile()
+    tmp_fl <- tempfile()
     download.file(paste0("https://github.com/ready4-dev/ttu_lng_ss/archive/refs/tags/v",
                          version_1L_chr,
                          ".zip"),
-                         temp_fl)
-    utils::unzip(temp_fl,
+                         tmp_fl)
+    utils::unzip(tmp_fl,
                  exdir = mkdn_data_dir_1L_chr)
-    unlink(temp_fl)
+    unlink(tmp_fl)
   }
   if(!is.null(input_params_ls)){
     header_yaml_args_ls <- input_params_ls$header_yaml_args_ls
@@ -218,7 +218,7 @@ write_mdl_cmprsn <- function(scored_data_tb,
   bl_tb <- youthvars::transform_ds_for_tstng(scored_data_tb,
                                   depnt_var_nm_1L_chr = ds_smry_ls$depnt_var_nm_1L_chr,
                                   candidate_predrs_chr = ds_smry_ls$candidate_predrs_chr,
-                                  dep_var_max_val_1L_dbl = 0.999,
+                                  depnt_var_max_val_1L_dbl = 0.999,
                                   round_var_nm_1L_chr = ds_smry_ls$round_var_nm_1L_chr,
                                   round_val_1L_chr = ds_smry_ls$round_bl_val_1L_chr)
   ds_smry_ls$candidate_predrs_chr <- reorder_cndt_predrs_chr(ds_smry_ls$candidate_predrs_chr,
@@ -527,7 +527,7 @@ write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_tota
   if (is.na(predn_type_1L_chr))
     predn_type_1L_chr <- NULL
   data_tb <- data_tb %>%
-    add_tfmd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+    add_tfd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
                        tfmn_1L_chr = tfmn_1L_chr)
   output_dir_1L_chr <- output_dir_1L_chr <- write_new_outp_dir(path_to_write_to_1L_chr,
                                                                new_dir_nm_1L_chr = new_dir_nm_1L_chr)
@@ -548,7 +548,7 @@ write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_tota
               coefficients_mat <- summary(model_mdl)$coefficients
             }
             tibble::tibble(variable = .x,
-                           Rsquare = caret::R2(stats::predict(model_mdl, type = predn_type_1L_chr) %>% calculate_dpnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
+                           Rsquare = caret::R2(stats::predict(model_mdl, type = predn_type_1L_chr) %>% calculate_depnt_var_tfmn(tfmn_1L_chr = tfmn_1L_chr,
                                                                                                                     tfmn_is_outp_1L_lgl = T),
                                                               data_tb %>%
                                                                 dplyr::pull(!!rlang::sym(depnt_var_nm_1L_chr)),
@@ -627,7 +627,7 @@ write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_
         match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr,
         target_var_nm_1L_chr = "tfmn_for_bnml_lgl", evaluate_lgl = F)
     data_tb <- data_tb %>%
-      add_tfmd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
+      add_tfd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
                          tfmn_1L_chr = tfmn_1L_chr)
     model_mdl <- make_mdl(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         tfmn_1L_chr = tfmn_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr,
@@ -809,9 +809,9 @@ write_reporting_dir <- function(path_to_write_to_1L_chr = getwd(),
   path_to_RMD_dir_1L_chr <- system.file("Project/CSP", package = "TTU")
   file.copy(path_to_RMD_dir_1L_chr, path_to_prjt_dir_1L_chr,
             recursive = T, overwrite = overwrite_1L_lgl)
-  path_to_CSP_1L_chr <- paste0(path_to_prjt_dir_1L_chr,
+  path_to_csp_1L_chr <- paste0(path_to_prjt_dir_1L_chr,
                                "/CSP/CSP.Rmd")
-  return(path_to_CSP_1L_chr)
+  return(path_to_csp_1L_chr)
 }
 write_rprt_with_rcrd <- function(path_to_outp_fl_1L_chr,
                                  paths_ls,
@@ -1005,7 +1005,7 @@ write_shareable_mdls <- function (outp_smry_ls,
   sorted_mdl_nms_chr <- sort(ranked_mdl_nms_chr)
   rank_idcs_int <- purrr::map_int(sorted_mdl_nms_chr,~which(ranked_mdl_nms_chr==.x))
   incld_mdl_paths_chr <- incld_mdl_paths_chr[order(rank_idcs_int)]
-  fake_ds_tb <- make_fake_ts_data(outp_smry_ls, dep_vars_are_NA_1L_lgl = F)
+  fake_ds_tb <- make_fake_ts_data(outp_smry_ls, depnt_vars_are_NA_1L_lgl = F)
   mdl_types_lup <- outp_smry_ls$mdl_types_lup
     shareable_mdls_ls <- outp_smry_ls$mdl_nms_ls %>% purrr::flatten_chr() %>%
         purrr::map2(incld_mdl_paths_chr, ~{
@@ -1039,9 +1039,9 @@ write_shareable_mdls <- function (outp_smry_ls,
               t() %>%
               as.vector()
             mdl_fake_ds_tb <- fake_ds_tb %>%
-              add_tfmd_var_to_ds(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
+              add_tfd_var_to_ds(depnt_var_nm_1L_chr = outp_smry_ls$depnt_var_nm_1L_chr,
                                  tfmn_1L_chr = tfmn_1L_chr,
-                                 dep_var_max_val_1L_dbl = 0.999) %>%
+                                 depnt_var_max_val_1L_dbl = 0.999) %>%
               dplyr::select(names(model_mdl$data))
             model_mdl$data <- mdl_fake_ds_tb
             table_predn_mdl <- make_shareable_mdl(fake_ds_tb = mdl_fake_ds_tb,
@@ -1175,7 +1175,7 @@ write_shareable_mdls_to_dv <- function (outp_smry_ls,
   if(!share_ingredients_1L_lgl){
     ds_ls <- dataverse::get_dataset(outp_smry_ls$dv_ls$ds_url_1L_chr)
     shareable_mdls_tb <- shareable_mdls_tb %>% dplyr::mutate(dv_nm_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr,
-                                                             fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ready4use::get_fl_id_from_dv_ls(ds_ls,
+                                                             fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ready4fun::get_fl_id_from_dv_ls(ds_ls,
                                                                                                                                             fl_nm_1L_chr = paste0(.x, ".RDS")) %>% as.integer()))
 
   }

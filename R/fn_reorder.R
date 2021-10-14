@@ -1,4 +1,4 @@
-#' Reorder candidate predictors
+#' Reorder candidate predictors character vector
 #' @description reorder_cndt_predrs_chr() is a Reorder function that reorders an object to conform to a pre-specified schema. Specifically, this function implements an algorithm to reorder candidate predictors character vector. The function is called for its side effects and does not return a value.
 #' @param candidate_predrs_chr Candidate predictors (a character vector)
 #' @param data_tb Data (a tibble)
@@ -29,7 +29,7 @@ reorder_cndt_predrs_chr <- function (candidate_predrs_chr, data_tb, depnt_var_nm
 #' @param tbs_ls Tibbles (a list)
 #' @param cor_dbl Correlation (a double vector)
 #' @param cor_var_chr Correlation variable (a character vector)
-#' @param id_var_to_rm_1L_chr Identity variable to rm (a character vector of length one), Default: 'NA'
+#' @param id_var_to_rmv_1L_chr Identity variable to remove (a character vector of length one), Default: 'NA'
 #' @return Tibbles (a list)
 #' @rdname reorder_tbs_for_target_cors
 #' @export 
@@ -38,7 +38,7 @@ reorder_cndt_predrs_chr <- function (candidate_predrs_chr, data_tb, depnt_var_nm
 #' @importFrom rlang sym
 #' @importFrom purrr map
 #' @keywords internal
-reorder_tbs_for_target_cors <- function (tbs_ls, cor_dbl, cor_var_chr, id_var_to_rm_1L_chr = NA_character_) 
+reorder_tbs_for_target_cors <- function (tbs_ls, cor_dbl, cor_var_chr, id_var_to_rmv_1L_chr = NA_character_) 
 {
     n_fup_dbl <- nrow(tbs_ls[[2]])
     cor_mat <- matrix(cor_dbl, ncol = 2, nrow = 2)
@@ -59,7 +59,7 @@ reorder_tbs_for_target_cors <- function (tbs_ls, cor_dbl, cor_var_chr, id_var_to
     }
     tbs_ls[[2]] <- tbs_ls[[2]] %>% dplyr::arrange(!!rlang::sym(cor_var_chr[2])) %>% 
         dplyr::slice(rank_y_int)
-    if (!is.na(id_var_to_rm_1L_chr)) 
-        tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::select(-!!rlang::sym(id_var_to_rm_1L_chr)))
+    if (!is.na(id_var_to_rmv_1L_chr)) 
+        tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::select(-!!rlang::sym(id_var_to_rmv_1L_chr)))
     return(tbs_ls)
 }

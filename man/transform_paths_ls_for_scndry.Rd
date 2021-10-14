@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_transform.R
 \name{transform_paths_ls_for_scndry}
 \alias{transform_paths_ls_for_scndry}
-\title{Transform paths list for scndry}
+\title{Transform paths list for secondary}
 \usage{
 transform_paths_ls_for_scndry(
   paths_ls,
@@ -16,7 +16,7 @@ transform_paths_ls_for_scndry(
 
 \item{reference_1L_int}{Reference (an integer vector of length one), Default: 1}
 
-\item{remove_prmry_1L_lgl}{Remove prmry (a logical vector of length one), Default: F}
+\item{remove_prmry_1L_lgl}{Remove primary (a logical vector of length one), Default: F}
 
 \item{remove_mkdn_1L_lgl}{Remove markdown (a logical vector of length one), Default: F}
 }
@@ -24,6 +24,6 @@ transform_paths_ls_for_scndry(
 Paths (a list)
 }
 \description{
-transform_paths_ls_for_scndry() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform paths list for scndry. Function argument paths_ls specifies the object to be updated. Argument reference_1L_int provides the object to be updated. The function returns Paths (a list).
+transform_paths_ls_for_scndry() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform paths list for secondary. Function argument paths_ls specifies the object to be updated. Argument reference_1L_int provides the object to be updated. The function returns Paths (a list).
 }
 \keyword{internal}

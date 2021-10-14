@@ -1,6 +1,6 @@
 #' Knit from template
 #' @description knit_from_tmpl() is a Knit function that knits a rmarkdown file Specifically, this function implements an algorithm to knit from template. The function is called for its side effects and does not return a value.
-#' @param params_to_expand_ls Params to expand (a list)
+#' @param params_to_expand_ls Parameters to expand (a list)
 #' @param path_to_tmpl_1L_chr Path to template (a character vector of length one)
 #' @return NULL
 #' @rdname knit_from_tmpl
@@ -20,7 +20,7 @@ knit_from_tmpl <- function (params_to_expand_ls, path_to_tmpl_1L_chr)
 }
 #' Knit model report
 #' @description knit_mdl_rprt() is a Knit function that knits a rmarkdown file Specifically, this function implements an algorithm to knit model report. The function is called for its side effects and does not return a value.
-#' @param knit_pars_ls Knit parameters (a list)
+#' @param knit_pars_ls Knit pars (a list)
 #' @param path_to_mdl_rprt_tmpl_1L_chr Path to model report template (a character vector of length one)
 #' @return NULL
 #' @rdname knit_mdl_rprt

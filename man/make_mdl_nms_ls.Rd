@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_mdl_nms_ls}
 \alias{make_mdl_nms_ls}
-\title{Make model names}
+\title{Make model names list}
 \usage{
 make_mdl_nms_ls(predr_vars_nms_ls, mdl_types_chr)
 }

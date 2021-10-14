@@ -2,7 +2,7 @@
 % Please edit documentation in R/C3_TTU_predictors_lup.R
 \name{make_pt_TTU_predictors_lup}
 \alias{make_pt_TTU_predictors_lup}
-\title{Make prototype TTU S3 class for candidate predictors lookup table}
+\title{Make prototype TTU predictors lookup table TTU S3 class for candidate predictors lookup table}
 \usage{
 make_pt_TTU_predictors_lup(
   short_name_chr = character(0),

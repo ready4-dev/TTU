@@ -21,9 +21,9 @@ transform_uid_var(
 \item{old_new_chr}{Old new (a character vector), Default: c("old_id_xx", "new_id_int")}
 }
 \value{
-Tfmd data (a tibble)
+Transformed data (a tibble)
 }
 \description{
-transform_uid_var() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform unique identifier variable. Function argument data_tb specifies the object to be updated. Argument id_var_nm_1L_chr provides the object to be updated. The function returns Tfmd data (a tibble).
+transform_uid_var() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform unique identifier variable. Function argument data_tb specifies the object to be updated. Argument id_var_nm_1L_chr provides the object to be updated. The function returns Transformed data (a tibble).
 }
 \keyword{internal}

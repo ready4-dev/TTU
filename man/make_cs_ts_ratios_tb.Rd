@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_cs_ts_ratios_tb}
 \alias{make_cs_ts_ratios_tb}
-\title{Make cs time series ratios}
+\title{Make cross-section time series ratios tibble}
 \usage{
 make_cs_ts_ratios_tb(
   predr_ctgs_ls,
@@ -24,9 +24,9 @@ make_cs_ts_ratios_tb(
 \item{fn_ls}{Function list (a list of functions), Default: NULL}
 }
 \value{
-Cs time series ratios (a tibble)
+Cross-section time series ratios (a tibble)
 }
 \description{
-make_cs_ts_ratios_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make cs time series ratios tibble. The function returns Cs time series ratios (a tibble).
+make_cs_ts_ratios_tb() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make cross-section time series ratios tibble. The function returns Cross-section time series ratios (a tibble).
 }
 \keyword{internal}

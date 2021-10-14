@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_add.R
 \name{add_prefd_predr_var_to_mdl_smry_ls}
 \alias{add_prefd_predr_var_to_mdl_smry_ls}
-\title{Add preferred predictor variable to model summary}
+\title{Add preferred predictor variable to model summary list}
 \usage{
 add_prefd_predr_var_to_mdl_smry_ls(mdl_smry_ls, ds_smry_ls)
 }

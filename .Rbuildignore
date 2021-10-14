@@ -8,7 +8,7 @@
 ^\.github$
 ^data-raw/abbreviations_lup\.csv$
 ^data-raw/DATASET\.R$
-^data-raw/fn_type_lup_tb\.csv$
+^data-raw/fn_types_lup\.csv$
 ^data-raw/fns/add\.R$
 ^data-raw/fns/calculate\.R$
 ^data-raw/fns/extract\.R$
@@ -71,8 +71,8 @@
 ^Meta$
 ^data-raw/dataverse/abbreviations_lup/abbreviations_lup\.csv$
 ^data-raw/dataverse/abbreviations_lup/abbreviations_lup\.RDS$
-^data-raw/dataverse/fn_type_lup_tb/fn_type_lup_tb\.csv$
-^data-raw/dataverse/fn_type_lup_tb/fn_type_lup_tb\.RDS$
+^data-raw/dataverse/fn_types_lup/fn_types_lup\.csv$
+^data-raw/dataverse/fn_types_lup/fn_types_lup\.RDS$
 ^data-raw/MAKE_CLASSES\.R$
 ^data-raw/MAKE_HOUSESTYLE_DSS\.R$
 ^data-raw/dataverse/prototype_lup/prototype_lup\.csv$
@@ -137,3 +137,7 @@
 ^data-raw/inst/Project/CSP/Header/abstract\.txt$
 ^data-raw/inst/Project/CSP/Header/header_common\.yaml$
 ^data-raw/inst/Project/CSP/preamble\.tex$
+^data-raw/dataverse/fn_type_lup_tb/fn_type_lup_tb\.csv$
+^data-raw/dataverse/fn_type_lup_tb/fn_type_lup_tb\.RDS$
+^data-raw/fn_type_lup_tb\.csv$
+^data-raw/NOTES\.R$

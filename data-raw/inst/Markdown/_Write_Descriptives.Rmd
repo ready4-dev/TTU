@@ -22,7 +22,7 @@ descv_plts_paths_ls <- youthvars::write_descv_plots(data_tb,
                                                     ds_descvs_ls = ds_descvs_ls,
                                                     descv_outp_dir_1L_chr = paths_ls$descv_outp_dir_1L_chr,
                                                     lbl_nms_chr = params_ls$maui_itm_short_nms_chr,
-                                                    maui_domains_pfcs_1L_chr = params_ls$maui_domains_pfcs_1L_chr)
+                                                    maui_domains_pfxs_1L_chr = params_ls$maui_domains_pfxs_1L_chr)
 
 ```
 

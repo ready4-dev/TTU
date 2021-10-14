@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_predict.R
 \name{predict_shrble_lm}
 \alias{predict_shrble_lm}
-\title{Predict shrble linear model}
+\title{Predict shareable linear model}
 \usage{
 predict_shrble_lm(
   object,
@@ -24,7 +24,7 @@ predict_shrble_lm(
 \arguments{
 \item{object}{PARAM_DESCRIPTION}
 
-\item{newdata}{PARAM_DESCRIPTION}
+\item{newdata}{New dataset (for prediction) (a new dataset (for prediction))}
 
 \item{se.fit}{PARAM_DESCRIPTION, Default: FALSE}
 
@@ -48,9 +48,9 @@ predict_shrble_lm(
 
 \item{sd_1L_dbl}{Standard deviation (a double vector of length one)}
 
-\item{...}{Additional arguments}
+\item{...}{Additional arguments (an additional arguments)}
 }
 \description{
-predict_shrble_lm() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict shrble linear model. The function is called for its side effects and does not return a value.
+predict_shrble_lm() is a Predict function that makes predictions from data using a specified statistical model. Specifically, this function implements an algorithm to predict shareable linear model. The function is called for its side effects and does not return a value.
 }
 \keyword{internal}

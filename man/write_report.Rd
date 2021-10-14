@@ -14,7 +14,7 @@ write_report(
 )
 }
 \arguments{
-\item{params_ls}{Params (a list)}
+\item{params_ls}{Parameters (a list)}
 
 \item{paths_ls}{Paths (a list)}
 

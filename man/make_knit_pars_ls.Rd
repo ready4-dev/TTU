@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_knit_pars_ls}
 \alias{make_knit_pars_ls}
-\title{Make knit parameters}
+\title{Make knit pars list}
 \usage{
 make_knit_pars_ls(
   rltv_path_to_data_dir_1L_chr,
@@ -33,8 +33,8 @@ make_knit_pars_ls(
 \item{section_type_1L_chr}{Section type (a character vector of length one), Default: '#'}
 }
 \value{
-Knit parameters (a list)
+Knit pars (a list)
 }
 \description{
-make_knit_pars_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make knit parameters list. The function returns Knit parameters (a list).
+make_knit_pars_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make knit pars list. The function returns Knit pars (a list).
 }

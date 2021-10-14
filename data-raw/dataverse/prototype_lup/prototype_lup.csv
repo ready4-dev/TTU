@@ -12,7 +12,7 @@
 "ready4_dist","ready4use::ready4_dist()","ready4use","ready4_dist","",TRUE
 "ready4_dv_import_lup","ready4use::ready4_dv_import_lup()","ready4use","ready4_dv_import_lup","",TRUE
 "ready4_all_import_lup","ready4use::ready4_all_import_lup()","ready4use","ready4_all_import_lup","",TRUE
-"ready4_par_struc_mape","ready4use::ready4_par_struc_mape()","ready4use","ready4_par_struc_mape","",TRUE
+"ready4_param_struc_mape","ready4use::ready4_param_struc_mape()","ready4use","ready4_param_struc_mape","",TRUE
 "ready4_dictionary","ready4use::ready4_dictionary()","ready4use","ready4_dictionary","",TRUE
 "ready4_local","ready4use::ready4_local()","ready4use","ready4_local","",FALSE
 "ready4_local_raw","ready4use::ready4_local_raw()","ready4use","ready4_local_raw","",FALSE

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_predr_ctgs_ls}
 \alias{make_predr_ctgs_ls}
-\title{Make predictor category categoriess}
+\title{Make predictor category categoriess list}
 \usage{
 make_predr_ctgs_ls(outp_smry_ls, include_idx_int = NULL)
 }

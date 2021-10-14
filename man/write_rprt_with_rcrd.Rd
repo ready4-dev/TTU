@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_write.R
 \name{write_rprt_with_rcrd}
 \alias{write_rprt_with_rcrd}
-\title{Write report with rcrd}
+\title{Write report with record}
 \usage{
 write_rprt_with_rcrd(
   path_to_outp_fl_1L_chr,
@@ -35,7 +35,7 @@ write_rprt_with_rcrd(
 
 \item{rprt_nm_1L_chr}{Report name (a character vector of length one), Default: 'AAA_TTU_MDL_CTG'}
 
-\item{rcrd_nm_1L_chr}{Rcrd name (a character vector of length one), Default: 'AAA_RPRT_WRTNG_MTH'}
+\item{rcrd_nm_1L_chr}{Record name (a character vector of length one), Default: 'AAA_RPRT_WRTNG_MTH'}
 
 \item{reference_1L_int}{Reference (an integer vector of length one), Default: NULL}
 
@@ -51,9 +51,9 @@ write_rprt_with_rcrd(
 
 \item{main_rprt_append_ls}{Main report append (a list), Default: NULL}
 
-\item{rcrd_rprt_append_ls}{Rcrd report append (a list), Default: NULL}
+\item{rcrd_rprt_append_ls}{Record report append (a list), Default: NULL}
 }
 \description{
-write_rprt_with_rcrd() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write report with rcrd. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+write_rprt_with_rcrd() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write report with record. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 }
 \keyword{internal}

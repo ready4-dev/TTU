@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_get.R
 \name{get_table_predn_mdl}
 \alias{get_table_predn_mdl}
-\title{Get table prediction}
+\title{Get table prediction model}
 \usage{
 get_table_predn_mdl(mdl_nm_1L_chr, ingredients_ls, analysis_1L_chr = NULL)
 }

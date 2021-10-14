@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_paths_to_ss_plts_ls}
 \alias{make_paths_to_ss_plts_ls}
-\title{Make paths to ss plots}
+\title{Make paths to ss plots list}
 \usage{
 make_paths_to_ss_plts_ls(
   output_data_dir_1L_chr,

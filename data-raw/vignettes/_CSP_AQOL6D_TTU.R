@@ -16,7 +16,7 @@ ds_tb %>%
 use_fake_data_1L_lgl <-  TRUE
 
 ## -----------------------------------------------------------------------------
-dictionary_tb <-  youthvars::make_final_rpln_ds_dict() #youthvars::make_tfd_repln_ds_dict_r3()
+dictionary_tb <-  youthvars::make_final_repln_ds_dict() #youthvars::make_tfd_repln_ds_dict_r3()
 
 ## ----dictionary, eval = knitr::is_html_output(), results='asis'---------------
 dictionary_tb %>%

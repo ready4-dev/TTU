@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_shareable_mdl}
 \alias{make_shareable_mdl}
-\title{Make shareable}
+\title{Make shareable model}
 \usage{
 make_shareable_mdl(
   fake_ds_tb,

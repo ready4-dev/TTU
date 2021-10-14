@@ -13,7 +13,7 @@ make_brms_mdl_smry_tbl(smry_mdl_ls, grp_1L_chr, popl_1L_chr, fam_1L_chr)
 
 \item{popl_1L_chr}{Population (a character vector of length one)}
 
-\item{fam_1L_chr}{Fam (a character vector of length one)}
+\item{fam_1L_chr}{Family (a character vector of length one)}
 }
 \value{
 Bayesian regression models model summary (a tibble)

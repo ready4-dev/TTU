@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_uid_rename_lup}
 \alias{make_uid_rename_lup}
-\title{Make unique identifier rename}
+\title{Make unique identifier rename lookup table}
 \usage{
 make_uid_rename_lup(data_tb, id_var_nm_1L_chr = "UID")
 }

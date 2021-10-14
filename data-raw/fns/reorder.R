@@ -11,7 +11,7 @@ reorder_cndt_predrs_chr <- function (candidate_predrs_chr, data_tb, depnt_var_nm
         as.vector()
     return(reordered_cndt_predrs)
 }
-reorder_tbs_for_target_cors <- function (tbs_ls, cor_dbl, cor_var_chr, id_var_to_rm_1L_chr = NA_character_)
+reorder_tbs_for_target_cors <- function (tbs_ls, cor_dbl, cor_var_chr, id_var_to_rmv_1L_chr = NA_character_)
 {
     n_fup_dbl <- nrow(tbs_ls[[2]])
     cor_mat <- matrix(cor_dbl, ncol = 2, nrow = 2)
@@ -32,7 +32,7 @@ reorder_tbs_for_target_cors <- function (tbs_ls, cor_dbl, cor_var_chr, id_var_to
     }
     tbs_ls[[2]] <- tbs_ls[[2]] %>% dplyr::arrange(!!rlang::sym(cor_var_chr[2])) %>%
         dplyr::slice(rank_y_int)
-    if (!is.na(id_var_to_rm_1L_chr))
-        tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::select(-!!rlang::sym(id_var_to_rm_1L_chr)))
+    if (!is.na(id_var_to_rmv_1L_chr))
+        tbs_ls <- tbs_ls %>% purrr::map(~.x %>% dplyr::select(-!!rlang::sym(id_var_to_rmv_1L_chr)))
     return(tbs_ls)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_get.R
 \name{get_lngl_ttu_types}
 \alias{get_lngl_ttu_types}
-\title{Get lngl ttu types}
+\title{Get longitudinal transfer to utility algorithm types}
 \usage{
 get_lngl_ttu_types(results_ls, collapse_1L_lgl = T)
 }
@@ -15,5 +15,5 @@ get_lngl_ttu_types(results_ls, collapse_1L_lgl = T)
 Model types (a character vector)
 }
 \description{
-get_lngl_ttu_types() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get lngl ttu types. Function argument results_ls specifies the where to look for the required object. The function returns Model types (a character vector).
+get_lngl_ttu_types() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get longitudinal transfer to utility algorithm types. Function argument results_ls specifies the where to look for the required object. The function returns Model types (a character vector).
 }

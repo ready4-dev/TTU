@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_tfd_sngl_predr_mdls_tb}
 \alias{make_tfd_sngl_predr_mdls_tb}
-\title{Make transformed single predictor models}
+\title{Make transformed single predictor models tibble}
 \usage{
 make_tfd_sngl_predr_mdls_tb(
   outp_smry_ls,

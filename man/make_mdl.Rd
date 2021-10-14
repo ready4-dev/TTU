@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_mdl}
 \alias{make_mdl}
-\title{Make}
+\title{Make model}
 \usage{
 make_mdl(
   data_tb,

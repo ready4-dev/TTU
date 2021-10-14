@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_write.R
 \name{write_scndry_analysis}
 \alias{write_scndry_analysis}
-\title{Write scndry analysis}
+\title{Write secondary analysis}
 \usage{
 write_scndry_analysis(
   predictors_lup = NULL,
@@ -21,7 +21,7 @@ write_scndry_analysis(
 \arguments{
 \item{predictors_lup}{Predictors (a lookup table), Default: NULL}
 
-\item{valid_params_ls_ls}{Valid params (a list of lists)}
+\item{valid_params_ls_ls}{Valid parameters (a list of lists)}
 
 \item{candidate_covar_nms_chr}{Candidate covariate names (a character vector)}
 
@@ -29,7 +29,7 @@ write_scndry_analysis(
 
 \item{header_yaml_args_ls}{Header yaml arguments (a list)}
 
-\item{path_params_ls}{Path params (a list)}
+\item{path_params_ls}{Path parameters (a list)}
 
 \item{prefd_covars_chr}{Preferred covariates (a character vector), Default: 'NA'}
 
@@ -42,6 +42,6 @@ write_scndry_analysis(
 \item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
 }
 \description{
-write_scndry_analysis() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write scndry analysis. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
+write_scndry_analysis() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write secondary analysis. The function is called for its side effects and does not return a value. WARNING: This function writes R scripts to your local environment. Make sure to only use if you want this behaviour
 }
 \keyword{internal}

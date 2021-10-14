@@ -10,7 +10,7 @@ library(DependenciesGraphs)
 pkg_depcy_ls <- DependenciesGraphs::envirDependencies("package:TTU")
 # saveRDS(migrate_ls,
 #         "migrate_ls.RDS")
-# write_fns_to_split_destns <- function(pkg_depcy_ls,
+# write_fns_to_split_dests <- function(pkg_depcy_ls,
 #                                       pkg_1_core_fns_chr,
 #                                       original_pkg_nm_1L_chr = get_dev_pkg_nm(),
 #                                       pkg_1_nm_1L_chr = "package_1",
@@ -66,7 +66,7 @@ pkg_depcy_ls <- DependenciesGraphs::envirDependencies("package:TTU")
 # }
 
 
-write_fns_to_split_destns(pkg_depcy_ls,
+write_fns_to_split_dests(pkg_depcy_ls,
                           pkg_1_core_fns_chr = c("add_utility_predn_to_ds",
                                                  "make_fake_ts_data",
                                                  "write_all_alg_outps",

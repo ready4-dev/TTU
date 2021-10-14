@@ -19,7 +19,7 @@ write_manuscript(
 \arguments{
 \item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
 
-\item{input_params_ls}{Input params (a list), Default: NULL}
+\item{input_params_ls}{Input parameters (a list), Default: NULL}
 
 \item{results_ls}{Results (a list), Default: NULL}
 

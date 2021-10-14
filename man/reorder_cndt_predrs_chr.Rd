@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_reorder.R
 \name{reorder_cndt_predrs_chr}
 \alias{reorder_cndt_predrs_chr}
-\title{Reorder candidate predictors}
+\title{Reorder candidate predictors character vector}
 \usage{
 reorder_cndt_predrs_chr(
   candidate_predrs_chr,

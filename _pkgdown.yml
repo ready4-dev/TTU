@@ -1,22 +1,18 @@
 home:
   links:
-  - text: User manual (PDF)
-    href: https://github.com/ready4-dev/TTU/files/6936649/TTU_0.0.0.9311_user.pdf
-  - text: Developer version of usual manual (PDF)
-    href: https://github.com/ready4-dev/TTU/releases/download/v0.9311/TTU_0.0.0.9311_developer.pdf
+  - text: Manual - User (PDF)
+    href: https://dataverse.harvard.edu/api/access/datafile/5251412
+  - text: Manual - Developer (PDF)
+    href: https://dataverse.harvard.edu/api/access/datafile/5251411
   - text: Project website
-    href: https://www.ready4-dev.com/
+    href:  https://ready4-dev.github.io/ready4/
 development:
   mode: auto
 reference:
 - title: "Datasets"
 - contents:
-  - abbreviations_lup
-  - fn_type_lup_tb
-  - fns_dmt_tb
   - mdl_types_lup
   - plt_types_lup
-  - prototype_lup
   - rprt_lup
 - title: "Classes"
 - contents:
@@ -49,7 +45,7 @@ reference:
   - get_signft_covars
   - make_abstract_args_ls
   - make_analysis_ds_smry_ls
-  - make_cmpst_sctr_and_dnsty_plt
+  - make_cmpst_sctr_and_dnst_plt
   - make_cndt_predr_text
   - make_coi_text
   - make_correlation_text
@@ -57,7 +53,7 @@ reference:
   - make_covar_ttu_tbl_title
   - make_covariates_text
   - make_data_availability_text
-  - make_dnsty_and_sctr_plt_title
+  - make_dnst_and_sctr_plt_title
   - make_ds_descvs_ls
   - make_ds_smry_ls
   - make_eq5d_ds_dict
@@ -99,7 +95,7 @@ reference:
   - predict_utility
   - print_all_plts_for_mdl_set
   - print_cohort_table
-  - print_corls_tbl
+  - print_cors_tbl
   - print_covar_ttu_tbls
   - print_indpnt_predrs_coefs_tbl
   - print_indpnt_predrs_lngl_mdl_coefs
@@ -114,7 +110,7 @@ reference:
   - transform_tb_to_mdl_inp
   - write_analyses
   - write_csp_output
-  - write_main_oupt_dir
+  - write_main_outp_dir
   - write_manuscript
   - write_mdl_cmprsn
   - write_mdl_type_covars_mdls

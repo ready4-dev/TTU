@@ -116,7 +116,7 @@ analysis_params_ls <- list(ds_descvs_ls = ds_descvs_ls,
 ```{r echo = TRUE }
 rprt_lup <- TTU::rprt_lup 
 file.create("aaaaaaaaaa.txt") 
-paths_ls <- TTU::write_main_oupt_dir(path_params_ls, 
+paths_ls <- TTU::write_main_outp_dir(path_params_ls, 
                                      use_fake_data_1L_lgl = use_fake_data_1L_lgl)
 paths_ls$path_to_current_1L_chr <- path_params_ls$path_to_current_1L_chr
 ```
@@ -135,7 +135,7 @@ dv_ls <- list(primary_dv_chr = c("fakes","https://doi.org/10.7910/DVN/612HDC"))
 ```{r echo = TRUE }
 params_ls <- list(candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_relation_s", "d_studying_working"),
                   ds_tb = ds_tb,
-                  maui_domains_pfcs_1L_chr = NULL,
+                  maui_domains_pfxs_1L_chr = NULL,
                   maui_itm_short_nms_chr = c("Mobility", "Self-care", "Activities","Pain","Anxiety"),
      maui_scoring_fn = function(data_tb,# Function must have these arguments in this order.
                                 maui_item_pfx_1L_chr,

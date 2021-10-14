@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_prmry_analysis_params_ls}
 \alias{make_prmry_analysis_params_ls}
-\title{Make prmry analysis params}
+\title{Make primary analysis parameters list}
 \usage{
 make_prmry_analysis_params_ls(
   analysis_core_params_ls,
@@ -18,15 +18,15 @@ make_prmry_analysis_params_ls(
 )
 }
 \arguments{
-\item{analysis_core_params_ls}{Analysis core params (a list)}
+\item{analysis_core_params_ls}{Analysis core parameters (a list)}
 
 \item{candidate_covar_nms_chr}{Candidate covariate names (a character vector), Default: 'NA'}
 
 \item{ds_tb}{Dataset (a tibble)}
 
-\item{path_params_ls}{Path params (a list)}
+\item{path_params_ls}{Path parameters (a list)}
 
-\item{maui_params_ls}{Maui params (a list)}
+\item{maui_params_ls}{Multi-attribute utility instrument parameters (a list)}
 
 \item{prefd_covars_chr}{Preferred covariates (a character vector), Default: NULL}
 
@@ -39,9 +39,9 @@ make_prmry_analysis_params_ls(
 \item{utl_class_fn_1L_chr}{Utility class function (a character vector of length one), Default: 'as.numeric'}
 }
 \value{
-Prmry analysis params (a list)
+Primary analysis parameters (a list)
 }
 \description{
-make_prmry_analysis_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make prmry analysis params list. The function returns Prmry analysis params (a list).
+make_prmry_analysis_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make primary analysis parameters list. The function returns Primary analysis parameters (a list).
 }
 \keyword{internal}

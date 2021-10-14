@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_transform.R
 \name{transform_rprt_lup}
 \alias{transform_rprt_lup}
-\title{Transform report}
+\title{Transform report lookup table}
 \usage{
 transform_rprt_lup(
   rprt_lup,
@@ -15,7 +15,7 @@ transform_rprt_lup(
 \arguments{
 \item{rprt_lup}{Report (a lookup table)}
 
-\item{add_suplry_rprt_1L_lgl}{Add suplry report (a logical vector of length one), Default: T}
+\item{add_suplry_rprt_1L_lgl}{Add supplementary report (a logical vector of length one), Default: T}
 
 \item{add_sharing_rprt_1L_lgl}{Add sharing report (a logical vector of length one), Default: F}
 

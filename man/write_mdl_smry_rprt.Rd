@@ -21,11 +21,11 @@ write_mdl_smry_rprt(
 )
 }
 \arguments{
-\item{input_params_ls}{Input params (a list), Default: NULL}
+\item{input_params_ls}{Input parameters (a list), Default: NULL}
 
 \item{header_yaml_args_ls}{Header yaml arguments (a list), Default: NULL}
 
-\item{path_params_ls}{Path params (a list), Default: NULL}
+\item{path_params_ls}{Path parameters (a list), Default: NULL}
 
 \item{use_fake_data_1L_lgl}{Use fake data (a logical vector of length one), Default: FALSE}
 
@@ -39,7 +39,7 @@ write_mdl_smry_rprt(
 
 \item{rprt_lup}{Report (a lookup table), Default: NULL}
 
-\item{rcrd_nm_1L_chr}{Rcrd name (a character vector of length one), Default: 'AAA_RPRT_WRTNG_MTH'}
+\item{rcrd_nm_1L_chr}{Record name (a character vector of length one), Default: 'AAA_RPRT_WRTNG_MTH'}
 
 \item{rprt_nm_1L_chr}{Report name (a character vector of length one), Default: 'AAA_TTU_MDL_CTG'}
 
@@ -48,9 +48,9 @@ write_mdl_smry_rprt(
 \item{use_shareable_mdls_1L_lgl}{Use shareable models (a logical vector of length one), Default: F}
 }
 \value{
-Input params (a list)
+Input parameters (a list)
 }
 \description{
-write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Input params (a list).
+write_mdl_smry_rprt() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model summary report. The function returns Input parameters (a list).
 }
 \keyword{internal}

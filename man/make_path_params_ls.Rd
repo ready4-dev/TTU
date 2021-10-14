@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_path_params_ls}
 \alias{make_path_params_ls}
-\title{Make path params}
+\title{Make path parameters list}
 \usage{
 make_path_params_ls(
   path_to_data_from_top_level_chr = NULL,
@@ -30,8 +30,8 @@ make_path_params_ls(
 \item{R_fl_nm_1L_chr}{R file name (a character vector of length one), Default: 'aaaaaaaaaa.txt'}
 }
 \value{
-Path params (a list)
+Path parameters (a list)
 }
 \description{
-make_path_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make path params list. The function returns Path params (a list).
+make_path_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make path parameters list. The function returns Path parameters (a list).
 }

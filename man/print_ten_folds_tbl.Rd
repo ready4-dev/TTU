@@ -12,7 +12,7 @@ print_ten_folds_tbl(
 )
 }
 \arguments{
-\item{params_ls}{Params (a list)}
+\item{params_ls}{Parameters (a list)}
 
 \item{caption_1L_chr}{Caption (a character vector of length one)}
 

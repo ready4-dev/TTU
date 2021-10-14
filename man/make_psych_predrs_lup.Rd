@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_psych_predrs_lup}
 \alias{make_psych_predrs_lup}
-\title{Make psych predictors}
+\title{Make psych predictors lookup table}
 \usage{
 make_psych_predrs_lup()
 }

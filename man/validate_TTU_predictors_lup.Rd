@@ -2,7 +2,7 @@
 % Please edit documentation in R/C3_TTU_predictors_lup.R
 \name{validate_TTU_predictors_lup}
 \alias{validate_TTU_predictors_lup}
-\title{Validate TTU S3 class for candidate predictors lookup table}
+\title{Validate TTU predictors lookup table TTU S3 class for candidate predictors lookup table}
 \usage{
 validate_TTU_predictors_lup(x)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_results_ls}
 \alias{make_results_ls}
-\title{Make results}
+\title{Make results list}
 \usage{
 make_results_ls(
   spine_of_results_ls = NULL,
@@ -30,9 +30,9 @@ make_results_ls(
 
 \item{output_format_ls}{Output format (a list), Default: NULL}
 
-\item{params_ls_ls}{Params (a list of lists), Default: NULL}
+\item{params_ls_ls}{Parameters (a list of lists), Default: NULL}
 
-\item{path_params_ls}{Path params (a list), Default: NULL}
+\item{path_params_ls}{Path parameters (a list), Default: NULL}
 
 \item{study_descs_ls}{Study descriptions (a list), Default: NULL}
 
@@ -42,7 +42,7 @@ make_results_ls(
 
 \item{var_nm_change_lup}{Variable name change (a lookup table), Default: NULL}
 
-\item{ctgl_vars_regrouping_ls}{Ctgl variables regrouping (a list), Default: NULL}
+\item{ctgl_vars_regrouping_ls}{Categorical variables regrouping (a list), Default: NULL}
 
 \item{sig_covars_some_predrs_mdls_tb}{Sig covariates some predictors models (a tibble), Default: NULL}
 

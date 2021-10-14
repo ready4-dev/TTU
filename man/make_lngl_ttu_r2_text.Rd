@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_lngl_ttu_r2_text}
 \alias{make_lngl_ttu_r2_text}
-\title{Make lngl ttu r2 text}
+\title{Make longitudinal transfer to utility algorithm squared text}
 \usage{
 make_lngl_ttu_r2_text(results_ls, part_int = 1)
 }
@@ -15,5 +15,5 @@ make_lngl_ttu_r2_text(results_ls, part_int = 1)
 Text (a character vector of length one)
 }
 \description{
-make_lngl_ttu_r2_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make lngl ttu r2 text. The function returns Text (a character vector of length one).
+make_lngl_ttu_r2_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make longitudinal transfer to utility algorithm squared text. The function returns Text (a character vector of length one).
 }

@@ -19,9 +19,9 @@ make_results_ls_spine(
 \arguments{
 \item{output_format_ls}{Output format (a list), Default: NULL}
 
-\item{params_ls_ls}{Params (a list of lists), Default: NULL}
+\item{params_ls_ls}{Parameters (a list of lists), Default: NULL}
 
-\item{path_params_ls}{Path params (a list), Default: NULL}
+\item{path_params_ls}{Path parameters (a list), Default: NULL}
 
 \item{study_descs_ls}{Study descriptions (a list)}
 

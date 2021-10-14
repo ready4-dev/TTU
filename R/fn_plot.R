@@ -2,7 +2,7 @@
 #' @description plot_auto_lm() is a Plot function that plots data Specifically, this function implements an algorithm to plot automatic linear model. The function is called for its side effects and does not return a value.
 #' @param mdl Model (a model)
 #' @param which_dbl Which (a double vector), Default: 1:6
-#' @param ncol_1L_int Ncol (an integer vector of length one), Default: 3
+#' @param ncol_1L_int Number of columns (an integer vector of length one), Default: 3
 #' @param label_size_1L_int Label size (an integer vector of length one), Default: 3
 #' @return NULL
 #' @rdname plot_auto_lm

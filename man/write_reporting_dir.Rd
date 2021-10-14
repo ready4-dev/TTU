@@ -18,8 +18,8 @@ write_reporting_dir(
 \item{overwrite_1L_lgl}{Overwrite (a logical vector of length one), Default: FALSE}
 }
 \value{
-Path to CSP (a character vector of length one)
+Path to complete study program (a character vector of length one)
 }
 \description{
-write_reporting_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write reporting directory. The function returns Path to CSP (a character vector of length one).
+write_reporting_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write reporting directory. The function returns Path to complete study program (a character vector of length one).
 }

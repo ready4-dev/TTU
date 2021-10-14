@@ -2,12 +2,12 @@
 % Please edit documentation in R/fn_print.R
 \name{print_covar_ttu_tbls}
 \alias{print_covar_ttu_tbls}
-\title{Print covariate ttu tables}
+\title{Print covariate transfer to utility algorithm tables}
 \usage{
 print_covar_ttu_tbls(params_ls, caption_1L_chr, table_1L_chr, ref_1L_int = 1)
 }
 \arguments{
-\item{params_ls}{Params (a list)}
+\item{params_ls}{Parameters (a list)}
 
 \item{caption_1L_chr}{Caption (a character vector of length one)}
 
@@ -16,5 +16,5 @@ print_covar_ttu_tbls(params_ls, caption_1L_chr, table_1L_chr, ref_1L_int = 1)
 \item{ref_1L_int}{Reference (an integer vector of length one), Default: 1}
 }
 \description{
-print_covar_ttu_tbls() is a Print function that prints output to console Specifically, this function implements an algorithm to print covariate ttu tables. The function is called for its side effects and does not return a value.
+print_covar_ttu_tbls() is a Print function that prints output to console Specifically, this function implements an algorithm to print covariate transfer to utility algorithm tables. The function is called for its side effects and does not return a value.
 }

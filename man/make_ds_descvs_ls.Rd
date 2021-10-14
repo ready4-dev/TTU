@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_ds_descvs_ls}
 \alias{make_ds_descvs_ls}
-\title{Make dataset descriptives}
+\title{Make dataset descriptives list}
 \usage{
 make_ds_descvs_ls(
   candidate_predrs_chr,
@@ -34,11 +34,11 @@ make_ds_descvs_ls(
 
 \item{round_vals_chr}{Round values (a character vector)}
 
-\item{maui_item_pfx_1L_chr}{Maui item prefix (a character vector of length one)}
+\item{maui_item_pfx_1L_chr}{Multi-attribute utility instrument item prefix (a character vector of length one)}
 
 \item{utl_wtd_var_nm_1L_chr}{Utility weighted variable name (a character vector of length one), Default: 'wtd_utl_dbl'}
 
-\item{utl_unwtd_var_nm_1L_chr}{Utility unwtd variable name (a character vector of length one), Default: 'unwtd_utl_dbl'}
+\item{utl_unwtd_var_nm_1L_chr}{Utility unweighted variable name (a character vector of length one), Default: 'unwtd_utl_dbl'}
 
 \item{candidate_covar_nms_chr}{Candidate covariate names (a character vector), Default: NULL}
 

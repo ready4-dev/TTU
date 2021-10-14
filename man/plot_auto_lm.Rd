@@ -11,7 +11,7 @@ plot_auto_lm(mdl, which_dbl = 1:6, ncol_1L_int = 3L, label_size_1L_int = 3)
 
 \item{which_dbl}{Which (a double vector), Default: 1:6}
 
-\item{ncol_1L_int}{Ncol (an integer vector of length one), Default: 3}
+\item{ncol_1L_int}{Number of columns (an integer vector of length one), Default: 3}
 
 \item{label_size_1L_int}{Label size (an integer vector of length one), Default: 3}
 }

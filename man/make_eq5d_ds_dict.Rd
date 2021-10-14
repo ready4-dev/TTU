@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_eq5d_ds_dict}
 \alias{make_eq5d_ds_dict}
-\title{Make eq5d dataset dictionary}
+\title{Make EQ5D dataset dictionary}
 \usage{
 make_eq5d_ds_dict(
   data_tb = make_fake_eq5d_ds(),

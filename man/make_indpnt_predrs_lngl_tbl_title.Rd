@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_indpnt_predrs_lngl_tbl_title}
 \alias{make_indpnt_predrs_lngl_tbl_title}
-\title{Make indpnt predictors lngl table title}
+\title{Make independent predictors longitudinal table title}
 \usage{
 make_indpnt_predrs_lngl_tbl_title(results_ls, ref_1L_int = 1)
 }
@@ -15,5 +15,5 @@ make_indpnt_predrs_lngl_tbl_title(results_ls, ref_1L_int = 1)
 Title (a character vector of length one)
 }
 \description{
-make_indpnt_predrs_lngl_tbl_title() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make indpnt predictors lngl table title. The function returns Title (a character vector of length one).
+make_indpnt_predrs_lngl_tbl_title() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make independent predictors longitudinal table title. The function returns Title (a character vector of length one).
 }

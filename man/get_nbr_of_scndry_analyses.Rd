@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_get.R
 \name{get_nbr_of_scndry_analyses}
 \alias{get_nbr_of_scndry_analyses}
-\title{Get number of scndry analyses}
+\title{Get number of secondary analyses}
 \usage{
 get_nbr_of_scndry_analyses(
   results_ls,
@@ -18,8 +18,8 @@ get_nbr_of_scndry_analyses(
 \item{capitalise_1L_lgl}{Capitalise (a logical vector of length one), Default: T}
 }
 \value{
-Number of scndry analyses length one (an output object of multiple potential types)
+Number of secondary analyses length one (an output object of multiple potential types)
 }
 \description{
-get_nbr_of_scndry_analyses() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get number of scndry analyses. Function argument results_ls specifies the where to look for the required object. The function returns Number of scndry analyses length one (an output object of multiple potential types).
+get_nbr_of_scndry_analyses() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get number of secondary analyses. Function argument results_ls specifies the where to look for the required object. The function returns Number of secondary analyses length one (an output object of multiple potential types).
 }

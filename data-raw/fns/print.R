@@ -48,11 +48,11 @@ print_cohort_table <- function(params_ls,
                               sanitize_fn = force)
   }
 }
-print_corls_tbl <- function(params_ls,
+print_cors_tbl <- function(params_ls,
                             caption_1L_chr,
                             mkdn_tbl_ref_1L_chr){
   results_ls <- params_ls$results_ls
-  tb <- results_ls$tables_ls$pred_dist_and_cors
+  tb <- results_ls$tables_ls$predd_dist_and_cors
   tb <- tb %>%
     dplyr::mutate(label = label %>%
                     purrr::map_chr(~stringr::str_remove_all(.x," \\(weighted total\\)")))

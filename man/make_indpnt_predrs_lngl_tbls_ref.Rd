@@ -2,16 +2,16 @@
 % Please edit documentation in R/fn_make.R
 \name{make_indpnt_predrs_lngl_tbls_ref}
 \alias{make_indpnt_predrs_lngl_tbls_ref}
-\title{Make indpnt predictors lngl tables reference}
+\title{Make independent predictors longitudinal tables reference}
 \usage{
 make_indpnt_predrs_lngl_tbls_ref(params_ls)
 }
 \arguments{
-\item{params_ls}{Params (a list)}
+\item{params_ls}{Parameters (a list)}
 }
 \value{
 Text (a character vector of length one)
 }
 \description{
-make_indpnt_predrs_lngl_tbls_ref() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make indpnt predictors lngl tables reference. The function returns Text (a character vector of length one).
+make_indpnt_predrs_lngl_tbls_ref() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make independent predictors longitudinal tables reference. The function returns Text (a character vector of length one).
 }

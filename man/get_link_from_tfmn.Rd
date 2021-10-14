@@ -9,7 +9,7 @@ get_link_from_tfmn(tfmn_1L_chr, is_OLS_1L_lgl = F)
 \arguments{
 \item{tfmn_1L_chr}{Transformation (a character vector of length one)}
 
-\item{is_OLS_1L_lgl}{Is OLS (a logical vector of length one), Default: F}
+\item{is_OLS_1L_lgl}{Is ordinary least squares (a logical vector of length one), Default: F}
 }
 \value{
 Link (a character vector of length one)

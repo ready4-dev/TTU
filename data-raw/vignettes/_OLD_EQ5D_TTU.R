@@ -76,7 +76,7 @@ analysis_params_ls <- list(ds_descvs_ls = ds_descvs_ls,
 ## ----echo = TRUE--------------------------------------------------------------
 rprt_lup <- TTU::rprt_lup 
 file.create("aaaaaaaaaa.txt") 
-paths_ls <- TTU::write_main_oupt_dir(path_params_ls, 
+paths_ls <- TTU::write_main_outp_dir(path_params_ls, 
                                      use_fake_data_1L_lgl = use_fake_data_1L_lgl)
 paths_ls$path_to_current_1L_chr <- path_params_ls$path_to_current_1L_chr
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_tfmn_cmprsn_plt}
 \alias{make_tfmn_cmprsn_plt}
-\title{Make transformation comparison}
+\title{Make transformation comparison plot}
 \usage{
 make_tfmn_cmprsn_plt(data_tb, depnt_var_nm_1L_chr, dictionary_tb)
 }

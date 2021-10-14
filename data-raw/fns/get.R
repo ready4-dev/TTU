@@ -395,7 +395,7 @@ get_table_predn_mdl <- function(mdl_nm_1L_chr,
     fake_ds_tb <- ingredients_ls %>% purrr::pluck(reference_1L_chr) %>% purrr::pluck("fake_ds_tb")
   }
   fake_ds_tb <- fake_ds_tb %>%
-    add_tfmd_var_to_ds(depnt_var_nm_1L_chr = ingredients_ls$depnt_var_nm_1L_chr,
+    add_tfd_var_to_ds(depnt_var_nm_1L_chr = ingredients_ls$depnt_var_nm_1L_chr,
                        tfmn_1L_chr = tfmn_1L_chr)
   table_predn_mdl <- make_shareable_mdl(fake_ds_tb = fake_ds_tb,
                                         mdl_smry_tb = ingredients_ls$mdls_smry_tb %>% dplyr::filter(Model == mdl_nm_1L_chr),

@@ -18,9 +18,9 @@ transform_nms_in_mdl_tbl(
 \item{var_nm_change_lup}{Variable name change (a lookup table), Default: NULL}
 }
 \value{
-Tfmd model table (a tibble)
+Transformed model table (a tibble)
 }
 \description{
-transform_nms_in_mdl_tbl() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform names in model table. Function argument mdl_tbl_tb specifies the object to be updated. Argument col_nm_1L_chr provides the object to be updated. The function returns Tfmd model table (a tibble).
+transform_nms_in_mdl_tbl() is a Transform function that edits an object in such a way that core object attributes - e.g. shape, dimensions, elements, type - are altered. Specifically, this function implements an algorithm to transform names in model table. Function argument mdl_tbl_tb specifies the object to be updated. Argument col_nm_1L_chr provides the object to be updated. The function returns Transformed model table (a tibble).
 }
 \keyword{internal}

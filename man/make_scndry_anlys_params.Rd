@@ -2,7 +2,7 @@
 % Please edit documentation in R/fn_make.R
 \name{make_scndry_anlys_params}
 \alias{make_scndry_anlys_params}
-\title{Make scndry anlys params}
+\title{Make secondary analysis parameters}
 \usage{
 make_scndry_anlys_params(
   scndry_anlys_params_ls = NULL,
@@ -13,7 +13,7 @@ make_scndry_anlys_params(
 )
 }
 \arguments{
-\item{scndry_anlys_params_ls}{Scndry anlys params (a list), Default: NULL}
+\item{scndry_anlys_params_ls}{Secondary analysis parameters (a list), Default: NULL}
 
 \item{candidate_covar_nms_chr}{Candidate covariate names (a character vector), Default: NULL}
 
@@ -24,8 +24,8 @@ make_scndry_anlys_params(
 \item{prefd_covars_chr}{Preferred covariates (a character vector), Default: 'NA'}
 }
 \value{
-New params (a list)
+New parameters (a list)
 }
 \description{
-make_scndry_anlys_params() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make scndry anlys params. The function returns New params (a list).
+make_scndry_anlys_params() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make secondary analysis parameters. The function returns New parameters (a list).
 }

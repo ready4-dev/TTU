@@ -21,15 +21,15 @@ write_study_outp_ds(
 )
 }
 \arguments{
-\item{input_params_ls}{Input params (a list)}
+\item{input_params_ls}{Input parameters (a list)}
 
 \item{dv_ds_nm_and_url_chr}{Dataverse dataset name and url (a character vector), Default: NULL}
 
-\item{rprt_lups_ls}{Report lups (a list), Default: NULL}
+\item{rprt_lups_ls}{Report lookup tables (a list), Default: NULL}
 
 \item{output_format_ls}{Output format (a list), Default: NULL}
 
-\item{path_params_ls}{Path params (a list), Default: NULL}
+\item{path_params_ls}{Path parameters (a list), Default: NULL}
 
 \item{abstract_args_ls}{Abstract arguments (a list), Default: NULL}
 
