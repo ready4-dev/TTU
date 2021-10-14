@@ -19,7 +19,7 @@ x_ready4fun_manifest <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Transfer
                                                                  "https://ready4-dev.github.io/ready4/")) %>%
   ready4fun::make_manifest(addl_pkgs_ls = ready4fun::make_addl_pkgs_ls(depends_chr = c("eq5d","ggfortify"),
                                                                        suggests_chr = c("knitr","rmarkdown"),
-                                                                       imports_chr = c("betareg","knitrBootstrap")),
+                                                                       imports_chr = c("betareg","caret","knitrBootstrap")),
                            build_ignore_ls = ready4fun::make_build_ignore_ls(file_nms_chr = c("initial_setup.R")),
                            check_type_1L_chr = "ready4",
                            copyright_holders_chr = "Orygen",

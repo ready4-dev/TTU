@@ -224,7 +224,8 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
     if (is.null(predictors_lup)) 
         data("predictors_lup", package = "youthvars", envir = environment())
     if (is.null(prototype_lup)) 
-        prototype_lup <- ready4fun::get_rds_from_dv("prototype_lup")
+        prototype_lup <- ready4fun::get_rds_from_dv("prototype_lup", 
+            server_1L_chr = "dataverse.harvard.edu")
     if (!is.null(depnt_var_nm_1L_chr)) {
         predictors_lup <- tibble::add_case(predictors_lup, short_name_chr = depnt_var_nm_1L_chr, 
             class_chr = "numeric", class_fn_chr = class_fn_1L_chr)
