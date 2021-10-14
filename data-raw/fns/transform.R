@@ -182,7 +182,8 @@ transform_mdl_vars_with_clss <- function(ds_tb,
   if(is.null(predictors_lup))
     data("predictors_lup", package = "youthvars", envir = environment())
   if(is.null(prototype_lup))
-    data("prototype_lup", package = "TTU", envir = environment())
+    prototype_lup <- ready4fun::get_rds_from_dv("prototype_lup")
+    #data("prototype_lup", package = "TTU", envir = environment())
   if(!is.null(depnt_var_nm_1L_chr)){
     predictors_lup <- tibble::add_case(predictors_lup,
                                        short_name_chr = depnt_var_nm_1L_chr,

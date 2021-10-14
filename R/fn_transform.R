@@ -212,10 +212,10 @@ transform_ds_to_predn_ds <- function (data_tb, predr_vars_nms_chr, tfmn_1L_chr, 
 #' @return Transformed dataset (a tibble)
 #' @rdname transform_mdl_vars_with_clss
 #' @export 
+#' @importFrom ready4fun get_rds_from_dv get_from_lup_obj
 #' @importFrom tibble add_case
 #' @importFrom purrr reduce
 #' @importFrom Hmisc label
-#' @importFrom ready4fun get_from_lup_obj
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym exec
 transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototype_lup = NULL, 
@@ -224,7 +224,7 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
     if (is.null(predictors_lup)) 
         data("predictors_lup", package = "youthvars", envir = environment())
     if (is.null(prototype_lup)) 
-        data("prototype_lup", package = "TTU", envir = environment())
+        prototype_lup <- ready4fun::get_rds_from_dv("prototype_lup")
     if (!is.null(depnt_var_nm_1L_chr)) {
         predictors_lup <- tibble::add_case(predictors_lup, short_name_chr = depnt_var_nm_1L_chr, 
             class_chr = "numeric", class_fn_chr = class_fn_1L_chr)
