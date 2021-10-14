@@ -1,23 +1,15 @@
 Package: TTU
 Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9317
-Authors@R: 
-    c(person(given = "Caroline",
-             family = "Gao",
-             role = "aut",
-             email = "caroline.gao@orygen.org.au",
-             comment = c(ORCID = "0000-0002-0987-2759")),
-      person(given = "Matthew",
-             family = "Hamilton",
-             role = c("aut", "cre"),
-             email = "matthew.hamilton@orygen.org.au",
-             comment = c(ORCID = "0000-0001-7407-9194")),
-      person(given = "Orygen",
-             role = c("cph", "fnd")),
-      person(given = "Headspace",
-             role = "fnd"),
-      person(given = "National Health and Medical Research Council",
-             role = "fnd"))
+Version: 0.0.0.9318
+Authors@R: c(
+    person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
+           comment = c(ORCID = "0000-0002-0987-2759")),
+    person("Matthew", "Hamilton", , "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-7407-9194")),
+    person("Orygen", role = c("cph", "fnd")),
+    person("Headspace", role = "fnd"),
+    person("National Health and Medical Research Council", role = "fnd")
+  )
 Description: Tools for developping, sharing and reporting Transfer To
     Utility (TTU) mapping algorithms that predict health utility from
     other health measures.  This development version of the TTU package
@@ -33,7 +25,7 @@ URL: https://ready4-dev.github.io/TTU/, https://github.com/ready4-dev/TTU,
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Imports: 
     assertthat,
     betareg,
@@ -41,16 +33,13 @@ Imports:
     Boruta,
     brms,
     caret,
-    cmdstanr (>= 0.4.0.9000),
     cowplot,
-    dataverse (>= 0.3.9),
+    dataverse,
     DescTools,
     dplyr,
     enrichwith,
-    eq5d,
     faux,
     ggalt,
-    ggfortify,
     ggplot2,
     here,
     Hmisc,
@@ -66,11 +55,9 @@ Imports:
     psych,
     purrr,
     randomForest,
-    readr,
-    ready4class (>= 0.0.0.9199),
-    ready4fun (>= 0.0.0.9298),
-    ready4show (>= 0.0.0.9038),
-    ready4use (>= 0.0.0.9133),
+    ready4fun (>= 0.0.0.9445),
+    ready4show (>= 0.0.0.9047),
+    ready4use (>= 0.0.0.9148),
     rlang,
     rmarkdown,
     stats,
@@ -84,15 +71,13 @@ Imports:
     utils,
     viridis,
     xfun,
-    youthvars (>= 0.0.0.9064)
+    youthvars (>= 0.0.0.9070)
 VignetteBuilder: knitr
 Depends: 
+    eq5d,
     R (>= 2.10)
 Remotes: 
-    stan-dev/cmdstanr,
+    ready4-dev/ready4fun,
     ready4-dev/ready4show,
     ready4-dev/ready4use,
-    ready4-dev/youthvars,
-    iqss/dataverse-client-r,
-    ready4-dev/ready4class,
-    ready4-dev/ready4fun
+    ready4-dev/youthvars
