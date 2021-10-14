@@ -39,7 +39,7 @@ We note our use of synthetic data by creating an object `use_fake_data_1L_lgl` a
 use_fake_data_1L_lgl <-  TRUE
 ```
 
-A data dictionary must also be supplied for the dataset. The dictionary must be of class `ready4_dictionary` from the `ready4use` package.
+A data dictionary must also be supplied for the dataset. The dictionary must be of class `ready4use_dictionary` from the `ready4use` package.
 
 ```{r}
 dictionary_tb <-  youthvars::make_final_repln_ds_dict() #youthvars::make_tfd_repln_ds_dict_r3()

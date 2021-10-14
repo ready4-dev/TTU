@@ -588,7 +588,7 @@ make_eq5d_ds_dict <- function(data_tb = make_fake_eq5d_ds(),
                               predictors_lup = make_psych_predrs_lup()){
   dictionary_tb <- youthvars::make_tfd_repln_ds_dict_r3() %>%
     dplyr::filter(var_nm_chr %in% names(data_tb)) %>%
-    youthvars::make_final_repln_ds_dict(additions_tb = ready4use::make_pt_ready4_dictionary(var_nm_chr = c("uid",
+    youthvars::make_final_repln_ds_dict(additions_tb = ready4use::make_pt_ready4use_dictionary(var_nm_chr = c("uid",
                                                                                                           "Timepoint", "data_collection_dtm",
                                                                                                           paste0("eq5dq_",c("MO", "SC", "UA", "PD", "AD")),
                                                                                                           "EQ5D_total_dbl",

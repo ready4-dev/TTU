@@ -101,7 +101,7 @@ ds_tb %>%
 ```
 
 ### Data dictionary
-A data dictionary must also be supplied for the dataset. The dictionary must be of class `ready4_dictionary` from the [ready4use](https://ready4-dev.github.io/ready4use/) package. In this case, we are using a pre-existing dictionary.
+A data dictionary must also be supplied for the dataset. The dictionary must be of class `ready4use_dictionary` from the [ready4use](https://ready4-dev.github.io/ready4use/) package. In this case, we are using a pre-existing dictionary.
 
 ```{r}
 dictionary_tb <- youthvars::make_final_repln_ds_dict()

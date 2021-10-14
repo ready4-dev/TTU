@@ -62,7 +62,7 @@ predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr =
                                               covariate_lgl = F))
 ```
 
-We also require a data dictionary for our input dataset. The dictionary must be of the `ready4use::ready4_dictionary` class. In the example below we are using an existing dictionary.
+We also require a data dictionary for our input dataset. The dictionary must be of the `ready4use::ready4use_dictionary` class. In the example below we are using an existing dictionary.
 
 ```{r}
 dictionary_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4959217"))

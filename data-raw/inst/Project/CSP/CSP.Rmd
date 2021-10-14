@@ -83,7 +83,7 @@ library(TTU)
 ```
 
 ### Data dictionary
-<!-- Un-comment and edit the code chunk below, replacing the default data dictionary with with a command to read in or create a dictionary for your data. The data dictionary must be of the class ready4_dictionary from the ready4use package. -->
+<!-- Un-comment and edit the code chunk below, replacing the default data dictionary with with a command to read in or create a dictionary for your data. The data dictionary must be of the class ready4use_dictionary from the ready4use package. -->
 ```{r}
 # dictionary_tb <- youthvars::make_final_repln_ds_dict()
 ```
