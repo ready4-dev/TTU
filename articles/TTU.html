@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9317</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9319</span>
       </span>
     </div>
 
@@ -107,12 +107,16 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/TTU/">TTU</a></span><span class="op">)</span>
+<span class="co">#&gt; Loading required package: ggfortify</span>
+<span class="co">#&gt; Loading required package: ggplot2</span>
+<span class="co">#&gt; Loading required package: eq5d</span>
 <span class="co">#&gt; Registered S3 methods overwritten by 'ggalt':</span>
-<span class="co">#&gt;   method                  from   </span>
-<span class="co">#&gt;   grid.draw.absoluteGrob  ggplot2</span>
-<span class="co">#&gt;   grobHeight.absoluteGrob ggplot2</span>
-<span class="co">#&gt;   grobWidth.absoluteGrob  ggplot2</span>
-<span class="co">#&gt;   grobX.absoluteGrob      ggplot2</span>
+<span class="co">#&gt;   method                  from     </span>
+<span class="co">#&gt;   fortify.table           ggfortify</span>
+<span class="co">#&gt;   grid.draw.absoluteGrob  ggplot2  </span>
+<span class="co">#&gt;   grobHeight.absoluteGrob ggplot2  </span>
+<span class="co">#&gt;   grobWidth.absoluteGrob  ggplot2  </span>
+<span class="co">#&gt;   grobX.absoluteGrob      ggplot2  </span>
 <span class="co">#&gt;   grobY.absoluteGrob      ggplot2</span></code></pre></div>
 <p>This development version of the TTU package has been made available as part of the process of testing and documenting the package. <a href="https://ready4-dev.github.io/TTU/index.html">Installation instructions are on the package homepage</a>.</p>
 <div id="before-you-get-started" class="section level2">
@@ -147,7 +151,7 @@
 <a href="#create-project-workspace" class="anchor"></a>Create project workspace</h3>
 <p>The following command will create a project directory in the location and with the name of your choosing.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">path_to_CSP_1L_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_reporting_dir.html">write_reporting_dir</a></span><span class="op">(</span>path_to_write_to_1L_chr <span class="op">=</span> <span class="st">"../Temp tests of output"</span>,
+<code class="sourceCode R"><span class="va">path_to_csp_1L_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_reporting_dir.html">write_reporting_dir</a></span><span class="op">(</span>path_to_write_to_1L_chr <span class="op">=</span> <span class="st">"../Temp tests of output"</span>,
                                           new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"AQoL-6D_Vignette"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="edit-template-program" class="section level3">
@@ -165,7 +169,7 @@
 <a href="#run-and-share-program" class="anchor"></a>Run and share program</h3>
 <p>Once you are ready to run your analysis, use the <code>write_csp_output</code> function. The <code>write_csp_output</code> function is required as simply knitting the RMD document you edited will not work as intended (although you can run chunks interactively if you prefer). Another advantage of <code>write_csp_output</code> is that if you provide details of your dataverse dataset (which will be different to the value in the below example), it will save a PDF copy of your workflow program in that dataset.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/write_csp_output.html">write_csp_output</a></span><span class="op">(</span><span class="va">path_to_CSP_1L_chr</span>,
+<code class="sourceCode R"><span class="fu"><a href="../reference/write_csp_output.html">write_csp_output</a></span><span class="op">(</span><span class="va">path_to_csp_1L_chr</span>,
                  dv_ds_doi_1L_chr <span class="op">=</span> <span class="st">"https://doi.org/10.7910/DVN/D74QMP"</span>,
                  execute_1L_lgl <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 </div>
