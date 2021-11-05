@@ -1,6 +1,6 @@
 Package: TTU
-Title: Transfer to Utility Mapping Algorithm Toolkit
-Version: 0.0.0.9322
+Title: Develop, Report and Share Transfer to Utility Mapping Algorithms
+Version: 0.0.0.9323
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -10,7 +10,7 @@ Authors@R: c(
     person("Headspace", role = "fnd"),
     person("National Health and Medical Research Council", role = "fnd")
   )
-Description: Tools for developping, sharing and reporting Transfer To
+Description: Tools for developping, reporting and sharing Transfer To
     Utility (TTU) mapping algorithms that predict health utility from
     other health measures.  This development version of the TTU package
     has been made available as part of the process of testing and
