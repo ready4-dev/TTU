@@ -56,13 +56,13 @@ x_xx$x_ready4fun_manifest <- ready4::renew(x_xx$x_ready4fun_manifest,
 # dv_ls <- list(primary_dv_chr = c("fakes","https://doi.org/10.7910/DVN/612HDC"))
 # fake_eq5d_ds_tb <- make_fake_eq5d_ds()
 # saveRDS(fake_eq5d_ds_tb,"data-raw/dataverse/fake_eq5d_ds_tb.Rds")
-# ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "fake_eq5d_ds_tb",
+# ready4::write_to_dv_with_wait(dss_tb = tibble::tibble(ds_obj_nm_chr = "fake_eq5d_ds_tb",
 #                                                       title_chr = "A synthetic (entirely fake) dataset with psychological distress, psychological wellbeing and EQ5D questionaire response variables."),
 #                               dv_nm_1L_chr = dv_ls$primary_dv_chr[1],
 #                               ds_url_1L_chr = dv_ls$primary_dv_chr[2],
 #                               parent_dv_dir_1L_chr = "data-raw/dataverse",
 #                               paths_to_dirs_chr = "data-raw/dataverse",
-#                               inc_fl_types_chr = ".Rds",
+#                               inc_fl_types_chr = ".RDS",
 #                               paths_are_rltv_1L_lgl = T)
 ##
 ## Add, Commit and Push

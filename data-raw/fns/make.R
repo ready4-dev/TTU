@@ -781,48 +781,48 @@ make_hlth_utl_and_predrs_ls <- function(outp_smry_ls,
                                             old_nms_chr = old_nms_chr,
                                             new_nms_chr = new_nms_chr)
   var_nm_1L_chr <- descv_tbls_ls$ds_descvs_ls$dictionary_tb %>%
-    ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "var_nm_chr",
+    ready4::get_from_lup_obj(match_var_nm_1L_chr = "var_nm_chr",
                                 match_value_xx = outp_smry_ls$depnt_var_nm_1L_chr,
                                 target_var_nm_1L_chr = "var_desc_chr",
-                                evaluate_lgl = F) %>% as.vector()
+                                evaluate_1L_lgl = F) %>% as.vector()
 
 
   hlth_utl_and_predrs_ls = list(bl_hu_mean_1L_dbl = descv_tbls_ls$main_outc_tbl_tb %>%
                                   dplyr::filter(label == "Mean (SD)") %>%
-                                  ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable",
+                                  ready4::get_from_lup_obj(match_var_nm_1L_chr = "variable",
                                                               match_value_xx = var_nm_1L_chr,
                                                               target_var_nm_1L_chr = paste0(descv_tbls_ls$ds_descvs_ls$round_vals_chr[1],
                                                                                             "_val_1_dbl"),
-                                                              evaluate_lgl = F) %>%
+                                                              evaluate_1L_lgl = F) %>%
                                   as.numeric() %>%
                                   round(nbr_of_digits_1L_int),
                                 bl_hu_sd_1L_dbl = descv_tbls_ls$main_outc_tbl_tb %>%
                                   dplyr::filter(label == "Mean (SD)") %>%
-                                  ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable",
+                                  ready4::get_from_lup_obj(match_var_nm_1L_chr = "variable",
                                                               match_value_xx = var_nm_1L_chr,
                                                               target_var_nm_1L_chr = paste0(descv_tbls_ls$ds_descvs_ls$round_vals_chr[1],
                                                                                             "_val_2_ls"),
-                                                              evaluate_lgl = F) %>%
+                                                              evaluate_1L_lgl = F) %>%
                                   stringr::str_remove("\\(") %>%
                                   stringr::str_remove("\\)") %>%
                                   as.numeric() %>%
                                   round(nbr_of_digits_1L_int),
                                 fup_hu_mean_1L_dbl = descv_tbls_ls$main_outc_tbl_tb %>%
                                   dplyr::filter(label == "Mean (SD)") %>%
-                                  ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable",
+                                  ready4::get_from_lup_obj(match_var_nm_1L_chr = "variable",
                                                               match_value_xx = var_nm_1L_chr,
                                                               target_var_nm_1L_chr = paste0(descv_tbls_ls$ds_descvs_ls$round_vals_chr[2],
                                                                                             "_val_1_dbl"),
-                                                              evaluate_lgl = F) %>%
+                                                              evaluate_1L_lgl = F) %>%
                                   as.numeric() %>%
                                   round(nbr_of_digits_1L_int),
                                 fup_hu_sd_1L_dbl = descv_tbls_ls$main_outc_tbl_tb %>%
                                   dplyr::filter(label == "Mean (SD)") %>%
-                                  ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "variable",
+                                  ready4::get_from_lup_obj(match_var_nm_1L_chr = "variable",
                                                               match_value_xx = var_nm_1L_chr,
                                                               target_var_nm_1L_chr = paste0(descv_tbls_ls$ds_descvs_ls$round_vals_chr[2],
                                                                                             "_val_2_ls"),
-                                                              evaluate_lgl = F) %>%
+                                                              evaluate_1L_lgl = F) %>%
                                   stringr::str_remove("\\(") %>%
                                   stringr::str_remove("\\)") %>%
                                   as.numeric() %>%
@@ -937,17 +937,17 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
                                                                         "",
                                                                         paste(" with ", ..1[2])),
                                                          " ",
-                                                         mdl_types_chr %>% purrr::map_chr(~paste0(ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                         mdl_types_chr %>% purrr::map_chr(~paste0(ready4::get_from_lup_obj(mdl_types_lup,
                                                                                                                               match_var_nm_1L_chr = "short_name_chr",
                                                                                                                               match_value_xx = .x,
                                                                                                                               target_var_nm_1L_chr = "mixed_type_chr",
-                                                                                                                              evaluate_lgl = F),
+                                                                                                                              evaluate_1L_lgl = F),
                                                                                                   " with ",
-                                                                                                  ready4fun::get_from_lup_obj(mdl_types_lup,
+                                                                                                  ready4::get_from_lup_obj(mdl_types_lup,
                                                                                                                               match_var_nm_1L_chr = "short_name_chr",
                                                                                                                               match_value_xx = .x,
                                                                                                                               target_var_nm_1L_chr = "with_chr",
-                                                                                                                              evaluate_lgl = F))))
+                                                                                                                              evaluate_1L_lgl = F))))
                                   section_ttls_chr <- paste0(section_type_1L_chr, " ", mdl_ttls_chr)
                                   plt_nms_ls <- paths_to_mdl_plts_ls %>% purrr::map2(mdl_ttls_chr,~{
                                     paths_to_mdl_plts_chr <- .x
@@ -961,11 +961,11 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
                                                " ",
                                                ifelse(transform_1L_lgl & .x == "coefs",
                                                       "population and group level effects",
-                                                      ready4fun::get_from_lup_obj(plt_types_lup,
+                                                      ready4::get_from_lup_obj(plt_types_lup,
                                                                            match_var_nm_1L_chr = "short_name_chr",
                                                                            match_value_xx = .x,
                                                                            target_var_nm_1L_chr = "long_name_chr",
-                                                                           evaluate_lgl = F)))
+                                                                           evaluate_1L_lgl = F)))
 
                                       }else{
                                         character(0)
@@ -1106,27 +1106,27 @@ make_mdl <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", tfmn_1L_chr 
     data_tb <- transform_ds_for_mdlng(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
     if (is.null(start_1L_chr)) {
-        start_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
+        start_1L_chr <- ready4::get_from_lup_obj(mdl_types_lup,
             match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr,
-            target_var_nm_1L_chr = "start_chr", evaluate_lgl = F)
+            target_var_nm_1L_chr = "start_chr", evaluate_1L_lgl = F)
     }
     if (!is.na(control_1L_chr)) {
         idx_1L_int <- 1 + stringi::stri_locate_last_fixed(mdl_type_1L_chr,
             "_")[1, 1] %>% as.vector()
         link_1L_chr <- get_link_from_tfmn(stringr::str_sub(mdl_type_1L_chr, start = idx_1L_int))
     }
-    mdl_1L_chr <- paste0(ready4fun::get_from_lup_obj(mdl_types_lup,
+    mdl_1L_chr <- paste0(ready4::get_from_lup_obj(mdl_types_lup,
         match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr,
-        target_var_nm_1L_chr = "fn_chr", evaluate_lgl = F), "(",
+        target_var_nm_1L_chr = "fn_chr", evaluate_1L_lgl = F), "(",
         transform_depnt_var_nm(depnt_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr),
         " ~ ", predr_var_nm_1L_chr, ifelse(is.na(covar_var_nms_chr[1]),
             "", paste0(" + ", paste0(covar_var_nms_chr, collapse = " + "))),
-        ", data = data_tb", ifelse(!is.na(ready4fun::get_from_lup_obj(mdl_types_lup,
+        ", data = data_tb", ifelse(!is.na(ready4::get_from_lup_obj(mdl_types_lup,
             match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr,
-            target_var_nm_1L_chr = "family_chr", evaluate_lgl = F)),
-            paste0(", family = ", ready4fun::get_from_lup_obj(mdl_types_lup,
+            target_var_nm_1L_chr = "family_chr", evaluate_1L_lgl = F)),
+            paste0(", family = ", ready4::get_from_lup_obj(mdl_types_lup,
                 match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr,
-                target_var_nm_1L_chr = "family_chr", evaluate_lgl = F)),
+                target_var_nm_1L_chr = "family_chr", evaluate_1L_lgl = F)),
             ""), ifelse((!is.na(start_1L_chr)|(is.na(start_1L_chr) & !is.na(control_1L_chr))), ", ", ""), ifelse(!is.na(control_1L_chr),
             paste0("link=\"", link_1L_chr, "\",control=", control_1L_chr,
                 "("), ""), ifelse(!is.na(start_1L_chr), paste0("start=c(",
@@ -1275,18 +1275,18 @@ make_mdl_desc_lines <- function(outp_smry_ls,
     purrr::map_chr(~stringr::str_remove(.x," baseline") %>% stringr::str_remove(" change")) %>% unique()
   predictors_desc_chr <- predictors_chr %>%
     purrr::map_chr(~{
-      scaling_1L_dbl <- ready4fun::get_from_lup_obj(outp_smry_ls$predictors_lup,
+      scaling_1L_dbl <- ready4::get_from_lup_obj(outp_smry_ls$predictors_lup,
                                                     match_value_xx = .x,
                                                     match_var_nm_1L_chr = "short_name_chr",
                                                     target_var_nm_1L_chr = "mdl_scaling_dbl",
-                                                    evaluate_lgl = F)
+                                                    evaluate_1L_lgl = F)
       paste0(.x,
              " (",
-             ready4fun::get_from_lup_obj(outp_smry_ls$dictionary_tb,
+             ready4::get_from_lup_obj(outp_smry_ls$dictionary_tb,
                                          match_value_xx = .x,
                                          match_var_nm_1L_chr = "var_nm_chr",
                                          target_var_nm_1L_chr = "var_desc_chr",
-                                         evaluate_lgl = F),
+                                         evaluate_1L_lgl = F),
              ifelse(scaling_1L_dbl == 1,
                     "",
                     paste0(" (multiplied by ", scaling_1L_dbl,")")),
@@ -1301,11 +1301,11 @@ make_mdl_desc_lines <- function(outp_smry_ls,
 
 
   mdl_desc_lines_chr <- paste0(paste0("This model predicts values at two timepoints for ",
-                                      ready4fun::get_from_lup_obj(outp_smry_ls$dictionary_tb,
+                                      ready4::get_from_lup_obj(outp_smry_ls$dictionary_tb,
                                                                   match_value_xx = outp_smry_ls$depnt_var_nm_1L_chr,
                                                                   match_var_nm_1L_chr = "var_nm_chr",
                                                                   target_var_nm_1L_chr = "var_desc_chr",
-                                                                  evaluate_lgl = F),
+                                                                  evaluate_1L_lgl = F),
                                       ". The predictor variables are ",
                                       "baseline values and subsequent changes in ",
                                       collapse = ""), predictors_desc_chr,". ",
@@ -1392,10 +1392,10 @@ make_predr_ctgs_ls <- function(outp_smry_ls,
   predictors_chr <- outp_smry_ls$predr_vars_nms_ls %>% purrr::flatten_chr() %>% unique()
   categories_chr <- predictors_chr %>%
     purrr::map_chr(~outp_smry_ls$dictionary_tb %>%
-                     ready4fun::get_from_lup_obj(match_value_xx = .x,
+                     ready4::get_from_lup_obj(match_value_xx = .x,
                                                  match_var_nm_1L_chr = "var_nm_chr",
                                                  target_var_nm_1L_chr = "var_ctg_chr",
-                                                 evaluate_lgl = F)) %>% unique()
+                                                 evaluate_1L_lgl = F)) %>% unique()
   predr_ctgs_ls <- categories_chr %>% purrr::map(~outp_smry_ls$dictionary_tb %>%
                                                    ready4use::remove_labels_from_ds() %>%
                                                    dplyr::filter(var_ctg_chr == .x) %>%
@@ -1454,9 +1454,9 @@ make_predr_vals <- function (predr_var_nm_1L_chr, candidate_predrs_lup = NULL)
         utils::data("candidate_predrs_lup", envir = environment())
     }
     args_ls <- purrr::map_dbl(names(candidate_predrs_lup)[3:4],
-                              ~candidate_predrs_lup %>% ready4fun::get_from_lup_obj(match_value_xx = predr_var_nm_1L_chr,
+                              ~candidate_predrs_lup %>% ready4::get_from_lup_obj(match_value_xx = predr_var_nm_1L_chr,
                                                                                     match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = .x,
-                                                                                    evaluate_lgl = F)) %>% as.list()
+                                                                                    evaluate_1L_lgl = F)) %>% as.list()
     predr_vals_dbl <- rlang::exec(.fn = seq, !!!args_ls)
     return(predr_vals_dbl)
 }
@@ -1644,31 +1644,31 @@ make_results_ls <- function(spine_of_results_ls = NULL,
   ttu_cs_ls$rf_seq_dscdng_chr <- ttu_cs_ls$rf_seq_dscdng_chr %>%
     purrr::map_chr(~ifelse(.x %in% spine_of_results_ls$var_nm_change_lup$old_nms_chr,
                                                          .x %>%
-                                                   ready4fun::get_from_lup_obj(data_lookup_tb = spine_of_results_ls$var_nm_change_lup,
+                                                   ready4::get_from_lup_obj(data_lookup_tb = spine_of_results_ls$var_nm_change_lup,
                                                                                match_var_nm_1L_chr = "old_nms_chr",
                                                                                target_var_nm_1L_chr = "new_nms_chr",
-                                                                               evaluate_lgl = F),
+                                                                               evaluate_1L_lgl = F),
                                                    .x))
   ttu_cs_ls$cs_mdls_predrs_seq_dscdng_chr <- ttu_cs_ls$cs_mdls_predrs_seq_dscdng_chr  %>%
     purrr::map_chr(~ifelse(.x %in% spine_of_results_ls$var_nm_change_lup$old_nms_chr,
                            .x %>%
-                             ready4fun::get_from_lup_obj(data_lookup_tb = spine_of_results_ls$var_nm_change_lup,
+                             ready4::get_from_lup_obj(data_lookup_tb = spine_of_results_ls$var_nm_change_lup,
                                                          match_var_nm_1L_chr = "old_nms_chr",
                                                          target_var_nm_1L_chr = "new_nms_chr",
-                                                         evaluate_lgl = F),
+                                                         evaluate_1L_lgl = F),
                            .x))
   ttu_lngl_ls = list(best_mdls_tb = tibble::tibble(model_type = mdl_types_chr %>%
-                                                     purrr::map_chr(~ready4fun::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup,
+                                                     purrr::map_chr(~ready4::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup,
                                                                                                  match_value_xx = .x,
                                                                                                  match_var_nm_1L_chr = "short_name_chr",
                                                                                                  target_var_nm_1L_chr = "mixed_acronym_chr",
-                                                                                                 evaluate_lgl = F)),
+                                                                                                 evaluate_1L_lgl = F)),
                                                    link_and_tfmn_chr = mdl_types_chr %>%
-                                                     purrr::map_chr(~ready4fun::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup,
+                                                     purrr::map_chr(~ready4::get_from_lup_obj(spine_of_results_ls$outp_smry_ls$mdl_types_lup,
                                                                                                  match_value_xx = .x,
                                                                                                  match_var_nm_1L_chr = "short_name_chr",
                                                                                                  target_var_nm_1L_chr = "with_chr",
-                                                                                                 evaluate_lgl = F)),
+                                                                                                 evaluate_1L_lgl = F)),
                                                    name_chr = make_predrs_for_best_mdls(spine_of_results_ls$outp_smry_ls,
                                                                                         old_nms_chr = spine_of_results_ls$var_nm_change_lup$old_nms_chr,
                                                                                         new_nms_chr = spine_of_results_ls$var_nm_change_lup$new_nms_chr),
@@ -1700,10 +1700,10 @@ make_results_ls <- function(spine_of_results_ls = NULL,
                      predr_var_nms_chr = spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]] %>%
                        purrr::map_chr(~ifelse(.x %in% spine_of_results_ls$var_nm_change_lup$old_nms_chr,
                                               .x %>%
-                                                ready4fun::get_from_lup_obj(data_lookup_tb = spine_of_results_ls$var_nm_change_lup,
+                                                ready4::get_from_lup_obj(data_lookup_tb = spine_of_results_ls$var_nm_change_lup,
                                                                             match_var_nm_1L_chr = "old_nms_chr",
                                                                             target_var_nm_1L_chr = "new_nms_chr",
-                                                                            evaluate_lgl = F),
+                                                                            evaluate_1L_lgl = F),
                                               .x)),
                      r_version_1L_chr = paste0(spine_of_results_ls$outp_smry_ls$session_data_ls$R.version$major,
                                                ".",
@@ -1752,26 +1752,26 @@ make_results_ls_spine <-  function(output_format_ls = NULL,
       candidate_covars_ls <- NULL
     }else{
       covar_ctgs_chr <- params_ls_ls$params_ls$candidate_covar_nms_chr %>%
-        purrr::map_chr(~ready4fun::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb,
+        purrr::map_chr(~ready4::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb,
                                                     match_value_xx = .x,
                                                     match_var_nm_1L_chr = "var_nm_chr",
                                                     target_var_nm_1L_chr = "var_ctg_chr",
-                                                    evaluate_lgl = F)) %>%
+                                                    evaluate_1L_lgl = F)) %>%
         unique()
       candidate_covars_ls <- covar_ctgs_chr  %>%
         purrr::map(~{
-          var_desc_chr <- ready4fun::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb,
+          var_desc_chr <- ready4::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb,
                                                       match_value_xx = .x,
                                                       match_var_nm_1L_chr = "var_ctg_chr",
                                                       target_var_nm_1L_chr = "var_desc_chr",
-                                                      evaluate_lgl = F)
+                                                      evaluate_1L_lgl = F)
           class(var_desc_chr) <- setdiff(class(var_desc_chr), "labelled")
           attr(var_desc_chr, "label") <- NULL
-          var_nm_chr <- ready4fun::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb,
+          var_nm_chr <- ready4::get_from_lup_obj(params_ls_ls$params_ls$ds_descvs_ls$dictionary_tb,
                                                     match_value_xx = .x,
                                                     match_var_nm_1L_chr = "var_ctg_chr",
                                                     target_var_nm_1L_chr = "var_nm_chr",
-                                                    evaluate_lgl = F)
+                                                    evaluate_1L_lgl = F)
           var_desc_chr[var_nm_chr %in% params_ls_ls$params_ls$candidate_covar_nms_chr]
         }
         ) %>%
@@ -1903,11 +1903,11 @@ make_shareable_mdl <- function (fake_ds_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "
     if (is.null(mdl_types_lup))
         utils::data(mdl_types_lup, envir = environment())
   if (is.na(tfmn_1L_chr))
-    tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
+    tfmn_1L_chr <- ready4::get_from_lup_obj(mdl_types_lup,
                                                match_value_xx = mdl_type_1L_chr,
                                                match_var_nm_1L_chr = "short_name_chr",
                                                target_var_nm_1L_chr = "tfmn_chr",
-                                               evaluate_lgl = F)
+                                               evaluate_1L_lgl = F)
   predr_var_nms_chr <- mdl_smry_tb$Parameter[!mdl_smry_tb$Parameter %in% c("SD (Intercept)", "Intercept",
                                                       "R2", "RMSE","Sigma")] %>%
     stringi::stri_replace_last_fixed(" baseline","_baseline") %>%
@@ -1928,11 +1928,11 @@ make_shareable_mdl <- function (fake_ds_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "
         tfmn_1L_chr = tfmn_1L_chr, mdl_type_1L_chr = mdl_type_1L_chr,
         mdl_types_lup = mdl_types_lup, control_1L_chr = control_1L_chr,
         start_1L_chr = start_1L_chr)
-    if(ready4fun::get_from_lup_obj(mdl_types_lup,
+    if(ready4::get_from_lup_obj(mdl_types_lup,
                                    match_value_xx = mdl_type_1L_chr,
                                    match_var_nm_1L_chr = "short_name_chr",
                                    target_var_nm_1L_chr = "fn_chr",
-                                   evaluate_lgl = F) == "betareg::betareg"){
+                                   evaluate_1L_lgl = F) == "betareg::betareg"){
       model_coeffs_dbl <- model_mdl$coefficients$mean
 
     }else{
@@ -1947,11 +1947,11 @@ make_shareable_mdl <- function (fake_ds_tb, mdl_smry_tb, depnt_var_nm_1L_chr = "
         msg = "Parameter names mismatch between data and model summary table")
     model_coeffs_dbl <- mdl_smry_tb$Estimate
     names(model_coeffs_dbl) <- param_nms_chr
-    if(ready4fun::get_from_lup_obj(mdl_types_lup,
+    if(ready4::get_from_lup_obj(mdl_types_lup,
                                    match_value_xx = mdl_type_1L_chr,
                                    match_var_nm_1L_chr = "short_name_chr",
                                    target_var_nm_1L_chr = "fn_chr",
-                                   evaluate_lgl = F) == "betareg::betareg"){
+                                   evaluate_1L_lgl = F) == "betareg::betareg"){
       model_mdl$coefficients$mean <- model_coeffs_dbl
 
     }else{
@@ -1971,17 +1971,17 @@ make_sngl_mdl_smry_tb <- function(mdls_tb,
                               paste0("_",mdl_type_1L_chr),
                               "")
   new_tb <- new_tb %>%
-    dplyr::mutate(!!rlang::sym(paste0("R2",mdl_nm_sfx_1L_chr)) := dplyr::case_when(Parameter == mdl_nm_1L_chr ~ ready4fun::get_from_lup_obj(new_tb,
+    dplyr::mutate(!!rlang::sym(paste0("R2",mdl_nm_sfx_1L_chr)) := dplyr::case_when(Parameter == mdl_nm_1L_chr ~ ready4::get_from_lup_obj(new_tb,
                                                                                                                                             match_value_xx = "R2",
                                                                                                                                             match_var_nm_1L_chr = "Parameter",
                                                                                                                                             target_var_nm_1L_chr = "Estimate",
-                                                                                                                                            evaluate_lgl = F),
+                                                                                                                                            evaluate_1L_lgl = F),
                                                                                    T ~ NA_character_),
-                  !!rlang::sym(paste0("Sigma",mdl_nm_sfx_1L_chr)) := dplyr::case_when(Parameter == mdl_nm_1L_chr ~ ready4fun::get_from_lup_obj(new_tb,
+                  !!rlang::sym(paste0("Sigma",mdl_nm_sfx_1L_chr)) := dplyr::case_when(Parameter == mdl_nm_1L_chr ~ ready4::get_from_lup_obj(new_tb,
                                                                                                                                                match_value_xx = "Sigma",
                                                                                                                                                match_var_nm_1L_chr = "Parameter",
                                                                                                                                                target_var_nm_1L_chr = "Estimate",
-                                                                                                                                               evaluate_lgl = F),
+                                                                                                                                               evaluate_1L_lgl = F),
                                                                                       T ~ NA_character_)) %>%
     dplyr::filter(!Parameter %in% c("R2","RMSE","Sigma")) %>%
     dplyr::rename_with(~paste0(.x,mdl_nm_sfx_1L_chr),.cols = c("Parameter","Estimate","SE")) %>%
@@ -2047,16 +2047,16 @@ make_smry_of_mdl_outp <- function (data_tb,
     data_tb <- data_tb %>% dplyr::filter(!is.na(!!rlang::sym(predr_var_nm_1L_chr)))
     data_tb <- transform_ds_for_mdlng(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr)
-    mdl_desc_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
+    mdl_desc_1L_chr <- ready4::get_from_lup_obj(mdl_types_lup,
         match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr,
-        target_var_nm_1L_chr = "long_name_chr", evaluate_lgl = F)
+        target_var_nm_1L_chr = "long_name_chr", evaluate_1L_lgl = F)
     folds_ls <- make_folds_ls(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         folds_1L_int = folds_1L_int)
-    control_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
+    control_1L_chr <- ready4::get_from_lup_obj(mdl_types_lup,
                                                   match_var_nm_1L_chr = "short_name_chr",
                                                   match_value_xx = mdl_type_1L_chr,
                                                   target_var_nm_1L_chr = "control_chr",
-                                                  evaluate_lgl = F)
+                                                  evaluate_1L_lgl = F)
     smry_of_one_predr_mdl_tb <- purrr::map_dfr(folds_ls, ~{
         model_mdl <- make_mdl(data_tb[-.x,], depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
             start_1L_chr = start_1L_chr, tfmn_1L_chr = tfmn_1L_chr,
@@ -2093,21 +2093,21 @@ make_smry_of_ts_mdl_outp <- function (data_tb,
 {
   scaling_fctr_dbl <- predr_vars_nms_chr %>% purrr::map_dbl(~
       ifelse(.x %in% predictors_lup$short_name_chr,
-             ready4fun::get_from_lup_obj(predictors_lup,
+             ready4::get_from_lup_obj(predictors_lup,
                                          target_var_nm_1L_chr = "mdl_scaling_dbl",
                                          match_value_xx = .x,
                                          match_var_nm_1L_chr = "short_name_chr",
-                                         evaluate_lgl = F),
+                                         evaluate_1L_lgl = F),
              1))
   mdl_type_1L_chr <- mdl_nm_1L_chr %>%
     stringr::str_remove(paste0(predr_vars_nms_chr[1], "_", ifelse(is.na(predr_vars_nms_chr[2]), "", paste0(predr_vars_nms_chr[2],
                                                                                                     "_"))))
   mdl_type_1L_chr <- stringr::str_sub(mdl_type_1L_chr, start = 1 + (mdl_type_1L_chr %>% stringi::stri_locate_first_fixed("_"))[1,2] %>% as.vector())
-  tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
+  tfmn_1L_chr <- ready4::get_from_lup_obj(mdl_types_lup,
                                              target_var_nm_1L_chr = "tfmn_chr",
                                              match_value_xx = mdl_type_1L_chr,
                                              match_var_nm_1L_chr = "short_name_chr",
-                                             evaluate_lgl = F)
+                                             evaluate_1L_lgl = F)
   tfd_data_tb <- transform_tb_to_mdl_inp(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr,
         predr_vars_nms_chr = predr_vars_nms_chr, id_var_nm_1L_chr = id_var_nm_1L_chr,
         round_var_nm_1L_chr = round_var_nm_1L_chr, round_bl_val_1L_chr = round_bl_val_1L_chr,
@@ -2115,11 +2115,11 @@ make_smry_of_ts_mdl_outp <- function (data_tb,
         tfmn_1L_chr = tfmn_1L_chr)
     tfd_depnt_var_nm_1L_chr <- transform_depnt_var_nm(depnt_var_nm_1L_chr,
                                                       tfmn_1L_chr = tfmn_1L_chr)
-    family_fn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup,
+    family_fn_1L_chr <- ready4::get_from_lup_obj(mdl_types_lup,
                                                    match_var_nm_1L_chr = "short_name_chr",
                                                    match_value_xx = mdl_type_1L_chr,
                                                    target_var_nm_1L_chr = "family_chr",
-                                                   evaluate_lgl = F)
+                                                   evaluate_1L_lgl = F)
     family_fn_1L_chr <- ifelse(is.na(family_fn_1L_chr),
                                ifelse(startsWith(mdl_type_1L_chr,"BET"),
                                       paste0("brms::Beta(link = \"",
@@ -2330,35 +2330,35 @@ make_tfmn_cmprsn_plt <-  function(data_tb,
     ggplot2::facet_wrap(~variable, scales = "free") +
     ggplot2::theme_bw() + ggplot2::labs(x = paste0("Transformed ",
                                                    dictionary_tb %>%
-                                                     ready4fun::get_from_lup_obj(match_var_nm_1L_chr = "var_nm_chr",
+                                                     ready4::get_from_lup_obj(match_var_nm_1L_chr = "var_nm_chr",
                                                                                  match_value_xx = depnt_var_nm_1L_chr,
                                                                                  target_var_nm_1L_chr = "var_desc_chr",
-                                                                                 evaluate_lgl = F)))
+                                                                                 evaluate_1L_lgl = F)))
   return(tfmn_cmprsn_plt)
 }
 make_ttu_cs_ls <-  function(outp_smry_ls,
                             sig_covars_some_predrs_mdls_tb,
                             sig_thresh_covars_1L_chr){
   # mdl_type_descs_chr <- outp_smry_ls$prefd_mdl_types_chr %>%
-  #   purrr::map_chr(~ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup,
+  #   purrr::map_chr(~ready4::get_from_lup_obj(outp_smry_ls$mdl_types_lup,
   #                                               match_var_nm_1L_chr = "short_name_chr",
   #                                               match_value_xx = .x,
   #                                               target_var_nm_1L_chr = "long_name_chr",
-  #                                               evaluate_lgl = F))
+  #                                               evaluate_1L_lgl = F))
   ttu_cs_ls <- list(best_mdl_types_ls = list(GLM = c("Gaussian distribution and log link"), # LEGACY ISSUE FROM MANUSCRIPT - OTHERWISE UNUSED
                                              OLS = c("no transformation","log transformation", "clog-log transformation")),
                     selected_mdls_chr = outp_smry_ls$prefd_mdl_types_chr %>%
-                      purrr::map_chr(~paste0(ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup,
+                      purrr::map_chr(~paste0(ready4::get_from_lup_obj(outp_smry_ls$mdl_types_lup,
                                                                          match_var_nm_1L_chr = "short_name_chr",
                                                                          match_value_xx = .x,
                                                                          target_var_nm_1L_chr = "fixed_acronym_chr",
-                                                                         evaluate_lgl = F),
+                                                                         evaluate_1L_lgl = F),
                                              " with ",
-                                             ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup,
+                                             ready4::get_from_lup_obj(outp_smry_ls$mdl_types_lup,
                                                                          match_var_nm_1L_chr = "short_name_chr",
                                                                          match_value_xx = .x,
                                                                          target_var_nm_1L_chr = "with_chr",
-                                                                         evaluate_lgl = F))),
+                                                                         evaluate_1L_lgl = F))),
                     cs_mdls_predrs_seq_dscdng_chr = outp_smry_ls$smry_of_mdl_sngl_predrs_tb$Predictor,
                     sig_covars_all_predrs_mdls_chr = outp_smry_ls$signt_covars_chr,
                     sig_thresh_covars_1L_chr = sig_thresh_covars_1L_chr,
@@ -2393,10 +2393,10 @@ make_unique_ls_elmt_idx_int <- function (data_ls)
     combos_tb <- combos_tb %>% dplyr::group_by(combo_chr) %>%
       dplyr::mutate(combo_id = dplyr::row_number())
     unique_ls_elmt_idx_int <- purrr::map(data_ls %>% unique(),
-                                         ~ready4fun::get_from_lup_obj(combos_tb %>% dplyr::ungroup(),
+                                         ~ready4::get_from_lup_obj(combos_tb %>% dplyr::ungroup(),
                                                                       match_var_nm_1L_chr = "combo_chr", match_value_xx = paste0(.x[1],
                                                                                                                                  ifelse(is.na(.x[2]), "", paste0("_", .x[2]))),
-                                                                      target_var_nm_1L_chr = "combo_id", evaluate_lgl = F)) %>%
+                                                                      target_var_nm_1L_chr = "combo_id", evaluate_1L_lgl = F)) %>%
       purrr::flatten_int()
   }else{
     unique_ls_elmt_idx_int <- 1

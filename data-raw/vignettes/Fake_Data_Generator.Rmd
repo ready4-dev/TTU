@@ -269,7 +269,7 @@ dss_tb <- tibble::add_case(dss_tb,
 
 ```{r}
 # NOT FOR INCLUSION IN VIGNETTE
-ready4use::write_fls_to_dv_ds(dss_tb,
+ready4::write_to_dv_with_wait(dss_tb,
                                dv_nm_1L_chr = "ready4models",
                                ds_url_1L_chr = "https://doi.org/10.7910/DVN/GRZRY5",
                                parent_dv_dir_1L_chr = "../../../../../../Data/Dataverse",

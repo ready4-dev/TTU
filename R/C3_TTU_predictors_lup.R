@@ -39,7 +39,7 @@ x
 #' @details TTU S3 class for candidate predictors lookup table
 #' @rdname make_pt_TTU_predictors_lup
 #' @export 
-#' @importFrom ready4fun update_pt_fn_args_ls
+#' @importFrom ready4 update_pt_fn_args_ls
 #' @importFrom rlang exec
 #' @importFrom tibble tibble
 make_pt_TTU_predictors_lup <- function(short_name_chr = character(0),
@@ -59,7 +59,7 @@ class_chr = class_chr,
 increment_dbl = increment_dbl,
 class_fn_chr = class_fn_chr,
 mdl_scaling_dbl = mdl_scaling_dbl,
-covariate_lgl = covariate_lgl) %>% ready4fun::update_pt_fn_args_ls()
+covariate_lgl = covariate_lgl) %>% ready4::update_pt_fn_args_ls()
 rlang::exec(tibble::tibble,!!!args_ls)
 }
 #' Validate TTU predictors lookup table TTU S3 class for candidate predictors lookup table

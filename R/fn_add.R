@@ -5,15 +5,15 @@
 #' @return Model summary (a list)
 #' @rdname add_prefd_predr_var_to_mdl_smry_ls
 #' @export 
-#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom ready4 get_from_lup_obj
 #' @keywords internal
 add_prefd_predr_var_to_mdl_smry_ls <- function (mdl_smry_ls, ds_smry_ls) 
 {
     mdl_smry_ls$predr_var_nm_1L_chr <- ds_smry_ls$candidate_predrs_chr[1]
     mdl_smry_ls$predr_var_desc_1L_chr <- ds_smry_ls$predictors_lup %>% 
-        ready4fun::get_from_lup_obj(match_value_xx = mdl_smry_ls$predr_var_nm_1L_chr, 
+        ready4::get_from_lup_obj(match_value_xx = mdl_smry_ls$predr_var_nm_1L_chr, 
             match_var_nm_1L_chr = "short_name_chr", target_var_nm_1L_chr = "long_name_chr", 
-            evaluate_lgl = F)
+            evaluate_1L_lgl = F)
     mdl_smry_ls$predr_vals_dbl <- make_predr_vals(mdl_smry_ls$predr_var_nm_1L_chr, 
         candidate_predrs_lup = ds_smry_ls$predictors_lup)
     return(mdl_smry_ls)
@@ -137,7 +137,7 @@ add_utility_predn_to_ds <- function (data_tb, model_mdl, tfmn_1L_chr, depnt_var_
 #' @return Updated (a tibble)
 #' @rdname add_utl_predn_to_new_ds
 #' @export 
-#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom ready4 get_from_lup_obj
 #' @importFrom dplyr filter pull rename left_join select
 #' @importFrom purrr flatten_chr
 #' @importFrom rlang sym
@@ -153,12 +153,12 @@ add_utl_predn_to_new_ds <- function (data_tb, ingredients_ls, mdl_nm_1L_chr, ana
         model_mdl <- get_table_predn_mdl(mdl_nm_1L_chr, ingredients_ls = ingredients_ls, 
             analysis_1L_chr = analysis_1L_chr)
     mdl_type_1L_chr <- get_mdl_type_from_nm(mdl_nm_1L_chr)
-    tfmn_1L_chr <- ready4fun::get_from_lup_obj(ingredients_ls$mdl_types_lup, 
+    tfmn_1L_chr <- ready4::get_from_lup_obj(ingredients_ls$mdl_types_lup, 
         match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
-        target_var_nm_1L_chr = "tfmn_chr", evaluate_lgl = F)
-    predn_type_1L_chr <- ready4fun::get_from_lup_obj(ingredients_ls$mdl_types_lup, 
+        target_var_nm_1L_chr = "tfmn_chr", evaluate_1L_lgl = F)
+    predn_type_1L_chr <- ready4::get_from_lup_obj(ingredients_ls$mdl_types_lup, 
         match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
-        target_var_nm_1L_chr = "predn_type_chr", evaluate_lgl = F)
+        target_var_nm_1L_chr = "predn_type_chr", evaluate_1L_lgl = F)
     if (is.na(predn_type_1L_chr)) 
         predn_type_1L_chr <- NULL
     id_var_nm_1L_chr <- ifelse(is.null(id_var_nm_1L_chr), ingredients_ls$id_var_nm_1L_chr, 

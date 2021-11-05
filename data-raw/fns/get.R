@@ -249,25 +249,25 @@ get_predrs_by_ctg <-  function(results_ls,
     predrs_by_ctg_ls <- predrs_by_ctg_ls %>%
       purrr::map2(names(predrs_by_ctg_ls) %>% Hmisc::capitalize(),
                   ~{
-                    predr_descs_1L_chr <- .x %>% purrr::map_chr(~         paste0(ready4fun::get_from_lup_obj(results_ls$mdl_ingredients_ls$dictionary_tb,
+                    predr_descs_1L_chr <- .x %>% purrr::map_chr(~         paste0(ready4::get_from_lup_obj(results_ls$mdl_ingredients_ls$dictionary_tb,
                                                                                                              match_value_xx = .x,
                                                                                                              match_var_nm_1L_chr = "var_nm_chr",
                                                                                                              target_var_nm_1L_chr = "var_desc_chr",
-                                                                                                             evaluate_lgl = F),
+                                                                                                             evaluate_1L_lgl = F),
                                                                                  " (",
                                                                                  .x %>% transform_names(rename_lup = results_ls$var_nm_change_lup),
                                                                                  " - measured on a scale of ",
-                                                                                 ready4fun::get_from_lup_obj(results_ls$mdl_ingredients_ls$predictors_lup,
+                                                                                 ready4::get_from_lup_obj(results_ls$mdl_ingredients_ls$predictors_lup,
                                                                                                              match_value_xx = .x,
                                                                                                              match_var_nm_1L_chr = "short_name_chr",
                                                                                                              target_var_nm_1L_chr = "min_val_dbl",
-                                                                                                             evaluate_lgl = F),
+                                                                                                             evaluate_1L_lgl = F),
                                                                                  "-",
-                                                                                 ready4fun::get_from_lup_obj(results_ls$mdl_ingredients_ls$predictors_lup,
+                                                                                 ready4::get_from_lup_obj(results_ls$mdl_ingredients_ls$predictors_lup,
                                                                                                              match_value_xx = .x,
                                                                                                              match_var_nm_1L_chr = "short_name_chr",
                                                                                                              target_var_nm_1L_chr = "max_val_dbl",
-                                                                                                             evaluate_lgl = F),
+                                                                                                             evaluate_1L_lgl = F),
                                                                                  ")")
                     ) %>% paste0(collapse = ", ") %>%
                       stringi::stri_replace_last_fixed(","," and")
@@ -312,17 +312,17 @@ get_random_intercept <- function(mdls_smry_tb,
   mdl_smry_tb <- mdls_smry_tb %>%
     dplyr::filter(Model == mdl_nm_1L_chr)
   sd_dbl <- c(mdl_smry_tb %>%
-                ready4fun::get_from_lup_obj(match_value_xx = "SD (Intercept)",
+                ready4::get_from_lup_obj(match_value_xx = "SD (Intercept)",
                                             match_var_nm_1L_chr = "Parameter",
                                             target_var_nm_1L_chr = "Estimate",
-                                            evaluate_lgl = F),
+                                            evaluate_1L_lgl = F),
               ifelse(deterministic_1L_lgl,
                      0,
                      mdl_smry_tb %>%
-                       ready4fun::get_from_lup_obj(match_value_xx = "SD (Intercept)",
+                       ready4::get_from_lup_obj(match_value_xx = "SD (Intercept)",
                                                    match_var_nm_1L_chr = "Parameter",
                                                    target_var_nm_1L_chr = "SE",
-                                                   evaluate_lgl = F)))
+                                                   evaluate_1L_lgl = F)))
   return(sd_dbl)
 }
 get_scndry_anlys_descs <- function(results_ls){
@@ -336,11 +336,11 @@ get_scndry_anlys_descs <- function(results_ls){
           unique() %>%
           purrr::map_chr(~{
             .x %>%
-              purrr::map_chr(~ready4fun::get_from_lup_obj(secondary_ls$dictionary_tb %>% ready4use::remove_labels_from_ds(),
+              purrr::map_chr(~ready4::get_from_lup_obj(secondary_ls$dictionary_tb %>% ready4use::remove_labels_from_ds(),
                                                           match_value_xx =.x,
                                                           match_var_nm_1L_chr = "var_nm_chr",
                                                           target_var_nm_1L_chr = "var_desc_chr",
-                                                          evaluate_lgl = F)) %>%
+                                                          evaluate_1L_lgl = F)) %>%
               paste0(collapse = ", ") %>%
               stringi::stri_replace_last_fixed(","," and")
 
@@ -381,11 +381,11 @@ get_table_predn_mdl <- function(mdl_nm_1L_chr,
                                 analysis_1L_chr = NULL){
   mdl_type_1L_chr <- get_mdl_type_from_nm(mdl_nm_1L_chr,
                                           mdl_types_lup = ingredients_ls$mdl_types_lup)
-  tfmn_1L_chr <- ready4fun::get_from_lup_obj(ingredients_ls$mdl_types_lup,
+  tfmn_1L_chr <- ready4::get_from_lup_obj(ingredients_ls$mdl_types_lup,
                                             match_value_xx = mdl_type_1L_chr,
                                             match_var_nm_1L_chr = "short_name_chr",
                                             target_var_nm_1L_chr = "tfmn_chr",
-                                            evaluate_lgl = F)
+                                            evaluate_1L_lgl = F)
   if(is.null(analysis_1L_chr)){
     fake_ds_tb <- ingredients_ls$fake_ds_tb
   }else{
@@ -404,11 +404,11 @@ get_table_predn_mdl <- function(mdl_nm_1L_chr,
                                         tfmn_1L_chr = tfmn_1L_chr,
                                         mdl_type_1L_chr = mdl_type_1L_chr,
                                         mdl_types_lup = ingredients_ls$mdl_types_lup,
-                                        control_1L_chr = ready4fun::get_from_lup_obj(ingredients_ls$mdl_types_lup,
+                                        control_1L_chr = ready4::get_from_lup_obj(ingredients_ls$mdl_types_lup,
                                                                                      match_value_xx = mdl_type_1L_chr,
                                                                                      match_var_nm_1L_chr = "short_name_chr",
                                                                                      target_var_nm_1L_chr = "control_chr",
-                                                                                     evaluate_lgl = F),
+                                                                                     evaluate_1L_lgl = F),
                                         start_1L_chr = NA_character_,
                                         seed_1L_int = ingredients_ls$seed_1L_int)
   return(table_predn_mdl)

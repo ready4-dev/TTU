@@ -548,7 +548,7 @@ predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", model_mdl, force_min_
 #' @param b1_eq5d_mdl_1L_dbl Regression model coefficient EQ5D model (a double vector of length one), Default: -2.926161
 #' @param aqol_error_1L_dbl Assessment of Quality of Life error (a double vector of length one), Default: 0
 #' @param eq5d_error_1L_dbl EQ5D error (a double vector of length one), Default: 0
-#' @return NA ()
+#' @return c(meanaqol8dutility, meaneq5dutility) (An object)
 #' @rdname predict_utl_from_k10
 #' @export 
 #' @keywords internal

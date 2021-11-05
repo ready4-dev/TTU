@@ -156,7 +156,7 @@ write_main_outp_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_f
 #' @importFrom utils unzip
 #' @importFrom ready4show write_header_fls
 #' @importFrom rmarkdown render
-#' @importFrom ready4use write_fls_to_dv_ds
+#' @importFrom ready4 write_to_dv_with_wait
 #' @importFrom tibble tibble
 write_manuscript <- function (abstract_args_ls = NULL, input_params_ls = NULL, results_ls = NULL, 
     figures_in_body_lgl = NULL, output_type_1L_chr = NULL, tables_in_body_lgl = NULL, 
@@ -222,7 +222,7 @@ write_manuscript <- function (abstract_args_ls = NULL, input_params_ls = NULL, r
         else {
             paths_ls <- results_ls$path_params_ls$paths_ls
         }
-        ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "TTU_Study_Manuscript", 
+        ready4::write_to_dv_with_wait(dss_tb = tibble::tibble(ds_obj_nm_chr = "TTU_Study_Manuscript", 
             title_chr = title_1L_chr), dv_nm_1L_chr = ifelse(!is.null(input_params_ls), 
             input_params_ls$path_params_ls$dv_ds_nm_and_url_chr[1], 
             results_ls$path_params_ls$dv_ds_nm_and_url_chr[1]), 
@@ -366,7 +366,7 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
 #' @export 
 #' @importFrom purrr map pluck map_lgl map_chr reduce
 #' @importFrom here here
-#' @importFrom ready4use write_fls_to_dv_ds
+#' @importFrom ready4 write_to_dv_with_wait
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter pull bind_rows distinct mutate
 #' @importFrom stats setNames
@@ -461,7 +461,7 @@ write_mdl_smry_rprt <- function (input_params_ls = NULL, header_yaml_args_ls = N
             abstract_args_ls = abstract_args_ls, rcrd_rprt_append_ls = rcrd_rprt_append_ls, 
             rprt_lup = rprt_lup, main_rprt_append_ls = main_rprt_append_ls)
         if (!is.null(dv_ds_nm_and_url_chr)) {
-            ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = c(rprt_nm_1L_chr, 
+            ready4::write_to_dv_with_wait(dss_tb = tibble::tibble(ds_obj_nm_chr = c(rprt_nm_1L_chr, 
                 rcrd_nm_1L_chr), title_chr = rprt_lup %>% dplyr::filter(rprt_nms_chr %in% 
                 c(rprt_nm_1L_chr, rcrd_nm_1L_chr)) %>% dplyr::pull(title_chr)), 
                 dv_nm_1L_chr = dv_ds_nm_and_url_chr[1], ds_url_1L_chr = dv_ds_nm_and_url_chr[2], 
@@ -524,7 +524,7 @@ write_mdl_smry_rprt <- function (input_params_ls = NULL, header_yaml_args_ls = N
 #' @export 
 #' @importFrom utils data
 #' @importFrom purrr map_chr map_dfr
-#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom ready4 get_from_lup_obj
 #' @importFrom tibble tibble
 #' @importFrom caret R2
 #' @importFrom stats predict AIC BIC
@@ -538,9 +538,9 @@ write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_tota
     if (is.null(mdl_types_lup)) 
         utils::data("mdl_types_lup", envir = environment())
     arg_vals_chr <- c("control_chr", "predn_type_chr", "tfmn_chr") %>% 
-        purrr::map_chr(~ready4fun::get_from_lup_obj(mdl_types_lup, 
+        purrr::map_chr(~ready4::get_from_lup_obj(mdl_types_lup, 
             match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
-            target_var_nm_1L_chr = .x, evaluate_lgl = F))
+            target_var_nm_1L_chr = .x, evaluate_1L_lgl = F))
     control_1L_chr <- arg_vals_chr[1]
     predn_type_1L_chr <- arg_vals_chr[2]
     tfmn_1L_chr <- arg_vals_chr[3]
@@ -600,7 +600,7 @@ write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_tota
 #' @export 
 #' @importFrom utils data
 #' @importFrom purrr map_dfr
-#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom ready4 get_from_lup_obj
 #' @importFrom dplyr select mutate everything arrange desc
 write_mdl_type_multi_outps <- function (data_tb, folds_1L_int = 10, predrs_var_nms_chr, covar_var_nms_chr = NA_character_, 
     start_1L_chr = NULL, mdl_type_1L_chr, depnt_var_nm_1L_chr = "utl_total_w", 
@@ -613,9 +613,9 @@ write_mdl_type_multi_outps <- function (data_tb, folds_1L_int = 10, predrs_var_n
         new_dir_nm_1L_chr = new_dir_nm_1L_chr)
     smry_of_mdl_sngl_predrs_tb <- purrr::map_dfr(predrs_var_nms_chr, 
         ~{
-            tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+            tfmn_1L_chr <- ready4::get_from_lup_obj(mdl_types_lup, 
                 match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
-                target_var_nm_1L_chr = "tfmn_chr", evaluate_lgl = F)
+                target_var_nm_1L_chr = "tfmn_chr", evaluate_1L_lgl = F)
             mdl_smry_tb <- write_mdl_type_sngl_outps(data_tb, 
                 folds_1L_int = folds_1L_int, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
                 tfmn_1L_chr = tfmn_1L_chr, start_1L_chr = start_1L_chr, 
@@ -658,7 +658,7 @@ write_mdl_type_multi_outps <- function (data_tb, folds_1L_int = 10, predrs_var_n
 #' @export 
 #' @importFrom utils data
 #' @importFrom purrr map_chr
-#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom ready4 get_from_lup_obj
 #' @importFrom tibble tibble
 #' @keywords internal
 write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_1L_chr = "utl_total_w", 
@@ -670,9 +670,9 @@ write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_
     if (is.null(mdl_types_lup)) 
         utils::data("mdl_types_lup", envir = environment())
     arg_vals_chr <- c("control_chr", "family_chr", "predn_type_chr") %>% 
-        purrr::map_chr(~ready4fun::get_from_lup_obj(mdl_types_lup, 
+        purrr::map_chr(~ready4::get_from_lup_obj(mdl_types_lup, 
             match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
-            target_var_nm_1L_chr = .x, evaluate_lgl = F))
+            target_var_nm_1L_chr = .x, evaluate_1L_lgl = F))
     control_1L_chr <- arg_vals_chr[1]
     family_1L_chr <- arg_vals_chr[2]
     predn_type_1L_chr <- arg_vals_chr[3]
@@ -685,9 +685,9 @@ write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_
                 plt_idxs_int <- c(1, 3, 4, 5)
         }
     }
-    tfmn_for_bnml_1L_lgl <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+    tfmn_for_bnml_1L_lgl <- ready4::get_from_lup_obj(mdl_types_lup, 
         match_var_nm_1L_chr = "short_name_chr", match_value_xx = mdl_type_1L_chr, 
-        target_var_nm_1L_chr = "tfmn_for_bnml_lgl", evaluate_lgl = F)
+        target_var_nm_1L_chr = "tfmn_for_bnml_lgl", evaluate_1L_lgl = F)
     data_tb <- data_tb %>% add_tfd_var_to_ds(depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
         tfmn_1L_chr = tfmn_1L_chr)
     model_mdl <- make_mdl(data_tb, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
@@ -974,7 +974,7 @@ write_reporting_dir <- function (path_to_write_to_1L_chr = getwd(), new_dir_nm_1
 #' @return NULL
 #' @rdname write_rprt_with_rcrd
 #' @export 
-#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom ready4 get_from_lup_obj
 #' @keywords internal
 write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_args_ls = NULL, 
     rprt_lup = NULL, use_fake_data_1L_lgl = F, rprt_nm_1L_chr = "AAA_TTU_MDL_CTG", 
@@ -993,21 +993,21 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_
         header_yaml_args_ls = header_yaml_args_ls, output_type_1L_chr = rprt_output_type_1L_chr, 
         nbr_of_digits_1L_int = nbr_of_digits_1L_int, rprt_lup = rprt_lup, 
         rprt_nm_1L_chr = rprt_nm_1L_chr, rprt_output_type_1L_chr = output_type_1L_chr, 
-        rprt_subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup, 
+        rprt_subtitle_1L_chr = ready4::get_from_lup_obj(rprt_lup, 
             match_value_xx = rprt_nm_1L_chr, match_var_nm_1L_chr = "rprt_nms_chr", 
-            target_var_nm_1L_chr = "title_chr", evaluate_lgl = F), 
-        subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup, 
+            target_var_nm_1L_chr = "title_chr", evaluate_1L_lgl = F), 
+        subtitle_1L_chr = ready4::get_from_lup_obj(rprt_lup, 
             match_value_xx = "AAA_RPRT_WRTNG_MTH", match_var_nm_1L_chr = "rprt_nms_chr", 
-            target_var_nm_1L_chr = "title_chr", evaluate_lgl = F), 
+            target_var_nm_1L_chr = "title_chr", evaluate_1L_lgl = F), 
         use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>% append(rcrd_rprt_append_ls)
     params_ls %>% write_report(paths_ls = paths_ls, rprt_nm_1L_chr = rcrd_nm_1L_chr, 
         abstract_args_ls = NULL, header_yaml_args_ls = header_yaml_args_ls, 
         rprt_lup = rprt_lup)
     list(outp_smry_ls = append(readRDS(path_to_outp_fl_1L_chr), 
         list(rprt_lup = rprt_lup)), output_type_1L_chr = output_type_1L_chr, 
-        subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup, 
+        subtitle_1L_chr = ready4::get_from_lup_obj(rprt_lup, 
             match_value_xx = rprt_nm_1L_chr, match_var_nm_1L_chr = "rprt_nms_chr", 
-            target_var_nm_1L_chr = "title_chr", evaluate_lgl = F)) %>% 
+            target_var_nm_1L_chr = "title_chr", evaluate_1L_lgl = F)) %>% 
         append(main_rprt_append_ls) %>% write_report(paths_ls = paths_ls, 
         rprt_nm_1L_chr = rprt_nm_1L_chr, abstract_args_ls = abstract_args_ls, 
         header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
@@ -1029,7 +1029,7 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_
 #' @rdname write_scndry_analysis
 #' @export 
 #' @importFrom purrr map_chr pluck
-#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom ready4 get_from_lup_obj
 #' @importFrom dplyr filter
 #' @keywords internal
 write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, candidate_covar_nms_chr, 
@@ -1042,38 +1042,38 @@ write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, ca
     if (!is.null(predictors_lup)) {
         predictors_lup$short_name_chr <- predictors_lup$short_name_chr %>% 
             purrr::map_chr(~ifelse(!.x %in% rename_lup$old_nms_chr, 
-                .x, ready4fun::get_from_lup_obj(rename_lup, match_value_xx = .x, 
+                .x, ready4::get_from_lup_obj(rename_lup, match_value_xx = .x, 
                   match_var_nm_1L_chr = "old_nms_chr", target_var_nm_1L_chr = "new_nms_chr", 
-                  evaluate_lgl = F)))
+                  evaluate_1L_lgl = F)))
         analysis_params_ls$predictors_lup <- predictors_lup
     }
     if (!is.null(candidate_predrs_chr)) {
         candidate_predrs_chr <- candidate_predrs_chr %>% purrr::map_chr(~ifelse(!.x %in% 
-            rename_lup$old_nms_chr, .x, ready4fun::get_from_lup_obj(rename_lup, 
+            rename_lup$old_nms_chr, .x, ready4::get_from_lup_obj(rename_lup, 
             match_value_xx = .x, match_var_nm_1L_chr = "old_nms_chr", 
-            target_var_nm_1L_chr = "new_nms_chr", evaluate_lgl = F)))
+            target_var_nm_1L_chr = "new_nms_chr", evaluate_1L_lgl = F)))
         analysis_params_ls$ds_descvs_ls$candidate_predrs_chr <- candidate_predrs_chr
     }
     if (!is.null(candidate_covar_nms_chr)) {
         candidate_covar_nms_chr <- candidate_covar_nms_chr %>% 
             purrr::map_chr(~ifelse(!.x %in% rename_lup$old_nms_chr, 
-                .x, ready4fun::get_from_lup_obj(rename_lup, match_value_xx = .x, 
+                .x, ready4::get_from_lup_obj(rename_lup, match_value_xx = .x, 
                   match_var_nm_1L_chr = "old_nms_chr", target_var_nm_1L_chr = "new_nms_chr", 
-                  evaluate_lgl = F)))
+                  evaluate_1L_lgl = F)))
     }
     if (ifelse(is.null(prefd_covars_chr), F, !is.na(prefd_covars_chr))) {
         prefd_covars_chr <- prefd_covars_chr %>% purrr::map_chr(~ifelse(!.x %in% 
-            rename_lup$old_nms_chr, .x, ready4fun::get_from_lup_obj(rename_lup, 
+            rename_lup$old_nms_chr, .x, ready4::get_from_lup_obj(rename_lup, 
             match_value_xx = .x, match_var_nm_1L_chr = "old_nms_chr", 
-            target_var_nm_1L_chr = "new_nms_chr", evaluate_lgl = F)))
+            target_var_nm_1L_chr = "new_nms_chr", evaluate_1L_lgl = F)))
     }
     data("rprt_lup", package = "TTU", envir = environment())
     rprt_lup <- rprt_lup %>% transform_rprt_lup(start_at_int = start_at_int, 
         reference_1L_int = reference_1L_int) %>% dplyr::filter(rprt_nms_chr == 
         "AAA_SUPLRY_ANLYS_MTH")
-    analysis_params_ls$subtitle_1L_chr <- ready4fun::get_from_lup_obj(rprt_lup, 
+    analysis_params_ls$subtitle_1L_chr <- ready4::get_from_lup_obj(rprt_lup, 
         match_value_xx = "AAA_SUPLRY_ANLYS_MTH", match_var_nm_1L_chr = "rprt_nms_chr", 
-        target_var_nm_1L_chr = "title_chr", evaluate_lgl = F)
+        target_var_nm_1L_chr = "title_chr", evaluate_1L_lgl = F)
     analysis_params_ls$prefd_covars_chr <- prefd_covars_chr
     analysis_params_ls$candidate_covar_nms_chr <- candidate_covar_nms_chr
     path_params_ls$paths_ls <- write_scndry_analysis_dir(path_params_ls$paths_ls, 
@@ -1137,7 +1137,7 @@ write_shareable_dir <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable"
 #' @importFrom purrr map_chr flatten_chr map map_lgl map_int map2 map_dbl map2_dfr discard
 #' @importFrom stringr str_locate str_remove_all
 #' @importFrom dplyr filter select mutate
-#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom ready4 get_from_lup_obj
 #' @importFrom stats setNames
 #' @importFrom tibble tibble
 write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "", 
@@ -1177,17 +1177,17 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
             mdl_nm_1L_chr <- .x
             mdl_type_1L_chr <- get_mdl_type_from_nm(mdl_nm_1L_chr, 
                 mdl_types_lup = mdl_types_lup)
-            tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+            tfmn_1L_chr <- ready4::get_from_lup_obj(mdl_types_lup, 
                 match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
-                target_var_nm_1L_chr = "tfmn_chr", evaluate_lgl = F)
-            predn_type_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+                target_var_nm_1L_chr = "tfmn_chr", evaluate_1L_lgl = F)
+            predn_type_1L_chr <- ready4::get_from_lup_obj(mdl_types_lup, 
                 match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
-                target_var_nm_1L_chr = "predn_type_chr", evaluate_lgl = F)
+                target_var_nm_1L_chr = "predn_type_chr", evaluate_1L_lgl = F)
             if (is.na(predn_type_1L_chr)) 
                 predn_type_1L_chr <- NULL
-            control_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+            control_1L_chr <- ready4::get_from_lup_obj(mdl_types_lup, 
                 match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
-                target_var_nm_1L_chr = "control_chr", evaluate_lgl = F)
+                target_var_nm_1L_chr = "control_chr", evaluate_1L_lgl = F)
             sd_dbl <- mdl_smry_tb %>% dplyr::filter(Parameter == 
                 "SD (Intercept)") %>% dplyr::select(Estimate, 
                 SE) %>% t() %>% as.vector()
@@ -1207,9 +1207,9 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
                 .x, ".RDS"))
             scaling_fctr_dbl <- outp_smry_ls$predr_vars_nms_ls %>% 
                 purrr::flatten_chr() %>% unique() %>% purrr::map_dbl(~ifelse(.x %in% 
-                outp_smry_ls$predictors_lup$short_name_chr, ready4fun::get_from_lup_obj(outp_smry_ls$predictors_lup, 
+                outp_smry_ls$predictors_lup$short_name_chr, ready4::get_from_lup_obj(outp_smry_ls$predictors_lup, 
                 target_var_nm_1L_chr = "mdl_scaling_dbl", match_value_xx = .x, 
-                match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F), 
+                match_var_nm_1L_chr = "short_name_chr", evaluate_1L_lgl = F), 
                 1))
             write_ts_mdl_plts(brms_mdl = model_mdl, table_predn_mdl = table_predn_mdl, 
                 tfd_data_tb = outp_smry_ls$scored_data_tb %>% 
@@ -1245,9 +1245,9 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
                     names() %>% stringr::str_remove_all("_change") %>% 
                     stringr::str_remove_all("_baseline") %>% 
                     unique() %>% purrr::discard(~.x == "(Intercept)")), 
-                    mdl_type_chr = mdl_type_1L_chr, tfmn_chr = ready4fun::get_from_lup_obj(outp_smry_ls$mdl_types_lup, 
+                    mdl_type_chr = mdl_type_1L_chr, tfmn_chr = ready4::get_from_lup_obj(outp_smry_ls$mdl_types_lup, 
                       match_value_xx = mdl_type_1L_chr, match_var_nm_1L_chr = "short_name_chr", 
-                      target_var_nm_1L_chr = "tfmn_chr", evaluate_lgl = F))
+                      target_var_nm_1L_chr = "tfmn_chr", evaluate_1L_lgl = F))
                 }), mdls_smry_tb = outp_smry_ls$mdls_smry_tb, 
         mdl_types_lup = mdl_types_lup, predictors_lup = outp_smry_ls$predictors_lup, 
         round_var_nm_1L_chr = outp_smry_ls$round_var_nm_1L_chr, 
@@ -1277,11 +1277,10 @@ write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable
 #' @rdname write_shareable_mdls_to_dv
 #' @export 
 #' @importFrom tibble tibble
-#' @importFrom ready4use write_fls_to_dv_ds
+#' @importFrom ready4 write_to_dv_with_wait get_fl_id_from_dv_ls
 #' @importFrom dataverse get_dataset
 #' @importFrom dplyr mutate
 #' @importFrom purrr map_int
-#' @importFrom ready4fun get_fl_id_from_dv_ls
 #' @keywords internal
 write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "", 
     share_ingredients_1L_lgl = T, output_dir_chr = NA_character_) 
@@ -1298,14 +1297,14 @@ write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Sha
             title_chr = paste0("A shareable (contains no confidential data) statistical model, ", 
                 names(outp_smry_ls$shareable_mdls_ls), ".", shareable_title_detail_1L_chr))
     }
-    ready4use::write_fls_to_dv_ds(shareable_mdls_tb, dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
+    ready4::write_to_dv_with_wait(shareable_mdls_tb, dv_nm_1L_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
         ds_url_1L_chr = outp_smry_ls$dv_ls$ds_url_1L_chr, parent_dv_dir_1L_chr = outp_smry_ls$dv_ls$parent_dv_dir_1L_chr, 
         paths_to_dirs_chr = output_dir_chr[ifelse(share_ingredients_1L_lgl, 
             2, 3)], paths_are_rltv_1L_lgl = F, inc_fl_types_chr = ".RDS")
     if (!share_ingredients_1L_lgl) {
         ds_ls <- dataverse::get_dataset(outp_smry_ls$dv_ls$ds_url_1L_chr)
         shareable_mdls_tb <- shareable_mdls_tb %>% dplyr::mutate(dv_nm_chr = outp_smry_ls$dv_ls$dv_nm_1L_chr, 
-            fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ready4fun::get_fl_id_from_dv_ls(ds_ls, 
+            fl_ids_int = ds_obj_nm_chr %>% purrr::map_int(~ready4::get_fl_id_from_dv_ls(ds_ls, 
                 fl_nm_1L_chr = paste0(.x, ".RDS")) %>% as.integer()))
     }
     return(shareable_mdls_tb)
@@ -1333,7 +1332,7 @@ write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Sha
 #' @importFrom utils data
 #' @importFrom ready4show write_mdl_plt_fl
 #' @importFrom purrr map_dfr
-#' @importFrom ready4fun get_from_lup_obj
+#' @importFrom ready4 get_from_lup_obj
 #' @importFrom dplyr arrange desc
 write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var_nm_1L_chr, predr_var_desc_1L_chr, 
     predr_vals_dbl, path_to_write_to_1L_chr, new_dir_nm_1L_chr = "A_Candidate_Mdls_Cmprsn", 
@@ -1354,9 +1353,9 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
         width_1L_dbl = 10)
     smry_of_sngl_predr_mdls_tb <- purrr::map_dfr(mdl_types_chr, 
         ~{
-            tfmn_1L_chr <- ready4fun::get_from_lup_obj(mdl_types_lup, 
+            tfmn_1L_chr <- ready4::get_from_lup_obj(mdl_types_lup, 
                 match_var_nm_1L_chr = "short_name_chr", match_value_xx = .x, 
-                target_var_nm_1L_chr = "tfmn_chr", evaluate_lgl = F)
+                target_var_nm_1L_chr = "tfmn_chr", evaluate_1L_lgl = F)
             write_mdl_type_sngl_outps(data_tb, folds_1L_int = folds_1L_int, 
                 depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, start_1L_chr = start_1L_chr, 
                 tfmn_1L_chr = tfmn_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr, 
@@ -1392,8 +1391,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @importFrom stringr str_remove
 #' @importFrom rlang exec
 #' @importFrom dplyr filter
-#' @importFrom ready4fun get_from_lup_obj
-#' @importFrom ready4use write_fls_to_dv_ds
+#' @importFrom ready4 get_from_lup_obj write_to_dv_with_wait
 #' @importFrom tibble tibble
 #' @keywords internal
 write_study_outp_ds <- function (input_params_ls, dv_ds_nm_and_url_chr = NULL, rprt_lups_ls = NULL, 
@@ -1469,19 +1467,19 @@ write_study_outp_ds <- function (input_params_ls, dv_ds_nm_and_url_chr = NULL, r
             output_type_1L_chr = output_format_ls$supplementary_outp_1L_chr, 
             rprt_lup = rprt_lup %>% dplyr::filter(rprt_nms_chr %in% 
                 included_rprts_chr), share_mdls_1L_lgl = (reference_1L_int == 
-                0), subtitle_1L_chr = ready4fun::get_from_lup_obj(rprt_lup, 
+                0), subtitle_1L_chr = ready4::get_from_lup_obj(rprt_lup, 
                 match_value_xx = "AAA_SHARING_MTH", match_var_nm_1L_chr = "rprt_nms_chr", 
-                target_var_nm_1L_chr = "title_chr", evaluate_lgl = F), 
+                target_var_nm_1L_chr = "title_chr", evaluate_1L_lgl = F), 
             transform_paths_ls = transform_paths_ls, use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>% 
             append(path_params_ls[1:2])
         params_ls %>% write_report(paths_ls = paths_ls, rprt_nm_1L_chr = "AAA_SHARING_MTH", 
             abstract_args_ls = abstract_args_ls, header_yaml_args_ls = header_yaml_args_ls, 
             rprt_lup = rprt_lup)
     })
-    ready4use::write_fls_to_dv_ds(dss_tb = tibble::tibble(ds_obj_nm_chr = "AAA_SHARING_MTH", 
-        title_chr = rprt_lups_ls[[1]] %>% ready4fun::get_from_lup_obj(match_value_xx = "AAA_SHARING_MTH", 
+    ready4::write_to_dv_with_wait(dss_tb = tibble::tibble(ds_obj_nm_chr = "AAA_SHARING_MTH", 
+        title_chr = rprt_lups_ls[[1]] %>% ready4::get_from_lup_obj(match_value_xx = "AAA_SHARING_MTH", 
             match_var_nm_1L_chr = "rprt_nms_chr", target_var_nm_1L_chr = "title_chr", 
-            evaluate_lgl = F)), dv_nm_1L_chr = dv_ds_nm_and_url_chr[1], 
+            evaluate_1L_lgl = F)), dv_nm_1L_chr = dv_ds_nm_and_url_chr[1], 
         ds_url_1L_chr = dv_ds_nm_and_url_chr[2], parent_dv_dir_1L_chr = paths_ls$dv_dir_1L_chr, 
         paths_to_dirs_chr = paths_ls$reports_dir_1L_chr, inc_fl_types_chr = inc_fl_types_chr, 
         paths_are_rltv_1L_lgl = F)

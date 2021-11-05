@@ -113,7 +113,7 @@ reltv_path_1L_chr <-ifelse(params$is_child_1L_lgl,
                            "../../Output/"
                            )
 saveRDS(fk_data_tb,paste0(reltv_path_1L_chr,"fk_data_tb.rds"))
-# tempfile(paste0(here::here("AQol_6D longitudinal/Output"),"/fk_data_tb"), fileext = ".rds")
+# tempfile(paste0(here::here("AQol_6D longitudinal/Output"),"/fk_data_tb"), fileext = ".RDS")
 ```
 
 

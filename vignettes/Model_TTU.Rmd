@@ -178,7 +178,7 @@ cmprsns_ls <- write_predr_and_covars_cmprsn(scored_data_tb = ds_tb,
                                             seed_1L_int = seed_1L_int)
 ```
 
-Now, we compare the performance of single predictor models of our preferred model type (in our case, a `r mdl_smry_ls$mdl_types_lup %>% ready4fun::get_from_lup_obj(target_var_nm_1L_chr = "long_name_chr",match_value_xx = cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr[1], match_var_nm_1L_chr = "short_name_chr", evaluate_lgl = F)`) for each candidate predictor. The call to the `write_predr_and_covars_cmprsn`{.R} function saved the tested models along with model plots in the "B_Candidate_Predrs_Cmprsn" sub-directory of "Output". These results are also viewable as a table.
+Now, we compare the performance of single predictor models of our preferred model type (in our case, a `r mdl_smry_ls$mdl_types_lup %>% ready4::get_from_lup_obj(target_var_nm_1L_chr = "long_name_chr",match_value_xx = cmprsns_ls$mdl_smry_ls$prefd_mdl_types_chr[1], match_var_nm_1L_chr = "short_name_chr", evaluate_1L_lgl = F)`) for each candidate predictor. The call to the `write_predr_and_covars_cmprsn`{.R} function saved the tested models along with model plots in the "B_Candidate_Predrs_Cmprsn" sub-directory of "Output". These results are also viewable as a table.
 
 ```{r}
 cmprsns_ls$mdl_smry_ls$predr_cmprsn_tb %>%
