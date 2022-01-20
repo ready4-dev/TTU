@@ -1,10 +1,16 @@
+url: https://ready4-dev.github.io/TTU/
+
+template:
+  bootstrap: 5
+  bootswatch: journal
+
 home:
   links:
   - text: Manual - User (PDF)
     href: https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/TTU_User.pdf
   - text: Manual - Developer (PDF)
     href: https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/TTU_Developer.pdf
-  - text: Project website
+  - text: ready4 framework
     href:  https://ready4-dev.github.io/ready4/
 development:
   mode: auto
@@ -14,9 +20,6 @@ reference:
   - mdl_types_lup
   - plt_types_lup
   - rprt_lup
-- title: "S3 Classes"
-- contents:
-  - TTU_predictors_lup
 - title: "Functions"
 - contents:
   - add_utility_predn_to_ds
@@ -74,8 +77,6 @@ reference:
   - make_mdl_desc_lines
   - make_nbr_at_fup_text
   - make_nbr_included_text
-  - make_output_format_ls
-  - make_path_params_ls
   - make_predr_vals
   - make_predr_vars_nms_ls
   - make_predrs_for_best_mdls
@@ -92,7 +93,6 @@ reference:
   - make_ten_folds_tbl_title
   - make_tfmn_cmprsn_plt
   - make_within_between_ratios_text
-  - predict_utility
   - print_all_plts_for_mdl_set
   - print_cohort_table
   - print_cors_tbl
@@ -109,9 +109,6 @@ reference:
   - transform_mdl_vars_with_clss
   - transform_tb_to_mdl_inp
   - write_analyses
-  - write_csp_output
-  - write_main_outp_dir
-  - write_manuscript
   - write_mdl_cmprsn
   - write_mdl_type_covars_mdls
   - write_mdl_type_multi_outps

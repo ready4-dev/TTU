@@ -3,7 +3,7 @@ ready4fun::write_fn_type_dirs()
 # MANUAL STEP. Write all your functions to R files in the new "fns" directory.
 fns_env_ls <- ready4fun::read_fns(c("data-raw/fns/","data-raw/mthds/"),
                                   fns_env = new.env(parent = globalenv()))
-x_ready4fun_manifest <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Develop, Report and Share Transfer to Utility Mapping Algorithms",
+x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utility Mapping Algorithms",
                                                     pkg_desc_1L_chr = "Tools for developping, reporting and sharing Transfer To Utility (TTU) mapping algorithms that predict health utility from other health measures.
                             This development version of the TTU package has been made available as part of the process of testing and documenting the package.
                             If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).",
@@ -15,7 +15,11 @@ x_ready4fun_manifest <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Develop,
                                                     urls_chr = c("https://ready4-dev.github.io/TTU/",
                                                                  "https://github.com/ready4-dev/TTU",
                                                                  "https://ready4-dev.github.io/ready4/")) %>%
-  ready4fun::make_manifest(addl_pkgs_ls = ready4fun::make_addl_pkgs_ls(depends_chr = c("eq5d","ggfortify"),
+  ready4fun::make_manifest(addl_pkgs_ls = ready4fun::make_addl_pkgs_ls(depends_chr = c("ggfortify",#eq5d
+                                                                                       "ready4",
+                                                                                       "scorz",
+                                                                                       "specific"
+                                                                                       ),
                                                                        suggests_chr = c("knitr","rmarkdown"),
                                                                        imports_chr = c("betareg","caret","knitrBootstrap")),
                            build_ignore_ls = ready4fun::make_build_ignore_ls(file_nms_chr = c("initial_setup.R")),
@@ -77,8 +81,8 @@ x_ready4fun_manifest <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Develop,
                                                                                                  "make_nbr_at_fup_text",
                                                                                                  "make_nbr_included_text",
                                                                                                  "make_new_TTU_predictors_lup",
-                                                                                                 "make_output_format_ls",
-                                                                                                 "make_path_params_ls",
+                                                                                                 #"make_output_format_ls",
+                                                                                                 #"make_path_params_ls",
                                                                                                  "make_predr_vals",
                                                                                                  "make_predr_vars_nms_ls",
                                                                                                  "make_predrs_for_best_mdls",
@@ -97,7 +101,7 @@ x_ready4fun_manifest <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Develop,
                                                                                                  "make_ten_folds_tbl_title",
                                                                                                  "make_tfmn_cmprsn_plt",
                                                                                                  "make_within_between_ratios_text",
-                                                                                                 "predict_utility",
+                                                                                                 #"predict_utility",
                                                                                                  "print_all_plts_for_mdl_set",
                                                                                                  "print_cohort_table",
                                                                                                  "print_cors_tbl",
@@ -115,9 +119,9 @@ x_ready4fun_manifest <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Develop,
                                                                                                  "transform_mdl_vars_with_clss",
                                                                                                  "transform_tb_to_mdl_inp",
                                                                                                  "write_analyses",
-                                                                                                 "write_csp_output",
-                                                                                                 "write_main_outp_dir",
-                                                                                                 "write_manuscript",
+                                                                                                 #"write_csp_output",
+                                                                                                 #"write_main_outp_dir",
+                                                                                                 #"write_manuscript",
                                                                                                  "write_mdl_cmprsn",
                                                                                                  "write_mdl_type_covars_mdls",
                                                                                                  "write_mdl_type_multi_outps",
@@ -138,20 +142,20 @@ x_ready4fun_manifest <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Develop,
                            lifecycle_stage_1L_chr = "experimental",
                            path_to_pkg_logo_1L_chr = "../../../../../Documentation/Images/TTU-logo/default.png",
                            piggyback_to_1L_chr = "ready4-dev/ready4",
-                           ready4_type_1L_chr = "authoring",
+                           ready4_type_1L_chr = "modelling",
                            zenodo_badge_1L_chr = "[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5646593.svg)](https://doi.org/10.5281/zenodo.5646593)")
-x_ready4class_constructor <- ready4class::ready4class_constructor() %>%
-  dplyr::bind_rows(tibble::tribble(
-    ~ make_s3_lgl, ~ name_stub_chr, ~ pt_ls, ~ pt_chkr_pfx_ls, ~ pt_ns_ls, ~ vals_ls, ~ allowed_vals_ls, ~ min_max_vals_ls, ~ start_end_vals_ls, ~ class_desc_chr, ~ parent_class_chr, ~ slots_ls, ~ meaningful_nms_ls, ~ inc_clss_ls, ~ asserts_ls,
-    TRUE, "predictors_lup", list("tibble"), list("is_"),list("tibble"),list(short_name_chr = "character(0)",
-                                                                            long_name_chr = "character(0)",
-                                                                            min_val_dbl = "numeric(0)",
-                                                                            max_val_dbl = "numeric(0)",
-                                                                            class_chr = "character(0)",
-                                                                            increment_dbl = "numeric(0)",
-                                                                            class_fn_chr = "character(0)",
-                                                                            mdl_scaling_dbl = "numeric(0)",
-                                                                            covariate_lgl = "logical(0)"), NULL,NULL, NULL, "TTU S3 class for candidate predictors lookup table", NA_character_, NULL, NULL, NULL, NULL))
+# x_ready4class_constructor <- ready4class::ready4class_constructor() %>%
+#   dplyr::bind_rows(tibble::tribble(
+#     ~ make_s3_lgl, ~ name_stub_chr, ~ pt_ls, ~ pt_chkr_pfx_ls, ~ pt_ns_ls, ~ vals_ls, ~ allowed_vals_ls, ~ min_max_vals_ls, ~ start_end_vals_ls, ~ class_desc_chr, ~ parent_class_chr, ~ slots_ls, ~ meaningful_nms_ls, ~ inc_clss_ls, ~ asserts_ls,
+#     TRUE, "predictors_lup", list("tibble"), list("is_"),list("tibble"),list(short_name_chr = "character(0)",
+#                                                                             long_name_chr = "character(0)",
+#                                                                             min_val_dbl = "numeric(0)",
+#                                                                             max_val_dbl = "numeric(0)",
+#                                                                             class_chr = "character(0)",
+#                                                                             increment_dbl = "numeric(0)",
+#                                                                             class_fn_chr = "character(0)",
+#                                                                             mdl_scaling_dbl = "numeric(0)",
+#                                                                             covariate_lgl = "logical(0)"), NULL,NULL, NULL, "TTU S3 class for candidate predictors lookup table", NA_character_, NULL, NULL, NULL, NULL))
 datasets_ls <- list(tibble::tibble(short_name_chr = c("OLS_NTF",
                                                       "OLS_LOG",
                                                       "OLS_LOGIT",
@@ -247,11 +251,11 @@ datasets_ls <- list(tibble::tibble(short_name_chr = c("OLS_NTF",
                       ready4fun::make_pkg_ds_ls(db_1L_chr = "rprt_lup",
                                                 title_1L_chr = "Report types lookup table",
                                                 desc_1L_chr = "A lookup table of the different report types supported by TTU functions"))
-x_ready4pack_manifest <- ready4pack::make_pt_ready4pack_manifest(x_ready4fun_manifest,
-                                                              constructor_r3 = x_ready4class_constructor,
+z <- ready4pack::make_pt_ready4pack_manifest(x,
+                                                              #constructor_r3 = x_ready4class_constructor,
                                                               pkg_ds_ls_ls = datasets_ls) %>%
   ready4pack::ready4pack_manifest()
-x_xx <- ready4::author(x_ready4pack_manifest)
+z <- ready4::author(z)
 # usethis::use_package("readr")
 # usethis::use_package("rgl")
 # piggyback::pb_new_release("ready4-dev/TTU",

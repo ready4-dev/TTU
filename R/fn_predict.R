@@ -30,7 +30,7 @@ predict_from_shareable_mdl <- function (model_mdl, data_tb, predn_type_1L_chr = 
 #' @param na.action PARAM_DESCRIPTION, Default: na.pass
 #' @param at PARAM_DESCRIPTION, Default: 0.5
 #' @param sd_1L_dbl Standard deviation (a double vector of length one)
-#' @param ... Additional arguments (an additional arguments)
+#' @param ... Additional arguments
 #' @return NULL
 #' @rdname predict_shrble_betareg
 #' @export 
@@ -157,7 +157,7 @@ predict_shrble_betareg <- function (object, newdata = NULL, type = c("response",
 #' @param terms PARAM_DESCRIPTION, Default: NULL
 #' @param na.action PARAM_DESCRIPTION, Default: na.pass
 #' @param sd_1L_dbl Standard deviation (a double vector of length one)
-#' @param ... Additional arguments (an additional arguments)
+#' @param ... Additional arguments
 #' @return NULL
 #' @rdname predict_shrble_glm
 #' @export 
@@ -229,7 +229,7 @@ predict_shrble_glm <- function (object, newdata = NULL, type = c("link", "respon
 #' @param pred.var PARAM_DESCRIPTION, Default: res.var/weights
 #' @param weights PARAM_DESCRIPTION, Default: 1
 #' @param sd_1L_dbl Standard deviation (a double vector of length one)
-#' @param ... Additional arguments (an additional arguments)
+#' @param ... Additional arguments
 #' @return NULL
 #' @rdname predict_shrble_lm
 #' @export 
@@ -514,13 +514,17 @@ predict_uncnstrd_utl <- function (data_tb, model_mdl, new_data_is_1L_chr = "Pred
 #' @return Predicted utility (a double vector)
 #' @rdname predict_utility
 #' @export 
+#' @importFrom lifecycle deprecate_soft
 #' @importFrom rlang exec
+#' @keywords internal
 predict_utility <- function (data_tb, tfmn_1L_chr = "NTF", model_mdl, force_min_max_1L_lgl = T, 
     force_new_data_1L_lgl = F, utl_min_val_1L_dbl = 0.03, impute_1L_lgl = T, 
     utl_cls_fn = NULL, new_data_is_1L_chr = "Predicted", predn_type_1L_chr = NULL, 
     sd_dbl = NA_real_, tfmn_for_bnml_1L_lgl = F, family_1L_chr = NA_character_, 
     is_brms_mdl_1L_lgl = T) 
 {
+    lifecycle::deprecate_soft("0.0.0.9324", "TTU::predict_utility()", 
+        "specific::predict_vars()")
     predd_utl_dbl <- predict_uncnstrd_utl(data_tb = data_tb, 
         model_mdl = model_mdl, new_data_is_1L_chr = new_data_is_1L_chr, 
         predn_type_1L_chr = predn_type_1L_chr, sd_dbl = sd_dbl, 

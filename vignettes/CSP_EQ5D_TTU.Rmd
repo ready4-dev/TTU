@@ -20,7 +20,6 @@ This vignette is an example of implementing of a reproducible workflow to:
 The steps in this reporting workflow should only be undertaken once an optimal set of input values have been identified by an [initial exploratory analysis](Model_TTU.html). Most of the steps in this example are described with minimal explanation here as they are discussed in more detail in the [AQoL-6D TTU reporting workflow vignette](CSP_AQOL6D_TTU.html). Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.
 
 ```{r echo = TRUE, message=FALSE}
-library(eq5d)
 library(TTU)
 ```
 
@@ -30,7 +29,7 @@ library(TTU)
 
 ### Bibliograhic data
 ```{r}
-header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = ready4show::authors_tb,
+header_yaml_args_ls <- ready4show::make_header_yaml_args_ls(authors_tb = ready4show::authors_tb,
                                                 institutes_tb = ready4show::institutes_tb,
                                                 title_1L_chr = "A hypothetical study using fake data for instructional purposes only",
                                                 keywords_chr = c("this","is","a","replication","using","fake","data","do", "not","cite"))
@@ -38,7 +37,7 @@ header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = ready4show::authors
 
 ### Report formatting
 ```{r }
-output_format_ls <- make_output_format_ls(manuscript_outp_1L_chr = "PDF",
+output_format_ls <- ready4show::make_output_format_ls(manuscript_outp_1L_chr = "PDF",
                                           manuscript_digits_1L_int = 2L,
                                           supplementary_outp_1L_chr = "PDF",
                                           supplementary_digits_1L_int = 2L)
@@ -183,7 +182,7 @@ input_params_ls <- make_study_descs_ls(input_params_ls = input_params_ls,
 When rendering the draft manuscript, we have opted in this example to also upload it to our dataset (`write_to_dv_1L_lgl = T`). This is not recommended if you plan to further develop the draft into an article for publication.
 
 ```{r eval = F}
-results_ls <- write_manuscript(input_params_ls = input_params_ls,
+results_ls <- ready4show::write_manuscript(input_params_ls = input_params_ls,
                                write_to_dv_1L_lgl = T)
 ```
 

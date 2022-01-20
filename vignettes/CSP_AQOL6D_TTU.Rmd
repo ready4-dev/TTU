@@ -24,6 +24,7 @@ As with all the vignettes included with the TTU package, this example is illustr
 
 ```{r echo = TRUE, message=FALSE}
 library(TTU)
+library(specific)
 ```
 
 # Input parameters
@@ -64,7 +65,7 @@ institutes_tb <- ready4show::ready4show_institutes() %>%
 We combine the data about authors with other bibliographic information.
 
 ```{r}
-header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = authors_tb,
+header_yaml_args_ls <- ready4show::make_header_yaml_args_ls(authors_tb = authors_tb,
                                                 institutes_tb = institutes_tb,
                                                 title_1L_chr = "A hypothetical study using fake data for instructional purposes only",
                                                 keywords_chr = c("this","is","a","replication","using","fake","data","do", "not","cite"))
@@ -74,7 +75,7 @@ header_yaml_args_ls <- make_header_yaml_args_ls(authors_tb = authors_tb,
 We add parameters relating to the desired output format of the reports we will be producing.
 
 ```{r }
-output_format_ls <- make_output_format_ls(manuscript_outp_1L_chr = "PDF",
+output_format_ls <- ready4show::make_output_format_ls(manuscript_outp_1L_chr = "PDF",
                                           manuscript_digits_1L_int = 2L,
                                           supplementary_outp_1L_chr = "PDF",
                                           supplementary_digits_1L_int = 2L)
@@ -146,7 +147,7 @@ ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("K6","PHQ9"),#
 We create a lookup table with further metadata on the dataset variables that we specified as our candidate predictors in the `candidate_predrs_chr` element of `ds_descvs_ls`, as well as the preferred covariates that we will specify later in the `make_input_params` function.
 
 ```{r}
-predictors_lup <- make_pt_TTU_predictors_lup(short_name_chr = c(ds_descvs_ls$candidate_predrs_chr, "SOFAS"),
+predictors_lup <- specific::specific_predictors(specific::make_pt_specific_predictors(short_name_chr = c(ds_descvs_ls$candidate_predrs_chr, "SOFAS"),
                                               long_name_chr = c("K6 total score", "PHQ9 total score", "SOFAS total score"),
                                               min_val_dbl = 0,
                                               max_val_dbl = c(24,27,100),
@@ -156,8 +157,7 @@ predictors_lup <- make_pt_TTU_predictors_lup(short_name_chr = c(ds_descvs_ls$can
                                                                "youthvars::youthvars_phq9",
                                                                "youthvars::youthvars_sofas"),
                                               mdl_scaling_dbl = 0.01,
-                                              covariate_lgl = F) %>%
-  TTU_predictors_lup()
+                                              covariate_lgl = F))
 ```
 
 ### Multi-Attribute Utility Instrument (MAUI) parameters
@@ -258,7 +258,7 @@ input_params_ls <- make_study_descs_ls(input_params_ls = input_params_ls,
 We can now pass the updated input parameters list to the `write_manuscript` function. This will produce an initial draft of a scientific manuscript (detailed methods and results, a basic introduction and no discussion), by first downloading an extension to the TTU package (https://github.com/ready4-dev/ttu_lng_ss).  If (AND ONLY IF), you are sure that you will never develop the manuscript further with a view to future publication, you can add this automatically generated draft to the study dataset by adding `write_to_dv_1L_lgl = T` to the function call (as below). 
 
 ```{r eval = F}
-results_ls <- write_manuscript(input_params_ls = input_params_ls,
+results_ls <- ready4show::write_manuscript(input_params_ls = input_params_ls,
                                write_to_dv_1L_lgl = T)
 ```
 

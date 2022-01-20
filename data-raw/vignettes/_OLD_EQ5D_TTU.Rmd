@@ -116,7 +116,7 @@ analysis_params_ls <- list(ds_descvs_ls = ds_descvs_ls,
 ```{r echo = TRUE }
 rprt_lup <- TTU::rprt_lup 
 file.create("aaaaaaaaaa.txt") 
-paths_ls <- TTU::write_main_outp_dir(path_params_ls, 
+paths_ls <- ready4show::write_main_outp_dir(path_params_ls, 
                                      use_fake_data_1L_lgl = use_fake_data_1L_lgl)
 paths_ls$path_to_current_1L_chr <- path_params_ls$path_to_current_1L_chr
 ```
@@ -158,7 +158,7 @@ params_ls <- list(candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexu
      utl_class_fn_1L_chr = "as.numeric") %>%
   append(analysis_params_ls) %>%
   append(path_params_ls[1:2])
-  TTU::write_report(params_ls = params_ls,
+  ready4show::write_report(params_ls = params_ls,
                     paths_ls = paths_ls,
                     R_fl_nm_1L_chr = paths_ls$R_fl_nm_1L_chr,
                     rprt_nm_1L_chr = "AAA_PMRY_ANLYS_MTH",
@@ -170,7 +170,7 @@ params_ls <- list(candidate_covar_nms_chr = c("d_sex_birth_s", "d_age",  "d_sexu
 ## Report results
 
 ```{r echo = TRUE }
-TTU::write_rprt_with_rcrd(path_to_outp_fl_1L_chr = paste0(paths_ls$output_data_dir_1L_chr,"/I_ALL_OUTPUT_.RDS"), 
+ready4show::write_rprt_with_rcrd(path_to_outp_fl_1L_chr = paste0(paths_ls$output_data_dir_1L_chr,"/I_ALL_OUTPUT_.RDS"), 
                      paths_ls = paths_ls,
                      R_fl_nm_1L_chr = paths_ls$R_fl_nm_1L_chr,
                      header_yaml_args_ls = header_yaml_args_ls,
@@ -202,7 +202,7 @@ if(!is.null(dv_ls)){
                               use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>%
     append(path_params_ls[1:2])
   params_ls %>%
-    TTU::write_report(paths_ls = paths_ls,
+    ready4show::write_report(paths_ls = paths_ls,
                       R_fl_nm_1L_chr = paths_ls$R_fl_nm_1L_chr,
                       rprt_nm_1L_chr = "AAA_SHARING_MTH",
                       abstract_args_ls = NULL,
@@ -250,7 +250,7 @@ TTU::write_scndry_analysis(analysis_params_ls = analysis_params_ls %>%
 ## Report results
 
 ```{r echo = TRUE }
-TTU::write_rprt_with_rcrd(path_to_outp_fl_1L_chr = here::here(paths_ls$path_from_top_level_1L_chr,
+ready4show::write_rprt_with_rcrd(path_to_outp_fl_1L_chr = here::here(paths_ls$path_from_top_level_1L_chr,
                                                               paths_ls$write_to_dir_nm_1L_chr,
                                                               paste0("secondary_",reference_1L_int),
                                                               "Output","I_ALL_OUTPUT_.RDS"),
@@ -291,7 +291,7 @@ if(!is.null(dv_ls$secondary_1_dv_chr)){
                               use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>%
     append(path_params_ls[1:2])
    
-    TTU::write_report(params_ls = params_ls,
+    ready4show::write_report(params_ls = params_ls,
                       paths_ls = scndry_paths_ls[names(scndry_paths_ls) != "prmry_analysis_dir_nm_1L_chr"],
                       R_fl_nm_1L_chr = paths_ls$R_fl_nm_1L_chr,
                       rprt_nm_1L_chr = "AAA_SHARING_MTH",
@@ -337,7 +337,7 @@ TTU::write_scndry_analysis(analysis_params_ls = analysis_params_ls %>%
 ## Report results
 
 ```{r echo = TRUE }
-TTU::write_rprt_with_rcrd(path_to_outp_fl_1L_chr = here::here(paths_ls$path_from_top_level_1L_chr,
+ready4show::write_rprt_with_rcrd(path_to_outp_fl_1L_chr = here::here(paths_ls$path_from_top_level_1L_chr,
                                                               paths_ls$write_to_dir_nm_1L_chr,
                                                               paste0("secondary_",reference_1L_int),
                                                               "Output","I_ALL_OUTPUT_.RDS"),
@@ -378,7 +378,7 @@ if(!is.null(dv_ls$secondary_2_dv_chr)){
                               use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>%
     append(path_params_ls[1:2])
   
-    TTU::write_report(params_ls = params_ls,
+    ready4show::write_report(params_ls = params_ls,
                       paths_ls = scndry_paths_ls[names(scndry_paths_ls) != "prmry_analysis_dir_nm_1L_chr"],
                       R_fl_nm_1L_chr = paths_ls$R_fl_nm_1L_chr,
                       rprt_nm_1L_chr = "AAA_SHARING_MTH",

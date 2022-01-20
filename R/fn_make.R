@@ -64,7 +64,7 @@ make_all_mdl_types_smry_tbl <- function (outp_smry_ls, mdls_tb)
 #' @description make_analysis_core_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make analysis core parameters list. The function returns Analysis core parameters (a list).
 #' @param ds_descvs_ls Dataset descriptives (a list)
 #' @param mdl_smry_ls Model summary (a list), Default: make_mdl_smry_ls()
-#' @param output_format_ls Output format (a list), Default: make_output_format_ls()
+#' @param output_format_ls Output format (a list), Default: NULL
 #' @param predictors_lup Predictors (a lookup table)
 #' @param control_ls Control (a list), Default: NULL
 #' @param iters_1L_int Iterations (an integer vector of length one), Default: 4000
@@ -77,8 +77,9 @@ make_all_mdl_types_smry_tbl <- function (outp_smry_ls, mdls_tb)
 #' @return Analysis core parameters (a list)
 #' @rdname make_analysis_core_params_ls
 #' @export 
+#' @importFrom ready4show make_output_format_ls
 #' @keywords internal
-make_analysis_core_params_ls <- function (ds_descvs_ls, mdl_smry_ls = make_mdl_smry_ls(), output_format_ls = make_output_format_ls(), 
+make_analysis_core_params_ls <- function (ds_descvs_ls, mdl_smry_ls = make_mdl_smry_ls(), output_format_ls = NULL, 
     predictors_lup, control_ls = NULL, iters_1L_int = 4000L, 
     prefd_covars_chr = NULL, prefd_mdl_types_chr = NULL, prior_ls = NULL, 
     seed_1L_int = 12345, candidate_covar_nms_chr = NULL, use_fake_data_1L_lgl = NULL) 
@@ -95,6 +96,8 @@ make_analysis_core_params_ls <- function (ds_descvs_ls, mdl_smry_ls = make_mdl_s
     else {
         warning("use_fake_data_1L_lgl is soft deprecated - it is recommended to specify whether the dataset is fake in the is_fake_1L_lgl element of the list obkect passed to the ds_descvs_ls argument")
     }
+    if (is.null(output_format_ls)) 
+        output_format_ls <- ready4show::make_output_format_ls()
     analysis_core_params_ls <- list(candidate_covar_nms_chr = candidate_covar_nms_chr, 
         ds_descvs_ls = ds_descvs_ls, iters_1L_int = iters_1L_int, 
         mdl_smry_ls = mdl_smry_ls, nbr_of_digits_1L_int = output_format_ls$supplementary_digits_1L_int, 
@@ -745,9 +748,6 @@ make_fake_eq5d_ds <- function (country_1L_chr = "UK", version_1L_chr = "5L", typ
     seed_1L_int = 1234, sample_from_1L_int = 10000) 
 {
     set.seed(seed_1L_int)
-    requireNamespace("eq5d")
-    if (force_attach_1L_lgl) 
-        attachNamespace("eq5d")
     data_tb <- purrr::map(c("MO", "SC", "UA", "PD", "AD"), ~list(1:5) %>% 
         stats::setNames(.x)) %>% purrr::flatten_dfr() %>% tidyr::expand(MO, 
         SC, UA, PD, AD) %>% dplyr::mutate(total_eq5d = eq5d::eq5d(., 
@@ -874,9 +874,12 @@ make_funding_text <- function (results_ls)
 #' @return Header yaml arguments (a list)
 #' @rdname make_header_yaml_args_ls
 #' @export 
+#' @importFrom lifecycle deprecate_soft
 make_header_yaml_args_ls <- function (authors_tb, institutes_tb, title_1L_chr, keywords_chr, 
     fl_nm_1L_chr = "header_common.yaml", use_fake_data_1L_lgl = F) 
 {
+    lifecycle::deprecate_soft("0.0.0.9324", "TTU::make_header_yaml_args_ls()", 
+        "ready4::make_header_yaml_args_ls()")
     if (!use_fake_data_1L_lgl) {
         header_yaml_args_ls <- list(authors_tb = authors_tb, 
             institutes_tb = institutes_tb, fl_nm_1L_chr = "header_common.yaml", 
@@ -982,7 +985,7 @@ make_indpnt_predrs_lngl_tbls_ref <- function (params_ls)
 #' @param dv_ds_nm_and_url_chr Dataverse dataset name and url (a character vector), Default: NULL
 #' @param iters_1L_int Iterations (an integer vector of length one), Default: 4000
 #' @param mdl_smry_ls Model summary (a list), Default: make_mdl_smry_ls()
-#' @param output_format_ls Output format (a list), Default: make_output_format_ls()
+#' @param output_format_ls Output format (a list), Default: NULL
 #' @param path_params_ls Path parameters (a list), Default: NULL
 #' @param prefd_covars_chr Preferred covariates (a character vector), Default: NULL
 #' @param prefd_mdl_types_chr Preferred model types (a character vector), Default: NULL
@@ -993,14 +996,17 @@ make_indpnt_predrs_lngl_tbls_ref <- function (params_ls)
 #' @return Parameters (a list of lists)
 #' @rdname make_input_params
 #' @export 
+#' @importFrom ready4show make_output_format_ls make_path_params_ls
 make_input_params <- function (ds_tb, ds_descvs_ls, header_yaml_args_ls, maui_params_ls, 
     predictors_lup, control_ls = NULL, dv_ds_nm_and_url_chr = NULL, 
-    iters_1L_int = 4000L, mdl_smry_ls = make_mdl_smry_ls(), output_format_ls = make_output_format_ls(), 
+    iters_1L_int = 4000L, mdl_smry_ls = make_mdl_smry_ls(), output_format_ls = NULL, 
     path_params_ls = NULL, prefd_covars_chr = NULL, prefd_mdl_types_chr = NULL, 
     prior_ls = NULL, seed_1L_int = 12345, scndry_anlys_params_ls = NULL, 
     write_new_dir_1L_lgl = T) 
 {
-    path_params_ls <- make_path_params_ls(use_fake_data_1L_lgl = ds_descvs_ls$is_fake_1L_lgl, 
+    if (is.null(output_format_ls)) 
+        output_format_ls <- ready4show::make_output_format_ls()
+    path_params_ls <- ready4show::make_path_params_ls(use_fake_data_1L_lgl = ds_descvs_ls$is_fake_1L_lgl, 
         dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr, write_new_dir_1L_lgl = write_new_dir_1L_lgl)
     params_ls_ls <- make_analysis_core_params_ls(ds_descvs_ls = ds_descvs_ls, 
         output_format_ls = output_format_ls, predictors_lup = predictors_lup, 
@@ -1549,9 +1555,13 @@ make_nbr_included_text <- function (results_ls)
 #' @return Output format (a list)
 #' @rdname make_output_format_ls
 #' @export 
+#' @importFrom lifecycle deprecate_soft
+#' @keywords internal
 make_output_format_ls <- function (manuscript_outp_1L_chr = "Word", manuscript_digits_1L_int = 2L, 
     supplementary_outp_1L_chr = "PDF", supplementary_digits_1L_int = 2L) 
 {
+    lifecycle::deprecate_soft("0.0.0.9324", "TTU::make_output_format_ls()", 
+        "ready4show::make_output_format_ls()")
     output_format_ls <- list(manuscript_outp_1L_chr = manuscript_outp_1L_chr, 
         manuscript_digits_1L_int = manuscript_digits_1L_int, 
         supplementary_outp_1L_chr = supplementary_outp_1L_chr, 
@@ -1570,11 +1580,16 @@ make_output_format_ls <- function (manuscript_outp_1L_chr = "Word", manuscript_d
 #' @return Path parameters (a list)
 #' @rdname make_path_params_ls
 #' @export 
+#' @importFrom lifecycle deprecate_soft
 #' @importFrom purrr pluck
+#' @importFrom ready4show write_main_outp_dir
+#' @keywords internal
 make_path_params_ls <- function (path_to_data_from_top_level_chr = NULL, path_from_top_level_1L_chr = NULL, 
     path_to_current_1L_chr = NULL, dv_ds_nm_and_url_chr = NULL, 
     write_new_dir_1L_lgl = F, use_fake_data_1L_lgl = F, R_fl_nm_1L_chr = "aaaaaaaaaa.txt") 
 {
+    lifecycle::deprecate_soft("0.0.0.9324", "TTU::make_path_params_ls()", 
+        "ready4show::make_path_params_ls()")
     if (is.null(path_to_data_from_top_level_chr)) 
         path_to_data_from_top_level_chr <- ifelse(use_fake_data_1L_lgl, 
             "fake_data.rds", "data.rds")
@@ -1590,7 +1605,7 @@ make_path_params_ls <- function (path_to_data_from_top_level_chr = NULL, path_fr
         path_to_data_from_top_level_chr = path_to_data_from_top_level_chr, 
         path_to_current_1L_chr = path_to_current_1L_chr, dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr)
     if (write_new_dir_1L_lgl) 
-        path_params_ls$paths_ls <- write_main_outp_dir(path_params_ls, 
+        path_params_ls$paths_ls <- ready4show::write_main_outp_dir(path_params_ls, 
             use_fake_data_1L_lgl = use_fake_data_1L_lgl, R_fl_nm_1L_chr = R_fl_nm_1L_chr)
     return(path_params_ls)
 }
@@ -2347,6 +2362,7 @@ make_smry_of_brm_mdl <- function (mdl_ls, data_tb, depnt_var_nm_1L_chr = "utl_to
 #' @return Summary of one predictor model (a tibble)
 #' @rdname make_smry_of_mdl_outp
 #' @export 
+#' @importFrom lifecycle deprecate_soft
 #' @importFrom utils data
 #' @importFrom dplyr filter pull summarise_all mutate select everything
 #' @importFrom rlang sym
@@ -2361,6 +2377,8 @@ make_smry_of_mdl_outp <- function (data_tb, model_mdl = NULL, folds_1L_int = 10,
     covar_var_nms_chr = NA_character_, mdl_type_1L_chr = "OLS_NTF", 
     mdl_types_lup = NULL, predn_type_1L_chr = NULL) 
 {
+    lifecycle::deprecate_soft("0.0.0.9323", "TTU::make_smry_of_mdl_outp()", 
+        "specific::make_smry_of_mdl_outp()")
     if (is.null(mdl_types_lup)) 
         utils::data("mdl_types_lup", envir = environment())
     data_tb <- data_tb %>% dplyr::filter(!is.na(!!rlang::sym(predr_var_nm_1L_chr)))

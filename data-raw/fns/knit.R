@@ -1,5 +1,6 @@
 knit_from_tmpl <- function (params_to_expand_ls, path_to_tmpl_1L_chr)
 {
+  lifecycle::deprecate_soft("0.0.0.9323","TTU::knit_from_tmpl()","ready4show::knit_from_tmpl()")
   src <- purrr::map(params_to_expand_ls,
                     ~{
                       args_ls <- append(list(file = path_to_tmpl_1L_chr),

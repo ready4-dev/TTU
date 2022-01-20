@@ -7,7 +7,7 @@
 make_analysis_core_params_ls(
   ds_descvs_ls,
   mdl_smry_ls = make_mdl_smry_ls(),
-  output_format_ls = make_output_format_ls(),
+  output_format_ls = NULL,
   predictors_lup,
   control_ls = NULL,
   iters_1L_int = 4000L,
@@ -24,7 +24,7 @@ make_analysis_core_params_ls(
 
 \item{mdl_smry_ls}{Model summary (a list), Default: make_mdl_smry_ls()}
 
-\item{output_format_ls}{Output format (a list), Default: make_output_format_ls()}
+\item{output_format_ls}{Output format (a list), Default: NULL}
 
 \item{predictors_lup}{Predictors (a lookup table)}
 

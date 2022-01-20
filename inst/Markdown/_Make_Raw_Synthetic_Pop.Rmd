@@ -1,0 +1,119 @@
+---
+title: "Raw_Synthetic"
+author: "Matthew Hamilton & Caroline Gao"
+date: "17/03/2021"
+output: html_document
+params:
+  is_child_1L_lgl: T
+---
+
+**This procedure is wrong and should not be implemented. Major edit pending.**
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(magrittr)
+```
+```{r results='hide', message=FALSE}
+here::i_am("Analyses/AQoL-6D/AQol_6D longitudinal/aqol6d_ttu_analysis/Markdown/Child_RMDs/_Make_Raw_Synthetic_Pop.Rmd")
+```
+
+```{r}
+raw_data_tb <- readRDS(here::here("Data cleaning","Data","Combined_cleaned_V4.rds")) %>%
+  add_interval_var()
+  # dplyr::group_by(fkClientID) %>%
+  # dplyr::mutate(bl_date_dtm = d_interview_date %>% dplyr::first()) %>%
+  # dplyr::mutate(interval_dbl = purrr::map2_dbl(bl_date_dtm,
+  #                                              d_interview_date,
+  #                                              ~ lubridate::interval(.x, .y) %>%
+  # lubridate::time_length(unit = "days"))) %>%
+  # dplyr::ungroup()
+```
+
+```{r}
+intervals_lup_tb <- raw_data_tb %>%
+  dplyr::select(fkClientID,d_interview_date, bl_date_dtm, interval_dbl, round) %>%
+  dplyr::arrange(fkClientID)
+```
+
+```{r}
+raw_data_tb %>% dplyr::filter(round==1) %>% dplyr::pull(interval_dbl) %>% summary() 
+```
+```{r}
+raw_data_tb %>% dplyr::filter(round==2) %>% dplyr::pull(interval_dbl) %>% summary() 
+```
+
+```{r}
+raw_data_tb <- raw_data_tb %>% 
+  dplyr::select(fkClientID, round, interval_dbl,  #d_interview_date,
+                c_p_diag_s , s_centre, c_clinical_staging_s, 
+                d_age, d_gender, d_sex_birth_s , d_sexual_ori_s,
+                d_country_bir_s, d_ATSI,d_english_home, d_english_native, 
+                d_relation_s,  d_studying_working, k6_total, 
+                phq9_total, bads_total, gad7_total,oasis_total,
+                scared_total, participation,
+                contains("aqol6d"),c_sofas)
+fk_data_ls <- synthpop::syn(raw_data_tb, visit.sequence = names(raw_data_tb)[!names(raw_data_tb) %in% c("fkClientID")], seed = 1234)
+```
+
+```{r}
+fk_data_ls$syn %>% dplyr::filter(round==1) %>% dplyr::pull(interval_dbl) %>% summary()
+```
+```{r}
+fk_data_ls$syn %>% dplyr::filter(round==2) %>% dplyr::pull(interval_dbl) %>% summary()
+```
+
+```{r}
+fk_data_tb <- fk_data_ls$syn %>%
+  # dplyr::left_join(intervals_lup_tb %>% dplyr::select(fkClientID,bl_date_dtm, round)) %>%
+  # dplyr::group_by(fkClientID) %>%
+  # dplyr::mutate(bl_date_dtm = sample(intervals_lup_tb$bl_date_dtm, size = 1)) %>%
+  # dplyr::ungroup() %>%
+  # dplyr::mutate(d_interview_date = purrr::map2(bl_date_dtm,
+  #                                              interval_dbl,
+  #                                              ~ ifelse(is.na(.y),NA,.x + lubridate::days(.y))) %>% unlist() %>% as.Date(origin = "1970-01-01")) %>%
+                  # dplyr::case_when(round = 2 & !(is.na(interval_dbl)|is.na(bl_date_dtm) )~ bl_date_dtm + lubridate::days(interval_dbl),
+                  #                                   T ~ bl_date_dtm)
+                # ) %>%
+ # dplyr::select(-c(bl_date_dtm,interval_dbl)) %>%
+    dplyr::arrange(fkClientID) 
+```
+```{r}
+summary(intervals_lup_tb$bl_date_dtm)
+```
+
+```{r}
+test_tb <- fk_data_tb %>%
+    dplyr::ungroup() %>%
+  dplyr::arrange(fkClientID) %>%
+dplyr::group_by(fkClientID) %>%
+  dplyr::arrange(d_interview_date) %>%
+  dplyr::mutate(bl_date_dtm2 = d_interview_date %>% dplyr::first()) %>%
+  dplyr::mutate(interval_dbl2 = purrr::map2_dbl(bl_date_dtm2,
+                                             d_interview_date,
+                                             ~ lubridate::interval(.x, .y) %>%
+                                               lubridate::time_length(unit = "days"))) %>%
+  dplyr::ungroup() 
+
+test_tb %>% dplyr::filter(round==2) %>% dplyr::pull(interval_dbl2) %>% summary()
+```
+```{r}
+test_tb %>% dplyr::filter(round==2) %>% dplyr::pull(interval_dbl) %>% summary()
+```
+
+
+
+```{r}
+fk_data_tb <- fk_data_tb %>%
+  dplyr::select(names(fk_data_tb)[!(names(fk_data_tb) %>% purrr::map_lgl(~ startsWith(.x,"aqol6d_sub") | startsWith(.x,"aqol6d_tot") | startsWith(.x,"aqol6d_fla")))])
+```
+
+```{r}
+reltv_path_1L_chr <-ifelse(params$is_child_1L_lgl,
+                           "../../../Output/",
+                           "../../Output/"
+                           )
+saveRDS(fk_data_tb,paste0(reltv_path_1L_chr,"fk_data_tb.rds"))
+# tempfile(paste0(here::here("AQol_6D longitudinal/Output"),"/fk_data_tb"), fileext = ".RDS")
+```
+
+

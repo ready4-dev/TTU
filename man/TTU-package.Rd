@@ -4,7 +4,7 @@
 \name{TTU-package}
 \alias{TTU}
 \alias{TTU-package}
-\title{TTU: Develop, Report and Share Transfer to Utility Mapping Algorithms}
+\title{TTU: Implement Transfer to Utility Mapping Algorithms}
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 

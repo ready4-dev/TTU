@@ -35,3 +35,4 @@ Path parameters (a list)
 \description{
 make_path_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make path parameters list. The function returns Path parameters (a list).
 }
+\keyword{internal}

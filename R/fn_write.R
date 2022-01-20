@@ -6,13 +6,14 @@
 #' @return NULL
 #' @rdname write_analyses
 #' @export 
+#' @importFrom ready4show write_report
 #' @importFrom purrr walk pluck
 write_analyses <- function (input_params_ls, abstract_args_ls = NULL, start_at_int = c(2, 
     1)) 
 {
-    write_report(params_ls = input_params_ls$params_ls, paths_ls = input_params_ls$path_params_ls$paths_ls, 
-        rprt_nm_1L_chr = "AAA_PMRY_ANLYS_MTH", abstract_args_ls = abstract_args_ls, 
-        header_yaml_args_ls = input_params_ls$header_yaml_args_ls)
+    ready4show::write_report(params_ls = input_params_ls$params_ls, 
+        paths_ls = input_params_ls$path_params_ls$paths_ls, rprt_nm_1L_chr = "AAA_PMRY_ANLYS_MTH", 
+        abstract_args_ls = abstract_args_ls, header_yaml_args_ls = input_params_ls$header_yaml_args_ls)
     if (!is.null(input_params_ls$scndry_anlys_params_ls)) {
         references_int <- 1:length(input_params_ls$scndry_anlys_params_ls)
         references_int %>% purrr::walk(~{
@@ -81,14 +82,18 @@ write_box_cox_tfmn <- function (data_tb, predr_var_nm_1L_chr, path_to_write_to_1
 #' @return NULL
 #' @rdname write_csp_output
 #' @export 
+#' @importFrom lifecycle deprecate_soft
 #' @importFrom purrr map_chr
 #' @importFrom stringr str_sub
 #' @importFrom knitr purl
 #' @importFrom DescTools SplitPath
 #' @importFrom rmarkdown render
 #' @importFrom dataverse add_dataset_file
+#' @keywords internal
 write_csp_output <- function (path_to_csp_1L_chr, dv_ds_doi_1L_chr = NULL, execute_1L_lgl = T) 
 {
+    lifecycle::deprecate_soft(" 0.0.0.9324", "TTU::write_csp_output()", 
+        "ready4show::write_csp_output()")
     readLines(path_to_csp_1L_chr) %>% purrr::map_chr(~ifelse(.x == 
         "knitr::opts_chunk$set(eval = F)", "knitr::opts_chunk$set(eval = T)", 
         .x)) %>% writeLines(con = path_to_csp_1L_chr)
@@ -119,12 +124,15 @@ write_csp_output <- function (path_to_csp_1L_chr, dv_ds_doi_1L_chr = NULL, execu
 #' @return Paths (a list)
 #' @rdname write_main_outp_dir
 #' @export 
+#' @importFrom lifecycle deprecate_soft
 #' @importFrom purrr pluck
-#' @importFrom ready4show make_paths_ls
+#' @importFrom ready4show make_paths_ls write_all_outp_dirs
 #' @importFrom here i_am here
-#' @importFrom youthvars write_all_outp_dirs
+#' @keywords internal
 write_main_outp_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_fl_nm_1L_chr = "aaaaaaaaaa.txt") 
 {
+    lifecycle::deprecate_soft(" 0.0.0.9324", "ready4show::write_main_outp_dir()", 
+        "ready4show::write_main_outp_dir()")
     file.create(R_fl_nm_1L_chr)
     R_fl_nm_1L_chr <- list.files() %>% purrr::pluck(1)
     paths_ls <- ready4show::make_paths_ls(append(params_ls, list(use_fake_data_1L_lgl = use_fake_data_1L_lgl)), 
@@ -136,7 +144,7 @@ write_main_outp_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_f
     dir.create(paste0(here::here(paths_ls$path_from_top_level_1L_chr), 
         "/", paths_ls$write_to_dir_nm_1L_chr))
     paths_ls$R_fl_nm_1L_chr <- R_fl_nm_1L_chr
-    paths_ls <- youthvars::write_all_outp_dirs(paths_ls)
+    paths_ls <- ready4show::write_all_outp_dirs(paths_ls)
     return(paths_ls)
 }
 #' Write manuscript
@@ -153,16 +161,20 @@ write_main_outp_dir <- function (params_ls = NULL, use_fake_data_1L_lgl = F, R_f
 #' @return Results (a list)
 #' @rdname write_manuscript
 #' @export 
+#' @importFrom lifecycle deprecate_soft
 #' @importFrom utils unzip
 #' @importFrom ready4show write_header_fls
 #' @importFrom rmarkdown render
 #' @importFrom ready4 write_to_dv_with_wait
 #' @importFrom tibble tibble
+#' @keywords internal
 write_manuscript <- function (abstract_args_ls = NULL, input_params_ls = NULL, results_ls = NULL, 
     figures_in_body_lgl = NULL, output_type_1L_chr = NULL, tables_in_body_lgl = NULL, 
     title_1L_chr = "Scientific manuscript", version_1L_chr = "0.5", 
     write_to_dv_1L_lgl = F) 
 {
+    lifecycle::deprecate_soft(" 0.0.0.9324", "ready4show::write_manuscript()", 
+        "ready4show::write_manuscript()")
     mkdn_data_dir_1L_chr <- ifelse(!is.null(input_params_ls), 
         input_params_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr, 
         results_ls$path_params_ls$paths_ls$mkdn_data_dir_1L_chr)
@@ -366,6 +378,7 @@ write_mdl_plts <- function (data_tb, model_mdl, mdl_fl_nm_1L_chr = "OLS_NTF", de
 #' @export 
 #' @importFrom purrr map pluck map_lgl map_chr reduce
 #' @importFrom here here
+#' @importFrom ready4show write_rprt_with_rcrd
 #' @importFrom ready4 write_to_dv_with_wait
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter pull bind_rows distinct mutate
@@ -450,7 +463,7 @@ write_mdl_smry_rprt <- function (input_params_ls = NULL, header_yaml_args_ls = N
                 args_ls = list(reference_1L_int = reference_1L_int, 
                   remove_prmry_1L_lgl = T))) %>% append(path_params_ls[1:2])
         }
-        write_rprt_with_rcrd(path_to_outp_fl_1L_chr = path_to_outp_fl_1L_chr, 
+        ready4show::write_rprt_with_rcrd(path_to_outp_fl_1L_chr = path_to_outp_fl_1L_chr, 
             paths_ls = paths_ls, header_yaml_args_ls = header_yaml_args_ls, 
             use_fake_data_1L_lgl = use_fake_data_1L_lgl, reference_1L_int = reference_1L_int, 
             start_at_int = start_at_int, rprt_nm_1L_chr = rprt_lup$rprt_nms_chr[purrr::map_lgl(rprt_lup$rprt_nms_chr, 
@@ -704,11 +717,11 @@ write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_
         plt_idxs_int = plt_idxs_int)
     if (!is.null(folds_1L_int)) {
         smry_of_one_predr_mdl_tb <- make_smry_of_mdl_outp(data_tb, 
-            model_mdl = model_mdl, folds_1L_int = folds_1L_int, 
-            depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, tfmn_1L_chr = tfmn_1L_chr, 
-            predr_var_nm_1L_chr = predr_var_nm_1L_chr, covar_var_nms_chr = covar_var_nms_chr, 
-            mdl_type_1L_chr = mdl_type_1L_chr, mdl_types_lup = mdl_types_lup, 
-            start_1L_chr = start_1L_chr, predn_type_1L_chr = predn_type_1L_chr)
+            folds_1L_int = folds_1L_int, depnt_var_nm_1L_chr = depnt_var_nm_1L_chr, 
+            tfmn_1L_chr = tfmn_1L_chr, predr_var_nm_1L_chr = predr_var_nm_1L_chr, 
+            covar_var_nms_chr = covar_var_nms_chr, mdl_type_1L_chr = mdl_type_1L_chr, 
+            mdl_types_lup = mdl_types_lup, start_1L_chr = start_1L_chr, 
+            predn_type_1L_chr = predn_type_1L_chr)
     }
     else {
         smry_of_one_predr_mdl_tb <- tibble::tibble()
@@ -915,12 +928,15 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_
 #' @return NULL
 #' @rdname write_report
 #' @export 
+#' @importFrom lifecycle deprecate_soft
 #' @importFrom ready4show make_rprt_type_ls write_rprt_from_tmpl
 #' @importFrom here i_am here
 #' @importFrom rlang exec
 write_report <- function (params_ls, paths_ls, rprt_nm_1L_chr, abstract_args_ls = NULL, 
     header_yaml_args_ls = NULL, rprt_lup = NULL) 
 {
+    lifecycle::deprecate_soft(" 0.0.0.9324", "ready4show::write_report()", 
+        "ready4show::write_report()")
     if (is.null(rprt_lup)) 
         data("rprt_lup", package = "TTU", envir = environment())
     rprt_type_ls <- rprt_lup %>% ready4show::make_rprt_type_ls(rprt_nm_1L_chr = rprt_nm_1L_chr)
@@ -941,9 +957,12 @@ write_report <- function (params_ls, paths_ls, rprt_nm_1L_chr, abstract_args_ls 
 #' @return Path to complete study program (a character vector of length one)
 #' @rdname write_reporting_dir
 #' @export 
+#' @importFrom lifecycle deprecate_soft
 write_reporting_dir <- function (path_to_write_to_1L_chr = getwd(), new_dir_nm_1L_chr = "TTU_Project", 
     overwrite_1L_lgl = FALSE) 
 {
+    lifecycle::deprecate_soft(" 0.0.0.9324", "ready4show::write_reporting_dir()", 
+        "ready4show::write_reporting_dir()")
     path_to_prjt_dir_1L_chr <- paste0(path_to_write_to_1L_chr, 
         "/", new_dir_nm_1L_chr)
     if (!dir.exists(path_to_prjt_dir_1L_chr)) 
@@ -974,7 +993,9 @@ write_reporting_dir <- function (path_to_write_to_1L_chr = getwd(), new_dir_nm_1
 #' @return NULL
 #' @rdname write_rprt_with_rcrd
 #' @export 
+#' @importFrom lifecycle deprecate_soft
 #' @importFrom ready4 get_from_lup_obj
+#' @importFrom ready4show write_report
 #' @keywords internal
 write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_args_ls = NULL, 
     rprt_lup = NULL, use_fake_data_1L_lgl = F, rprt_nm_1L_chr = "AAA_TTU_MDL_CTG", 
@@ -983,6 +1004,8 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_
     nbr_of_digits_1L_int = 2L, abstract_args_ls = NULL, main_rprt_append_ls = NULL, 
     rcrd_rprt_append_ls = NULL) 
 {
+    lifecycle::deprecate_soft(" 0.0.0.9324", "ready4show::write_rprt_with_rcrd()", 
+        "ready4show::write_rprt_with_rcrd()")
     if (is.null(rprt_lup)) {
         data("rprt_lup", package = "TTU", envir = environment())
         rprt_lup <- rprt_lup %>% transform_rprt_lup(add_suplry_rprt_1L_lgl = !is.null(reference_1L_int), 
@@ -1000,15 +1023,15 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_
             match_value_xx = "AAA_RPRT_WRTNG_MTH", match_var_nm_1L_chr = "rprt_nms_chr", 
             target_var_nm_1L_chr = "title_chr", evaluate_1L_lgl = F), 
         use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>% append(rcrd_rprt_append_ls)
-    params_ls %>% write_report(paths_ls = paths_ls, rprt_nm_1L_chr = rcrd_nm_1L_chr, 
-        abstract_args_ls = NULL, header_yaml_args_ls = header_yaml_args_ls, 
-        rprt_lup = rprt_lup)
+    params_ls %>% ready4show::write_report(paths_ls = paths_ls, 
+        rprt_nm_1L_chr = rcrd_nm_1L_chr, abstract_args_ls = NULL, 
+        header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
     list(outp_smry_ls = append(readRDS(path_to_outp_fl_1L_chr), 
         list(rprt_lup = rprt_lup)), output_type_1L_chr = output_type_1L_chr, 
         subtitle_1L_chr = ready4::get_from_lup_obj(rprt_lup, 
             match_value_xx = rprt_nm_1L_chr, match_var_nm_1L_chr = "rprt_nms_chr", 
             target_var_nm_1L_chr = "title_chr", evaluate_1L_lgl = F)) %>% 
-        append(main_rprt_append_ls) %>% write_report(paths_ls = paths_ls, 
+        append(main_rprt_append_ls) %>% ready4show::write_report(paths_ls = paths_ls, 
         rprt_nm_1L_chr = rprt_nm_1L_chr, abstract_args_ls = abstract_args_ls, 
         header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
 }
@@ -1031,6 +1054,7 @@ write_rprt_with_rcrd <- function (path_to_outp_fl_1L_chr, paths_ls, header_yaml_
 #' @importFrom purrr map_chr pluck
 #' @importFrom ready4 get_from_lup_obj
 #' @importFrom dplyr filter
+#' @importFrom ready4show write_report
 #' @keywords internal
 write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, candidate_covar_nms_chr, 
     candidate_predrs_chr = NULL, header_yaml_args_ls, path_params_ls, 
@@ -1086,7 +1110,7 @@ write_scndry_analysis <- function (predictors_lup = NULL, valid_params_ls_ls, ca
     params_ls_ls <- transform_params_ls_to_valid(params_ls)
     params_ls <- params_ls_ls %>% purrr::pluck("params_ls") %>% 
         append(list(rename_lup = params_ls_ls$rename_lup))
-    params_ls %>% write_report(paths_ls = path_params_ls$paths_ls, 
+    params_ls %>% ready4show::write_report(paths_ls = path_params_ls$paths_ls, 
         rprt_nm_1L_chr = rprt_nm_1L_chr, abstract_args_ls = abstract_args_ls, 
         header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
 }
@@ -1392,6 +1416,7 @@ write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var
 #' @importFrom rlang exec
 #' @importFrom dplyr filter
 #' @importFrom ready4 get_from_lup_obj write_to_dv_with_wait
+#' @importFrom ready4show write_report
 #' @importFrom tibble tibble
 #' @keywords internal
 write_study_outp_ds <- function (input_params_ls, dv_ds_nm_and_url_chr = NULL, rprt_lups_ls = NULL, 
@@ -1472,9 +1497,9 @@ write_study_outp_ds <- function (input_params_ls, dv_ds_nm_and_url_chr = NULL, r
                 target_var_nm_1L_chr = "title_chr", evaluate_1L_lgl = F), 
             transform_paths_ls = transform_paths_ls, use_fake_data_1L_lgl = use_fake_data_1L_lgl) %>% 
             append(path_params_ls[1:2])
-        params_ls %>% write_report(paths_ls = paths_ls, rprt_nm_1L_chr = "AAA_SHARING_MTH", 
-            abstract_args_ls = abstract_args_ls, header_yaml_args_ls = header_yaml_args_ls, 
-            rprt_lup = rprt_lup)
+        params_ls %>% ready4show::write_report(paths_ls = paths_ls, 
+            rprt_nm_1L_chr = "AAA_SHARING_MTH", abstract_args_ls = abstract_args_ls, 
+            header_yaml_args_ls = header_yaml_args_ls, rprt_lup = rprt_lup)
     })
     ready4::write_to_dv_with_wait(dss_tb = tibble::tibble(ds_obj_nm_chr = "AAA_SHARING_MTH", 
         title_chr = rprt_lups_ls[[1]] %>% ready4::get_from_lup_obj(match_value_xx = "AAA_SHARING_MTH", 

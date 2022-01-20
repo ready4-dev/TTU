@@ -1,0 +1,22 @@
+---
+title: "_Write_Main_Analysis"
+author: "Matthew Hamilton & Caroline Gao"
+date: "24/03/2021"
+output: html_document
+---
+
+## Summarise analysis dataset meta-data
+```{r, child=c('_Make_Ds_Smry.Rmd')}
+```
+
+## Specify candidate models to be explored
+```{r, child=c('_Make_Mdl_Smry.Rmd')}
+```
+
+## Test candidate models, predictors and covariates
+```{r, child=c('_Write_Cndt_Mdls_Tests.Rmd')}
+```
+
+## Create longitudinal models
+```{r, child=c('_Write_TS_Mdls.Rmd')}
+```

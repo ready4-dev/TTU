@@ -14,7 +14,7 @@ make_input_params(
   dv_ds_nm_and_url_chr = NULL,
   iters_1L_int = 4000L,
   mdl_smry_ls = make_mdl_smry_ls(),
-  output_format_ls = make_output_format_ls(),
+  output_format_ls = NULL,
   path_params_ls = NULL,
   prefd_covars_chr = NULL,
   prefd_mdl_types_chr = NULL,
@@ -43,7 +43,7 @@ make_input_params(
 
 \item{mdl_smry_ls}{Model summary (a list), Default: make_mdl_smry_ls()}
 
-\item{output_format_ls}{Output format (a list), Default: make_output_format_ls()}
+\item{output_format_ls}{Output format (a list), Default: NULL}
 
 \item{path_params_ls}{Path parameters (a list), Default: NULL}
 

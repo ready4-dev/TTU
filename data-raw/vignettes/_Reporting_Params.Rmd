@@ -30,7 +30,7 @@ institutes_tb %>%
 We combine the data about authors with other bibliographic information.
 
 ```{r}
-header_yaml_args_ls <- TTU::make_header_yaml_args_ls(authors_tb = authors_tb,
+header_yaml_args_ls <- ready4show::make_header_yaml_args_ls(authors_tb = authors_tb,
                                                      institutes_tb = institutes_tb,
                                                      title_1L_chr = "A hypothetical study using fake data for instructional purposes only",
                                                      keywords_chr = c("this","is","a","replication","using","fake","data","do", "not","cite"))
@@ -40,7 +40,7 @@ header_yaml_args_ls <- TTU::make_header_yaml_args_ls(authors_tb = authors_tb,
 We add parameters relating to the desired output format of the reports we will be producing.
 
 ```{r }
-output_format_ls <- TTU::make_output_format_ls(manuscript_outp_1L_chr = "Word",
+output_format_ls <- TTU::ready4show::make_output_format_ls(manuscript_outp_1L_chr = "Word",
                                                manuscript_digits_1L_int = 2L,
                                                supplementary_outp_1L_chr = "PDF",
                                                supplementary_digits_1L_int = 2L)

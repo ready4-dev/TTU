@@ -126,11 +126,11 @@ analysis_core_params_ls <- TTU::make_analysis_core_params_ls(ds_descvs_ls = ds_d
 We next create an object that specifies the relative locations of the input data and the intended destination for analysis outputs and reports. The default settings of the `make_path_params_ls` function will write all output into a new directory, created one level up from the current working directory.
 
 ```{r}
-path_params_ls <- TTU::make_path_params_ls("fake_data.rds")
+path_params_ls <- ready4show:make_path_params_ls("fake_data.rds")
 ```
 
 ```{r echo = TRUE }
-paths_ls <- TTU::write_main_outp_dir(path_params_ls, 
+paths_ls <- ready4show::write_main_outp_dir(path_params_ls, 
                                      use_fake_data_1L_lgl = use_fake_data_1L_lgl)
 ```
 
@@ -158,7 +158,7 @@ valid_params_ls_ls <- TTU::make_valid_params_ls_ls(analysis_core_params_ls,
 ## Run analysis
 
 ```{r echo = TRUE }
-TTU::write_report(params_ls = valid_params_ls_ls$params_ls,
+ready4show::write_report(params_ls = valid_params_ls_ls$params_ls,
                   paths_ls = paths_ls,
                   rprt_nm_1L_chr = "AAA_PMRY_ANLYS_MTH",
                   abstract_args_ls = NULL,

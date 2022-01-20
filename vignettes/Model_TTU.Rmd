@@ -47,10 +47,10 @@ ds_tb %>%
                           mkdn_tbl_ref_1L_chr = "tab:inputds")
 ```
 
-We next create a lookup table summarising key information about the variables from our dataset that we will explore as candidate predictors in our models. The predictors lookup table must be of the `TTU_predictors_lup` class.
+We next create a lookup table summarising key information about the variables from our dataset that we will explore as candidate predictors in our models. The predictors lookup table must be of the `specific_predictors` class.
 
 ```{r}
-predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = c("K10_int","Psych_well_int"),
+predictors_lup <- specific::specific_predictors(specific::make_pt_specific_predictors(short_name_chr = c("K10_int","Psych_well_int"),
                                               long_name_chr = c("Kessler Psychological Distress - 10 Item Total Score",
                                                    "Overall Wellbeing Measure (Winefield et al. 2012)"),
                                               min_val_dbl = c(10,18),
@@ -72,7 +72,6 @@ dictionary_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/
 We now convert study participant responses to the EQ-5D questionnaire to health utility scores. We do this using the `eq5d` package.
 
 ```{r message=FALSE, results='hide', warning=FALSE}
-library(eq5d)
 ds_tb <- ds_tb %>% 
         dplyr::rename_with(~stringr::str_replace(.x,"eq5dq_",""),dplyr::starts_with("eq5dq_")) %>%
   dplyr::mutate(`:=`(EQ5D_total_dbl, 

@@ -1,0 +1,19 @@
+---
+title: "_Import_Data"
+author: "Matthew Hamilton & Caroline Gao"
+date: "23/03/2021"
+output: html_document
+---
+
+```{r echo = !is.null(params_ls$ds_tb), eval = !is.null(params_ls$ds_tb), message = F}
+data_tb <- params_ls$ds_tb
+```
+```{r echo = is.null(params_ls$ds_tb), eval = is.null(params_ls$ds_tb), message = F}
+data_tb <- readRDS(here::here(paths_ls$path_to_data_from_top_level_chr %>%
+                                purrr::map(~.x)))
+```
+```{r echo = !is.null(params_ls$raw_ds_tfmn_fn), eval = !is.null(params_ls$raw_ds_tfmn_fn)}
+data_tb <- rlang::exec(params_ls$raw_ds_tfmn_fn, data_tb)
+```
+
+

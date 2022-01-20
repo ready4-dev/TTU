@@ -68,7 +68,7 @@ make_all_mdl_types_smry_tbl <- function(outp_smry_ls,
 }
 make_analysis_core_params_ls <- function(ds_descvs_ls,
                                          mdl_smry_ls = make_mdl_smry_ls(),
-                                         output_format_ls = make_output_format_ls(),
+                                         output_format_ls = NULL,
                                          predictors_lup,
                                          control_ls = NULL,
                                          iters_1L_int = 4000L,
@@ -89,6 +89,8 @@ make_analysis_core_params_ls <- function(ds_descvs_ls,
   }else{
     warning("use_fake_data_1L_lgl is soft deprecated - it is recommended to specify whether the dataset is fake in the is_fake_1L_lgl element of the list obkect passed to the ds_descvs_ls argument")
   }
+  if(is.null(output_format_ls))
+    output_format_ls <- ready4show::make_output_format_ls()
   analysis_core_params_ls <- list(candidate_covar_nms_chr = candidate_covar_nms_chr,
                                   ds_descvs_ls = ds_descvs_ls,
                                   iters_1L_int = iters_1L_int,
@@ -634,9 +636,9 @@ make_fake_eq5d_ds <- function(country_1L_chr = "UK",
                               seed_1L_int = 1234,
                               sample_from_1L_int = 10000){
   set.seed(seed_1L_int)
-  requireNamespace("eq5d")
-  if(force_attach_1L_lgl)
-  attachNamespace("eq5d")
+  # requireNamespace("eq5d")
+  # if(force_attach_1L_lgl)
+  # attachNamespace("eq5d")
   data_tb <- purrr::map(c("MO","SC","UA","PD","AD"),
                         ~list(1:5) %>% stats::setNames(.x)) %>%
     purrr::flatten_dfr() %>%
@@ -756,6 +758,7 @@ make_header_yaml_args_ls <- function(authors_tb,
                                      keywords_chr,
                                      fl_nm_1L_chr = "header_common.yaml",
                                      use_fake_data_1L_lgl = F){
+  lifecycle::deprecate_soft("0.0.0.9324","TTU::make_header_yaml_args_ls()","ready4::make_header_yaml_args_ls()")
   if(!use_fake_data_1L_lgl){
     header_yaml_args_ls <- list(authors_tb = authors_tb,
                                 institutes_tb = institutes_tb,
@@ -862,7 +865,7 @@ make_input_params <- function(ds_tb,
                               dv_ds_nm_and_url_chr = NULL,
                               iters_1L_int = 4000L,
                               mdl_smry_ls = make_mdl_smry_ls(),
-                              output_format_ls = make_output_format_ls(),
+                              output_format_ls = NULL,
                               path_params_ls = NULL,
                               prefd_covars_chr = NULL,
                               prefd_mdl_types_chr = NULL,
@@ -870,7 +873,9 @@ make_input_params <- function(ds_tb,
                               seed_1L_int = 12345,
                               scndry_anlys_params_ls = NULL,
                               write_new_dir_1L_lgl = T){
-  path_params_ls <- make_path_params_ls(use_fake_data_1L_lgl = ds_descvs_ls$is_fake_1L_lgl,
+  if(is.null(output_format_ls))
+    output_format_ls <- ready4show::make_output_format_ls()
+  path_params_ls <- ready4show::make_path_params_ls(use_fake_data_1L_lgl = ds_descvs_ls$is_fake_1L_lgl,
                                         dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr,
                                         write_new_dir_1L_lgl = write_new_dir_1L_lgl)
   params_ls_ls <- make_analysis_core_params_ls(ds_descvs_ls = ds_descvs_ls,
@@ -1343,6 +1348,7 @@ make_output_format_ls <- function(manuscript_outp_1L_chr = "Word",
                                   manuscript_digits_1L_int = 2L,
                                   supplementary_outp_1L_chr = "PDF",
                                   supplementary_digits_1L_int = 2L){
+  lifecycle::deprecate_soft("0.0.0.9324","TTU::make_output_format_ls()","ready4show::make_output_format_ls()")
   output_format_ls <- list(manuscript_outp_1L_chr = manuscript_outp_1L_chr,
                            manuscript_digits_1L_int = manuscript_digits_1L_int,
                            supplementary_outp_1L_chr = supplementary_outp_1L_chr,
@@ -1356,6 +1362,7 @@ make_path_params_ls <- function(path_to_data_from_top_level_chr = NULL,
                                 write_new_dir_1L_lgl = F,
                                 use_fake_data_1L_lgl = F,
                                 R_fl_nm_1L_chr = 'aaaaaaaaaa.txt'){
+  lifecycle::deprecate_soft("0.0.0.9324","TTU::make_path_params_ls()","ready4show::make_path_params_ls()")
   if(is.null(path_to_data_from_top_level_chr))
     path_to_data_from_top_level_chr <- ifelse(use_fake_data_1L_lgl,
                                               "fake_data.rds",
@@ -1371,7 +1378,7 @@ make_path_params_ls <- function(path_to_data_from_top_level_chr = NULL,
                          path_to_current_1L_chr = path_to_current_1L_chr,
                          dv_ds_nm_and_url_chr = dv_ds_nm_and_url_chr)
   if(write_new_dir_1L_lgl)
-  path_params_ls$paths_ls <- write_main_outp_dir(path_params_ls,
+  path_params_ls$paths_ls <- ready4show::write_main_outp_dir(path_params_ls,
                                                  use_fake_data_1L_lgl = use_fake_data_1L_lgl,
                                                  R_fl_nm_1L_chr = R_fl_nm_1L_chr)
 
@@ -2042,6 +2049,7 @@ make_smry_of_mdl_outp <- function (data_tb,
                                    mdl_types_lup = NULL,
                                    predn_type_1L_chr = NULL)
 {
+  lifecycle::deprecate_soft("0.0.0.9323","TTU::make_smry_of_mdl_outp()","specific::make_smry_of_mdl_outp()")
     if (is.null(mdl_types_lup))
         utils::data("mdl_types_lup", envir = environment())
     data_tb <- data_tb %>% dplyr::filter(!is.na(!!rlang::sym(predr_var_nm_1L_chr)))

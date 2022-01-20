@@ -469,6 +469,7 @@ predict_utility <- function (data_tb,
                              tfmn_for_bnml_1L_lgl = F,
                              family_1L_chr = NA_character_,
                              is_brms_mdl_1L_lgl = T){
+  lifecycle::deprecate_soft("0.0.0.9324","TTU::predict_utility()","specific::predict_vars()")
   predd_utl_dbl <- predict_uncnstrd_utl(data_tb = data_tb,
                                         model_mdl = model_mdl,
                                         new_data_is_1L_chr = new_data_is_1L_chr,

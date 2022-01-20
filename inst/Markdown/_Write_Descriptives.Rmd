@@ -1,0 +1,31 @@
+---
+title: "_Write_Descriptives"
+author: "Matthew Hamilton & Caroline Gao"
+date: "31/03/2021"
+output: html_document
+---
+
+## Write descriptive statistics tables
+
+```{r}
+descv_tbl_ls <- youthvars::write_descv_tbls(data_tb,
+                                            ds_descvs_ls = ds_descvs_ls,
+                                            predictors_lup = params_ls$predictors_lup,
+                                            descv_outp_dir_1L_chr = paths_ls$descv_outp_dir_1L_chr,
+                                            nbr_of_digits_1L_int = params_ls$nbr_of_digits_1L_int)
+```
+
+## Write descriptive statistics plots
+  
+```{r, results='hide', message=FALSE, warning=FALSE, fig.show='hide'}
+descv_plts_paths_ls <- youthvars::write_descv_plots(data_tb,
+                                                    ds_descvs_ls = ds_descvs_ls,
+                                                    descv_outp_dir_1L_chr = paths_ls$descv_outp_dir_1L_chr,
+                                                    lbl_nms_chr = params_ls$maui_itm_short_nms_chr,
+                                                    maui_domains_pfxs_1L_chr = params_ls$maui_domains_pfxs_1L_chr)
+
+```
+
+
+
+

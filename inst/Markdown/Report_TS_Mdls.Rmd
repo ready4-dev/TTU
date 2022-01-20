@@ -1,0 +1,94 @@
+---
+output: 
+  bookdown::pdf_document2: 
+    includes:
+      in_header: preamble.tex
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua'
+    toc: no
+  bookdown::pdf_book: 
+    includes:
+      in_header: preamble.tex
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua'
+  bookdown::html_document2:
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua' 
+    toc: yes
+  bookdown::markdown_document2:
+    base_format: "officedown::rdocx_document"
+    number_sections: yes
+    toc: yes
+    tables:
+      style: Table
+      layout: autofit
+      width: 1.0
+      caption:
+        style: Table Caption
+        pre: 'Table '
+        sep: ': '
+      conditional:
+        first_row: true
+        first_column: false
+        last_row: false
+        last_column: false
+        no_hband: false
+        no_vband: true
+    pandoc_args: 
+      - "--metadata-file=Header/header_common.yaml"
+      - '--lua-filter=Filters/scholarly-metadata.lua'
+      - '--lua-filter=Filters/author-info-blocks.lua'
+      - '--lua-filter=Filters/pagebreaks.lua'
+params:
+  existing_predrs_ls: !r NULL
+  outp_smry_ls: !r NULL
+  output_type_1L_chr: HTML
+  rltv_path_to_data_dir_1L_chr: ../Output/F_TS_Mdls
+  subtitle_1L_chr: "Catalogue of longitudinal models"
+  root_dir_1L_chr: ./
+  section_type_1L_chr: "#"
+subtitle: "`r params$subtitle_1L_chr`"
+date: "`r format.Date(Sys.Date(),'%B %d, %Y')`"
+graphics: yes
+---
+
+```{r setup, include=FALSE}
+library(TTU)
+library(magrittr)
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(comment = NA)
+knitr::opts_knit$set(root.dir = params$root_dir_1L_chr)
+options(tinytex.verbose = TRUE)
+options(xtable.floating = FALSE)
+options(xtable.timestamp = "")
+```
+
+```{r include=FALSE}
+params_ls <- params
+```
+
+```{r echo=FALSE}
+predr_vars_nms_ls <- make_predr_vars_nms_ls(main_predrs_chr = params_ls$outp_smry_ls$predr_cmprsn_tb$predr_chr, 
+                       covars_ls = list(params_ls$outp_smry_ls$prefd_covars_chr),
+                       existing_predrs_ls = params_ls$existing_predrs_ls)
+knit_pars_ls <- make_knit_pars_ls(rltv_path_to_data_dir_1L_chr = params_ls$rltv_path_to_data_dir_1L_chr,
+                  mdl_types_chr = params_ls$outp_smry_ls$prefd_mdl_types_chr,
+                  predr_vars_nms_ls = predr_vars_nms_ls,
+                  mdl_types_lup = params_ls$outp_smry_ls$mdl_types_lup, 
+                  plt_types_lup = TTU::plt_types_lup,
+                  output_type_1L_chr = params_ls$output_type_1L_chr,
+                  section_type_1L_chr = params_ls$section_type_1L_chr) 
+```
+
+This algorithm authored report summarises a number of time series models for predicting  `r ready4::get_from_lup_obj(params_ls$outp_smry_ls$dictionary_tb,                      match_value_xx = params_ls$outp_smry_ls$depnt_var_nm_1L_chr,                                                                  match_var_nm_1L_chr = "var_nm_chr",                                                                  target_var_nm_1L_chr = "var_desc_chr",                                                                  evaluate_1L_lgl = F)` at two time-points. The descriptions of each model included in the report detail model predictor variables, parameter values and predictive performance. Report figures graphically illustrate the predictive performance of models when mean or sampled parameter values are used, with and without transformation of model outputs to enforce within range predictions. A number of these plots compare the performance of predictions when the original R model object (of class *brmsfit*) is used or when predictions are made from a summary table of model coefficients. Each model description also includes a catalogue reference number that is useful for retrieving the model data required to make predictions.
+
+```{r, echo=FALSE, results='asis'}
+ knit_pars_ls %>%
+  purrr::walk(~knit_mdl_rprt(.x, path_to_mdl_rprt_tmpl_1L_chr = "_mdl_rpt_tmpl.Rmd"))
+```

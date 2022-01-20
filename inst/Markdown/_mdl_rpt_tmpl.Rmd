@@ -1,0 +1,54 @@
+---
+output: html_document
+---
+
+\newpage
+\blandscape
+
+{{section_ttl_1L_chr}}
+
+```{r echo=F, results="asis"}
+make_mdl_desc_lines(outp_smry_ls = params_ls$outp_smry_ls,
+                    mdl_nm_1L_chr = {{mdl_nms_chr}},
+                    output_type_1L_chr = {{output_type_1L_chr}}) %>% writeLines()
+```
+
+```{r echo = F, results="asis"}
+brms_mdl_print_ls <- make_brms_mdl_print_ls(mdl_ls = readRDS({{path_to_mdl_1L_chr}}),
+                                            label_stub_1L_chr = {{label_stub_1L_chr}},
+                                            caption_1L_chr = {{caption_1L_chr}},
+                                            output_type_1L_chr = {{output_type_1L_chr}})
+rlang::exec(ready4show::print_table,!!!brms_mdl_print_ls[[5]])
+```
+
+```{r {{mdl_nms_chr}}, tab.cap=paste0({{caption_1L_chr}},' model performance parameters'), echo = F, results="asis"}
+df <- params_ls$outp_smry_ls$mdls_smry_tb %>%
+  dplyr::filter(Model == {{mdl_nms_chr}}) %>%
+  dplyr::filter(Parameter %in% c("R2","RMSE")) %>%
+  dplyr::select(-Model) 
+add_to_row_ls <- list()
+add_to_row_ls$pos <- list(0, nrow(df)
+                     )
+add_to_row_ls$command <- c("Parameter* & Estimate	& SE	& 95CI\\\\\n",
+                        "\\hline\n" )
+df %>%
+  ready4show::print_table(output_type_1L_chr = {{output_type_1L_chr}},
+                          caption_1L_chr = knitr::opts_current$get("tab.cap"),
+                          mkdn_tbl_ref_1L_chr = paste0("tab:",knitr::opts_current$get("tab.id")),
+                          use_rdocx_1L_lgl = ifelse({{output_type_1L_chr}}=="Word",T,F),
+                          add_to_row_ls = add_to_row_ls,
+                          hline_after_ls = c(-1,0),
+                          sanitize_fn = force) 
+  
+```
+
+\elandscape
+\newpage
+
+```{r, fig.cap={{plt_nms_chr}}, echo=FALSE, message=F}
+knitr::include_graphics({{paths_to_mdl_plts_chr}})
+```
+
+`r officer::run_pagebreak()`
+\newpage
+
