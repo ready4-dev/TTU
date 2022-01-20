@@ -1,4 +1,9 @@
 library(ready4)
+library(ready4use)
+library(ready4show)
+library(youthvars)
+library(scorz)
+library(specific)
 ready4fun::write_fn_type_dirs()
 # MANUAL STEP. Write all your functions to R files in the new "fns" directory.
 fns_env_ls <- ready4fun::read_fns(c("data-raw/fns/","data-raw/mthds/"),
@@ -257,8 +262,20 @@ z <- ready4pack::make_pt_ready4pack_manifest(x,
   ready4pack::ready4pack_manifest()
 z <- ready4::author(z)
 # usethis::use_package("readr")
-usethis::use_dev_package("scorz",remote = "ready4-dev/scorz")
-usethis::use_dev_package("specific",remote = "ready4-dev/specific")
+# usethis::use_dev_package("scorz",remote = "ready4-dev/scorz")
+# usethis::use_dev_package("specific",remote = "ready4-dev/specific")
+usethis::use_dev_package("ready4",
+                         type = "Depends",
+                         remote = "ready4-dev/ready4")
+usethis::use_dev_package("youthvars",
+                         type = "Depends",
+                         remote = "ready4-dev/youthvars")
+usethis::use_dev_package("scorz",
+                         type = "Depends",
+                         remote = "ready4-dev/scorz")
+usethis::use_dev_package("specific",
+                         type = "Depends",
+                         remote = "ready4-dev/specific")
 # usethis::use_package("rgl")
 # piggyback::pb_new_release("ready4-dev/TTU",
 #                           tag = paste0("v",desc::desc_get_version()),
