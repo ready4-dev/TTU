@@ -177,14 +177,15 @@ transform_ds_to_predn_ds <- function(data_tb,
 transform_mdl_vars_with_clss <- function(ds_tb,
                                          predictors_lup = NULL,
                                          prototype_lup = NULL,
-                                         depnt_var_nm_1L_chr = "utl_total_w",
+                                         depnt_var_nm_1L_chr = "utl_total_w", # Remove default
                                          class_fn_1L_chr = "as.numeric"){
   if(is.null(predictors_lup))
     data("predictors_lup", package = "youthvars", envir = environment())
   if(is.null(prototype_lup))
-    prototype_lup <- ready4::get_rds_from_dv("prototype_lup",
-                                                server_1L_chr = "dataverse.harvard.edu")
-    #data("prototype_lup", package = "TTU", envir = environment())
+    prototype_lup <- ready4use::Ready4useRepos(gh_repo_1L_chr = "ready4-dev/ready4",
+                                               gh_tag_1L_chr = "Documentation_0.0") %>%
+      ready4::ingest(fls_to_ingest_chr = "prototype_lup",
+                     metadata_1L_lgl = F)
   if(!is.null(depnt_var_nm_1L_chr)){
     predictors_lup <- tibble::add_case(predictors_lup,
                                        short_name_chr = depnt_var_nm_1L_chr,
@@ -196,15 +197,15 @@ transform_mdl_vars_with_clss <- function(ds_tb,
                              ~ if(.y %in% names(.x)){
                                label_1L_chr <- Hmisc::label(.x[[.y]])
                                class_1L_chr <- ready4::get_from_lup_obj(predictors_lup,
-                                                                           match_var_nm_1L_chr = "short_name_chr",
-                                                                           match_value_xx = .y,
-                                                                           target_var_nm_1L_chr = "class_chr",
-                                                                           evaluate_1L_lgl = F)
-                               ns_1L_chr <- ready4::get_from_lup_obj(prototype_lup,
-                                                                        match_var_nm_1L_chr = "type_chr",
-                                                                        match_value_xx = class_1L_chr,
-                                                                        target_var_nm_1L_chr = "pt_ns_chr",
+                                                                        match_var_nm_1L_chr = "short_name_chr",
+                                                                        match_value_xx = .y,
+                                                                        target_var_nm_1L_chr = "class_chr",
                                                                         evaluate_1L_lgl = F)
+                               ns_1L_chr <- ready4::get_from_lup_obj(prototype_lup,
+                                                                     match_var_nm_1L_chr = "type_chr",
+                                                                     match_value_xx = class_1L_chr,
+                                                                     target_var_nm_1L_chr = "pt_ns_chr",
+                                                                     evaluate_1L_lgl = F)
                                ns_and_ext_1L_chr <- ifelse(ns_1L_chr == "base",
                                                            "",
                                                            paste0(ns_1L_chr,"::"))
@@ -214,13 +215,13 @@ transform_mdl_vars_with_clss <- function(ds_tb,
                                                    eval(parse(text = paste0(ns_and_ext_1L_chr,"as_",class_1L_chr))),
                                                    eval(parse(text = paste0(ns_and_ext_1L_chr,class_1L_chr)))))
                                tb <- .x %>% dplyr::mutate(!!rlang::sym(.y) := rlang::exec(ready4::get_from_lup_obj(predictors_lup,
-                                                                                                                      match_var_nm_1L_chr = "short_name_chr",
-                                                                                                                      match_value_xx = .y,
-                                                                                                                      target_var_nm_1L_chr = "class_fn_chr",
-                                                                                                                      evaluate_1L_lgl = T),
+                                                                                                                   match_var_nm_1L_chr = "short_name_chr",
+                                                                                                                   match_value_xx = .y,
+                                                                                                                   target_var_nm_1L_chr = "class_fn_chr",
+                                                                                                                   evaluate_1L_lgl = T),
                                                                                           !!rlang::sym(.y) %>% fn))
                                if(label_1L_chr != ""){
-                                Hmisc::label(tb[[.y]]) <- label_1L_chr
+                                 Hmisc::label(tb[[.y]]) <- label_1L_chr
                                }
                                tb
                              }else{

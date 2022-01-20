@@ -212,7 +212,8 @@ transform_ds_to_predn_ds <- function (data_tb, predr_vars_nms_chr, tfmn_1L_chr, 
 #' @return Transformed dataset (a tibble)
 #' @rdname transform_mdl_vars_with_clss
 #' @export 
-#' @importFrom ready4 get_rds_from_dv get_from_lup_obj
+#' @importFrom ready4use Ready4useRepos
+#' @importFrom ready4 ingest get_from_lup_obj
 #' @importFrom tibble add_case
 #' @importFrom purrr reduce
 #' @importFrom Hmisc label
@@ -224,8 +225,9 @@ transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototyp
     if (is.null(predictors_lup)) 
         data("predictors_lup", package = "youthvars", envir = environment())
     if (is.null(prototype_lup)) 
-        prototype_lup <- ready4::get_rds_from_dv("prototype_lup", 
-            server_1L_chr = "dataverse.harvard.edu")
+        prototype_lup <- ready4use::Ready4useRepos(gh_repo_1L_chr = "ready4-dev/ready4", 
+            gh_tag_1L_chr = "Documentation_0.0") %>% ready4::ingest(fls_to_ingest_chr = "prototype_lup", 
+            metadata_1L_lgl = F)
     if (!is.null(depnt_var_nm_1L_chr)) {
         predictors_lup <- tibble::add_case(predictors_lup, short_name_chr = depnt_var_nm_1L_chr, 
             class_chr = "numeric", class_fn_chr = class_fn_1L_chr)
