@@ -1,10 +1,14 @@
 pandoc: 2.7.3
-pkgdown: 1.6.1
+pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   CSP_AQOL6D_TTU: CSP_AQOL6D_TTU.html
   CSP_EQ5D_TTU: CSP_EQ5D_TTU.html
   Model_TTU: Model_TTU.html
   TTU: TTU.html
-last_built: 2021-11-05T00:20Z
+  V_01: V_01.html
+last_built: 2022-01-20T08:55Z
+urls:
+  reference: https://ready4-dev.github.io/TTU/reference
+  article: https://ready4-dev.github.io/TTU/articles
 

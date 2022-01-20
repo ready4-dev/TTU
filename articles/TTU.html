@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="TTU">
 <title>TTU • TTU</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
@@ -12,104 +13,115 @@
 <link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
-<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="TTU">
+<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="TTU">
 <meta property="og:description" content="TTU">
-<meta property="og:image" content="/logo.png">
+<meta property="og:image" content="https://ready4-dev.github.io/TTU/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
-    <div class="container template-article">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">TTU</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="Unreleased version">0.0.0.9323</span>
-      </span>
-    </div>
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
+    
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="../index.html">TTU</a>
+
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9325</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="active nav-item">
+  <a class="nav-link" href="../articles/TTU.html">Get started</a>
 </li>
-<li>
-  <a href="../articles/TTU.html">Get started</a>
+<li class="nav-item">
+  <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li>
-  <a href="../reference/index.html">Reference</a>
-</li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/CSP_AQOL6D_TTU.html">Reporting Workflow, AQoL-6D Clinical Population Example</a>
-    </li>
-    <li>
-      <a href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
-    </li>
-    <li>
-      <a href="../articles/Model_TTU.html">Exploratory Analysis Workflow</a>
-    </li>
-  </ul>
-</li>
-      </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/ready4-dev/TTU/">
-    <span class="fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
-      </ul>
-</div>
-<!--/.nav-collapse -->
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/CSP_AQOL6D_TTU.html">Reporting Workflow, AQoL-6D Clinical Population Example</a>
+    <a class="dropdown-item" href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
+    <a class="dropdown-item" href="../articles/Model_TTU.html">Exploratory Analysis Workflow</a>
+    <a class="dropdown-item" href="../articles/V_01.html">Significant Changes To The TTU Package</a>
   </div>
-<!--/.container -->
+</li>
+      </ul>
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/ready4-dev/TTU/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
-<!--/.navbar -->
 
-      
+    
+  </div>
+</nav><div class="container template-article">
 
-      </header><script src="TTU_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <div class="col-md-9 contents">
-    <div class="page-header toc-ignore">
-      <h1 data-toc-skip>TTU</h1>
+
+
+<script src="TTU_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+  <main id="main"><div class="page-header">
+      <img src="../logo.png" class="logo" alt=""><h1>TTU</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ready4-dev/TTU/blob/master/vignettes/TTU.Rmd"><code>vignettes/TTU.Rmd</code></a></small>
-      <div class="hidden name"><code>TTU.Rmd</code></div>
-
+      <small class="dont-index">Source: <a href="https://github.com/ready4-dev/TTU/blob/HEAD/vignettes/TTU.Rmd" class="external-link"><code>vignettes/TTU.Rmd</code></a></small>
+      <div class="d-none name"><code>TTU.Rmd</code></div>
     </div>
 
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/TTU/">TTU</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/TTU/">TTU</a></span><span class="op">)</span>
+<span class="co">#&gt; Loading required package: ready4</span>
+<span class="co">#&gt; Loading required package: generics</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'generics'</span>
+<span class="co">#&gt; The following objects are masked from 'package:base':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,</span>
+<span class="co">#&gt;     setequal, union</span>
 <span class="co">#&gt; Loading required package: ggfortify</span>
 <span class="co">#&gt; Loading required package: ggplot2</span>
-<span class="co">#&gt; Loading required package: eq5d</span>
+<span class="co">#&gt; Loading required package: scorz</span>
+<span class="co">#&gt; Loading required package: specific</span>
+<span class="co">#&gt; Loading required package: youthvars</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'youthvars'</span>
+<span class="co">#&gt; The following objects are masked from 'package:scorz':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     add_adol6d_scores, add_aqol6d_adol_dim_scrg_eqs,</span>
+<span class="co">#&gt;     add_aqol6d_items_to_aqol6d_tbs_ls, add_aqol6dU_to_aqol6d_items_tb,</span>
+<span class="co">#&gt;     add_aqol6dU_to_aqol6d_tbs_ls, add_cors_and_utls_to_aqol6d_tbs_ls,</span>
+<span class="co">#&gt;     add_dim_disv_to_aqol6d_items_tb, add_dim_scores_to_aqol6d_items_tb,</span>
+<span class="co">#&gt;     add_itm_disv_to_aqol6d_itms_tb, add_labels_to_aqol6d_tb,</span>
+<span class="co">#&gt;     add_unwtd_dim_tots, add_wtd_dim_tots, calculate_adol_aqol6dU,</span>
+<span class="co">#&gt;     calculate_adult_aqol6dU, calculate_aqol6d_dim_1_disv,</span>
+<span class="co">#&gt;     calculate_aqol6d_dim_2_disv, calculate_aqol6d_dim_3_disv,</span>
+<span class="co">#&gt;     calculate_aqol6d_dim_4_disv, calculate_aqol6d_dim_5_disv,</span>
+<span class="co">#&gt;     calculate_aqol6d_dim_6_disv, get_aqol6d_scrg_dss,</span>
+<span class="co">#&gt;     impute_adult_aqol6d_items_tb, impute_unscrd_adol_aqol6d_ds,</span>
+<span class="co">#&gt;     make_adol_aqol6d_disv_lup, make_aqol6d_adol_pop_tbs_ls,</span>
+<span class="co">#&gt;     make_aqol6d_fns_ls, make_aqol6d_items_tb, make_dim_sclg_cons_dbl,</span>
+<span class="co">#&gt;     make_domain_items_ls</span>
 <span class="co">#&gt; Registered S3 methods overwritten by 'ggalt':</span>
 <span class="co">#&gt;   method                  from     </span>
 <span class="co">#&gt;   fortify.table           ggfortify</span>
@@ -117,88 +129,166 @@
 <span class="co">#&gt;   grobHeight.absoluteGrob ggplot2  </span>
 <span class="co">#&gt;   grobWidth.absoluteGrob  ggplot2  </span>
 <span class="co">#&gt;   grobX.absoluteGrob      ggplot2  </span>
-<span class="co">#&gt;   grobY.absoluteGrob      ggplot2</span></code></pre></div>
+<span class="co">#&gt;   grobY.absoluteGrob      ggplot2</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Attaching package: 'TTU'</span>
+<span class="co">#&gt; The following objects are masked from 'package:specific':</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     add_prefd_predr_var_to_mdl_smry_ls, add_tfd_var_to_ds,</span>
+<span class="co">#&gt;     add_uids_to_tbs_ls, add_utility_predn_to_ds,</span>
+<span class="co">#&gt;     add_utl_predn_to_new_ds, calculate_depnt_var_tfmn, calculate_rmse,</span>
+<span class="co">#&gt;     fit_ts_model_with_brm, get_background_text, get_cndts_for_mxd_mdls,</span>
+<span class="co">#&gt;     get_conclusion_text, get_covar_ctgs, get_covars_by_ctg,</span>
+<span class="co">#&gt;     get_hlth_utl_nm, get_hlth_utl_stat, get_link_from_tfmn,</span>
+<span class="co">#&gt;     get_lngl_ttu_types, get_mdl_cmprsns, get_mdl_type_from_nm,</span>
+<span class="co">#&gt;     get_mdls_with_signft_covars, get_nbr_of_predrs,</span>
+<span class="co">#&gt;     get_nbr_of_predrs_by_ctg, get_nbr_of_scndry_analyses,</span>
+<span class="co">#&gt;     get_ordered_sngl_csnl_mdls, get_popl_descvs, get_predr_ctgs,</span>
+<span class="co">#&gt;     get_predrs_by_ctg, get_prefd_mdl_predrs, get_random_intercept,</span>
+<span class="co">#&gt;     get_scndry_anlys_descs, get_selected_mixed_mdls, get_signft_covars,</span>
+<span class="co">#&gt;     get_table_predn_mdl, knit_mdl_rprt, make_abstract_args_ls,</span>
+<span class="co">#&gt;     make_all_mdl_types_smry_tbl, make_analysis_core_params_ls,</span>
+<span class="co">#&gt;     make_analysis_ds_smry_ls, make_bl_fup_add_to_row_ls,</span>
+<span class="co">#&gt;     make_brms_mdl_print_ls, make_brms_mdl_smry_tbl,</span>
+<span class="co">#&gt;     make_cmpst_sctr_and_dnst_plt, make_cndt_predr_text, make_cohort_ls,</span>
+<span class="co">#&gt;     make_coi_text, make_correlation_text, make_covar_ttu_tbl_refs,</span>
+<span class="co">#&gt;     make_covar_ttu_tbl_title, make_covariates_text,</span>
+<span class="co">#&gt;     make_cs_ts_ratios_tb, make_data_availability_text,</span>
+<span class="co">#&gt;     make_dnst_and_sctr_plt_title, make_ds_descvs_ls, make_ds_smry_ls,</span>
+<span class="co">#&gt;     make_ethics_text, make_fake_ts_data, make_folds_ls,</span>
+<span class="co">#&gt;     make_funding_text, make_hlth_utl_and_predrs_ls,</span>
+<span class="co">#&gt;     make_indpnt_predrs_lngl_tbl_title,</span>
+<span class="co">#&gt;     make_indpnt_predrs_lngl_tbls_ref, make_input_params,</span>
+<span class="co">#&gt;     make_knit_pars_ls, make_lngl_ttu_r2_text,</span>
+<span class="co">#&gt;     make_lngl_ttu_with_covars_text, make_maui_params_ls, make_mdl,</span>
+<span class="co">#&gt;     make_mdl_coef_range_text, make_mdl_coef_ratio_ls,</span>
+<span class="co">#&gt;     make_mdl_desc_lines, make_mdl_nms_ls, make_mdl_smry_elmt_tbl,</span>
+<span class="co">#&gt;     make_mdl_smry_ls, make_mdl_type_smry_tbl, make_mdls_ls,</span>
+<span class="co">#&gt;     make_mdls_smry_tbls_ls, make_nbr_at_fup_text,</span>
+<span class="co">#&gt;     make_nbr_included_text, make_paths_to_ss_plts_ls,</span>
+<span class="co">#&gt;     make_predn_ds_with_one_predr, make_predr_ctgs_ls, make_predr_vals,</span>
+<span class="co">#&gt;     make_predr_vars_nms_ls, make_predrs_for_best_mdls,</span>
+<span class="co">#&gt;     make_prefd_mdls_vec, make_prmry_analysis_params_ls,</span>
+<span class="co">#&gt;     make_psych_predrs_lup, make_random_forest_text,</span>
+<span class="co">#&gt;     make_ranked_predrs_ls, make_results_ls, make_results_ls_spine,</span>
+<span class="co">#&gt;     make_scaling_text, make_scndry_anlys_params,</span>
+<span class="co">#&gt;     make_scndry_anlys_text, make_selected_mdl_text, make_shareable_mdl,</span>
+<span class="co">#&gt;     make_smry_of_brm_mdl, make_smry_of_mdl_outp,</span>
+<span class="co">#&gt;     make_smry_of_ts_mdl_outp, make_sngl_mdl_smry_tb, make_ss_tbls_ls,</span>
+<span class="co">#&gt;     make_study_descs_ls, make_ten_fold_text, make_ten_folds_tbl_title,</span>
+<span class="co">#&gt;     make_tfd_sngl_predr_mdls_tb, make_tfmn_cmprsn_plt, make_ttu_cs_ls,</span>
+<span class="co">#&gt;     make_uid_rename_lup, make_unique_ls_elmt_idx_int,</span>
+<span class="co">#&gt;     make_valid_params_ls_ls, make_within_between_ratios_text,</span>
+<span class="co">#&gt;     plot_auto_lm, plot_lnr_cmprsn, plot_obsd_predd_dnst,</span>
+<span class="co">#&gt;     plot_obsd_predd_sctr_cmprsn, plot_sctr_plt_cmprsn,</span>
+<span class="co">#&gt;     predict_from_shareable_mdl, predict_shrble_betareg,</span>
+<span class="co">#&gt;     predict_shrble_glm, predict_shrble_lm, predict_uncnstrd_utl,</span>
+<span class="co">#&gt;     print_all_plts_for_mdl_set, print_cohort_table, print_cors_tbl,</span>
+<span class="co">#&gt;     print_covar_ttu_tbls, print_indpnt_predrs_coefs_tbl,</span>
+<span class="co">#&gt;     print_indpnt_predrs_lngl_mdl_coefs, print_lngl_ttu_tbls,</span>
+<span class="co">#&gt;     print_ten_folds_tbl, print_ts_mdl_plts,</span>
+<span class="co">#&gt;     randomise_changes_in_fct_lvls, rename_from_nmd_vec,</span>
+<span class="co">#&gt;     reorder_cndt_predrs_chr, reorder_tbs_for_target_cors, rprt_lup,</span>
+<span class="co">#&gt;     scramble_xx, transform_chr_digit_pairs,</span>
+<span class="co">#&gt;     transform_data_tb_for_cmprsn, transform_depnt_var_nm,</span>
+<span class="co">#&gt;     transform_dict_with_rename_lup, transform_ds_for_all_cmprsn_plts,</span>
+<span class="co">#&gt;     transform_ds_for_mdlng, transform_ds_to_predn_ds,</span>
+<span class="co">#&gt;     transform_mdl_vars_with_clss, transform_names,</span>
+<span class="co">#&gt;     transform_nms_in_mdl_tbl, transform_params_ls_from_lup,</span>
+<span class="co">#&gt;     transform_params_ls_to_valid, transform_paths_ls_for_scndry,</span>
+<span class="co">#&gt;     transform_predd_var_nm, transform_predr_nm_part_of_phrases,</span>
+<span class="co">#&gt;     transform_rprt_lup, transform_tb_to_mdl_inp,</span>
+<span class="co">#&gt;     transform_tbl_to_rnd_vars, transform_timepoint_vals,</span>
+<span class="co">#&gt;     transform_ts_mdl_data, transform_uid_var, write_analyses,</span>
+<span class="co">#&gt;     write_box_cox_tfmn, write_mdl_cmprsn, write_mdl_plts,</span>
+<span class="co">#&gt;     write_mdl_smry_rprt, write_mdl_type_covars_mdls,</span>
+<span class="co">#&gt;     write_mdl_type_multi_outps, write_mdl_type_sngl_outps,</span>
+<span class="co">#&gt;     write_mdls_with_covars_cmprsn, write_new_outp_dir,</span>
+<span class="co">#&gt;     write_predr_and_covars_cmprsn, write_predr_and_mdl_tstng_results,</span>
+<span class="co">#&gt;     write_predr_cmprsn_outps, write_scndry_analysis,</span>
+<span class="co">#&gt;     write_scndry_analysis_dir, write_shareable_dir,</span>
+<span class="co">#&gt;     write_shareable_mdls, write_shareable_mdls_to_dv,</span>
+<span class="co">#&gt;     write_sngl_predr_multi_mdls_outps, write_study_outp_ds,</span>
+<span class="co">#&gt;     write_to_delete_ds_copies, write_to_delete_mdl_fls,</span>
+<span class="co">#&gt;     write_ts_mdl_plts, write_ts_mdls, write_ts_mdls_from_alg_outp</span></code></pre></div>
 <p>This development version of the TTU package has been made available as part of the process of testing and documenting the package. <a href="https://ready4-dev.github.io/TTU/index.html">Installation instructions are on the package homepage</a>.</p>
-<div id="before-you-get-started" class="section level2">
-<h2 class="hasAnchor">
-<a href="#before-you-get-started" class="anchor"></a>Before you get started</h2>
-<div id="third-party-package-configuration" class="section level3">
-<h3 class="hasAnchor">
-<a href="#third-party-package-configuration" class="anchor"></a>Third party package configuration</h3>
-<p>A key step in the workflows supported by TTU is to make calls to the Stan program. By default, functions in TTU rely on the <code>cmdstanr</code> package to do this, and you therefore need to have that package installed on your machine (which should occur automatically when you install TTU) and to have performed the necessary configuration of that package (refer to <a href="https://mc-stan.org/cmdstanr/">https://mc-stan.org/cmdstanr/</a> for details).</p>
+<div class="section level2">
+<h2 id="before-you-get-started">Before you get started<a class="anchor" aria-label="anchor" href="#before-you-get-started"></a>
+</h2>
+<div class="section level3">
+<h3 id="third-party-package-configuration">Third party package configuration<a class="anchor" aria-label="anchor" href="#third-party-package-configuration"></a>
+</h3>
+<p>A key step in the workflows supported by TTU is to make calls to the Stan program. By default, functions in TTU rely on the <code>cmdstanr</code> package to do this, and you therefore need to have that package installed on your machine (which should occur automatically when you install TTU) and to have performed the necessary configuration of that package (refer to <a href="https://mc-stan.org/cmdstanr/" class="external-link">https://mc-stan.org/cmdstanr/</a> for details).</p>
 </div>
-<div id="data-repository-set-up" class="section level3">
-<h3 class="hasAnchor">
-<a href="#data-repository-set-up" class="anchor"></a>Data repository set-up</h3>
-<p>Furthermore, TTU package workflows support sharing of results to an online repository. If you wish to avail of this feature, you will need to have set up an account with a Dataverse (<a href="https://dataverse.org/" class="uri">https://dataverse.org/</a>) provider (e.g., <a href="https://dataverse.harvard.edu/" class="uri">https://dataverse.harvard.edu/</a>). You also need to have created:</p>
+<div class="section level3">
+<h3 id="data-repository-set-up">Data repository set-up<a class="anchor" aria-label="anchor" href="#data-repository-set-up"></a>
+</h3>
+<p>Furthermore, TTU package workflows support sharing of results to an online repository. If you wish to avail of this feature, you will need to have set up an account with a Dataverse (<a href="https://dataverse.org/" class="external-link uri">https://dataverse.org/</a>) provider (e.g., <a href="https://dataverse.harvard.edu/" class="external-link uri">https://dataverse.harvard.edu/</a>). You also need to have created:</p>
 <ul>
-<li>a dataverse API key and stored the API key and server values in your local environment (to see how to do this, visit: <a href="https://github.com/IQSS/dataverse-client-r" class="uri">https://github.com/IQSS/dataverse-client-r</a> )</li>
-<li>an empty dataset for each project you undertake with TTU (steps 1-3 and 5 in <a href="https://guides.dataverse.org/en/5.5/user/dataset-management.html#adding-a-new-dataset" class="uri">https://guides.dataverse.org/en/5.5/user/dataset-management.html#adding-a-new-dataset</a>)</li>
+<li>a dataverse API key and stored the API key and server values in your local environment (to see how to do this, visit: <a href="https://github.com/IQSS/dataverse-client-r" class="external-link uri">https://github.com/IQSS/dataverse-client-r</a> )</li>
+<li>an empty dataset for each project you undertake with TTU (steps 1-3 and 5 in <a href="https://guides.dataverse.org/en/5.5/user/dataset-management.html#adding-a-new-dataset" class="external-link uri">https://guides.dataverse.org/en/5.5/user/dataset-management.html#adding-a-new-dataset</a>)</li>
 </ul>
 </div>
 </div>
-<div id="workflow" class="section level2">
-<h2 class="hasAnchor">
-<a href="#workflow" class="anchor"></a>Workflow</h2>
+<div class="section level2">
+<h2 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
+</h2>
 <p>The workflow that TTU supports has two main parts.</p>
 <p>Part one is to undertake and exploratory analysis in order to finalise the input parameters that you will use in your study. The following vignette illustrates this workflow:</p>
 <ul>
 <li><a href="Model_TTU.html">Exploratory workflow (General population - EQ5D example)</a></li>
 </ul>
 <p>When you have determined the inputs that you will be using, you can implement the reporting workflow, which involves the following steps.</p>
-<div id="create-project-workspace" class="section level3">
-<h3 class="hasAnchor">
-<a href="#create-project-workspace" class="anchor"></a>Create project workspace</h3>
+<div class="section level3">
+<h3 id="create-project-workspace">Create project workspace<a class="anchor" aria-label="anchor" href="#create-project-workspace"></a>
+</h3>
 <p>The following command will create a project directory in the location and with the name of your choosing.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">path_to_csp_1L_chr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/write_reporting_dir.html">write_reporting_dir</a></span><span class="op">(</span>path_to_write_to_1L_chr <span class="op">=</span> <span class="st">"../Temp tests of output"</span>,
+<code class="sourceCode R"><span class="va">path_to_csp_1L_chr</span> <span class="op">&lt;-</span> <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/write_reporting_dir.html" class="external-link">write_reporting_dir</a></span><span class="op">(</span>path_to_write_to_1L_chr <span class="op">=</span> <span class="st">"../Temp tests of output"</span>,
                                           new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"AQoL-6D_Vignette"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="edit-template-program" class="section level3">
-<h3 class="hasAnchor">
-<a href="#edit-template-program" class="anchor"></a>Edit template program</h3>
-<p>The preceding command will have created a template RMD file for you to edit in the CSP sub-directory of your project directory. That template file will look like this: <a href="https://github.com/ready4-dev/TTU/blob/master/inst/Project/CSP/CSP.Rmd" class="uri">https://github.com/ready4-dev/TTU/blob/master/inst/Project/CSP/CSP.Rmd</a></p>
+<div class="section level3">
+<h3 id="edit-template-program">Edit template program<a class="anchor" aria-label="anchor" href="#edit-template-program"></a>
+</h3>
+<p>The preceding command will have created a template RMD file for you to edit in the CSP sub-directory of your project directory. That template file will look like this: <a href="https://github.com/ready4-dev/TTU/blob/master/inst/Project/CSP/CSP.Rmd" class="external-link uri">https://github.com/ready4-dev/TTU/blob/master/inst/Project/CSP/CSP.Rmd</a></p>
 <p>Edit the file with the information relevant to your study. Two vignettes that illustrate the workflow functions that you will be using are:</p>
 <ul>
 <li><a href="CSP_EQ5D_TTU.html">Reporting workflow (General population - EQ5D example)</a></li>
 <li><a href="CSP_AQOL6D_TTU.html">Reporting workflow (Clinical population - AQoL6D example)</a></li>
 </ul>
 </div>
-<div id="run-and-share-program" class="section level3">
-<h3 class="hasAnchor">
-<a href="#run-and-share-program" class="anchor"></a>Run and share program</h3>
+<div class="section level3">
+<h3 id="run-and-share-program">Run and share program<a class="anchor" aria-label="anchor" href="#run-and-share-program"></a>
+</h3>
 <p>Once you are ready to run your analysis, use the <code>write_csp_output</code> function. The <code>write_csp_output</code> function is required as simply knitting the RMD document you edited will not work as intended (although you can run chunks interactively if you prefer). Another advantage of <code>write_csp_output</code> is that if you provide details of your dataverse dataset (which will be different to the value in the below example), it will save a PDF copy of your workflow program in that dataset.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/write_csp_output.html">write_csp_output</a></span><span class="op">(</span><span class="va">path_to_csp_1L_chr</span>,
+<code class="sourceCode R"><span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/write_csp_output.html" class="external-link">write_csp_output</a></span><span class="op">(</span><span class="va">path_to_csp_1L_chr</span>,
                  dv_ds_doi_1L_chr <span class="op">=</span> <span class="st">"https://doi.org/10.7910/DVN/D74QMP"</span>,
                  execute_1L_lgl <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
-
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
 
-      <footer><div class="copyright">
-  <p>Developed by Caroline Gao, Matthew Hamilton, Orygen, Headspace, National Health and Medical Research Council.</p>
+    <footer><div class="pkgdown-footer-left">
+  <p></p>
+<p>Developed by Caroline Gao, Matthew Hamilton, Orygen, Headspace, National Health and Medical Research Council.</p>
 </div>
 
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+<div class="pkgdown-footer-right">
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
 
+  
 
   </body>
 </html>
