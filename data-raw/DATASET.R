@@ -257,6 +257,8 @@ z <- ready4pack::make_pt_ready4pack_manifest(x,
   ready4pack::ready4pack_manifest()
 z <- ready4::author(z)
 # usethis::use_package("readr")
+usethis::use_dev_package("scorz",remote = "ready4-dev/scorz")
+usethis::use_dev_package("specific",remote = "ready4-dev/specific")
 # usethis::use_package("rgl")
 # piggyback::pb_new_release("ready4-dev/TTU",
 #                           tag = paste0("v",desc::desc_get_version()),
