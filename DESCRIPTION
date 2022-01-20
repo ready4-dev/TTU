@@ -1,6 +1,6 @@
 Package: TTU
-Title: Develop, Report and Share Transfer to Utility Mapping Algorithms
-Version: 0.0.0.9324
+Title: Implement Transfer to Utility Mapping Algorithms
+Version: 0.0.0.9325
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -34,6 +34,7 @@ Imports:
     DescTools,
     dplyr,
     enrichwith,
+    eq5d,
     faux,
     ggalt,
     ggplot2,
@@ -51,7 +52,6 @@ Imports:
     psych,
     purrr,
     randomForest,
-    ready4 (>= 0.0.0.9083),
     ready4show (>= 0.0.0.9085),
     ready4use (>= 0.0.0.9217),
     rlang,
@@ -70,9 +70,11 @@ Imports:
     youthvars (>= 0.0.0.9100)
 VignetteBuilder: knitr
 Depends: 
+    ready4,
     ggfortify,
-    eq5d,
-    R (>= 2.10)
+    R (>= 2.10),
+    scorz,
+    specific
 LazyData: true
 Remotes: 
     ready4-dev/ready4,
