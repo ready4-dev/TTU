@@ -1,6 +1,6 @@
 Package: TTU
 Title: Develop, Report and Share Transfer to Utility Mapping Algorithms
-Version: 0.0.0.9323
+Version: 0.0.0.9324
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -51,9 +51,9 @@ Imports:
     psych,
     purrr,
     randomForest,
-    ready4 (>= 0.0.0.9030),
-    ready4show (>= 0.0.0.9050),
-    ready4use (>= 0.0.0.9155),
+    ready4 (>= 0.0.0.9083),
+    ready4show (>= 0.0.0.9085),
+    ready4use (>= 0.0.0.9217),
     rlang,
     rmarkdown,
     stats,
@@ -67,7 +67,7 @@ Imports:
     utils,
     viridis,
     xfun,
-    youthvars (>= 0.0.0.9072)
+    youthvars (>= 0.0.0.9100)
 VignetteBuilder: knitr
 Depends: 
     ggfortify,
