@@ -1,6 +1,6 @@
 Package: TTU
 Title: Implement Transfer to Utility Mapping Algorithms
-Version: 0.0.0.9328
+Version: 0.0.0.9329
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -66,20 +66,18 @@ Imports:
     tidyselect,
     utils,
     viridis,
-    xfun
+    xfun,
+    youthvars (>= 0.0.0.9104)
 VignetteBuilder: knitr
 Depends: 
-    ready4 (>= 0.0.0.9089),
+    ready4,
     ggfortify,
     R (>= 2.10),
-    scorz (>= 0.0.0.9048),
-    specific (>= 0.0.0.9073),
-    youthvars (>= 0.0.0.9104)
+    scorz,
+    specific
 LazyData: true
-Remotes:  
+Remotes: 
     ready4-dev/ready4,
     ready4-dev/ready4show,
     ready4-dev/ready4use,
-    ready4-dev/youthvars,
-    ready4-dev/scorz,
-    ready4-dev/specific
+    ready4-dev/youthvars
