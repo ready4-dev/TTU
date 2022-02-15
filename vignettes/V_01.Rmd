@@ -9,6 +9,6 @@ vignette: >
 
 ## Change is coming!
 
-The TTU package is undergoing significant redevelopment currently. As a result the syntax will soon look very different to that outlined in the current vignettes.
+The TTU package is undergoing significant redevelopment currently. As a result the syntax will soon look very different to that outlined in the current (deprecated) vignettes.
 
 More updates will appear here shortly.

@@ -1,14 +1,15 @@
 ---
-title: "Reporting Workflow, AQoL-6D Clinical Population Example"
+title: "AQoL-6D Clinical Population Example (Deprecated)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Reporting Workflow, AQoL-6D Clinical Population Example}
+  %\VignetteIndexEntry{AQoL-6D Clinical Population Example (Deprecated)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 \blandscape
 <!---BLOCK_LANDSCAPE_START--->
+**This workflow has been deprecated. Many of the functions included in this workflow have been replaced by methods in the [specific package](https://ready4-dev.github.io/specific). Updated syntax for reporting utility mapping studies with the TTU package is currently being developed. The current syntax should be regarded as unstable and subject to change at short notice.**
 
 This vignette is an example of implementing of a reproducible workflow to:
 

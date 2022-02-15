@@ -1,14 +1,16 @@
 ---
-title: "Reporting Workflow, EQ5D General Population Example"
+title: "EQ5D General Population Example (Deprecated)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Reporting Workflow, EQ5D General Population Example}
+  %\VignetteIndexEntry{EQ5D General Population Example (Deprecated)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 \blandscape
 <!---BLOCK_LANDSCAPE_START--->
+**This workflow has been deprecated. Many of the functions included in this workflow have been replaced by methods in the [specific package](https://ready4-dev.github.io/specific). Updated syntax for reporting utility mapping studies with the TTU package is currently being developed. The current syntax should be regarded as unstable and subject to change at short notice.**
+
 This vignette is an example of implementing of a reproducible workflow to:
 
 - develop transfer to utility models to predict EQ-5D in a community sample; 

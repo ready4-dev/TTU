@@ -17,6 +17,9 @@ knitr::opts_chunk$set(
 ```{r setup}
 library(TTU)
 ```
+
+**The TTU package is currently undergoing significant redevelopment. Many of the functions included in the package have been replaced by methods in the [specific package](https://ready4-dev.github.io/specific). Updated syntax for reporting upackage should be regarded as unstable and subject to change at short notice.** 
+
 This development version of the TTU package has been made available as part of the process of testing and documenting the package. [Installation instructions are on the package homepage](https://ready4-dev.github.io/TTU/index.html).
 
 ## Before you get started

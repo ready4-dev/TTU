@@ -149,6 +149,19 @@ x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utili
                            piggyback_to_1L_chr = "ready4-dev/ready4",
                            ready4_type_1L_chr = "modelling",
                            zenodo_badge_1L_chr = "[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5646593.svg)](https://doi.org/10.5281/zenodo.5646593)")
+# y <- dplyr::bind_rows(ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+#                                                                    name_stub_chr = "Synopsis",
+#                                                                    slots_ls = list("a_YouthvarsProfile",
+#                                                                                    "b_SpecificParameters",
+#                                                                                    "c_SpecificResults",
+#                                                                                    "paths_chr") %>% list(),
+#                                                                    pt_ls = list("YouthvarsProfile",
+#                                                                                 "SpecificParameters",
+#                                                                                 "SpecificResults",
+#                                                                                 "character") %>% list(),
+#                                                                    class_desc_chr = "Modelling project dataset, input parameters and complete mixed models results.",
+#                                                                    parent_class_chr = "SpecificProject",
+#                                                                    inc_clss_ls = list("SpecificResults","SpecificParameters") %>% list()))
 # x_ready4class_constructor <- ready4class::ready4class_constructor() %>%
 #   dplyr::bind_rows(tibble::tribble(
 #     ~ make_s3_lgl, ~ name_stub_chr, ~ pt_ls, ~ pt_chkr_pfx_ls, ~ pt_ns_ls, ~ vals_ls, ~ allowed_vals_ls, ~ min_max_vals_ls, ~ start_end_vals_ls, ~ class_desc_chr, ~ parent_class_chr, ~ slots_ls, ~ meaningful_nms_ls, ~ inc_clss_ls, ~ asserts_ls,
@@ -261,6 +274,8 @@ z <- ready4pack::make_pt_ready4pack_manifest(x,
                                                               pkg_ds_ls_ls = datasets_ls) %>%
   ready4pack::ready4pack_manifest()
 z <- ready4::author(z)
+ready4::write_citation_cff(packageDescription("TTU"),
+                           citation_chr = readLines("inst/CITATION"))
 # usethis::use_package("readr")
 # usethis::use_dev_package("scorz",remote = "ready4-dev/scorz")
 # usethis::use_dev_package("specific",remote = "ready4-dev/specific")
