@@ -18,3 +18,4 @@ print_covar_ttu_tbls(params_ls, caption_1L_chr, table_1L_chr, ref_1L_int = 1)
 \description{
 print_covar_ttu_tbls() is a Print function that prints output to console Specifically, this function implements an algorithm to print covariate transfer to utility algorithm tables. The function is called for its side effects and does not return a value.
 }
+\keyword{internal}

@@ -23,3 +23,4 @@ Number of secondary analyses length one (an output object of multiple potential 
 \description{
 get_nbr_of_scndry_analyses() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get number of secondary analyses. Function argument results_ls specifies the where to look for the required object. The function returns Number of secondary analyses length one (an output object of multiple potential types).
 }
+\keyword{internal}

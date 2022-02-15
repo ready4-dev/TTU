@@ -17,3 +17,4 @@ Model types (a character vector)
 \description{
 get_lngl_ttu_types() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get longitudinal transfer to utility algorithm types. Function argument results_ls specifies the where to look for the required object. The function returns Model types (a character vector).
 }
+\keyword{internal}

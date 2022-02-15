@@ -15,3 +15,4 @@ Correlation text (a character vector of length one)
 \description{
 make_correlation_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make correlation text. The function returns Correlation text (a character vector of length one).
 }
+\keyword{internal}

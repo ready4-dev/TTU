@@ -141,3 +141,4 @@
 ^data-raw/dataverse/fn_type_lup_tb/fn_type_lup_tb\.RDS$
 ^data-raw/fn_type_lup_tb\.csv$
 ^data-raw/NOTES\.R$
+^data-raw/s4_mthds/author\.R$

@@ -8,6 +8,7 @@
 #' @export 
 #' @importFrom ready4show write_report
 #' @importFrom purrr walk pluck
+#' @keywords internal
 write_analyses <- function (input_params_ls, abstract_args_ls = NULL, start_at_int = c(2, 
     1)) 
 {
@@ -260,6 +261,7 @@ write_manuscript <- function (abstract_args_ls = NULL, input_params_ls = NULL, r
 #' @rdname write_mdl_cmprsn
 #' @export 
 #' @importFrom youthvars transform_ds_for_tstng
+#' @keywords internal
 write_mdl_cmprsn <- function (scored_data_tb, ds_smry_ls, mdl_smry_ls, output_data_dir_1L_chr, 
     seed_1L_int = 1234) 
 {
@@ -543,6 +545,7 @@ write_mdl_smry_rprt <- function (input_params_ls = NULL, header_yaml_args_ls = N
 #' @importFrom stats predict AIC BIC
 #' @importFrom dplyr pull arrange desc
 #' @importFrom rlang sym
+#' @keywords internal
 write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predrs_var_nms_chr, 
     covar_var_nms_chr, mdl_type_1L_chr, path_to_write_to_1L_chr, 
     new_dir_nm_1L_chr = "D_Covars_Selection", fl_nm_pfx_1L_chr = "D_CT", 
@@ -615,6 +618,7 @@ write_mdl_type_covars_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_tota
 #' @importFrom purrr map_dfr
 #' @importFrom ready4 get_from_lup_obj
 #' @importFrom dplyr select mutate everything arrange desc
+#' @keywords internal
 write_mdl_type_multi_outps <- function (data_tb, folds_1L_int = 10, predrs_var_nms_chr, covar_var_nms_chr = NA_character_, 
     start_1L_chr = NULL, mdl_type_1L_chr, depnt_var_nm_1L_chr = "utl_total_w", 
     path_to_write_to_1L_chr, new_dir_nm_1L_chr, mdl_types_lup = NULL, 
@@ -742,6 +746,7 @@ write_mdl_type_sngl_outps <- function (data_tb, folds_1L_int = 10, depnt_var_nm_
 #' @return Output summary (a list)
 #' @rdname write_mdls_with_covars_cmprsn
 #' @export 
+#' @keywords internal
 write_mdls_with_covars_cmprsn <- function (scored_data_tb, bl_tb, ds_smry_ls, mdl_smry_ls, output_data_dir_1L_chr, 
     seed_1L_int = 1234, session_data_ls = NULL) 
 {
@@ -801,6 +806,7 @@ write_new_outp_dir <- function (path_to_write_to_1L_chr, new_dir_nm_1L_chr)
 #' @rdname write_predr_and_covars_cmprsn
 #' @export 
 #' @importFrom youthvars transform_ds_for_tstng
+#' @keywords internal
 write_predr_and_covars_cmprsn <- function (scored_data_tb, bl_tb, ds_smry_ls, mdl_smry_ls, output_data_dir_1L_chr, 
     seed_1L_int = 1234) 
 {
@@ -884,6 +890,7 @@ write_predr_and_mdl_tstng_results <- function (scored_data_tb, ds_smry_ls, mdl_s
 #' @importFrom ready4show write_mdl_plt_fl
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr arrange desc filter
+#' @keywords internal
 write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_nm_1L_chr = "B_Candidate_Predrs_Cmprsn", 
     depnt_var_nm_1L_chr = "utl_total_w", candidate_predrs_chr, 
     max_nbr_of_boruta_mdl_runs_int = 300L) 
@@ -932,6 +939,7 @@ write_predr_cmprsn_outps <- function (data_tb, path_to_write_to_1L_chr, new_dir_
 #' @importFrom ready4show make_rprt_type_ls write_rprt_from_tmpl
 #' @importFrom here i_am here
 #' @importFrom rlang exec
+#' @keywords internal
 write_report <- function (params_ls, paths_ls, rprt_nm_1L_chr, abstract_args_ls = NULL, 
     header_yaml_args_ls = NULL, rprt_lup = NULL) 
 {
@@ -958,6 +966,7 @@ write_report <- function (params_ls, paths_ls, rprt_nm_1L_chr, abstract_args_ls 
 #' @rdname write_reporting_dir
 #' @export 
 #' @importFrom lifecycle deprecate_soft
+#' @keywords internal
 write_reporting_dir <- function (path_to_write_to_1L_chr = getwd(), new_dir_nm_1L_chr = "TTU_Project", 
     overwrite_1L_lgl = FALSE) 
 {
@@ -1164,6 +1173,7 @@ write_shareable_dir <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable"
 #' @importFrom ready4 get_from_lup_obj
 #' @importFrom stats setNames
 #' @importFrom tibble tibble
+#' @keywords internal
 write_shareable_mdls <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Shareable", shareable_title_detail_1L_chr = "", 
     write_mdls_to_dv_1L_lgl = F) 
 {
@@ -1358,6 +1368,7 @@ write_shareable_mdls_to_dv <- function (outp_smry_ls, new_dir_nm_1L_chr = "G_Sha
 #' @importFrom purrr map_dfr
 #' @importFrom ready4 get_from_lup_obj
 #' @importFrom dplyr arrange desc
+#' @keywords internal
 write_sngl_predr_multi_mdls_outps <- function (data_tb, mdl_types_chr, predr_var_nm_1L_chr, predr_var_desc_1L_chr, 
     predr_vals_dbl, path_to_write_to_1L_chr, new_dir_nm_1L_chr = "A_Candidate_Mdls_Cmprsn", 
     start_1L_chr = NULL, covar_var_nms_chr = NA_character_, depnt_var_nm_1L_chr = "utl_total_w", 
@@ -1519,6 +1530,7 @@ write_study_outp_ds <- function (input_params_ls, dv_ds_nm_and_url_chr = NULL, r
 #' @export 
 #' @importFrom purrr map_chr walk
 #' @importFrom here here
+#' @keywords internal
 write_to_delete_ds_copies <- function (input_params_ls = NULL, paths_ls = NULL) 
 {
     if (is.null(paths_ls)) 
@@ -1547,6 +1559,7 @@ write_to_delete_ds_copies <- function (input_params_ls = NULL, paths_ls = NULL)
 #' @rdname write_to_delete_mdl_fls
 #' @export 
 #' @importFrom purrr map_lgl walk
+#' @keywords internal
 write_to_delete_mdl_fls <- function (outp_smry_ls) 
 {
     paths_to_mdls_chr <- outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% 
@@ -1732,6 +1745,7 @@ write_ts_mdls <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_v
 #' @return Output summary (a list)
 #' @rdname write_ts_mdls_from_alg_outp
 #' @export 
+#' @keywords internal
 write_ts_mdls_from_alg_outp <- function (outp_smry_ls, predictors_lup, utl_min_val_1L_dbl = -1, 
     backend_1L_chr = getOption("brms.backend", "rstan"), iters_1L_int = 4000L, 
     new_dir_nm_1L_chr = "F_TS_Mdls", prior_ls = NULL, control_ls = NULL) 

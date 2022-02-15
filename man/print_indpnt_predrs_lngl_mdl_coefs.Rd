@@ -23,3 +23,4 @@ print_indpnt_predrs_lngl_mdl_coefs(
 \description{
 print_indpnt_predrs_lngl_mdl_coefs() is a Print function that prints output to console Specifically, this function implements an algorithm to print independent predictors longitudinal model coefficients. The function is called for its side effects and does not return a value.
 }
+\keyword{internal}

@@ -19,3 +19,4 @@ Ordered single cross-sectional models (a character vector)
 \description{
 get_ordered_sngl_csnl_mdls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get ordered single cross-sectional models. Function argument results_ls specifies the where to look for the required object. The function returns Ordered single cross-sectional models (a character vector).
 }
+\keyword{internal}

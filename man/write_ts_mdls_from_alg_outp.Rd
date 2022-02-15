@@ -38,3 +38,4 @@ Output summary (a list)
 \description{
 write_ts_mdls_from_alg_outp() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write time series models from algorithm output. The function returns Output summary (a list).
 }
+\keyword{internal}

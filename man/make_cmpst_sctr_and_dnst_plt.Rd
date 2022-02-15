@@ -32,3 +32,4 @@ make_cmpst_sctr_and_dnst_plt(
 \description{
 make_cmpst_sctr_and_dnst_plt() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make composite scatter and density plot. The function is called for its side effects and does not return a value.
 }
+\keyword{internal}

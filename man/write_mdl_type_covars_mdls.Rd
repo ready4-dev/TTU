@@ -44,3 +44,4 @@ Summary of models with covariates (a tibble)
 \description{
 write_mdl_type_covars_mdls() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model type covariates models. The function returns Summary of models with covariates (a tibble).
 }
+\keyword{internal}

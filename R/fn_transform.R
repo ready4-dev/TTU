@@ -45,6 +45,7 @@ transform_chr_digit_pairs <- function (digit_pairs_chr, nbr_of_digits_1L_int = 2
 #' @export 
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym
+#' @keywords internal
 transform_data_tb_for_cmprsn <- function (data_tb, model_mdl, depnt_var_nm_1L_chr = "utl_total_w", 
     source_data_nm_1L_chr = "Original", new_data_is_1L_chr = "Predicted", 
     predn_type_1L_chr = NULL, family_1L_chr = NA_character_, 
@@ -153,6 +154,7 @@ transform_ds_for_all_cmprsn_plts <- function (tfd_data_tb, model_mdl, depnt_var_
 #' @importFrom tidyr drop_na
 #' @importFrom rlang syms
 #' @importFrom dplyr select
+#' @keywords internal
 transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_var_nm_1L_chr, 
     covar_var_nms_chr = NA_character_) 
 {
@@ -179,6 +181,7 @@ transform_ds_for_mdlng <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w"
 #' @importFrom rlang sym exec
 #' @importFrom purrr reduce map_dbl
 #' @importFrom ready4 get_from_lup_obj
+#' @keywords internal
 transform_ds_to_predn_ds <- function (data_tb, predr_vars_nms_chr, tfmn_1L_chr, depnt_var_nm_1L_chr, 
     id_var_nm_1L_chr, round_var_nm_1L_chr, round_bl_val_1L_chr, 
     predictors_lup) 
@@ -219,6 +222,7 @@ transform_ds_to_predn_ds <- function (data_tb, predr_vars_nms_chr, tfmn_1L_chr, 
 #' @importFrom Hmisc label
 #' @importFrom dplyr mutate
 #' @importFrom rlang sym exec
+#' @keywords internal
 transform_mdl_vars_with_clss <- function (ds_tb, predictors_lup = NULL, prototype_lup = NULL, 
     depnt_var_nm_1L_chr = "utl_total_w", class_fn_1L_chr = "as.numeric") 
 {
@@ -565,6 +569,7 @@ transform_rprt_lup <- function (rprt_lup, add_suplry_rprt_1L_lgl = T, add_sharin
 #' @importFrom rlang sym
 #' @importFrom purrr reduce
 #' @importFrom stats na.omit
+#' @keywords internal
 transform_tb_to_mdl_inp <- function (data_tb, depnt_var_nm_1L_chr = "utl_total_w", predr_vars_nms_chr, 
     id_var_nm_1L_chr = "fkClientID", round_var_nm_1L_chr = "round", 
     round_bl_val_1L_chr = "Baseline", drop_all_msng_1L_lgl = T, 

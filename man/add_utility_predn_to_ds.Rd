@@ -59,3 +59,4 @@ Data (a tibble)
 \description{
 add_utility_predn_to_ds() is an Add function that updates an object by adding data to that object. Specifically, this function implements an algorithm to add utility prediction to dataset. Function argument data_tb specifies the object to be updated. The function returns Data (a tibble).
 }
+\keyword{internal}

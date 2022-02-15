@@ -17,3 +17,4 @@ Text (a character vector of length one)
 \description{
 make_within_between_ratios_text() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make within between ratios text. The function returns Text (a character vector of length one).
 }
+\keyword{internal}

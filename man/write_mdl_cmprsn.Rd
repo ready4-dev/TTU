@@ -29,3 +29,4 @@ Model comparison (a list)
 \description{
 write_mdl_cmprsn() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write model comparison. The function returns Model comparison (a list).
 }
+\keyword{internal}

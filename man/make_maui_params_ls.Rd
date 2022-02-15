@@ -29,3 +29,4 @@ Multi-attribute utility instrument parameters (a list)
 \description{
 make_maui_params_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make multi-attribute utility instrument parameters list. The function returns Multi-attribute utility instrument parameters (a list).
 }
+\keyword{internal}

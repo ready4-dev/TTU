@@ -32,3 +32,4 @@ Predictor and covariates comparison (a list)
 \description{
 write_predr_and_covars_cmprsn() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write predictor and covariates comparison. The function returns Predictor and covariates comparison (a list).
 }
+\keyword{internal}

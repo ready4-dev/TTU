@@ -15,3 +15,4 @@ Candidates for mixed models (a lookup table)
 \description{
 get_cndts_for_mxd_mdls() is a Get function that retrieves a pre-existing data object from memory, local file system or online repository. Specifically, this function implements an algorithm to get candidates for mixed models. Function argument mdl_types_lup specifies the where to look for the required object. The function returns Candidates for mixed models (a lookup table).
 }
+\keyword{internal}

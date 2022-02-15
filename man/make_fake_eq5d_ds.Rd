@@ -35,3 +35,4 @@ Data (a tibble)
 \description{
 make_fake_eq5d_ds() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake eq5d dataset. The function returns Data (a tibble).
 }
+\keyword{internal}

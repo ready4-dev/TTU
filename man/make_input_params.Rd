@@ -65,3 +65,4 @@ Parameters (a list of lists)
 \description{
 make_input_params() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make input parameters. The function returns Parameters (a list of lists).
 }
+\keyword{internal}

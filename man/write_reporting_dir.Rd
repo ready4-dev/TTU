@@ -23,3 +23,4 @@ Path to complete study program (a character vector of length one)
 \description{
 write_reporting_dir() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write reporting directory. The function returns Path to complete study program (a character vector of length one).
 }
+\keyword{internal}

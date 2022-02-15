@@ -56,3 +56,4 @@ Results (a list)
 \description{
 make_results_ls() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make results list. The function returns Results (a list).
 }
+\keyword{internal}

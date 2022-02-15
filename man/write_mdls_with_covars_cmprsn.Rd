@@ -35,3 +35,4 @@ Output summary (a list)
 \description{
 write_mdls_with_covars_cmprsn() is a Write function that writes a file to a specified local directory. Specifically, this function implements an algorithm to write models with covariates comparison. The function returns Output summary (a list).
 }
+\keyword{internal}

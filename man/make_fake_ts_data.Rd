@@ -17,3 +17,4 @@ Fk data (a tibble)
 \description{
 make_fake_ts_data() is a Make function that creates a new R object. Specifically, this function implements an algorithm to make fake time series data. The function returns Fk data (a tibble).
 }
+\keyword{internal}

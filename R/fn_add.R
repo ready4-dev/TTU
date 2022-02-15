@@ -90,6 +90,7 @@ add_uids_to_tbs_ls <- function (tbs_ls, prefix_1L_chr, id_var_nm_1L_chr = "fkCli
 #' @importFrom dplyr mutate select
 #' @importFrom rlang sym
 #' @importFrom tidyselect all_of
+#' @keywords internal
 add_utility_predn_to_ds <- function (data_tb, model_mdl, tfmn_1L_chr, depnt_var_nm_1L_chr, 
     force_min_max_1L_lgl = T, force_new_data_1L_lgl = F, impute_1L_lgl = T, 
     is_brms_mdl_1L_lgl = T, new_data_is_1L_chr = "Predicted", 

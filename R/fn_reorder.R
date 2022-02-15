@@ -11,6 +11,7 @@
 #' @importFrom Hmisc rcorr
 #' @importFrom tibble as_tibble
 #' @importFrom rlang sym
+#' @keywords internal
 reorder_cndt_predrs_chr <- function (candidate_predrs_chr, data_tb, depnt_var_nm_1L_chr = "utl_total_w", 
     method_1L_chr = "pearson") 
 {

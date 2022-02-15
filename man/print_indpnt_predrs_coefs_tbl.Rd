@@ -16,3 +16,4 @@ print_indpnt_predrs_coefs_tbl(params_ls, caption_1L_chr, mkdn_tbl_ref_1L_chr)
 \description{
 print_indpnt_predrs_coefs_tbl() is a Print function that prints output to console Specifically, this function implements an algorithm to print independent predictors coefficients table. The function is called for its side effects and does not return a value.
 }
+\keyword{internal}
