@@ -1,6 +1,6 @@
 Package: TTU
 Title: Implement Transfer to Utility Mapping Algorithms
-Version: 0.0.0.9330
+Version: 0.0.0.9331
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -23,63 +23,25 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 Imports: 
-    assertthat,
     betareg,
-    boot,
-    Boruta,
-    brms,
     caret,
-    cowplot,
-    dataverse,
-    DescTools,
-    dplyr,
-    enrichwith,
-    eq5d,
-    faux,
-    ggalt,
-    ggplot2,
-    here,
-    Hmisc,
-    kableExtra,
     knitr,
     knitrBootstrap,
     lifecycle,
-    lubridate,
     magrittr,
-    MASS,
     methods,
-    pacman,
-    psych,
-    purrr,
-    randomForest,
     ready4show (>= 0.0.0.9095),
-    ready4use (>= 0.0.0.9220),
-    rlang,
-    rmarkdown,
-    stats,
-    stringi,
-    stringr,
-    synthpop,
-    testthat,
-    tibble,
-    tidyr,
-    tidyselect,
-    utils,
-    viridis,
-    xfun
+    testthat
 VignetteBuilder: knitr
 Depends: 
-    ready4 (>= 0.0.0.9089),
+    ready4,
     ggfortify,
     R (>= 2.10),
-    scorz (>= 0.0.0.9048),
-    specific (>= 0.0.0.9075),
-    youthvars (>= 0.0.0.9104)
+    scorz,
+    specific
 LazyData: true
-Remotes:  
+Suggests: 
+    rmarkdown
+Remotes: 
     ready4-dev/ready4,
-    ready4-dev/ready4show,
-    ready4-dev/ready4use,
-    ready4-dev/youthvars,
-    ready4-dev/scorz,
-    ready4-dev/specific
+    ready4-dev/ready4show
