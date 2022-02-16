@@ -1,0 +1,281 @@
+---
+title: "AQoL-6D Clinical Population Example (Deprecated)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{AQoL-6D Clinical Population Example (Deprecated)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+\blandscape
+<!---BLOCK_LANDSCAPE_START--->
+**This workflow has been deprecated. Many of the functions included in this workflow have been replaced by methods in the [specific package](https://ready4-dev.github.io/specific). Updated syntax for reporting utility mapping studies with the TTU package is currently being developed. The current syntax should be regarded as unstable and subject to change at short notice.**
+
+This vignette is an example of implementing of a reproducible workflow to:
+
+- develop transfer to utility models to predict AQoL-6D in a clinical mental health sample; 
+
+- create and share catalogues of these models; and 
+
+- author a scientific summary of the results and methods deployed. 
+
+This example, should be read in conjunction with [the vignette illustrating a reporting workflow implemented for developing an EQ-5D TTU using alternative predictors](CSP_EQ5D_TTU.html), which highlights some additional considerations. It is highly recommended that you only implement this reporting workflow for your own projects once you have identified an optimal set of input parameters following an [initial exploratory analysis](Model_TTU.html). The benefits of undertaking such initial exploratory work include identifying where it may be appropriate to override algorithm default selections for preferred model types and covariates and discovering if it is necessary to supply non-default input parameters to address problems in model convergence.
+
+As with all the vignettes included with the TTU package, this example is illustrated using entirely fake data, so do not use its outputs to inform decision making. For an example of how TTU workflows were applied to real data see https://www.medrxiv.org/content/10.1101/2021.07.07.21260129v2.full .
+
+```{r echo = TRUE, message=FALSE}
+library(TTU)
+library(specific)
+```
+
+# Input parameters
+
+## Reporting parameters
+
+### Bibliograhic data
+We begin by specifying the authorship and other bibliographic data that we wish to attach to all reports that we generate. We use the `ready4show_authors` and `ready4show_institutes` classes of the [ready4show](https://ready4-dev.github.io/ready4show/) package to do this.
+
+```{r }
+authors_tb <- ready4show::ready4show_authors() %>%
+  tibble::add_case(first_nm_chr = "Alejandra",
+                   middle_nm_chr = "Rocio",
+                   last_nm_chr = "Scienceace",
+                   title_chr = "Dr",
+                   qualifications_chr = "MD, PhD",
+                   institute_chr = "Institute_A, Institute_B",
+                   sequence_int = 1,
+                   is_corresponding_lgl = T,
+                   email_chr = "fake_email@fake_institute.com") %>%
+    tibble::add_case(first_nm_chr = "Fionn",
+                   middle_nm_chr = "Seamus",
+                   last_nm_chr = "Researchchamp",
+                   title_chr = "Prof",
+                   qualifications_chr = "MSc, PhD",
+                   institute_chr = "Institute_C, Institute_B",
+                   sequence_int = 2,
+                   email_chr = "fake_email@fake_institute.com")
+  
+```
+```{r}
+institutes_tb <- ready4show::ready4show_institutes() %>%
+  tibble::add_case(short_name_chr = "Institute_A", long_name_chr = "Awesome University, Shanghai") %>%
+  tibble::add_case(short_name_chr = "Institute_B", long_name_chr = "August Institution, London") %>%
+  tibble::add_case(short_name_chr = "Institute_C", long_name_chr = "Highly Ranked Uni, Montreal")
+```
+
+We combine the data about authors with other bibliographic information.
+
+```{r}
+header_yaml_args_ls <- ready4show::make_header_yaml_args_ls(authors_tb = authors_tb,
+                                                institutes_tb = institutes_tb,
+                                                title_1L_chr = "A hypothetical study using fake data for instructional purposes only",
+                                                keywords_chr = c("this","is","a","replication","using","fake","data","do", "not","cite"))
+```
+
+### Report formatting
+We add parameters relating to the desired output format of the reports we will be producing.
+
+```{r }
+output_format_ls <- ready4show::make_output_format_ls(manuscript_outp_1L_chr = "PDF",
+                                          manuscript_digits_1L_int = 2L,
+                                          supplementary_outp_1L_chr = "PDF",
+                                          supplementary_digits_1L_int = 2L)
+```
+
+## Data parameters
+
+### Dataset
+We read in our study dataset (in this case we are a [fake dataset](https://ready4-dev.github.io/youthvars/articles/Replication_DS.html)).
+
+```{r message=FALSE}
+ds_tb <- youthvars::replication_popl_tb %>% 
+            youthvars::transform_raw_ds_for_analysis() 
+```
+
+The first few records of the dataset are as follows.
+
+```{r inputds, echo=F, eval = knitr::is_html_output(), results='asis'}
+ds_tb %>%
+    head() %>%
+  ready4show::print_table(output_type_1L_chr = "HTML",
+                          caption_1L_chr = "Input dataset",
+                          mkdn_tbl_ref_1L_chr = "tab:inputds")
+```
+
+### Data dictionary
+A data dictionary must also be supplied for the dataset. The dictionary must be of class `ready4use_dictionary` from the [ready4use](https://ready4-dev.github.io/ready4use/) package. In this case, we are using a pre-existing dictionary.
+
+```{r}
+dictionary_tb <- youthvars::make_final_repln_ds_dict()
+```
+
+The first few records of the data dictionary are reproduced below.
+
+```{r dictionary, echo=F, eval = knitr::is_html_output(), results='asis'}
+dictionary_tb %>%
+      head() %>%
+  ready4show::print_table(output_type_1L_chr = "HTML",
+                          caption_1L_chr = "Data dictionary",
+                          mkdn_tbl_ref_1L_chr = "tab:dictionary")
+```
+
+### Dataset metadata
+We describe the features of our dataset that are most relevant to the analyses we are planning to undertake. Note all, Multi-Attribute Utility Instrument (MAUI) question variables must start with a common prefix, which needs to be passed to the `maui_item_pfx_1L_chr` argument. The dataset does not need to include variables for total health utility scores (weighted and unweighted), as these variables will be computed during the analysis. However, you can supply the names you wish assigned to these variables once they are computed using the `utl_wtd_var_nm_1L_chr` and `utl_unwtd_var_nm_1L_chr` arguments.
+
+```{r echo = TRUE}
+ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("K6","PHQ9"),#
+                                  candidate_covar_nms_chr = c("d_age", "SOFAS",
+                                                              "c_p_diag_s",
+                                                              "c_clinical_staging_s", 
+                                                              "d_relation_s",
+                                                              "d_studying_working"),
+                                  cohort_descv_var_nms_chr = c("d_age","d_relation_s",
+                                                               "d_studying_working",
+                                                               "c_p_diag_s","c_clinical_staging_s",
+                                                               "SOFAS"),
+                                  dictionary_tb = dictionary_tb, 
+                                  id_var_nm_1L_chr = "fkClientID", 
+                                  is_fake_1L_lgl = T,
+                                  msrmnt_date_var_nm_1L_chr = "d_interview_date",
+                                  round_var_nm_1L_chr = "round", 
+                                  round_vals_chr = c("Baseline", "Follow-up"),
+                                  maui_item_pfx_1L_chr = "aqol6d_q", 
+                                  utl_wtd_var_nm_1L_chr = "aqol6d_total_w", 
+                                  utl_unwtd_var_nm_1L_chr = "aqol6d_total_c")
+```
+
+### Candidate predictors metadata
+We create a lookup table with further metadata on the dataset variables that we specified as our candidate predictors in the `candidate_predrs_chr` element of `ds_descvs_ls`, as well as the preferred covariates that we will specify later in the `make_input_params` function.
+
+```{r}
+predictors_lup <- specific::specific_predictors(specific::make_pt_specific_predictors(short_name_chr = c(ds_descvs_ls$candidate_predrs_chr, "SOFAS"),
+                                              long_name_chr = c("K6 total score", "PHQ9 total score", "SOFAS total score"),
+                                              min_val_dbl = 0,
+                                              max_val_dbl = c(24,27,100),
+                                              class_chr = "integer",
+                                              increment_dbl = 1,
+                                              class_fn_chr = c("youthvars::youthvars_k6",
+                                                               "youthvars::youthvars_phq9",
+                                                               "youthvars::youthvars_sofas"),
+                                              mdl_scaling_dbl = 0.01,
+                                              covariate_lgl = F))
+```
+
+### Multi-Attribute Utility Instrument (MAUI) parameters
+We also need to provide information specific to the MAUI used to collect the data from which health utility will be derived. The minimum allowable health utility weight for this instrument can be declared using the `utl_min_val_1L_dbl` argument.
+
+```{r}
+maui_params_ls <- make_maui_params_ls(maui_domains_pfxs_1L_chr = "vD",
+                                      maui_itm_short_nms_chr = c("Household tasks",
+                                                                 "Getting around","Morbility",
+                                                                 "Self care","Enjoy close rels",
+                                                                 "Family rels", 
+                                                                 "Community involvement", "Despair", 
+                                                                 "Worry", "Sad", "Agitated",
+                                                                 "Energy level","Control",
+                                                                 "Coping","Frequency of pain", 
+                                                                 "Degree of pain",
+                                                                 "Pain interference", "Vision",
+                                                                 "Hearing", "Communication"),
+                                      maui_scoring_fn = youthvars::add_adol6d_scores,
+                                      short_and_long_nm = c("AQoL-6D",
+                                                            "Assessment of Quality of Life - Six Dimension"),
+                                      utl_min_val_1L_dbl = 0.03)
+```
+
+## Analysis parameters
+We can also (but do not have to) specify how we want to adapt the input parameters we have just declared for any secondary analyses (e.g. that use different combinations of candidate predictors and covariates). We can do this using the `make_scndry_anlys_params` function. 
+
+```{r}
+scndry_anlys_params_ls <- make_scndry_anlys_params(candidate_predrs_chr = c("SOFAS"),
+                                                   prefd_covars_chr = NA_character_)
+```
+
+
+We can now create a list of input parameters using the `make_input_params` function, principally using the objects created in the preceding steps. We can force the use of specified model types or covariates (rather than allowing the analysis algorithm to select these based on automated criteria) by using the `prefd_mdl_types_chr` and `prefd_covars_chr` arguments. As we have specified secondary analysis parameters, we supply these to the `scndry_anlys_params_ls` argument.
+
+If [during set-up, you have created an empty dataverse dataset to post results to](TTU.html), assign the DOI for your dataset and the name of the dataverse containing it to the `dv_ds_nm_and_url_chr` argument (your values will be different to those below, which will not work for you). If you do not wish to post results to a dataverse dataset, set `dv_ds_nm_and_url_chr = NULL`. The `make_input_params` function performs a number of checks relating to the naming conventions used in some variables of interest and where necessary (for consistency with reporting templates) modifies the names of these variables.
+
+```{r eval = F }
+input_params_ls <- make_input_params(ds_tb,
+                                     ds_descvs_ls = ds_descvs_ls,
+                                     dv_ds_nm_and_url_chr = c("fakes", # Dataverse containing dataset
+                                                              "https://doi.org/10.7910/DVN/D74QMP"), # DOI
+                                     header_yaml_args_ls = header_yaml_args_ls,
+                                     maui_params_ls = maui_params_ls,
+                                     output_format_ls = output_format_ls,
+                                     predictors_lup = predictors_lup,
+                                     prefd_covars_chr = "SOFAS",
+                                     prefd_mdl_types_chr = c("OLS_CLL","GLM_GSN_LOG"),
+                                     scndry_anlys_params_ls = scndry_anlys_params_ls)
+
+```
+
+# Analyse, Report and Share
+
+## Run analysis
+All analytic steps for our primary and secondary analyses are executed with the following function call. Note, this step can involve long execution times (potentially over an hour, depending on the input parameters).
+```{r eval=FALSE}
+write_analyses(input_params_ls)
+```
+
+## Report results
+We now generate the catalogues (one for the primary and one for each secondary analysis) that report the models created in the preceding step. The `write_mdl_smry_rprt` function also creates shareable versions (i.e. with copies of source dataset replaced by synthetic data) of the models. This step can take several minutes to execute.
+
+```{r echo = TRUE, eval=FALSE }
+input_params_ls <- write_mdl_smry_rprt(input_params_ls,
+                                       use_shareable_mdls_1L_lgl = T)
+```
+
+## Share results
+We can now share the results created in the previous step by posting them to the online repository, the details of which we supplied earlier. 
+
+```{r echo = TRUE, eval=FALSE }
+write_study_outp_ds(input_params_ls)
+```
+
+The `write_study_outp_ds` function writes its outputs to a draft dataset - which you can review by logging into your dataverse account, before clicking on the option to publish the dataset. The stucture of your draft dataset should be similar to those produced by this vignette, which are viewable at: https://doi.org/10.7910/DVN/D74QMP
+
+# Create manuscript
+
+## Create study metadata
+The first step to creating a manuscript that provides the scientific summary of the study is to add some metadata about the study itself to our parameters list, using the `make_study_descs_ls` function. If you want the manuscript to refer to some of the candidate predictors by different names than that provided in the `short_name_chr` column of the `predictors_lup` object defined earlier, you can create a table of name correspondences and pass it to the `var_nm_change_lup` argument.
+
+```{r eval = F}
+input_params_ls <- make_study_descs_ls(input_params_ls = input_params_ls,
+                                       background_1L_chr = "Our study is entirely fictional and has been created to illustrate TTU package functionality.",
+                                       coi_1L_chr = "None declared.",
+                                       conclusion_1L_chr = "If this study was real, the results would be interesting.",
+                                       ethics_1L_chr = "The study was reviewed and granted approval by Awesome University's Human Research Ethics Committee (1111111.1).",
+                                       funding_1L_chr = "The study was funded by Generous Benefactor.",
+                                       sample_desc_1L_chr = "The study sample is fake data that pretends to be young people aged 12 to 25 years who attended Australian primary care services for mental health related needs between November 2019 to August 2020.",
+                                       time_btwn_bl_and_fup_1L_chr = "three months",
+                                       var_nm_change_lup = tibble::tibble(old_nms_chr = c("PHQ9","GAD7"),
+                                                                          new_nms_chr = c("PHQ-9",
+                                                                                          "GAD-7")))
+```
+
+## Render auto-generated first-draft
+We can now pass the updated input parameters list to the `write_manuscript` function. This will produce an initial draft of a scientific manuscript (detailed methods and results, a basic introduction and no discussion), by first downloading an extension to the TTU package (https://github.com/ready4-dev/ttu_lng_ss).  If (AND ONLY IF), you are sure that you will never develop the manuscript further with a view to future publication, you can add this automatically generated draft to the study dataset by adding `write_to_dv_1L_lgl = T` to the function call (as below). 
+
+```{r eval = F}
+results_ls <- ready4show::write_manuscript(input_params_ls = input_params_ls,
+                               write_to_dv_1L_lgl = T)
+```
+
+The manuscript exported to the dataset by the preceding call is accessible at: https://dataverse.harvard.edu/api/access/datafile/4957407 . A local version will also automatically be saved on your machine and you can discover where this is by printing the object `results_ls$path_params_ls$paths_ls$reports_dir_1L_chr`.
+
+You can override the output format specified in the input parameter list object by using the `output_type_1L_chr` argument. Note, that this time around we are using the `results_ls` object as the main input as this object was automatically saved (to the directory path stored in `results_ls$path_params_ls$paths_ls$output_data_dir_1L_chr`) by the preceding call.
+
+## Modify for publication
+If you wish to develop the manuscript into something you will submit for publication, consult https://github.com/ready4-dev/ttu_lng_ss for guidance.
+
+# Purge dataset copies
+As a final step, it is important to delete all local copies (but not the original version) of the study dataset that were produced during the analysis.
+
+```{r echo = TRUE, eval=FALSE }
+write_to_delete_ds_copies(results_ls)
+```
+
+\elandscape
+<!---BLOCK_LANDSCAPE_STOP--->

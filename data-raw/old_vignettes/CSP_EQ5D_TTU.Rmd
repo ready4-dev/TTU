@@ -1,0 +1,201 @@
+---
+title: "EQ5D General Population Example (Deprecated)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{EQ5D General Population Example (Deprecated)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+\blandscape
+<!---BLOCK_LANDSCAPE_START--->
+**This workflow has been deprecated. Many of the functions included in this workflow have been replaced by methods in the [specific package](https://ready4-dev.github.io/specific). Updated syntax for reporting utility mapping studies with the TTU package is currently being developed. The current syntax should be regarded as unstable and subject to change at short notice.**
+
+This vignette is an example of implementing of a reproducible workflow to:
+
+- develop transfer to utility models to predict EQ-5D in a community sample; 
+
+- create and share catalogues of these models; and 
+
+- author a scientific summary of the results and methods deployed. 
+
+The steps in this reporting workflow should only be undertaken once an optimal set of input values have been identified by an [initial exploratory analysis](Model_TTU.html). Most of the steps in this example are described with minimal explanation here as they are discussed in more detail in the [AQoL-6D TTU reporting workflow vignette](CSP_AQOL6D_TTU.html). Note, this vignette uses fake data - it is for illustrative purposes only and should not be used to inform decision making.
+
+```{r echo = TRUE, message=FALSE}
+library(TTU)
+```
+
+# Input parameters
+
+## Reporting parameters
+
+### Bibliograhic data
+```{r}
+header_yaml_args_ls <- ready4show::make_header_yaml_args_ls(authors_tb = ready4show::authors_tb,
+                                                institutes_tb = ready4show::institutes_tb,
+                                                title_1L_chr = "A hypothetical study using fake data for instructional purposes only",
+                                                keywords_chr = c("this","is","a","replication","using","fake","data","do", "not","cite"))
+```
+
+### Report formatting
+```{r }
+output_format_ls <- ready4show::make_output_format_ls(manuscript_outp_1L_chr = "PDF",
+                                          manuscript_digits_1L_int = 2L,
+                                          supplementary_outp_1L_chr = "PDF",
+                                          supplementary_digits_1L_int = 2L)
+```
+
+## Data parameters
+
+### Dataset
+
+```{r message=FALSE}
+ds_tb <- readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4959218")) 
+```
+
+The first few records of the dataset are as follows.
+
+```{r inputds, echo=F, eval = knitr::is_html_output(), results='asis'}
+ds_tb %>%
+    head() %>%
+  ready4show::print_table(output_type_1L_chr = "HTML",
+                          caption_1L_chr = "Input dataset",
+                          mkdn_tbl_ref_1L_chr = "tab:inputds")
+```
+### Data dictionary
+
+```{r}
+dictionary_tb = readRDS(url("https://dataverse.harvard.edu/api/access/datafile/4959217"))
+```
+
+### Dataset metadata
+
+```{r echo = TRUE, eval = F }
+ds_descvs_ls <- make_ds_descvs_ls(candidate_predrs_chr = c("k10_int","psych_well_int"),
+                                  candidate_covar_nms_chr = NA_character_,
+                                  cohort_descv_var_nms_chr = c("d_age", "Gender", 
+                                                               "d_relation_s","d_sexual_ori_s", 
+                                                               "Region", "d_studying_working"),
+                                  dictionary_tb = dictionary_tb, 
+                                  id_var_nm_1L_chr = "uid", 
+                                  is_fake_1L_lgl = T,
+                                  msrmnt_date_var_nm_1L_chr = "data_collection_dtm",
+                                  round_var_nm_1L_chr = "Timepoint", 
+                                  round_vals_chr = c("BL", "FUP"),
+                                  maui_item_pfx_1L_chr = "eq5dq_", 
+                                  utl_wtd_var_nm_1L_chr = "EQ5D_total_dbl",
+                                  utl_unwtd_var_nm_1L_chr = "EQ5d_cumulative_dbl")
+```
+
+### Candidate predictors metadata
+
+```{r eval = F }
+predictors_lup <- TTU_predictors_lup(make_pt_TTU_predictors_lup(short_name_chr = ds_descvs_ls$candidate_predrs_chr,
+                                              long_name_chr = c("Kessler Psychological Distress - 10 Item Total Score",
+                                                   "Overall Psychological Wellbeing (Winefield et al. 2012)"),
+                                              min_val_dbl = c(10,18),
+                                              max_val_dbl = c(50,90),
+                                              class_chr = "integer",
+                                              increment_dbl = 1,
+                                              class_fn_chr = "as.integer",
+                                              mdl_scaling_dbl = 0.01,
+                                              covariate_lgl = F))
+```
+
+### Multi-Attribute Utility Instrument (MAUI) parameters
+If our source dataset does not include a pre-calculated weighted utility variable, we must supply a function to calculate this variable using the `maui_scoring_fn` argument. Note if specifying such a function, it must:
+
+ - include identical arguments as in the below example (including names and order), even if all arguments are not required; and
+ - also calculate an unweighted score that is a simple sum of all MAUI item question responses (e.g. the last three lines of the example `maui_scoring_fn`).
+
+```{r eval = F }
+maui_params_ls <- make_maui_params_ls(maui_domains_pfxs_1L_chr = "eq5dq_",
+                                      maui_itm_short_nms_chr = c("Mobility", "Self-care", "Activities","Pain","Anxiety"),
+                                      maui_scoring_fn = function(data_tb,
+                                             maui_item_pfx_1L_chr,
+                                             id_var_nm_1L_chr, 
+                                             utl_wtd_var_nm_1L_chr,
+                                             utl_unwtd_var_nm_1L_chr){
+                    require(eq5d)
+                    data_tb %>% 
+                      dplyr::rename_with(~stringr::str_replace(.x,maui_item_pfx_1L_chr,""),
+                                         dplyr::starts_with(maui_item_pfx_1L_chr)) %>%
+                      dplyr::mutate(`:=`(!!rlang::sym(utl_wtd_var_nm_1L_chr), 
+                                         eq5d::eq5d(., country="UK", version = "5L", type = "CW"))) %>%
+                      dplyr::rename_with(~paste0(maui_item_pfx_1L_chr,.x),c("MO","SC","UA","PD","AD")) %>%
+                      dplyr::mutate(`:=`(!!rlang::sym(utl_unwtd_var_nm_1L_chr),                                          rowSums(dplyr::across(dplyr::starts_with(maui_item_pfx_1L_chr))))) %>%
+                      dplyr::filter(!is.na(!!rlang::sym(utl_unwtd_var_nm_1L_chr)))
+                    },
+                    short_and_long_nm = c("EQ-5D",
+                                          "EuroQol - Five Dimension"))
+```
+
+## Analysis parameters
+Unlike the [AQoL-6D vignette](CSP_AQOL6D_TTU.html), when creating our input parameters list, we need to pass a value to the `control_ls` argument. We discovered this when undertaking the [initial exploratory analysis](Model_TTU.html).
+
+```{r eval = F }
+input_params_ls <- make_input_params(ds_tb,
+                                     control_ls = list(adapt_delta = 0.99),
+                                     ds_descvs_ls = ds_descvs_ls,
+                                     dv_ds_nm_and_url_chr = c("fakes", 
+                                                              "https://doi.org/10.7910/DVN/612HDC"), 
+                                     header_yaml_args_ls = header_yaml_args_ls,
+                                     maui_params_ls = maui_params_ls,
+                                     output_format_ls = output_format_ls,
+                                     predictors_lup = predictors_lup,
+                                     prefd_covars_chr = NA_character_)
+
+```
+
+# Analyse, Report and Share 
+
+## Run analysis
+```{r eval = FALSE}
+write_analyses(input_params_ls)
+```
+
+## Report results
+```{r echo = TRUE, eval=FALSE }
+input_params_ls <- write_mdl_smry_rprt(input_params_ls,
+                                       use_shareable_mdls_1L_lgl = T)
+```
+
+## Share results
+```{r echo = TRUE, eval=FALSE }
+write_study_outp_ds(input_params_ls)
+```
+The uploaded files can be viewed at: https://doi.org/10.7910/DVN/612HDC
+
+# Create manuscript
+
+## Create study metadata
+```{r eval = F}
+input_params_ls <- make_study_descs_ls(input_params_ls = input_params_ls,
+                                       background_1L_chr = "Our study is entirely fictional and has been created to illustrate the generalisability of TTU package functions.",
+                                       coi_1L_chr = "None declared.",
+                                       conclusion_1L_chr = "If this study was real, the results would be really interesting.",
+                                       ethics_1L_chr = "The study was reviewed and granted approval by Awesome University's Human Research Ethics Committee (2222222.2).",
+                                       funding_1L_chr = "The study was funded by an science enthusiast.",
+                                       sample_desc_1L_chr = "The study sample is fake data that pretends to be Australian young people aged 12 to 25 years.",
+                                       time_btwn_bl_and_fup_1L_chr = "four months")
+```
+
+## Render auto-generated first-draft
+When rendering the draft manuscript, we have opted in this example to also upload it to our dataset (`write_to_dv_1L_lgl = T`). This is not recommended if you plan to further develop the draft into an article for publication.
+
+```{r eval = F}
+results_ls <- ready4show::write_manuscript(input_params_ls = input_params_ls,
+                               write_to_dv_1L_lgl = T)
+```
+
+The draft manuscript created by the previous call is available at: https://dataverse.harvard.edu/api/access/datafile/4957805 .
+
+# Purge dataset copies
+All remaining local copies (but not the original version) of the study dataset are deleted from the workspace.
+
+```{r echo = TRUE, eval=FALSE }
+write_to_delete_ds_copies(results_ls)
+```
+
+\elandscape
+<!---BLOCK_LANDSCAPE_STOP--->

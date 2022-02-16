@@ -1,0 +1,68 @@
+---
+title: "TTU"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{TTU}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(TTU)
+```
+
+**The TTU package is currently undergoing significant redevelopment. Many of the functions included in the package have been replaced by methods in the [specific package](https://ready4-dev.github.io/specific). Updated syntax for reporting upackage should be regarded as unstable and subject to change at short notice.** 
+
+This development version of the TTU package has been made available as part of the process of testing and documenting the package. [Installation instructions are on the package homepage](https://ready4-dev.github.io/TTU/index.html).
+
+## Before you get started
+### Third party package configuration
+A key step in the workflows supported by TTU is to make calls to the Stan program. By default, functions in TTU rely on the `cmdstanr` package to do this, and you therefore need to have that package installed on your machine (which should occur automatically when you install TTU) and to have performed the necessary configuration of that package (refer to [https://mc-stan.org/cmdstanr/](https://mc-stan.org/cmdstanr/) for details).
+
+### Data repository set-up
+Furthermore, TTU package workflows support sharing of results to an online repository. If you wish to avail of this feature, you will need to have set up an account with a Dataverse (https://dataverse.org/) provider (e.g., https://dataverse.harvard.edu/). You also need to have created:
+
+ - a dataverse API key and stored the API key and server values in your local environment (to see how to do this, visit: https://github.com/IQSS/dataverse-client-r )
+ - an empty dataset for each project you undertake with TTU (steps 1-3 and 5 in https://guides.dataverse.org/en/5.5/user/dataset-management.html#adding-a-new-dataset)
+
+## Workflow 
+The workflow that TTU supports has two main parts.
+
+Part one is to undertake and exploratory analysis in order to finalise the input parameters that you will use in your study. The following vignette illustrates this workflow:
+
+- [Exploratory workflow (General population - EQ5D example)](Model_TTU.html)
+
+When you have determined the inputs that you will be using, you can implement the reporting workflow, which involves the following steps.
+
+### Create project workspace
+
+The following command will create a project directory in the location and with the name of your choosing. 
+```{r eval = F}
+path_to_csp_1L_chr <- ready4show::write_reporting_dir(path_to_write_to_1L_chr = "../Temp tests of output",
+                                          new_dir_nm_1L_chr = "AQoL-6D_Vignette")
+```
+
+### Edit template program
+The preceding command will have created a template RMD file for you to edit in the CSP sub-directory of your project directory. That template file will look like this: https://github.com/ready4-dev/TTU/blob/master/inst/Project/CSP/CSP.Rmd
+
+Edit the file with the information relevant to your study. Two vignettes that illustrate the workflow functions that you will be using are:
+
+- [Reporting workflow (General population - EQ5D example)](CSP_EQ5D_TTU.html)
+- [Reporting workflow (Clinical population - AQoL6D example)](CSP_AQOL6D_TTU.html)
+
+### Run and share program
+Once you are ready to run your analysis, use the `write_csp_output` function. The `write_csp_output` function is required as simply knitting the RMD document you edited will not work as intended (although you can run chunks interactively if you prefer). Another advantage of `write_csp_output` is that if you provide details of your dataverse dataset (which will be different to the value in the below example), it will save a PDF copy of your workflow program in that dataset.
+
+```{r eval = F}
+ready4show::write_csp_output(path_to_csp_1L_chr,
+                 dv_ds_doi_1L_chr = "https://doi.org/10.7910/DVN/D74QMP",
+                 execute_1L_lgl = F)
+```
+

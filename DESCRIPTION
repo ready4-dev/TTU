@@ -34,14 +34,18 @@ Imports:
     testthat
 VignetteBuilder: knitr
 Depends: 
-    ready4,
+    ready4 (>= 0.0.0.9089),
     ggfortify,
     R (>= 2.10),
-    scorz,
-    specific
+    scorz (>= 0.0.0.9048),
+    specific (>= 0.0.0.9076),
+    youthvars (>= 0.0.0.9104)
 LazyData: true
 Suggests: 
     rmarkdown
-Remotes: 
+Remotes:  
     ready4-dev/ready4,
-    ready4-dev/ready4show
+    ready4-dev/ready4show,
+    ready4-dev/youthvars,
+    ready4-dev/scorz,
+    ready4-dev/specific
