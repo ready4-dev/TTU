@@ -9,7 +9,7 @@ ready4fun::write_fn_type_dirs()
 fns_env_ls <- ready4fun::read_fns(c("data-raw/fns/","data-raw/mthds/"),
                                   fns_env = new.env(parent = globalenv()))
 x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utility Mapping Algorithms",
-                                                    pkg_desc_1L_chr = "Tools for developping, reporting and sharing Transfer To Utility (TTU) mapping algorithms that predict health utility from other health measures.
+                                                    pkg_desc_1L_chr = "Tools for developing, reporting and sharing Transfer To Utility (TTU) mapping algorithms that predict health utility from other health measures.
                             This development version of the TTU package has been made available as part of the process of testing and documenting the package.
                             If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).",
                                                     authors_prsn = c(utils::person(given = "Caroline",family = "Gao",email = "caroline.gao@orygen.org.au", role = c("aut"),comment = c(ORCID = "0000-0002-0987-2759")),

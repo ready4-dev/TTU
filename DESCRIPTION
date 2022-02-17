@@ -10,7 +10,7 @@ Authors@R: c(
     person("Headspace", role = "fnd"),
     person("National Health and Medical Research Council", role = "fnd")
   )
-Description: Tools for developping, reporting and sharing Transfer To
+Description: Tools for developing, reporting and sharing Transfer To
     Utility (TTU) mapping algorithms that predict health utility from
     other health measures.  This development version of the TTU package
     has been made available as part of the process of testing and
