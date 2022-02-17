@@ -1,8 +1,7 @@
 #' TTUReports
-#' 
+#'
 #' Metadata to produce utility mapping study reports.
-#' 
-#' @include 
+#'
 #' @slot a_SpecificSynopsis  (an instance of the SpecificSynopsis class)
 #' @slot catalogue_tmpl_chr Catalogue template (a character vector)
 #' @slot catalogue_fl_nms_ls Catalogue file names (a list)
