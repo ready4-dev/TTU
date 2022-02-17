@@ -1,12 +1,12 @@
 cff-version: 1.2.0
-message: "Caroline Gao and Matthew Hamilton  (2022). TTU: Implement Transfer to Utility Mapping Algorithms. Version 0.0.0.9332. Zenodo. https://doi.org/10.5281/zenodo.5646593"
+message: "Caroline Gao and Matthew Hamilton  (2022). TTU: Implement Transfer to Utility Mapping Algorithms. Version 0.0.0.9334. Zenodo. https://doi.org/10.5281/zenodo.5646593"
 authors:
   - family-names: "Gao"
     given-names: "Caroline"
   - family-names: "Hamilton"
     given-names: "Matthew"
 title: "TTU: Implement Transfer to Utility Mapping Algorithms"
-version: 0.0.0.9332
+version: 0.0.0.9334
 doi: 10.5281/zenodo.5646593
-date-released: 2022-02-17
+date-released: 2022-02-18
 url: "https://ready4-dev.github.io/TTU/"

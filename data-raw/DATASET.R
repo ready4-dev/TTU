@@ -20,12 +20,7 @@ x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utili
                                                     urls_chr = c("https://ready4-dev.github.io/TTU/",
                                                                  "https://github.com/ready4-dev/TTU",
                                                                  "https://ready4-dev.github.io/ready4/")) %>%
-  ready4fun::make_manifest(addl_pkgs_ls = ready4fun::make_addl_pkgs_ls(depends_chr = c("ggfortify",#eq5d
-                                                                                       "ready4",
-                                                                                       "scorz",
-                                                                                       "specific"
-                                                                                       ),
-                                                                       suggests_chr = c("knitr","rmarkdown"),
+  ready4fun::make_manifest(addl_pkgs_ls = ready4fun::make_addl_pkgs_ls(suggests_chr = c("knitr","rmarkdown"),
                                                                        imports_chr = c("betareg","caret","knitrBootstrap")),
                            build_ignore_ls = ready4fun::make_build_ignore_ls(file_nms_chr = c("initial_setup.R")),
                            check_type_1L_chr = "ready4",
