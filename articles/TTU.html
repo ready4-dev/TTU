@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">TTU</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9327</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9335</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,8 +51,8 @@
 <li class="nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/CSP_AQOL6D_TTU.html">Reporting Workflow, AQoL-6D Clinical Population Example</a>
-    <a class="dropdown-item" href="../articles/CSP_EQ5D_TTU.html">Reporting Workflow, EQ5D General Population Example</a>
+    <a class="dropdown-item" href="../articles/CSP_AQOL6D_TTU.html">AQoL-6D Clinical Population Example (Deprecated)</a>
+    <a class="dropdown-item" href="../articles/CSP_EQ5D_TTU.html">EQ5D General Population Example (Deprecated)</a>
     <a class="dropdown-item" href="../articles/Model_TTU.html">Exploratory Analysis Workflow</a>
     <a class="dropdown-item" href="../articles/V_01.html">Significant Changes To The TTU Package</a>
   </div>
@@ -91,184 +91,16 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/TTU/">TTU</a></span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: ready4</span>
-<span class="co">#&gt; Loading required package: generics</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'generics'</span>
-<span class="co">#&gt; The following objects are masked from 'package:base':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,</span>
-<span class="co">#&gt;     setequal, union</span>
-<span class="co">#&gt; Loading required package: ggfortify</span>
-<span class="co">#&gt; Loading required package: ggplot2</span>
-<span class="co">#&gt; Loading required package: scorz</span>
-<span class="co">#&gt; Loading required package: specific</span>
-<span class="co">#&gt; Loading required package: youthvars</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'youthvars'</span>
-<span class="co">#&gt; The following objects are masked from 'package:scorz':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     add_adol6d_scores, add_aqol6d_adol_dim_scrg_eqs,</span>
-<span class="co">#&gt;     add_aqol6d_items_to_aqol6d_tbs_ls, add_aqol6dU_to_aqol6d_items_tb,</span>
-<span class="co">#&gt;     add_aqol6dU_to_aqol6d_tbs_ls, add_cors_and_utls_to_aqol6d_tbs_ls,</span>
-<span class="co">#&gt;     add_dim_disv_to_aqol6d_items_tb, add_dim_scores_to_aqol6d_items_tb,</span>
-<span class="co">#&gt;     add_itm_disv_to_aqol6d_itms_tb, add_labels_to_aqol6d_tb,</span>
-<span class="co">#&gt;     add_unwtd_dim_tots, add_wtd_dim_tots, calculate_adol_aqol6dU,</span>
-<span class="co">#&gt;     calculate_adult_aqol6dU, calculate_aqol6d_dim_1_disv,</span>
-<span class="co">#&gt;     calculate_aqol6d_dim_2_disv, calculate_aqol6d_dim_3_disv,</span>
-<span class="co">#&gt;     calculate_aqol6d_dim_4_disv, calculate_aqol6d_dim_5_disv,</span>
-<span class="co">#&gt;     calculate_aqol6d_dim_6_disv, get_aqol6d_scrg_dss,</span>
-<span class="co">#&gt;     impute_adult_aqol6d_items_tb, impute_unscrd_adol_aqol6d_ds,</span>
-<span class="co">#&gt;     make_adol_aqol6d_disv_lup, make_aqol6d_adol_pop_tbs_ls,</span>
-<span class="co">#&gt;     make_aqol6d_fns_ls, make_aqol6d_items_tb, make_dim_sclg_cons_dbl,</span>
-<span class="co">#&gt;     make_domain_items_ls</span>
 <span class="co">#&gt; Registered S3 methods overwritten by 'ggalt':</span>
-<span class="co">#&gt;   method                  from     </span>
-<span class="co">#&gt;   fortify.table           ggfortify</span>
-<span class="co">#&gt;   grid.draw.absoluteGrob  ggplot2  </span>
-<span class="co">#&gt;   grobHeight.absoluteGrob ggplot2  </span>
-<span class="co">#&gt;   grobWidth.absoluteGrob  ggplot2  </span>
-<span class="co">#&gt;   grobX.absoluteGrob      ggplot2  </span>
-<span class="co">#&gt;   grobY.absoluteGrob      ggplot2</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Attaching package: 'TTU'</span>
-<span class="co">#&gt; The following objects are masked from 'package:specific':</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;     add_prefd_predr_var_to_mdl_smry_ls, add_tfd_var_to_ds,</span>
-<span class="co">#&gt;     add_uids_to_tbs_ls, add_utility_predn_to_ds,</span>
-<span class="co">#&gt;     add_utl_predn_to_new_ds, calculate_depnt_var_tfmn, calculate_rmse,</span>
-<span class="co">#&gt;     fit_ts_model_with_brm, get_background_text, get_cndts_for_mxd_mdls,</span>
-<span class="co">#&gt;     get_conclusion_text, get_covar_ctgs, get_covars_by_ctg,</span>
-<span class="co">#&gt;     get_hlth_utl_nm, get_hlth_utl_stat, get_link_from_tfmn,</span>
-<span class="co">#&gt;     get_lngl_ttu_types, get_mdl_cmprsns, get_mdl_type_from_nm,</span>
-<span class="co">#&gt;     get_mdls_with_signft_covars, get_nbr_of_predrs,</span>
-<span class="co">#&gt;     get_nbr_of_predrs_by_ctg, get_nbr_of_scndry_analyses,</span>
-<span class="co">#&gt;     get_ordered_sngl_csnl_mdls, get_popl_descvs, get_predr_ctgs,</span>
-<span class="co">#&gt;     get_predrs_by_ctg, get_prefd_mdl_predrs, get_random_intercept,</span>
-<span class="co">#&gt;     get_scndry_anlys_descs, get_selected_mixed_mdls, get_signft_covars,</span>
-<span class="co">#&gt;     get_table_predn_mdl, knit_mdl_rprt, make_abstract_args_ls,</span>
-<span class="co">#&gt;     make_all_mdl_types_smry_tbl, make_analysis_core_params_ls,</span>
-<span class="co">#&gt;     make_analysis_ds_smry_ls, make_bl_fup_add_to_row_ls,</span>
-<span class="co">#&gt;     make_brms_mdl_print_ls, make_brms_mdl_smry_tbl,</span>
-<span class="co">#&gt;     make_cmpst_sctr_and_dnst_plt, make_cndt_predr_text, make_cohort_ls,</span>
-<span class="co">#&gt;     make_coi_text, make_correlation_text, make_covar_ttu_tbl_refs,</span>
-<span class="co">#&gt;     make_covar_ttu_tbl_title, make_covariates_text,</span>
-<span class="co">#&gt;     make_cs_ts_ratios_tb, make_data_availability_text,</span>
-<span class="co">#&gt;     make_dnst_and_sctr_plt_title, make_ds_descvs_ls, make_ds_smry_ls,</span>
-<span class="co">#&gt;     make_ethics_text, make_fake_ts_data, make_folds_ls,</span>
-<span class="co">#&gt;     make_funding_text, make_hlth_utl_and_predrs_ls,</span>
-<span class="co">#&gt;     make_indpnt_predrs_lngl_tbl_title,</span>
-<span class="co">#&gt;     make_indpnt_predrs_lngl_tbls_ref, make_input_params,</span>
-<span class="co">#&gt;     make_knit_pars_ls, make_lngl_ttu_r2_text,</span>
-<span class="co">#&gt;     make_lngl_ttu_with_covars_text, make_maui_params_ls, make_mdl,</span>
-<span class="co">#&gt;     make_mdl_coef_range_text, make_mdl_coef_ratio_ls,</span>
-<span class="co">#&gt;     make_mdl_desc_lines, make_mdl_nms_ls, make_mdl_smry_elmt_tbl,</span>
-<span class="co">#&gt;     make_mdl_smry_ls, make_mdl_type_smry_tbl, make_mdls_ls,</span>
-<span class="co">#&gt;     make_mdls_smry_tbls_ls, make_nbr_at_fup_text,</span>
-<span class="co">#&gt;     make_nbr_included_text, make_paths_to_ss_plts_ls,</span>
-<span class="co">#&gt;     make_predn_ds_with_one_predr, make_predr_ctgs_ls, make_predr_vals,</span>
-<span class="co">#&gt;     make_predr_vars_nms_ls, make_predrs_for_best_mdls,</span>
-<span class="co">#&gt;     make_prefd_mdls_vec, make_prmry_analysis_params_ls,</span>
-<span class="co">#&gt;     make_psych_predrs_lup, make_random_forest_text,</span>
-<span class="co">#&gt;     make_ranked_predrs_ls, make_results_ls, make_results_ls_spine,</span>
-<span class="co">#&gt;     make_scaling_text, make_scndry_anlys_params,</span>
-<span class="co">#&gt;     make_scndry_anlys_text, make_selected_mdl_text, make_shareable_mdl,</span>
-<span class="co">#&gt;     make_smry_of_brm_mdl, make_smry_of_mdl_outp,</span>
-<span class="co">#&gt;     make_smry_of_ts_mdl_outp, make_sngl_mdl_smry_tb, make_ss_tbls_ls,</span>
-<span class="co">#&gt;     make_study_descs_ls, make_ten_fold_text, make_ten_folds_tbl_title,</span>
-<span class="co">#&gt;     make_tfd_sngl_predr_mdls_tb, make_tfmn_cmprsn_plt, make_ttu_cs_ls,</span>
-<span class="co">#&gt;     make_uid_rename_lup, make_unique_ls_elmt_idx_int,</span>
-<span class="co">#&gt;     make_valid_params_ls_ls, make_within_between_ratios_text,</span>
-<span class="co">#&gt;     plot_auto_lm, plot_lnr_cmprsn, plot_obsd_predd_dnst,</span>
-<span class="co">#&gt;     plot_obsd_predd_sctr_cmprsn, plot_sctr_plt_cmprsn,</span>
-<span class="co">#&gt;     predict_from_shareable_mdl, predict_shrble_betareg,</span>
-<span class="co">#&gt;     predict_shrble_glm, predict_shrble_lm, predict_uncnstrd_utl,</span>
-<span class="co">#&gt;     print_all_plts_for_mdl_set, print_cohort_table, print_cors_tbl,</span>
-<span class="co">#&gt;     print_covar_ttu_tbls, print_indpnt_predrs_coefs_tbl,</span>
-<span class="co">#&gt;     print_indpnt_predrs_lngl_mdl_coefs, print_lngl_ttu_tbls,</span>
-<span class="co">#&gt;     print_ten_folds_tbl, print_ts_mdl_plts,</span>
-<span class="co">#&gt;     randomise_changes_in_fct_lvls, rename_from_nmd_vec,</span>
-<span class="co">#&gt;     reorder_cndt_predrs_chr, reorder_tbs_for_target_cors, rprt_lup,</span>
-<span class="co">#&gt;     scramble_xx, transform_chr_digit_pairs,</span>
-<span class="co">#&gt;     transform_data_tb_for_cmprsn, transform_depnt_var_nm,</span>
-<span class="co">#&gt;     transform_dict_with_rename_lup, transform_ds_for_all_cmprsn_plts,</span>
-<span class="co">#&gt;     transform_ds_for_mdlng, transform_ds_to_predn_ds,</span>
-<span class="co">#&gt;     transform_mdl_vars_with_clss, transform_names,</span>
-<span class="co">#&gt;     transform_nms_in_mdl_tbl, transform_params_ls_from_lup,</span>
-<span class="co">#&gt;     transform_params_ls_to_valid, transform_paths_ls_for_scndry,</span>
-<span class="co">#&gt;     transform_predd_var_nm, transform_predr_nm_part_of_phrases,</span>
-<span class="co">#&gt;     transform_rprt_lup, transform_tb_to_mdl_inp,</span>
-<span class="co">#&gt;     transform_tbl_to_rnd_vars, transform_timepoint_vals,</span>
-<span class="co">#&gt;     transform_ts_mdl_data, transform_uid_var, write_analyses,</span>
-<span class="co">#&gt;     write_box_cox_tfmn, write_mdl_cmprsn, write_mdl_plts,</span>
-<span class="co">#&gt;     write_mdl_smry_rprt, write_mdl_type_covars_mdls,</span>
-<span class="co">#&gt;     write_mdl_type_multi_outps, write_mdl_type_sngl_outps,</span>
-<span class="co">#&gt;     write_mdls_with_covars_cmprsn, write_new_outp_dir,</span>
-<span class="co">#&gt;     write_predr_and_covars_cmprsn, write_predr_and_mdl_tstng_results,</span>
-<span class="co">#&gt;     write_predr_cmprsn_outps, write_scndry_analysis,</span>
-<span class="co">#&gt;     write_scndry_analysis_dir, write_shareable_dir,</span>
-<span class="co">#&gt;     write_shareable_mdls, write_shareable_mdls_to_dv,</span>
-<span class="co">#&gt;     write_sngl_predr_multi_mdls_outps, write_study_outp_ds,</span>
-<span class="co">#&gt;     write_to_delete_ds_copies, write_to_delete_mdl_fls,</span>
-<span class="co">#&gt;     write_ts_mdl_plts, write_ts_mdls, write_ts_mdls_from_alg_outp</span></code></pre></div>
+<span class="co">#&gt;   method                  from   </span>
+<span class="co">#&gt;   grid.draw.absoluteGrob  ggplot2</span>
+<span class="co">#&gt;   grobHeight.absoluteGrob ggplot2</span>
+<span class="co">#&gt;   grobWidth.absoluteGrob  ggplot2</span>
+<span class="co">#&gt;   grobX.absoluteGrob      ggplot2</span>
+<span class="co">#&gt;   grobY.absoluteGrob      ggplot2</span></code></pre></div>
+<p><strong>The TTU package is currently undergoing significant redevelopment. Many of the functions previously included in the package have been replaced by methods in the <a href="https://ready4-dev.github.io/specific" class="external-link">specific package</a>. More information will be poster here shortly.</strong></p>
 <p>This development version of the TTU package has been made available as part of the process of testing and documenting the package. <a href="https://ready4-dev.github.io/TTU/index.html">Installation instructions are on the package homepage</a>.</p>
-<div class="section level2">
-<h2 id="before-you-get-started">Before you get started<a class="anchor" aria-label="anchor" href="#before-you-get-started"></a>
-</h2>
-<div class="section level3">
-<h3 id="third-party-package-configuration">Third party package configuration<a class="anchor" aria-label="anchor" href="#third-party-package-configuration"></a>
-</h3>
-<p>A key step in the workflows supported by TTU is to make calls to the Stan program. By default, functions in TTU rely on the <code>cmdstanr</code> package to do this, and you therefore need to have that package installed on your machine (which should occur automatically when you install TTU) and to have performed the necessary configuration of that package (refer to <a href="https://mc-stan.org/cmdstanr/" class="external-link">https://mc-stan.org/cmdstanr/</a> for details).</p>
-</div>
-<div class="section level3">
-<h3 id="data-repository-set-up">Data repository set-up<a class="anchor" aria-label="anchor" href="#data-repository-set-up"></a>
-</h3>
-<p>Furthermore, TTU package workflows support sharing of results to an online repository. If you wish to avail of this feature, you will need to have set up an account with a Dataverse (<a href="https://dataverse.org/" class="external-link uri">https://dataverse.org/</a>) provider (e.g., <a href="https://dataverse.harvard.edu/" class="external-link uri">https://dataverse.harvard.edu/</a>). You also need to have created:</p>
-<ul>
-<li>a dataverse API key and stored the API key and server values in your local environment (to see how to do this, visit: <a href="https://github.com/IQSS/dataverse-client-r" class="external-link uri">https://github.com/IQSS/dataverse-client-r</a> )</li>
-<li>an empty dataset for each project you undertake with TTU (steps 1-3 and 5 in <a href="https://guides.dataverse.org/en/5.5/user/dataset-management.html#adding-a-new-dataset" class="external-link uri">https://guides.dataverse.org/en/5.5/user/dataset-management.html#adding-a-new-dataset</a>)</li>
-</ul>
-</div>
-</div>
-<div class="section level2">
-<h2 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
-</h2>
-<p>The workflow that TTU supports has two main parts.</p>
-<p>Part one is to undertake and exploratory analysis in order to finalise the input parameters that you will use in your study. The following vignette illustrates this workflow:</p>
-<ul>
-<li><a href="Model_TTU.html">Exploratory workflow (General population - EQ5D example)</a></li>
-</ul>
-<p>When you have determined the inputs that you will be using, you can implement the reporting workflow, which involves the following steps.</p>
-<div class="section level3">
-<h3 id="create-project-workspace">Create project workspace<a class="anchor" aria-label="anchor" href="#create-project-workspace"></a>
-</h3>
-<p>The following command will create a project directory in the location and with the name of your choosing.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">path_to_csp_1L_chr</span> <span class="op">&lt;-</span> <span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/write_reporting_dir.html" class="external-link">write_reporting_dir</a></span><span class="op">(</span>path_to_write_to_1L_chr <span class="op">=</span> <span class="st">"../Temp tests of output"</span>,
-                                          new_dir_nm_1L_chr <span class="op">=</span> <span class="st">"AQoL-6D_Vignette"</span><span class="op">)</span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="edit-template-program">Edit template program<a class="anchor" aria-label="anchor" href="#edit-template-program"></a>
-</h3>
-<p>The preceding command will have created a template RMD file for you to edit in the CSP sub-directory of your project directory. That template file will look like this: <a href="https://github.com/ready4-dev/TTU/blob/master/inst/Project/CSP/CSP.Rmd" class="external-link uri">https://github.com/ready4-dev/TTU/blob/master/inst/Project/CSP/CSP.Rmd</a></p>
-<p>Edit the file with the information relevant to your study. Two vignettes that illustrate the workflow functions that you will be using are:</p>
-<ul>
-<li><a href="CSP_EQ5D_TTU.html">Reporting workflow (General population - EQ5D example)</a></li>
-<li><a href="CSP_AQOL6D_TTU.html">Reporting workflow (Clinical population - AQoL6D example)</a></li>
-</ul>
-</div>
-<div class="section level3">
-<h3 id="run-and-share-program">Run and share program<a class="anchor" aria-label="anchor" href="#run-and-share-program"></a>
-</h3>
-<p>Once you are ready to run your analysis, use the <code>write_csp_output</code> function. The <code>write_csp_output</code> function is required as simply knitting the RMD document you edited will not work as intended (although you can run chunks interactively if you prefer). Another advantage of <code>write_csp_output</code> is that if you provide details of your dataverse dataset (which will be different to the value in the below example), it will save a PDF copy of your workflow program in that dataset.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">ready4show</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/ready4show/reference/write_csp_output.html" class="external-link">write_csp_output</a></span><span class="op">(</span><span class="va">path_to_csp_1L_chr</span>,
-                 dv_ds_doi_1L_chr <span class="op">=</span> <span class="st">"https://doi.org/10.7910/DVN/D74QMP"</span>,
-                 execute_1L_lgl <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
-</div>
-</div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
-    </nav></aside>
+  </main>
 </div>
 
 
