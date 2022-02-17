@@ -54,7 +54,7 @@ y <- ready4class::ready4class_constructor() %>%
                                                                              "list",
                                                                              "character",
                                                                              "list") %>% list(),
-                                                                vals_ls = list(list(catalogue_tmpl_chr = "c(\"https://github.com/ready4-dev/ttu_mdl_ctlg\",\"0.0.9.3\")",
+                                                                vals_ls = list(list(catalogue_tmpl_chr = "c(\"https://github.com/ready4-dev/ttu_mdl_ctlg\",\"0.0.9.5\")",
                                                                                     catalogue_fl_nms_ls = "ready4show::make_rmd_fl_nms_ls(\"Lngl_Mdls_HTML\",
                                                                                                                            pdf_fl_nm_1L_chr = \"Lngl_Mdls_PDF\",
                                                                                                                            word_fl_nm_1L_chr = \"Lngl_Mdls_Word\")",
@@ -167,21 +167,19 @@ z <- ready4::author(z)
 ready4::write_citation_cff(packageDescription("TTU"),
                            citation_chr = readLines("inst/CITATION"))
 # usethis::use_package("readr")
-# usethis::use_dev_package("scorz",remote = "ready4-dev/scorz")
-# usethis::use_dev_package("specific",remote = "ready4-dev/specific")
 # MANUAL DELETION OF TRAILING INCLUDE
-usethis::use_dev_package("ready4",
-                         type = "Depends",
-                         remote = "ready4-dev/ready4")
-usethis::use_dev_package("youthvars",
-                         type = "Depends",
-                         remote = "ready4-dev/youthvars")
-usethis::use_dev_package("scorz",
-                         type = "Depends",
-                         remote = "ready4-dev/scorz")
-usethis::use_dev_package("specific",
-                         type = "Depends",
-                         remote = "ready4-dev/specific")
+# usethis::use_dev_package("ready4",
+#                          type = "Depends",
+#                          remote = "ready4-dev/ready4")
+# usethis::use_dev_package("youthvars",
+#                          type = "Depends",
+#                          remote = "ready4-dev/youthvars")
+# usethis::use_dev_package("scorz",
+#                          type = "Depends",
+#                          remote = "ready4-dev/scorz")
+# usethis::use_dev_package("specific",
+#                          type = "Depends",
+#                          remote = "ready4-dev/specific")
 # usethis::use_package("rgl")
 # piggyback::pb_new_release("ready4-dev/TTU",
 #                           tag = paste0("v",desc::desc_get_version()),
