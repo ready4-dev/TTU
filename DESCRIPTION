@@ -1,6 +1,6 @@
 Package: TTU
 Title: Implement Transfer to Utility Mapping Algorithms
-Version: 0.0.0.9336
+Version: 0.0.0.9337
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
