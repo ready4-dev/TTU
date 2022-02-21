@@ -36,7 +36,7 @@ author_TTUReports <- function(x,
                          "/",
                          what_1L_chr)
     if(type_1L_chr == "Dependencies"){
-      df <- data.frame(Package = c("youthvars","scorz","specific","TTU",) %>%
+      df <- data.frame(Package = c("youthvars","scorz","specific","TTU") %>%
                          purrr::map(~ {
                            utils::packageDescription(.x) %>%
                              `[`(c("Depends", "Imports")) %>%
