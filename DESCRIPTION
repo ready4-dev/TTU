@@ -1,6 +1,6 @@
 Package: TTU
 Title: Implement Transfer to Utility Mapping Algorithms
-Version: 0.0.0.9335
+Version: 0.0.0.9336
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -25,19 +25,37 @@ RoxygenNote: 7.1.2
 Imports: 
     betareg,
     caret,
+    dplyr,
+    ggplot2,
     knitr,
     knitrBootstrap,
     lifecycle,
     magrittr,
     methods,
+    purrr,
     ready4 (>= 0.0.0.9089),
     ready4show (>= 0.0.0.9095),
-    specific (>= 0.0.0.9078),
-    testthat
+    specific (>= 0.0.0.9079),
+    stringr,
+    testthat,
+    utils
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
 LazyData: true
+Collate: 
+    'C4_TTUSynopsis.R'
+    'C4_TTUReports.R'
+    'TTU-package.R'
+    'db_mdl_types_lup.R'
+    'db_plt_types_lup.R'
+    'db_rprt_lup.R'
+    'fn_get.R'
+    'fn_make.R'
+    'imp_fns.R'
+    'imp_mthds.R'
+    'mthd_author.R'
+    'pkg_TTU.R'
 Suggests: 
     rmarkdown
 Remotes: 
