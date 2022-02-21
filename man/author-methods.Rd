@@ -5,14 +5,30 @@
 \alias{author,TTUReports-method}
 \title{Author and save files}
 \usage{
-\S4method{author}{TTUReports}(x, download_tmpl_1L_lgl = T, what_1L_chr = "Catalogue")
+\S4method{author}{TTUReports}(
+  x,
+  depnt_var_desc_1L_chr = NA_character_,
+  download_tmpl_1L_lgl = T,
+  fl_type_1L_chr = ".eps",
+  timepoint_new_nms_chr = NA_character_,
+  type_1L_chr = "Report",
+  what_1L_chr = NA_character_
+)
 }
 \arguments{
 \item{x}{An object of class TTUReports}
 
+\item{depnt_var_desc_1L_chr}{Dependent variable description (a character vector of length one), Default: 'NA'}
+
 \item{download_tmpl_1L_lgl}{Download template (a logical vector of length one), Default: T}
 
-\item{what_1L_chr}{What (a character vector of length one), Default: 'Catalogue'}
+\item{fl_type_1L_chr}{File type (a character vector of length one), Default: '.eps'}
+
+\item{timepoint_new_nms_chr}{Timepoint new names (a character vector), Default: 'NA'}
+
+\item{type_1L_chr}{Type (a character vector of length one), Default: 'Report'}
+
+\item{what_1L_chr}{What (a character vector of length one), Default: 'NA'}
 }
 \description{
 author method applied to TTUReports

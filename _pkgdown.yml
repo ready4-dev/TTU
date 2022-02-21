@@ -22,6 +22,7 @@ reference:
   - rprt_lup
 - title: "S4 Classes"
 - contents:
+  - TTUSynopsis
   - TTUReports
 - title: "Methods"
 - contents:

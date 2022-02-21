@@ -11,7 +11,7 @@ Metadata to produce utility mapping study reports.
 \section{Slots}{
 
 \describe{
-\item{\code{a_SpecificSynopsis}}{(an instance of the SpecificSynopsis class)}
+\item{\code{a_TTUSynopsis}}{(an instance of the TTUSynopsis class)}
 
 \item{\code{catalogue_tmpl_chr}}{Catalogue template (a character vector)}
 

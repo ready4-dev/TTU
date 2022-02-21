@@ -38,13 +38,27 @@ x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utili
                            zenodo_badge_1L_chr = "[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5646593.svg)](https://doi.org/10.5281/zenodo.5646593)")
 y <- ready4class::ready4class_constructor() %>%
   dplyr::bind_rows(ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
+                                                                name_stub_chr = "Synopsis",
+                                                                slots_ls = list("a_Ready4showPaths",
+                                                                                "b_SpecificResults",
+                                                                                "c_SpecificParameters",
+                                                                                "d_YouthvarsProfile",
+                                                                                "e_Ready4useRepos") %>% list(),
+                                                                pt_ls = list("Ready4showPaths",
+                                                                             "SpecificResults",
+                                                                             "SpecificParameters",
+                                                                             "YouthvarsProfile",
+                                                                             "Ready4useRepos") %>% list(),
+                                                                class_desc_chr = "Input, Output and Authorship Data For Generating Utility Mapping Study Reports.",
+                                                                parent_class_chr = "SpecificSynopsis"),
+                   ready4class::make_pt_ready4class_constructor(make_s3_lgl = FALSE,
                                                                 name_stub_chr = "Reports",
-                                                                slots_ls = list("a_SpecificSynopsis",
+                                                                slots_ls = list("a_TTUSynopsis",
                                                                                 "catalogue_tmpl_chr",
                                                                                 "catalogue_fl_nms_ls",
                                                                                 "manuscript_tmpl_chr",
                                                                                 "manuscript_fl_nms_ls") %>% list(),
-                                                                pt_ls = list("SpecificSynopsis",
+                                                                pt_ls = list("TTUSynopsis",
                                                                              "character",
                                                                              "list",
                                                                              "character",
@@ -57,8 +71,8 @@ y <- ready4class::ready4class_constructor() %>%
                                                                                     manuscript_fl_nms_ls = "ready4show::make_rmd_fl_nms_ls(pdf_fl_nm_1L_chr = \"Main_PDF\",
                                                                                                                             word_fl_nm_1L_chr = \"Main_Word\")")),
                                                                 class_desc_chr = "Metadata to produce utility mapping study reports.",
-                                                                parent_class_chr = "Ready4Module"
-  ))
+                                                                parent_class_chr = "Ready4Module",
+                                                                inc_clss_ls = list("TTUSynopsis") %>% list()))
 datasets_ls <- list(tibble::tibble(short_name_chr = c("OLS_NTF",
                                                       "OLS_LOG",
                                                       "OLS_LOGIT",
@@ -161,9 +175,9 @@ z <- ready4pack::make_pt_ready4pack_manifest(x,
 z <- ready4::author(z)
 ready4::write_citation_cff(packageDescription("TTU"),
                            citation_chr = readLines("inst/CITATION"))
-usethis::use_dev_package("specific",
-                         type = "Imports",
-                         remote = "ready4-dev/specific")
+# usethis::use_dev_package("specific",
+#                          type = "Imports",
+#                          remote = "ready4-dev/specific")
 # usethis::use_package("readr")
 # MANUAL DELETION OF TRAILING INCLUDE
 # usethis::use_dev_package("ready4",

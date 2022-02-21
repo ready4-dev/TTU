@@ -8,7 +8,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5646593.svg)](https://doi.org/10.5281/zenodo.5646593)
 <!-- badges: end -->
 
-Tools for developping, reporting and sharing Transfer To
+Tools for developing, reporting and sharing Transfer To
 Utility (TTU) mapping algorithms that predict health utility from
 other health measures.  This development version of the TTU package
 has been made available as part of the process of testing and
