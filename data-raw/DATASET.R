@@ -189,7 +189,6 @@ ready4::write_citation_cff(packageDescription("TTU"),
 # usethis::use_dev_package("scorz",
 #                          type = "Depends",
 #                          remote = "ready4-dev/scorz")
-
 # usethis::use_package("rgl")
 # piggyback::pb_new_release("ready4-dev/TTU",
 #                           tag = paste0("v",desc::desc_get_version()),
