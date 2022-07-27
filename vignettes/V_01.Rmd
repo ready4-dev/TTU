@@ -12,3 +12,59 @@ vignette: >
 The TTU package is undergoing significant redevelopment currently. As a result the syntax will soon look very different to that outlined in the current (deprecated) vignettes.
 
 More updates will appear here shortly.
+
+```{r}
+library(ready4)
+library(ready4use)
+library(youthvars)
+library(TTU)
+```
+
+```{r}
+A <- Ready4useRepos(gh_repo_1L_chr = "ready4-dev/youthvars", 
+                          gh_tag_1L_chr = "Documentation_0.0") %>%  
+  ingest(fls_to_ingest_chr = "ymh_YouthvarsSeries",
+         metadata_1L_lgl = F)
+A@a_Ready4useDyad@ds_tb <- A@a_Ready4useDyad@ds_tb %>%
+            youthvars::transform_raw_ds_for_analysis()
+```
+
+```{r}
+A <- ScorzAqol6Adol(a_YouthvarsProfile = A)
+```
+
+```{r}
+B <- TTUParameters(a_ScorzProfile = A)
+```
+```{r}
+# Make into renew method
+B <- renewSlot(B,
+               "a_ScorzProfile")
+B@b_SpecificParameters <- SpecificConverter(a_ScorzProfile = B@a_ScorzProfile) %>%
+  metamorphose() %>%
+  procureSlot("b_SpecificParameters")
+```
+```{r}
+B <- renewSlot(B,
+            "b_SpecificParameters@depnt_var_min_max_dbl",
+               c(0.03,1)) %>%
+  renewSlot("b_SpecificParameters@candidate_predrs_chr",
+            c("BADS","GAD7", "K6", "OASIS", "PHQ9", "SCARED")) %>%
+  renewSlot("b_SpecificParameters@candidate_covars_chr",
+            c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_studying_working",
+              "c_p_diag_s", "c_clinical_staging_s", "SOFAS")) %>%
+  renewSlot("b_SpecificParameters@descv_var_nms_chr",
+             c("d_age","Gender","d_relation_s",
+               "d_sexual_ori_s", "Region", "d_studying_working",
+               "c_p_diag_s", "c_clinical_staging_s","SOFAS")) %>%
+  renewSlot("b_SpecificParameters@msrmnt_date_var_nm_1L_chr",
+               "d_interview_date") %>%
+    renewSlot("b_SpecificParameters@predictors_lup",
+            Ready4useRepos(dv_nm_1L_chr = "TTU", 
+                    dv_ds_nm_1L_chr = "https://doi.org/10.7910/DVN/DKDIB0", 
+                    dv_server_1L_chr = "dataverse.harvard.edu") %>%
+  ingest(fls_to_ingest_chr = c("predictors_r3"),
+         metadata_1L_lgl = F)) 
+```
+
+

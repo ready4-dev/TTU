@@ -6,11 +6,11 @@
 \alias{TTU-package}
 \title{TTU: Implement Transfer to Utility Mapping Algorithms}
 \description{
-\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
 Tools for developing, reporting and sharing Transfer To Utility (TTU) mapping algorithms that predict health utility from other health measures. This development version of the TTU package has been made available as part of the process of testing and documenting the package. If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).
 
-\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
 Tools for developing, reporting and sharing Transfer To Utility (TTU) mapping algorithms that predict health utility from other health measures. This development version of the TTU package has been made available as part of the process of testing and documenting the package. If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).
 }
@@ -32,21 +32,6 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Matthew Hamilton \email{matthew.hamilton@orygen.org.au} (\href{https://orcid.org/0000-0001-7407-9194}{ORCID})
-
-Authors:
-\itemize{
-  \item Caroline Gao \email{caroline.gao@orygen.org.au} (\href{https://orcid.org/0000-0002-0987-2759}{ORCID})
-}
-
-Other contributors:
-\itemize{
-  \item Orygen [copyright holder, funder]
-  \item Headspace [funder]
-  \item National Health and Medical Research Council [funder]
-}
-
-
 \strong{Maintainer}: Matthew Hamilton \email{matthew.hamilton@orygen.org.au} (\href{https://orcid.org/0000-0001-7407-9194}{ORCID})
 
 Authors:
