@@ -79,7 +79,7 @@ y <- ready4class::ready4class_constructor() %>%
                                                                              "list",
                                                                              "character",
                                                                              "list") %>% list(),
-                                                                vals_ls = list(list(catalogue_tmpl_chr = "c(\"https://github.com/ready4-dev/ttu_mdl_ctlg\",\"0.0.9.5\")",
+                                                                vals_ls = list(list(catalogue_tmpl_chr = "c(\"https://github.com/ready4-dev/ttu_mdl_ctlg\",\"0.0.9.6\")",
                                                                                     catalogue_fl_nms_ls = "ready4show::make_rmd_fl_nms_ls(\"Lngl_Mdls_HTML\",
                                                                                                                            pdf_fl_nm_1L_chr = \"Lngl_Mdls_PDF\",
                                                                                                                            word_fl_nm_1L_chr = \"Lngl_Mdls_Word\")",

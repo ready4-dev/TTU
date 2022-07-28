@@ -66,7 +66,7 @@ A <- Ready4useDyad(ds_tb = Ready4useRepos(dv_nm_1L_chr = "fakes",
 A <- YouthvarsSeries(a_Ready4useDyad = A,
                      id_var_nm_1L_chr = "fkClientID",
                      timepoint_var_nm_1L_chr = "round",
-                     timepoint_vals_chr = levels(procureSlot(B,
+                     timepoint_vals_chr = levels(procureSlot(A,
                                                              "ds_tb")$round))
 ```
 
@@ -98,7 +98,6 @@ exhibitSlot(A,
                "b_SpecificParameters@predictors_lup")
 ```
 
-
 ```{r}
 A <- renewSlot(A,
             "b_SpecificParameters@depnt_var_min_max_dbl",
@@ -121,22 +120,20 @@ A <- renewSlot(A,
                tempdir()) %>%
   renewSlot("b_SpecificParameters@fake_1L_lgl",
             T) 
-  
-  
 ```
 
 ```{r}
-C <- SpecificModels(a_YouthvarsProfile = A@a_ScorzProfile@a_YouthvarsProfile,
+B <- SpecificModels(a_YouthvarsProfile = A@a_ScorzProfile@a_YouthvarsProfile,
                     b_SpecificParameters = A@b_SpecificParameters,
                     paths_chr = A@paths_chr)
 ```
 
 ```{r}
-C <- ratify(C)
+B <- ratify(B)
 ```
 
 ```{r}
-C <- author(C,
+B <- author(B,
             what_1L_chr = "workspace")
 ```
 
@@ -145,7 +142,7 @@ C <- author(C,
 We now generate tables and charts that describe our dataset. These are saved in a sub-directory of our output data directory.
 
 ```{r}
-C <- author(C,
+B <- author(B,
             what_1L_chr = "descriptives",
             digits_1L_int = 3L)
 ```
@@ -156,16 +153,15 @@ C <- author(C,
 We next compare the performance of different model types. This step saves model objects and plots to a sub-directory of our output directory and outputs a `SpecificPredictors` object.
 
 ```{r}
-C <- investigate(C,
-                 depnt_var_max_val_1L_dbl = 0.99,
+B <- investigate(B,
+                 depnt_var_max_val_1L_dbl = 0.99,# Parent method argument
                  session_ls = sessionInfo())
-
 ```
 
 After inspecting the output of the previous command, we can now specify the preferred model types to use from this point onwards.
 
 ```{r}
-C <- renew(C,
+B <- renew(B,
            new_val_xx = c("GLM_GSN_LOG", "OLS_CLL"),
            type_1L_chr = "results",
            what_1L_chr = "prefd_mdls")
@@ -175,14 +171,14 @@ C <- renew(C,
 Next we assess multiple versions of our preferred model type - one single predictor model for each of our candidate predictors and the same models with candidate covariates added. The output is a `SpecificFixed` object, plus a number of model/plot objects saved locally.
 
 ```{r}
-C <- investigate(C)
+B <- investigate(B)
 ```
 
 ### Assess performance of final model specification 
 After reviewing the output of the previous step, we specify the covariates we wish to add to the models.
 
 ```{r}
-C <- renew(C,
+B <- renew(B,
            new_val_xx = "SOFAS",
            type_1L_chr = "results",
            what_1L_chr = "prefd_covars")
@@ -191,7 +187,7 @@ C <- renew(C,
 We now assess the multivariate models. The output is a `SpecificMixed` object and more locally saved model/plot objects.
 
 ```{r}
-C <- investigate(C)
+B <- investigate(B)
 ```
 
 ## Undertake longitudinal modelling
@@ -201,7 +197,7 @@ We next reformulate the models we finalised in the previous step so that they ar
 For our primary analysis, we use the longitudinal formulation of the models we previously selected. As with previous steps the output of this analysis is stored in the `F1` object and in files written to the local output data directory.
 
 ```{r}
-C <- investigate(C)
+B <- investigate(B)
 ```
 
 ### Secondary analyses
@@ -221,7 +217,7 @@ scndry_anlys_params_ls <- make_scndry_anlys_params(candidate_predrs_chr = c("SOF
                                                        "d_sexual_ori_s",
                                                        "d_studying_working"),
                            prefd_covars_chr = "PHQ9")
-C <- investigate(C, 
+B <- investigate(B, 
                  scndry_anlys_params_ls = scndry_anlys_params_ls)
 ```
 
@@ -231,28 +227,25 @@ C <- investigate(C,
 The model objects created and saved in our working directory by the preceding steps are not suitable for public dissemination. They are both too large in file size and, more importantly, include copies of our source dataset. We can overcome these limitations by creating shareable versions of the models. Two types of shareable version are created - copies of the original model objects in which fake data overwrites the original source data and tables of model coefficients.
 
 ```{r}
-C <- authorData(C)
+B <- authorData(B)#ERROR
 ```
-
-
-
 
 ## Specify study reporting metadata
 We create a `TTUSynopsis` object that contains the fields necessary to render and share reports.
 
 ```{r}
-C <- metamorphose(C)
-C <- TTUSynopsis(a_Ready4showPaths = C@a_Ready4showPaths,
-                 b_SpecificResults = C@b_SpecificResults,
-                 c_SpecificParameters = C@c_SpecificParameters,
-                 d_YouthvarsProfile = C@d_YouthvarsProfile,
-                 rmd_fl_nms_ls = C@rmd_fl_nms_ls)
+B <- metamorphose(B)
+B <- TTUSynopsis(a_Ready4showPaths = B@a_Ready4showPaths,
+                 b_SpecificResults = B@b_SpecificResults,
+                 c_SpecificParameters = B@c_SpecificParameters,
+                 d_YouthvarsProfile = B@d_YouthvarsProfile,
+                 rmd_fl_nms_ls = B@rmd_fl_nms_ls)
 ```
 
 We add metadata relevant to the reports that we will be generating to these fields.
 
 ```{r}
-C <- C %>% 
+B <- B %>% 
   renewSlot("authors_r3", 
             ready4show::authors_tb) %>%
         renewSlot("institutes_r3", 
@@ -275,14 +268,14 @@ C <- C %>%
 We now create a `TTUReports` object, that we can use to efficiently retrieve and apply programs that can summarise our study results.
 
 ```{r}
-D <- TTUReports(a_TTUSynopsis = C)
+C <- TTUReports(a_TTUSynopsis = B)
 ```
 
 ### Author model catalogues
 We download a program for generating a catalogue of models and use it to summarising the models created under each study analysis (one primary and two secondary). The catalogues are saved locally.
 
 ```{r}
-author(D,
+author(C,
        download_tmpl_1L_lgl = T,
        what_1L_chr = "Catalogue")
 ```
@@ -291,7 +284,7 @@ author(D,
 We share the catalogues that we created, uploading a copy to our study online repository. To run this step you will need write permissions to the online repository.
 
 ```{r}
-shareSlot(D,
+shareSlot(C,
           slot_nm_1L_chr = "a_TTUSynopsis",
           type_1L_chr = "Report",
           what_1L_chr = "Catalogue")
@@ -301,7 +294,7 @@ shareSlot(D,
 We share tables of coefficients and other meta-data about the models we have created by posting them to the online repository. The object we create and share is designed to be used in conjunction with the `youthu` package to make it easier to make predictions with these models using new data. Again, you will need write permissions to the online repository.
 
 ```{r}
-shareSlot(D,
+shareSlot(C,
           "a_TTUSynopsis",
           type_1L_chr = "Models",
           what_1L_chr = "ingredients")
@@ -311,7 +304,7 @@ shareSlot(D,
 We add some content about the manuscript we wish to author.
 
 ```{r}
-C <- procureSlot(D,
+B <- procureSlot(C,
                  "a_TTUSynopsis") %>% 
   renewSlot("background_1L_chr",
             "Quality Adjusted Life Years (QALYs) are often used in economic evaluations, yet utility weights for deriving them are rarely directly measured in mental health services.") %>%
@@ -319,37 +312,27 @@ C <- procureSlot(D,
   renewSlot("conclusion_1L_chr",
             "Adolescent AQoL-6D utility can be derived from a range of psychological distress, depression and anxiety measures. TTU algorithms estimated from cross-sectional data can approximate longitudinal change but may slightly bias QALY predictions.") %>%
   renewSlot("ethics_1L_chr", 
-            paste0("The study was reviewed and granted approval by ",
-                   ifelse(is.na(path_to_data_1L_chr),
-                          "no-one.",
-                          "the University of Melbourne’s Human Research Ethics Committee and the local Human Ethics and Advisory Group (1645367.1")
-                   )) %>%
+            "The study was reviewed and granted approval by no-one." ) %>%
   renewSlot("funding_1L_chr", 
-            paste0("The study was funded by ",
-                   ifelse(is.na(path_to_data_1L_chr),
-                          "no-one.",
-                          "the National Health and Medical Research Council (NHMRC, APP1076940), Orygen and headspace."))) %>%
+            "The study was funded by no-one.") %>%
   renewSlot("interval_chr", 
             "three months") %>%
   renewSlot("keywords_chr", 
             c("anxiety", "AQoL","depression", 
               "psychological distress", "QALYs", "utility mapping")) %>%
   renewSlot("sample_desc_1L_chr",
-            ifelse(is.na(path_to_data_1L_chr),
-                   "The study sample is fake data.",
-                   "")
-            ) 
-D <- renewSlot(D,
+            "The study sample is fake data.") 
+C <- renewSlot(C,
                "a_TTUSynopsis",
-               C)
+               B)
 ```
 
 We add arguments to help us create an abstract for the the manuscript.
 
 ```{r}
-D <- D %>%
+C <- C %>%
   renewSlot("a_TTUSynopsis@abstract_args_ls",
-            manufactureSlot(D,
+            manufactureSlot(C,
                             "a_TTUSynopsis",
                             what_1L_chr = "abstract_args_ls")) 
 ```
@@ -357,7 +340,7 @@ D <- D %>%
 We create a summary of results that can be interpreted by the program that authors the manuscript.
 
 ```{r}
-D <- enhanceSlot(D, 
+C <- enhanceSlot(C, 
                  "a_TTUSynopsis",
                  depnt_var_nms_chr = c("AQoL-6D",
                                        "Adolescent AQoL Six Dimension"), 
@@ -367,7 +350,7 @@ D <- enhanceSlot(D,
 We create and save the plots that will be used in the manuscript.
 
 ```{r}
-author(D,
+author(C,
        depnt_var_desc_1L_chr = "AQoL-6D",
        timepoint_new_nms_chr = c("Baseline","Follow-up"),
        type_1L_chr = "Plots")
@@ -376,7 +359,7 @@ author(D,
 We download a program for generating a template manuscript and run it to author a first draft of the manuscript.
 
 ```{r}
-author(D,
+author(C,
        download_tmpl_1L_lgl = T,
        type_1L_chr = "Report",
        what_1L_chr = "Manuscript_Auto")
@@ -385,12 +368,12 @@ author(D,
 We create the files we will be using for figures submitted to our target journal and also a table of all the dependency packages used in our analysis and reporting.
 
 ```{r}
-author(D,
+author(C,
        depnt_var_desc_1L_chr = "AQoL-6D",
        timepoint_new_nms_chr = c("Baseline","Follow-up"),
        type_1L_chr = "Plots",
        what_1L_chr = "Manuscript_Submission")
-author(D,
+author(C,
        type_1L_chr = "Dependencies",
        what_1L_chr = "Manuscript_Submission")
 
@@ -399,17 +382,17 @@ author(D,
 We can now customise the template manuscript program so that it can generate the manuscript we plan on submitting. It is recommended that the updated manuscript generation program is saved in a new sub-directory, for example "Manuscript_Submission". Once we have done this (a step undertaken manually, not by this algorithm)  we can the following command to author the submission manuscript.
 
 ```{r}
-if(paste0(D@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
+if(paste0(C@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
           "/",
-          D@a_TTUSynopsis@a_Ready4showPaths@mkdn_data_dir_1L_chr,
+          C@a_TTUSynopsis@a_Ready4showPaths@mkdn_data_dir_1L_chr,
           "/Manuscript_Submission") %>% 
    dir.exists()){
-  D <- D %>%
+  C <- C %>%
            renewSlot("a_TTUSynopsis@tables_in_body_lgl",
                      F) %>%
            renewSlot("a_TTUSynopsis@figures_in_body_lgl",
                      F)
-  author(D,
+  author(C,
          download_tmpl_1L_lgl = F,
          what_1L_chr = "Manuscript_Submission")
 }
@@ -418,12 +401,12 @@ if(paste0(D@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
 We now generate the Supplementary Information for the submission manuscript.
 
 ```{r}
-if(paste0(D@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
+if(paste0(C@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
           "/",
-          D@a_TTUSynopsis@a_Ready4showPaths@mkdn_data_dir_1L_chr,
+          C@a_TTUSynopsis@a_Ready4showPaths@mkdn_data_dir_1L_chr,
           "/Manuscript_Submission") %>% 
    dir.exists()){
-  authorReport(D %>%
+  authorReport(C %>%
                  renewSlot("a_TTUSynopsis@rmd_fl_nms_ls",
                            ready4show::make_rmd_fl_nms_ls(pdf_fl_nm_1L_chr = "TA_PDF")) %>%
                  procureSlot("a_TTUSynopsis"),
@@ -437,7 +420,7 @@ if(paste0(D@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
 The preceding steps saved multiple objects (mostly R model objects) that have embedded within them copies of the source dataset. We can now purge all such copies from our output data directory.
 
 ```{r}
-author(C,
+author(B,
        type_1L_chr = "purge_write")
 ```
 
