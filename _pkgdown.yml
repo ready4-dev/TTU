@@ -22,9 +22,9 @@ reference:
   - rprt_lup
 - title: "S4 Classes"
 - contents:
-  - TTUParameters
   - TTUSynopsis
   - TTUReports
+  - TTUProject
 - title: "Methods"
 - contents:
   - author-TTUReports
