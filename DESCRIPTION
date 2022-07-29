@@ -1,6 +1,6 @@
 Package: TTU
 Title: Implement Transfer to Utility Mapping Algorithms
-Version: 0.0.0.9343
+Version: 0.0.0.9344
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -35,7 +35,7 @@ Imports:
     purrr,
     ready4 (>= 0.0.0.9092),
     ready4show (>= 0.0.0.9096),
-    specific (>= 0.0.0.9081),
+    specific (>= 0.0.0.9082),
     stringr,
     testthat,
     utils
