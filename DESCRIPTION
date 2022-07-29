@@ -1,6 +1,6 @@
 Package: TTU
 Title: Implement Transfer to Utility Mapping Algorithms
-Version: 0.0.0.9342
+Version: 0.0.0.9343
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -44,9 +44,9 @@ Depends:
     R (>= 2.10)
 LazyData: true
 Collate: 
-    'C4_TTUParameters.R'
     'C4_TTUSynopsis.R'
     'C4_TTUReports.R'
+    'C4_TTUProject.R'
     'TTU-package.R'
     'db_mdl_types_lup.R'
     'db_plt_types_lup.R'
