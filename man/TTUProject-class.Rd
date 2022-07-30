@@ -15,7 +15,7 @@ Input And Output Data For Undertaking and Reporting Utility Mapping Studies.
 
 \item{\code{b_SpecificParameters}}{(an instance of the SpecificParameters class)}
 
-\item{\code{c_TTUSynopsis}}{(an instance of the TTUSynopsis class)}
+\item{\code{c_SpecificProject}}{(an instance of the SpecificProject class)}
 
 \item{\code{d_TTUReports}}{(an instance of the TTUReports class)}
 
