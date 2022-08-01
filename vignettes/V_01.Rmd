@@ -316,40 +316,36 @@ R.utils::copyDirectory(paste0(A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@out
 ```
 
 
-```{r}
-authorSlot(A, "d_TTUReports", type_1L_chr = "Plots", what_1L_chr = "Manuscript_Submission",
-           depnt_var_desc_1L_chr = "AQoL-6D" # Inherit from TTUAqolAdol
-           #,timepoint_new_nms_chr = c("Baseline","Follow-up")
-       )
-author(A@d_TTUReports, type_1L_chr = "Dependencies", what_1L_chr = "Manuscript_Submission") #ERROR
-
+```{r echo=FALSE, eval=FALSE}
+# authorSlot(A, "d_TTUReports", type_1L_chr = "Plots", what_1L_chr = "Manuscript_Submission",
+#            depnt_var_desc_1L_chr = "AQoL-6D" # Inherit from TTUAqolAdol
+#            #,timepoint_new_nms_chr = c("Baseline","Follow-up")
+#        ) # Not required for vignette
+# author(A@d_TTUReports, type_1L_chr = "Dependencies", what_1L_chr = "Manuscript_Submission") #ERROR - Not required for vignette
 ```
 
 We can now customise the template manuscript program so that it can generate the manuscript we plan on submitting. It is recommended that the updated manuscript generation program is saved in a new sub-directory, for example "Manuscript_Submission". Once we have done this (a step undertaken manually, not by this algorithm)  we can the following command to author the submission manuscript.
 
 ```{r}
 ## PICK UP HERE, REBUILD SPECIFIC AND CTLG AND SS MARKDOWN PROGRAMS
+A <- renewSlot(A, "d_TTUReports",
+               procureSlot(A, "d_TTUReports") %>%
+                 renewSlot("a_TTUSynopsis@tables_in_body_lgl",  F) %>%
+                 renewSlot("a_TTUSynopsis@figures_in_body_lgl", F) %>%
+                 renewSlot("a_TTUSynopsis@outp_formats_chr", c("Word","PDF")))
 
-C <- C %>%
-  renewSlot("a_TTUSynopsis@tables_in_body_lgl",
-            F) %>%
-  renewSlot("a_TTUSynopsis@figures_in_body_lgl",
-            F)
-  author(C,
-         download_tmpl_1L_lgl = F,
-         what_1L_chr = "Manuscript_Submission")
+authorSlot(A, "d_TTUReports", what_1L_chr = "Manuscript_Submission", download_tmpl_1L_lgl = F)
 ```
 
 We now generate the Supplementary Information for the submission manuscript.
 
-```{r}
-authorReport(C %>%
-                 renewSlot("a_TTUSynopsis@rmd_fl_nms_ls",
-                           ready4show::make_rmd_fl_nms_ls(pdf_fl_nm_1L_chr = "TA_PDF")) %>%
-                 procureSlot("a_TTUSynopsis"),
-               fl_nm_1L_chr = "Supplement",
-               #download_tmpl_1L_lgl = F,
-               what_1L_chr = "Manuscript_Submission") # ERROR
+```{r echo=FALSE, eval=FALSE}
+# authorReport(procureSlot(A, "d_TTUReports")  %>%
+#                renewSlot("a_TTUSynopsis@rmd_fl_nms_ls", ready4show::make_rmd_fl_nms_ls(pdf_fl_nm_1L_chr = "TA_PDF")) %>%
+#                procureSlot("a_TTUSynopsis"),
+#                fl_nm_1L_chr = "Supplement",
+#                #download_tmpl_1L_lgl = F,
+#                what_1L_chr = "Manuscript_Submission") # Produces incorrect output
 
 ```
 
@@ -357,11 +353,11 @@ authorReport(C %>%
 The preceding steps saved multiple objects (mostly R model objects) that have embedded within them copies of the source dataset. We can now purge all such copies from our output data directory.
 
 ```{r}
-author(B,
-       type_1L_chr = "purge_write") # Authors (again?) catalogue. ???
+author(procureSlot(A,"c_SpecificProject"),
+       type_1L_chr = "purge_write") 
 ```
 
-```{r echo=FALSE}
+```{r echo=FALSE, eval=FALSE}
 # transform_dyad_for_analysis <- function(data_Ready4useDyad){
 #   data_Ready4useDyad@ds_tb <- data_Ready4useDyad@ds_tb %>%
 #             youthvars::transform_raw_ds_for_analysis()
