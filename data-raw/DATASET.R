@@ -1,4 +1,4 @@
-library(ready4)
+library(ready4fun)
 library(ready4use)
 library(ready4show)
 library(youthvars)
@@ -21,7 +21,8 @@ x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utili
                                                                  "https://github.com/ready4-dev/TTU",
                                                                  "https://ready4-dev.github.io/ready4/")) %>%
   ready4fun::make_manifest(addl_pkgs_ls = ready4fun::make_addl_pkgs_ls(suggests_chr = c("knitr","rmarkdown"),
-                                                                       imports_chr = c("betareg","caret","knitrBootstrap","specific")),
+                                                                       imports_chr = c("betareg","caret","knitrBootstrap","specific"),
+                                                                       depends_chr = "specific"),
                            build_ignore_ls = ready4fun::make_build_ignore_ls(file_nms_chr = c("initial_setup.R")),
                            check_type_1L_chr = "ready4",
                            copyright_holders_chr = "Orygen",
@@ -186,8 +187,6 @@ z <- ready4pack::make_pt_ready4pack_manifest(x,
                                              pkg_ds_ls_ls = datasets_ls) %>%
   ready4pack::ready4pack_manifest()
 z <- ready4::author(z)
-ready4::write_citation_cff(packageDescription("TTU"),
-                           citation_chr = readLines("inst/CITATION"))
 # usethis::use_dev_package("specific",
 #                          type = "Imports",
 #                          remote = "ready4-dev/specific")
@@ -196,10 +195,13 @@ ready4::write_citation_cff(packageDescription("TTU"),
 # usethis::use_dev_package("ready4",
 #                          type = "Depends",
 #                          remote = "ready4-dev/ready4")
-# usethis::use_dev_package("youthvars",
-#                          type = "Depends",
-#                          remote = "ready4-dev/youthvars")
-# usethis::use_dev_package("scorz",
+usethis::use_dev_package("youthvars",
+                         type = "Imports",#D?
+                         remote = "ready4-dev/youthvars")
+usethis::use_dev_package("scorz",
+                         type = "Imports",
+                         remote = "ready4-dev/scorz")
+# usethis::use_dev_package("specific",
 #                          type = "Depends",
 #                          remote = "ready4-dev/scorz")
 # usethis::use_package("rgl")

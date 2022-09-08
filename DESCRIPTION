@@ -35,13 +35,15 @@ Imports:
     purrr,
     ready4 (>= 0.0.0.9102),
     ready4show (>= 0.0.0.9098),
-    specific (>= 0.0.0.9083),
+    scorz (>= 0.0.0.9053),
     stringr,
     testthat,
-    utils
+    utils,
+    youthvars (>= 0.0.0.9108)
 VignetteBuilder: knitr
 Depends: 
-    R (>= 2.10)
+    R (>= 2.10),
+    specific (>= 0.0.0.9083)
 LazyData: true
 Collate: 
     'C4_TTUSynopsis.R'
@@ -62,4 +64,6 @@ Suggests:
 Remotes: 
     ready4-dev/ready4,
     ready4-dev/ready4show,
-    ready4-dev/specific
+    ready4-dev/specific,
+    ready4-dev/youthvars,
+    ready4-dev/scorz
