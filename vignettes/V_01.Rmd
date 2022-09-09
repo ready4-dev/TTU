@@ -1,17 +1,39 @@
 ---
-title: "Significant Changes To The TTU Package"
+title: "Implement A Utility Mapping Study"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Significant Changes To The TTU Package}
+  %\VignetteIndexEntry{Implement A Utility Mapping Study}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-## Change is coming!
+Note: **This vignette uses fake data** - it is for illustrative purposes only and should not be used to inform decision making.
 
-The TTU package is undergoing significant redevelopment currently. As a result the syntax will soon look very different to that outlined in the current (deprecated) vignettes.
+## Motivation
 
-More updates will appear here shortly.
+Youth mental health services do not typically collect health utility data from their clients, which makes it more difficult to place an economic values on outcomes attained in these services. One strategy for addressing this gap is to use data from similar samples of young people that contain both health utility and the types of outcome measures that are collected in clinical services. The TTU package provides a toolkit for conducting and reporting a utility mapping (or Transfer to Utility) study.
+
+## Implementation
+
+TTU has been developed using the [ready4 framework](https://ready4-dev.github.io/ready4/) and combines and extends multiple types of [modules](https://ready4-dev.github.io/ready4/articles/V_01.html) from the readyforwhatsnext model:
+
+- Modules for labeling, validating and summarising youth mental health datasets from the [youthvars](https://ready4-dev.github.io/youthvars/) package;
+- Modules for scoring health utility from the [scorz](https://ready4-dev.github.io/scorz/) package;
+- Modules for specifying and testing statistical models from the [specific](https://ready4-dev.github.io/specific/) package;
+- Modules for generating reports from the [ready4show](https://ready4-dev.github.io/ready4show/)  package; and
+- Modules for sharing data via online data repositories from the [ready4use](https://ready4-dev.github.io/ready4use/)  package.
+
+Additionally, TTU relies on two RMarkdown programs:
+
+- ttu_mdl_ctlg: Generate a Template Utility Mapping (Transfer to Utility) Model Catalogue (https://doi.org/10.5281/zenodo.5936870)
+- ttu_lng_ss: Create a Draft Scientific Manuscript For A Utility Mapping Study (https://doi.org/10.5281/zenodo.5976987)
+
+
+## Workflow
+The following workflow illustrates (**using fake data**) the same steps we used in a real world study (https://doi.org/10.1101/2021.07.07.21260129).
+
+### Load required packages
+We begin by loading our required packages.
 
 ```{r message=FALSE, warning=FALSE}
 library(ready4)
@@ -20,6 +42,9 @@ library(youthvars)
 library(scorz)
 library(TTU)
 ```
+
+### Add dataset metadata 
+We use the Ready4useDyad and Ready4useRepos modules to [retrieve and ingest](https://ready4-dev.github.io/ready4use/articles/V_01.html) and to then [pair a dataset and its data dictionary](_https://ready4-dev.github.io/ready4use/articles/V_02.html). 
 
 ```{r}
 A <- Ready4useDyad(ds_tb = Ready4useRepos(dv_nm_1L_chr = "fakes",
@@ -36,6 +61,8 @@ A <- Ready4useDyad(ds_tb = Ready4useRepos(dv_nm_1L_chr = "fakes",
   renew(type_1L_chr = "label")
 ```
 
+We use the YouthvarsSeries module to [supply metadata about out a longitudinal dataset vignette](https://ready4-dev.github.io/youthvars/articles/V_02.html).
+
 ```{r}
 A <- YouthvarsSeries(a_Ready4useDyad = A,
                      id_var_nm_1L_chr = "fkClientID",
@@ -44,14 +71,23 @@ A <- YouthvarsSeries(a_Ready4useDyad = A,
                                                              "ds_tb")$round))
 ```
 
+### Score health utility 
+
+We next use the ScorzAqol6Adol module to [score adolescent AQoL-6D health utility](https://ready4-dev.github.io/scorz/articles/V_01.html).
+
 ```{r}
 A <- TTUProject(a_ScorzProfile = ScorzAqol6Adol(a_YouthvarsProfile = A))
+A <- renewSlot(A, "a_ScorzProfile")
 ```
+
+### Evaluate candidate models 
+
+Over the next few steps we will use modules from the specific package to  to [specify and assess a number of candidate utility mapping models](https://ready4-dev.github.io/specific/articles/V_01.html).
+
 ```{r echo=FALSE}
 # Make next bit into renew method
 ```
 ```{r}
-A <- renewSlot(A, "a_ScorzProfile")
 A <- renewSlot(A, "b_SpecificParameters", SpecificConverter(a_ScorzProfile = A@a_ScorzProfile) %>%
                  metamorphose() %>%
                  procureSlot("b_SpecificParameters"))
@@ -64,9 +100,14 @@ A <- renewSlot(A, "b_SpecificParameters@predictors_lup", Ready4useRepos(dv_nm_1L
                  ingest(fls_to_ingest_chr = c("predictors_r3"),
                         metadata_1L_lgl = F)) 
 ```
+
+We can inspect the metadata on candidate predictors that we have just ingested.
+
 ```{r}
 exhibitSlot(A, "b_SpecificParameters@predictors_lup")
 ```
+
+We add additional metadata about variables in our dataset that will be used in exploratory modelling.
 
 ```{r}
 A <- renewSlot(A, "b_SpecificParameters@depnt_var_min_max_dbl", c(0.03,1)) %>% # Inherit From TTUAqolAdol
@@ -82,7 +123,6 @@ A <- renewSlot(A, "b_SpecificParameters@depnt_var_min_max_dbl", c(0.03,1)) %>% #
 ```{r}
 A <-  renewSlot(A, "b_SpecificParameters@fake_1L_lgl", T) 
 ```
-
 ```{r}
 A <- renewSlot(A, "c_SpecificProject", SpecificModels(a_YouthvarsProfile = A@a_ScorzProfile@a_YouthvarsProfile,
                                                       b_SpecificParameters = A@b_SpecificParameters,
@@ -98,9 +138,7 @@ A <- renewSlot(A, "c_SpecificProject",
                authorSlot(A, "c_SpecificProject", what_1L_chr = "workspace"))
 ```
 
-## Generate descriptive statistics
-
-We now generate tables and charts that describe our dataset. These are saved in a sub-directory of our output data directory.
+We now generate tables and charts that describe our dataset. These are saved in a sub-directory of our output data directory. One of the plots is reproduced here.
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 A <- renewSlot(A, "c_SpecificProject",
@@ -108,15 +146,12 @@ A <- renewSlot(A, "c_SpecificProject",
                           digits_1L_int = 3L))
 ```
 
-## Undertake exploratory modelling using baseline dataset
-
-### Identify preferred model types
-We next compare the performance of different model types. This step saves model objects and plots to a sub-directory of our output directory and outputs a `SpecificPredictors` object.
+We next compare the performance of different model types. This step saves model objects and plots to a sub-directory of our output directory.
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 A <- renewSlot(A, "c_SpecificProject",
                investigateSlot(A, "c_SpecificProject",
-                               depnt_var_max_val_1L_dbl = 0.99,# Parent method argument
+                               depnt_var_max_val_1L_dbl = 0.99,
                                session_ls = sessionInfo()))
 ```
 
@@ -130,15 +165,13 @@ A <- renewSlot(A, "c_SpecificProject",
                      what_1L_chr = "prefd_mdls"))
 ```
 
-### Identify preferred predictors and covariates
-Next we assess multiple versions of our preferred model type - one single predictor model for each of our candidate predictors and the same models with candidate covariates added. The output is a `SpecificFixed` object, plus a number of model/plot objects saved locally.
+Next we assess multiple versions of our preferred model type - one single predictor model for each of our candidate predictors and the same models with candidate covariates added. A number of model/plot objects saved locally.
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 A <- renewSlot(A, "c_SpecificProject",
                investigateSlot(A,"c_SpecificProject"))
 ```
 
-### Assess performance of final model specification 
 After reviewing the output of the previous step, we specify the covariates we wish to add to the models.
 
 ```{r message=FALSE, results='hide', warning=FALSE}
@@ -149,25 +182,22 @@ A <- renewSlot(A, "c_SpecificProject",
                      what_1L_chr = "prefd_covars"))
 ```
 
-We now assess the multivariate models. The output is a `SpecificMixed` object and more locally saved model/plot objects.
+We now assess the multivariate models.  More model/plot objects are saved locally.
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 A <- renewSlot(A, "c_SpecificProject",
                investigateSlot(A, "c_SpecificProject"))
 ```
 
-## Undertake longitudinal modelling
 We next reformulate the models we finalised in the previous step so that they are suitable for modelling longitudinal change.
 
-### Primary analysis
-For our primary analysis, we use the longitudinal formulation of the models we previously selected. As with previous steps the output of this analysis is stored in the `F1` object and in files written to the local output data directory.
+For our primary analysis, we use the longitudinal formulation of the models we previously selected. A series of large model files are written to the local output data directory.
 
 ```{r eval =F}
 A <- renewSlot(A, "c_SpecificProject",
                investigateSlot(A, "c_SpecificProject"))
 ```
 
-### Secondary analyses
 For our secondary analyses, we specify alternative combinations of predictors and covariates.
 
 ```{r eval =F}
@@ -188,17 +218,17 @@ A <- renewSlot(A, "c_SpecificProject",
                                                           prefd_covars_chr = "PHQ9")))
 ```
 
-# Report and disseminate findings
+### Report and disseminate findings
 
-## Create shareable models
-The model objects created and saved in our working directory by the preceding steps are not suitable for public dissemination. They are both too large in file size and, more importantly, include copies of our source dataset. We can overcome these limitations by creating shareable versions of the models. Two types of shareable version are created - copies of the original model objects in which fake data overwrites the original source data and tables of model coefficients.
+#### Create shareable models
+The model objects created and saved in our working directory by the preceding steps are not suitable for public dissemination. They are both too large in file size and, more importantly, include copies of our source dataset. We can overcome these limitations by creating shareable versions of the models. Two types of shareable version are created - copies of the original model objects in which fake data overwrites the original source data and summary tables of model coefficients.
 
 ```{r eval =F}
 A <- renewSlot(A, "c_SpecificProject",
                authorData(procureSlot(A, "c_SpecificProject")))
 ```
 
-## Specify study reporting metadata
+#### Specify study reporting metadata
 We create a `TTUSynopsis` object that contains the fields necessary to render and share reports.
 
 ```{r eval =F}
@@ -216,7 +246,7 @@ A <- renewSlot(A, "d_TTUReports",
                )
 ```
 
-We add metadata relevant to the reports that we will be generating to these fields.
+We add metadata relevant to the reports that we will be generating to these fields. Note that the data we supply to the Ready4useRepos object below must relate to a repository to which we have write permissions (otherwise subsequent steps will fail).
 
 ```{r eval =F}
 A <- renewSlot(A, "d_TTUReports@a_TTUSynopsis",
@@ -233,36 +263,34 @@ A <- renewSlot(A, "d_TTUReports@a_TTUSynopsis",
 
 ```
 
-
-
 ```{r echo = F, eval =F}
 ## Describe and share models
 # We now create a `TTUReports` object, that we can use to efficiently retrieve and apply programs that can summarise our study results.
 # C <- TTUReports(a_TTUSynopsis = B)
 ```
 
-### Author model catalogues
+#### Author model catalogues
 We download a program for generating a catalogue of models and use it to summarising the models created under each study analysis (one primary and two secondary). The catalogues are saved locally.
 
 ```{r eval =F}
 authorSlot(A, "d_TTUReports", what_1L_chr = "Catalogue", download_tmpl_1L_lgl = T)
 ```
 
-### Share model catalogue
+#### Share model catalogue
 We share the catalogues that we created, uploading a copy to our study online repository. To run this step you will need write permissions to the online repository.
 
 ```{r eval =F}
-shareSlot(A, "d_TTUReports@a_TTUSynopsis", type_1L_chr = "Report", what_1L_chr = "Catalogue") # Outputs df
+shareSlot(A, "d_TTUReports@a_TTUSynopsis", type_1L_chr = "Report", what_1L_chr = "Catalogue") 
 ```
 
-### Share models
+#### Share models
 We share tables of coefficients and other meta-data about the models we have created by posting them to the online repository. The object we create and share is designed to be used in conjunction with the `youthu` package to make it easier to make predictions with these models using new data. Again, you will need write permissions to the online repository.
 
 ```{r eval =F}
 shareSlot(A, "d_TTUReports@a_TTUSynopsis", type_1L_chr = "Models", what_1L_chr = "ingredients")
 ```
 
-## Author manuscript
+#### Author manuscript
 We add some content about the manuscript we wish to author.
 
 ```{r eval =F}
@@ -283,13 +311,12 @@ We create a summary of results that can be interpreted by the program that autho
 ```{r eval =F}
 A <- renewSlot(A, "d_TTUReports@a_TTUSynopsis@abstract_args_ls",
                manufactureSlot(A,"d_TTUReports@a_TTUSynopsis", what_1L_chr = "abstract_args_ls",
-                               depnt_var_nms_chr = c("AQoL-6D", "Adolescent AQoL Six Dimension"))) # port to parent manufacture method
+                               depnt_var_nms_chr = c("AQoL-6D", "Adolescent AQoL Six Dimension"))) 
 ```
 
 ```{r eval =F}
 A <- enhanceSlot(A, "d_TTUReports@a_TTUSynopsis", with_1L_chr = "results_ls",
-                 depnt_var_nms_chr = c("AQoL-6D", "Adolescent AQoL Six Dimension")#,version_1L_chr = A@d_TTUReports@manuscript_tmpl_chr[2]
-                 ) # Should be derived from scorz class
+                 depnt_var_nms_chr = c("AQoL-6D", "Adolescent AQoL Six Dimension")) 
 ```
 
 We create and save the plots that will be used in the manuscript.
@@ -297,7 +324,6 @@ We create and save the plots that will be used in the manuscript.
 ```{r eval =F}
 authorSlot(A, "d_TTUReports", type_1L_chr = "Plots",
            depnt_var_desc_1L_chr = A@d_TTUReports@a_TTUSynopsis@b_SpecificResults@a_SpecificShareable@shareable_outp_ls$results_ls$study_descs_ls$health_utl_nm_1L_chr)
-           #timepoint_new_nms_chr = c("Baseline","Follow-up"), # necessary?
 ```
 
 We download a program for generating a template manuscript and run it to author a first draft of the manuscript.
@@ -305,7 +331,6 @@ We download a program for generating a template manuscript and run it to author 
 ```{r eval =F}
 authorSlot(A, "d_TTUReports", type_1L_chr = "Report", what_1L_chr = "Manuscript_Auto", download_tmpl_1L_lgl = T)
 ```
-
 
 We can copy the RMarkdown files that created the template manuscript to a new director (which we call "Manuscript_Submission") so that we can then manually edit those files to produce a manuscript that we can submit for publication. Note that in this example we have not made any edits to the template manuscript.
 
@@ -346,6 +371,7 @@ authorSlot(A, "d_TTUReports", what_1L_chr = "Manuscript_Submission", download_tm
 purrr::walk2(c("Manuscript_Auto","Manuscript_Submission"),
              2:1,
              ~ {
+               x <- A@d_TTUReports@a_TTUSynopsis
                what_1L_chr <- .x
                idx_1L_int <- .y
                if(what_1L_chr %in% c("Manuscript_Auto","Manuscript_Submission")){ # ADD THIS TO share_SpecificSynopsis
@@ -363,7 +389,12 @@ purrr::walk2(c("Manuscript_Auto","Manuscript_Submission"),
                                                        descriptions_chr = paste0("Scientific summary of utility mapping study",
                                                                                  ifelse(what_1L_chr == "Manuscript_Auto", " (algorithm generated)","")),
                                                        ds_url_1L_chr = x@e_Ready4useRepos@dv_ds_nm_1L_chr)
-                 })
+                 
+                 
+               }
+               Sys.sleep(5L)
+               }
+               )
 
 ```
 
@@ -380,7 +411,7 @@ authorReport(procureSlot(A, "d_TTUReports")  %>%
 
 ```
 
-# Tidy workspace
+### Tidy workspace
 The preceding steps saved multiple objects (mostly R model objects) that have embedded within them copies of the source dataset. We can now purge all such copies from our output data directory.
 
 ```{r eval = F}
