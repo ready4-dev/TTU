@@ -35,9 +35,11 @@ Imports:
     purrr,
     ready4 (>= 0.0.0.9102),
     ready4show (>= 0.0.0.9098),
+    scorz (>= 0.0.0.9053),
     stringr,
     testthat,
-    utils
+    utils,
+    youthvars (>= 0.0.0.9108)
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10),
@@ -59,7 +61,9 @@ Collate:
     'pkg_TTU.R'
 Suggests: 
     rmarkdown
-Remotes: 
+Remotes:  
     ready4-dev/ready4,
     ready4-dev/ready4show,
-    ready4-dev/specific
+    ready4-dev/specific,
+    ready4-dev/youthvars,
+    ready4-dev/scorz
