@@ -14,8 +14,8 @@
 <link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Significant Changes To The TTU Package">
 <meta property="og:description" content="TTU">
@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">TTU</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9339</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9346</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,8 +78,9 @@
 
 
 
-<script src="V_01_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
-  <main id="main"><div class="page-header">
+<script src="V_01_files/kePrint-0.0.1/kePrint.js"></script><link href="V_01_files/lightable-0.0.1/lightable.css" rel="stylesheet">
+<div class="row">
+  <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Significant Changes To The TTU Package</h1>
             
       
@@ -89,13 +90,529 @@
 
     
     
-<div class="section level2">
-<h2 id="change-is-coming">Change is coming!<a class="anchor" aria-label="anchor" href="#change-is-coming"></a>
-</h2>
+<div class="section level3">
+<h3 id="change-is-coming">Change is coming!<a class="anchor" aria-label="anchor" href="#change-is-coming"></a>
+</h3>
 <p>The TTU package is undergoing significant redevelopment currently. As a result the syntax will soon look very different to that outlined in the current (deprecated) vignettes.</p>
 <p>More updates will appear here shortly.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/ready4/" class="external-link">ready4</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/ready4use/" class="external-link">ready4use</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/youthvars/" class="external-link">youthvars</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/scorz/" class="external-link">scorz</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ready4-dev.github.io/TTU/">TTU</a></span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4use/reference/Ready4useDyad-class.html" class="external-link">Ready4useDyad</a></span><span class="op">(</span>ds_tb <span class="op">=</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4use/reference/Ready4useRepos-class.html" class="external-link">Ready4useRepos</a></span><span class="op">(</span>dv_nm_1L_chr <span class="op">=</span> <span class="st">"fakes"</span>,</span>
+<span>                                          dv_ds_nm_1L_chr <span class="op">=</span> <span class="st">"https://doi.org/10.7910/DVN/HJXYKQ"</span>,</span>
+<span>                                          dv_server_1L_chr <span class="op">=</span> <span class="st">"dataverse.harvard.edu"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                     <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/ingest-methods.html" class="external-link">ingest</a></span><span class="op">(</span>fls_to_ingest_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ymh_clinical_tb"</span><span class="op">)</span>,</span>
+<span>                            metadata_1L_lgl <span class="op">=</span> <span class="cn">F</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                     <span class="fu">youthvars</span><span class="fu">::</span><span class="fu"><a href="https://ready4-dev.github.io/youthvars/reference/transform_raw_ds_for_analysis.html" class="external-link">transform_raw_ds_for_analysis</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>                   dictionary_r3 <span class="op">=</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4use/reference/Ready4useRepos-class.html" class="external-link">Ready4useRepos</a></span><span class="op">(</span>dv_nm_1L_chr <span class="op">=</span> <span class="st">"TTU"</span>, </span>
+<span>                                                  dv_ds_nm_1L_chr <span class="op">=</span> <span class="st">"https://doi.org/10.7910/DVN/DKDIB0"</span>, </span>
+<span>                                                  dv_server_1L_chr <span class="op">=</span> <span class="st">"dataverse.harvard.edu"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                     <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/ingest-methods.html" class="external-link">ingest</a></span><span class="op">(</span>fls_to_ingest_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dictionary_r3"</span><span class="op">)</span>,</span>
+<span>                            metadata_1L_lgl <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span>type_1L_chr <span class="op">=</span> <span class="st">"label"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/youthvars/reference/YouthvarsSeries-class.html" class="external-link">YouthvarsSeries</a></span><span class="op">(</span>a_Ready4useDyad <span class="op">=</span> <span class="va">A</span>,</span>
+<span>                     id_var_nm_1L_chr <span class="op">=</span> <span class="st">"fkClientID"</span>,</span>
+<span>                     timepoint_var_nm_1L_chr <span class="op">=</span> <span class="st">"round"</span>,</span>
+<span>                     timepoint_vals_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/procureSlot-methods.html" class="external-link">procureSlot</a></span><span class="op">(</span><span class="va">A</span>,</span>
+<span>                                                             <span class="st">"ds_tb"</span><span class="op">)</span><span class="op">$</span><span class="va">round</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TTUProject-class.html">TTUProject</a></span><span class="op">(</span>a_ScorzProfile <span class="op">=</span> <span class="fu"><a href="https://ready4-dev.github.io/scorz/reference/ScorzAqol6Adol-class.html" class="external-link">ScorzAqol6Adol</a></span><span class="op">(</span>a_YouthvarsProfile <span class="op">=</span> <span class="va">A</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"a_ScorzProfile"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Joining, by = c("fkClientID", "match_var_chr")</span></span></code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"b_SpecificParameters"</span>, <span class="fu"><a href="https://ready4-dev.github.io/specific/reference/SpecificConverter-class.html" class="external-link">SpecificConverter</a></span><span class="op">(</span>a_ScorzProfile <span class="op">=</span> <span class="va">A</span><span class="op">@</span><span class="va">a_ScorzProfile</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/metamorphose-methods.html" class="external-link">metamorphose</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/procureSlot-methods.html" class="external-link">procureSlot</a></span><span class="op">(</span><span class="st">"b_SpecificParameters"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"b_SpecificParameters@predictors_lup"</span>, <span class="fu"><a href="https://ready4-dev.github.io/ready4use/reference/Ready4useRepos-class.html" class="external-link">Ready4useRepos</a></span><span class="op">(</span>dv_nm_1L_chr <span class="op">=</span> <span class="st">"TTU"</span>, </span>
+<span>                                                                        dv_ds_nm_1L_chr <span class="op">=</span> <span class="st">"https://doi.org/10.7910/DVN/DKDIB0"</span>, </span>
+<span>                                                                        dv_server_1L_chr <span class="op">=</span> <span class="st">"dataverse.harvard.edu"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/ingest-methods.html" class="external-link">ingest</a></span><span class="op">(</span>fls_to_ingest_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"predictors_r3"</span><span class="op">)</span>,</span>
+<span>                        metadata_1L_lgl <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/exhibitSlot-methods.html" class="external-link">exhibitSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"b_SpecificParameters@predictors_lup"</span><span class="op">)</span></span></code></pre></div>
+<table class="table  lightable-paper lightable-hover" style='font-family: "Arial Narrow", arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;border-bottom: 0;'>
+<thead><tr>
+<th style="text-align:left;">
+Variable
+</th>
+<th style="text-align:right;">
+Description
+</th>
+<th style="text-align:right;">
+Minimum
+</th>
+<th style="text-align:right;">
+Maximum
+</th>
+<th style="text-align:right;">
+Class
+</th>
+<th style="text-align:right;">
+Increment
+</th>
+<th style="text-align:right;">
+Function
+</th>
+<th style="text-align:left;">
+Scaling
+</th>
+<th style="text-align:right;">
+Covariate
+</th>
+</tr></thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+BADS
+</td>
+<td style="text-align:right;">
+BADS total score
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+150
+</td>
+<td style="text-align:right;">
+integer
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+youthvars::youthvars_bads
+</td>
+<td style="text-align:left;">
+0.01
+</td>
+<td style="text-align:right;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+GAD7
+</td>
+<td style="text-align:right;">
+GAD7 total score
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+integer
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+youthvars::youthvars_gad7
+</td>
+<td style="text-align:left;">
+0.01
+</td>
+<td style="text-align:right;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+K6
+</td>
+<td style="text-align:right;">
+K6 total score
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+integer
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+youthvars::youthvars_k6
+</td>
+<td style="text-align:left;">
+0.01
+</td>
+<td style="text-align:right;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+OASIS
+</td>
+<td style="text-align:right;">
+OASIS total score
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+integer
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+youthvars::youthvars_oasis
+</td>
+<td style="text-align:left;">
+0.01
+</td>
+<td style="text-align:right;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+PHQ9
+</td>
+<td style="text-align:right;">
+PHQ9 total score
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+integer
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+youthvars::youthvars_phq9
+</td>
+<td style="text-align:left;">
+0.01
+</td>
+<td style="text-align:right;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SCARED
+</td>
+<td style="text-align:right;">
+SCARED total score
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+integer
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+youthvars::youthvars_scared
+</td>
+<td style="text-align:left;">
+0.01
+</td>
+<td style="text-align:right;">
+FALSE
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+SOFAS
+</td>
+<td style="text-align:right;">
+SOFAS total score
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+integer
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+youthvars::youthvars_sofas
+</td>
+<td style="text-align:left;">
+0.01
+</td>
+<td style="text-align:right;">
+TRUE
+</td>
+</tr>
+</tbody>
+<tfoot><tr>
+<td style="padding: 0; " colspan="100%">
+<sup></sup>
+</td>
+</tr></tfoot>
+</table>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"b_SpecificParameters@depnt_var_min_max_dbl"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.03</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="co"># Inherit From TTUAqolAdol</span></span>
+<span>  <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"b_SpecificParameters@candidate_predrs_chr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"BADS"</span>,<span class="st">"GAD7"</span>, <span class="st">"K6"</span>, <span class="st">"OASIS"</span>, <span class="st">"PHQ9"</span>, <span class="st">"SCARED"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"b_SpecificParameters@candidate_covars_chr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d_sex_birth_s"</span>, <span class="st">"d_age"</span>,  <span class="st">"d_sexual_ori_s"</span>, </span>
+<span>                                                           <span class="st">"d_studying_working"</span>, <span class="st">"c_p_diag_s"</span>, <span class="st">"c_clinical_staging_s"</span>,</span>
+<span>                                                           <span class="st">"SOFAS"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"b_SpecificParameters@descv_var_nms_chr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d_age"</span>,<span class="st">"Gender"</span>,<span class="st">"d_relation_s"</span>, <span class="st">"d_sexual_ori_s"</span>, </span>
+<span>                                                        <span class="st">"Region"</span>, <span class="st">"d_studying_working"</span>, <span class="st">"c_p_diag_s"</span>, </span>
+<span>                                                        <span class="st">"c_clinical_staging_s"</span>,<span class="st">"SOFAS"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"b_SpecificParameters@msrmnt_date_var_nm_1L_chr"</span>, <span class="st">"d_interview_date"</span><span class="op">)</span> </span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"b_SpecificParameters@fake_1L_lgl"</span>, <span class="cn">T</span><span class="op">)</span> </span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>, <span class="fu"><a href="https://ready4-dev.github.io/specific/reference/SpecificModels-class.html" class="external-link">SpecificModels</a></span><span class="op">(</span>a_YouthvarsProfile <span class="op">=</span> <span class="va">A</span><span class="op">@</span><span class="va">a_ScorzProfile</span><span class="op">@</span><span class="va">a_YouthvarsProfile</span>,</span>
+<span>                                                      b_SpecificParameters <span class="op">=</span> <span class="va">A</span><span class="op">@</span><span class="va">b_SpecificParameters</span>,</span>
+<span>                                                      paths_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/ratifySlot-methods.html" class="external-link">ratifySlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>, </span>
+<span>               <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/authorSlot-methods.html" class="external-link">authorSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>, what_1L_chr <span class="op">=</span> <span class="st">"workspace"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-  </main>
+<div class="section level3">
+<h3 id="generate-descriptive-statistics">Generate descriptive statistics<a class="anchor" aria-label="anchor" href="#generate-descriptive-statistics"></a>
+</h3>
+<p>We now generate tables and charts that describe our dataset. These are saved in a sub-directory of our output data directory.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>,</span>
+<span>               <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/authorSlot-methods.html" class="external-link">authorSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>, what_1L_chr <span class="op">=</span> <span class="st">"descriptives"</span>,</span>
+<span>                          digits_1L_int <span class="op">=</span> <span class="fl">3L</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="V_01_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
+</div>
+<div class="section level3">
+<h3 id="undertake-exploratory-modelling-using-baseline-dataset">Undertake exploratory modelling using baseline dataset<a class="anchor" aria-label="anchor" href="#undertake-exploratory-modelling-using-baseline-dataset"></a>
+</h3>
+<div class="section level4">
+<h4 id="identify-preferred-model-types">Identify preferred model types<a class="anchor" aria-label="anchor" href="#identify-preferred-model-types"></a>
+</h4>
+<p>We next compare the performance of different model types. This step saves model objects and plots to a sub-directory of our output directory and outputs a <code>SpecificPredictors</code> object.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>,</span>
+<span>               <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/investigateSlot-methods.html" class="external-link">investigateSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>,</span>
+<span>                               depnt_var_max_val_1L_dbl <span class="op">=</span> <span class="fl">0.99</span>,<span class="co"># Parent method argument</span></span>
+<span>                               session_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>After inspecting the output of the previous command, we can now specify the preferred model types to use from this point onwards.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>,</span>
+<span>               <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/procureSlot-methods.html" class="external-link">procureSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span><span class="op">)</span>,</span>
+<span>                     new_val_xx <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GLM_GSN_LOG"</span>, <span class="st">"OLS_CLL"</span><span class="op">)</span>,</span>
+<span>                     type_1L_chr <span class="op">=</span> <span class="st">"results"</span>,</span>
+<span>                     what_1L_chr <span class="op">=</span> <span class="st">"prefd_mdls"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="identify-preferred-predictors-and-covariates">Identify preferred predictors and covariates<a class="anchor" aria-label="anchor" href="#identify-preferred-predictors-and-covariates"></a>
+</h4>
+<p>Next we assess multiple versions of our preferred model type - one single predictor model for each of our candidate predictors and the same models with candidate covariates added. The output is a <code>SpecificFixed</code> object, plus a number of model/plot objects saved locally.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>,</span>
+<span>               <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/investigateSlot-methods.html" class="external-link">investigateSlot</a></span><span class="op">(</span><span class="va">A</span>,<span class="st">"c_SpecificProject"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="assess-performance-of-final-model-specification">Assess performance of final model specification<a class="anchor" aria-label="anchor" href="#assess-performance-of-final-model-specification"></a>
+</h4>
+<p>After reviewing the output of the previous step, we specify the covariates we wish to add to the models.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>,</span>
+<span>               <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/procureSlot-methods.html" class="external-link">procureSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span><span class="op">)</span>,</span>
+<span>                     new_val_xx <span class="op">=</span> <span class="st">"SOFAS"</span>,</span>
+<span>                     type_1L_chr <span class="op">=</span> <span class="st">"results"</span>,</span>
+<span>                     what_1L_chr <span class="op">=</span> <span class="st">"prefd_covars"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>We now assess the multivariate models. The output is a <code>SpecificMixed</code> object and more locally saved model/plot objects.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>,</span>
+<span>               <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/investigateSlot-methods.html" class="external-link">investigateSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="undertake-longitudinal-modelling">Undertake longitudinal modelling<a class="anchor" aria-label="anchor" href="#undertake-longitudinal-modelling"></a>
+</h3>
+<p>We next reformulate the models we finalised in the previous step so that they are suitable for modelling longitudinal change.</p>
+<div class="section level4">
+<h4 id="primary-analysis">Primary analysis<a class="anchor" aria-label="anchor" href="#primary-analysis"></a>
+</h4>
+<p>For our primary analysis, we use the longitudinal formulation of the models we previously selected. As with previous steps the output of this analysis is stored in the <code>F1</code> object and in files written to the local output data directory.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>,</span>
+<span>               <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/investigateSlot-methods.html" class="external-link">investigateSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="secondary-analyses">Secondary analyses<a class="anchor" aria-label="anchor" href="#secondary-analyses"></a>
+</h4>
+<p>For our secondary analyses, we specify alternative combinations of predictors and covariates.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>,</span>
+<span>               <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/investigateSlot-methods.html" class="external-link">investigateSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>,</span>
+<span>                               scndry_anlys_params_ls <span class="op">=</span> <span class="fu"><a href="https://ready4-dev.github.io/specific/reference/make_scndry_anlys_params.html" class="external-link">make_scndry_anlys_params</a></span><span class="op">(</span>candidate_predrs_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SOFAS"</span><span class="op">)</span>,</span>
+<span>                                                                                 candidate_covar_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d_sex_birth_s"</span>, </span>
+<span>                                                                                                             <span class="st">"d_age"</span>, </span>
+<span>                                                                                                             <span class="st">"d_sexual_ori_s"</span>,</span>
+<span>                                                                                                             <span class="st">"d_studying_working"</span><span class="op">)</span>,</span>
+<span>                                                                                 prefd_covars_chr <span class="op">=</span> <span class="cn">NA_character_</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                                 <span class="fu"><a href="https://ready4-dev.github.io/specific/reference/make_scndry_anlys_params.html" class="external-link">make_scndry_anlys_params</a></span><span class="op">(</span>candidate_predrs_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SCARED"</span>,<span class="st">"OASIS"</span>,<span class="st">"GAD7"</span><span class="op">)</span>,</span>
+<span>                                                          candidate_covar_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PHQ9"</span>, <span class="st">"SOFAS"</span>, </span>
+<span>                                                                                      <span class="st">"d_sex_birth_s"</span>, </span>
+<span>                                                                                      <span class="st">"d_age"</span>, </span>
+<span>                                                                                      <span class="st">"d_sexual_ori_s"</span>,</span>
+<span>                                                                                      <span class="st">"d_studying_working"</span><span class="op">)</span>,</span>
+<span>                                                          prefd_covars_chr <span class="op">=</span> <span class="st">"PHQ9"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="report-and-disseminate-findings">Report and disseminate findings<a class="anchor" aria-label="anchor" href="#report-and-disseminate-findings"></a>
+</h2>
+<div class="section level3">
+<h3 id="create-shareable-models">Create shareable models<a class="anchor" aria-label="anchor" href="#create-shareable-models"></a>
+</h3>
+<p>The model objects created and saved in our working directory by the preceding steps are not suitable for public dissemination. They are both too large in file size and, more importantly, include copies of our source dataset. We can overcome these limitations by creating shareable versions of the models. Two types of shareable version are created - copies of the original model objects in which fake data overwrites the original source data and tables of model coefficients.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span>,</span>
+<span>               <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/authorData-methods.html" class="external-link">authorData</a></span><span class="op">(</span><span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/procureSlot-methods.html" class="external-link">procureSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="specify-study-reporting-metadata">Specify study reporting metadata<a class="anchor" aria-label="anchor" href="#specify-study-reporting-metadata"></a>
+</h3>
+<p>We create a <code>TTUSynopsis</code> object that contains the fields necessary to render and share reports.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports"</span>,</span>
+<span>               <span class="op">{</span></span>
+<span>                 <span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/metamorphoseSlot-methods.html" class="external-link">metamorphoseSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"c_SpecificProject"</span><span class="op">)</span></span>
+<span>                 <span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TTUSynopsis-class.html">TTUSynopsis</a></span><span class="op">(</span>a_Ready4showPaths <span class="op">=</span> <span class="va">Y</span><span class="op">@</span><span class="va">a_Ready4showPaths</span>,</span>
+<span>                                  b_SpecificResults <span class="op">=</span> <span class="va">Y</span><span class="op">@</span><span class="va">b_SpecificResults</span>,</span>
+<span>                                  c_SpecificParameters <span class="op">=</span> <span class="va">Y</span><span class="op">@</span><span class="va">c_SpecificParameters</span>,</span>
+<span>                                  d_YouthvarsProfile <span class="op">=</span> <span class="va">Y</span><span class="op">@</span><span class="va">d_YouthvarsProfile</span>,</span>
+<span>                                  rmd_fl_nms_ls <span class="op">=</span> <span class="va">Y</span><span class="op">@</span><span class="va">rmd_fl_nms_ls</span><span class="op">)</span></span>
+<span>                 <span class="va">Y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/TTUReports-class.html">TTUReports</a></span><span class="op">(</span>a_TTUSynopsis <span class="op">=</span> <span class="va">Y</span><span class="op">)</span></span>
+<span>                 <span class="va">Y</span></span>
+<span>                 <span class="op">}</span></span>
+<span>               <span class="op">)</span></span></code></pre></div>
+<p>We add metadata relevant to the reports that we will be generating to these fields.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports@a_TTUSynopsis"</span>,</span>
+<span>               <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/procureSlot-methods.html" class="external-link">procureSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports@a_TTUSynopsis"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"authors_r3"</span>, <span class="fu">ready4show</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/ready4show/reference/authors_tb.html" class="external-link">authors_tb</a></span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"institutes_r3"</span>, <span class="fu">ready4show</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/ready4show/reference/institutes_tb.html" class="external-link">institutes_tb</a></span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"digits_int"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3L</span>,<span class="fl">3L</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"outp_formats_chr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PDF"</span>,<span class="st">"PDF"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"title_1L_chr"</span>, <span class="st">"A hypothetical utility mapping study using fake data"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"correspondences_r3"</span>, old_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PHQ9"</span>, <span class="st">"GAD7"</span><span class="op">)</span>, new_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PHQ-9"</span>, <span class="st">"GAD-7"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"e_Ready4useRepos"</span>, <span class="fu"><a href="https://ready4-dev.github.io/ready4use/reference/Ready4useRepos-class.html" class="external-link">Ready4useRepos</a></span><span class="op">(</span>dv_nm_1L_chr <span class="op">=</span> <span class="st">"fakes"</span>, </span>
+<span>                                                              dv_ds_nm_1L_chr <span class="op">=</span> <span class="st">"https://doi.org/10.7910/DVN/D74QMP"</span>, </span>
+<span>                                                              dv_server_1L_chr <span class="op">=</span> <span class="st">"dataverse.harvard.edu"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> </span></code></pre></div>
+<div class="section level4">
+<h4 id="author-model-catalogues">Author model catalogues<a class="anchor" aria-label="anchor" href="#author-model-catalogues"></a>
+</h4>
+<p>We download a program for generating a catalogue of models and use it to summarising the models created under each study analysis (one primary and two secondary). The catalogues are saved locally.</p>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/authorSlot-methods.html" class="external-link">authorSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports"</span>, what_1L_chr <span class="op">=</span> <span class="st">"Catalogue"</span>, download_tmpl_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="share-model-catalogue">Share model catalogue<a class="anchor" aria-label="anchor" href="#share-model-catalogue"></a>
+</h4>
+<p>We share the catalogues that we created, uploading a copy to our study online repository. To run this step you will need write permissions to the online repository.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/shareSlot-methods.html" class="external-link">shareSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports@a_TTUSynopsis"</span>, type_1L_chr <span class="op">=</span> <span class="st">"Report"</span>, what_1L_chr <span class="op">=</span> <span class="st">"Catalogue"</span><span class="op">)</span> <span class="co"># Outputs df</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="share-models">Share models<a class="anchor" aria-label="anchor" href="#share-models"></a>
+</h4>
+<p>We share tables of coefficients and other meta-data about the models we have created by posting them to the online repository. The object we create and share is designed to be used in conjunction with the <code>youthu</code> package to make it easier to make predictions with these models using new data. Again, you will need write permissions to the online repository.</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/shareSlot-methods.html" class="external-link">shareSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports@a_TTUSynopsis"</span>, type_1L_chr <span class="op">=</span> <span class="st">"Models"</span>, what_1L_chr <span class="op">=</span> <span class="st">"ingredients"</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="author-manuscript">Author manuscript<a class="anchor" aria-label="anchor" href="#author-manuscript"></a>
+</h3>
+<p>We add some content about the manuscript we wish to author.</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports@a_TTUSynopsis"</span>,</span>
+<span>               <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/procureSlot-methods.html" class="external-link">procureSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports@a_TTUSynopsis"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"background_1L_chr"</span>, <span class="st">"Quality Adjusted Life Years (QALYs) are often used in economic evaluations, yet utility weights for deriving them are rarely directly measured in mental health services."</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"coi_1L_chr"</span>, <span class="st">"None declared"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"conclusion_1L_chr"</span>,<span class="st">"Nothing should be concluded from this study as it is purely hypothetical."</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"ethics_1L_chr"</span>, <span class="st">"The study was reviewed and granted approval by no-one."</span> <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"funding_1L_chr"</span>, <span class="st">"The study was funded by no-one."</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"interval_chr"</span>, <span class="st">"three months"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"keywords_chr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"anxiety"</span>, <span class="st">"AQoL"</span>,<span class="st">"depression"</span>, <span class="st">"psychological distress"</span>, <span class="st">"QALYs"</span>, <span class="st">"utility mapping"</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"sample_desc_1L_chr"</span>, <span class="st">"The study sample is fake data."</span><span class="op">)</span> <span class="op">)</span></span></code></pre></div>
+<p>We create a summary of results that can be interpreted by the program that authors the manuscript.</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports@a_TTUSynopsis@abstract_args_ls"</span>,</span>
+<span>               <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/manufactureSlot-methods.html" class="external-link">manufactureSlot</a></span><span class="op">(</span><span class="va">A</span>,<span class="st">"d_TTUReports@a_TTUSynopsis"</span>, what_1L_chr <span class="op">=</span> <span class="st">"abstract_args_ls"</span>,</span>
+<span>                               depnt_var_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AQoL-6D"</span>, <span class="st">"Adolescent AQoL Six Dimension"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># port to parent manufacture method</span></span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/enhanceSlot-methods.html" class="external-link">enhanceSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports@a_TTUSynopsis"</span>, with_1L_chr <span class="op">=</span> <span class="st">"results_ls"</span>,</span>
+<span>                 depnt_var_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AQoL-6D"</span>, <span class="st">"Adolescent AQoL Six Dimension"</span><span class="op">)</span><span class="co">#,version_1L_chr = A@d_TTUReports@manuscript_tmpl_chr[2]</span></span>
+<span>                 <span class="op">)</span> <span class="co"># Should be derived from scorz class</span></span></code></pre></div>
+<p>We create and save the plots that will be used in the manuscript.</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/authorSlot-methods.html" class="external-link">authorSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports"</span>, type_1L_chr <span class="op">=</span> <span class="st">"Plots"</span>,</span>
+<span>           depnt_var_desc_1L_chr <span class="op">=</span> <span class="va">A</span><span class="op">@</span><span class="va">d_TTUReports</span><span class="op">@</span><span class="va">a_TTUSynopsis</span><span class="op">@</span><span class="va">b_SpecificResults</span><span class="op">@</span><span class="va">a_SpecificShareable</span><span class="op">@</span><span class="va">shareable_outp_ls</span><span class="op">$</span><span class="va">results_ls</span><span class="op">$</span><span class="va">study_descs_ls</span><span class="op">$</span><span class="va">health_utl_nm_1L_chr</span><span class="op">)</span></span>
+<span>           <span class="co">#timepoint_new_nms_chr = c("Baseline","Follow-up"), # necessary?</span></span></code></pre></div>
+<p>We download a program for generating a template manuscript and run it to author a first draft of the manuscript.</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/authorSlot-methods.html" class="external-link">authorSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports"</span>, type_1L_chr <span class="op">=</span> <span class="st">"Report"</span>, what_1L_chr <span class="op">=</span> <span class="st">"Manuscript_Auto"</span>, download_tmpl_1L_lgl <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code></pre></div>
+<p>We can copy the RMarkdown files that created the template manuscript to a new director (which we call “Manuscript_Submission”) so that we can then manually edit those files to produce a manuscript that we can submit for publication. Note that in this example we have not made any edits to the template manuscript.</p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">R.utils</span><span class="fu">::</span><span class="fu">copyDirectory</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">A</span><span class="op">@</span><span class="va">d_TTUReports</span><span class="op">@</span><span class="va">a_TTUSynopsis</span><span class="op">@</span><span class="va">a_Ready4showPaths</span><span class="op">@</span><span class="va">outp_data_dir_1L_chr</span>,</span>
+<span>                              <span class="st">"/"</span>,</span>
+<span>                              <span class="va">A</span><span class="op">@</span><span class="va">d_TTUReports</span><span class="op">@</span><span class="va">a_TTUSynopsis</span><span class="op">@</span><span class="va">a_Ready4showPaths</span><span class="op">@</span><span class="va">mkdn_data_dir_1L_chr</span>,</span>
+<span>                              <span class="st">"/Manuscript_Auto"</span><span class="op">)</span>,</span>
+<span>                       <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">A</span><span class="op">@</span><span class="va">d_TTUReports</span><span class="op">@</span><span class="va">a_TTUSynopsis</span><span class="op">@</span><span class="va">a_Ready4showPaths</span><span class="op">@</span><span class="va">outp_data_dir_1L_chr</span>,</span>
+<span>                              <span class="st">"/"</span>,</span>
+<span>                              <span class="va">A</span><span class="op">@</span><span class="va">d_TTUReports</span><span class="op">@</span><span class="va">a_TTUSynopsis</span><span class="op">@</span><span class="va">a_Ready4showPaths</span><span class="op">@</span><span class="va">mkdn_data_dir_1L_chr</span>,</span>
+<span>                              <span class="st">"/Manuscript_Submission"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Once any edits to the RMarkdown files for creating the submission manuscript have been finalised, we can run the following command to author the manuscript. The below commands will generate a Microsoft Word format manuscript and a PDF technical appendix. Unlike the template manuscript, the figures and tables are positioned after (and not within) the main body of the manuscript. Note that the Word version of the manuscript generated by these commands will require some minor formatting edits (principally to the display of tables and numbering of sections).</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports"</span>,</span>
+<span>               <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/procureSlot-methods.html" class="external-link">procureSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"a_TTUSynopsis@tables_in_body_lgl"</span>,  <span class="cn">F</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"a_TTUSynopsis@figures_in_body_lgl"</span>, <span class="cn">F</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
+<span>                 <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renewSlot-methods.html" class="external-link">renewSlot</a></span><span class="op">(</span><span class="st">"a_TTUSynopsis@outp_formats_chr"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Word"</span>,<span class="st">"PDF"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/authorSlot-methods.html" class="external-link">authorSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"d_TTUReports"</span>, what_1L_chr <span class="op">=</span> <span class="st">"Manuscript_Submission"</span>, download_tmpl_1L_lgl <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="tidy-workspace">Tidy workspace<a class="anchor" aria-label="anchor" href="#tidy-workspace"></a>
+</h2>
+<p>The preceding steps saved multiple objects (mostly R model objects) that have embedded within them copies of the source dataset. We can now purge all such copies from our output data directory.</p>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/author-methods.html" class="external-link">author</a></span><span class="op">(</span><span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/procureSlot-methods.html" class="external-link">procureSlot</a></span><span class="op">(</span><span class="va">A</span>,<span class="st">"c_SpecificProject"</span><span class="op">)</span>,</span>
+<span>       type_1L_chr <span class="op">=</span> <span class="st">"purge_write"</span><span class="op">)</span> </span></code></pre></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
@@ -107,7 +624,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer>
