@@ -1,8 +1,8 @@
 ---
-title: "Implement A Utility Mapping Study"
+title: "Implement A Utility Mapping Study (Adolescent AQoL-6D Example)"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Implement A Utility Mapping Study}
+  %\VignetteIndexEntry{Implement A Utility Mapping Study (Adolescent AQoL-6D Example)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -30,7 +30,44 @@ Additionally, TTU relies on two RMarkdown programs:
 
 
 ## Workflow
-The following workflow illustrates (**using fake data**) the same steps we used in a real world study (https://doi.org/10.1101/2021.07.07.21260129).
+### Background and citation 
+The following workflow illustrates (**using fake data**) the same steps we used in a real world study, a summary of which is available at https://doi.org/10.1101/2021.07.07.21260129). Citation information for that study is:
+
+@article {Hamilton2021.07.07.21260129,
+	author = {Hamilton, Matthew P and Gao, Caroline X and Filia, Kate M and Menssink, Jana M and Sharmin, Sonia and Telford, Nic and Herrman, Helen and Hickie, Ian B and Mihalopoulos, Cathrine and Rickwood, Debra J and McGorry, Patrick D and Cotton, Sue M},
+	title = {Predicting Quality Adjusted Life Years in young people attending primary mental health services},
+	elocation-id = {2021.07.07.21260129},
+	year = {2021},
+	doi = {10.1101/2021.07.07.21260129},
+	publisher = {Cold Spring Harbor Laboratory Press},
+	URL = {https://www.medrxiv.org/content/early/2021/07/12/2021.07.07.21260129},
+	eprint = {https://www.medrxiv.org/content/early/2021/07/12/2021.07.07.21260129.full.pdf},
+	journal = {medRxiv}
+}
+
+The program applied in that study, which this workflow closely resembles is available at https://doi.org/10.5281/zenodo.6116077 and can be cited as follows:
+
+@software{hamilton_matthew_2022_6212704,
+  author       = {Hamilton, Matthew and
+                  Gao, Caroline},
+  title        = {{Complete study program to reproduce all steps from 
+                   data ingest through to results dissemination for a
+                   study to map mental health measures to AQoL-6D
+                   health utility}},
+  month        = feb,
+  year         = 2022,
+  note         = {{Matthew Hamilton and Caroline Gao  (2022). 
+                   Complete study program to reproduce all steps from
+                   data ingest through to results dissemination for a
+                   study to map mental health measures to AQoL-6D
+                   health utility. Zenodo.
+                   https://doi.org/10.5281/zenodo.6116077. Version
+                   0.0.9.3}},
+  publisher    = {Zenodo},
+  version      = {0.0.9.3},
+  doi          = {10.5281/zenodo.6212704},
+  url          = {https://doi.org/10.5281/zenodo.6212704}
+}
 
 ### Load required packages
 We begin by loading our required packages.
@@ -138,7 +175,7 @@ A <- renewSlot(A, "c_SpecificProject",
                authorSlot(A, "c_SpecificProject", what_1L_chr = "workspace"))
 ```
 
-We now generate tables and charts that describe our dataset. These are saved in a sub-directory of our output data directory. One of the plots is reproduced here.
+We now generate tables and charts that describe our dataset. These are saved in a sub-directory of our output data directory, a copy of which is [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/_A_Candidate_Mdls_Cmprsn_Descriptives.zip). One of the plots is also reproduced here.
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 A <- renewSlot(A, "c_SpecificProject",
@@ -146,7 +183,7 @@ A <- renewSlot(A, "c_SpecificProject",
                           digits_1L_int = 3L))
 ```
 
-We next compare the performance of different model types. This step saves model objects and plots to a sub-directory of our output directory.
+We next compare the performance of different model types. This step saves model objects and plots to a sub-directory of our output directory, a copy of which is [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/B_Candidate_Predrs_Cmprsn.zip).
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 A <- renewSlot(A, "c_SpecificProject",
@@ -165,7 +202,7 @@ A <- renewSlot(A, "c_SpecificProject",
                      what_1L_chr = "prefd_mdls"))
 ```
 
-Next we assess multiple versions of our preferred model type - one single predictor model for each of our candidate predictors and the same models with candidate covariates added. A number of model/plot objects saved locally.
+Next we assess multiple versions of our preferred model type - one single predictor model for each of our candidate predictors and the same models with candidate covariates added. A number of model/plot objects saved to a sub-directory of our output directory, a copy of which is [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/C_Predrs_Sngl_Mdl_Cmprsn.zip).
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 A <- renewSlot(A, "c_SpecificProject",
@@ -182,7 +219,7 @@ A <- renewSlot(A, "c_SpecificProject",
                      what_1L_chr = "prefd_covars"))
 ```
 
-We now assess the multivariate models.  More model/plot objects are saved locally.
+We now assess the multivariate models.  More model/plot objects are saved to a sub-directory of our output directory, a copy of which is [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/E_Predrs_W_Covars_Sngl_Mdl_Cmprsn.zip).
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 A <- renewSlot(A, "c_SpecificProject",
@@ -395,6 +432,22 @@ purrr::walk2(c("Manuscript_Auto","Manuscript_Submission"),
                Sys.sleep(5L)
                }
                )
+
+```
+```{r echo=F, eval=F}
+outp_dirs_chr <- list.dirs(paste0(A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,"/Output"))
+outp_dirs_chr[2:7] %>%
+  purrr::walk(~{
+    dir_path_1L_chr <- .x
+    file_paths_chr <- dir(dir_path_1L_chr, full.names = T)
+    if(!identical(file_paths_chr, character(0))){
+          zip(zipfile = dir_path_1L_chr, files = file_paths_chr)
+    ready4::write_fls_to_repo(paste0(dir_path_1L_chr,".zip"),
+                              piggyback_to_1L_chr = "ready4-dev/TTU")
+    Sys.sleep(5L)
+    }
+
+  })
 
 ```
 
