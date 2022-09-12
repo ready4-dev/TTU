@@ -33,6 +33,7 @@ Additionally, TTU relies on two RMarkdown programs:
 ### Background and citation 
 The following workflow illustrates (**using fake data**) the same steps we used in a real world study, a summary of which is available at https://doi.org/10.1101/2021.07.07.21260129). Citation information for that study is:
 
+```{r eval=F}
 @article {Hamilton2021.07.07.21260129,
 	author = {Hamilton, Matthew P and Gao, Caroline X and Filia, Kate M and Menssink, Jana M and Sharmin, Sonia and Telford, Nic and Herrman, Helen and Hickie, Ian B and Mihalopoulos, Cathrine and Rickwood, Debra J and McGorry, Patrick D and Cotton, Sue M},
 	title = {Predicting Quality Adjusted Life Years in young people attending primary mental health services},
@@ -44,9 +45,11 @@ The following workflow illustrates (**using fake data**) the same steps we used 
 	eprint = {https://www.medrxiv.org/content/early/2021/07/12/2021.07.07.21260129.full.pdf},
 	journal = {medRxiv}
 }
+```
 
 The program applied in that study, which this workflow closely resembles is available at https://doi.org/10.5281/zenodo.6116077 and can be cited as follows:
 
+```{r eval=FALSE}
 @software{hamilton_matthew_2022_6212704,
   author       = {Hamilton, Matthew and
                   Gao, Caroline},
@@ -68,6 +71,8 @@ The program applied in that study, which this workflow closely resembles is avai
   doi          = {10.5281/zenodo.6212704},
   url          = {https://doi.org/10.5281/zenodo.6212704}
 }
+```
+
 
 ### Load required packages
 We begin by loading our required packages.
@@ -175,7 +180,7 @@ A <- renewSlot(A, "c_SpecificProject",
                authorSlot(A, "c_SpecificProject", what_1L_chr = "workspace"))
 ```
 
-We now generate tables and charts that describe our dataset. These are saved in a sub-directory of our output data directory, a copy of which is [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/_A_Candidate_Mdls_Cmprsn_Descriptives.zip). One of the plots is also reproduced here.
+We now generate tables and charts that describe our dataset. These are saved in a sub-directory of our output data directory, a copy of which is [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/_Descriptives.zip). One of the plots is also reproduced here.
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 A <- renewSlot(A, "c_SpecificProject",

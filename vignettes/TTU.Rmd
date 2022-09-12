@@ -14,13 +14,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, message=FALSE, warning=FALSE, results='hide'}
 library(TTU)
 ```
 
-**The TTU package is currently undergoing significant redevelopment. Many of the functions previously included in the package have been replaced by methods in the [specific package](https://ready4-dev.github.io/specific).  More information will be poster here shortly.** 
+This development version of the TTU package has been made available as part of the process of testing and documenting the package. [Installation instructions are on the package homepage](https://ready4-dev.github.io/TTU/index.html). Currently, one vignette article is available to demonstrate how to use the TTU package:
 
-This development version of the TTU package has been made available as part of the process of testing and documenting the package. [Installation instructions are on the package homepage](https://ready4-dev.github.io/TTU/index.html).
+- [Implement A Utility Mapping Study (Adolescent AQoL-6D Example)](V_01.html)
 
 
 

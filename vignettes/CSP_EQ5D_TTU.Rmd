@@ -1,8 +1,8 @@
 ---
-title: "EQ5D General Population Example (Deprecated)"
+title: "(Defunct) EQ5D General Population Example"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{EQ5D General Population Example (Deprecated)}
+  %\VignetteIndexEntry{(Defunct) EQ5D General Population Example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

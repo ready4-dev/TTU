@@ -1,8 +1,8 @@
 ---
-title: "AQoL-6D Clinical Population Example (Deprecated)"
+title: "(Defunct) AQoL-6D Clinical Population Example"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{AQoL-6D Clinical Population Example (Deprecated)}
+  %\VignetteIndexEntry{(Defunct) AQoL-6D Clinical Population Example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
