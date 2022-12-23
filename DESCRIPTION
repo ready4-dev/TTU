@@ -1,6 +1,6 @@
 Package: TTU
-Title: Implement Transfer to Utility Mapping Algorithms
-Version: 0.0.0.9346
+Title: Implement Transfer to Utility Mapping Algorithms with Ready4
+Version: 0.0.0.9347
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -10,18 +10,18 @@ Authors@R: c(
     person("Headspace", role = "fnd"),
     person("National Health and Medical Research Council", role = "fnd")
   )
-Description: Tools for developing, reporting and sharing Transfer To
-    Utility (TTU) mapping algorithms that predict health utility from
-    other health measures.  This development version of the TTU package
-    has been made available as part of the process of testing and
-    documenting the package.  If you have any questions, please contact
-    the authors (matthew.hamilton@orygen.org.au).
+Description: Tools for developing, reporting and sharing utility mapping
+    algorithms for use with the ready4 youth mental health systems model
+    (https://ready4-dev.github.io/ready4/).  This development version of
+    the TTU package has been made available as part of the process of
+    testing and documenting the package.  If you have any questions,
+    please contact the authors (matthew.hamilton@orygen.org.au).
 License: GPL-3 + file LICENSE
 URL: https://ready4-dev.github.io/TTU/, https://github.com/ready4-dev/TTU,
     https://ready4-dev.github.io/ready4/
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Imports: 
     betareg,
     caret,
@@ -33,13 +33,11 @@ Imports:
     magrittr,
     methods,
     purrr,
-    ready4 (>= 0.0.0.9102),
-    ready4show (>= 0.0.0.9098),
-    scorz (>= 0.0.0.9053),
+    ready4 (>= 0.0.0.9109),
+    ready4show (>= 0.0.0.9103),
     stringr,
     testthat,
-    utils,
-    youthvars (>= 0.0.0.9108)
+    utils
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10),
@@ -61,9 +59,7 @@ Collate:
     'pkg_TTU.R'
 Suggests: 
     rmarkdown
-Remotes:  
+Remotes: 
     ready4-dev/ready4,
     ready4-dev/ready4show,
-    ready4-dev/specific,
-    ready4-dev/youthvars,
-    ready4-dev/scorz
+    ready4-dev/specific
