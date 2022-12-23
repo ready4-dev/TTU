@@ -8,8 +8,8 @@ ready4fun::write_fn_type_dirs()
 # MANUAL STEP. Write all your functions to R files in the new "fns" directory.
 fns_env_ls <- ready4fun::read_fns(c("data-raw/fns/","data-raw/mthds/"),
                                   fns_env = new.env(parent = globalenv()))
-x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utility Mapping Algorithms",
-                                                    pkg_desc_1L_chr = "Tools for developing, reporting and sharing Transfer To Utility (TTU) mapping algorithms that predict health utility from other health measures.
+x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utility Mapping Algorithms With Ready4",
+                                                    pkg_desc_1L_chr = "Tools for developing, reporting and sharing utility mapping algorithms for use with the ready4 youth mental health systems model (https://ready4-dev.github.io/ready4/).
                             This development version of the TTU package has been made available as part of the process of testing and documenting the package.
                             If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).",
                                                     authors_prsn = c(utils::person(given = "Caroline",family = "Gao",email = "caroline.gao@orygen.org.au", role = c("aut"),comment = c(ORCID = "0000-0002-0987-2759")),
@@ -187,6 +187,13 @@ z <- ready4pack::make_pt_ready4pack_manifest(x,
                                              pkg_ds_ls_ls = datasets_ls) %>%
   ready4pack::ready4pack_manifest()
 z <- ready4::author(z)
+usethis::use_dev_package("youthvars",
+                         type = "Imports",#D?
+                         remote = "ready4-dev/youthvars")
+usethis::use_dev_package("scorz",
+                         type = "Imports",
+                         remote = "ready4-dev/scorz")
+devtools::build_vignettes()
 # usethis::use_dev_package("specific",
 #                          type = "Imports",
 #                          remote = "ready4-dev/specific")
@@ -195,12 +202,6 @@ z <- ready4::author(z)
 # usethis::use_dev_package("ready4",
 #                          type = "Depends",
 #                          remote = "ready4-dev/ready4")
-usethis::use_dev_package("youthvars",
-                         type = "Imports",#D?
-                         remote = "ready4-dev/youthvars")
-usethis::use_dev_package("scorz",
-                         type = "Imports",
-                         remote = "ready4-dev/scorz")
 # usethis::use_dev_package("specific",
 #                          type = "Depends",
 #                          remote = "ready4-dev/scorz")

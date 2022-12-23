@@ -4,15 +4,15 @@
 \name{TTU-package}
 \alias{TTU}
 \alias{TTU-package}
-\title{TTU: Implement Transfer to Utility Mapping Algorithms}
+\title{TTU: Implement Transfer to Utility Mapping Algorithms with Ready4}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Tools for developing, reporting and sharing Transfer To Utility (TTU) mapping algorithms that predict health utility from other health measures. This development version of the TTU package has been made available as part of the process of testing and documenting the package. If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).
+Tools for developing, reporting and sharing utility mapping algorithms for use with the ready4 youth mental health systems model (https://ready4-dev.github.io/ready4/). This development version of the TTU package has been made available as part of the process of testing and documenting the package. If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).
 
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Tools for developing, reporting and sharing Transfer To Utility (TTU) mapping algorithms that predict health utility from other health measures. This development version of the TTU package has been made available as part of the process of testing and documenting the package. If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).
+Tools for developing, reporting and sharing utility mapping algorithms for use with the ready4 youth mental health systems model (https://ready4-dev.github.io/ready4/). This development version of the TTU package has been made available as part of the process of testing and documenting the package. If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).
 }
 \seealso{
 Useful links:

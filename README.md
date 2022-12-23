@@ -1,6 +1,6 @@
 # TTU
 
-## Implement Transfer to Utility Mapping Algorithms
+## Implement Transfer to Utility Mapping Algorithms with Ready4
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -9,12 +9,12 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5646593.svg)](https://doi.org/10.5281/zenodo.5646593)
 <!-- badges: end -->
 
-Tools for developing, reporting and sharing Transfer To
-Utility (TTU) mapping algorithms that predict health utility from
-other health measures.  This development version of the TTU package
-has been made available as part of the process of testing and
-documenting the package.  If you have any questions, please contact
-the authors (matthew.hamilton@orygen.org.au).
+Tools for developing, reporting and sharing utility mapping
+algorithms for use with the ready4 youth mental health systems model
+(https://ready4-dev.github.io/ready4/).  This development version of
+the TTU package has been made available as part of the process of
+testing and documenting the package.  If you have any questions,
+please contact the authors (matthew.hamilton@orygen.org.au).
 
 To install a development version of this software, run the following commands in your R console:
 

@@ -938,7 +938,7 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
                                                    }) %>%
                                         purrr::flatten_chr() %>% unique()
                                       })
-                                  mdl_ttls_chr <- paste0(..1[1], ifelse(is.na(..1[2]),
+                                  mdl_tots_chr <- paste0(..1[1], ifelse(is.na(..1[2]),
                                                                         "",
                                                                         paste(" with ", ..1[2])),
                                                          " ",
@@ -953,16 +953,16 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
                                                                                                                               match_value_xx = .x,
                                                                                                                               target_var_nm_1L_chr = "with_chr",
                                                                                                                               evaluate_1L_lgl = F))))
-                                  section_ttls_chr <- paste0(section_type_1L_chr, " ", mdl_ttls_chr)
-                                  plt_nms_ls <- paths_to_mdl_plts_ls %>% purrr::map2(mdl_ttls_chr,~{
+                                  section_tots_chr <- paste0(section_type_1L_chr, " ", mdl_tots_chr)
+                                  plt_nms_ls <- paths_to_mdl_plts_ls %>% purrr::map2(mdl_tots_chr,~{
                                     paths_to_mdl_plts_chr <- .x
-                                    mdl_ttl_1L_chr <- .y
+                                    mdl_tot_1L_chr <- .y
                                     transform_1L_lgl <- paths_to_mdl_plts_chr %>% endsWith("_coefs.png") %>% any()
                                     if(paths_to_mdl_plts_chr %>% endsWith("_hetg.png") %>% any())
                                       transform_1L_lgl <- F # ALL OF THIS TFMN LOGIC CAN BE BINNED WHEN NEW CATEGORY OF PLOT TYPE IS ADDED.
                                     plt_types_chr %>% purrr::map(~{
                                       if(endsWith(paths_to_mdl_plts_chr,paste0("_",.x,".png")) %>% any()){
-                                        paste0(mdl_ttl_1L_chr,
+                                        paste0(mdl_tot_1L_chr,
                                                " ",
                                                ifelse(transform_1L_lgl & .x == "coefs",
                                                       "population and group level effects",
@@ -978,10 +978,10 @@ make_knit_pars_ls <- function (rltv_path_to_data_dir_1L_chr, mdl_types_chr, pred
                                   })
                                   list(plt_nms_ls = plt_nms_ls,
                                        paths_to_mdls_chr = paths_to_mdls_chr,
-                                       tbl_captions_chr = mdl_ttls_chr,
+                                       tbl_captions_chr = mdl_tots_chr,
                                        label_stubs_chr = paste0("lab", ..2),
                                        output_type_1L_chr = output_type_1L_chr,
-                                       section_ttls_chr = section_ttls_chr,
+                                       section_tots_chr = section_tots_chr,
                                        paths_to_mdl_plts_ls = paths_to_mdl_plts_ls)
                                   }) %>%
       stats::setNames(predr_vars_nms_ls %>% purrr::map_chr(~paste(.x,collapse="_")))

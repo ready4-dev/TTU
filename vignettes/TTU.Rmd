@@ -18,6 +18,8 @@ knitr::opts_chunk$set(
 library(TTU)
 ```
 
+The tools in TTU are designed to make it easier to implement utility mapping studies for with [ready4 - an open source health economic model of the systems shaping mental health and wellbeing in young people](https://www.ready4-dev.com).
+
 This development version of the TTU package has been made available as part of the process of testing and documenting the package. [Installation instructions are on the package homepage](https://ready4-dev.github.io/TTU/index.html). Currently, one vignette article is available to demonstrate how to use the TTU package:
 
 - [Implement A Utility Mapping Study (Adolescent AQoL-6D Example)](V_01.html)

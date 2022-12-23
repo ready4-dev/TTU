@@ -15,7 +15,7 @@ Youth mental health services do not typically collect health utility data from t
 
 ## Implementation
 
-TTU has been developed using the [ready4 framework](https://ready4-dev.github.io/ready4/) and combines and extends multiple types of [modules](https://ready4-dev.github.io/ready4/articles/V_01.html) from the readyforwhatsnext model:
+TTU has been developed for use with the [ready4 model](https://ready4-dev.github.io/ready4/) and combines and extends multiple types of [ready4 modules](https://ready4-dev.github.io/ready4/articles/V_01.html):
 
 - Modules for labeling, validating and summarising youth mental health datasets from the [youthvars](https://ready4-dev.github.io/youthvars/) package;
 - Modules for scoring health utility from the [scorz](https://ready4-dev.github.io/scorz/) package;
@@ -146,7 +146,8 @@ A <- renewSlot(A, "b_SpecificParameters@predictors_lup", Ready4useRepos(dv_nm_1L
 We can inspect the metadata on candidate predictors that we have just ingested.
 
 ```{r}
-exhibitSlot(A, "b_SpecificParameters@predictors_lup")
+exhibitSlot(A, "b_SpecificParameters@predictors_lup",
+         scroll_box_args_ls = list(width = "100%"))
 ```
 
 We add additional metadata about variables in our dataset that will be used in exploratory modelling.

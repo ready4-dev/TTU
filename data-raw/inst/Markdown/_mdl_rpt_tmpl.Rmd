@@ -5,7 +5,7 @@ output: html_document
 \newpage
 \blandscape
 
-{{section_ttl_1L_chr}}
+{{section_tot_1L_chr}}
 
 ```{r echo=F, results="asis"}
 make_mdl_desc_lines(outp_smry_ls = params_ls$outp_smry_ls,

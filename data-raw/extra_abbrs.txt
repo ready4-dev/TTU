@@ -12,7 +12,7 @@ make_smry_of_mdl to make_smry_of_mdl_outp
 make_smry_of_ts_mdl make_smry_of_ts_mdl_outp
 make_vec_with_sum_of_int to make_vec_with_sum_of_int_val
 n_folds_1L_int to folds_1L_int
-plt_idcs_int to plt_idxs_int
+plt_idcs_int to plt_indcs_int
 plot_lnr_cmprsn_sctr_plt to plot_sctr_plt_cmprsn
 plot_obsd_predd_sctr to plot_obsd_predd_sctr_cmprsn
 pop_1L_chr to popl_1L_chr
