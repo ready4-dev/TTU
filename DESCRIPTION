@@ -1,6 +1,6 @@
 Package: TTU
 Title: Implement Transfer to Utility Mapping Algorithms with Ready4
-Version: 0.0.0.9348
+Version: 0.0.0.9349
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -23,12 +23,9 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports: 
-    betareg,
-    caret,
     dplyr,
     ggplot2,
     knitr,
-    knitrBootstrap,
     lifecycle,
     magrittr,
     methods,
@@ -58,6 +55,9 @@ Collate:
     'mthd_author.R'
     'pkg_TTU.R'
 Suggests: 
+    betareg,
+    caret,
+    knitrBootstrap,
     rmarkdown
 Remotes: 
     ready4-dev/ready4,
