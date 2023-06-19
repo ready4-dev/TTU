@@ -1,6 +1,6 @@
 Package: TTU
 Title: Implement Transfer to Utility Mapping Algorithms with Ready4
-Version: 0.0.0.9347
+Version: 0.0.0.9348
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -33,8 +33,8 @@ Imports:
     magrittr,
     methods,
     purrr,
-    ready4 (>= 0.0.0.9109),
-    ready4show (>= 0.0.0.9103),
+    ready4 (>= 0.0.0.9117),
+    ready4show (>= 0.0.0.9106),
     stringr,
     testthat,
     utils
