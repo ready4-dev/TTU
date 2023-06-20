@@ -4,7 +4,7 @@
 \name{TTU-package}
 \alias{TTU}
 \alias{TTU-package}
-\title{TTU: Implement Transfer to Utility Mapping Algorithms with Ready4}
+\title{TTU: Implement Transfer to Utility Mapping Algorithms}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 

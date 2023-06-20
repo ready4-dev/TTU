@@ -1,6 +1,6 @@
 # TTU
 
-## Implement Transfer to Utility Mapping Algorithms with Ready4
+## Implement Transfer to Utility Mapping Algorithms
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
