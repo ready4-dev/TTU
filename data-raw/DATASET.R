@@ -20,8 +20,8 @@ x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utili
                                                     urls_chr = c("https://ready4-dev.github.io/TTU/",
                                                                  "https://github.com/ready4-dev/TTU",
                                                                  "https://ready4-dev.github.io/ready4/")) %>%
-  ready4fun::make_manifest(addl_pkgs_ls = ready4fun::make_addl_pkgs_ls(suggests_chr = c("knitr","rmarkdown"),
-                                                                       imports_chr = c("betareg","caret","knitrBootstrap","specific"),
+  ready4fun::make_manifest(addl_pkgs_ls = ready4fun::make_addl_pkgs_ls(suggests_chr = c("betareg","caret","knitr","knitrBootstrap","rmarkdown"),
+                                                                       #imports_chr = c(),
                                                                        depends_chr = "specific"),
                            build_ignore_ls = ready4fun::make_build_ignore_ls(file_nms_chr = c("initial_setup.R")),
                            check_type_1L_chr = "ready4",
@@ -30,7 +30,7 @@ x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utili
                            dev_pkgs_chr = c("cmdstanr",
                                             "ready4",#"ready4fun",
                                             "ready4use","ready4show",
-                                            "youthvars","scorz",
+                                            #"youthvars","scorz",
                                             "specific"),
                            lifecycle_stage_1L_chr = "experimental",
                            path_to_pkg_logo_1L_chr = "../../../../../Documentation/Images/TTU-logo/default.png",
@@ -187,16 +187,16 @@ z <- ready4pack::make_pt_ready4pack_manifest(x,
                                              pkg_ds_ls_ls = datasets_ls) %>%
   ready4pack::ready4pack_manifest()
 z <- ready4::author(z)
-usethis::use_dev_package("youthvars",
-                         type = "Imports",#D?
-                         remote = "ready4-dev/youthvars")
-usethis::use_dev_package("scorz",
-                         type = "Imports",
-                         remote = "ready4-dev/scorz")
+# usethis::use_dev_package("youthvars",
+#                          type = "Suggests",#D?
+#                          remote = "ready4-dev/youthvars")
+# usethis::use_dev_package("scorz",
+#                          type = "Depends",
+#                          remote = "ready4-dev/scorz")
+usethis::use_dev_package("specific",
+                         type = "Depends",
+                         remote = "ready4-dev/specific")
 devtools::build_vignettes()
-# usethis::use_dev_package("specific",
-#                          type = "Imports",
-#                          remote = "ready4-dev/specific")
 # usethis::use_package("readr")
 # MANUAL DELETION OF TRAILING INCLUDE
 # usethis::use_dev_package("ready4",

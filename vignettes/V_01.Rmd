@@ -20,8 +20,8 @@ TTU has been developed for use with the [ready4 model](https://ready4-dev.github
 - Modules for labeling, validating and summarising youth mental health datasets from the [youthvars](https://ready4-dev.github.io/youthvars/) package;
 - Modules for scoring health utility from the [scorz](https://ready4-dev.github.io/scorz/) package;
 - Modules for specifying and testing statistical models from the [specific](https://ready4-dev.github.io/specific/) package;
-- Modules for generating reports from the [ready4show](https://ready4-dev.github.io/ready4show/)  package; and
-- Modules for sharing data via online data repositories from the [ready4use](https://ready4-dev.github.io/ready4use/)  package.
+- Modules for generating reports from the [ready4show](https://ready4-dev.github.io/ready4show/) package; and
+- Modules for sharing data via online data repositories from the [ready4use](https://ready4-dev.github.io/ready4use/) package.
 
 Additionally, TTU relies on two RMarkdown programs:
 
@@ -85,6 +85,17 @@ library(scorz)
 library(TTU)
 ```
 
+### Set consent policy
+By default, methods associated with TTU modules will request your consent before writing files to your machine. This is the safest option. However, as there are many files that need to be written locally for this program to execute, you can overwrite this default by supplying the value "Y" to methods with a `consent_1L_chr` argument.
+
+```{r eval = FALSE}
+consent_1L_chr <- "" # Default value - asks for consent prior to writing each file.
+```
+
+```{r echo = FALSE}
+consent_1L_chr <- "Y" # Gives consent to write files without additional requests.
+```
+
 ### Add dataset metadata 
 We use the Ready4useDyad and Ready4useRepos modules to [retrieve and ingest](https://ready4-dev.github.io/ready4use/articles/V_01.html) and to then [pair a dataset and its data dictionary](_https://ready4-dev.github.io/ready4use/articles/V_02.html). 
 
@@ -124,7 +135,7 @@ A <- renewSlot(A, "a_ScorzProfile")
 
 ### Evaluate candidate models 
 
-Over the next few steps we will use modules from the specific package to  to [specify and assess a number of candidate utility mapping models](https://ready4-dev.github.io/specific/articles/V_01.html).
+Over the next few steps we will use modules from the specific package to [specify and assess a number of candidate utility mapping models](https://ready4-dev.github.io/specific/articles/V_01.html).
 
 ```{r echo=FALSE}
 # Make next bit into renew method
@@ -178,15 +189,15 @@ A <- ratifySlot(A, "c_SpecificProject")
 
 ```{r}
 A <- renewSlot(A, "c_SpecificProject", 
-               authorSlot(A, "c_SpecificProject", what_1L_chr = "workspace"))
+               authorSlot(A, "c_SpecificProject", consent_1L_chr = consent_1L_chr, what_1L_chr = "workspace"))
 ```
 
 We now generate tables and charts that describe our dataset. These are saved in a sub-directory of our output data directory, a copy of which is [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/_Descriptives.zip). One of the plots is also reproduced here.
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 A <- renewSlot(A, "c_SpecificProject",
-               authorSlot(A, "c_SpecificProject", what_1L_chr = "descriptives",
-                          digits_1L_int = 3L))
+               authorSlot(A, "c_SpecificProject", consent_1L_chr = consent_1L_chr, 
+                          digits_1L_int = 3L, what_1L_chr = "descriptives"))
 ```
 
 We next compare the performance of different model types. This step saves model objects and plots to a sub-directory of our output directory, a copy of which is [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/B_Candidate_Predrs_Cmprsn.zip).
@@ -194,6 +205,7 @@ We next compare the performance of different model types. This step saves model 
 ```{r message=FALSE, results='hide', warning=FALSE}
 A <- renewSlot(A, "c_SpecificProject",
                investigateSlot(A, "c_SpecificProject",
+                               consent_1L_chr = consent_1L_chr,
                                depnt_var_max_val_1L_dbl = 0.99,
                                session_ls = sessionInfo()))
 ```
@@ -212,7 +224,7 @@ Next we assess multiple versions of our preferred model type - one single predic
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 A <- renewSlot(A, "c_SpecificProject",
-               investigateSlot(A,"c_SpecificProject"))
+               investigateSlot(A,"c_SpecificProject", consent_1L_chr = consent_1L_chr))
 ```
 
 After reviewing the output of the previous step, we specify the covariates we wish to add to the models.
@@ -229,7 +241,7 @@ We now assess the multivariate models.  More model/plot objects are saved to a s
 
 ```{r message=FALSE, results='hide', warning=FALSE}
 A <- renewSlot(A, "c_SpecificProject",
-               investigateSlot(A, "c_SpecificProject"))
+               investigateSlot(A, "c_SpecificProject", consent_1L_chr = consent_1L_chr))
 ```
 
 We next reformulate the models we finalised in the previous step so that they are suitable for modelling longitudinal change.
@@ -238,7 +250,7 @@ For our primary analysis, we use the longitudinal formulation of the models we p
 
 ```{r eval =F}
 A <- renewSlot(A, "c_SpecificProject",
-               investigateSlot(A, "c_SpecificProject"))
+               investigateSlot(A, "c_SpecificProject", consent_1L_chr = consent_1L_chr))
 ```
 
 For our secondary analyses, we specify alternative combinations of predictors and covariates.
@@ -246,6 +258,7 @@ For our secondary analyses, we specify alternative combinations of predictors an
 ```{r eval =F}
 A <- renewSlot(A, "c_SpecificProject",
                investigateSlot(A, "c_SpecificProject",
+                               consent_1L_chr = consent_1L_chr,
                                scndry_anlys_params_ls = make_scndry_anlys_params(candidate_predrs_chr = c("SOFAS"),
                                                                                  candidate_covar_nms_chr = c("d_sex_birth_s", 
                                                                                                              "d_age", 
@@ -268,7 +281,7 @@ The model objects created and saved in our working directory by the preceding st
 
 ```{r eval =F}
 A <- renewSlot(A, "c_SpecificProject",
-               authorData(procureSlot(A, "c_SpecificProject")))
+               authorData(procureSlot(A, "c_SpecificProject"), consent_1L_chr = consent_1L_chr))
 ```
 
 #### Specify study reporting metadata
@@ -316,21 +329,21 @@ A <- renewSlot(A, "d_TTUReports@a_TTUSynopsis",
 We download a program for generating a catalogue of models and use it to summarising the models created under each study analysis (one primary and two secondary). The catalogues are saved locally.
 
 ```{r eval =F}
-authorSlot(A, "d_TTUReports", what_1L_chr = "Catalogue", download_tmpl_1L_lgl = T)
+authorSlot(A, "d_TTUReports", consent_1L_chr = consent_1L_chr, download_tmpl_1L_lgl = T, what_1L_chr = "Catalogue")
 ```
 
 #### Share model catalogue
 We share the catalogues that we created, uploading a copy to our study online repository. To run this step you will need write permissions to the online repository.
 
 ```{r eval =F}
-shareSlot(A, "d_TTUReports@a_TTUSynopsis", type_1L_chr = "Report", what_1L_chr = "Catalogue") 
+shareSlot(A, "d_TTUReports@a_TTUSynopsis", consent_1L_chr = consent_1L_chr,  type_1L_chr = "Report", what_1L_chr = "Catalogue") 
 ```
 
 #### Share models
 We share tables of coefficients and other meta-data about the models we have created by posting them to the online repository. The object we create and share is designed to be used in conjunction with the `youthu` package to make it easier to make predictions with these models using new data. Again, you will need write permissions to the online repository.
 
 ```{r eval =F}
-shareSlot(A, "d_TTUReports@a_TTUSynopsis", type_1L_chr = "Models", what_1L_chr = "ingredients")
+shareSlot(A, "d_TTUReports@a_TTUSynopsis", consent_1L_chr = consent_1L_chr, type_1L_chr = "Models", what_1L_chr = "ingredients")
 ```
 
 #### Author manuscript
@@ -365,14 +378,15 @@ A <- enhanceSlot(A, "d_TTUReports@a_TTUSynopsis", with_1L_chr = "results_ls",
 We create and save the plots that will be used in the manuscript.
 
 ```{r eval =F}
-authorSlot(A, "d_TTUReports", type_1L_chr = "Plots",
-           depnt_var_desc_1L_chr = A@d_TTUReports@a_TTUSynopsis@b_SpecificResults@a_SpecificShareable@shareable_outp_ls$results_ls$study_descs_ls$health_utl_nm_1L_chr)
+authorSlot(A, "d_TTUReports", consent_1L_chr = consent_1L_chr,
+           depnt_var_desc_1L_chr = A@d_TTUReports@a_TTUSynopsis@b_SpecificResults@a_SpecificShareable@shareable_outp_ls$results_ls$study_descs_ls$health_utl_nm_1L_chr, 
+           type_1L_chr = "Plots")
 ```
 
 We download a program for generating a template manuscript and run it to author a first draft of the manuscript.
 
 ```{r eval =F}
-authorSlot(A, "d_TTUReports", type_1L_chr = "Report", what_1L_chr = "Manuscript_Auto", download_tmpl_1L_lgl = T)
+authorSlot(A, "d_TTUReports", consent_1L_chr = consent_1L_chr, type_1L_chr = "Report", what_1L_chr = "Manuscript_Auto", download_tmpl_1L_lgl = T)
 ```
 
 We can copy the RMarkdown files that created the template manuscript to a new director (which we call "Manuscript_Submission") so that we can then manually edit those files to produce a manuscript that we can submit for publication. Note that in this example we have not made any edits to the template manuscript.
@@ -406,7 +420,7 @@ A <- renewSlot(A, "d_TTUReports",
                  renewSlot("a_TTUSynopsis@tables_in_body_lgl",  F) %>%
                  renewSlot("a_TTUSynopsis@figures_in_body_lgl", F) %>%
                  renewSlot("a_TTUSynopsis@outp_formats_chr", c("Word","PDF")))
-authorSlot(A, "d_TTUReports", what_1L_chr = "Manuscript_Submission", download_tmpl_1L_lgl = F)
+authorSlot(A, "d_TTUReports", consent_1L_chr = consent_1L_chr, what_1L_chr = "Manuscript_Submission", download_tmpl_1L_lgl = F)
 ```
 
 ```{r echo=FALSE, eval=FALSE}
@@ -429,6 +443,7 @@ purrr::walk2(c("Manuscript_Auto","Manuscript_Submission"),
                                                               ifelse(x@outp_formats_chr[idx_1L_int] == "Word",
                                                                      ".docx",
                                                                      paste0(".",tolower(x@outp_formats_chr[idx_1L_int])))),
+                                                       consent_1L_chr = consent_1L_chr,
                                                        descriptions_chr = paste0("Scientific summary of utility mapping study",
                                                                                  ifelse(what_1L_chr == "Manuscript_Auto", " (algorithm generated)","")),
                                                        ds_url_1L_chr = x@e_Ready4useRepos@dv_ds_nm_1L_chr)

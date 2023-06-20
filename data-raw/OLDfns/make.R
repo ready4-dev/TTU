@@ -1384,15 +1384,15 @@ make_path_params_ls <- function(path_to_data_from_top_level_chr = NULL,
 
   return(path_params_ls)
 }
-make_paths_to_ss_plts_ls <- function(output_data_dir_1L_chr,
+make_paths_to_ms_smry_plts_ls <- function(output_data_dir_1L_chr,
                                      outp_smry_ls,
                                      additional_paths_chr = "/dens_and_sctr.png"){
-  paths_to_ss_plts_ls = list(combined_utl = paste0(output_data_dir_1L_chr,"/_Descriptives/combined_utl.png"),
+  paths_to_ms_smry_plts_ls = list(combined_utl = paste0(output_data_dir_1L_chr,"/_Descriptives/combined_utl.png"),
                              composite = paste0(output_data_dir_1L_chr,additional_paths_chr[1]),
                              items = paste0(output_data_dir_1L_chr,"/_Descriptives/qstn_rspns.png"),
                              density = paste0(output_data_dir_1L_chr,"/",outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% purrr::map_lgl(~stringr::str_detect(.x,"A_TFMN_CMPRSN_DNSTY"))]),#paste0(output_data_dir_1L_chr,"/A_TFMN_CMPRSN_DNSTY.png"), #Update
                              importance = paste0(output_data_dir_1L_chr,"/",outp_smry_ls$file_paths_chr[outp_smry_ls$file_paths_chr %>% purrr::map_lgl(~stringr::str_detect(.x,"B_PRED_CMPRSN_BORUTA_VAR_IMP"))]))
-  return(paths_to_ss_plts_ls)
+  return(paths_to_ms_smry_plts_ls)
 }
 make_predr_ctgs_ls <- function(outp_smry_ls,
                                include_idx_int = NULL){
@@ -1702,7 +1702,7 @@ make_results_ls <- function(spine_of_results_ls = NULL,
                      mdls_with_signft_covars_ls = spine_of_results_ls$mdls_with_signft_covars_ls,
                      output_format_ls = input_params_ls$output_format_ls,
                      path_params_ls = input_params_ls$path_params_ls,
-                     paths_to_figs_ls = make_paths_to_ss_plts_ls(spine_of_results_ls$output_data_dir_1L_chr,
+                     paths_to_figs_ls = make_paths_to_ms_smry_plts_ls(spine_of_results_ls$output_data_dir_1L_chr,
                                                                  outp_smry_ls = spine_of_results_ls$outp_smry_ls),
                      predr_var_nms_chr = spine_of_results_ls$outp_smry_ls$predr_vars_nms_ls[[1]] %>%
                        purrr::map_chr(~ifelse(.x %in% spine_of_results_ls$var_nm_change_lup$old_nms_chr,
@@ -1716,7 +1716,7 @@ make_results_ls <- function(spine_of_results_ls = NULL,
                                                ".",
                                                spine_of_results_ls$outp_smry_ls$session_data_ls$R.version$minor),
                      study_descs_ls = spine_of_results_ls$study_descs_ls,
-                     tables_ls = make_ss_tbls_ls(spine_of_results_ls$outp_smry_ls,
+                     tables_ls = make_ms_smry_tbls_ls(spine_of_results_ls$outp_smry_ls,
                                                  mdls_smry_tbls_ls = mdls_smry_tbls_ls,
                                                  covars_mdls_ls = covars_mdls_ls,
                                                  descv_tbls_ls = descv_tbls_ls,
@@ -2168,7 +2168,7 @@ make_smry_of_ts_mdl_outp <- function (data_tb,
     }
     return(smry_of_ts_mdl_ls)
 }
-make_ss_tbls_ls <- function(outp_smry_ls,
+make_ms_smry_tbls_ls <- function(outp_smry_ls,
                             mdls_smry_tbls_ls,
                             covars_mdls_ls,
                             descv_tbls_ls,
@@ -2180,7 +2180,7 @@ make_ss_tbls_ls <- function(outp_smry_ls,
                                                              add_mdl_nm_sfx_1L_lgl = F)) %>%
     stats::setNames(1:length(outp_smry_ls$prefd_mdl_types_chr) %>%
                       purrr::map_chr(~paste0("mdl_type_",.x,"_covar_mdls_tb")))
-  ss_tbls_ls <- append(mdl_types_tables_ls,
+  ms_smry_tbls_ls <- append(mdl_types_tables_ls,
                        list(ind_preds_coefs_tbl = make_all_mdl_types_smry_tbl(outp_smry_ls,
                                                                               mdls_tb = mdls_smry_tbls_ls$indpt_predrs_mdls_tb),
                      participant_descs = descv_tbls_ls$cohort_desc_tb,
@@ -2194,7 +2194,7 @@ make_ss_tbls_ls <- function(outp_smry_ls,
                                                      stringr::str_replace_all("1.10","> 1.00"))),
                      tenf_sngl_predr_tb = make_tfd_sngl_predr_mdls_tb(outp_smry_ls,
                                                              nbr_of_digits_1L_int = nbr_of_digits_1L_int)))
-  return(ss_tbls_ls)
+  return(ms_smry_tbls_ls)
 }
 make_study_descs_ls <- function(input_params_ls = NULL,
                                 time_btwn_bl_and_fup_1L_chr,

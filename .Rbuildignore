@@ -162,3 +162,4 @@
 ^data-raw/OLDfns/transform\.R$
 ^data-raw/OLDfns/write\.R$
 ^data-raw/s4_fns/author\.R$
+^data-raw/Import\.R$

@@ -7,18 +7,25 @@
 \usage{
 \S4method{author}{TTUReports}(
   x,
+  consent_1L_chr = "",
   depnt_var_desc_1L_chr = NA_character_,
+  depnt_var_min_val_1L_dbl = numeric(0),
   download_tmpl_1L_lgl = T,
   fl_type_1L_chr = ".eps",
   timepoint_new_nms_chr = NA_character_,
   type_1L_chr = "Report",
-  what_1L_chr = NA_character_
+  what_1L_chr = NA_character_,
+  ...
 )
 }
 \arguments{
 \item{x}{An object of class TTUReports}
 
+\item{consent_1L_chr}{Consent (a character vector of length one), Default: ''}
+
 \item{depnt_var_desc_1L_chr}{Dependent variable description (a character vector of length one), Default: 'NA'}
+
+\item{depnt_var_min_val_1L_dbl}{Dependent variable minimum value (a double vector of length one), Default: numeric(0)}
 
 \item{download_tmpl_1L_lgl}{Download template (a logical vector of length one), Default: T}
 
@@ -29,6 +36,8 @@
 \item{type_1L_chr}{Type (a character vector of length one), Default: 'Report'}
 
 \item{what_1L_chr}{What (a character vector of length one), Default: 'NA'}
+
+\item{...}{Additional arguments}
 }
 \description{
 author method applied to TTUReports
