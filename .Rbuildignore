@@ -163,3 +163,5 @@
 ^data-raw/OLDfns/write\.R$
 ^data-raw/s4_fns/author\.R$
 ^data-raw/Import\.R$
+^data-raw/fix_author_SpecificSynopsis\.R$
+^data-raw/fix_authorReport_Ready4showSynopisis\.R$

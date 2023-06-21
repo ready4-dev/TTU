@@ -79,6 +79,7 @@ We begin by loading our required packages.
 
 ```{r message=FALSE, warning=FALSE}
 library(ready4)
+library(ready4show)
 library(ready4use)
 library(youthvars)
 library(scorz)

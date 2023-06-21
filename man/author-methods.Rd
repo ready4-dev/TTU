@@ -7,6 +7,7 @@
 \usage{
 \S4method{author}{TTUReports}(
   x,
+  args_ls = NULL,
   consent_1L_chr = "",
   depnt_var_desc_1L_chr = NA_character_,
   depnt_var_min_val_1L_dbl = numeric(0),
@@ -20,6 +21,8 @@
 }
 \arguments{
 \item{x}{An object of class TTUReports}
+
+\item{args_ls}{Arguments (a list), Default: NULL}
 
 \item{consent_1L_chr}{Consent (a character vector of length one), Default: ''}
 

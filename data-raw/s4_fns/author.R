@@ -1,4 +1,5 @@
 author_TTUReports <- function(x,
+                              args_ls = NULL,
                               consent_1L_chr = "",
                               depnt_var_desc_1L_chr = NA_character_,
                               depnt_var_min_val_1L_dbl = numeric(0),
@@ -27,14 +28,16 @@ author_TTUReports <- function(x,
     }
     if(what_1L_chr == "Catalogue"){
       author(x@a_TTUSynopsis,
+             args_ls = args_ls,
              consent_1L_chr = consent_1L_chr,
-             type_1L_chr = "Report",
+             type_1L_chr = type_1L_chr,
              what_1L_chr = what_1L_chr)
     }else{
-      authorReport(x@a_TTUSynopsis, #
+      authorReport(x@a_TTUSynopsis,
+                   args_ls = args_ls,
                    consent_1L_chr = consent_1L_chr,
-                   what_1L_chr = what_1L_chr,
-                   ...)
+                   type_1L_chr = type_1L_chr,
+                   what_1L_chr = what_1L_chr)
     }
   }else{
     dir_1L_chr <- paste0(x@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,

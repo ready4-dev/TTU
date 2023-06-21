@@ -1,4 +1,5 @@
 author_TTUReports <- function(x,
+                              args_ls = NULL,
                               depnt_var_desc_1L_chr = NA_character_,
                               depnt_var_min_val_1L_dbl = numeric(0),
                               download_tmpl_1L_lgl = T,
@@ -28,9 +29,9 @@ author_TTUReports <- function(x,
              type_1L_chr = "Report",
              what_1L_chr = what_1L_chr)
     }else{
-      author_SpecificSynopsis(x@a_TTUSynopsis, # authorReport when Exported
-                              what_1L_chr = what_1L_chr,
-                              ...)
+      author(x@a_TTUSynopsis, # authorReport when Exported
+             args_ls = args_ls,
+             what_1L_chr = what_1L_chr)
     }
   }else{
     dir_1L_chr <- paste0(x@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
@@ -79,7 +80,7 @@ author_TTUReports <- function(x,
       saveRDS(df,
               paste0(dir_1L_chr,
                      "/packages.RDS"))
-      
+
     }
     if(type_1L_chr == "Plots"){
       composite_1_plt <- depict_SpecificSynopsis(x@a_TTUSynopsis,#depictSlot(x,"a_TTUSynopsis", when exported
@@ -102,9 +103,9 @@ author_TTUReports <- function(x,
                                       "/fig2",
                                       fl_type_1L_chr),
                         composite_1_plt)
-        
+
       }
-      
+
     }
   }
 }

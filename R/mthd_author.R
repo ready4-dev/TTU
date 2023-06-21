@@ -3,6 +3,7 @@
 #' @name author-TTUReports
 #' @description author method applied to TTUReports
 #' @param x An object of class TTUReports
+#' @param args_ls Arguments (a list), Default: NULL
 #' @param consent_1L_chr Consent (a character vector of length one), Default: ''
 #' @param depnt_var_desc_1L_chr Dependent variable description (a character vector of length one), Default: 'NA'
 #' @param depnt_var_min_val_1L_dbl Dependent variable minimum value (a double vector of length one), Default: numeric(0)
@@ -22,7 +23,7 @@
 #' @importFrom dplyr mutate
 #' @importFrom ready4 write_with_consent make_list_phrase author
 #' @importFrom ggplot2 ggsave
-methods::setMethod("author", "TTUReports", function (x, consent_1L_chr = "", depnt_var_desc_1L_chr = NA_character_, 
+methods::setMethod("author", "TTUReports", function (x, args_ls = NULL, consent_1L_chr = "", depnt_var_desc_1L_chr = NA_character_, 
     depnt_var_min_val_1L_dbl = numeric(0), download_tmpl_1L_lgl = T, 
     fl_type_1L_chr = ".eps", timepoint_new_nms_chr = NA_character_, 
     type_1L_chr = "Report", what_1L_chr = NA_character_, ...) 
@@ -43,12 +44,13 @@ methods::setMethod("author", "TTUReports", function (x, consent_1L_chr = "", dep
             x@a_TTUSynopsis@rmd_fl_nms_ls <- x@manuscript_fl_nms_ls
         }
         if (what_1L_chr == "Catalogue") {
-            author(x@a_TTUSynopsis, consent_1L_chr = consent_1L_chr, 
-                type_1L_chr = "Report", what_1L_chr = what_1L_chr)
+            author(x@a_TTUSynopsis, args_ls = args_ls, consent_1L_chr = consent_1L_chr, 
+                type_1L_chr = type_1L_chr, what_1L_chr = what_1L_chr)
         }
         else {
-            authorReport(x@a_TTUSynopsis, consent_1L_chr = consent_1L_chr, 
-                what_1L_chr = what_1L_chr, ...)
+            authorReport(x@a_TTUSynopsis, args_ls = args_ls, 
+                consent_1L_chr = consent_1L_chr, type_1L_chr = type_1L_chr, 
+                what_1L_chr = what_1L_chr)
         }
     }
     else {
