@@ -337,14 +337,14 @@ authorSlot(A, "d_TTUReports", consent_1L_chr = consent_1L_chr, download_tmpl_1L_
 We share the catalogues that we created, uploading a copy to our study online repository. To run this step you will need write permissions to the online repository.
 
 ```{r eval =F}
-shareSlot(A, "d_TTUReports@a_TTUSynopsis", consent_1L_chr = consent_1L_chr,  type_1L_chr = "Report", what_1L_chr = "Catalogue") 
+shareSlot(A, "d_TTUReports@a_TTUSynopsis", type_1L_chr = "Report", what_1L_chr = "Catalogue") 
 ```
 
 #### Share models
 We share tables of coefficients and other meta-data about the models we have created by posting them to the online repository. The object we create and share is designed to be used in conjunction with the `youthu` package to make it easier to make predictions with these models using new data. Again, you will need write permissions to the online repository.
 
 ```{r eval =F}
-shareSlot(A, "d_TTUReports@a_TTUSynopsis", consent_1L_chr = consent_1L_chr, type_1L_chr = "Models", what_1L_chr = "ingredients")
+shareSlot(A, "d_TTUReports@a_TTUSynopsis", type_1L_chr = "Models", what_1L_chr = "ingredients")
 ```
 
 #### Author manuscript
@@ -457,6 +457,7 @@ purrr::walk2(c("Manuscript_Auto","Manuscript_Submission"),
 
 ```
 ```{r echo=F, eval=F}
+# NEVER RUN THIS STEP FOR REAL DATA - THIS IS ONLY APPROPRIATE FOR A VIGNETTE EXAMPLE USING FAKE DATA
 outp_dirs_chr <- list.dirs(paste0(A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,"/Output"))
 outp_dirs_chr[2:7] %>%
   purrr::walk(~{
@@ -472,26 +473,22 @@ outp_dirs_chr[2:7] %>%
   })
 
 ```
-
+We can now generate the Supplementary Information for the submission manuscript.
 
 ```{r echo=FALSE, eval=FALSE}
-# We now generate the Supplementary Information for the submission manuscript.
-authorReport(procureSlot(A, "d_TTUReports")  %>%
+authorReport(procureSlot(A, "d_TTUReports") %>%
                renewSlot("a_TTUSynopsis@rmd_fl_nms_ls", ready4show::make_rmd_fl_nms_ls(pdf_fl_nm_1L_chr = "TA_PDF")) %>%
-               renewSlot("a_TTUSynopsis@outp_formats_chr", c("PDF","PDF"))%>%
+               renewSlot("a_TTUSynopsis@outp_formats_chr", c("PDF","PDF")) %>%
                procureSlot("a_TTUSynopsis"),
-               fl_nm_1L_chr = "Supplement",
-               #download_tmpl_1L_lgl = F,
-               what_1L_chr = "Manuscript_Submission") 
-
+             consent_1L_chr = consent_1L_chr, fl_nm_1L_chr = "Supplement", what_1L_chr = "Manuscript_Submission") 
 ```
 
 ### Tidy workspace
 The preceding steps saved multiple objects (mostly R model objects) that have embedded within them copies of the source dataset. We can now purge all such copies from our output data directory.
 
 ```{r eval = F}
-author(procureSlot(A,"c_SpecificProject"),
-       type_1L_chr = "purge_write") 
+authorSlot(A,"c_SpecificProject", type_1L_chr = "purge_write") 
+#author(procureSlot(A,"c_SpecificProject"), type_1L_chr = "purge_write") 
 ```
 
 ```{r echo=FALSE, eval=FALSE}

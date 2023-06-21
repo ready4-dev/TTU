@@ -165,3 +165,5 @@
 ^data-raw/Import\.R$
 ^data-raw/fix_author_SpecificSynopsis\.R$
 ^data-raw/fix_authorReport_Ready4showSynopisis\.R$
+^data-raw/fixes_ready4\.R$
+^data-raw/fixes_specific\.R$
