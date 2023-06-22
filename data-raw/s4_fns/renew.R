@@ -8,7 +8,6 @@ renew_TTUProject <- function(x,
                              y_Ready4useRepos = ready4use::Ready4useRepos(),
                              what_1L_chr = "utility",
                              ...){
-
   if(what_1L_chr == "parameters"){
     if(type_1L_chr=="default"){
       x <- renewSlot(x, "b_SpecificParameters", SpecificConverter(a_ScorzProfile = x@a_ScorzProfile) %>%
@@ -52,9 +51,25 @@ renew_TTUProject <- function(x,
     x <- renewSlot(x, "c_SpecificProject",
                    authorSlot(x, "c_SpecificProject", consent_1L_chr = consent_1L_chr, what_1L_chr = "workspace"))
   }
+  if(what_1L_chr == "results"){
+    if(type_1L_chr =="covariates"){
+      x <- renewSlot(x, "c_SpecificProject",
+                     renew(procureSlot(x, "c_SpecificProject"),
+                           new_val_xx = new_val_xx,
+                           type_1L_chr = "results",
+                           what_1L_chr = "prefd_covars"))
+    }
+    if(type_1L_chr == "models"){
+      x <- renewSlot(x, "c_SpecificProject",
+                     renew(procureSlot(x, "c_SpecificProject"),
+                           new_val_xx = new_val_xx,
+                           type_1L_chr = "results",
+                           what_1L_chr = "prefd_mdls"))
+    }
+
+  }
   if(what_1L_chr == "utility"){
     x <- renewSlot(x, "a_ScorzProfile")
   }
   return(x)
-
 }

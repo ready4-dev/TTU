@@ -145,3 +145,25 @@ author_TTUReports <- function(x,
     }
   }
 }
+author_TTUProject <- function(x,
+                              consent_1L_chr = "",
+                              digits_1L_int = 2L,
+                              what_1L_chr = "default",
+                              ...){
+  if(what_1L_chr %in% c("descriptives", "models")){
+    if(what_1L_chr == "descriptives"){
+      x <- renewSlot(x, "c_SpecificProject",
+                     authorSlot(x, "c_SpecificProject",
+                                consent_1L_chr = consent_1L_chr,
+                                digits_1L_int = digits_1L_int,
+                                what_1L_chr = what_1L_chr))
+    }
+    if(what_1L_chr == "models"){
+      x <- renewSlot(x, "c_SpecificProject",
+                     authorData(procureSlot(x, "c_SpecificProject"), consent_1L_chr = consent_1L_chr))
+    }
+  }else{
+    x <- methods::callNextMethod()
+  }
+  return(x)
+}

@@ -131,16 +131,21 @@ We next use the ScorzAqol6Adol module to [score adolescent AQoL-6D health utilit
 
 ```{r}
 A <- TTUProject(a_ScorzProfile = ScorzAqol6Adol(a_YouthvarsProfile = A))
-A <- renew(A, what_1L_chr = "utility") # A <- renewSlot(A, "a_ScorzProfile")
+A <- renew(A, what_1L_chr = "utility") 
 ```
 
 ### Evaluate candidate models 
 
 Over the next few steps we will use modules from the specific package to [specify and assess a number of candidate utility mapping models](https://ready4-dev.github.io/specific/articles/V_01.html).
 
+#### Specify modelling parameters
+We begin by specifying the parameters we will use in our modelling project. The initial step is to ensure the fields in `A` for storing parameter values are internally consistent with the data we have entered in the previous steps.
+
 ```{r}
 A <- renew(A, what_1L_chr = "parameters")
 ```
+
+We next ingest a lookup table of metadata about the variables we plan to explore as candidate predictors. In this case, we are sourcing the lookup table from an online data repository.
 
 ```{r}
 A <- renew(A, fl_nm_1L_chr = "predictors_r3", type_1L_chr = "predictors_lup", 
@@ -158,14 +163,14 @@ exhibit(A, scroll_box_args_ls = list(width = "100%"))
 We add additional metadata about variables in our dataset that will be used in exploratory modelling.
 
 ```{r}
-A <- renew(A, c(0.03,1), type_1L_chr = "range", what_1L_chr == "parameters") %>%
-  renew(c("BADS","GAD7", "K6", "OASIS", "PHQ9", "SCARED"), 
-                   type_1L_chr = "predictors_vars", what_1L_chr == "parameters") %>%
-  renew(c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_studying_working", "c_p_diag_s", "c_clinical_staging_s", "SOFAS"), 
-                   type_1L_chr = "covariates", what_1L_chr == "parameters") %>%
+A <- renew(A, c(0.03,1), type_1L_chr = "range", what_1L_chr = "parameters") %>%
+  renew(c("BADS","GAD7", "K6", "OASIS", "PHQ9", "SCARED"),
+        type_1L_chr = "predictors_vars", what_1L_chr = "parameters") %>%
+  renew(c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_studying_working", "c_p_diag_s", "c_clinical_staging_s", "SOFAS"),     
+        type_1L_chr = "covariates", what_1L_chr = "parameters") %>%
   renew(c("d_age","Gender","d_relation_s", "d_sexual_ori_s" ,"Region", "d_studying_working", "c_p_diag_s", "c_clinical_staging_s","SOFAS"), 
-                   type_1L_chr = "descriptives", what_1L_chr == "parameters") %>%
-  renew("d_interview_date", type_1L_chr = "temporal", what_1L_chr == "parameters")
+        type_1L_chr = "descriptives", what_1L_chr = "parameters") %>%
+  renew("d_interview_date", type_1L_chr = "temporal", what_1L_chr = "parameters")
 ```
 
 We record that the data we are working with is fake (this step can be skipped if working with real data).
@@ -180,73 +185,51 @@ We update `A` for internal consistency with the values we have previously suppli
 A <- renew(A, consent_1L_chr = consent_1L_chr, paths_chr = tempdir(), what_1L_chr = "project")
 ```
 
-We now generate tables and charts that describe our dataset. These are saved in a sub-directory of our output data directory, a copy of which is [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/_Descriptives.zip). One of the plots is also reproduced here.
+We now generate tables and charts that describe our dataset. These are saved in a sub-directory of our output data directory, and are [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/_Descriptives.zip). One of the plots is also reproduced here.
 
 ```{r message=FALSE, results='hide', warning=FALSE}
-A <- renewSlot(A, "c_SpecificProject",
-               authorSlot(A, "c_SpecificProject", consent_1L_chr = consent_1L_chr, 
-                          digits_1L_int = 3L, what_1L_chr = "descriptives"))
+A <- author(A, consent_1L_chr = consent_1L_chr, digits_1L_int = 3L, what_1L_chr = "descriptives")
 ```
 
-We next compare the performance of different model types. This step saves model objects and plots to a sub-directory of our output directory, a copy of which is [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/B_Candidate_Predrs_Cmprsn.zip).
+We next compare the performance of different model types. We perform this step using the `investigate` method. This is the first of several times that we use this method. Each time the method is called `A` is updated to that the next time the method is called, a different algorithm will be used. The sequence of calls to `investigate` is therefore important (it should be in the same order as outlined in this example and you should not attempt to repeat a call to `investigate` to redo a prior step).
 
 ```{r message=FALSE, results='hide', warning=FALSE}
-A <- renewSlot(A, "c_SpecificProject",
-               investigateSlot(A, "c_SpecificProject",
-                               consent_1L_chr = consent_1L_chr,
-                               depnt_var_max_val_1L_dbl = 0.99,
-                               session_ls = sessionInfo()))
+A <- investigate(A, consent_1L_chr = consent_1L_chr, depnt_var_max_val_1L_dbl = 0.9999, session_ls = sessionInfo())
 ```
 
-After inspecting the output of the previous command, we can now specify the preferred model types to use from this point onwards.
+The outputs of the previous command are saved into a sub-directory of our output directory. An example of this output is [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/A_Candidate_Mdls_Cmprsn.zip)). Once we inspect this output, we can then specify the preferred model types to use from this point onwards.
 
 ```{r message=FALSE, results='hide', warning=FALSE}
-A <- renewSlot(A, "c_SpecificProject",
-               renew(procureSlot(A, "c_SpecificProject"),
-                     new_val_xx = c("GLM_GSN_LOG", "OLS_CLL"),
-                     type_1L_chr = "results",
-                     what_1L_chr = "prefd_mdls"))
+A <- renew(A, c("GLM_GSN_LOG", "OLS_CLL"), type_1L_chr = "models", what_1L_chr = "results")
 ```
 
-Next we assess multiple versions of our preferred model type - one single predictor model for each of our candidate predictors and the same models with candidate covariates added. A number of model/plot objects saved to a sub-directory of our output directory, a copy of which is [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/C_Predrs_Sngl_Mdl_Cmprsn.zip).
+Next we assess multiple versions of our preferred model type - one single predictor model for each of our candidate predictors and the same models with candidate covariates added. 
 
 ```{r message=FALSE, results='hide', warning=FALSE}
-A <- renewSlot(A, "c_SpecificProject",
-               investigateSlot(A,"c_SpecificProject", consent_1L_chr = consent_1L_chr))
+A <- investigate(A, consent_1L_chr = consent_1L_chr)
 ```
-
-After reviewing the output of the previous step, we specify the covariates we wish to add to the models.
+The previous step saved output into a sub-directory of our output directory. Example output is available for download: ([single predictor comparisons](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/B_Candidate_Predrs_Cmprsn.zip)) and [multivariate model comparisons](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/C_Predrs_Sngl_Mdl_Cmprsn.zip). After reviewing this output, we can specify the covariates we wish to add to the models we will assess from this point forward.
 
 ```{r message=FALSE, results='hide', warning=FALSE}
-A <- renewSlot(A, "c_SpecificProject",
-               renew(procureSlot(A, "c_SpecificProject"),
-                     new_val_xx = "SOFAS",
-                     type_1L_chr = "results",
-                     what_1L_chr = "prefd_covars"))
+A <- renew(A, "SOFAS", type_1L_chr = "covariates", what_1L_chr = "results")
 ```
 
-We now assess the multivariate models.  More model/plot objects are saved to a sub-directory of our output directory, a copy of which is [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/E_Predrs_W_Covars_Sngl_Mdl_Cmprsn.zip).
+We can now assess the multivariate models. 
 
 ```{r message=FALSE, results='hide', warning=FALSE}
-A <- renewSlot(A, "c_SpecificProject",
-               investigateSlot(A, "c_SpecificProject", consent_1L_chr = consent_1L_chr))
+A <- investigate(A, consent_1L_chr = consent_1L_chr)
 ```
 
-We next reformulate the models we finalised in the previous step so that they are suitable for modelling longitudinal change.
-
-For our primary analysis, we use the longitudinal formulation of the models we previously selected. A series of large model files are written to the local output data directory.
+As a result of the previous step, more model objects and plot files have been saved to a sub-directory of our output directory. Examples of this output are available for download [here](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/D_Predr_Covars_Cmprsn.zip) and [here](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/E_Predrs_W_Covars_Sngl_Mdl_Cmprsn.zip). Once we inspect this output we can reformulate the models we finalised in the previous step so that they are suitable for modelling longitudinal change. For our primary analysis, we use a mixed model formulation of the models that we previously selected. A series of large model files are written to the local output data directory.
 
 ```{r eval =F}
-A <- renewSlot(A, "c_SpecificProject",
-               investigateSlot(A, "c_SpecificProject", consent_1L_chr = consent_1L_chr))
+A <- investigate_TTUProject(A, consent_1L_chr = consent_1L_chr)
 ```
 
 For our secondary analyses, we specify alternative combinations of predictors and covariates.
 
 ```{r eval =F}
-A <- renewSlot(A, "c_SpecificProject",
-               investigateSlot(A, "c_SpecificProject",
-                               consent_1L_chr = consent_1L_chr,
+A <- investigate(A, consent_1L_chr = consent_1L_chr,
                                scndry_anlys_params_ls = make_scndry_anlys_params(candidate_predrs_chr = c("SOFAS"),
                                                                                  candidate_covar_nms_chr = c("d_sex_birth_s", 
                                                                                                              "d_age", 
@@ -260,6 +243,22 @@ A <- renewSlot(A, "c_SpecificProject",
                                                                                       "d_sexual_ori_s",
                                                                                       "d_studying_working"),
                                                           prefd_covars_chr = "PHQ9")))
+# A <- renewSlot(A, "c_SpecificProject",
+#                investigateSlot(A, "c_SpecificProject",
+#                                consent_1L_chr = consent_1L_chr,
+#                                scndry_anlys_params_ls = make_scndry_anlys_params(candidate_predrs_chr = c("SOFAS"),
+#                                                                                  candidate_covar_nms_chr = c("d_sex_birth_s", 
+#                                                                                                              "d_age", 
+#                                                                                                              "d_sexual_ori_s",
+#                                                                                                              "d_studying_working"),
+#                                                                                  prefd_covars_chr = NA_character_) %>%
+#                                  make_scndry_anlys_params(candidate_predrs_chr = c("SCARED","OASIS","GAD7"),
+#                                                           candidate_covar_nms_chr = c("PHQ9", "SOFAS", 
+#                                                                                       "d_sex_birth_s", 
+#                                                                                       "d_age", 
+#                                                                                       "d_sexual_ori_s",
+#                                                                                       "d_studying_working"),
+#                                                           prefd_covars_chr = "PHQ9")))
 ```
 
 ### Report and disseminate findings
@@ -268,6 +267,7 @@ A <- renewSlot(A, "c_SpecificProject",
 The model objects created and saved in our working directory by the preceding steps are not suitable for public dissemination. They are both too large in file size and, more importantly, include copies of our source dataset. We can overcome these limitations by creating shareable versions of the models. Two types of shareable version are created - copies of the original model objects in which fake data overwrites the original source data and summary tables of model coefficients.
 
 ```{r eval =F}
+
 A <- renewSlot(A, "c_SpecificProject",
                authorData(procureSlot(A, "c_SpecificProject"), consent_1L_chr = consent_1L_chr))
 ```
