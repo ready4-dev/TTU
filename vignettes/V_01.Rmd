@@ -131,66 +131,53 @@ We next use the ScorzAqol6Adol module to [score adolescent AQoL-6D health utilit
 
 ```{r}
 A <- TTUProject(a_ScorzProfile = ScorzAqol6Adol(a_YouthvarsProfile = A))
-A <- renewSlot(A, "a_ScorzProfile")
+A <- renew(A, what_1L_chr = "utility") # A <- renewSlot(A, "a_ScorzProfile")
 ```
 
 ### Evaluate candidate models 
 
 Over the next few steps we will use modules from the specific package to [specify and assess a number of candidate utility mapping models](https://ready4-dev.github.io/specific/articles/V_01.html).
 
-```{r echo=FALSE}
-# Make next bit into renew method
-```
 ```{r}
-A <- renewSlot(A, "b_SpecificParameters", SpecificConverter(a_ScorzProfile = A@a_ScorzProfile) %>%
-                 metamorphose() %>%
-                 procureSlot("b_SpecificParameters"))
+A <- renew(A, what_1L_chr = "parameters")
 ```
 
 ```{r}
-A <- renewSlot(A, "b_SpecificParameters@predictors_lup", Ready4useRepos(dv_nm_1L_chr = "TTU", 
-                                                                        dv_ds_nm_1L_chr = "https://doi.org/10.7910/DVN/DKDIB0", 
-                                                                        dv_server_1L_chr = "dataverse.harvard.edu") %>%
-                 ingest(fls_to_ingest_chr = c("predictors_r3"),
-                        metadata_1L_lgl = F)) 
+A <- renew(A, fl_nm_1L_chr = "predictors_r3", type_1L_chr = "predictors_lup", 
+           y_Ready4useRepos = Ready4useRepos(dv_nm_1L_chr = "TTU", dv_ds_nm_1L_chr = "https://doi.org/10.7910/DVN/DKDIB0", 
+                                             dv_server_1L_chr = "dataverse.harvard.edu"),
+           what_1L_chr = "parameters")
 ```
 
 We can inspect the metadata on candidate predictors that we have just ingested.
 
 ```{r}
-exhibitSlot(A, "b_SpecificParameters@predictors_lup",
-         scroll_box_args_ls = list(width = "100%"))
+exhibit(A, scroll_box_args_ls = list(width = "100%"))
 ```
 
 We add additional metadata about variables in our dataset that will be used in exploratory modelling.
 
 ```{r}
-A <- renewSlot(A, "b_SpecificParameters@depnt_var_min_max_dbl", c(0.03,1)) %>% # Inherit From TTUAqolAdol
-  renewSlot("b_SpecificParameters@candidate_predrs_chr", c("BADS","GAD7", "K6", "OASIS", "PHQ9", "SCARED")) %>%
-  renewSlot("b_SpecificParameters@candidate_covars_chr", c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", 
-                                                           "d_studying_working", "c_p_diag_s", "c_clinical_staging_s",
-                                                           "SOFAS")) %>%
-  renewSlot("b_SpecificParameters@descv_var_nms_chr", c("d_age","Gender","d_relation_s", "d_sexual_ori_s", 
-                                                        "Region", "d_studying_working", "c_p_diag_s", 
-                                                        "c_clinical_staging_s","SOFAS")) %>%
-  renewSlot("b_SpecificParameters@msrmnt_date_var_nm_1L_chr", "d_interview_date") 
-```
-```{r}
-A <-  renewSlot(A, "b_SpecificParameters@fake_1L_lgl", T) 
-```
-```{r}
-A <- renewSlot(A, "c_SpecificProject", SpecificModels(a_YouthvarsProfile = A@a_ScorzProfile@a_YouthvarsProfile,
-                                                      b_SpecificParameters = A@b_SpecificParameters,
-                                                      paths_chr = tempdir())) 
+A <- renew(A, c(0.03,1), type_1L_chr = "range", what_1L_chr == "parameters") %>%
+  renew(c("BADS","GAD7", "K6", "OASIS", "PHQ9", "SCARED"), 
+                   type_1L_chr = "predictors_vars", what_1L_chr == "parameters") %>%
+  renew(c("d_sex_birth_s", "d_age",  "d_sexual_ori_s", "d_studying_working", "c_p_diag_s", "c_clinical_staging_s", "SOFAS"), 
+                   type_1L_chr = "covariates", what_1L_chr == "parameters") %>%
+  renew(c("d_age","Gender","d_relation_s", "d_sexual_ori_s" ,"Region", "d_studying_working", "c_p_diag_s", "c_clinical_staging_s","SOFAS"), 
+                   type_1L_chr = "descriptives", what_1L_chr == "parameters") %>%
+  renew("d_interview_date", type_1L_chr = "temporal", what_1L_chr == "parameters")
 ```
 
-```{r}
-A <- ratifySlot(A, "c_SpecificProject")
-```
+We record that the data we are working with is fake (this step can be skipped if working with real data).
 
 ```{r}
-A <- renewSlot(A, "c_SpecificProject", 
-               authorSlot(A, "c_SpecificProject", consent_1L_chr = consent_1L_chr, what_1L_chr = "workspace"))
+A <- renew(A, T, type_1L_chr = "is_fake", what_1L_chr = "parameters")
+```
+
+We update `A` for internal consistency with the values we have previously supplied and create a local workspace to which output files will be written.
+
+```{r}
+A <- renew(A, consent_1L_chr = consent_1L_chr, paths_chr = tempdir(), what_1L_chr = "project")
 ```
 
 We now generate tables and charts that describe our dataset. These are saved in a sub-directory of our output data directory, a copy of which is [available for download](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/_Descriptives.zip). One of the plots is also reproduced here.
