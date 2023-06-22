@@ -223,42 +223,19 @@ A <- investigate(A, consent_1L_chr = consent_1L_chr)
 As a result of the previous step, more model objects and plot files have been saved to a sub-directory of our output directory. Examples of this output are available for download [here](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/D_Predr_Covars_Cmprsn.zip) and [here](https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/E_Predrs_W_Covars_Sngl_Mdl_Cmprsn.zip). Once we inspect this output we can reformulate the models we finalised in the previous step so that they are suitable for modelling longitudinal change. For our primary analysis, we use a mixed model formulation of the models that we previously selected. A series of large model files are written to the local output data directory.
 
 ```{r eval =F}
-A <- investigate_TTUProject(A, consent_1L_chr = consent_1L_chr)
+A <- investigate(A, consent_1L_chr = consent_1L_chr)
 ```
 
 For our secondary analyses, we specify alternative combinations of predictors and covariates.
 
 ```{r eval =F}
 A <- investigate(A, consent_1L_chr = consent_1L_chr,
-                               scndry_anlys_params_ls = make_scndry_anlys_params(candidate_predrs_chr = c("SOFAS"),
-                                                                                 candidate_covar_nms_chr = c("d_sex_birth_s", 
-                                                                                                             "d_age", 
-                                                                                                             "d_sexual_ori_s",
-                                                                                                             "d_studying_working"),
-                                                                                 prefd_covars_chr = NA_character_) %>%
-                                 make_scndry_anlys_params(candidate_predrs_chr = c("SCARED","OASIS","GAD7"),
-                                                          candidate_covar_nms_chr = c("PHQ9", "SOFAS", 
-                                                                                      "d_sex_birth_s", 
-                                                                                      "d_age", 
-                                                                                      "d_sexual_ori_s",
-                                                                                      "d_studying_working"),
-                                                          prefd_covars_chr = "PHQ9")))
-# A <- renewSlot(A, "c_SpecificProject",
-#                investigateSlot(A, "c_SpecificProject",
-#                                consent_1L_chr = consent_1L_chr,
-#                                scndry_anlys_params_ls = make_scndry_anlys_params(candidate_predrs_chr = c("SOFAS"),
-#                                                                                  candidate_covar_nms_chr = c("d_sex_birth_s", 
-#                                                                                                              "d_age", 
-#                                                                                                              "d_sexual_ori_s",
-#                                                                                                              "d_studying_working"),
-#                                                                                  prefd_covars_chr = NA_character_) %>%
-#                                  make_scndry_anlys_params(candidate_predrs_chr = c("SCARED","OASIS","GAD7"),
-#                                                           candidate_covar_nms_chr = c("PHQ9", "SOFAS", 
-#                                                                                       "d_sex_birth_s", 
-#                                                                                       "d_age", 
-#                                                                                       "d_sexual_ori_s",
-#                                                                                       "d_studying_working"),
-#                                                           prefd_covars_chr = "PHQ9")))
+                 scndry_anlys_params_ls = make_scndry_anlys_params(candidate_predrs_chr = c("SOFAS"),
+                                                                   candidate_covar_nms_chr = c("d_sex_birth_s", "d_age", "d_sexual_ori_s", "d_studying_working"),
+                                                                   prefd_covars_chr = NA_character_) %>%
+                   make_scndry_anlys_params(candidate_predrs_chr = c("SCARED","OASIS","GAD7"),
+                                            candidate_covar_nms_chr = c("PHQ9", "SOFAS", "d_sex_birth_s", "d_age", "d_sexual_ori_s", "d_studying_working"),
+                                            prefd_covars_chr = "PHQ9"))
 ```
 
 ### Report and disseminate findings
@@ -267,44 +244,26 @@ A <- investigate(A, consent_1L_chr = consent_1L_chr,
 The model objects created and saved in our working directory by the preceding steps are not suitable for public dissemination. They are both too large in file size and, more importantly, include copies of our source dataset. We can overcome these limitations by creating shareable versions of the models. Two types of shareable version are created - copies of the original model objects in which fake data overwrites the original source data and summary tables of model coefficients.
 
 ```{r eval =F}
-
-A <- renewSlot(A, "c_SpecificProject",
-               authorData(procureSlot(A, "c_SpecificProject"), consent_1L_chr = consent_1L_chr))
+author(A, consent_1L_chr = consent_1L_chr, what_1L_chr = "models")
 ```
 
 #### Specify study reporting metadata
-We create a `TTUSynopsis` object that contains the fields necessary to render and share reports.
+We update `A` so that we can begin use it to render and share reports.
 
 ```{r eval =F}
-A <- renewSlot(A, "d_TTUReports",
-               {
-                 Y <- metamorphoseSlot(A, "c_SpecificProject")
-                 Y <- TTUSynopsis(a_Ready4showPaths = Y@a_Ready4showPaths,
-                                  b_SpecificResults = Y@b_SpecificResults,
-                                  c_SpecificParameters = Y@c_SpecificParameters,
-                                  d_YouthvarsProfile = Y@d_YouthvarsProfile,
-                                  rmd_fl_nms_ls = Y@rmd_fl_nms_ls)
-                 Y <- TTUReports(a_TTUSynopsis = Y)
-                 Y
-                 }
-               )
+A <- renew_TTUProject(A, what_1L_chr == "reporting")
 ```
 
 We add metadata relevant to the reports that we will be generating to these fields. Note that the data we supply to the Ready4useRepos object below must relate to a repository to which we have write permissions (otherwise subsequent steps will fail).
 
 ```{r eval =F}
-A <- renewSlot(A, "d_TTUReports@a_TTUSynopsis",
-               procureSlot(A, "d_TTUReports@a_TTUSynopsis") %>% 
-                 renewSlot("authors_r3", ready4show::authors_tb) %>%
-                 renewSlot("institutes_r3", ready4show::institutes_tb) %>%
-                 renewSlot("digits_int", c(3L,3L)) %>%
-                 renewSlot("outp_formats_chr", c("PDF","PDF")) %>%
-                 renewSlot("title_1L_chr", "A hypothetical utility mapping study using fake data") %>%
-                 renewSlot("correspondences_r3", old_nms_chr = c("PHQ9", "GAD7"), new_nms_chr = c("PHQ-9", "GAD-7")) %>%
-                 renewSlot("e_Ready4useRepos", Ready4useRepos(dv_nm_1L_chr = "fakes", 
-                                                              dv_ds_nm_1L_chr = "https://doi.org/10.7910/DVN/D74QMP", 
-                                                              dv_server_1L_chr = "dataverse.harvard.edu"))) 
-
+A <- renew(A, ready4show::authors_tb, type_1L_chr = "authors", what_1L_chr = "reporting") %>%
+  renew(ready4show::institutes_tb, type_1L_chr = "institutes", what_1L_chr = "reporting") %>%
+  renew(c(3L,3L), type_1L_chr = "digits", what_1L_chr = "reporting") %>%
+  renew(c("PDF","PDF"), type_1L_chr = "formats", what_1L_chr = "reporting") %>%
+  renew("A hypothetical utility mapping study using fake data", type_1L_chr = "title", what_1L_chr = "reporting") %>%
+  renew(renew(ready4show_correspondences(),old_nms_chr = c("PHQ9", "GAD7"), new_nms_chr = c("PHQ-9", "GAD-7")), type_1L_chr = "changes", what_1L_chr = "reporting") %>%
+  renew(Ready4useRepos(dv_nm_1L_chr = "fakes", dv_ds_nm_1L_chr = "https://doi.org/10.7910/DVN/D74QMP", dv_server_1L_chr = "dataverse.harvard.edu"), type_1L_chr = "repos", what_1L_chr = "reporting") 
 ```
 
 ```{r echo = F, eval =F}

@@ -51,6 +51,56 @@ renew_TTUProject <- function(x,
     x <- renewSlot(x, "c_SpecificProject",
                    authorSlot(x, "c_SpecificProject", consent_1L_chr = consent_1L_chr, what_1L_chr = "workspace"))
   }
+  if(what_1L_chr == "reporting"){
+    if(type_1L_chr=="default"){
+      x <- renewSlot(x, "d_TTUReports",
+                     {
+                       Y <- metamorphoseSlot(x, "c_SpecificProject")
+                       Y <- TTUSynopsis(a_Ready4showPaths = Y@a_Ready4showPaths,
+                                        b_SpecificResults = Y@b_SpecificResults,
+                                        c_SpecificParameters = Y@c_SpecificParameters,
+                                        d_YouthvarsProfile = Y@d_YouthvarsProfile,
+                                        rmd_fl_nms_ls = Y@rmd_fl_nms_ls)
+                       Y <- TTUReports(a_TTUSynopsis = Y)
+                       Y
+                     })
+    }
+    if(type_1L_chr == "authors"){
+      x <- renewSlot(x, "d_TTUReports@a_TTUSynopsis",
+                     procureSlot(x, "d_TTUReports@a_TTUSynopsis") %>%
+                       renewSlot("authors_r3", new_val_xx))
+    }
+    if(type_1L_chr == "changes"){
+      x <- renewSlot(x, "d_TTUReports@a_TTUSynopsis",
+                     procureSlot(x, "d_TTUReports@a_TTUSynopsis") %>%
+                       renewSlot("correspondences_r3", new_val_xx))
+    }
+    if(type_1L_chr == "digits"){
+      x <- renewSlot(x, "d_TTUReports@a_TTUSynopsis",
+                     procureSlot(x, "d_TTUReports@a_TTUSynopsis") %>%
+                       renewSlot("digits_int", new_val_xx))
+    }
+    if(type_1L_chr == "formats"){
+      x <- renewSlot(x, "d_TTUReports@a_TTUSynopsis",
+                     procureSlot(x, "d_TTUReports@a_TTUSynopsis") %>%
+                       renewSlot("outp_formats_chr", new_val_xx))
+    }
+    if(type_1L_chr == "institutes"){
+      x <- renewSlot(x, "d_TTUReports@a_TTUSynopsis",
+                     procureSlot(x, "d_TTUReports@a_TTUSynopsis") %>%
+                       renewSlot("institutes_r3", new_val_xx))
+    }
+    if(type_1L_chr == "repos"){
+      x <- renewSlot(x, "d_TTUReports@a_TTUSynopsis",
+                     procureSlot(x, "d_TTUReports@a_TTUSynopsis") %>%
+                       renewSlot("e_Ready4useRepos", new_val_xx))
+    }
+    if(type_1L_chr == "title"){
+      x <- renewSlot(x, "d_TTUReports@a_TTUSynopsis",
+                     procureSlot(x, "d_TTUReports@a_TTUSynopsis") %>%
+                       renewSlot("title_1L_chr", new_val_xx))
+    }
+  }
   if(what_1L_chr == "results"){
     if(type_1L_chr =="covariates"){
       x <- renewSlot(x, "c_SpecificProject",
