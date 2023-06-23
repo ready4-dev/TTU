@@ -42,7 +42,8 @@ Imports:
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10),
-    specific
+    scorz (>= 0.0.0.9058),
+    specific (>= 0.0.0.9098)
 LazyData: true
 Collate: 
     'C4_TTUSynopsis.R'
@@ -66,9 +67,12 @@ Suggests:
     betareg,
     caret,
     knitrBootstrap,
-    rmarkdown
+    rmarkdown,
+    youthvars (>= 0.0.0.9120)
 Remotes: 
     ready4-dev/ready4,
     ready4-dev/ready4show,
     ready4-dev/ready4use,
-    ready4-dev/specific
+    ready4-dev/specific,
+    ready4-dev/youthvars,
+    ready4-dev/scorz

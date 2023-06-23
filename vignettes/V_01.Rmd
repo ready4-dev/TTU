@@ -101,28 +101,18 @@ consent_1L_chr <- "Y" # Gives consent to write files without additional requests
 We use the Ready4useDyad and Ready4useRepos modules to [retrieve and ingest](https://ready4-dev.github.io/ready4use/articles/V_01.html) and to then [pair a dataset and its data dictionary](_https://ready4-dev.github.io/ready4use/articles/V_02.html). 
 
 ```{r}
-A <- Ready4useDyad(ds_tb = Ready4useRepos(dv_nm_1L_chr = "fakes",
-                                          dv_ds_nm_1L_chr = "https://doi.org/10.7910/DVN/HJXYKQ",
-                                          dv_server_1L_chr = "dataverse.harvard.edu") %>%
-                     ingest(fls_to_ingest_chr = c("ymh_clinical_tb"),
-                            metadata_1L_lgl = F) %>%
-                     youthvars::transform_raw_ds_for_analysis(),
-                   dictionary_r3 = Ready4useRepos(dv_nm_1L_chr = "TTU", 
-                                                  dv_ds_nm_1L_chr = "https://doi.org/10.7910/DVN/DKDIB0", 
-                                                  dv_server_1L_chr = "dataverse.harvard.edu") %>%
-                     ingest(fls_to_ingest_chr = c("dictionary_r3"),
-                            metadata_1L_lgl = F)) %>%
+A <- Ready4useDyad(ds_tb = Ready4useRepos(dv_nm_1L_chr = "fakes", dv_ds_nm_1L_chr = "https://doi.org/10.7910/DVN/HJXYKQ", dv_server_1L_chr = "dataverse.harvard.edu") %>%
+                     ingest(fls_to_ingest_chr = c("ymh_clinical_tb"), metadata_1L_lgl = F) %>% youthvars::transform_raw_ds_for_analysis(),
+                   dictionary_r3 = Ready4useRepos(dv_nm_1L_chr = "TTU", dv_ds_nm_1L_chr = "https://doi.org/10.7910/DVN/DKDIB0", dv_server_1L_chr = "dataverse.harvard.edu") %>%
+                     ingest(fls_to_ingest_chr = c("dictionary_r3"), metadata_1L_lgl = F)) %>%
   renew(type_1L_chr = "label")
 ```
 
 We use the YouthvarsSeries module to [supply metadata about out a longitudinal dataset vignette](https://ready4-dev.github.io/youthvars/articles/V_02.html).
 
 ```{r}
-A <- YouthvarsSeries(a_Ready4useDyad = A,
-                     id_var_nm_1L_chr = "fkClientID",
-                     timepoint_var_nm_1L_chr = "round",
-                     timepoint_vals_chr = levels(procureSlot(A,
-                                                             "ds_tb")$round))
+A <- YouthvarsSeries(a_Ready4useDyad = A, id_var_nm_1L_chr = "fkClientID", timepoint_var_nm_1L_chr = "round",
+                     timepoint_vals_chr = levels(procureSlot(A, "ds_tb")$round))
 ```
 
 ### Score health utility 
@@ -148,7 +138,7 @@ A <- renew(A, what_1L_chr = "parameters")
 We next ingest a lookup table of metadata about the variables we plan to explore as candidate predictors. In this case, we are sourcing the lookup table from an online data repository.
 
 ```{r}
-A <- renew(A, fl_nm_1L_chr = "predictors_r3", type_1L_chr = "predictors_lup", 
+A <- renew(A, "use_renew_mthd", fl_nm_1L_chr = "predictors_r3", type_1L_chr = "predictors_lup", 
            y_Ready4useRepos = Ready4useRepos(dv_nm_1L_chr = "TTU", dv_ds_nm_1L_chr = "https://doi.org/10.7910/DVN/DKDIB0", 
                                              dv_server_1L_chr = "dataverse.harvard.edu"),
            what_1L_chr = "parameters")
@@ -238,20 +228,20 @@ A <- investigate(A, consent_1L_chr = consent_1L_chr,
                                             prefd_covars_chr = "PHQ9"))
 ```
 
-### Report and disseminate findings
+### Report findings
 
 #### Create shareable models
 The model objects created and saved in our working directory by the preceding steps are not suitable for public dissemination. They are both too large in file size and, more importantly, include copies of our source dataset. We can overcome these limitations by creating shareable versions of the models. Two types of shareable version are created - copies of the original model objects in which fake data overwrites the original source data and summary tables of model coefficients.
 
 ```{r eval =F}
-author(A, consent_1L_chr = consent_1L_chr, what_1L_chr = "models")
+A <- author(A, consent_1L_chr = consent_1L_chr, what_1L_chr = "models")
 ```
 
 #### Specify study reporting metadata
 We update `A` so that we can begin use it to render and share reports.
 
 ```{r eval =F}
-A <- renew_TTUProject(A, what_1L_chr == "reporting")
+A <- renew(A, what_1L_chr = "reporting")
 ```
 
 We add metadata relevant to the reports that we will be generating to these fields. Note that the data we supply to the Ready4useRepos object below must relate to a repository to which we have write permissions (otherwise subsequent steps will fail).
@@ -262,145 +252,85 @@ A <- renew(A, ready4show::authors_tb, type_1L_chr = "authors", what_1L_chr = "re
   renew(c(3L,3L), type_1L_chr = "digits", what_1L_chr = "reporting") %>%
   renew(c("PDF","PDF"), type_1L_chr = "formats", what_1L_chr = "reporting") %>%
   renew("A hypothetical utility mapping study using fake data", type_1L_chr = "title", what_1L_chr = "reporting") %>%
-  renew(renew(ready4show_correspondences(),old_nms_chr = c("PHQ9", "GAD7"), new_nms_chr = c("PHQ-9", "GAD-7")), type_1L_chr = "changes", what_1L_chr = "reporting") %>%
+  renew(renew(ready4show_correspondences(), old_nms_chr = c("PHQ9", "GAD7"), new_nms_chr = c("PHQ-9", "GAD-7")), type_1L_chr = "changes", what_1L_chr = "reporting") %>%
   renew(Ready4useRepos(dv_nm_1L_chr = "fakes", dv_ds_nm_1L_chr = "https://doi.org/10.7910/DVN/D74QMP", dv_server_1L_chr = "dataverse.harvard.edu"), type_1L_chr = "repos", what_1L_chr = "reporting") 
-```
-
-```{r echo = F, eval =F}
-## Describe and share models
-# We now create a `TTUReports` object, that we can use to efficiently retrieve and apply programs that can summarise our study results.
-# C <- TTUReports(a_TTUSynopsis = B)
 ```
 
 #### Author model catalogues
 We download a program for generating a catalogue of models and use it to summarising the models created under each study analysis (one primary and two secondary). The catalogues are saved locally.
 
 ```{r eval =F}
-authorSlot(A, "d_TTUReports", consent_1L_chr = consent_1L_chr, download_tmpl_1L_lgl = T, what_1L_chr = "Catalogue")
-```
-
-#### Share model catalogue
-We share the catalogues that we created, uploading a copy to our study online repository. To run this step you will need write permissions to the online repository.
-
-```{r eval =F}
-shareSlot(A, "d_TTUReports@a_TTUSynopsis", type_1L_chr = "Report", what_1L_chr = "Catalogue") 
-```
-
-#### Share models
-We share tables of coefficients and other meta-data about the models we have created by posting them to the online repository. The object we create and share is designed to be used in conjunction with the `youthu` package to make it easier to make predictions with these models using new data. Again, you will need write permissions to the online repository.
-
-```{r eval =F}
-shareSlot(A, "d_TTUReports@a_TTUSynopsis", type_1L_chr = "Models", what_1L_chr = "ingredients")
+A <- author(A, consent_1L_chr = consent_1L_chr, download_tmpl_1L_lgl = T, what_1L_chr = "catalogue")
 ```
 
 #### Author manuscript
 We add some content about the manuscript we wish to author.
 
 ```{r eval =F}
-A <- renewSlot(A, "d_TTUReports@a_TTUSynopsis",
-               procureSlot(A, "d_TTUReports@a_TTUSynopsis") %>% 
-                 renewSlot("background_1L_chr", "Quality Adjusted Life Years (QALYs) are often used in economic evaluations, yet utility weights for deriving them are rarely directly measured in mental health services.") %>%
-                 renewSlot("coi_1L_chr", "None declared") %>%
-                 renewSlot("conclusion_1L_chr","Nothing should be concluded from this study as it is purely hypothetical.") %>%
-                 renewSlot("ethics_1L_chr", "The study was reviewed and granted approval by no-one." ) %>%
-                 renewSlot("funding_1L_chr", "The study was funded by no-one.") %>%
-                 renewSlot("interval_chr", "three months") %>%
-                 renewSlot("keywords_chr", c("anxiety", "AQoL","depression", "psychological distress", "QALYs", "utility mapping")) %>%
-                 renewSlot("sample_desc_1L_chr", "The study sample is fake data.") )
+A <- renew(A, "Quality Adjusted Life Years (QALYs) are often used in economic evaluations, yet utility weights for deriving them are rarely directly measured in mental health services.", 
+           type_1L_chr = "background", what_1L_chr = "reporting") %>%
+  renew("None declared", type_1L_chr = "conflicts", what_1L_chr = "reporting") %>%
+  renew("Nothing should be concluded from this study as it is purely hypothetical.", type_1L_chr = "conclusion", what_1L_chr = "reporting") %>%
+  renew("The study was reviewed and granted approval by no-one." , type_1L_chr = "ethics", what_1L_chr = "reporting") %>%
+  renew("The study was funded by no-one.", type_1L_chr = "funding", what_1L_chr = "reporting") %>%
+  renew("three months", type_1L_chr = "interval", what_1L_chr = "reporting") %>%
+  renew(c("anxiety", "AQoL","depression", "psychological distress", "QALYs", "utility mapping"), type_1L_chr = "keywords", what_1L_chr = "reporting") %>%
+  renew("The study sample is fake data.", type_1L_chr = "sample", what_1L_chr = "reporting") 
 ```
 
-We create a summary of results that can be interpreted by the program that authors the manuscript.
+We create a brief summary of results that can be interpreted by the program that authors the manuscript.
 
 ```{r eval =F}
-A <- renewSlot(A, "d_TTUReports@a_TTUSynopsis@abstract_args_ls",
-               manufactureSlot(A,"d_TTUReports@a_TTUSynopsis", what_1L_chr = "abstract_args_ls",
-                               depnt_var_nms_chr = c("AQoL-6D", "Adolescent AQoL Six Dimension"))) 
+A <- renew(A, c("AQoL-6D", "Adolescent AQoL Six Dimension"), type_1L_chr = "naming", what_1L_chr = "reporting")
 ```
 
 ```{r eval =F}
-A <- enhanceSlot(A, "d_TTUReports@a_TTUSynopsis", with_1L_chr = "results_ls",
-                 depnt_var_nms_chr = c("AQoL-6D", "Adolescent AQoL Six Dimension")) 
+A <- renew(A, "use_renew_mthd", type_1L_chr = "abstract", what_1L_chr = "reporting")
 ```
 
 We create and save the plots that will be used in the manuscript.
 
 ```{r eval =F}
-authorSlot(A, "d_TTUReports", consent_1L_chr = consent_1L_chr,
-           depnt_var_desc_1L_chr = A@d_TTUReports@a_TTUSynopsis@b_SpecificResults@a_SpecificShareable@shareable_outp_ls$results_ls$study_descs_ls$health_utl_nm_1L_chr, 
-           type_1L_chr = "Plots")
+A <- author(A, consent_1L_chr = consent_1L_chr, what_1L_chr = "plots")
 ```
 
 We download a program for generating a template manuscript and run it to author a first draft of the manuscript.
 
 ```{r eval =F}
-authorSlot(A, "d_TTUReports", consent_1L_chr = consent_1L_chr, type_1L_chr = "Report", what_1L_chr = "Manuscript_Auto", download_tmpl_1L_lgl = T)
+A <- author(A, consent_1L_chr = consent_1L_chr, download_tmpl_1L_lgl = T, what_1L_chr = "manuscript")
 ```
 
-We can copy the RMarkdown files that created the template manuscript to a new director (which we call "Manuscript_Submission") so that we can then manually edit those files to produce a manuscript that we can submit for publication. Note that in this example we have not made any edits to the template manuscript.
+We can copy the RMarkdown files that created the template manuscript to a new directory (called "Manuscript_Submission") so that we can then manually edit those files to produce a manuscript that we can submit for publication. 
 
 ```{r eval =F}
-R.utils::copyDirectory(paste0(A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
-                              "/",
-                              A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@mkdn_data_dir_1L_chr,
-                              "/Manuscript_Auto"),
-                       paste0(A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
-                              "/",
-                              A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@mkdn_data_dir_1L_chr,
-                              "/Manuscript_Submission"))
+A <- author(A, consent_1L_chr = consent_1L_chr, type_1L_chr = "copy", what_1L_chr = "manuscript")
 ```
 
+At this point in the workflow, additional steps are required to adapt / author the manuscript that will be submitted for publication. However, in this example we are going to skip that step and keep working with the unedited template manuscript. If we had a finalised manuscript authoring program stored online, we could now specify the repository from which the program can be retrieved.
 
-```{r echo=FALSE, eval=FALSE}
-# We create the files we will be using for figures submitted to our target journal and also a table of all the dependency packages used in our analysis and reporting.
-# authorSlot(A, "d_TTUReports", type_1L_chr = "Plots", what_1L_chr = "Manuscript_Submission",
-#            depnt_var_desc_1L_chr = "AQoL-6D" # Inherit from TTUAqolAdol
-#            #,timepoint_new_nms_chr = c("Baseline","Follow-up")
-#        ) # Not required for vignette
-# author(A@d_TTUReports, type_1L_chr = "Dependencies", what_1L_chr = "Manuscript_Submission") #ERROR - Not required for vignette
-```
-
-Once any edits to the RMarkdown files for creating the submission manuscript have been finalised, we can run the following command to author the manuscript. The below commands will generate a Microsoft Word format manuscript and a PDF technical appendix. Unlike the template manuscript, the figures and tables are positioned after (and not within) the main body of the manuscript. Note that the Word version of the manuscript generated by these commands will require some minor formatting edits (principally to the display of tables and numbering of sections).
-
-```{r eval =F}
-A <- renewSlot(A, "d_TTUReports",
-               procureSlot(A, "d_TTUReports") %>%
-                 renewSlot("a_TTUSynopsis@tables_in_body_lgl",  F) %>%
-                 renewSlot("a_TTUSynopsis@figures_in_body_lgl", F) %>%
-                 renewSlot("a_TTUSynopsis@outp_formats_chr", c("Word","PDF")))
-authorSlot(A, "d_TTUReports", consent_1L_chr = consent_1L_chr, what_1L_chr = "Manuscript_Submission", download_tmpl_1L_lgl = F)
+```{reval=FALSE}
+# Not run
+# A <- renew(A, c("URL of GitHub repository with", "Program version number"), type_1L_chr = "template-manuscript", what_1L_chr = "reporting")
 ```
 
 ```{r echo=FALSE, eval=FALSE}
-# UPLOAD MS
-purrr::walk2(c("Manuscript_Auto","Manuscript_Submission"),
-             2:1,
-             ~ {
-               x <- A@d_TTUReports@a_TTUSynopsis
-               what_1L_chr <- .x
-               idx_1L_int <- .y
-               if(what_1L_chr %in% c("Manuscript_Auto","Manuscript_Submission")){ # ADD THIS TO share_SpecificSynopsis
-                 ms_nm_1L_chr <- "Manuscript"
-                 idx_1L_int <- ready4::write_fls_to_dv(paste0(x@a_Ready4showPaths@outp_data_dir_1L_chr,
-                                                              "/",
-                                                              x@a_Ready4showPaths@reports_dir_1L_chr,
-                                                              "/",
-                                                              what_1L_chr,
-                                                              "/",
-                                                              ms_nm_1L_chr,
-                                                              ifelse(x@outp_formats_chr[idx_1L_int] == "Word",
-                                                                     ".docx",
-                                                                     paste0(".",tolower(x@outp_formats_chr[idx_1L_int])))),
-                                                       consent_1L_chr = consent_1L_chr,
-                                                       descriptions_chr = paste0("Scientific summary of utility mapping study",
-                                                                                 ifelse(what_1L_chr == "Manuscript_Auto", " (algorithm generated)","")),
-                                                       ds_url_1L_chr = x@e_Ready4useRepos@dv_ds_nm_1L_chr)
-                 
-                 
-               }
-               Sys.sleep(5L)
-               }
-               )
+# Not required for vignette article
+# A <- author(A, consent_1L_chr = consent_1L_chr, type_1L_chr = "plots", what_1L_chr = "manuscript")
+# A <- author(A, consent_1L_chr = consent_1L_chr, type_1L_chr = "dependencies", what_1L_chr = "manuscript")
+```
 
+We can now configure the output to be generated by the manuscript authoring program. The below commands will specify a Microsoft Word format manuscript and a PDF technical appendix. Unlike the template manuscript, the figures and tables will be positioned after (and not within) the main body of the manuscript. Note that the Word version of the manuscript generated by these values will require some minor formatting edits (principally to the display of tables and numbering of sections).
+
+```{r eval =F}
+A <- renew(A, F, type_1L_chr = "figures-body", what_1L_chr = "reporting") %>%
+  renew(F, type_1L_chr = "tables-body", what_1L_chr = "reporting") %>%
+  renew(c("Word","PDF"), type_1L_chr = "formats", what_1L_chr = "reporting")
+```
+
+Once any edits to the RMarkdown files for creating the submission manuscript have been finalised, we can run the following command to author the manuscript. If we are using a custom manuscript authoring program downloaded from an online repository the `download_tmpl_1L_lgl` argument will need to be set to `T`.
+
+```{r eval =F}
+A <- author(A, consent_1L_chr = consent_1L_chr, download_tmpl_1L_lgl = F, type_1L_chr="submission", what_1L_chr = "manuscript")
 ```
 ```{r echo=F, eval=F}
 # NEVER RUN THIS STEP FOR REAL DATA - THIS IS ONLY APPROPRIATE FOR A VIGNETTE EXAMPLE USING FAKE DATA
@@ -419,38 +349,24 @@ outp_dirs_chr[2:7] %>%
   })
 
 ```
+
 We can now generate the Supplementary Information for the submission manuscript.
 
-```{r echo=FALSE, eval=FALSE}
-authorReport(procureSlot(A, "d_TTUReports") %>%
-               renewSlot("a_TTUSynopsis@rmd_fl_nms_ls", ready4show::make_rmd_fl_nms_ls(pdf_fl_nm_1L_chr = "TA_PDF")) %>%
-               renewSlot("a_TTUSynopsis@outp_formats_chr", c("PDF","PDF")) %>%
-               procureSlot("a_TTUSynopsis"),
-             consent_1L_chr = consent_1L_chr, fl_nm_1L_chr = "Supplement", what_1L_chr = "Manuscript_Submission") 
+```{r eval=FALSE}
+A <- author(A, consent_1L_chr = consent_1L_chr, supplement_fl_nm_1L_chr = "TA_PDF", type_1L_chr="submission", what_1L_chr = "supplement")
+```
+
+### Share outputs
+We can now share non-confidential elements (ie no copies of individual records) of the outputs that we have created via our study online repository. To run this step you will need write permissions to the online repository. In the below step we are sharing model catalogues, the shareable models (designed to be used in conjunction with the [youthu](https://ready4-dev.github.io/youthu/index.html) package), our manuscript files and our supplementary information. In most real world studies the manuscript would not be shared via an online repository - the `what_chr` argument would need to be ammended to reflect this.
+
+```{r eval=FALSE}
+A <- share(A, types_chr = c("auto", "submission"), what_chr = c("catalogue", "manuscript", "models", "supplement"))
 ```
 
 ### Tidy workspace
 The preceding steps saved multiple objects (mostly R model objects) that have embedded within them copies of the source dataset. We can now purge all such copies from our output data directory.
 
 ```{r eval = F}
-authorSlot(A,"c_SpecificProject", type_1L_chr = "purge_write") 
-#author(procureSlot(A,"c_SpecificProject"), type_1L_chr = "purge_write") 
+A <- author(A, what_1L_chr = "purge")
 ```
 
-```{r echo=FALSE, eval=FALSE}
-# transform_dyad_for_analysis <- function(data_Ready4useDyad){
-#   data_Ready4useDyad@ds_tb <- data_Ready4useDyad@ds_tb %>%
-#             youthvars::transform_raw_ds_for_analysis()
-#   data_Ready4useDyad@dictionary_r3 <- data_Ready4useDyad@dictionary_r3 %>%
-#     dplyr::mutate(var_nm_chr = dplyr::case_when(var_nm_chr == "phq9_total" ~  "PHQ9",
-#                                                 var_nm_chr == "bads_total" ~ "BADS",
-#                                                 var_nm_chr == "gad7_total" ~ "GAD7",
-#                                                 var_nm_chr == "oasis_total" ~ "OASIS",
-#                                                 var_nm_chr == "scared_total" ~ "SCARED",
-#                                                 var_nm_chr == "k6_total" ~ "K6",
-#                                                 var_nm_chr == "sofas_total" ~ "SOFAS",
-#                                                 T ~ var_nm_chr %>% purrr::map_chr(~.x)
-#                                                 ))
-#   return(data_Ready4useDyad)
-# }
-```

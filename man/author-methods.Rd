@@ -3,6 +3,8 @@
 \name{author-TTUReports}
 \alias{author-TTUReports}
 \alias{author,TTUReports-method}
+\alias{author-TTUProject}
+\alias{author,TTUProject-method}
 \title{Author and save files}
 \usage{
 \S4method{author}{TTUReports}(
@@ -18,9 +20,22 @@
   what_1L_chr = NA_character_,
   ...
 )
+
+\S4method{author}{TTUProject}(
+  x,
+  consent_1L_chr = "",
+  depnt_var_min_val_1L_dbl = numeric(0),
+  digits_1L_int = 2L,
+  download_tmpl_1L_lgl = T,
+  supplement_fl_nm_1L_chr = "TA_PDF",
+  timepoint_new_nms_chr = NA_character_,
+  type_1L_chr = "auto",
+  what_1L_chr = "default",
+  ...
+)
 }
 \arguments{
-\item{x}{An object of class TTUReports}
+\item{x}{An object of class TTUProject}
 
 \item{args_ls}{Arguments (a list), Default: NULL}
 
@@ -36,12 +51,21 @@
 
 \item{timepoint_new_nms_chr}{Timepoint new names (a character vector), Default: 'NA'}
 
-\item{type_1L_chr}{Type (a character vector of length one), Default: 'Report'}
+\item{type_1L_chr}{Type (a character vector of length one), Default: 'auto'}
 
-\item{what_1L_chr}{What (a character vector of length one), Default: 'NA'}
+\item{what_1L_chr}{What (a character vector of length one), Default: 'default'}
 
 \item{...}{Additional arguments}
+
+\item{digits_1L_int}{Digits (an integer vector of length one), Default: 2}
+
+\item{supplement_fl_nm_1L_chr}{Supplement file name (a character vector of length one), Default: 'TA_PDF'}
+}
+\value{
+x (An object of class TTUProject)
 }
 \description{
 author method applied to TTUReports
+
+author method applied to TTUProject
 }

@@ -68,7 +68,7 @@ y <- ready4class::ready4class_constructor() %>%
                                                                                     catalogue_fl_nms_ls = "ready4show::make_rmd_fl_nms_ls(\"Lngl_Mdls_HTML\",
                                                                                                                            pdf_fl_nm_1L_chr = \"Lngl_Mdls_PDF\",
                                                                                                                            word_fl_nm_1L_chr = \"Lngl_Mdls_Word\")",
-                                                                                    manuscript_tmpl_chr = "c(\"https://github.com/ready4-dev/ttu_lng_ss\",\"0.9.0.0\")",
+                                                                                    manuscript_tmpl_chr = "c(\"https://github.com/ready4-dev/ttu_lng_ss\",\"0.9.0.1\")",
                                                                                     manuscript_fl_nms_ls = "ready4show::make_rmd_fl_nms_ls(pdf_fl_nm_1L_chr = \"Main_PDF\",
                                                                                                                             word_fl_nm_1L_chr = \"Main_Word\")")),
                                                                 class_desc_chr = "Metadata to produce utility mapping study reports.",

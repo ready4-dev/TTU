@@ -48,8 +48,9 @@ author_TTUReports <- function(x,
     if(type_1L_chr == "Dependencies"){
       df <- data.frame(Package = c("youthvars","scorz","specific","TTU") %>%
                          purrr::map(~ {
-                           utils::packageDescription(.x) %>%
-                             `[`(c("Depends", "Imports")) %>%
+                           desc_ls <- utils::packageDescription(.x)
+                           desc_ls[c("Depends", "Imports")] %>%
+                            # `[`(c("Depends", "Imports")) %>%
                              purrr::map(~{
                                if(is.null(.x)){
                                  character(0)
@@ -102,6 +103,7 @@ author_TTUReports <- function(x,
     }
     if(type_1L_chr == "Plots"){
       composite_1_plt <- depict(x@a_TTUSynopsis,#
+                                consent_1L_chr = consent_1L_chr,
                                 depnt_var_desc_1L_chr = depnt_var_desc_1L_chr,
                                 depnt_var_min_val_1L_dbl = depnt_var_min_val_1L_dbl,
                                 timepoint_old_nms_chr = procureSlot(x,
@@ -110,6 +112,7 @@ author_TTUReports <- function(x,
                                 what_1L_chr = "composite_mdl",
                                 write_1L_lgl = T)
       composite_2_plt <- depict(x@a_TTUSynopsis,#
+                                consent_1L_chr = consent_1L_chr,
                                 what_1L_chr = "composite_utl",
                                 write_1L_lgl = T)
       if(!is.na(what_1L_chr)){
@@ -147,20 +150,88 @@ author_TTUReports <- function(x,
 }
 author_TTUProject <- function(x,
                               consent_1L_chr = "",
+                              depnt_var_min_val_1L_dbl = numeric(0),
                               digits_1L_int = 2L,
+                              download_tmpl_1L_lgl = T,
+                              supplement_fl_nm_1L_chr = "TA_PDF",
+                              timepoint_new_nms_chr = NA_character_,
+                              type_1L_chr = "auto",
                               what_1L_chr = "default",
                               ...){
-  if(what_1L_chr %in% c("descriptives", "models")){
-    if(what_1L_chr == "descriptives"){
+  if(what_1L_chr %in% c("catalogue","Catalogue","dependencies", "Dependencies", "descriptives", "Descriptives", "manuscript", "Manuscript", "models", "Models",
+                        "plots", "Plots", "purge", "Purge",  "supplement", "Supplement")){
+    if(what_1L_chr %in% c("catalogue","Catalogue")){
+      authorSlot(x, "d_TTUReports", consent_1L_chr = consent_1L_chr, download_tmpl_1L_lgl = download_tmpl_1L_lgl, what_1L_chr = Hmisc::capitalize(what_1L_chr))
+    }
+    if(what_1L_chr %in% c("descriptives","Descriptives")){
       x <- renewSlot(x, "c_SpecificProject",
                      authorSlot(x, "c_SpecificProject",
                                 consent_1L_chr = consent_1L_chr,
                                 digits_1L_int = digits_1L_int,
-                                what_1L_chr = what_1L_chr))
+                                what_1L_chr = tolower(what_1L_chr)))
     }
-    if(what_1L_chr == "models"){
+    if(what_1L_chr %in% c("manuscript", "Manuscript")){
+      if(type_1L_chr=="auto"){
+        x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@ms_dir_1L_chr <- paste0(Hmisc::capitalize(what_1L_chr),"_",Hmisc::capitalize(type_1L_chr))
+        authorSlot(x, "d_TTUReports", consent_1L_chr = consent_1L_chr, download_tmpl_1L_lgl = download_tmpl_1L_lgl, type_1L_chr = "Report", what_1L_chr = x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@ms_dir_1L_chr)
+      }
+      if(type_1L_chr == "copy"){
+        from_1L_chr <- paste0(A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
+                              "/",
+                              A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@mkdn_data_dir_1L_chr,
+                              "/Manuscript_Auto")
+        to_1L_chr <- paste0(A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
+                            "/",
+                            A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@mkdn_data_dir_1L_chr,
+                            "/Manuscript_Submission")
+        ready4::write_with_consent(consented_fn = R.utils::copyDirectory,
+                                   prompt_1L_chr = paste0("Do you confirm that you want to copy the directory ",
+                                                          from_1L_chr, #"packages.RDS",
+                                                          " (and all its contents) to ",
+                                                          to_1L_chr,
+                                                          "?"),
+                                   consent_1L_chr = consent_1L_chr,
+                                   consented_args_ls = list(from = from_1L_chr,
+                                                            to = to_1L_chr),
+                                   consented_msg_1L_chr = paste0("The directory ",
+                                                                 from_1L_chr,
+                                                                 " has been copied to ",
+                                                                 to_1L_chr,
+                                                                 "."),
+                                   declined_msg_1L_chr = "Write request cancelled - no new directory copy has been written.")
+
+      }
+      if(type_1L_chr %in% c("dependencies", "Dependencies")){
+        author(x@d_TTUReports, consent_1L_chr = consent_1L_chr, type_1L_chr = Hmisc::capitalize(type_1L_chr), what_1L_chr = "Manuscript_Submission")
+      }
+      if(type_1L_chr %in% c("plots","Plots")){
+        authorSlot(x, "d_TTUReports", consent_1L_chr = consent_1L_chr, depnt_var_desc_1L_chr = x@d_TTUReports@a_TTUSynopsis@b_SpecificResults@a_SpecificShareable@shareable_outp_ls$results_ls$study_descs_ls$health_utl_nm_1L_chr,
+                   depnt_var_min_val_1L_dbl = depnt_var_min_val_1L_dbl, timepoint_new_nms_chr = timepoint_new_nms_chr, type_1L_chr = Hmisc::capitalize(type_1L_chr), what_1L_chr = "Manuscript_Submission")
+      }
+      if(type_1L_chr=="submission"){
+        x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@ms_dir_1L_chr <- paste0(Hmisc::capitalize(what_1L_chr),"_",Hmisc::capitalize(type_1L_chr))
+        authorSlot(x, "d_TTUReports", consent_1L_chr = consent_1L_chr, download_tmpl_1L_lgl = download_tmpl_1L_lgl, type_1L_chr = "Report", what_1L_chr = x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@ms_dir_1L_chr)
+      }
+    }
+    if(what_1L_chr %in% c("models", "Models")){
       x <- renewSlot(x, "c_SpecificProject",
                      authorData(procureSlot(x, "c_SpecificProject"), consent_1L_chr = consent_1L_chr))
+    }
+    if(what_1L_chr %in% c("purge")){
+      authorSlot(x,"c_SpecificProject", type_1L_chr = "purge_write")
+    }
+    if(what_1L_chr %in% c("plots","Plots")){
+      authorSlot(x, "d_TTUReports", consent_1L_chr = consent_1L_chr,
+                 depnt_var_desc_1L_chr = x@d_TTUReports@a_TTUSynopsis@b_SpecificResults@a_SpecificShareable@shareable_outp_ls$results_ls$study_descs_ls$health_utl_nm_1L_chr,
+                 type_1L_chr = Hmisc::capitalize(what_1L_chr))
+    }
+    if(what_1L_chr %in% c("supplement","Supplement")){
+      x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@ms_dir_1L_chr <- paste0("Manuscript_",Hmisc::capitalize(type_1L_chr))
+      authorReport(procureSlot(x, "d_TTUReports") %>%
+                     renewSlot("a_TTUSynopsis@rmd_fl_nms_ls", ready4show::make_rmd_fl_nms_ls(pdf_fl_nm_1L_chr = supplement_fl_nm_1L_chr)) %>%
+                     renewSlot("a_TTUSynopsis@outp_formats_chr", rep(x@d_TTUReports@a_TTUSynopsis@outp_formats_chr[2],2)) %>%
+                     procureSlot("a_TTUSynopsis"),
+                   consent_1L_chr = consent_1L_chr, fl_nm_1L_chr = "Supplement", what_1L_chr = x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@ms_dir_1L_chr)
     }
   }else{
     x <- methods::callNextMethod()

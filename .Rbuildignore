@@ -167,3 +167,7 @@
 ^data-raw/fix_authorReport_Ready4showSynopisis\.R$
 ^data-raw/fixes_ready4\.R$
 ^data-raw/fixes_specific\.R$
+^data-raw/s4_fns/exhibit\.R$
+^data-raw/s4_fns/investigate\.R$
+^data-raw/s4_fns/renew\.R$
+^data-raw/s4_fns/share\.R$
