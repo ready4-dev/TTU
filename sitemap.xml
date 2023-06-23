@@ -52,10 +52,16 @@
     <loc>https://ready4-dev.github.io/TTU/reference/deprecated.html</loc>
   </url>
   <url>
+    <loc>https://ready4-dev.github.io/TTU/reference/exhibit-methods.html</loc>
+  </url>
+  <url>
     <loc>https://ready4-dev.github.io/TTU/reference/get_pkg_citation.html</loc>
   </url>
   <url>
     <loc>https://ready4-dev.github.io/TTU/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/TTU/reference/investigate-methods.html</loc>
   </url>
   <url>
     <loc>https://ready4-dev.github.io/TTU/reference/make_report_fl_nms_ls.html</loc>
@@ -70,6 +76,12 @@
     <loc>https://ready4-dev.github.io/TTU/reference/plt_types_lup.html</loc>
   </url>
   <url>
+    <loc>https://ready4-dev.github.io/TTU/reference/renew-methods.html</loc>
+  </url>
+  <url>
     <loc>https://ready4-dev.github.io/TTU/reference/rprt_lup.html</loc>
+  </url>
+  <url>
+    <loc>https://ready4-dev.github.io/TTU/reference/share-methods.html</loc>
   </url>
 </urlset>
