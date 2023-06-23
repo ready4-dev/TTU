@@ -1,6 +1,6 @@
 Package: TTU
 Title: Implement Transfer to Utility Mapping Algorithms
-Version: 0.0.0.9354
+Version: 0.0.0.9355
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -25,21 +25,24 @@ RoxygenNote: 7.2.3
 Imports: 
     dplyr,
     ggplot2,
+    Hmisc,
     knitr,
     lifecycle,
     magrittr,
     methods,
     purrr,
+    R.utils,
     ready4 (>= 0.0.0.9118),
     ready4show (>= 0.0.0.9109),
+    ready4use (>= 0.0.0.9228),
+    rlang,
     stringr,
     testthat,
     utils
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10),
-    scorz (>= 0.0.0.9058),
-    specific (>= 0.0.0.9097)
+    specific
 LazyData: true
 Collate: 
     'C4_TTUSynopsis.R'
@@ -54,16 +57,18 @@ Collate:
     'imp_fns.R'
     'imp_mthds.R'
     'mthd_author.R'
+    'mthd_exhibit.R'
+    'mthd_investigate.R'
+    'mthd_renew.R'
+    'mthd_share.R'
     'pkg_TTU.R'
 Suggests: 
     betareg,
     caret,
     knitrBootstrap,
-    rmarkdown,
-    youthvars (>= 0.0.0.9120)
+    rmarkdown
 Remotes: 
     ready4-dev/ready4,
     ready4-dev/ready4show,
-    ready4-dev/specific,
-    ready4-dev/youthvars,
-    ready4-dev/scorz
+    ready4-dev/ready4use,
+    ready4-dev/specific
