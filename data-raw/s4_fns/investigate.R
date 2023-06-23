@@ -18,7 +18,7 @@ investigate_TTUProject <- function(x,
                     args_ls)
   if(inherits(x@c_SpecificProject, what = "SpecificModels") & !(inherits(x@c_SpecificProject, what = "SpecificFixed")|inherits(x@c_SpecificProject, what = "SpecificMixed")|inherits(x@c_SpecificProject, what = "SpecificPredictors"))){
     args_ls <- append(list(depnt_var_max_val_1L_dbl = ifelse(identical(depnt_var_max_val_1L_dbl, numeric(0)), 1, depnt_var_max_val_1L_dbl),
-                           depnt_var_min_val_1L_dbl = ifelse(identical(depnt_var_max_val_1L_dbl, numeric(0)), -1, depnt_var_max_val_1L_dbl),
+                           depnt_var_min_val_1L_dbl = ifelse(identical(depnt_var_min_val_1L_dbl, numeric(0)), -1, depnt_var_min_val_1L_dbl),
                            session_ls = session_ls),
                       args_ls)
   }

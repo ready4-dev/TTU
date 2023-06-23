@@ -363,8 +363,10 @@ We can now share non-confidential elements (ie no copies of individual records) 
 A <- share(A, types_chr = c("auto", "submission"), what_chr = c("catalogue", "manuscript", "models", "supplement"))
 ```
 
+The dataset we created in the previous step is viewable here:  https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/D74QMP 
+
 ### Tidy workspace
-The preceding steps saved multiple objects (mostly R model objects) that have embedded within them copies of the source dataset. We can now purge all such copies from our output data directory.
+The preceding steps saved multiple objects (mostly R model objects) that have embedded within them copies of the source dataset. To protect the confidentiality of these records we can now purge all such copies from our output data directory.
 
 ```{r eval = F}
 A <- author(A, what_1L_chr = "purge")
