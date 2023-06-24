@@ -11,7 +11,7 @@ fns_env_ls <- ready4fun::read_fns(c("data-raw/fns/","data-raw/mthds/"),
 x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utility Mapping Algorithms",
                                                     pkg_desc_1L_chr = "Tools for developing, reporting and sharing utility mapping algorithms for use with the ready4 youth mental health systems model (https://ready4-dev.github.io/ready4/).
                             This development version of the TTU package has been made available as part of the process of testing and documenting the package.
-                            If you have any questions, please contact the authors (matthew.hamilton@orygen.org.au).",
+                            If you have any questions, please contact the authors (matthew.hamilton1@monash.edu).",
                                                     authors_prsn = c(utils::person(given = "Caroline",family = "Gao",email = "caroline.gao@orygen.org.au", role = c("aut"),comment = c(ORCID = "0000-0002-0987-2759")),
                                                                      utils::person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
                                                                      utils::person("Orygen", role = c("cph", "fnd")),

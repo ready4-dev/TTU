@@ -14,7 +14,7 @@ algorithms for use with the ready4 youth mental health systems model
 (https://ready4-dev.github.io/ready4/).  This development version of
 the TTU package has been made available as part of the process of
 testing and documenting the package.  If you have any questions,
-please contact the authors (matthew.hamilton@orygen.org.au).
+please contact the authors (matthew.hamilton1@monash.edu).
 
 To install a development version of this software, run the following commands in your R console:
 
