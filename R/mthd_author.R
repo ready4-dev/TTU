@@ -229,7 +229,8 @@ methods::setMethod("author", "TTUProject", function (x, consent_1L_chr = "", dep
                 "c_SpecificProject"), consent_1L_chr = consent_1L_chr))
         }
         if (what_1L_chr %in% c("purge")) {
-            authorSlot(x, "c_SpecificProject", type_1L_chr = "purge_write")
+            authorSlot(x, "c_SpecificProject", type_1L_chr = "purge_write", 
+                consent_1L_chr = consent_1L_chr)
         }
         if (what_1L_chr %in% c("plots", "Plots")) {
             authorSlot(x, "d_TTUReports", consent_1L_chr = consent_1L_chr, 
