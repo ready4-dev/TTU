@@ -13,6 +13,7 @@
 #' @importFrom purrr walk map_lgl map_chr
 #' @importFrom Hmisc capitalize
 #' @importFrom ready4 write_fls_to_dv share
+#' @importFrom dplyr filter
 methods::setMethod("share", "TTUProject", function (x, formats_chr = c(".docx", ".pdf", ".tex"), types_chr = "auto", 
     what_chr = c("catalogue", "instrument", "models")) 
 {
@@ -53,7 +54,10 @@ methods::setMethod("share", "TTUProject", function (x, formats_chr = c(".docx", 
     }
     if ("instrument" %in% what_chr) {
         descs_ls <- x@d_TTUReports@a_TTUSynopsis@b_SpecificResults@a_SpecificShareable@shareable_outp_ls$results_ls$study_descs_ls
-        instrument_ls <- list(X_ScorzProfile = x@ScorzProfile, 
+        Y <- x
+        Y@a_ScorzProfile@a_YouthvarsProfile@a_Ready4useDyad@ds_tb <- Y@a_ScorzProfile@a_YouthvarsProfile@a_Ready4useDyad@ds_tb %>% 
+            dplyr::filter(F)
+        instrument_ls <- list(X_ScorzProfile = Y@a_ScorzProfile, 
             depnt_var_nms_chr = c(descs_ls$health_utl_nm_1L_chr, 
                 descs_ls$health_utl_long_nm_1L_chr))
         Y <- share(x@d_TTUReports@a_TTUSynopsis@e_Ready4useRepos, 

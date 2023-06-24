@@ -44,7 +44,9 @@ share_TTUProject <- function(x,
     }
   if("instrument" %in% what_chr){
     descs_ls <- x@d_TTUReports@a_TTUSynopsis@b_SpecificResults@a_SpecificShareable@shareable_outp_ls$results_ls$study_descs_ls
-    instrument_ls <- list(X_ScorzProfile = x@ScorzProfile, depnt_var_nms_chr = c(descs_ls$health_utl_nm_1L_chr, descs_ls$health_utl_long_nm_1L_chr))
+    Y <- x
+    Y@a_ScorzProfile@a_YouthvarsProfile@a_Ready4useDyad@ds_tb <- Y@a_ScorzProfile@a_YouthvarsProfile@a_Ready4useDyad@ds_tb %>% dplyr::filter(F)
+    instrument_ls <- list(X_ScorzProfile = Y@a_ScorzProfile, depnt_var_nms_chr = c(descs_ls$health_utl_nm_1L_chr, descs_ls$health_utl_long_nm_1L_chr))
     Y <- share(x@d_TTUReports@a_TTUSynopsis@e_Ready4useRepos, description_1L_chr = "R list object with details of the utility instrument used in this study.",
                obj_to_share_xx = instrument_ls, fl_nm_1L_chr = "instrument")
   }
