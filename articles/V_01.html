@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">TTU</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9357</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9358</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -518,17 +518,10 @@ have previously supplied and create a local workspace to which output
 files will be written.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="va">A</span>, consent_1L_chr <span class="op">=</span> <span class="va">consent_1L_chr</span>, paths_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, what_1L_chr <span class="op">=</span> <span class="st">"project"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## New directories created:</span></span>
-<span><span class="co">## /tmp/RtmpxAn26H/Fake</span></span>
-<span><span class="co">## /tmp/RtmpxAn26H/Fake/Markdown</span></span>
-<span><span class="co">## /tmp/RtmpxAn26H/Fake/Output</span></span>
-<span><span class="co">## /tmp/RtmpxAn26H/Fake/Reports</span></span>
-<span><span class="co">## /tmp/RtmpxAn26H/Fake/Output/_Descriptives</span></span>
-<span><span class="co">## /tmp/RtmpxAn26H/Fake/Output/H_Dataverse</span></span></code></pre>
 <p>We now generate tables and charts that describe our dataset. These
 are saved in a sub-directory of our output data directory, and are <a href="https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/_Descriptives.zip" class="external-link">available
 for download</a>. One of the plots is also reproduced here.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/author-methods.html" class="external-link">author</a></span><span class="op">(</span><span class="va">A</span>, consent_1L_chr <span class="op">=</span> <span class="va">consent_1L_chr</span>, digits_1L_int <span class="op">=</span> <span class="fl">3L</span>, what_1L_chr <span class="op">=</span> <span class="st">"descriptives"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="V_01_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
 <p>We next compare the performance of different model types. We perform
@@ -539,18 +532,18 @@ different algorithm will be used. The sequence of calls to
 <code>investigate</code> is therefore important (it should be in the
 same order as outlined in this example and you should not attempt to
 repeat a call to <code>investigate</code> to redo a prior step).</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/investigate-methods.html" class="external-link">investigate</a></span><span class="op">(</span><span class="va">A</span>, consent_1L_chr <span class="op">=</span> <span class="va">consent_1L_chr</span>, depnt_var_max_val_1L_dbl <span class="op">=</span> <span class="fl">0.9999</span>, session_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The outputs of the previous command are saved into a sub-directory of
 our output directory. An example of this output is <a href="https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/A_Candidate_Mdls_Cmprsn.zip" class="external-link">available
 for download</a>). Once we inspect this output, we can then specify the
 preferred model types to use from this point onwards.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="va">A</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GLM_GSN_LOG"</span>, <span class="st">"OLS_CLL"</span><span class="op">)</span>, type_1L_chr <span class="op">=</span> <span class="st">"models"</span>, what_1L_chr <span class="op">=</span> <span class="st">"results"</span><span class="op">)</span></span></code></pre></div>
 <p>Next we assess multiple versions of our preferred model type - one
 single predictor model for each of our candidate predictors and the same
 models with candidate covariates added.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/investigate-methods.html" class="external-link">investigate</a></span><span class="op">(</span><span class="va">A</span>, consent_1L_chr <span class="op">=</span> <span class="va">consent_1L_chr</span><span class="op">)</span></span></code></pre></div>
 <p>The previous step saved output into a sub-directory of our output
 directory. Example output is available for download: (<a href="https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/B_Candidate_Predrs_Cmprsn.zip" class="external-link">single
@@ -558,10 +551,10 @@ predictor comparisons</a>) and <a href="https://github.com/ready4-dev/TTU/releas
 model comparisons</a>. After reviewing this output, we can specify the
 covariates we wish to add to the models we will assess from this point
 forward.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"SOFAS"</span>, type_1L_chr <span class="op">=</span> <span class="st">"covariates"</span>, what_1L_chr <span class="op">=</span> <span class="st">"results"</span><span class="op">)</span></span></code></pre></div>
 <p>We can now assess the multivariate models.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/investigate-methods.html" class="external-link">investigate</a></span><span class="op">(</span><span class="va">A</span>, consent_1L_chr <span class="op">=</span> <span class="va">consent_1L_chr</span><span class="op">)</span></span></code></pre></div>
 <p>As a result of the previous step, more model objects and plot files
 have been saved to a sub-directory of our output directory. Examples of
@@ -572,11 +565,11 @@ in the previous step so that they are suitable for modelling
 longitudinal change. For our primary analysis, we use a mixed model
 formulation of the models that we previously selected. A series of large
 model files are written to the local output data directory.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/investigate-methods.html" class="external-link">investigate</a></span><span class="op">(</span><span class="va">A</span>, consent_1L_chr <span class="op">=</span> <span class="va">consent_1L_chr</span><span class="op">)</span></span></code></pre></div>
 <p>For our secondary analyses, we specify alternative combinations of
 predictors and covariates.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/investigate-methods.html" class="external-link">investigate</a></span><span class="op">(</span><span class="va">A</span>, consent_1L_chr <span class="op">=</span> <span class="va">consent_1L_chr</span>,</span>
 <span>                 scndry_anlys_params_ls <span class="op">=</span> <span class="fu"><a href="https://ready4-dev.github.io/specific/reference/make_scndry_anlys_params.html" class="external-link">make_scndry_anlys_params</a></span><span class="op">(</span>candidate_predrs_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SOFAS"</span><span class="op">)</span>,</span>
 <span>                                                                   candidate_covar_nms_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"d_sex_birth_s"</span>, <span class="st">"d_age"</span>, <span class="st">"d_sexual_ori_s"</span>, <span class="st">"d_studying_working"</span><span class="op">)</span>,</span>
@@ -599,7 +592,7 @@ source dataset. We can overcome these limitations by creating shareable
 versions of the models. Two types of shareable version are created -
 copies of the original model objects in which fake data overwrites the
 original source data and summary tables of model coefficients.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/author-methods.html" class="external-link">author</a></span><span class="op">(</span><span class="va">A</span>, consent_1L_chr <span class="op">=</span> <span class="va">consent_1L_chr</span>, what_1L_chr <span class="op">=</span> <span class="st">"models"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -607,13 +600,13 @@ original source data and summary tables of model coefficients.</p>
 </h4>
 <p>We update <code>A</code> so that we can begin use it to render and
 share reports.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="va">A</span>, what_1L_chr <span class="op">=</span> <span class="st">"reporting"</span><span class="op">)</span></span></code></pre></div>
 <p>We add metadata relevant to the reports that we will be generating to
 these fields. Note that the data we supply to the Ready4useRepos object
 below must relate to a repository to which we have write permissions
 (otherwise subsequent steps will fail).</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="va">A</span>, <span class="fu">ready4show</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/ready4show/reference/authors_tb.html" class="external-link">authors_tb</a></span>, type_1L_chr <span class="op">=</span> <span class="st">"authors"</span>, what_1L_chr <span class="op">=</span> <span class="st">"reporting"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="fu">ready4show</span><span class="fu">::</span><span class="va"><a href="https://ready4-dev.github.io/ready4show/reference/institutes_tb.html" class="external-link">institutes_tb</a></span>, type_1L_chr <span class="op">=</span> <span class="st">"institutes"</span>, what_1L_chr <span class="op">=</span> <span class="st">"reporting"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3L</span>,<span class="fl">3L</span><span class="op">)</span>, type_1L_chr <span class="op">=</span> <span class="st">"digits"</span>, what_1L_chr <span class="op">=</span> <span class="st">"reporting"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -628,14 +621,14 @@ below must relate to a repository to which we have write permissions
 <p>We download a program for generating a catalogue of models and use it
 to summarising the models created under each study analysis (one primary
 and two secondary). The catalogues are saved locally.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/author-methods.html" class="external-link">author</a></span><span class="op">(</span><span class="va">A</span>, consent_1L_chr <span class="op">=</span> <span class="va">consent_1L_chr</span>, download_tmpl_1L_lgl <span class="op">=</span> <span class="cn">T</span>, what_1L_chr <span class="op">=</span> <span class="st">"catalogue"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="author-manuscript">Author manuscript<a class="anchor" aria-label="anchor" href="#author-manuscript"></a>
 </h4>
 <p>We add some content about the manuscript we wish to author.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"Quality Adjusted Life Years (QALYs) are often used in economic evaluations, yet utility weights for deriving them are rarely directly measured in mental health services."</span>, </span>
 <span>           type_1L_chr <span class="op">=</span> <span class="st">"background"</span>, what_1L_chr <span class="op">=</span> <span class="st">"reporting"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="st">"None declared"</span>, type_1L_chr <span class="op">=</span> <span class="st">"conflicts"</span>, what_1L_chr <span class="op">=</span> <span class="st">"reporting"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
@@ -647,22 +640,22 @@ and two secondary). The catalogues are saved locally.</p>
 <span>  <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="st">"The study sample is fake data."</span>, type_1L_chr <span class="op">=</span> <span class="st">"sample"</span>, what_1L_chr <span class="op">=</span> <span class="st">"reporting"</span><span class="op">)</span> </span></code></pre></div>
 <p>We create a brief summary of results that can be interpreted by the
 program that authors the manuscript.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="va">A</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AQoL-6D"</span>, <span class="st">"Adolescent AQoL Six Dimension"</span><span class="op">)</span>, type_1L_chr <span class="op">=</span> <span class="st">"naming"</span>, what_1L_chr <span class="op">=</span> <span class="st">"reporting"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"use_renew_mthd"</span>, type_1L_chr <span class="op">=</span> <span class="st">"abstract"</span>, what_1L_chr <span class="op">=</span> <span class="st">"reporting"</span><span class="op">)</span></span></code></pre></div>
 <p>We create and save the plots that will be used in the manuscript.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/author-methods.html" class="external-link">author</a></span><span class="op">(</span><span class="va">A</span>, consent_1L_chr <span class="op">=</span> <span class="va">consent_1L_chr</span>, what_1L_chr <span class="op">=</span> <span class="st">"plots"</span><span class="op">)</span></span></code></pre></div>
 <p>We download a program for generating a template manuscript and run it
 to author a first draft of the manuscript.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/author-methods.html" class="external-link">author</a></span><span class="op">(</span><span class="va">A</span>, consent_1L_chr <span class="op">=</span> <span class="va">consent_1L_chr</span>, download_tmpl_1L_lgl <span class="op">=</span> <span class="cn">T</span>, what_1L_chr <span class="op">=</span> <span class="st">"manuscript"</span><span class="op">)</span></span></code></pre></div>
 <p>We can copy the RMarkdown files that created the template manuscript
 to a new directory (called “Manuscript_Submission”) so that we can then
 manually edit those files to produce a manuscript that we can submit for
 publication.</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/author-methods.html" class="external-link">author</a></span><span class="op">(</span><span class="va">A</span>, consent_1L_chr <span class="op">=</span> <span class="va">consent_1L_chr</span>, type_1L_chr <span class="op">=</span> <span class="st">"copy"</span>, what_1L_chr <span class="op">=</span> <span class="st">"manuscript"</span><span class="op">)</span></span></code></pre></div>
 <p>At this point in the workflow, additional steps are required to adapt
 / author the manuscript that will be submitted for publication. However,
@@ -680,7 +673,7 @@ within) the main body of the manuscript. Note that the Word version of
 the manuscript generated by these values will require some minor
 formatting edits (principally to the display of tables and numbering of
 sections).</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="va">A</span>, <span class="cn">F</span>, type_1L_chr <span class="op">=</span> <span class="st">"figures-body"</span>, what_1L_chr <span class="op">=</span> <span class="st">"reporting"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="cn">F</span>, type_1L_chr <span class="op">=</span> <span class="st">"tables-body"</span>, what_1L_chr <span class="op">=</span> <span class="st">"reporting"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Word"</span>,<span class="st">"PDF"</span><span class="op">)</span>, type_1L_chr <span class="op">=</span> <span class="st">"formats"</span>, what_1L_chr <span class="op">=</span> <span class="st">"reporting"</span><span class="op">)</span></span></code></pre></div>
@@ -690,11 +683,11 @@ author the manuscript. If we are using a custom manuscript authoring
 program downloaded from an online repository the
 <code>download_tmpl_1L_lgl</code> argument will need to be set to
 <code>T</code>.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/author-methods.html" class="external-link">author</a></span><span class="op">(</span><span class="va">A</span>, consent_1L_chr <span class="op">=</span> <span class="va">consent_1L_chr</span>, download_tmpl_1L_lgl <span class="op">=</span> <span class="cn">F</span>, type_1L_chr<span class="op">=</span><span class="st">"submission"</span>, what_1L_chr <span class="op">=</span> <span class="st">"manuscript"</span><span class="op">)</span></span></code></pre></div>
 <p>We can now generate the Supplementary Information for the submission
 manuscript.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/author-methods.html" class="external-link">author</a></span><span class="op">(</span><span class="va">A</span>, consent_1L_chr <span class="op">=</span> <span class="va">consent_1L_chr</span>, supplement_fl_nm_1L_chr <span class="op">=</span> <span class="st">"TA_PDF"</span>, type_1L_chr<span class="op">=</span><span class="st">"submission"</span>, what_1L_chr <span class="op">=</span> <span class="st">"supplement"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -705,14 +698,14 @@ manuscript.</p>
 individual records) of the outputs that we have created via our study
 online repository. To run this step you will need write permissions to
 the online repository. In the below step we are sharing model
-catalogues, the shareable models (designed to be used in conjunction
-with the <a href="https://ready4-dev.github.io/youthu/index.html" class="external-link">youthu</a>
+catalogues, details of the utility instrument, the shareable mapping
+models (designed to be used in conjunction with the <a href="https://ready4-dev.github.io/youthu/index.html" class="external-link">youthu</a>
 package), our manuscript files and our supplementary information. In
 most real world studies the manuscript would not be shared via an online
 repository - the <code>what_chr</code> argument would need to be
 ammended to reflect this.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/share-methods.html" class="external-link">share</a></span><span class="op">(</span><span class="va">A</span>, types_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"submission"</span><span class="op">)</span>, what_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"catalogue"</span>, <span class="st">"manuscript"</span>, <span class="st">"models"</span>, <span class="st">"supplement"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/share-methods.html" class="external-link">share</a></span><span class="op">(</span><span class="va">A</span>, types_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"submission"</span><span class="op">)</span>, what_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"catalogue"</span>, <span class="st">"instrument"</span> ,<span class="st">"manuscript"</span>, <span class="st">"models"</span>, <span class="st">"supplement"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The dataset we created in the previous step is viewable here: <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/D74QMP" class="external-link uri">https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/D74QMP</a></p>
 </div>
 <div class="section level3">
@@ -722,7 +715,7 @@ ammended to reflect this.</p>
 that have embedded within them copies of the source dataset. To protect
 the confidentiality of these records we can now purge all such copies
 from our output data directory.</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/author-methods.html" class="external-link">author</a></span><span class="op">(</span><span class="va">A</span>, what_1L_chr <span class="op">=</span> <span class="st">"purge"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
