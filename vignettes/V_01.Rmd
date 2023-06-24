@@ -171,7 +171,7 @@ A <- renew(A, T, type_1L_chr = "is_fake", what_1L_chr = "parameters")
 
 We update `A` for internal consistency with the values we have previously supplied and create a local workspace to which output files will be written.
 
-```{r}
+```{r message=FALSE, results='hide', warning=FALSE}
 A <- renew(A, consent_1L_chr = consent_1L_chr, paths_chr = tempdir(), what_1L_chr = "project")
 ```
 
@@ -357,10 +357,10 @@ A <- author(A, consent_1L_chr = consent_1L_chr, supplement_fl_nm_1L_chr = "TA_PD
 ```
 
 ### Share outputs
-We can now share non-confidential elements (ie no copies of individual records) of the outputs that we have created via our study online repository. To run this step you will need write permissions to the online repository. In the below step we are sharing model catalogues, the shareable models (designed to be used in conjunction with the [youthu](https://ready4-dev.github.io/youthu/index.html) package), our manuscript files and our supplementary information. In most real world studies the manuscript would not be shared via an online repository - the `what_chr` argument would need to be ammended to reflect this.
+We can now share non-confidential elements (ie no copies of individual records) of the outputs that we have created via our study online repository. To run this step you will need write permissions to the online repository. In the below step we are sharing model catalogues, details of the utility instrument, the shareable mapping models (designed to be used in conjunction with the [youthu](https://ready4-dev.github.io/youthu/index.html) package), our manuscript files and our supplementary information. In most real world studies the manuscript would not be shared via an online repository - the `what_chr` argument would need to be ammended to reflect this.
 
 ```{r eval=FALSE}
-A <- share(A, types_chr = c("auto", "submission"), what_chr = c("catalogue", "manuscript", "models", "supplement"))
+A <- share(A, types_chr = c("auto", "submission"), what_chr = c("catalogue", "instrument" ,"manuscript", "models", "supplement"))
 ```
 
 The dataset we created in the previous step is viewable here:  https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/D74QMP 

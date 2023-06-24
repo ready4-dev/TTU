@@ -153,13 +153,32 @@ author_TTUProject <- function(x,
                               depnt_var_min_val_1L_dbl = numeric(0),
                               digits_1L_int = 2L,
                               download_tmpl_1L_lgl = T,
+                              fl_nm_1L_chr = "TTUProject",
                               supplement_fl_nm_1L_chr = "TA_PDF",
                               timepoint_new_nms_chr = NA_character_,
                               type_1L_chr = "auto",
                               what_1L_chr = "default",
                               ...){
   if(what_1L_chr %in% c("catalogue","Catalogue","dependencies", "Dependencies", "descriptives", "Descriptives", "manuscript", "Manuscript", "models", "Models",
-                        "plots", "Plots", "purge", "Purge",  "supplement", "Supplement")){
+                        "plots", "Plots", "purge", "Purge", "self", "Self",  "supplement", "Supplement")){
+    if(what_1L_chr %in% c("self", "Self")){
+      to_1L_chr <- paste0(x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
+                          "/",
+                          fl_nm_1L_chr,
+                          ".RDS")
+      ready4::write_with_consent(consented_fn = saveRDS,
+                                 prompt_1L_chr = paste0("Do you confirm that you want to write a copy of this TTUProject module to ",
+                                                        to_1L_chr,
+                                                        "?"),
+                                 consent_1L_chr = consent_1L_chr,
+                                 consented_args_ls = list(object = x,
+                                                          file = to_1L_chr),
+                                 consented_msg_1L_chr = paste0("A copy of this TTUProject module has been written to ",
+                                                               to_1L_chr,
+                                                               "."),
+                                 declined_msg_1L_chr = "Write request cancelled - no new file has been written.")
+    }
+
     if(what_1L_chr %in% c("catalogue","Catalogue")){
       authorSlot(x, "d_TTUReports", consent_1L_chr = consent_1L_chr, download_tmpl_1L_lgl = download_tmpl_1L_lgl, what_1L_chr = Hmisc::capitalize(what_1L_chr))
     }
@@ -176,13 +195,13 @@ author_TTUProject <- function(x,
         authorSlot(x, "d_TTUReports", consent_1L_chr = consent_1L_chr, download_tmpl_1L_lgl = download_tmpl_1L_lgl, type_1L_chr = "Report", what_1L_chr = x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@ms_dir_1L_chr)
       }
       if(type_1L_chr == "copy"){
-        from_1L_chr <- paste0(A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
+        from_1L_chr <- paste0(x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
                               "/",
-                              A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@mkdn_data_dir_1L_chr,
+                              x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@mkdn_data_dir_1L_chr,
                               "/Manuscript_Auto")
-        to_1L_chr <- paste0(A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
+        to_1L_chr <- paste0(x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr,
                             "/",
-                            A@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@mkdn_data_dir_1L_chr,
+                            x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@mkdn_data_dir_1L_chr,
                             "/Manuscript_Submission")
         ready4::write_with_consent(consented_fn = R.utils::copyDirectory,
                                    prompt_1L_chr = paste0("Do you confirm that you want to copy the directory ",

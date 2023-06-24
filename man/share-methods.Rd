@@ -9,7 +9,7 @@
   x,
   formats_chr = c(".docx", ".pdf", ".tex"),
   types_chr = "auto",
-  what_chr = c("catalogue", "models")
+  what_chr = c("catalogue", "instrument", "models")
 )
 }
 \arguments{
@@ -19,7 +19,7 @@
 
 \item{types_chr}{Types (a character vector), Default: 'auto'}
 
-\item{what_chr}{What (a character vector), Default: c("catalogue", "models")}
+\item{what_chr}{What (a character vector), Default: c("catalogue", "instrument", "models")}
 }
 \value{
 x (An object of class TTUProject)

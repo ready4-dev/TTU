@@ -27,6 +27,7 @@
   depnt_var_min_val_1L_dbl = numeric(0),
   digits_1L_int = 2L,
   download_tmpl_1L_lgl = T,
+  fl_nm_1L_chr = "TTUProject",
   supplement_fl_nm_1L_chr = "TA_PDF",
   timepoint_new_nms_chr = NA_character_,
   type_1L_chr = "auto",
@@ -58,6 +59,8 @@
 \item{...}{Additional arguments}
 
 \item{digits_1L_int}{Digits (an integer vector of length one), Default: 2}
+
+\item{fl_nm_1L_chr}{File name (a character vector of length one), Default: 'TTUProject'}
 
 \item{supplement_fl_nm_1L_chr}{Supplement file name (a character vector of length one), Default: 'TA_PDF'}
 }
