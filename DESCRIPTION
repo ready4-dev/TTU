@@ -1,6 +1,6 @@
 Package: TTU
 Title: Implement Transfer to Utility Mapping Algorithms
-Version: 0.0.0.9356
+Version: 0.0.0.9357
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -15,7 +15,7 @@ Description: Tools for developing, reporting and sharing utility mapping
     (https://ready4-dev.github.io/ready4/).  This development version of
     the TTU package has been made available as part of the process of
     testing and documenting the package.  If you have any questions,
-    please contact the authors (matthew.hamilton@orygen.org.au).
+    please contact the authors (matthew.hamilton1@monash.edu).
 License: GPL-3 + file LICENSE
 URL: https://ready4-dev.github.io/TTU/, https://github.com/ready4-dev/TTU,
     https://ready4-dev.github.io/ready4/
@@ -34,7 +34,7 @@ Imports:
     R.utils,
     ready4 (>= 0.0.0.9118),
     ready4show (>= 0.0.0.9109),
-    ready4use (>= 0.0.0.9228),
+    ready4use (>= 0.0.0.9229),
     rlang,
     stringr,
     testthat,
@@ -42,8 +42,7 @@ Imports:
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10),
-    scorz (>= 0.0.0.9058),
-    specific (>= 0.0.0.9098)
+    specific
 LazyData: true
 Collate: 
     'C4_TTUSynopsis.R'
@@ -67,12 +66,9 @@ Suggests:
     betareg,
     caret,
     knitrBootstrap,
-    rmarkdown,
-    youthvars (>= 0.0.0.9120)
+    rmarkdown
 Remotes: 
     ready4-dev/ready4,
     ready4-dev/ready4show,
     ready4-dev/ready4use,
-    ready4-dev/specific,
-    ready4-dev/youthvars,
-    ready4-dev/scorz
+    ready4-dev/specific
