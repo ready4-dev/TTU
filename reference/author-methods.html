@@ -12,7 +12,7 @@ author method applied to TTUProject"><meta property="og:image" content="https://
     
     <a class="navbar-brand me-2" href="../index.html">TTU</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9360</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9361</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,10 +82,13 @@ author method applied to TTUProject"><meta property="og:image" content="https://
 <span><span class="fu">author</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  consent_1L_chr <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  custom_args_ls <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  custom_fn <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  depnt_var_min_val_1L_dbl <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span>,</span>
 <span>  digits_1L_int <span class="op">=</span> <span class="fl">2L</span>,</span>
 <span>  download_tmpl_1L_lgl <span class="op">=</span> <span class="cn">T</span>,</span>
 <span>  fl_nm_1L_chr <span class="op">=</span> <span class="st">"TTUProject"</span>,</span>
+<span>  items_as_domains_1L_lgl <span class="op">=</span> <span class="cn">F</span>,</span>
 <span>  supplement_fl_nm_1L_chr <span class="op">=</span> <span class="st">"TA_PDF"</span>,</span>
 <span>  timepoint_new_nms_chr <span class="op">=</span> <span class="cn">NA_character_</span>,</span>
 <span>  type_1L_chr <span class="op">=</span> <span class="st">"auto"</span>,</span>
@@ -140,12 +143,24 @@ author method applied to TTUProject"><meta property="og:image" content="https://
 <dd><p>Additional arguments</p></dd>
 
 
+<dt>custom_args_ls</dt>
+<dd><p>Custom arguments (a list), Default: NULL</p></dd>
+
+
+<dt>custom_fn</dt>
+<dd><p>Custom (a function), Default: NULL</p></dd>
+
+
 <dt>digits_1L_int</dt>
 <dd><p>Digits (an integer vector of length one), Default: 2</p></dd>
 
 
 <dt>fl_nm_1L_chr</dt>
 <dd><p>File name (a character vector of length one), Default: 'TTUProject'</p></dd>
+
+
+<dt>items_as_domains_1L_lgl</dt>
+<dd><p>Items as domains (a logical vector of length one), Default: F</p></dd>
 
 
 <dt>supplement_fl_nm_1L_chr</dt>
