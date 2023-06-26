@@ -5,10 +5,47 @@
 \alias{exhibit,TTUProject-method}
 \title{Exhibit features of a dataset by printing them to the R console}
 \usage{
-\S4method{exhibit}{TTUProject}(x, what_1L_chr = "predictors", ...)
+\S4method{exhibit}{TTUProject}(
+  x,
+  captions_chr = NULL,
+  display_1L_chr = "all",
+  header_1L_chr = "",
+  header_col_nms_chr = " ",
+  mkdn_tbl_refs_chr = NULL,
+  profile_idx_int = NA_integer_,
+  output_type_1L_chr = "HTML",
+  type_1L_chr = "default",
+  use_lbls_as_col_nms_1L_lgl = T,
+  use_rdocx_1L_lgl = F,
+  variables_chr = character(0),
+  what_1L_chr = "predictors",
+  ...
+)
 }
 \arguments{
 \item{x}{An object of class TTUProject}
+
+\item{captions_chr}{Captions (a character vector), Default: NULL}
+
+\item{display_1L_chr}{Display (a character vector of length one), Default: 'all'}
+
+\item{header_1L_chr}{Header (a character vector of length one), Default: ''}
+
+\item{header_col_nms_chr}{Header column names (a character vector), Default: ' '}
+
+\item{mkdn_tbl_refs_chr}{Markdown table references (a character vector), Default: NULL}
+
+\item{profile_idx_int}{Profile index (an integer vector), Default: NA}
+
+\item{output_type_1L_chr}{Output type (a character vector of length one), Default: 'HTML'}
+
+\item{type_1L_chr}{Type (a character vector of length one), Default: 'default'}
+
+\item{use_lbls_as_col_nms_1L_lgl}{Use labels as column names (a logical vector of length one), Default: T}
+
+\item{use_rdocx_1L_lgl}{Use rdocx (a logical vector of length one), Default: F}
+
+\item{variables_chr}{Variables (a character vector), Default: character(0)}
 
 \item{what_1L_chr}{What (a character vector of length one), Default: 'predictors'}
 

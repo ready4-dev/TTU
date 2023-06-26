@@ -171,3 +171,5 @@
 ^data-raw/s4_fns/investigate\.R$
 ^data-raw/s4_fns/renew\.R$
 ^data-raw/s4_fns/share\.R$
+^data-raw/s4_fns/manufacture\.R$
+^data-raw/s4_fns/procure\.R$

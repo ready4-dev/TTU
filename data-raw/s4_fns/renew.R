@@ -41,17 +41,31 @@ renew_TTUProject <- function(x,
     }
   }
   if(what_1L_chr == "project"){
-    x <- renewSlot(x, "c_SpecificProject", SpecificModels(a_YouthvarsProfile = x@a_ScorzProfile@a_YouthvarsProfile,
-                                                          b_SpecificParameters = x@b_SpecificParameters, paths_chr = paths_chr))
-    x <- ratifySlot(x, "c_SpecificProject")
-    x <- renewSlot(x, "c_SpecificProject", authorSlot(x, "c_SpecificProject", consent_1L_chr = consent_1L_chr, what_1L_chr = "workspace"))
+    if(type_1L_chr == "default"){
+      x <- renewSlot(x, "c_SpecificProject", SpecificModels(a_YouthvarsProfile = x@a_ScorzProfile@a_YouthvarsProfile,
+                                                            b_SpecificParameters = x@b_SpecificParameters, paths_chr = paths_chr))
+      x <- ratifySlot(x, "c_SpecificProject")
+      x <- renewSlot(x, "c_SpecificProject", authorSlot(x, "c_SpecificProject", consent_1L_chr = consent_1L_chr, what_1L_chr = "workspace"))
+    }
+    if(type_1L_chr == "dummys"){
+      x <- renewSlot(x, "c_SpecificProject", renew(x@c_SpecificProject, new_val_xx, what_1L_chr = type_1L_chr))
+    }
+  }
+  if(what_1L_chr == "records"){
+    if(type_1L_chr == "ds"){
+      x <- renewSlot(x, "a_ScorzProfile@a_YouthvarsProfile@a_Ready4useDyad@ds_tb", new_val_xx)
+    }
+    if(type_1L_chr == "dict"){
+      x <- renewSlot(x, "a_ScorzProfile@a_YouthvarsProfile@a_Ready4useDyad@dictionary_r3", new_val_xx)
+    }
+
   }
   if(what_1L_chr == "reporting"){
     if(type_1L_chr == "default"){
-        Y <- metamorphoseSlot(x, "c_SpecificProject")
-        Y <- TTUSynopsis(a_Ready4showPaths = Y@a_Ready4showPaths, b_SpecificResults = Y@b_SpecificResults, c_SpecificParameters = Y@c_SpecificParameters,
-                         d_YouthvarsProfile = Y@d_YouthvarsProfile, rmd_fl_nms_ls = Y@rmd_fl_nms_ls)
-        Y <- TTUReports(a_TTUSynopsis = Y)
+      Y <- metamorphoseSlot(x, "c_SpecificProject")
+      Y <- TTUSynopsis(a_Ready4showPaths = Y@a_Ready4showPaths, b_SpecificResults = Y@b_SpecificResults, c_SpecificParameters = Y@c_SpecificParameters,
+                       d_YouthvarsProfile = Y@d_YouthvarsProfile, rmd_fl_nms_ls = Y@rmd_fl_nms_ls)
+      Y <- TTUReports(a_TTUSynopsis = Y)
       x <- renewSlot(x, "d_TTUReports", Y)
     }
     if(type_1L_chr == "abstract"){
