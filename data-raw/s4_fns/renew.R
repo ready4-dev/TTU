@@ -17,7 +17,7 @@ renew_TTUProject <- function(x,
     }
     if(type_1L_chr=="predictors_lup"){
       if(new_val_xx == "use_renew_mthd"){
-        predictors_lup <- Ready4useRepos(dv_nm_1L_chr = "TTU", dv_ds_nm_1L_chr = "https://doi.org/10.7910/DVN/DKDIB0", dv_server_1L_chr = "dataverse.harvard.edu") %>%
+        predictors_lup <- y_Ready4useRepos %>%
           ingest(fls_to_ingest_chr = c(fl_nm_1L_chr), metadata_1L_lgl = F)
       }else{
         predictors_lup <- new_val_xx

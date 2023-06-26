@@ -132,10 +132,13 @@ methods::setMethod("author", "TTUReports", function (x, args_ls = NULL, consent_
 #' @description author method applied to TTUProject
 #' @param x An object of class TTUProject
 #' @param consent_1L_chr Consent (a character vector of length one), Default: ''
+#' @param custom_args_ls Custom arguments (a list), Default: NULL
+#' @param custom_fn Custom (a function), Default: NULL
 #' @param depnt_var_min_val_1L_dbl Dependent variable minimum value (a double vector of length one), Default: numeric(0)
 #' @param digits_1L_int Digits (an integer vector of length one), Default: 2
 #' @param download_tmpl_1L_lgl Download template (a logical vector of length one), Default: T
 #' @param fl_nm_1L_chr File name (a character vector of length one), Default: 'TTUProject'
+#' @param items_as_domains_1L_lgl Items as domains (a logical vector of length one), Default: F
 #' @param supplement_fl_nm_1L_chr Supplement file name (a character vector of length one), Default: 'TA_PDF'
 #' @param timepoint_new_nms_chr Timepoint new names (a character vector), Default: 'NA'
 #' @param type_1L_chr Type (a character vector of length one), Default: 'auto'
@@ -150,8 +153,9 @@ methods::setMethod("author", "TTUReports", function (x, args_ls = NULL, consent_
 #' @importFrom R.utils copyDirectory
 #' @importFrom ready4show make_rmd_fl_nms_ls
 #' @importFrom methods callNextMethod
-methods::setMethod("author", "TTUProject", function (x, consent_1L_chr = "", depnt_var_min_val_1L_dbl = numeric(0), 
-    digits_1L_int = 2L, download_tmpl_1L_lgl = T, fl_nm_1L_chr = "TTUProject", 
+methods::setMethod("author", "TTUProject", function (x, consent_1L_chr = "", custom_args_ls = NULL, custom_fn = NULL, 
+    depnt_var_min_val_1L_dbl = numeric(0), digits_1L_int = 2L, 
+    download_tmpl_1L_lgl = T, fl_nm_1L_chr = "TTUProject", items_as_domains_1L_lgl = F, 
     supplement_fl_nm_1L_chr = "TA_PDF", timepoint_new_nms_chr = NA_character_, 
     type_1L_chr = "auto", what_1L_chr = "default", ...) 
 {
@@ -175,9 +179,19 @@ methods::setMethod("author", "TTUProject", function (x, consent_1L_chr = "", dep
                 what_1L_chr = Hmisc::capitalize(what_1L_chr))
         }
         if (what_1L_chr %in% c("descriptives", "Descriptives")) {
+            if (items_as_domains_1L_lgl == T) {
+                x_labels_chr <- manufacture(x@a_ScorzProfile, 
+                  what_1L_chr = "domains", custom_args_ls = list(string = x@b_SpecificParameters@itm_labels_chr), 
+                  custom_fn = Hmisc::capitalize)
+            }
+            else {
+                x_labels_chr <- manufacture(x@a_ScorzProfile, 
+                  what_1L_chr = "domains")
+            }
             x <- renewSlot(x, "c_SpecificProject", authorSlot(x, 
                 "c_SpecificProject", consent_1L_chr = consent_1L_chr, 
-                digits_1L_int = digits_1L_int, what_1L_chr = tolower(what_1L_chr)))
+                digits_1L_int = digits_1L_int, what_1L_chr = tolower(what_1L_chr), 
+                x_labels_chr = x_labels_chr))
         }
         if (what_1L_chr %in% c("manuscript", "Manuscript")) {
             if (type_1L_chr == "auto") {

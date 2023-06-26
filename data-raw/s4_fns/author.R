@@ -150,10 +150,13 @@ author_TTUReports <- function(x,
 }
 author_TTUProject <- function(x,
                               consent_1L_chr = "",
+                              custom_args_ls = NULL,
+                              custom_fn = NULL,
                               depnt_var_min_val_1L_dbl = numeric(0),
                               digits_1L_int = 2L,
                               download_tmpl_1L_lgl = T,
                               fl_nm_1L_chr = "TTUProject",
+                              items_as_domains_1L_lgl = F,
                               supplement_fl_nm_1L_chr = "TA_PDF",
                               timepoint_new_nms_chr = NA_character_,
                               type_1L_chr = "auto",
@@ -183,11 +186,18 @@ author_TTUProject <- function(x,
       authorSlot(x, "d_TTUReports", consent_1L_chr = consent_1L_chr, download_tmpl_1L_lgl = download_tmpl_1L_lgl, what_1L_chr = Hmisc::capitalize(what_1L_chr))
     }
     if(what_1L_chr %in% c("descriptives","Descriptives")){
+      if(items_as_domains_1L_lgl == T){
+        x_labels_chr <- manufacture(x@a_ScorzProfile, what_1L_chr = "domains",
+                                    custom_args_ls = list(string = x@b_SpecificParameters@itm_labels_chr), custom_fn = Hmisc::capitalize)
+      }else{
+        x_labels_chr <- manufacture(x@a_ScorzProfile, what_1L_chr = "domains")
+      }
       x <- renewSlot(x, "c_SpecificProject",
                      authorSlot(x, "c_SpecificProject",
                                 consent_1L_chr = consent_1L_chr,
                                 digits_1L_int = digits_1L_int,
-                                what_1L_chr = tolower(what_1L_chr)))
+                                what_1L_chr = tolower(what_1L_chr),
+                                x_labels_chr = x_labels_chr))
     }
     if(what_1L_chr %in% c("manuscript", "Manuscript")){
       if(type_1L_chr=="auto"){

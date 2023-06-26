@@ -24,10 +24,13 @@
 \S4method{author}{TTUProject}(
   x,
   consent_1L_chr = "",
+  custom_args_ls = NULL,
+  custom_fn = NULL,
   depnt_var_min_val_1L_dbl = numeric(0),
   digits_1L_int = 2L,
   download_tmpl_1L_lgl = T,
   fl_nm_1L_chr = "TTUProject",
+  items_as_domains_1L_lgl = F,
   supplement_fl_nm_1L_chr = "TA_PDF",
   timepoint_new_nms_chr = NA_character_,
   type_1L_chr = "auto",
@@ -58,9 +61,15 @@
 
 \item{...}{Additional arguments}
 
+\item{custom_args_ls}{Custom arguments (a list), Default: NULL}
+
+\item{custom_fn}{Custom (a function), Default: NULL}
+
 \item{digits_1L_int}{Digits (an integer vector of length one), Default: 2}
 
 \item{fl_nm_1L_chr}{File name (a character vector of length one), Default: 'TTUProject'}
+
+\item{items_as_domains_1L_lgl}{Items as domains (a logical vector of length one), Default: F}
 
 \item{supplement_fl_nm_1L_chr}{Supplement file name (a character vector of length one), Default: 'TA_PDF'}
 }

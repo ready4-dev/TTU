@@ -13,7 +13,7 @@ x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utili
                             This development version of the TTU package has been made available as part of the process of testing and documenting the package.
                             If you have any questions, please contact the authors (matthew.hamilton1@monash.edu).",
                                                     authors_prsn = c(utils::person(given = "Caroline",family = "Gao",email = "caroline.gao@orygen.org.au", role = c("aut"),comment = c(ORCID = "0000-0002-0987-2759")),
-                                                                     utils::person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton@orygen.org.au", role = c("aut", "cre"),comment = c(ORCID = "0000-0001-7407-9194")),
+                                                                     utils::person(given = "Matthew",family = "Hamilton",email = "matthew.hamilton1@monash.edu", role = c("aut", "cre", "fnd"),comment = c(ORCID = "0000-0001-7407-9194")),
                                                                      utils::person("Orygen", role = c("cph", "fnd")),
                                                                      utils::person("Headspace", role = c( "fnd")),
                                                                      utils::person("National Health and Medical Research Council", role = c( "fnd"))),
@@ -211,4 +211,4 @@ devtools::build_vignettes()
 #                           tag = paste0("v",desc::desc_get_version()),
 #                           body = "Version implemented following significant redevelopment of package dependencies.",
 #                           prerelease = F)
-# devtools::build_vignettes()
+
