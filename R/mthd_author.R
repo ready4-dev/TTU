@@ -12,6 +12,7 @@
 #' @param timepoint_new_nms_chr Timepoint new names (a character vector), Default: 'NA'
 #' @param type_1L_chr Type (a character vector of length one), Default: 'Report'
 #' @param what_1L_chr What (a character vector of length one), Default: 'NA'
+#' @param x_labels_chr X labels (a character vector), Default: character(0)
 #' @param ... Additional arguments
 #' @return NULL
 #' @rdname author-methods
@@ -26,7 +27,8 @@
 methods::setMethod("author", "TTUReports", function (x, args_ls = NULL, consent_1L_chr = "", depnt_var_desc_1L_chr = NA_character_, 
     depnt_var_min_val_1L_dbl = numeric(0), download_tmpl_1L_lgl = T, 
     fl_type_1L_chr = ".eps", timepoint_new_nms_chr = NA_character_, 
-    type_1L_chr = "Report", what_1L_chr = NA_character_, ...) 
+    type_1L_chr = "Report", what_1L_chr = NA_character_, x_labels_chr = character(0), 
+    ...) 
 {
     if (type_1L_chr == "Report") {
         if (download_tmpl_1L_lgl) {
@@ -103,7 +105,8 @@ methods::setMethod("author", "TTUReports", function (x, args_ls = NULL, consent_
                 timepoint_new_nms_chr = timepoint_new_nms_chr, 
                 what_1L_chr = "composite_mdl", write_1L_lgl = T)
             composite_2_plt <- depict(x@a_TTUSynopsis, consent_1L_chr = consent_1L_chr, 
-                what_1L_chr = "composite_utl", write_1L_lgl = T)
+                what_1L_chr = "composite_utl", write_1L_lgl = T, 
+                x_labels_chr = x_labels_chr)
             if (!is.na(what_1L_chr)) {
                 consented_fn <- function(composite_1_plt, composite_2_plt, 
                   dir_1L_chr, fl_type_1L_chr) {
@@ -164,7 +167,7 @@ methods::setMethod("author", "TTUProject", function (x, consent_1L_chr = "", cus
         "Manuscript", "models", "Models", "plots", "Plots", "purge", 
         "Purge", "self", "Self", "supplement", "Supplement")) {
         if (what_1L_chr %in% c("self", "Self")) {
-            to_1L_chr <- paste0(x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@outp_data_dir_1L_chr, 
+            to_1L_chr <- paste0(x@c_SpecificProject@b_SpecificParameters@paths_ls$output_data_dir_1L_chr, 
                 "/", fl_nm_1L_chr, ".RDS")
             ready4::write_with_consent(consented_fn = saveRDS, 
                 prompt_1L_chr = paste0("Do you confirm that you want to write a copy of this TTUProject module to ", 
@@ -223,12 +226,21 @@ methods::setMethod("author", "TTUProject", function (x, consent_1L_chr = "", cus
                   what_1L_chr = "Manuscript_Submission")
             }
             if (type_1L_chr %in% c("plots", "Plots")) {
+                if (items_as_domains_1L_lgl == T) {
+                  x_labels_chr <- manufacture(x@a_ScorzProfile, 
+                    what_1L_chr = "domains", custom_args_ls = list(string = x@b_SpecificParameters@itm_labels_chr), 
+                    custom_fn = Hmisc::capitalize)
+                }
+                else {
+                  x_labels_chr <- manufacture(x@a_ScorzProfile, 
+                    what_1L_chr = "domains")
+                }
                 authorSlot(x, "d_TTUReports", consent_1L_chr = consent_1L_chr, 
                   depnt_var_desc_1L_chr = x@d_TTUReports@a_TTUSynopsis@b_SpecificResults@a_SpecificShareable@shareable_outp_ls$results_ls$study_descs_ls$health_utl_nm_1L_chr, 
                   depnt_var_min_val_1L_dbl = depnt_var_min_val_1L_dbl, 
                   timepoint_new_nms_chr = timepoint_new_nms_chr, 
                   type_1L_chr = Hmisc::capitalize(type_1L_chr), 
-                  what_1L_chr = "Manuscript_Submission")
+                  what_1L_chr = "Manuscript_Submission", x_labels_chr = x_labels_chr)
             }
             if (type_1L_chr == "submission") {
                 x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@ms_dir_1L_chr <- paste0(Hmisc::capitalize(what_1L_chr), 
@@ -247,9 +259,19 @@ methods::setMethod("author", "TTUProject", function (x, consent_1L_chr = "", cus
                 consent_1L_chr = consent_1L_chr)
         }
         if (what_1L_chr %in% c("plots", "Plots")) {
+            if (items_as_domains_1L_lgl == T) {
+                x_labels_chr <- manufacture(x@a_ScorzProfile, 
+                  what_1L_chr = "domains", custom_args_ls = list(string = x@b_SpecificParameters@itm_labels_chr), 
+                  custom_fn = Hmisc::capitalize)
+            }
+            else {
+                x_labels_chr <- manufacture(x@a_ScorzProfile, 
+                  what_1L_chr = "domains")
+            }
             authorSlot(x, "d_TTUReports", consent_1L_chr = consent_1L_chr, 
                 depnt_var_desc_1L_chr = x@d_TTUReports@a_TTUSynopsis@b_SpecificResults@a_SpecificShareable@shareable_outp_ls$results_ls$study_descs_ls$health_utl_nm_1L_chr, 
-                type_1L_chr = Hmisc::capitalize(what_1L_chr))
+                type_1L_chr = Hmisc::capitalize(what_1L_chr), 
+                x_labels_chr = x_labels_chr)
         }
         if (what_1L_chr %in% c("supplement", "Supplement")) {
             x@d_TTUReports@a_TTUSynopsis@a_Ready4showPaths@ms_dir_1L_chr <- paste0("Manuscript_", 

@@ -33,7 +33,7 @@ methods::setMethod("renew", "TTUProject", function (x, new_val_xx = NULL, consen
                 new_val_xx)
         }
         if (type_1L_chr == "predictors_lup") {
-            if (new_val_xx == "use_renew_mthd") {
+            if (identical(new_val_xx, "use_renew_mthd")) {
                 predictors_lup <- y_Ready4useRepos %>% ingest(fls_to_ingest_chr = c(fl_nm_1L_chr), 
                   metadata_1L_lgl = F)
             }
@@ -99,7 +99,7 @@ methods::setMethod("renew", "TTUProject", function (x, new_val_xx = NULL, consen
             x <- renewSlot(x, "d_TTUReports", Y)
         }
         if (type_1L_chr == "abstract") {
-            if (new_val_xx == "use_renew_mthd") {
+            if (identical(new_val_xx, "use_renew_mthd")) {
                 descs_ls <- x@d_TTUReports@a_TTUSynopsis@b_SpecificResults@a_SpecificShareable@shareable_outp_ls$results_ls$study_descs_ls
                 x <- renewSlot(x, "d_TTUReports@a_TTUSynopsis@abstract_args_ls", 
                   manufactureSlot(x, "d_TTUReports@a_TTUSynopsis", 

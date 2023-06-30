@@ -18,6 +18,7 @@
   timepoint_new_nms_chr = NA_character_,
   type_1L_chr = "Report",
   what_1L_chr = NA_character_,
+  x_labels_chr = character(0),
   ...
 )
 
@@ -58,6 +59,8 @@
 \item{type_1L_chr}{Type (a character vector of length one), Default: 'auto'}
 
 \item{what_1L_chr}{What (a character vector of length one), Default: 'default'}
+
+\item{x_labels_chr}{X labels (a character vector), Default: character(0)}
 
 \item{...}{Additional arguments}
 
