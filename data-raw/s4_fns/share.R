@@ -51,7 +51,7 @@ share_TTUProject <- function(x,
                obj_to_share_xx = instrument_ls, fl_nm_1L_chr = "instrument")
   }
     if("models" %in% what_chr){
-      shareSlot(A, "d_TTUReports@a_TTUSynopsis", type_1L_chr = "Models", what_1L_chr = "ingredients")
+      shareSlot(x, "d_TTUReports@a_TTUSynopsis", type_1L_chr = "Models", what_1L_chr = "ingredients")
     }
   return(x)
 }
