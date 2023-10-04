@@ -1,6 +1,6 @@
 Package: TTU
 Title: Implement Transfer to Utility Mapping Algorithms
-Version: 0.0.0.9364
+Version: 0.0.0.9365
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -10,12 +10,15 @@ Authors@R: c(
     person("Headspace", role = "fnd"),
     person("National Health and Medical Research Council", role = "fnd")
   )
-Description: Tools for developing, reporting and sharing utility mapping
-    algorithms for use with the ready4 youth mental health systems model
-    (https://ready4-dev.github.io/ready4/).  This development version of
-    the TTU package has been made available as part of the process of
-    testing and documenting the package.  If you have any questions,
-    please contact the authors (matthew.hamilton1@monash.edu).
+Description: Modules from the ready4 youth mental health economic model
+    (https://www.ready4-dev.com/docs/model/) that can be used to develop,
+    assess, report and share utility mapping models.  Outputs produced
+    through use of TTU package modules are designed to integrate with
+    health economic models developed with the ready4 framework
+    (https://www.ready4-dev.com/).  This development version of the TTU
+    package has been made available as part of the process of testing and
+    documenting the package.  If you have any questions, please contact
+    the authors (matthew.hamilton1@monash.edu).
 License: GPL-3 + file LICENSE
 URL: https://ready4-dev.github.io/TTU/, https://github.com/ready4-dev/TTU,
     https://ready4-dev.github.io/ready4/
@@ -32,9 +35,9 @@ Imports:
     methods,
     purrr,
     R.utils,
-    ready4 (>= 0.0.0.9118),
-    ready4show (>= 0.0.0.9109),
-    ready4use (>= 0.0.0.9229),
+    ready4 (>= 0.0.0.9125),
+    ready4show (>= 0.0.0.9111),
+    ready4use (>= 0.0.0.9231),
     rlang,
     stringr,
     testthat,
@@ -42,8 +45,7 @@ Imports:
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10),
-    scorz (>= 0.0.0.9059),
-    specific (>= 0.0.0.9104)
+    specific
 LazyData: true
 Collate: 
     'C4_TTUSynopsis.R'
@@ -69,12 +71,9 @@ Suggests:
     betareg,
     caret,
     knitrBootstrap,
-    rmarkdown,
-    youthvars (>= 0.0.0.9121)
+    rmarkdown
 Remotes: 
     ready4-dev/ready4,
     ready4-dev/ready4show,
     ready4-dev/ready4use,
-    ready4-dev/specific,
-    ready4-dev/youthvars,
-    ready4-dev/scorz
+    ready4-dev/specific
