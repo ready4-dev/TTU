@@ -10,7 +10,7 @@ home:
     href: https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/TTU_User.pdf
   - text: Manual - Developer (PDF)
     href: https://github.com/ready4-dev/TTU/releases/download/Documentation_0.0/TTU_Developer.pdf
-  - text: Model
+  - text: Framework & Model
     href:  https://ready4-dev.github.io/ready4/
 development:
   mode: auto

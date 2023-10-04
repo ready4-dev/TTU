@@ -1,3 +1,4 @@
+library(ready4)
 library(ready4fun)
 library(ready4use)
 library(ready4show)
@@ -9,7 +10,8 @@ ready4fun::write_fn_type_dirs()
 fns_env_ls <- ready4fun::read_fns(c("data-raw/fns/","data-raw/mthds/"),
                                   fns_env = new.env(parent = globalenv()))
 x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utility Mapping Algorithms",
-                                                    pkg_desc_1L_chr = "Tools for developing, reporting and sharing utility mapping algorithms for use with the ready4 youth mental health systems model (https://ready4-dev.github.io/ready4/).
+                                                    pkg_desc_1L_chr = "Modules from the ready4 youth mental health economic model (https://www.ready4-dev.com/docs/model/) that can be used to develop, assess, report and share utility mapping models.
+                            Outputs produced through use of TTU package modules are designed to integrate with health economic models developed with the ready4 framework (https://www.ready4-dev.com/).
                             This development version of the TTU package has been made available as part of the process of testing and documenting the package.
                             If you have any questions, please contact the authors (matthew.hamilton1@monash.edu).",
                                                     authors_prsn = c(utils::person(given = "Caroline",family = "Gao",email = "caroline.gao@orygen.org.au", role = c("aut"),comment = c(ORCID = "0000-0002-0987-2759")),
@@ -197,6 +199,10 @@ usethis::use_dev_package("scorz",
 usethis::use_dev_package("specific",
                          type = "Depends",
                          remote = "ready4-dev/specific")
+write_to_edit_workflow("pkgdown.yaml", consent_1L_chr = "Y") # In other packages, run for "test-coverage.yaml" as well.
+readLines("_pkgdown.yml") %>%
+  stringr::str_replace_all("  - text: Model", "  - text: Framework & Model") %>%
+  writeLines(con = "_pkgdown.yml")
 devtools::build_vignettes()
 # usethis::use_package("readr")
 # MANUAL DELETION OF TRAILING INCLUDE
