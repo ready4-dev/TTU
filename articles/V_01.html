@@ -34,7 +34,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">TTU</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9364</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9365</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,35 +93,40 @@
     
 <p>Note: <strong>This vignette uses fake data</strong> - it is for
 illustrative purposes only and should not be used to inform decision
-making.</p>
+making. This vignette outlines the workflow for developing utility
+mapping models using longitudinal data. The workflow for developing
+utility mapping models is broadly similar, with some minor
+modifications. An example of developing models using cross-sectional
+data is available at <a href="https://doi.org/10.5281/zenodo.8098595" class="external-link uri">https://doi.org/10.5281/zenodo.8098595</a> .</p>
 <div class="section level2">
 <h2 id="motivation">Motivation<a class="anchor" aria-label="anchor" href="#motivation"></a>
 </h2>
-<p>Youth mental health services do not typically collect health utility
-data from their clients, which makes it more difficult to place an
-economic values on outcomes attained in these services. One strategy for
-addressing this gap is to use data from similar samples of young people
-that contain both health utility and the types of outcome measures that
-are collected in clinical services. The TTU package provides a toolkit
-for conducting and reporting a utility mapping (or Transfer to Utility)
-study.</p>
+<p>Health services do not typically collect health utility data from
+their clients, which makes it more difficult to place an economic values
+on outcomes attained in these services. One strategy for addressing this
+gap is to use data from similar samples of patients that contain both
+health utility and the types of outcome measures that are collected in
+clinical services. The TTU package provides a toolkit for conducting and
+reporting a utility mapping (or Transfer to Utility) study.</p>
 </div>
 <div class="section level2">
 <h2 id="implementation">Implementation<a class="anchor" aria-label="anchor" href="#implementation"></a>
 </h2>
-<p>TTU has been developed for use with the <a href="https://ready4-dev.github.io/ready4/" class="external-link">ready4 model</a> and
-combines and extends multiple types of <a href="https://ready4-dev.github.io/ready4/articles/V_01.html" class="external-link">ready4
-modules</a>:</p>
+<p>The TTU package contains <a href="https://www.ready4-dev.com/docs/framework/implementation/modularity/" class="external-link">modules</a>
+of the <a href="https://www.ready4-dev.com/docs/model/" class="external-link">ready4 youth
+mental health economic model</a> that combine and extend model modules
+for:</p>
 <ul>
-<li>Modules for labeling, validating and summarising youth mental health
-datasets from the <a href="https://ready4-dev.github.io/youthvars/" class="external-link">youthvars</a>
-package;</li>
-<li>Modules for scoring health utility from the <a href="https://ready4-dev.github.io/scorz/" class="external-link">scorz</a> package;</li>
-<li>Modules for specifying and testing statistical models from the <a href="https://ready4-dev.github.io/specific/" class="external-link">specific</a> package;</li>
-<li>Modules for generating reports from the <a href="https://ready4-dev.github.io/ready4show/" class="external-link">ready4show</a> package;
+<li>labeling, validating and summarising youth mental health datasets
+(from the <a href="https://ready4-dev.github.io/youthvars/" class="external-link">youthvars</a>
+package);</li>
+<li>scoring health utility (from the <a href="https://ready4-dev.github.io/scorz/" class="external-link">scorz</a> package);</li>
+<li>specifying and testing statistical models (from the <a href="https://ready4-dev.github.io/specific/" class="external-link">specific</a>
+package);</li>
+<li>generating reproducible analysis reports (from the <a href="https://ready4-dev.github.io/ready4show/" class="external-link">ready4show</a> package);
 and</li>
-<li>Modules for sharing data via online data repositories from the <a href="https://ready4-dev.github.io/ready4use/" class="external-link">ready4use</a>
-package.</li>
+<li>sharing data via online data repositories (from the <a href="https://ready4-dev.github.io/ready4use/" class="external-link">ready4use</a>
+package).</li>
 </ul>
 <p>Additionally, TTU relies on two RMarkdown programs:</p>
 <ul>
@@ -130,6 +135,8 @@ Utility) Model Catalogue (<a href="https://doi.org/10.5281/zenodo.5936870" class
 <li>ttu_lng_ss: Create a Draft Scientific Manuscript For A Utility
 Mapping Study (<a href="https://doi.org/10.5281/zenodo.5976987" class="external-link uri">https://doi.org/10.5281/zenodo.5976987</a>)</li>
 </ul>
+<p>Outputs generated by the TTU package are designed to be compatible
+with health economic models developed with the <a href="https://www.ready4-dev.com" class="external-link">ready4 framework</a>).</p>
 </div>
 <div class="section level2">
 <h2 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
@@ -213,7 +220,7 @@ dataset and its data dictionary</a>.</p>
 <span>                     <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/ingest-methods.html" class="external-link">ingest</a></span><span class="op">(</span>fls_to_ingest_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"dictionary_r3"</span><span class="op">)</span>, metadata_1L_lgl <span class="op">=</span> <span class="cn">F</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/renew-methods.html" class="external-link">renew</a></span><span class="op">(</span>type_1L_chr <span class="op">=</span> <span class="st">"label"</span><span class="op">)</span></span></code></pre></div>
 <p>We use the YouthvarsSeries module to <a href="https://ready4-dev.github.io/youthvars/articles/V_02.html" class="external-link">supply
-metadata about out a longitudinal dataset vignette</a>.</p>
+metadata about our longitudinal dataset vignette</a>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ready4-dev.github.io/youthvars/reference/YouthvarsSeries-class.html" class="external-link">YouthvarsSeries</a></span><span class="op">(</span>a_Ready4useDyad <span class="op">=</span> <span class="va">A</span>, id_var_nm_1L_chr <span class="op">=</span> <span class="st">"fkClientID"</span>, timepoint_var_nm_1L_chr <span class="op">=</span> <span class="st">"round"</span>,</span>
 <span>                     timepoint_vals_chr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html" class="external-link">levels</a></span><span class="op">(</span><span class="fu"><a href="https://ready4-dev.github.io/ready4/reference/procureSlot-methods.html" class="external-link">procureSlot</a></span><span class="op">(</span><span class="va">A</span>, <span class="st">"ds_tb"</span><span class="op">)</span><span class="op">$</span><span class="va">round</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
