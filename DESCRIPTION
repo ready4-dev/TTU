@@ -1,6 +1,6 @@
 Package: TTU
 Title: Implement Transfer to Utility Mapping Algorithms
-Version: 0.0.0.9365
+Version: 0.0.0.9366
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -10,11 +10,11 @@ Authors@R: c(
     person("Headspace", role = "fnd"),
     person("National Health and Medical Research Council", role = "fnd")
   )
-Description: Modules from the ready4 youth mental health economic model
-    (https://www.ready4-dev.com/docs/model/) that can be used to develop,
-    assess, report and share utility mapping models.  Outputs produced
-    through use of TTU package modules are designed to integrate with
-    health economic models developed with the ready4 framework
+Description: Modules from the readyforwhatsnext youth mental health
+    economic model (https://readyforwhatsnext.org/) that can be used to
+    develop, assess, report and share utility mapping models.  Outputs
+    produced through use of TTU package modules are designed to integrate
+    with health economic models developed with the ready4 framework
     (https://www.ready4-dev.com/).  This development version of the TTU
     package has been made available as part of the process of testing and
     documenting the package.  If you have any questions, please contact
@@ -24,29 +24,33 @@ URL: https://ready4-dev.github.io/TTU/, https://github.com/ready4-dev/TTU,
     https://ready4-dev.github.io/ready4/
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
+Suggests: 
+    betareg,
+    caret,
+    knitr,
+    knitrBootstrap,
+    rmarkdown,
+    testthat
+VignetteBuilder: knitr
 Imports: 
     dplyr,
     ggplot2,
     Hmisc,
-    knitr,
     lifecycle,
     magrittr,
     methods,
     purrr,
     R.utils,
-    ready4 (>= 0.0.0.9125),
-    ready4show (>= 0.0.0.9111),
-    ready4use (>= 0.0.0.9231),
+    ready4,
+    ready4show (>= 0.0.0.9112),
+    ready4use (>= 0.0.0.9232),
     rlang,
     stringr,
-    testthat,
     utils
-VignetteBuilder: knitr
 Depends: 
     R (>= 2.10),
-    scorz (>= 0.0.0.9062),
-    specific (>= 0.0.0.9108)
+    specific
 LazyData: true
 Collate: 
     'C4_TTUSynopsis.R'
@@ -68,16 +72,7 @@ Collate:
     'mthd_renew.R'
     'mthd_share.R'
     'pkg_TTU.R'
-Suggests: 
-    betareg,
-    caret,
-    knitrBootstrap,
-    rmarkdown,
-    youthvars (>= 0.0.0.9123)
 Remotes: 
-    ready4-dev/ready4,
     ready4-dev/ready4show,
     ready4-dev/ready4use,
-    ready4-dev/specific,
-    ready4-dev/youthvars,
-    ready4-dev/scorz
+    ready4-dev/specific
