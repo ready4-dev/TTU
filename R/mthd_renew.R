@@ -1,5 +1,5 @@
 #' 
-#' Renew values in a dataset
+#' Renew (update) values
 #' @name renew-TTUProject
 #' @description renew method applied to TTUProject
 #' @param x An object of class TTUProject

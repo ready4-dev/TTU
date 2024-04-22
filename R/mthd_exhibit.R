@@ -1,5 +1,5 @@
 #' 
-#' Exhibit features of a dataset by printing them to the R console
+#' Exhibit features of model module data by printing them to the R console
 #' @name exhibit-TTUProject
 #' @description exhibit method applied to TTUProject
 #' @param x An object of class TTUProject
@@ -16,7 +16,7 @@
 #' @param variables_chr Variables (a character vector), Default: character(0)
 #' @param what_1L_chr What (a character vector of length one), Default: 'predictors'
 #' @param ... Additional arguments
-#' @return NULL
+#' @return No return value, called for side effects.
 #' @rdname exhibit-methods
 #' @aliases exhibit,TTUProject-method
 #' @export 

@@ -14,7 +14,7 @@
 #' @param what_1L_chr What (a character vector of length one), Default: 'NA'
 #' @param x_labels_chr X labels (a character vector), Default: character(0)
 #' @param ... Additional arguments
-#' @return NULL
+#' @return No return value, called for side effects.
 #' @rdname author-methods
 #' @aliases author,TTUReports-method
 #' @export 

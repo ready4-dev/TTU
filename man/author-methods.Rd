@@ -77,6 +77,8 @@
 \item{supplement_fl_nm_1L_chr}{Supplement file name (a character vector of length one), Default: 'TA_PDF'}
 }
 \value{
+No return value, called for side effects.
+
 x (An object of class TTUProject)
 }
 \description{

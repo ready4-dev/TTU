@@ -10,7 +10,7 @@ ready4fun::write_fn_type_dirs()
 fns_env_ls <- ready4fun::read_fns(c("data-raw/fns/","data-raw/mthds/"),
                                   fns_env = new.env(parent = globalenv()))
 x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utility Mapping Algorithms",
-                                                    pkg_desc_1L_chr = "Modules from the ready4 youth mental health economic model (https://www.ready4-dev.com/docs/model/) that can be used to develop, assess, report and share utility mapping models.
+                                                    pkg_desc_1L_chr = "Modules from the readyforwhatsnext youth mental health economic model (https://readyforwhatsnext.org/) that can be used to develop, assess, report and share utility mapping models.
                             Outputs produced through use of TTU package modules are designed to integrate with health economic models developed with the ready4 framework (https://www.ready4-dev.com/).
                             This development version of the TTU package has been made available as part of the process of testing and documenting the package.
                             If you have any questions, please contact the authors (matthew.hamilton1@monash.edu).",
@@ -27,10 +27,10 @@ x <- ready4fun::make_pkg_desc_ls(pkg_title_1L_chr = "Implement Transfer to Utili
                                                                        depends_chr = "specific"),
                            build_ignore_ls = ready4fun::make_build_ignore_ls(file_nms_chr = c("initial_setup.R")),
                            check_type_1L_chr = "ready4",
-                           copyright_holders_chr = "Orygen",
+                           copyright_holders_chr = "Matthew Hamilton and Orygen",
                            custom_dmt_ls = ready4fun::make_custom_dmt_ls(),##
                            dev_pkgs_chr = c("cmdstanr",
-                                            "ready4",#"ready4fun",
+                                            #"ready4",#"ready4fun",
                                             "ready4use","ready4show",
                                             #"youthvars","scorz",
                                             "specific"),
@@ -189,7 +189,7 @@ z <- ready4pack::make_pt_ready4pack_manifest(x,
                                              pkg_ds_ls_ls = datasets_ls) %>%
   ready4pack::ready4pack_manifest()
 z <- ready4::author(z)
-ready4::write_extra_pkgs_to_actions(consent_1L_chr = "Y")
+ready4::write_extra_pkgs_to_actions(path_to_dir_1L_chr = ".github/workflows", consent_1L_chr = "Y")
 usethis::use_dev_package("youthvars",
                          type = "Suggests",#D?
                          remote = "ready4-dev/youthvars")
@@ -200,10 +200,10 @@ usethis::use_dev_package("specific",
                          type = "Depends",
                          remote = "ready4-dev/specific")
 write_to_edit_workflow("pkgdown.yaml", consent_1L_chr = "Y") # In other packages, run for "test-coverage.yaml" as well.
-readLines("_pkgdown.yml") %>%
-  stringr::str_replace_all("  - text: Model", "  - text: Framework & Model") %>%
-  writeLines(con = "_pkgdown.yml")
-devtools::build_vignettes()
+write_to_tidy_pkg(z$x_ready4fun_manifest, build_vignettes_1L_lgl = TRUE,
+                  clean_license_1L_lgl = TRUE, consent_1L_chr = "Y",
+                  examples_chr = character(0),
+                  suggest_chr = "pkgload")
 # usethis::use_package("readr")
 # MANUAL DELETION OF TRAILING INCLUDE
 # usethis::use_dev_package("ready4",

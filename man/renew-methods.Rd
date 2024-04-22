@@ -3,7 +3,7 @@
 \name{renew-TTUProject}
 \alias{renew-TTUProject}
 \alias{renew,TTUProject-method}
-\title{Renew values in a dataset}
+\title{Renew (update) values}
 \usage{
 \S4method{renew}{TTUProject}(
   x,
