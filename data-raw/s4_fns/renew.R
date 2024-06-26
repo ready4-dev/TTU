@@ -4,6 +4,7 @@ renew_TTUProject <- function(x,
                              depnt_var_min_val_1L_dbl = numeric(0),
                              fl_nm_1L_chr = character(0),
                              paths_chr = character(0),
+                             prototype_lup = NULL,
                              type_1L_chr = "default",
                              y_Ready4useRepos = ready4use::Ready4useRepos(),
                              what_1L_chr = "utility",
@@ -44,7 +45,7 @@ renew_TTUProject <- function(x,
     if(type_1L_chr == "default"){
       x <- renewSlot(x, "c_SpecificProject", SpecificModels(a_YouthvarsProfile = x@a_ScorzProfile@a_YouthvarsProfile,
                                                             b_SpecificParameters = x@b_SpecificParameters, paths_chr = paths_chr))
-      x <- ratifySlot(x, "c_SpecificProject")
+      x <- ratifySlot(x, "c_SpecificProject", prototype_lup = prototype_lup)
       x <- renewSlot(x, "c_SpecificProject", authorSlot(x, "c_SpecificProject", consent_1L_chr = consent_1L_chr, what_1L_chr = "workspace"))
     }
     if(type_1L_chr == "dummys"){

@@ -8,6 +8,7 @@
 #' @param depnt_var_min_val_1L_dbl Dependent variable minimum value (a double vector of length one), Default: numeric(0)
 #' @param fl_nm_1L_chr File name (a character vector of length one), Default: character(0)
 #' @param paths_chr Paths (a character vector), Default: character(0)
+#' @param prototype_lup Prototype (a lookup table), Default: NULL
 #' @param type_1L_chr Type (a character vector of length one), Default: 'default'
 #' @param y_Ready4useRepos PARAM_DESCRIPTION, Default: ready4use::Ready4useRepos()
 #' @param what_1L_chr What (a character vector of length one), Default: 'utility'
@@ -19,9 +20,9 @@
 #' @importFrom ready4use Ready4useRepos
 #' @importFrom ready4 renew
 methods::setMethod("renew", "TTUProject", function (x, new_val_xx = NULL, consent_1L_chr = "", depnt_var_min_val_1L_dbl = numeric(0), 
-    fl_nm_1L_chr = character(0), paths_chr = character(0), type_1L_chr = "default", 
-    y_Ready4useRepos = ready4use::Ready4useRepos(), what_1L_chr = "utility", 
-    ...) 
+    fl_nm_1L_chr = character(0), paths_chr = character(0), prototype_lup = NULL, 
+    type_1L_chr = "default", y_Ready4useRepos = ready4use::Ready4useRepos(), 
+    what_1L_chr = "utility", ...) 
 {
     if (what_1L_chr == "parameters") {
         if (type_1L_chr == "default") {
@@ -69,7 +70,7 @@ methods::setMethod("renew", "TTUProject", function (x, new_val_xx = NULL, consen
             x <- renewSlot(x, "c_SpecificProject", SpecificModels(a_YouthvarsProfile = x@a_ScorzProfile@a_YouthvarsProfile, 
                 b_SpecificParameters = x@b_SpecificParameters, 
                 paths_chr = paths_chr))
-            x <- ratifySlot(x, "c_SpecificProject")
+            x <- ratifySlot(x, "c_SpecificProject", prototype_lup = prototype_lup)
             x <- renewSlot(x, "c_SpecificProject", authorSlot(x, 
                 "c_SpecificProject", consent_1L_chr = consent_1L_chr, 
                 what_1L_chr = "workspace"))

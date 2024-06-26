@@ -19,7 +19,7 @@ Description: Modules from the readyforwhatsnext youth mental health
     package has been made available as part of the process of testing and
     documenting the package.  If you have any questions, please contact
     the authors (matthew.hamilton1@monash.edu).
-License: GPL-3 + file LICENSE
+License: GPL-3
 URL: https://ready4-dev.github.io/TTU/, https://github.com/ready4-dev/TTU,
     https://ready4-dev.github.io/ready4/
 Encoding: UTF-8
@@ -30,8 +30,10 @@ Suggests:
     caret,
     knitr,
     knitrBootstrap,
+    pkgload,
     rmarkdown,
-    testthat
+    testthat,
+    youthvars (>= 0.0.0.9125)
 VignetteBuilder: knitr
 Imports: 
     dplyr,
@@ -50,7 +52,8 @@ Imports:
     utils
 Depends: 
     R (>= 2.10),
-    specific
+    scorz (>= 0.0.0.9066),
+    specific (>= 0.0.0.9108)
 LazyData: true
 Collate: 
     'C4_TTUSynopsis.R'
@@ -75,4 +78,6 @@ Collate:
 Remotes: 
     ready4-dev/ready4show,
     ready4-dev/ready4use,
-    ready4-dev/specific
+    ready4-dev/specific,
+    ready4-dev/youthvars,
+    ready4-dev/scorz

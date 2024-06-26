@@ -3,7 +3,7 @@
 \name{procure-TTUProject}
 \alias{procure-TTUProject}
 \alias{procure,TTUProject-method}
-\title{Procure items from a dataset}
+\title{Procure data from a model module}
 \usage{
 \S4method{procure}{TTUProject}(
   x,

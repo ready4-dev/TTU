@@ -12,6 +12,7 @@
   depnt_var_min_val_1L_dbl = numeric(0),
   fl_nm_1L_chr = character(0),
   paths_chr = character(0),
+  prototype_lup = NULL,
   type_1L_chr = "default",
   y_Ready4useRepos = ready4use::Ready4useRepos(),
   what_1L_chr = "utility",
@@ -30,6 +31,8 @@
 \item{fl_nm_1L_chr}{File name (a character vector of length one), Default: character(0)}
 
 \item{paths_chr}{Paths (a character vector), Default: character(0)}
+
+\item{prototype_lup}{Prototype (a lookup table), Default: NULL}
 
 \item{type_1L_chr}{Type (a character vector of length one), Default: 'default'}
 

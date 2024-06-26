@@ -1,5 +1,5 @@
 #' 
-#' Procure items from a dataset
+#' Procure data from a model module
 #' @name procure-TTUProject
 #' @description procure method applied to TTUProject
 #' @param x An object of class TTUProject
