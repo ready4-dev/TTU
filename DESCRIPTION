@@ -1,6 +1,6 @@
 Package: TTU
 Title: Implement Transfer to Utility Mapping Algorithms
-Version: 0.0.0.9366
+Version: 0.0.0.9367
 Authors@R: c(
     person("Caroline", "Gao", , "caroline.gao@orygen.org.au", role = "aut",
            comment = c(ORCID = "0000-0002-0987-2759")),
@@ -19,7 +19,7 @@ Description: Modules from the readyforwhatsnext youth mental health
     package has been made available as part of the process of testing and
     documenting the package.  If you have any questions, please contact
     the authors (matthew.hamilton1@monash.edu).
-License: GPL-3
+License: GPL-3 + file LICENSE
 URL: https://ready4-dev.github.io/TTU/, https://github.com/ready4-dev/TTU,
     https://ready4-dev.github.io/ready4/
 Encoding: UTF-8
@@ -30,10 +30,8 @@ Suggests:
     caret,
     knitr,
     knitrBootstrap,
-    pkgload,
     rmarkdown,
-    testthat,
-    youthvars (>= 0.0.0.9125)
+    testthat
 VignetteBuilder: knitr
 Imports: 
     dplyr,
@@ -45,15 +43,14 @@ Imports:
     purrr,
     R.utils,
     ready4,
-    ready4show (>= 0.0.0.9112),
-    ready4use (>= 0.0.0.9232),
+    ready4show (>= 0.0.0.9114),
+    ready4use (>= 0.0.0.9233),
     rlang,
     stringr,
     utils
 Depends: 
     R (>= 2.10),
-    scorz (>= 0.0.0.9065),
-    specific (>= 0.0.0.9108)
+    specific
 LazyData: true
 Collate: 
     'C4_TTUSynopsis.R'
@@ -78,6 +75,4 @@ Collate:
 Remotes: 
     ready4-dev/ready4show,
     ready4-dev/ready4use,
-    ready4-dev/specific,
-    ready4-dev/youthvars,
-    ready4-dev/scorz
+    ready4-dev/specific
